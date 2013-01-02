@@ -1,0 +1,19 @@
+h1, h2, h3, h4, h5 ul, li {margin: 0; padding: 0; font-weight: normal; clear:both;}
+h2 {padding: 3px 0px;}
+ul li, ol li {line-height: 1.7em;}
+table {border-collapse:collapse;}
+body { font: 12px/14px Arial, sans-serif !important; margin: 20px; padding: 0;}
+a {border-bottom: 1px dotted #3E95BE; color: #1E759E !important; text-decoration: none;}
+div#com_cobalt div.leftColumn { border: 0px !important;}
+div.task_association,div.task_category,div.task_description { margin-left:20px; display:inline; }
+div#calendar table { width:auto !important; }
+div#calendar tr th.ui-widget-header.fc-sun.fc-first,
+div#calendar tr th.ui-widget-header.fc-sun,
+div#calendar tr th.ui-widget-header.fc-mon,
+div#calendar tr th.ui-widget-header.fc-tue,
+div#calendar tr th.ui-widget-header.fc-wed,
+div#calendar tr th.ui-widget-header.fc-thu,
+div#calendar tr th.ui-widget-header.fc-fri,
+div#calendar tr th.ui-widget-header.fc-sat {  width:150px !important; }
+div#calendar tr td.fc-sun.fc-first div { min-height:150px !important; height:150px !important;}
+
