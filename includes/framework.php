@@ -23,7 +23,7 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') || (filesize(JPATH_CO
 
 	if (file_exists(JPATH_INSTALLATION.'/index.php')) {
 
-		header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'index.php')).'install/index.php');
+		header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'install/index.php')).'install/index.php');
 		exit();
 
 	} else {

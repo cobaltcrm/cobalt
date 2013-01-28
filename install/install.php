@@ -17,6 +17,8 @@ class crmInstall
 
 		//construct base url
 		$this->baseurl = CURI::base();
+		session_start();
+		$this->error = $_SESSION['error'];
 	}
 
 

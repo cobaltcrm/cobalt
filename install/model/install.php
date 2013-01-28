@@ -10,6 +10,9 @@ class crmInstallModel{
 	
 	function install(){
 
+		session_start();
+		$_SESSION['error'] = null;
+
 		$logPath = JPATH_BASE."/logs";
 		$tmpPath = JPATH_BASE."/tmp";
 
@@ -43,13 +46,23 @@ class crmInstallModel{
 		//write configuration
 		//TODO: needs to check if writable
 		$file = JPATH_BASE."/configuration.php";
-		file_put_contents($file, $this->config->toString());
+		if ( !@file_put_contents($file, $this->config->toString()) ){
+			$this->setError(JText::_('There was an error creating the configuration.php file. Please check your permissions for directory '.JPATH_BASE));
+
+			return false;
+		}
 			
 		//populate database
-		$this->createDb();
+		if ( !$this->createDb() ){
+			$this->setError(JText::_('There was an error creating the required database. Please review your '));
+			return false;
+		}
 
 		//populate crm
-		$this->createCrm();
+		if ( !$this->createCrm() ){
+			$this->setError(JText::_('There was a problem creating the CRM database. Please review your database settings.'));
+			return false;
+		}
 
 		//create admin user
 		$admin = array(
@@ -59,11 +72,19 @@ class crmInstallModel{
 			'first_name'	=>$_POST['first_name'],
 			'last_name'		=>$_POST['last_name']
 		);
-		$this->createAdmin($admin);
+		if ( !$this->createAdmin($admin) ){
+			$this->setError(JText::_('There was a problem creating the CRM administrator user. Please review your database settings.'));
+			return false;
+		}
 
 		//rename-move installation folder
 		//TODO: needs to check if writable
-		rename(JPATH_BASE."/install",JPATH_BASE."/_install");
+		if ( !rename(JPATH_BASE."/install",JPATH_BASE."/_install") ){
+			$this->setError(JText::_('There was a problem removing the CRM installation folder. Please remove the folder named "install" or optionally rename it.'));
+			return false;
+		}
+
+		return true;
 
 	}
 
@@ -113,6 +134,8 @@ class crmInstallModel{
 			}
 		}
 
+		return true;
+
 	}
 
 	function createCrm(){
@@ -151,6 +174,8 @@ class crmInstallModel{
 			}
 		}
 
+		return true;
+
 	}
 
 
@@ -166,7 +191,7 @@ class crmInstallModel{
 		$cryptpass = $crypt . ':' . $salt;
 
 		$query = $this->db->getQuery(true);
-		$columns = array($this->db->quoteName('id'), $this->db->quoteName('admin'), $this->db->quoteName('name'), $this->db->quoteName('first_name'), $this->db->quoteName('last_name') $this->db->quoteName('username'),
+		$columns = array($this->db->quoteName('id'), $this->db->quoteName('admin'), $this->db->quoteName('name'), $this->db->quoteName('first_name'), $this->db->quoteName('last_name'), $this->db->quoteName('username'),
 						$this->db->quoteName('email'), $this->db->quoteName('password'),
 						$this->db->quoteName('block'),
 						$this->db->quoteName('sendEmail'), $this->db->quoteName('registerDate'),
@@ -175,11 +200,10 @@ class crmInstallModel{
 		$query->columns($columns);
 
 		$query->values(
-			$this->db->quote($userId) . ', ' . $this->db->quote("1") . ', ' . $this->db->quote($admin['first_name'].' '.$admin['last_name']) . ', ' . $this->db->quote($admin['first_name']. ', ' . $this->db->quote($admin['last_name'] . ', ' . $this->db->quote($admin['username']) . ', ' .
+			$this->db->quote($userId) . ', ' . $this->db->quote("1") . ', ' . $this->db->quote($admin['first_name'].' '.$admin['last_name']) . ', ' . $this->db->quote($admin['first_name']). ', ' . $this->db->quote($admin['last_name']) . ', ' . $this->db->quote($admin['username']) . ', ' .
 			$this->db->quote($admin['email']) . ', ' . $this->db->quote($cryptpass) . ', ' .
 			$this->db->quote('0') . ', ' . $this->db->quote('1') . ', ' . $this->db->quote(date("Y-m-d H:i:s")) . ', ' . $this->db->quote("0000-00-00 00:00:00") . ', ' .
-			$this->db->quote('0') . ', ' . $this->db->quote('')
-		);
+			$this->db->quote('0') . ', ' . $this->db->quote(''));
 
 		$this->db->setQuery($query);
 		$this->db->query();
@@ -192,6 +216,8 @@ class crmInstallModel{
 		$this->db->query();
 
 		$this->admin = $admin;
+
+		return true;
 	}
 
 	function getAdmin(){
@@ -294,7 +320,16 @@ class crmInstallModel{
 	}
 
 	function setError($error){
-		$this->error = $error;
+		if ( is_array($this->error) ){
+			$this->error[] = $error;
+		}else if ( $this->error != null ){
+			$this->error = array($this->error);
+			$this->error[] = $error;
+		}else{
+			$this->error = $error;
+		}
+		session_start();
+		$_SESSION['error'] = $this->error;
 	}
 
 	function getError(){

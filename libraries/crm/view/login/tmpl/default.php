@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				<button type="submit" class="btn btn-primary"><?php echo CRMText::_('COBALT_LOG_IN'); ?></button>
 			</div>
 		</div>
-		<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?view=dashboard')); ?>">
+		<input type="hidden" name="return" value="<?php echo base64_encode('index.php?view=dashboard'); ?>">
 		<?php echo JHtml::_('form.token'); ?>
 	</fieldset>
 </form>

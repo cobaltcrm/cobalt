@@ -48,9 +48,13 @@ CREATE TABLE IF NOT EXISTS `#__branding` (
   `link_hover` varchar(255) DEFAULT NULL,
   `assigned` tinyint(2) NOT NULL,
   `modified` datetime NOT NULL,
+  `site_logo` varchar(255) NOT NULL DEFAULT 'cobalt-3d.png',
+  `feature_btn_bg` varchar(255) DEFAULT NULL,
+  `feature_btn_border` varchar(255) DEFAULT NULL,
+  `block_btn_border` varchar(255) DEFAULT NULL,
+  `site_name` varchar(255) NOT NULL DEFAULT 'COBALT',
   PRIMARY KEY (`id`)
 ) ;
-
 
 
 INSERT IGNORE INTO `#__branding` (`id`, `header`, `tabs_hover`, `tabs_hover_text`, `table_header_row`, `table_header_text`, `link`, `link_hover`, `assigned`, `modified`)

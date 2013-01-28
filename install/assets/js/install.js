@@ -1,4 +1,7 @@
 var validateDbTo = null;
+var site = false;
+var db = false;
+var admin = false;
 
 $(document).ready(function(){
 
@@ -35,12 +38,12 @@ function validateSite(){
 		valid = false;
 	}
 
+	site = valid;
+
 	return valid;
 }
 
 function validateAdmin(){
-
-	console.log('here');
 
 	var valid = true;
 
@@ -64,18 +67,22 @@ function validateAdmin(){
 		}
 	});
 
+	admin = valid;
+
 	return valid;
 
 }
 
 function validateDb(){
 
+	var valid = false;
+
 	if ( !$("#database").is(":visible") ) {
 
 		$('#myTab a[href="#database"]').tab('show');
 		setTimeout(function(){validateDb();},500);
 
-		var valid = false;
+		valid = false;
 
 	} else {
 
@@ -86,10 +93,10 @@ function validateDb(){
 		obj['pass'] = $("#dbPass").val();
 		obj['name'] = $("#dbName").val();
 
-		var valid = true;
+		valid = true;
 
 		$.each(obj,function(key,value){
-			if ( value == "" || value == null ){
+			if ( key != "pass" && ( value == "" || value == null ) ){
 				valid = false;
 				$("#db"+ucwords(key)).tooltip('show');
 				$('#myTab a[href="#database"]').tab('show')
@@ -109,15 +116,17 @@ function validateDb(){
 				success:function(data){
 					$("#db-ajax").css('visibility','hidden');
 					if ( data.valid ){
-						$("#database-validation-message").empty().append("<span class='alert alert-success'>Everything checks out!</span>");
+						$("#database-validation-message").empty().append("<div class='alert alert-success'>Everything checks out!</div>");
 					}else{
-						$("#database-validation-message").empty().append("<span class='alert alert-danger'>There appears to be a problem! <b>"+data.error+"</b></span>");
+						$("#database-validation-message").empty().append("<div class='alert alert-danger'>There appears to be a problem! <b>"+data.error+"</b></div>");
 					}
 				}
 			})
 		}
 
 	}
+
+	db = valid;
 
 	return valid;
 
@@ -136,6 +145,14 @@ function ucwords (str) {
 }
 
 function install(){
-	if ( validateSite() && validateDb() && validateAdmin() )
-		$('#install-form').submit();
+	if ( !site ){
+		validateSite();
+	}else if ( !db ){
+		validateDb();
+	}else{
+		validateAdmin();
+	}
+	if ( admin ){
+		$("#install-form").submit();
+	}
 }

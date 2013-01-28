@@ -366,6 +366,7 @@ CREATE TABLE IF NOT EXISTS `#__users` (
   `lastvisitDate` datetime DEFAULT NULL,
   `activation` varchar(100) DEFAULT NULL,
   `params` text,
+  `language` varchar(255) DEFAULT 'en-GB',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

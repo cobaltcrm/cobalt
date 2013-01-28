@@ -40,11 +40,15 @@ class crmInstallController{
 
 	/** Install application **/
 	function install(){
-		
+
 		//load our installation model
 		include_once(JPATH_BASE."/install/model/install.php");
 		$model = new crmInstallModel();
-		$model->install();
+		if ( !$model->install() ){
+			session_start();
+			$_SESSION['error'] = $model->getError();
+			header('Location: '.CURI::base());
+		}
 
 		require_once JPATH_BASE . '/includes/framework.php';
 		include_once JPATH_BASE . '/includes/application.php';
