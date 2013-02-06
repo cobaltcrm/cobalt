@@ -15,6 +15,8 @@ class CobaltControllerEdit extends CobaltControllerDefault
 
     function execute()
     {
+        
+        /*
         $app = JFactory::getApplication();
         $viewName = $app->input->get('view');
         $app->input->set('layout','edit');
@@ -24,6 +26,8 @@ class CobaltControllerEdit extends CobaltControllerDefault
 
         //display view
         echo $view->render();
+        */
+       parent::execute();
     }
 
 }
