@@ -16,8 +16,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <table>
 	<tbody>
-		
-		<?php if($this->teammates) > 0 ) { foreach($this->teammates as $teammate) {  ?>
+
+		<?php if($this->teammates > 0 ) { foreach($this->teammates as $teammate) {  ?>
 		<tr>
 			<td><?php echo CRMText::_('COBALT_TEAMMATE'); ?></td>
 			<td><?php  echo $teammate->name; ?></td>
