@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //define company
 $company = $this->companies[0];?>
@@ -64,11 +64,11 @@ $company = $this->companies[0];?>
 			<h1><?php echo $company['name']; ?></h1>
 		</div>
 
-		<div class="row-fluid">	
+		<div class="row-fluid">
 			<div class="span4 well well-small">
 					<?php echo ucwords(CRMText::_('COBALT_COMPANY_TOTAL_PIPELINE')); ?>:
 					<span class="amount"><?php echo CobaltHelperConfig::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
-			</div>	
+			</div>
 			<div class="span4 well well-small">
 					<?php echo ucwords(CRMText::_('COBALT_COMPANY_DEALS')); ?>:
 					<span class="text-success"><?php echo CobaltHelperConfig::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
@@ -78,7 +78,7 @@ $company = $this->companies[0];?>
 					<?php echo ucwords(CRMText::_('COBALT_COMPANY_CONTACTED')); ?>:
 					<?php echo CobaltHelperDate::formatDate($company['modified']); ?>
 			</div>
-		</div>	
+		</div>
 
 		<!-- NOTES -->
 		<?php echo $company['notes']->render(); ?>
@@ -94,14 +94,14 @@ $company = $this->companies[0];?>
 		<span class="pull-right"><a class="btn" onclick="addDeal('company_id=<?php echo $company['id']; ?>')" href="javascript:void(0);"><i class="icon-plus"></i><?php echo ucwords(CRMText::_('COBALT_ADD_DEAL')); ?></a></span>
 		<h3><?php echo ucwords(CRMText::_('COBALT_EDIT_DEALS')); ?></h3>
 		<div class="large_info">
-			<?php echo $this->deal_dock->render(); ?>	
+			<?php echo $this->deal_dock->render(); ?>
 		</div>
 		<hr />
 
 		<!-- PEOPLE -->
-		<span class="pull-right"><a class="btn" href="javascript:void(0);" onclick="addPerson('company_id=<?php echo $company['id']; ?>');"><i class="icon-plus"></i><?php echo ucwords(CRMText::_('COBALT_ADD_PERSON')); ?></a></span>		
+		<span class="pull-right"><a class="btn" href="javascript:void(0);" onclick="addPerson('company_id=<?php echo $company['id']; ?>');"><i class="icon-plus"></i><?php echo ucwords(CRMText::_('COBALT_ADD_PERSON')); ?></a></span>
 		<h3><?php echo ucwords(CRMText::_('COBALT_EDIT_PEOPLE')); ?></h3>
-		<div class="large_info">		
+		<div class="large_info">
 			<?php echo $this->people_dock->render(); ?>
 		</div>
 		<hr />
@@ -112,8 +112,8 @@ $company = $this->companies[0];?>
 		        <div class="fileupload fileupload-new" data-provides="fileupload">
 		         	<span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo CRMText::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo CRMText::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
 		        </div>
-		        <input type="hidden" name="association_id" value="<?php echo $deal['id']; ?>" />
-				<input type="hidden" name="association_type" value='deal' />
+		        <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
+				<input type="hidden" name="association_type" value='company' />
 		    </form>
 		</span>
 		<!-- DOCUMENTS -->
@@ -121,7 +121,7 @@ $company = $this->companies[0];?>
 		<div class="large_info">
 	         <table class="table table-striped table-hover" id="documents_table">
 		        <thead>
-		            <th><?php echo CRMText::_('COBALT_TYPE'); ?></th> 
+		            <th><?php echo CRMText::_('COBALT_TYPE'); ?></th>
 		            <th><?php echo CRMText::_('COBALT_FILE_NAME'); ?></th>
 		            <th><?php echo CRMText::_('COBALT_OWNER'); ?></th>
 		            <th><?php echo CRMText::_('COBALT_SIZE'); ?></th>
@@ -131,7 +131,7 @@ $company = $this->companies[0];?>
 		           <?php echo $this->document_list->render(); ?>
 		        </tbody>
 	        </table>
-	    </div>   
+	    </div>
 
 	</div>
 
@@ -158,12 +158,12 @@ $company = $this->companies[0];?>
 							<img class="google-image-modal"  style="background-image:url(<?php echo $urlString; ?>);" />
 						</div>
 						<?php echo $company['address_1']; ?><br />
-						<?php if ( array_key_exists('address_2',$company) && $company['address_2'] != "" ){ 
+						<?php if ( array_key_exists('address_2',$company) && $company['address_2'] != "" ){
 							echo $company['address_2'].'<br />';
 						} ?>
 						<?php echo $company['address_city'].', '.$company['address_state']." ".$company['address_zip']; ?><br />
 						<?php echo $company['address_country']; ?>
-					<?php } ?>				
+					<?php } ?>
 			<?php if ( array_key_exists('phone',$company) && $company['phone']!="") { ?>
 					<b><?php echo ucwords(CRMText::_('COBALT_COMPANY_PHONE')); ?></b>
 					<div class="infoDetails">
@@ -177,17 +177,17 @@ $company = $this->companies[0];?>
 					</div>
 			<?php } ?>
 			<?php if ( array_key_exists('website',$company) && $company['website']!="") { ?>
-					<b><?php echo ucwords(CRMText::_('COBALT_COMPANY_WEBSITE')); ?></b>					
+					<b><?php echo ucwords(CRMText::_('COBALT_COMPANY_WEBSITE')); ?></b>
 					<div class="infoDetails">
 						<a target="_blank" href="<?php echo $company['website']; ?>"><?php echo $company['website']; ?></a>
 					</div>
-			<?php } ?>	
+			<?php } ?>
 			<?php if ( array_key_exists('email',$company) && $company['email']!="") { ?>
 					<b><?php echo ucwords(CRMText::_('COBALT_COMPANY_EMAIL')); ?></b>
 					<div class="infoDetails">
 						<a href="mailto:<?php echo $company['email']; ?>"><?php echo $company['email']; ?></a>
 					</div>
-			<?php } ?>		
+			<?php } ?>
 				</div>
 			</div>
 			<?php if ( array_key_exists('description',$company) && $company['description']!="" ) { ?>
@@ -196,7 +196,7 @@ $company = $this->companies[0];?>
 				<div class="infoDetails">
 					<?php echo nl2br($company['description']); ?>
 				</div>
-			<?php } ?>	
+			<?php } ?>
 			<hr />
 
 			<!-- SOCIAL MEDIA -->
@@ -258,7 +258,7 @@ $company = $this->companies[0];?>
 		<?php if($company['twitter_user']) { ?>
 			<div class="widget">
 				<h2><?php echo CRMText::_('COBALT_LATEST_TWEETS'); ?></h2>
-				<?php if ( array_key_exists('tweets',$company) ){ for($i=0; $i<count($company['tweets']); $i++) { 
+				<?php if ( array_key_exists('tweets',$company) ){ for($i=0; $i<count($company['tweets']); $i++) {
 					$tweet = $company['tweets'][$i];
 				?>
 				<div class="tweet">
@@ -270,7 +270,7 @@ $company = $this->companies[0];?>
 		<?php } ?>
 
 		<!-- BANTER DOCK INTEGRATION -->
-		<?php if ( isset($this->banter_dock) ){ 
+		<?php if ( isset($this->banter_dock) ){
 			echo $this->banter_dock->render();
 		}?>
 		<!-- EVENT DOCK -->
