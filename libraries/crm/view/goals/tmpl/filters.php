@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if ( count($this->goals > 0 ) ){
         foreach ( $this->goals as $goal ){ ?>
@@ -21,7 +21,7 @@ if ( count($this->goals > 0 ) ){
                     <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
                     <div class="goal_info_progress_total bar" style="background-color:#<?php echo $bgcolor; ?>;width:<?php echo number_format($goal['goal_info']/$goal['amount']*100); ?>%;"></div>
                 </div>
-                <div class="clearfix"
+                <div class="clearfix">
                     <span class="goal_info_out_of">
                         <?php
                             if ( $goal['goal_type'] == 'win_cash' ){
@@ -29,7 +29,7 @@ if ( count($this->goals > 0 ) ){
                             }
                             if ( $goal['goal_type'] == 'win_deals' ){
                                 echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals won.";
-                            } 
+                            }
                             if ( $goal['goal_type'] == 'move_deals' ){
                                 echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals moved.";
                             }
