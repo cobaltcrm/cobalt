@@ -42,8 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 								<div class="text">
 									<ul>
 										<li><?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED'); ?></li>
-										<li<?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED_INSTRUCTIONS'); ?></li>
-										</li>
+										<li><?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED_INSTRUCTIONS'); ?></li>
 										<li>
 											<form class="inline-form" method="POST">
 												<input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_COMPANIES_TEMPLATE'); ?>" />
