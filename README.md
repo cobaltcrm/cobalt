@@ -1,4 +1,4 @@
-cobaltapp
+Cobalt App
 =========
 
-Standalone CRM on Joomla! Platform
+Prototype Standalone CRM on Joomla! Platform
