@@ -26,7 +26,7 @@ class CobaltViewReportsHtml extends JViewHtml
         //determine view layout
         $this->layout = $this->getLayout();
         $func = "_display_".$this->layout;
-        if ( function_exists($this->$func) ){
+        if ( method_exists($this, $func) ){
             $this->$func();
         }
         
