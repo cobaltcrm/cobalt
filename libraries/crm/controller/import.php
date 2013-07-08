@@ -8,9 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltControllerImport extends CobaltControllerDefault
+class CobaltControllerImport extends CobaltControllerDefault {
 
 		function execute(){
 
@@ -33,11 +33,11 @@ class CobaltControllerImport extends CobaltControllerDefault
 	                    	$import_model = "deal";
 	                    break;
 	                case "people":
-	                    	$import_model = "people";  
+	                    	$import_model = "people";
 	                    break;
             	}
 
-            	if ( isset($import_model) ) {		
+            	if ( isset($import_model) ) {
             		$model = new CobaltModelImport();
 					if ( $model->importCSVData($data['import_id'],$import_model) ){
 						$success = true;
@@ -55,7 +55,7 @@ class CobaltControllerImport extends CobaltControllerDefault
 
 				$msg = CRMText::_('COBALT_ERROR_IMPORTING');
 				$app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
-				
+
 			}
 		}
 
