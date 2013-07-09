@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelNote extends CobaltModelDefault
 {
-        
+
         var $_id = null;
         var $published = 1;
         var $public_notes = null;
 
         /**
-         * 
+         *
          *
          * @access  public
          * @return  void
@@ -26,9 +26,9 @@ class CobaltModelNote extends CobaltModelDefault
         function __construct()
         {
             parent::__construct();
-            
+
         }
-        
+
         /**
          * Method to store a record
          *
@@ -40,8 +40,8 @@ class CobaltModelNote extends CobaltModelDefault
             $app = JFactory::getApplication();
 
             //Load Tables
-            $row =& JTable::getInstance('note','Table');
-            $oldRow =& JTable::getInstance('note','Table');
+            $row = JTable::getInstance('note','Table');
+            $oldRow = JTable::getInstance('note','Table');
 
             if ( $data == null ){
                 $data = $app->input->getRequest( 'post' );
@@ -84,10 +84,10 @@ class CobaltModelNote extends CobaltModelDefault
                 }
 
             }
-            
+
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
-            
+
             if ( !array_key_exists('id',$data) ){
                 $data['created'] = $date;
                 $status = "created";
@@ -96,10 +96,10 @@ class CobaltModelNote extends CobaltModelDefault
                 $oldRow->load($data['id']);
                 $status = "updated";
             }
-            
+
             $data['modified'] = $date;
             $data['owner_id'] = CobaltHelperUsers::getUserId();
-            
+
             // Bind the form fields to the table
             if (!$row->bind($data)) {
                 $this->setError($this->_db->getErrorMsg());
@@ -107,14 +107,14 @@ class CobaltModelNote extends CobaltModelDefault
             }
 
             $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onBeforeNoteSave', array(&$row));            
-         
+            $dispatcher->trigger('onBeforeNoteSave', array(&$row));
+
             // Make sure the record is valid
             if (!$row->check()) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
-         
+
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());
@@ -126,7 +126,7 @@ class CobaltModelNote extends CobaltModelDefault
             }else{
                 $id = $this->_db->insertId();
             }
-            
+
 
             CobaltHelperActivity::saveActivity($oldRow, $row,'note', $status);
 
@@ -139,24 +139,24 @@ class CobaltModelNote extends CobaltModelDefault
 
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onAfterNoteSave', array(&$row));
-            
+
             return $id;
         }
-        
-        
+
+
         /*
          * Method to access a note
-         * 
-         * @return array     
+         *
+         * @return array
          */
         function getNote($id){
-            
+
             //grab db
-            $db =& JFactory::getDBO();
-            
+            $db = JFactory::getDBO();
+
             //initialize query
             $query = $db->getQuery(true);
-            
+
             //gen query string
             $query->select("n.*,cat.name as category_name,comp.name as company_name,deal.name as deal_name,"
                         ."person.first_name as person_first_name,person.last_name as person_last_name,"
@@ -170,11 +170,11 @@ class CobaltModelNote extends CobaltModelDefault
             $query->leftJoin("#__users AS author ON author.id = owner.id");
             $query->where("n.id=".$id);
             $query->where("n.published=".$this->published);
-            
+
             //load results
             $db->setQuery($query);
             $results = $db->loadAssocList();
-            
+
             //clean results
             if ( count ( $results ) > 0 ){
                 foreach ( $results as $key => $note ){
@@ -184,34 +184,34 @@ class CobaltModelNote extends CobaltModelDefault
             }
 
             $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onNoteLoad', array(&$results));            
-            
+            $dispatcher->trigger('onNoteLoad', array(&$results));
+
             //return results
             return $results;
         }
-        
+
         /*
          * Method to access notes
-         * 
-         * @return array     
+         *
+         * @return array
          */
         function getNotes($object_id = NULL,$type = NULL, $display = true){
-            
+
             $app = JFactory::getApplication();
 
             //grab db
-            $db =& JFactory::getDBO();
-            
+            $db = JFactory::getDBO();
+
             //initialize query
             $query = $db->getQuery(true);
-            
+
             //gen query string
             $query->select("n.*,cat.name as category_name,comp.name as company_name,
                             comp.id as company_id,deal.name as deal_name,deal.id as deal_id,
                             person.id as person_id,person.first_name as person_first_name,
                             person.last_name as person_last_name, owner.first_name as owner_first_name,
                             event.name as event_name, event.id as event_id,
-                            owner.last_name as owner_last_name, author.email"); 
+                            owner.last_name as owner_last_name, author.email");
             $query->from("#__notes as n");
             $query->leftJoin("#__notes_categories AS cat ON cat.id = n.category_id");
             $query->leftJoin("#__companies AS comp ON comp.id = n.company_id AND comp.published>0");
@@ -233,7 +233,7 @@ class CobaltModelNote extends CobaltModelDefault
             //person
              $person_filter = $this->getState('Note.person_name');
             if ( $person_filter != null ){
-                
+
             }
 
             if($object_id) {
@@ -272,7 +272,7 @@ class CobaltModelNote extends CobaltModelDefault
             //created
              $created_filter = $this->getState('Note.created');
             if ( $company_filter != null ){
-                
+
             }
             //category
              $category_filter = $this->getState('Note.category_id');
@@ -323,7 +323,7 @@ class CobaltModelNote extends CobaltModelDefault
             }
 
             $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onNoteLoad', array(&$results));            
+            $dispatcher->trigger('onNoteLoad', array(&$results));
 
             if(!$display) {
                 //return results
@@ -334,15 +334,15 @@ class CobaltModelNote extends CobaltModelDefault
                 return $notesView;
             }
         }
-        
+
         /*
          * method to get list of deals
          */
-        
+
         function getNoteCategories(){
-            
+
             //db object
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             //gen query
             $query = $db->getQuery(true);
             $query->select("name,id FROM #__notes_categories");
@@ -354,9 +354,9 @@ class CobaltModelNote extends CobaltModelDefault
             $return = array_merge($blank,$row);
             //return results
             return $return;
-            
+
         }
-        
+
         function populateState(){
 
 
@@ -367,7 +367,7 @@ class CobaltModelNote extends CobaltModelDefault
             $filter_order = $app->getUserStateFromRequest('Note.filter_order','filter_order','comp.name');
             $filter_order_Dir = $app->getUserStateFromRequest('Note.filter_order_Dir','filter_order_Dir','asc');
 
-            
+
             //set default filter states
             $company_filter = $app->getUserStateFromRequest('Note.company_name','company_name',null);
             $deal_filter = $app->getUserStateFromRequest('Note.deal_name','deal_name',null);
@@ -376,7 +376,7 @@ class CobaltModelNote extends CobaltModelDefault
             $owner_type = $app->getUserStateFromRequest('Note.owner_type','owner_type',null);
             $created_filter = $app->getUserStateFromRequest('Note.created','created',null);
             $category_filter = $app->getUserStateFromRequest('Note.category_id','category_id',null);
-            
+
             //set states
             //
             $state = new JRegistry();

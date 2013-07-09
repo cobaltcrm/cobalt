@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerTrash extends CobaltControllerDefault
 {
@@ -20,7 +20,7 @@ class CobaltControllerTrash extends CobaltControllerDefault
 		$item_type = $app->input->get('item_type');
 
 		//ADD TO MODELS * trash model *
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->update("#__".$item_type)->set("published=-1");
 			if ( is_array($item_id) ){

@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelReport extends CobaltModelDefault
 {
@@ -25,11 +25,11 @@ class CobaltModelReport extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('report','Table');
-        $oldRow =& JTable::getInstance('report','Table');
+        $row = JTable::getInstance('report','Table');
+        $oldRow = JTable::getInstance('report','Table');
 
         $data = $app->input->getRequest('post');
-        
+
         //date generation
         $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
         if ( !array_key_exists('id',$data) ){
@@ -40,34 +40,34 @@ class CobaltModelReport extends CobaltModelDefault
             $oldRow->load($data['id']);
             $status = "updated";
         }
-        
+
         //modified date
         $data['modified'] = $date;
-        
+
         //assign owner id
         $data['owner_id'] = CobaltHelperUsers::getUserId();
-        
+
         //insert custom field data
         $data['fields'] = serialize($data['fields']);
-        
+
         // Bind the form fields to the table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-        
+
         return true;
     }
 
@@ -80,14 +80,14 @@ class CobaltModelReport extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //load database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //gen query string
         $query->select("report.*");
         $query->from("#__reports as report");
         $query->leftJoin("#__users AS u ON u.id = report.owner_id");
-        
+
         //search for reports
         if ( $id != null ){
             $query->where("report.id=$id");
@@ -97,18 +97,18 @@ class CobaltModelReport extends CobaltModelDefault
         $user_id = CobaltHelperUsers::getUserId();
         $member_role = CobaltHelperUsers::getRole();
         $team_id = CobaltHelperUsers::getTeamId();
-        
+
         if ( $member_role != 'exec' ){
-            
+
             if ( $member_role == 'manager' ){
                 $query->where("u.team_id=$team_id");
             }else{
                 $query->where("(report.owner_id=$user_id)");
             }
-            
+
         }
-        
-        /** 
+
+        /**
          * Set our sorting direction if set via post
          */
         $layout = str_replace("_filter","",$app->input->get('layout'));
@@ -117,7 +117,7 @@ class CobaltModelReport extends CobaltModelDefault
 
             $query->order($this->getState('Report.filter_order') . ' ' . $this->getState('Report.filter_order_Dir'));
         }
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
@@ -130,17 +130,17 @@ class CobaltModelReport extends CobaltModelDefault
      * @return mixed $results
      */
     function getCustomReportData($id=null){
-        
+
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $app = JFactory::getApplication();
-        
+
         //get the custom report so we know what data to filter and select
         $custom_report = $this->getCustomReports($id);
         $custom_report = $custom_report[0];
         $custom_report_fields = unserialize($custom_report['fields']);
-        
+
         //gen query
         //construct query string
         $queryString  = 'd.*,SUM(d.amount) AS filtered_total,';
@@ -152,11 +152,11 @@ class CobaltModelReport extends CobaltModelDefault
         $queryString .= 'p.first_name as primary_contact_first_name,p.last_name as primary_contact_last_name,';
         $queryString .= "p.email as primary_contact_email,p.phone as primary_contact_phone,";
         $queryString .= "pc.name as primary_contact_company_name";
-        
+
         //select
         $query->select($queryString);
         $query->from("#__deals AS d");
-        
+
         //left join
         $query->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0');
         $query->leftJoin('#__deal_status AS stat ON stat.id = d.status_id');
@@ -165,11 +165,11 @@ class CobaltModelReport extends CobaltModelDefault
         $query->leftJoin('#__users AS user ON user.id = d.owner_id');
         $query->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0");
         $query->leftJoin("#__companies AS pc ON pc.id = p.company_id AND pc.published>0");
-        
+
         //group results
         $query->group("d.id");
-        
-        
+
+
         //filter data with user state requests
         $layout = str_replace("_filter","",$app->input->get('layout'));
         $view = $app->input->get('view');
@@ -183,7 +183,7 @@ class CobaltModelReport extends CobaltModelDefault
         $filter_order_Dir = $this->getState('Report.'.$id.'_'.$layout.'_filter_order_Dir');
         $filter_order = ( strstr($filter_order,"custom_") ) ? str_replace("d.","",$filter_order) : $filter_order;
         $query->order($filter_order . ' ' . $filter_order_Dir );
-        
+
         //assign defaults
         $close = null;
         $modified = null;
@@ -191,20 +191,20 @@ class CobaltModelReport extends CobaltModelDefault
         $status = null;
         $source = null;
         $stage = null;
-        
+
         //filter by deal names
         $deal_filter = $this->getState('Report.'.$id.'_'.$layout.'_name');
         if ( $deal_filter != null ){
             $query->where("d.name LIKE '%".$deal_filter."%'");
         }
-        
+
         //owner
         $owner_filter = $this->getState('Report.'.$id.'_'.$layout.'_owner_id');
         if ( $owner_filter != null AND $owner_filter != 'all' ){
             $owner_type = $this->getState('Report.'.$id.'_'.$layout.'_owner_type');
             if ( $owner_type == 'member' ){
                 $query->where("d.owner_id=".$owner_filter);
-                
+
             }
             if ( $owner_type == 'team' ){
                 //get team members
@@ -219,7 +219,7 @@ class CobaltModelReport extends CobaltModelDefault
                 $query->where("d.owner_id IN(".$ids.")");
             }
         }
-        
+
         //amount
         $amount_filter = $this->getState('Report.'.$id.'_'.$layout.'_amount');
         if ( $amount_filter != null AND $amount_filter != 'all' ){
@@ -262,158 +262,158 @@ class CobaltModelReport extends CobaltModelDefault
         if ( $primary_contact_name != null ){
             $query->where("(p.first_name LIKE '%".$primary_contact_name."%' OR p.last_name LIKE '%".$primary_contact_name."%')");
         }
-        
+
         //filter by primary contact email
         $primary_contact_email = $this->getState('Report.'.$id.'_'.$layout.'_primary_contact_email');
         if ( $primary_contact_email != null ){
             $query->where("p.email LIKE '%".$primary_contact_email."%'");
         }
-        
+
         //filter by primary contact phone
         $primary_contact_phone = $this->getState('Report.'.$id.'_'.$layout.'_primary_contact_phone');
         if ( $primary_contact_phone != null ){
             $query->where("p.phone LIKE '%".$primary_contact_phone."%'");
         }
-        
+
         //get current date to use for all date filtering
         $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
-        
+
         /** --------------------------------------------
          * Search for closing deal filters
          */
         if ( $close != null && $close != "any" ){
-                
+
             if ( $close == "this_week" ){
                 $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
                 $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
                 $query->where("d.expected_close >= '$this_week'");
                 $query->where("d.expected_close < '$next_week'");
             }
-            
+
             if ( $close == "next_week" ){
                 $next_week = date('Y-m-d 00:00:00', strtotime(CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime($date))) . "+7 days"));
-                $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days")); 
+                $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days"));
                 $query->where("d.expected_close >= '$next_week'");
                 $query->where("d.expected_close < '$week_after_next'");
             }
-            
+
             if ( $close == "this_month" ){
                 $this_month = CobaltHelperDate::formatDBDate(date('Y-m-0 00:00:00'));
                 $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                 $query->where("d.expected_close >= '$this_month'");
                 $query->where("d.expected_close < '$next_month'");
             }
-            
+
             if ( $close == "next_month" ){
                 $next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+1 month"));
                 $next_next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+2 months"));
                 $query->where("d.expected_close >= '$next_month'");
                 $query->where("d.expected_close < '$next_next_month'");
             }
-            
+
         }
 
         /** --------------------------------------------
          * Search for modified deal filters
          */
         if ( $modified != null && $modified != "any" ){
-                
+
             if ( $modified == "this_week" ){
                 $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
                 $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
                 $query->where("d.modified >= '$last_week'");
                 $query->where("d.modified < '$this_week'");
             }
-            
+
             if ( $modified == "last_week" ){
                 $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
                 $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                 $query->where("d.modified >= '$week_before_last'");
                 $query->where("d.modified < '$last_week'");
             }
-            
+
             if ( $modified == "this_month" ){
                 $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                 $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                 $query->where("d.modified >= '$this_month'");
                 $query->where("d.modified < '$next_month'");
             }
-            
+
             if ( $modified == "last_month" ){
                 $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                 $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
                 $query->where("d.modified >= '$last_month'");
                 $query->where("d.modified < '$this_month'");
             }
-            
+
         }
 
         /** --------------------------------------------
          * Search for created deal filters
          */
         if ( $created != null && $created != "any" ){
-                
+
             if ( $created == "this_week" ){
                 $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
                 $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date) . "-7 days")));
                 $query->where("d.created >= '$last_week'");
                 $query->where("d.created < '$this_week'");
             }
-            
+
             if ( $created == "last_week" ){
                 $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
                 $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                 $query->where("d.created >= '$week_before_last'");
                 $query->where("d.created < '$last_week'");
             }
-            
+
             if ( $created == "this_month" ){
                 $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                 $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                 $query->where("d.created >= '$this_month'");
                 $query->where("d.created < '$next_month'");
             }
-            
+
             if ( $created == "last_month" ){
                 $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                 $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date) . "-1 month")));
                 $query->where("d.created >= '$last_month'");
                 $query->where("d.created < '$this_month'");
             }
-            
+
             if ( $created == "today" ){
                 $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
                 $tomorrow = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 day"));
                 $query->where("d.created >= '$today'");
                 $query->where("d.created < '$tomorrow'");
             }
-            
+
             if ( $created == "yesterday" ){
                 $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
                 $yesterday = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 day"));
                 $query->where("d.created >= '$yesterday'");
                 $query->where("d.created < '$today'");
             }
-            
+
         }
 
-        /** ------------------------------------------ 
+        /** ------------------------------------------
          * Search for status
          */
         if ( $status != null AND $status != 'all' ){
             $query->where("d.status_id=".$status);
         }
-        
+
         /** -------------------------
          * Search for sources
          */
         if ( $source != null AND $source != 'all' ){
             $query->where('d.source_id='.$source);
         }
-        
+
         /** ----------------------------------------------------------------
          * Filter for stage id associations
-         */ 
+         */
         if ( $stage != null && $stage != 'all' ){
             //if we want active deals we must retrieve the active stage ids to filter by
             if ( $stage == 'active' ){
@@ -432,13 +432,13 @@ class CobaltModelReport extends CobaltModelDefault
                 $query->where("d.stage_id='".$stage."'");
             }
         }
-        
+
         /** ---------------------------------------------------------------------------------------------------------------
          * Field for custom field user states
          */
         //Get custom filters
         $custom_fields = CobaltHelperDeal::getUserCustomFields();
-        //If the user has defined any custom fields we will left join the associated data here 
+        //If the user has defined any custom fields we will left join the associated data here
         if ( count($custom_fields) > 0 ){
             foreach ( $custom_fields as $row ){
                     //Join different data based on type
@@ -470,35 +470,35 @@ class CobaltModelReport extends CobaltModelDefault
                                         $query->where("custom_".$row['id'].".value >= '$this_week'");
                                         $query->where("custom_".$row['id'].".value < '$next_week'");
                                     }
-                                    
+
                                     if ( $custom_field_filter == "next_week" ){
                                         $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
-                                        $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days")); 
+                                        $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days"));
                                         $query->where("custom_".$row['id'].".value >= '$next_week'");
                                         $query->where("custom_".$row['id'].".value < '$week_after_next'");
                                     }
-                                    
+
                                     if ( $custom_field_filter == "this_month" ){
                                         $this_month = CobaltHelperDate::formatDBDate(date('Y-m-0 00:00:00'));
                                         $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                                         $query->where("custom_".$row['id'].".value >= '$this_month'");
                                         $query->where("custom_".$row['id'].".value < '$next_month'");
                                     }
-                                    
+
                                     if ( $custom_field_filter == "next_month" ){
                                         $next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+1 month"));
                                         $next_next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+2 months"));
                                         $query->where("custom_".$row['id'].".value >= '$next_month'");
                                         $query->where("custom_".$row['id'].".value < '$next_next_month'");
                                     }
-                                    
+
 
                                 break;
                             default:
                                 $query->where("custom_".$row['id'].".value LIKE '%".$custom_field_filter."%'");
                                 break;
                         }
-                    } 
+                    }
             }
         }
 
@@ -506,39 +506,39 @@ class CobaltModelReport extends CobaltModelDefault
         $user_id = CobaltHelperUsers::getUserId();
         $member_role = CobaltHelperUsers::getRole();
         $team_id = CobaltHelperUsers::getTeamId();
-        
+
         if ( $member_role != 'exec' ){
-            
+
             if ( $member_role == 'manager' ){
                 $query->where("user.team_id=$team_id");
             }else{
                 $query->where("(d.owner_id=$user_id)");
             }
-            
+
         }
 
         $query->where("d.published=".$this->published);
         $query->where("d.archived=0");
-        
-        
+
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
-       
+
         return $results;
     }
-    
+
         /**
          * Method to delete a record
-         * @param int $id document id to delete 
+         * @param int $id document id to delete
          * @return boolean True on success
          */
         function deleteReport($id){
-         
+
             //get dbo
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             $report = $this->getCustomReports($id);
             if ( count($report) > 0 ){
                 $query->delete("#__reports");
@@ -546,18 +546,18 @@ class CobaltModelReport extends CobaltModelDefault
                 $db->setQuery($query);
                 $db->query();
             }
-            
+
             //return
-            return true;   
+            return true;
         }
-        
+
         /**
          * Populate user state requests
          */
         function populateState(){
             //get states
             $app = JFactory::getApplication();
-            
+
             //determine view so we set correct states
             $view = $app->input->get('view');
             $layout = str_replace("_filter","",$app->input->get('layout'));
@@ -568,12 +568,12 @@ class CobaltModelReport extends CobaltModelDefault
                 $id = $app->input->get('custom_report');
                 $layout = "custom_report";
             }
-            
+
             /** --------------------------------------
              * Filter data for different views
              */
             switch ( $layout ){
-            
+
                 case "custom_reports"    :
                     //set default filter states for reports
                     $filter_order = $app->getUserStateFromRequest('Report.filter_order','filter_order','report.name');
@@ -582,7 +582,7 @@ class CobaltModelReport extends CobaltModelDefault
                     $this->state->set('Report.filter_order',$filter_order);
                     $this->state->set('Report.filter_order_Dir',$filter_order_Dir);
                 break;
-                
+
                 case "custom_report"    :
 
                     //set default filter states for reports
@@ -611,7 +611,7 @@ class CobaltModelReport extends CobaltModelDefault
                                 $this->state->set('Report.'.$id.'_'.$layout.'_'.$row['id'],$custom_field_value);
                         }
                     }
-                    
+
                     //set states for reports
                     $this->state->set('Report.'.$id.'_'.$layout.'_filter_order',$filter_order);
                     $this->state->set('Report.'.$id.'_'.$layout.'_filter_order_Dir',$filter_order_Dir);
@@ -630,7 +630,7 @@ class CobaltModelReport extends CobaltModelDefault
                     $this->state->set('Report.'.$id.'_'.$layout.'_primary_contact_phone',$primary_contact_phone);
                     $this->state->set('Report.'.$id.'_'.$layout.'_primary_contact_email',$primary_contact_email);
                 break;
-            
+
             }
         }
 }

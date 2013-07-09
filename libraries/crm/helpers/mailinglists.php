@@ -32,7 +32,7 @@ class CobaltHelperMailinglists extends JObject
 		$personModel = new CobaltModelPeople();
 		$email = $personModel->getEmail($person_id);
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$query->select("subid")
@@ -55,7 +55,7 @@ class CobaltHelperMailinglists extends JObject
 	public function getMailingLists($all=FALSE){
 
 		$subid = self::getSubscriberId();
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$query->select("DISTINCT list.listid,list.name,list.description,list.color")
@@ -98,9 +98,9 @@ class CobaltHelperMailinglists extends JObject
 		$listId = $listId ? $listId : $this->listId;
 		$subId = self::getSubscriberId();
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		
+
 		$query->select("mail.mailid,mail.subject,mail.published,mail.senddate,user.open,user.opendate")
 				->from("#__acymailing_mail AS mail")
 				->leftJoin("#__acymailing_listmail AS listmail ON listmail.mailid = mail.mailid")
@@ -124,7 +124,7 @@ class CobaltHelperMailinglists extends JObject
 		$person_id = $data['person_id'];
 		$listid = $data['listid'];
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$peopleModel = new CobaltModelPeople();
@@ -184,7 +184,7 @@ class CobaltHelperMailinglists extends JObject
 		$person_id = $data['person_id'];
 		$listid = $data['listid'];
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$time = time();
@@ -208,7 +208,7 @@ class CobaltHelperMailinglists extends JObject
 		$mailid = $data['mailid'];
 		$subid = self::getSubscriberId();
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$query->select("click.click,url.name,url.url")

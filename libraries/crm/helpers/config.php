@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
- 
+
  class CobaltHelperConfig extends JObject
  {
 
  	public function getImapConfig(){
- 		$db =& JFactory::getDBO();
+ 		$db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("imap_host,imap_pass,imap_user")->from("#__config")->where("id=1");
         $db->setQuery($query);
@@ -48,11 +48,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	function getVersion(){
 
-		$xml =& JFactory::getXML( 'simple' );
- 
+		$xml = JFactory::getXML( 'simple' );
+
  		if ( file_exists(JPATH_SITE.'/administrator/cobalt.xml')) {
  			$xml->loadFile( JPATH_SITE.'/administrator/cobalt.xml' );
-			$position =& $xml->document->getElementByPath(  'version' );	
+			$position =& $xml->document->getElementByPath(  'version' );
 			return $position->data();
  		} else {
  			return 0;
@@ -110,8 +110,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	        array( 'person', 'people'   )
 	        );
 
-	        $uncountable = array( 
-	        'sheep', 
+	        $uncountable = array(
+	        'sheep',
 	        'fish',
 	        'series',
 	        'species',
@@ -138,9 +138,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         if ( preg_match( $pattern[0], $string ) )
             return preg_replace( $pattern[0], $pattern[1], $string );
         }
-    
+
         return $string;
-    
+
     }
 
     function getCurrency(){

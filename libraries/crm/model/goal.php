@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelGoal extends JModelBase
 {
         var $published = 1;
-        
+
         /**
          * Method to store a record
          * @param $_POST data
@@ -24,11 +24,11 @@ class CobaltModelGoal extends JModelBase
             $app = JFactory::getApplication();
 
             //Load Tables
-            $row =& JTable::getInstance('goal','Table');
-            $oldRow =& JTable::getInstance('goal','Table');
+            $row = JTable::getInstance('goal','Table');
+            $oldRow = JTable::getInstance('goal','Table');
 
             $data = $app->input->getRequest( 'post' );
-            
+
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
             if ( !array_key_exists('id',$data) ){
@@ -39,25 +39,25 @@ class CobaltModelGoal extends JModelBase
                 $oldRow->load($data['id']);
                 $status = "updated";
             }
-            
+
             //assign checkboxes
             if ( array_key_exists('leaderboard',$data) ){ $data['leaderboard'] = 1; } else { $data['leaderboard'] = 0; }
-            
+
             //assign owner id
             $data['owner_id'] = CobaltHelperUsers::getUserId();
-            
+
             // Bind the form fields to the table
             if (!$row->bind($data)) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
-         
+
             // Make sure the record is valid
             if (!$row->check()) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
-         
+
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());
@@ -65,7 +65,7 @@ class CobaltModelGoal extends JModelBase
             }
 
             CobaltHelperActivity::saveActivity($oldRow, $row,'goal', $status);
-        
+
             return true;
         }
 
@@ -76,13 +76,13 @@ class CobaltModelGoal extends JModelBase
          */
         function getIndividualGoals($id=null){
             //load database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //load goals associated with an individual
             $member_id = CobaltHelperUsers::getUserId();
             $query->select("g.*,u.first_name,u.last_name")->from("#__goals AS g");
-            
+
             //if we are seaching for a specific individual
             if ( $id ){
                 $query->where("g.assigned_type='member' AND g.assigned_id=$id");
@@ -90,27 +90,27 @@ class CobaltModelGoal extends JModelBase
             //else get logged in member
                 $query->where("g.assigned_type='member' AND g.assigned_id=$member_id");
             }
-            
+
             //left join users names
             $query->leftJoin("#__users AS u ON u.id = g.assigned_id");
 
             $query->where("g.published=".$this->published);
-            
+
             //get goals
             $db->setQuery($query);
             $results = $db->loadAssocList();
-            
+
             //get essential data
             $this->won_stage_ids = CobaltHelperDeal::getWonStages();
             if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
             }
-            
+
             //return results
             return $results;
         }
-        
+
         /**
          * Get individual goals for executives
          * @param none
@@ -118,36 +118,36 @@ class CobaltModelGoal extends JModelBase
          */
         function getExecIndividualGoals(){
             //load database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //load goals associated with an individual
             $member_id = CobaltHelperUsers::getUserId();
             $query->select("g.*,u.first_name,u.last_name")->from("#__goals AS g");
-            
+
             //if we are seaching for a specific individual
             $query->where("g.assigned_type='member'");
-            
+
             //left join users names
             $query->leftJoin("#__users AS u ON u.id = g.assigned_id");
 
             $query->where("g.published=".$this->published);
-            
+
             //get goals
             $db->setQuery($query);
             $results = $db->loadAssocList();
-            
+
             //get essential data
             $this->won_stage_ids = CobaltHelperDeal::getWonStages();
             if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
             }
-            
+
             //return results
             return $results;
         }
-        
+
         /**
          * Get individual goals for managers
          * @param none
@@ -155,14 +155,14 @@ class CobaltModelGoal extends JModelBase
          */
         function getManagerIndividualGoals(){
             //load database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //load goals associated with an individual
             $member_id = CobaltHelperUsers::getUserId();
             $team_id = CobaltHelperUsers::getTeamId($member_id);
             $query->select("g.*,u.first_name,u.last_name")->from("#__goals AS g");
-            
+
              //get team members
             $team_members = CobaltHelperUsers::getTeamUsers($team_id);
 
@@ -175,27 +175,27 @@ class CobaltModelGoal extends JModelBase
             $query = substr($query,0,-1);
             $query .= ")";
             $query .= " AND g.assigned_type='member'";
-            
+
             //left join users names
             $query .= " LEFT JOIN #__users AS u ON u.id = g.assigned_id";
 
             $query .= "g.published=".$this->published;
-            
+
             //get goals
             $db->setQuery($query);
             $results = $db->loadAssocList();
-            
+
             //get essential data
             $this->won_stage_ids = CobaltHelperDeal::getWonStages();
             if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
             }
-            
+
             //return results
             return $results;
         }
-        
+
         /**
          * Get Team Goals
          * @param int $id specific team to search for
@@ -204,40 +204,40 @@ class CobaltModelGoal extends JModelBase
         function getTeamGoals($id=null){
             //get user team id
             $team_id = CobaltHelperUsers::getTeamId();
-            
+
            //load database
-           $db =& JFactory::getDBO();
+           $db = JFactory::getDBO();
            $query = $db->getQuery(true);
-           
+
            //load goals associated with team id
            $query->select("g.*,u.first_name,u.last_name,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name")->from("#__goals AS g");
            $db->setQuery($query);
-           
+
            //if we are searching for a specific team
            if ( $id ){
-                $query->where("g.assigned_type='team' AND g.assigned_id=$id");                       
+                $query->where("g.assigned_type='team' AND g.assigned_id=$id");
            }else{
            //else load associated team if any
                 $query->where("g.assigned_type='team' AND g.assigned_id=$team_id");
            }
-           
+
            //left join managers name
            $query->leftJoin("#__teams AS t ON t.team_id = g.assigned_id");
            $query->leftJoin("#__users AS u on u.id = t.leader_id");
 
            $query->where("g.published=".$this->published);
-           
-           
+
+
            //load results
            $results = $db->loadAssocList();
-           
+
             //get essential data
             $this->won_stage_ids = CobaltHelperDeal::getWonStages();
             if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
             }
-            
+
            //return goals
            return $results;
         }
@@ -248,55 +248,25 @@ class CobaltModelGoal extends JModelBase
          */
         function getExecTeamGoals(){
             //load database
-           $db =& JFactory::getDBO();
+           $db = JFactory::getDBO();
            $query = $db->getQuery(true);
-           
+
            //load goals associated with team id
            $query->select("g.*,u.first_name,u.last_name,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name")->from("#__goals AS g");
            $db->setQuery($query);
-           
+
            //if we are searching for a specific team
             $query->where("g.assigned_type='team'");
-           
+
            //left join managers name
            $query->leftJoin("#__teams AS t ON t.team_id = g.assigned_id");
            $query->leftJoin("#__users AS u on u.id = t.leader_id");
 
            $query->where("g.published=".$this->published);
-           
+
            //load results
            $results = $db->loadAssocList();
-           
-            //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
-            if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
-                    $results[$key]['goal_info'] = $this->goalInfo($goal);
-                }
-            }
-            
-           //return goals
-           return $results;            
-        }
-        
-        /**
-         * Get Company Goals
-         * @param none
-         * @return mixed $results goals matched
-         */
-        function getCompanyGoals(){
-            //load database
-            $db =& JFactory::getDBO();
-            $query = $db->getQuery(true);
-            
-            //load goals associated with the company
-            $query->select("g.*")->from("#__goals AS g")->where("g.assigned_type='company'");
 
-            $query->where("g.published=".$this->published);
-            
-            //left join data essential for making calculations
-            $db->setQuery($query);
-            $results = $db->loadAssocList();
-               
             //get essential data
             $this->won_stage_ids = CobaltHelperDeal::getWonStages();
             if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
@@ -307,7 +277,37 @@ class CobaltModelGoal extends JModelBase
            //return goals
            return $results;
         }
-        
+
+        /**
+         * Get Company Goals
+         * @param none
+         * @return mixed $results goals matched
+         */
+        function getCompanyGoals(){
+            //load database
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(true);
+
+            //load goals associated with the company
+            $query->select("g.*")->from("#__goals AS g")->where("g.assigned_type='company'");
+
+            $query->where("g.published=".$this->published);
+
+            //left join data essential for making calculations
+            $db->setQuery($query);
+            $results = $db->loadAssocList();
+
+            //get essential data
+            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            if ( count($results) > 0 ){ foreach ( $results as $key=>$goal ){
+                    $results[$key]['goal_info'] = $this->goalInfo($goal);
+                }
+            }
+
+           //return goals
+           return $results;
+        }
+
         /**
          * Get a leaderboard entry
          * @param int $id id of leaderboard to get
@@ -315,9 +315,9 @@ class CobaltModelGoal extends JModelBase
          */
         function getLeaderBoards($id=null){
             //load database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //load goals and associate with user depending on team//role that have a leaderboard flag in the database
             $query->select("g.*")->from("#__goals AS g")->where("g.leaderboard=1");
             $query->leftJoin("#__users AS u ON u.id = g.assigned_id");
@@ -332,44 +332,44 @@ class CobaltModelGoal extends JModelBase
                 $user_id = CobaltHelperUsers::getUserId();
                 $member_role = CobaltHelperUsers::getRole();
                 $team_id = CobaltHelperUsers::getTeamId();
-                
+
                 if ( $member_role != 'exec' ){
-                    
+
                     if ( $member_role == 'manager' ){
                         $query->where("u.team_id=$team_id");
                     }else{
                         $query->where("(g.owner_id=$user_id)");
                     }
-                    
+
                 }
-                
+
             }
 
             $query->where("g.published=".$this->published);
-            
+
             //get results
             $db->setQuery($query);
             $results = $db->loadAssocList();
-            
+
             //get data for leaderboard
             for($i=0;$i<count($results);$i++){
                $results[$i]['members'] = $this->leaderboardInfo($results[$i]);
             }
-            
+
             //return goals
             return $results;
         }
-        
-        /** 
+
+        /**
          * Get Goal Information
          * @param $goal mixed array of goal information
          * @return $results int information relating to goal
          */
         function goalInfo($goal){
             //get DBO
-             $db =& JFactory::getDBO();
+             $db = JFactory::getDBO();
              $query = $db->getQuery(true);
-             
+
             //win_cash
             if ( $goal['goal_type'] == 'win_cash' ){
                 $query->select("SUM(amount)");
@@ -395,7 +395,7 @@ class CobaltModelGoal extends JModelBase
                     }
                     $query .= " AND stage_id IN (".implode(',',$this->won_stage_ids).")";
                 }else{
-                    $query->where("stage_id IN (".implode(',',$this->won_stage_ids).")");    
+                    $query->where("stage_id IN (".implode(',',$this->won_stage_ids).")");
                 }
                  //filter by start and end date
                 $query .= " AND modified >= '".$goal['start_date']."'";
@@ -427,7 +427,7 @@ class CobaltModelGoal extends JModelBase
                     }
                     $query .= " AND stage_id IN (".implode(',',$this->won_stage_ids).")";
                 }else{
-                    $query->where("stage_id IN (".implode(',',$this->won_stage_ids).")");    
+                    $query->where("stage_id IN (".implode(',',$this->won_stage_ids).")");
                 }
                  //filter by start and end date
                 $query .= " AND modified >= '".$goal['start_date']."'";
@@ -442,7 +442,7 @@ class CobaltModelGoal extends JModelBase
                 if ( $goal['assigned_type'] != 'company' ){
                     //filter based on member
                     if ( $goal['assigned_type'] == 'member' ){
-                        $query->where("owner_id=".$goal['assigned_id']);    
+                        $query->where("owner_id=".$goal['assigned_id']);
                     }
                     //filter based on team
                     if ( $goal['assigned_type'] == 'team' ){
@@ -498,7 +498,7 @@ class CobaltModelGoal extends JModelBase
                  //filter by start and end date
                 $query .= " AND modified >= '".$goal['start_date']."'";
                 $query .= " AND modified <= '".$goal['end_date']."'";
-            } 
+            }
 
             //write_notes
             if ( $goal['goal_type'] == 'write_notes' ){
@@ -508,7 +508,7 @@ class CobaltModelGoal extends JModelBase
                 if ( $goal['assigned_type'] != 'company'){
                     //filter based on member
                     if ( $goal['assigned_type'] == 'member' ){
-                        $query->where("owner_id=".$goal['assigned_id']);    
+                        $query->where("owner_id=".$goal['assigned_id']);
                     }
                     //filter based on team
                     if ( $goal['assigned_type'] == 'team' ){
@@ -539,7 +539,7 @@ class CobaltModelGoal extends JModelBase
                 //filter by company
                 if ( $goal['assigned_type'] != 'company' ){
                     //filter based on member
-                    if ( $goal['assigned_type'] == 'member' ){ 
+                    if ( $goal['assigned_type'] == 'member' ){
                         $query->where("owner_id=".$goal['assigned_id']);
                     }
                     //filter by team
@@ -566,10 +566,10 @@ class CobaltModelGoal extends JModelBase
             //return info
             $db->setQuery($query);
             $results = $db->loadResult();
-            
+
             return $db->loadResult();
         }
-        
+
         /**
          * Get leaderboard info
          * @param mixed $leaderboard leaderboard object
@@ -578,22 +578,22 @@ class CobaltModelGoal extends JModelBase
         function leaderboardInfo($leaderboard){
 
             //get db
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //get won stage id
             $won_stage_ids = CobaltHelperDeal::getWonStages();
-            
+
             //assign start_date and end_date
             $start_date = $leaderboard['start_date'];
             $end_date   = $leaderboard['end_date'];
-            
-            
+
+
             //select members from database and join essential data
             //get members
             $query->select("u.id,u.first_name,u.last_name");
             $query->from("#__users AS u");
-            
+
             //left join data
             //win_cash
             if ( $leaderboard['goal_type'] == 'win_cash' ){
@@ -631,14 +631,14 @@ class CobaltModelGoal extends JModelBase
                 $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.created >= '$start_date' AND d.created <= '$end_date' AND d.published>0");
                 $query->order('COUNT(d.id) desc');
             }
-                    
+
             //switch depending on leaderboard type
             switch ( $leaderboard['assigned_type'] ){
                 case "team":
-                    $query->where("u.team_id=".$leaderboard['assigned_id']);   
+                    $query->where("u.team_id=".$leaderboard['assigned_id']);
                 break;
                 case "member":
-                    $query->where("u.id=".$leaderboard['assigned_id']);   
+                    $query->where("u.id=".$leaderboard['assigned_id']);
                 break;
             }
 

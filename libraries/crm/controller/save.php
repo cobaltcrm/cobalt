@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerSave extends CobaltControllerDefault
 
@@ -20,16 +20,16 @@ class CobaltControllerSave extends CobaltControllerDefault
 		$model = new $modelName();
 
 		//if we are requesting a return redirect set up redirect link
-		if ( $app->input->get('view') ) {  	
+		if ( $app->input->get('view') ) {
 			$link = JRoute::_('index.php?view='.$app->input->get('view'));
 		}
-		
+
 	    if ( $db_id = $model->store() ) {
 
 			$msg = CRMText::_('COBALT_SUCCESSFULLY_SAVED');
 
 			//redirect if set else return json
-			if ( $app->input->get('view') ) {  	
+			if ( $app->input->get('view') ) {
 
     			$app->redirect($link, $msg);
 
@@ -46,7 +46,7 @@ class CobaltControllerSave extends CobaltControllerDefault
 					}
 					$return = $company;
 				}
-				
+
 				//if deal information is being edited
 				if ( $app->input->get('model') == 'deal' ) {
 					$model = new CobaltModelDeal();
@@ -54,7 +54,7 @@ class CobaltControllerSave extends CobaltControllerDefault
 					$deal = $model->getDeals($id);
 					$return = $deal[0];
 				}
-				
+
 				//if people information is being edited
 				if ( $app->input->get('model') == 'people' ) {
 					$model = new CobaltModelPeople();
@@ -62,7 +62,7 @@ class CobaltControllerSave extends CobaltControllerDefault
 					$person = $model->getPerson($id);
 					$return = $person;
 				}
-				
+
 				//if conversation information is being edited
 				if ( $app->input->get('model') == 'conversation') {
 					$model = new CobaltModelConversation();
@@ -70,7 +70,7 @@ class CobaltControllerSave extends CobaltControllerDefault
 					$conversation = $model->getConversation($db_id);
 					$return = $conversation[0];
 				}
-				
+
 				//if note information is being edited
 				if ( $app->input->get('model') == 'note' ){
 					$model = new CobaltModelNote();
@@ -78,14 +78,14 @@ class CobaltControllerSave extends CobaltControllerDefault
 					$note = $model->getNote($db_id);
 					$return = $note[0];
 				}
-				
+
 				//if event information is being edited
 				if ( $app->input->get('model') == 'event' ) {
 
 					//get model
 					$model = new CobaltModelEvent();
-					$db =& JFactory::getDBO();
-					
+					$db = JFactory::getDBO();
+
 					//determine whether we are inserting a new entry or editing an entry
 					$event_id = $db_id;
 
@@ -93,11 +93,11 @@ class CobaltControllerSave extends CobaltControllerDefault
 					$return = $model->getEvent($event_id);
 
 				}
-				
+
 				if ( isset($return) ){
 					echo json_encode($return);
 				}
-				
+
 			}
 
 	    } else {
@@ -105,10 +105,10 @@ class CobaltControllerSave extends CobaltControllerDefault
       		$msg = CRMText::_('COBALT_ERROR_SAVING');
 
 			//redirect if set else return json info
-    		if ( $app->input->get('return') ) {  	
+    		if ( $app->input->get('return') ) {
 
     			$app->redirect($link, $msg);
-    			
+
 			}else{
 
 				$return = $app->input->getRequest('post');

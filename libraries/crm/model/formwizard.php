@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelFormwizard extends CobaltModelDefault
 {
@@ -16,7 +16,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
     var $_view = "formwizard";
 
     /**
-     * 
+     *
      *
      * @access  public
      * @return  void
@@ -24,7 +24,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
     function __construct()
     {
         parent::__construct();
-        
+
     }
 
     public function populateState(){
@@ -34,25 +34,25 @@ class CobaltModelFormwizard extends CobaltModelDefault
         $filter_order_Dir = $app->getUserStateFromRequest('Formwizard.filter_order_Dir','filter_order_Dir','asc');
 
         $state = new JRegistry();
-        
+
         //set states
         $state->set('Formwizard.filter_order', $filter_order);
         $state->set('Formwizard.filter_order_Dir',$filter_order_Dir);
 
         $this->setState($state);
     }
-    
+
     function store()
     {
 
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('formwizard','Table');
+        $row = JTable::getInstance('formwizard','Table');
         $data = $app->input->getRequest( 'post' );
 
         $userId = JFactory::getUser()->id;
-        
+
         //date generation
         $date = date('Y-m-d H:i:s');
         $data['modified'] = $date;
@@ -75,7 +75,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
         // This would be rare and only if multiple users are simultaneously adding custom forms...
 
         if(array_key_exists('temp_id',$data) ) {
-            
+
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select('COUNT(*) as existing, MAX(id) AS greatest')
@@ -96,7 +96,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
@@ -113,7 +113,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
     }
 
     function _buildQuery(){
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("f.*,CONCAT(user.first_name,' ',user.last_name) AS owner_name")->from("#__formwizard AS f");
         $query->leftJoin("#__users AS user ON user.id = f.owner_id");
@@ -122,7 +122,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
 
     function getForms(){
         $query = $this->_buildQuery();
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query->order($this->getState('Formwizard.filter_order') . ' ' . $this->getState('Formwizard.filter_order_Dir'));
         $db->setQuery($query);
         $results = $db->loadAssocList();
@@ -142,7 +142,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
         if ( $formId > 0 ){
 
             $query = $this->_buildQuery();
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query->where("f.id=".$formId);
             $db->setQuery($query);
             $result = $db->loadAssoc();
@@ -150,7 +150,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
             $result['html'] = $result['html'];
             return $result;
 
-        } else { 
+        } else {
 
             return (array)JTable::getInstance("formwizard","Table");
 
@@ -159,7 +159,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
 
     function delete($ids){
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->delete("#__formwizard");

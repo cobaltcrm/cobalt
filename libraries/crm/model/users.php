@@ -9,12 +9,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelUsers extends CobaltModelDefault
 {
     /**
-     * 
+     *
      *
      * @access  public
      * @return  void
@@ -23,21 +23,21 @@ class CobaltModelUsers extends CobaltModelDefault
     {
         parent::__construct();
     }
-    
+
     function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('users','Table');
+        $row = JTable::getInstance('users','Table');
         $data = $app->input->getRequest( 'post' );
 
         $dispatcher = JEventDispatcher::getInstance();
         $dispatcher->trigger('onBeforeCRMUserSave', array(&$data));
-        
+
         //date generation
         $date = date('Y-m-d H:i:s');
-        
+
         if ( !array_key_exists('id',$data) ){
             $data['created'] = $date;
             $data['time_zone'] = CobaltHelperConfig::getConfigValue('timezone');
@@ -63,7 +63,7 @@ class CobaltModelUsers extends CobaltModelDefault
         if ( array_key_exists('id',$data) && $data['id'] > 0 ){
             $teamId = $this->getTeamId($data['id']);
         }
-        
+
         //assign user priviliges
         $data['modified'] = $date;
         $data['admin'] = ( array_key_exists ('admin',$data) && $data['admin'] == '1' ) ? 1 : 0;
@@ -92,13 +92,13 @@ class CobaltModelUsers extends CobaltModelDefault
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
@@ -119,7 +119,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
         $row->id = ( array_key_exists('id',$data) && $data['id'] > 0 ) ? $data['id'] : $this->_db->insertId();
         $this->updateUserMap($row);
-        
+
         $dispatcher = JEventDispatcher::getInstance();
         $dispatcher->trigger('onAfterCRMUserSave', array(&$data));
 
@@ -128,7 +128,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
     function updateUserMap($user){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->delete("#__user_usergroup_map")->where("user_id=".$user->id);
@@ -146,7 +146,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function _buildQuery(){
 
          //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
          //select
@@ -155,7 +155,7 @@ class CobaltModelUsers extends CobaltModelDefault
                         team.leader_id as leader_id,
                         IF(team.name!='',team.name,CONCAT(team_leader.first_name,' ',team_leader.last_name)) AS team_name");
         $query->from("#__users AS u");
-        
+
         //left join essential data
         $query->leftJoin("#__users AS ju ON ju.id = u.id");
         $query->leftJoin("#__teams AS team ON team.team_id = u.team_id");
@@ -164,12 +164,12 @@ class CobaltModelUsers extends CobaltModelDefault
         return $query;
 
     }
-    
+
     public function getUsers($id=null){
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
-        
+
         //sort
         $query->order($this->getState('Users.filter_order') . ' ' . $this->getState('Users.filter_order_Dir'));
         if( $id ){
@@ -177,7 +177,7 @@ class CobaltModelUsers extends CobaltModelDefault
         }
 
         $query->where("u.published=1");
-        
+
         //return results
         $db->setQuery($query);
         return $db->loadAssocList();
@@ -189,7 +189,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
         if ( $id > 0 ){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             if( $id ){
@@ -204,7 +204,7 @@ class CobaltModelUsers extends CobaltModelDefault
         }
 
     }
-    
+
     public function populateState(){
         //get states
         $app = JFactory::getApplication();
@@ -212,26 +212,26 @@ class CobaltModelUsers extends CobaltModelDefault
         $filter_order_Dir = $app->getUserStateFromRequest('Users.filter_order_Dir','filter_order_Dir','asc');
 
         $state = new JRegistry();
-        
+
         //set states
         $state->set('Users.filter_order', $filter_order);
         $state->set('Users.filter_order_Dir',$filter_order_Dir);
 
         $this->setState($state);
     }
-    
+
     public function getJoomlaUsersToAdd(){
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //select
         $query->select("ju.id,ju.name,ju.username,ju.email,cu.id as cid,cu.published");
         $query->from("#__users AS ju");
-        
+
         //left join essential data
         $query->leftJoin("#__users AS cu ON ju.id = cu.id");
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
@@ -243,39 +243,39 @@ class CobaltModelUsers extends CobaltModelDefault
                 $user['last_name'] = array_key_exists(1,$name) ? $name[1] : "";
                 $users[$user['id']] = $user;
             }
-        } 
+        }
         return $users;
     }
 
     public function getCobaltUsers($idsOnly=FALSE){
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //select
         $query->select("u.id AS value,CONCAT(u.first_name,' ',u.last_name) AS label");
         $query->from("#__users AS u");
         $query->where("u.published=1");
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
-        
+
         return $results;
     }
-    
+
     public function getJoomlaUsersToAddList($namesOnly=FALSE){
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //select
         $query->select("ju.id,ju.name,ju.username,cu.id as cid,cu.published");
         $query->from("#__users AS ju");
-        
+
         //left join essential data
         $query->leftJoin("#__users AS cu ON ju.id = cu.id");
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
@@ -292,18 +292,18 @@ class CobaltModelUsers extends CobaltModelDefault
         }
         return $users;
     }
-    
+
     //return user team id
     function getTeamId($user_id){
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //get id
         $query->select("team_id");
         $query->from("#__users");
         $query->where('id='.$user_id);
-        
+
         //return id
         $db->setQuery($query);
         return $db->loadResult();
@@ -311,11 +311,11 @@ class CobaltModelUsers extends CobaltModelDefault
 
     function delete($ids){
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeCRMUserDelete', array(&$ids));            
+        $dispatcher->trigger('onBeforeCRMUserDelete', array(&$ids));
 
         $query->update("#__users");
                 if ( is_array($ids) ){
@@ -326,9 +326,9 @@ class CobaltModelUsers extends CobaltModelDefault
         $query->set("published=-1");
         $db->setQuery($query);
         if ( $db->query() ){
-     
+
             $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onAfterCRMUserDelete', array(&$ids));            
+            $dispatcher->trigger('onAfterCRMUserDelete', array(&$ids));
 
             return true;
         }else{
@@ -337,7 +337,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
     }
 
-    
+
 
 }
 

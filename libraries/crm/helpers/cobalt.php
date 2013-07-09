@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperCobalt
  {
         function percent2Color($value,$brightness = 255, $max = 100,$min = 0, $thirdColorHex = '00')
-        {       
+        {
                 // Calculate first and second color (Inverse relationship)
                 $value = number_format($value);
                 $first = (1-($value/$max))*$brightness;
@@ -21,15 +21,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
                 // Find the influence of the middle color (yellow if 1st and 2nd are red and green)
                 $diff = abs($first-$second);
-                $influence = ($brightness-$diff)/2;     
+                $influence = ($brightness-$diff)/2;
                 $first = intval($first + $influence);
                 $second = intval($second + $influence);
 
                 // Convert to HEX, format and return
-                $firstHex = str_pad(dechex($first),2,0,STR_PAD_LEFT);     
+                $firstHex = str_pad(dechex($first),2,0,STR_PAD_LEFT);
                 $secondHex = str_pad(dechex($second),2,0,STR_PAD_LEFT);
 
-                return $firstHex . $secondHex . $thirdColorHex ; 
+                return $firstHex . $secondHex . $thirdColorHex ;
         }
 
         /**
@@ -39,7 +39,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
          * @return [mixed] $results
          */
         function getTaskTemplates($type,$id=null){
-                $db =& JFactory::getDBO();
+                $db = JFactory::getDBO();
                 $query = $db->getQuery(true);
                 $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
                 $db->setQuery($query);
@@ -65,17 +65,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
          * @param int $id : The id of the item we wish to store associated data
          * @param mixed $cf_data : The data to be stored
          * @return void
-         * 
+         *
          */
         function storeCustomCf($id,$cf_data,$type){
-            
+
             //Get DBO
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
-            
+
             //Loop through $cf_data array to update/insert
             for ( $i=0; $i<count($cf_data); $i++ ){
                 //assign the data
@@ -97,7 +97,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                                  ",custom_field_id=".$row['custom_field_id'].
                                  ",value='".$row['custom_field_value']."'".
                                  ",modified='$date'");
-                    $query->where($type."_id=$id AND custom_field_id=".$row['custom_field_id']);                                                                         
+                    $query->where($type."_id=$id AND custom_field_id=".$row['custom_field_id']);
                     $db->setQuery($query);
                     $db->query();
                 }else{
@@ -117,7 +117,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         function checkEmailName($email){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(TRUE);
 
             $query->select("email")
@@ -179,7 +179,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $itemType = $itemType ? $itemType : $app->input->get('item_type');
             $userId = $userId ? $userId : $app->input->get('user_id');
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $query->insert("#__shared")
@@ -200,7 +200,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $itemType = $itemType ? $itemType : $app->input->get('item_type');
             $userId = $userId ? $userId : $app->input->get('user_id');
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $query->delete("#__shared")
@@ -217,7 +217,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         function showShareDialog(){
             $app = JFactory::getApplication();
 
-            $document =& JFactory::getDocument();
+            $document = JFactory::getDocument();
             $document->addScriptDeclaration('var users='.json_encode(CobaltHelperUsers::getAllSharedUsers()).';');
 
             $html = "<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='share_item_dialog'>";
@@ -253,7 +253,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $associationType = $associationType ? $associationType : $app->input->get('association_type');
             $associationId = $associationId ? $associationId : $app->input->get('association_id');
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             switch ($associationType){

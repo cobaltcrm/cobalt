@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelStats extends JModelBase
 {
@@ -28,7 +28,7 @@ class CobaltModelStats extends JModelBase
 
     public function getDistinctEntries($type,$field){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("DISTINCT h.type_id");
@@ -46,7 +46,7 @@ class CobaltModelStats extends JModelBase
     public function joinField($ids,$type,$field){
         $results = array();
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         if ( count ( $ids ) > 0 ){
@@ -69,12 +69,12 @@ class CobaltModelStats extends JModelBase
     }
 
     public function getUsers($user_id,$user_role){
-        
+
         if( $user_role != 'basic' ){
-            
-            $db =& JFactory::getDBO();
+
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             $query->select("id");
             $query->from("#__users");
 
@@ -84,7 +84,7 @@ class CobaltModelStats extends JModelBase
                 $query->where('team_id='.$team_id);
             }
             //if exec there is no where clause, load all users
-            
+
             //load results
             $db->setQuery($query);
             $results = $db->loadColumn();
@@ -99,7 +99,7 @@ class CobaltModelStats extends JModelBase
 
     public function getActiveDealsAmount(){
 
-    	$db =& JFactory::getDBO();
+    	$db = JFactory::getDBO();
     	$query = $db->getQuery(true);
 
     	/** get unique history **/
@@ -120,7 +120,7 @@ class CobaltModelStats extends JModelBase
 
     public function getStages(){
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
     	$query = $db->getQuery(true);
 
         /** Select distinct history entries **/
@@ -142,7 +142,7 @@ class CobaltModelStats extends JModelBase
                 if ( array_key_exists($deal->new_value,$stages) ){
                     $stages[$deal->new_value]['amount'] += $deal->amount;
                 }
-            }   
+            }
         }
 
         usort($stages,'self::sortAmount');
@@ -157,7 +157,7 @@ class CobaltModelStats extends JModelBase
 
     public function getLeads(){
 
-    	$db =& JFactory::getDBO();
+    	$db = JFactory::getDBO();
     	$query = $db->getQuery(true);
 
     	/** person ids **/
@@ -176,7 +176,7 @@ class CobaltModelStats extends JModelBase
 
     public function getNotes(){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $note_ids = $this->getDistinctEntries('note','id');
@@ -208,7 +208,7 @@ class CobaltModelStats extends JModelBase
 
     public function getTodos(){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $events = $this->getDistinctEntries('event','id');
