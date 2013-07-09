@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 ?>
 
@@ -21,7 +21,7 @@ $app = JFactory::getApplication();
 
 <div data-role="content">
 
-	<form id="edit_form" method="POST" action="<?php echo 'index.php?controller=save&model=people&return=people'; ?>" onsubmit="return save(this)" >
+	<form id="edit_form" method="post" action="<?php echo 'index.php?controller=save&model=people&return=people'; ?>" onsubmit="return save(this)" >
 			<div id="editForm">
 			<div class="cobaltRow">
 				<div class="cobaltField"><?php echo CRMText::_('COBALT_PERSON_FIRST'); ?><span class="required">*</span></div>
@@ -55,7 +55,7 @@ $app = JFactory::getApplication();
 				<div class="cobaltValue">
 					<select data-native-menu="false" data-overlay-theme="a" data-theme="c" name="source_id" tabindex="-1">
 						<?php $options = CobaltHelperDropdown::generateDropdown('source','','',true);
-							 if(count($options) > 0) { foreach($options as $option) { 
+							 if(count($options) > 0) { foreach($options as $option) {
 							 	echo "<option value='".$option['id']."''>".$option['name']."</option>";
 							 } } ?>
 					</select>

@@ -23,7 +23,7 @@
                   <?php echo $this->error; ?>
               </div>
           <?php } }?>
-          <form id="install-form" enctype="multipart/form-data" method="POST" action="<?php echo $this->baseurl; ?>/install/index.php?c=install&m=install" class="form-line">
+          <form id="install-form" enctype="multipart/form-data" method="post" action="<?php echo $this->baseurl; ?>/install/index.php?c=install&m=install" class="form-line">
             <!-- Tab buttons -->
           <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#site" data-toggle="tab"><i class="icon-home"></i> Site</a></li>
@@ -60,11 +60,11 @@
 
                   <div class="clearfix overflow" id="database-validation-message">
                   </div>
-                  
+
                   <div class="clearfix padding">
                     <label class="control-label" for="database_name">Host</label>
                     <input data-placement="right" rel="tooltip" title="Enter database host name" type="text" id="dbHost" name="database_host" placeholder="e.g localhost,127.0.0.1">
-                  
+
                     <label class="control-label" for="inputPassword">User</label>
                     <input data-placement="right" rel="tooltip" title="Enter database username" type="text" id="dbUser" name="database_user" placeholder="Username for database">
 

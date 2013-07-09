@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $view = $app->input->get('view');
 $layout = $app->input->get('layout','list');
@@ -29,7 +29,7 @@ $layout = $app->input->get('layout','list');
 				<ul>
 				    <?php foreach ( $this->event_statuses as $title => $text ){
 					     echo "<li><a class='filter_".$title." dropdown_item' onclick=\"eventFilter('status','".$title."')\">".$text."</a></li>";
-		            }?>							
+		            }?>
 				</ul>
 			</div>
 			<span class="filters"><a class="dropdown" id="event_type_link" ><?php echo $this->event_types[$this->state->get('Event.'.$view.'_'.$layout.'_type')]; ?></a></span>
@@ -37,12 +37,12 @@ $layout = $app->input->get('layout','list');
 				<ul>
 				    <?php foreach ( $this->event_types as $title => $text ){
 					     echo "<li><a class='filter_".$title." dropdown_item' onclick=\"eventFilter('type','".$title."')\">".$text."</a></li>";
-		            }?>							
+		            }?>
 				</ul>
 			</div>
 			<?php echo CRMText::_('COBALT_OF'); ?>
-			<?php 
-				$arr = array('any'=>CRMText::_('COBALT_ANY_TYPE')); 
+			<?php
+				$arr = array('any'=>CRMText::_('COBALT_ANY_TYPE'));
 				$this->event_categories = $arr+$this->event_categories;
 			?>
 			<span class="filters"><a class="dropdown" id="event_category_link" ><?php echo $this->event_categories[$this->state->get('Event.'.$view.'_'.$layout.'_category')]; ?></a></span>
@@ -50,7 +50,7 @@ $layout = $app->input->get('layout','list');
 				<ul>
 				    <?php foreach ( $this->event_categories as $title => $text ){
 					     echo "<li><a class='filter_".$title." dropdown_item' onclick=\"eventFilter('category','".$title."')\">".$text."</a></li>";
-		            }?>							
+		            }?>
 				</ul>
 			</div>
 			<?php echo CRMText::_('COBALT_THAT_ARE'); ?>
@@ -59,7 +59,7 @@ $layout = $app->input->get('layout','list');
 				<ul>
 				    <?php foreach ( $this->event_due_dates as $title => $text ){
 					     echo "<li><a class='filter_".$title." dropdown_item' onclick=\"eventFilter('due_date','".$title."')\">".$text."</a></li>";
-		            }?>							
+		            }?>
 				</ul>
 			</div>
 			<?php echo CRMText::_('COBALT_FOR'); ?>
@@ -68,11 +68,11 @@ $layout = $app->input->get('layout','list');
 				<ul>
 				    <?php foreach ( $this->event_associations as $title => $text ){
 					     echo "<li><a class='filter_".$title." dropdown_item' onclick=\"eventFilter('association_type','".$title."')\">".$text."</a></li>";
-		            }?>							
+		            }?>
 				</ul>
 			</div>
 			<?php echo CRMText::_('COBALT_ASSIGNED_TO'); ?>
-			<?php 
+			<?php
 				$arr = array(array('value'=>CobaltHelperUsers::getUserId(),'label'=>CRMText::_('COBALT_ME')));
 				$users = CobaltHelperUsers::getUsers();
 				$teams = CobaltHelperUsers::getTeams();
@@ -95,7 +95,7 @@ $layout = $app->input->get('layout','list');
 						}
 					}
 				}else{
-					$user_filter = CRMText::_('COBALT_ME'); 
+					$user_filter = CRMText::_('COBALT_ME');
 				}
 			?>
 			<span class="filters"><a class="dropdown" id="event_assignee_link" ><?php echo $user_filter; ?></a></span>
@@ -127,8 +127,8 @@ $layout = $app->input->get('layout','list');
 		                        echo "<li><a class='dropdown_item filter_user_".$user['id']."' onclick='eventUserFilter(\"individual\",".$user['id'].")'>".$user['first_name']."  ".$user['last_name']."</a></li>";
 		                    }
 		                }
-		                
-		            ?>						
+
+		            ?>
 				</ul>
 			</div>
     	</li>
@@ -138,14 +138,14 @@ $layout = $app->input->get('layout','list');
 	</ul>
 	<div class="actions_container">
 		<span class="actions">
-			<a onclick="addTaskEvent('task')"><?php echo ucwords(CRMText::_('COBALT_ADD_TASK')); ?></a> - 
-			<a onclick="addTaskEvent('event')"><?php echo ucwords(CRMText::_('COBALT_ADD_EVENT')); ?></a> - 
-			<a href="<?php echo JRoute::_('index.php?view=calendar'); ?>" ><?php echo CRMText::_('COBALT_SHOW_CALENDAR'); ?></a> - 
+			<a onclick="addTaskEvent('task')"><?php echo ucwords(CRMText::_('COBALT_ADD_TASK')); ?></a> -
+			<a onclick="addTaskEvent('event')"><?php echo ucwords(CRMText::_('COBALT_ADD_EVENT')); ?></a> -
+			<a href="<?php echo JRoute::_('index.php?view=calendar'); ?>" ><?php echo CRMText::_('COBALT_SHOW_CALENDAR'); ?></a> -
 			<a href="javascript:void(0)" onclick="printItems('event_form');"><?php echo CRMText::_('COBALT_PRINT'); ?></a>
 		</span>
 	</div>
 	<?php echo CobaltHelperTemplate::getEventListEditActions(); ?>
-<form id="event_form" class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form id="event_form" class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
 <input type="hidden" name="layout" value="events" />
 <input type="hidden" name="model" value="event" />
 <table id='events_list' class="com_cobalt_table">
@@ -163,7 +163,7 @@ $layout = $app->input->get('layout','list');
 			</tr>
 		</thead>
 		<tbody id="events">
-			<?php 
+			<?php
 				$data = array('events'=>$this->events);
 				$event_list = CobaltHelperView::getView('events','list','phtml',$data);
 				echo $event_list->render();
@@ -171,7 +171,7 @@ $layout = $app->input->get('layout','list');
 		</tbody>
 </table>
 <input type="hidden" name="list_type" value="events" />
-</form> 
+</form>
 </div>
 <div id="deal_contacts_modal_dialog" style="display:none;"></div>
 <div id="edit_task" style="display:none;"></div>

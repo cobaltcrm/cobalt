@@ -15,7 +15,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<?php if ( count ( $this->help_menu_links ) > 0 ){ foreach ( $this->help_menu_links as $link ) { ?>
 						<li class="<?php echo $link['completed_status']!=0 ? 'completed' : 'uncompleted'; ?>" id="<?php echo $link['config']; ?>">
 							<a href="<?php echo $link['link']; ?>">
-								<i class="<?php echo $link['completed_status']==1 ? 'icon-ok icon' : $link['class']; ?>"></i>  
+								<i class="<?php echo $link['completed_status']==1 ? 'icon-ok icon' : $link['class']; ?>"></i>
 								<span><?php echo $link['text']; ?></span>
 							</a>
 							<span class="<?php echo $link['completed_status']==1 ? 'completed' : 'uncompleted'; ?>">
@@ -28,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <?php } ?>
 <?php if ( $this->show_update_buttons || $this->show_help ){  ?>
 	<div id="help_description_action" class="help_description_action">
-		<form action="" method="POST">
+		<form action="" method="post">
 			<div class="help_text">
 				<h3><?php echo JText::_('COBALT_HELP_'.strtoupper($this->help_type).'_TITLE'); ?></h3>
 				<?php echo JText::_('COBALT_HELP_'.strtoupper($this->help_type).'_DESC'); ?>

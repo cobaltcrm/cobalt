@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $format = $app->input->get('format');
 
@@ -19,8 +19,8 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
 	<h1><?php echo $person['header']; ?></h1>
 <?php } ?>
 
-<form id="edit_form" method="POST" action="<?php echo 'index.php?controller=people&task=save'; ?>" onsubmit="return save(this)" >
-			
+<form id="edit_form" method="post" action="<?php echo 'index.php?controller=people&task=save'; ?>" onsubmit="return save(this)" >
+
 
 <ul class="nav nav-tabs" id="myTab">
   <li class="active"><a href="#Person" data-toggle="tab" >Person</a></li>
@@ -30,7 +30,7 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
   <li><a href="#Details" data-toggle="tab">Details</a></li>
   <li><a href="#Custom" data-toggle="tab">Custom</a></li>
 </ul>
- 
+
 <div class="tab-content">
   <div class="tab-pane active fade in" id="Person">
 		<div class="cobaltRow">
@@ -82,12 +82,12 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
 		<div class="cobaltRow">
 			<div class="cobaltField"><?php echo ucwords(CRMText::_('COBALT_PERSON_DEAL')); ?></div>
 			<div class="cobaltValue">
-				<?php 
+				<?php
 					if ( array_key_exists('deal_id',$person) && $person['deal_id'] ) {
 						echo $person['deal_name'];
 					}else{
 						echo CobaltHelperDropdown::generateDropdown('deal');
-					} 
+					}
 				?>
 			</div>
 		</div>

@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $company = $this->company;
 ?>
-<form id="edit_form" method="POST" action="<?php echo 'index.php?view=companies&controller=save'; ?>" onsubmit="return save(this)" >
+<form id="edit_form" method="post" action="<?php echo 'index.php?view=companies&controller=save'; ?>" onsubmit="return save(this)" >
 
 	<ul class="nav nav-tabs" id="myTab">
 	  <li class="active"><a href="#Company" data-toggle="tab" >Company</a></li>
@@ -20,7 +20,7 @@ $company = $this->company;
 	  <li><a href="#Details" data-toggle="tab">Details</a></li>
 	  <li><a href="#Custom" data-toggle="tab" >Custom</a></li>
 	</ul>
-	 
+
 	<div class="tab-content">
 	  <div class="tab-pane active fade in" id="Company">
 			<div class="cobaltRow">

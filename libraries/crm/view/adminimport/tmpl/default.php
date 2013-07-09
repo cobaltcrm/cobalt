@@ -44,19 +44,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 										<li><?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED'); ?></li>
 										<li><?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED_INSTRUCTIONS'); ?></li>
 										<li>
-											<form class="inline-form" method="POST">
+											<form class="inline-form" method="post">
 												<input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_COMPANIES_TEMPLATE'); ?>" />
 												<input type="hidden" name="template_type" value="companies" />
 											</form>
 										</li>
 										<li>
-											<form class="inline-form" method="POST">
+											<form class="inline-form" method="post">
 												<input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_DEALS_TEMPLATE'); ?>" />
 												<input type="hidden" name="template_type" value="deals" />
 											</form>
 										</li>
 										<li>
-											<form class="inline-form" method="POST">
+											<form class="inline-form" method="post">
 												<input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_PEOPLE_TEMPLATE'); ?>" />
 												<input type="hidden" name="template_type" value="people" />
 											</form>
@@ -72,7 +72,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 									<ul>
 										<li><?php echo JText::_('COBALT_UPLOAD_YOUR_FILE'); ?></li>
 										<li><?php echo JText::_('COBALT_SELECT_YOUR_CSV'); ?>
-											<form id="import_form" action="index.php?view=import" method="POST" enctype="multipart/form-data">
+											<form id="import_form" action="index.php?view=import" method="post" enctype="multipart/form-data">
 									        	<div class="input_upload_button" >
 									        		<label><?php echo JText::_('COBALT_TYPE'); ?></label>
 									        		<?php echo CobaltHelperDropdown::showImportTypes(); ?>
@@ -109,7 +109,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 										</span>
 									</div>
 								<?php } ?>
-								<form action="index.php?controller=import" method="POST">
+								<form action="index.php?controller=import" method="post">
 										<div id="editForm">
 										<?php if ( isset($this->import_data) && count($this->import_data) > 0 ) { foreach ( $this->import_data as $key => $data ) { ?>
 										<?php if ( $key > 0 ){ $style = "style='display:none;'"; } else { $style = ""; } ?>

@@ -12,10 +12,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
 	var eventsObj = <?php echo $this->events; ?>;
-	var loc = 'calendar';	
+	var loc = 'calendar';
 </script>
 
-<form class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
     <div class="pull-right text-right">
     <span class="calendar_actions">
         <input type="hidden" name="layout" value="calendar" />
@@ -28,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 <li><a class="dropdown_item" href="javascript:void(0);" onclick="showAllCalendarEvents()"><?php echo CRMText::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
             </ul>
         </div>
-        <a href="<?php echo JRoute::_('index.php?view=events'); ?>" ><?php echo CRMText::_('COBALT_CALENDAR_SHOW_ALL'); ?></a> 
+        <a href="<?php echo JRoute::_('index.php?view=events'); ?>" ><?php echo CRMText::_('COBALT_CALENDAR_SHOW_ALL'); ?></a>
         <?php /** FUTURE <a href="javascript:void(0);" onclick="printItems(this);"><?php echo CRMText::_('COBALT_PRINT'); ?></a> **/ ?>
     </span>
     </div>
@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <div id="edit_task" style="display:none;">
 </div>
-		
+
 <div id="edit_event" style="display:none;">
 </div>
 

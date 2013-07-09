@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if(!isset($this->association_id)) { ?>
 	<div data-role='header' data-theme='b'>
@@ -21,24 +21,24 @@ if(!isset($this->association_id)) { ?>
 	<div data-role="content">
 <?php } ?>
 
-		<form id="task_edit" method="POST" action="<?php echo JRoute::_('index.php?controller=save&model=event&return=events'); ?>" >
+		<form id="task_edit" method="post" action="<?php echo JRoute::_('index.php?controller=save&model=event&return=events'); ?>" >
 		<div id="editForm">
 			<div class="cobaltRow">
 				<div class="cobaltField"><?php echo CRMText::_('COBALT_NAME'); ?></div>
 				<div class="cobaltValue">
 					<input type="text" class="inputbox" name="name" value="" />
-				</div>	
+				</div>
 			</div>
 			<div class="cobaltRow">
 				<div class="cobaltField"><?php echo CRMText::_('COBALT_CATEGORY'); ?></div>
 				<div class="cobaltValue">
 					<select data-native-menu="false" data-overlay-theme="a" data-theme="c" name="category_id" tabindex="-1">
-						<?php 
+						<?php
 	                        $categories = CobaltHelperEvent::getCategories();
 	                        echo JHtml::_('select.options', $categories, 'value', 'text', "", true);
 	                    ?>
 					</select>
-				</div>	
+				</div>
 			</div>
 			<div class="cobaltRow">
 				<div class="cobaltField"></div>
@@ -46,7 +46,7 @@ if(!isset($this->association_id)) { ?>
 					<label for="due_date"><?php echo CRMText::_('COBALT_DUE_DATE'); ?>:</label>
 					<input type="date" name="due_date_hidden" class="inputbox" id="due_date" value="" />
 					<input type="hidden" name="due_date" id="due_date_hidden" value="" />
-				</div>	
+				</div>
 			</div>
 			<input data-theme="c" type="button" onclick="addTaskEntry();" name="submit"  value="<?php echo CRMText::_('COBALT_SUBMIT'); ?>" />
 			<?php if(isset($this->association_id)) { ?>
