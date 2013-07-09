@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $deal = $this->deal;
 $app = JFactory::getApplication();
 ?>
 <?php $raw = $app->input->get('format'); ?>
-<form id="edit_form" class="form-horizontal" method="POST" name="new_deal" action="<?php echo 'index.php?controller=save'; ?>" onsubmit="return save(this)">
+<form id="edit_form" class="form-horizontal" method="post" name="new_deal" action="<?php echo 'index.php?controller=save'; ?>" onsubmit="return save(this)">
 	<?php if ( !$raw ){ ?>
 	<div class="page-header">
 		<div class="btn-group pull-right">
@@ -123,12 +123,12 @@ $app = JFactory::getApplication();
 		    </div>
 	    </div>
     </div>
-			
+
 	<?php
 		if ( array_key_exists('id',$deal) ){
 			echo '<input class="inputbox" type="hidden" name="id" value="'.$deal['id'].'" />';
 		}
-		if ( array_key_exists('person_id',$deal) AND $app->input->get('person_id') ) { 
+		if ( array_key_exists('person_id',$deal) AND $app->input->get('person_id') ) {
 			echo '<input class="inputbox" type="hidden" name="person_id" value="'.$deal['person_id'].'" />';
 		}
 		if ( array_key_exists('company_id',$deal) AND $app->input->get('company_id') ) {

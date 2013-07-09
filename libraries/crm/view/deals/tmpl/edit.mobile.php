@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $deal = $this->deal;
 $app = JFactory::getApplication();
 ?>
 <h1><?php echo ucwords($deal['header']); ?></h1>
-<form id="deal_form" method="POST" name="new_deal" action="<?php echo JRoute::_('index.php?controller=save&model=deal&return=deals'); ?>" target="hidden" onsubmit="save()">
+<form id="deal_form" method="post" name="new_deal" action="<?php echo JRoute::_('index.php?controller=save&model=deal&return=deals'); ?>" target="hidden" onsubmit="save()">
 	<div id="editForm">
 		<div class="cobaltRow">
 			<div class="cobaltField"><?php echo CRMText::_('COBALT_DEAL_NAME'); ?></div>
@@ -30,9 +30,9 @@ $app = JFactory::getApplication();
 					<?php
 						if ( $app->input->get('company_id') ) {
 							echo $deal['company_name'];
-						}else{ 
+						}else{
 							echo CobaltHelperDropdown::generateDropdown('company',$deal['company_id']);
-						} 
+						}
 					?>
 			</div>
 		</div>
@@ -75,7 +75,7 @@ $app = JFactory::getApplication();
 				<div class="cobaltField"><?php echo CRMText::_('COBALT_DEAL_CLOSE'); ?></div>
 				<div class="cobaltValue"><input class="inputbox" type="text" name="expected_close" value="<?php if(count($deal)>0) echo $deal['expected_close']; ?>"></div>
 			</div>
-			<?php 
+			<?php
 				$custom = CobaltHelperDropdown::generateCustom('deal',$deal['id']);
                 $custom_data = ( array_key_exists('id',$deal) ) ? CobaltHelperDeal::getCustomData($deal['id'],"deal") : array();
                 foreach ( $custom as $field => $value ) {
@@ -104,7 +104,7 @@ $app = JFactory::getApplication();
                                 <!-- make this a custom date picker -->
                                     <input class="inputbox" name="custom_<?php echo $value['id']; ?>" class="filter_input date_input" name="" type="text" value="<?php echo $custom_field_filter; ?>"  />
                                 <?php break; ?>
-                            <?php } 
+                            <?php }
                         echo '</div>';
                         echo '</div>';
                 } }
@@ -114,7 +114,7 @@ $app = JFactory::getApplication();
 		if ( array_key_exists('id',$deal) ){
 			echo '<input class="inputbox" type="hidden" name="id" value="'.$deal['id'].'" />';
 		}
-		if ( array_key_exists('person_id',$deal) AND $app->input->get('person_id') ) { 
+		if ( array_key_exists('person_id',$deal) AND $app->input->get('person_id') ) {
 			echo '<input class="inputbox" type="hidden" name="person_id" value="'.$deal['person_id'].'" />';
 		}
 		if ( array_key_exists('company_id',$deal) AND $app->input->get(';company_id') ) {

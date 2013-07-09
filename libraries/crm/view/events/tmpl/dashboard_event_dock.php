@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 ?>
 
 <script type="text/javascript">
 </script>
-<form class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
 <input type="hidden" name="layout" value="events" />
 <input type="hidden" name="model" value="event" />
 
@@ -54,7 +54,7 @@ $app = JFactory::getApplication();
                             echo "<li><a href='javascript:void(0);' class='filter_user_".$user['id']."' onclick='updateEventList(".$user['id'].",0)'>".$user['first_name']."  ".$user['last_name']."</a></li>";
                         }
                     }
-                    
+
                 ?>
             </ul>
         </span>

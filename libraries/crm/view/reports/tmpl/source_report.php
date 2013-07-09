@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     order_dir = "<?php echo $this->state->get('Deal.source_report_filter_order_Dir'); ?>";
     order_col = "<?php echo $this->state->get('Deal.source_report_filter_order'); ?>";
 </script>
-<form id="list_form" class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
 <input type="hidden" name="layout" value="report" />
 <input type="hidden" name="model" value="deal" />
 <input type="hidden" name="report" value="source_report" />
