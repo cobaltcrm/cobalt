@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelConversation extends CobaltModelDefault
 {
@@ -24,16 +24,16 @@ class CobaltModelConversation extends CobaltModelDefault
 		{
 
 			$app = JFactory::getApplication();
-			
+
 
 			//Load Tables
-			$row =& JTable::getInstance('conversation','Table');
-			$oldRow =& JTable::getInstance('conversation','Table');
+			$row = JTable::getInstance('conversation','Table');
+			$oldRow = JTable::getInstance('conversation','Table');
 		    $data = $app->input->getRequest( 'post' );
-			
+
 			//date generation
 			$date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
-			
+
 			if ( !array_key_exists('id',$data) ){
 				$data['created'] = $date;
 				$status = "created";
@@ -42,7 +42,7 @@ class CobaltModelConversation extends CobaltModelDefault
 				$oldRow->load($data['id']);
 				$status = "updated";
 			}
-			
+
 			$data['modified'] = $date;
             $data['author'] = CobaltHelperUsers::getUserId();
 
@@ -51,13 +51,13 @@ class CobaltModelConversation extends CobaltModelDefault
 		        $this->setError($this->_db->getErrorMsg());
 		        return false;
 		    }
-		 
+
 		    // Make sure the record is valid
 		    if (!$row->check()) {
 		        $this->setError($this->_db->getErrorMsg());
 		        return false;
 		    }
-		 
+
 		    // Store the web link table to the database
 		    if (!$row->store()) {
 		        $this->setError($this->_db->getErrorMsg());
@@ -65,14 +65,14 @@ class CobaltModelConversation extends CobaltModelDefault
 		    }
 
 		    $id = array_key_exists('id',$data) ? $data['id'] : $this->_db->insertId();
-		 
+
             CobaltHelperActivity::saveActivity($oldRow, $row,'conversation', $status);
 
 		    return $id;
 		}
 
 		function getConversations(){
-			$db =& JFactory::getDBO();
+			$db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name, author.email");
             $query->from("#__conversations AS c");
@@ -91,20 +91,20 @@ class CobaltModelConversation extends CobaltModelDefault
 
             return $conversations;
 		}
-		
+
 		/*
 		 * Method to access conversations
-		 * 
-		 * @return array	 
+		 *
+		 * @return array
 		 */
 		function getConversation($id){
-			
+
 			//grab db
-			$db =& JFactory::getDBO();
-			
+			$db = JFactory::getDBO();
+
 			//initialize query
 			$query = $db->getQuery(true);
-			
+
 			//gen query string
 			$query->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name,author.email");
 			$query->from("#__conversations as c");
@@ -112,11 +112,11 @@ class CobaltModelConversation extends CobaltModelDefault
 			$query->where("c.published=".$this->published);
 			$query->leftJoin("#__users AS u ON u.id = c.author");
 			$query->leftJoin("#__users AS author on author.id=u.id");
-			
+
 			//load results
 			$db->setQuery($query);
 			$results = $db->loadAssocList();
-			
+
 			//clean results
 			if ( count($results) > 0 ){
 				foreach ( $results as $key => $convo ){
@@ -124,11 +124,10 @@ class CobaltModelConversation extends CobaltModelDefault
 					$results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($convo['email']);
 				}
 			}
-			
+
 			//return results
 			return $results;
 		}
 
-		
+
 }
-	

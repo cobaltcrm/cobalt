@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelTemplates extends CobaltModelDefault
 {
@@ -16,7 +16,7 @@ class CobaltModelTemplates extends CobaltModelDefault
     var $_view = "templates";
 
     /**
-     * 
+     *
      *
      * @access  public
      * @return  void
@@ -24,28 +24,28 @@ class CobaltModelTemplates extends CobaltModelDefault
     function __construct()
     {
         parent::__construct();
-        
+
     }
-    
+
     function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('templates','Table');
+        $row = JTable::getInstance('templates','Table');
         $data = $app->input->getRequest( 'post' );
-        
+
         //date generation
         $date = date('Y-m-d H:i:s');
         if ( !array_key_exists('id',$data) ){
             $data['created'] = $date;
         }
         $data['modified'] = $date;
-        
+
         //assign default
         //TODO make this a function that updates the database table so there is only ONE default
         $data['default'] = ( array_key_exists('default',$data) AND $data['default'] == 'on' ) ? 1 : 0;
-        
+
         //generate custom items for template
         $items = array();
         for ( $i=0; $i<count($data['items']); $i++ ){
@@ -62,32 +62,32 @@ class CobaltModelTemplates extends CobaltModelDefault
         unset($data['names']);
         unset($data['days']);
         unset($data['types']);
-        
+
         // Bind the form fields to the table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-        
+
         //get newly inserted template id
         if ( !array_key_exists('id',$data) ){
             $template_id = $this->_db->insertid();
         }else{
             $template_id = $data['id'];
         }
-        
+
         //loop through template events and bind the tables to update the database
         //TODO remove ids that are no longer used associated with the template
         for( $i=0; $i<count($items); $i++ ){
@@ -102,13 +102,13 @@ class CobaltModelTemplates extends CobaltModelDefault
             $temp_table->check();
             $temp_table->store();
         }
-        
+
         return true;
     }
 
     function _buildQuery(){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -118,29 +118,29 @@ class CobaltModelTemplates extends CobaltModelDefault
         return $query;
 
     }
-    
-    
+
+
     /**
      * Get list of templates
      * @param int $id specific search id
      * @return mixed $results results
      */
     function getTemplates(){
-        
+
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
-        
+
         //sort
         $query->order($this->getState('Templates.filter_order') . ' ' . $this->getState('Templates.filter_order_Dir'));
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
-        
+
         //return data
         return $results;
-        
+
     }
 
     function getTemplate($id=null){
@@ -150,26 +150,26 @@ class CobaltModelTemplates extends CobaltModelDefault
         if ( $id > 0 ){
 
             //database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
-            
+
             //sort
             $query->order($this->getState('Templates.filter_order') . ' ' . $this->getState('Templates.filter_order_Dir'));
             $query->where("t.id=$id");
 
-            
+
             //return results
             $db->setQuery($query);
             $result = $db->loadAssoc();
-            
+
             //left join essential data if we are searching for a specific template
             $query = $db->getQuery(true);
             $query->select("t.*");
             $query->from("#__template_data AS t");
             $query->where("t.template_id=$id");
             $db->setQuery($query);
-            $result['data'] = $db->loadAssocList(); 
-            
+            $result['data'] = $db->loadAssocList();
+
             //return data
             return $result;
 
@@ -180,7 +180,7 @@ class CobaltModelTemplates extends CobaltModelDefault
         }
 
     }
-    
+
     function populateState(){
         //get states
         $app = JFactory::getApplication();
@@ -188,25 +188,25 @@ class CobaltModelTemplates extends CobaltModelDefault
         $filter_order_Dir = $app->getUserStateFromRequest('Templates.filter_order_Dir','filter_order_Dir','asc');
 
         $state = new JRegistry();
-        
+
         //set states
         $state->set('Templates.filter_order', $filter_order);
         $state->set('Templates.filter_order_Dir',$filter_order_Dir);
 
         $this->setState($state);
     }
-    
+
     function remove($id){
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //delete id
         $query->delete('#__templates')->where('id = '.$id);
         $db->setQuery($query);
         $db->query();
     }
 
-    
+
 
 }

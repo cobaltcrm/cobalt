@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -22,7 +22,7 @@ class CobaltModelAvatar extends JModelBase
 
 
     /**
-     * 
+     *
      *
      * @access  public
      * @return  void
@@ -44,43 +44,43 @@ class CobaltModelAvatar extends JModelBase
         //this is the name of the field in the html form, filedata is the default name for swfupload
         //so we will leave it as that
         $fieldName = 'avatar';
-        
+
         //any errors the server registered on uploading
         $fileError = $_FILES[$fieldName]['error'];
-        if ($fileError > 0) 
+        if ($fileError > 0)
         {
-                switch ($fileError) 
+                switch ($fileError)
             {
                 case 1:
                 echo CRMText::_( 'FILE TO LARGE THAN PHP INI ALLOWS' );
                 return;
-         
+
                 case 2:
                 echo CRMText::_( 'FILE TO LARGE THAN HTML FORM ALLOWS' );
                 return;
-         
+
                 case 3:
                 echo CRMText::_( 'ERROR PARTIAL UPLOAD' );
                 return;
-         
+
                 case 4:
                 echo CRMText::_( 'ERROR NO FILE' );
                 return;
                 }
         }
-         
+
         //check the file extension is ok
         $fileName = $_FILES[$fieldName]['name'];
         $fileTemp = $_FILES[$fieldName]['tmp_name'];
 
         $uploadedFileNameParts = explode('.',$fileName);
         $uploadedFileExtension = array_pop($uploadedFileNameParts);
-         
+
         $validFileExts = explode(',', 'jpeg,jpg,png,gif,bmp');
-         
+
         //assume the extension is false until we know its ok
         $extOk = false;
-         
+
         //go through every ok extension, if the ok extension matches the file extension (case insensitive)
         //then the file extension is ok
         foreach($validFileExts as $key => $value)
@@ -90,25 +90,25 @@ class CobaltModelAvatar extends JModelBase
                 $extOk = true;
             }
         }
-         
-        if ($extOk == false) 
+
+        if ($extOk == false)
         {
             echo CRMText::_( 'INVALID EXTENSION' );
                 return;
         }
-         
+
         //data generation
         $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
         $hashFilename = md5($fileName.$date).".".$uploadedFileExtension;
 
         //lose any special characters in the filename
         $fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
-         
+
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_SITE.'//media/avatars/'.$hashFilename;
 
-        if(!JFile::upload($fileTemp,$uploadPath)) 
-        {   
+        if(!JFile::upload($fileTemp,$uploadPath))
+        {
             echo CRMText::_( 'ERROR MOVING FILE' );
             return;
         }
@@ -154,7 +154,7 @@ class CobaltModelAvatar extends JModelBase
 
     public function getAvatar($item_id,$item_type){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->clear();
         $query->select("avatar")->from("#__".$item_type)->where("id=".$item_id);

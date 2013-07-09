@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelUser extends JModelBase
 {
-        
+
         function __construct(){
-            
+
             parent::__construct();
-            
+
         }
-        
+
         /**
          * Method to store a record
          *
@@ -27,14 +27,14 @@ class CobaltModelUser extends JModelBase
         function store($data=null)
         {
             $app = JFactory::getApplication();
-            
+
             //Load Tables
-            $row =& JTable::getInstance('user','Table');
-            
+            $row = JTable::getInstance('user','Table');
+
             if($data['id']) {
                 $row->load($data['id']);
             }
-            
+
             if(!$data) {
                 $data = $app->input->getRequest( 'post' );
             }
@@ -46,14 +46,14 @@ class CobaltModelUser extends JModelBase
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
             $data['modified'] = $date;
-            
+
             //update users email address
             if ( array_key_exists('email',$data)){
                 $emails = $data['email'];
                 $this->updateEmail($data['id'],$emails);
                 unset($data['email']);
             }
-            
+
             // Bind the form fields to the table
             if (!$row->bind($data)) {
                 $this->setError($this->_db->getErrorMsg());
@@ -65,16 +65,16 @@ class CobaltModelUser extends JModelBase
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
-         
+
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
-            
+
             return true;
-            
-         
+
+
         }
 
         /**
@@ -84,16 +84,16 @@ class CobaltModelUser extends JModelBase
          * @return void
          */
         function updateEmail($user_id,$emails){
-            
+
             //get dbo
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //delete any existing entries
             $query->delete('#__users_email_cf')->where('member_id = '.$user_id);
             $db->setQuery($query);
             $db->query();
-            
+
             //insert new entries
             $query->clear();
             $values = array();
@@ -113,30 +113,30 @@ class CobaltModelUser extends JModelBase
                 print_r($db);
                 exit();
             }
-            
+
         }
-        
+
         /**
          * Update a users database columns for displaying data on individual pages
          * @param string $loc the column in the database to update
          * @param string $column the column in the serialized array that will be updated
          */
         function updateColumns($loc,$column){
-            
+
             //get user id
             $user_id = CobaltHelperUsers::getUserId();
-            
+
             //get database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //get current array
             $query->select($loc."_columns");
             $query->from("#__users");
             $query->where("id=".$user_id);
             $db->setQuery($query);
             $result = unserialize($db->loadResult());
-            
+
             //if we have no data assigned grab the defaults
             if ( !is_array($result) ){
                 switch ( $loc ){
@@ -159,16 +159,16 @@ class CobaltModelUser extends JModelBase
                 //if we dont find the value in the array add it
                 $result[] = $column;
             }
-            
+
             //serialize the new array
             $result = serialize($result);
-            
+
             //update the database
             $query->update('#__users')->set($loc."_columns='".$result."'")->where("id=".$user_id);
             $db->setQuery($query);
             $db->query();
-            
+
         }
-        
-        
+
+
 }

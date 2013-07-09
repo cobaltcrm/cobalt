@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelTeams extends JModelBase
 {
     /**
-     * 
+     *
      *
      * @access  public
      * @return  void
@@ -22,26 +22,26 @@ class CobaltModelTeams extends JModelBase
     {
         parent::__construct();
 
-        
+
     }
-    
+
     /**
      * Get list of existing teams
-     * @return mixed $teams array of teams returned 
+     * @return mixed $teams array of teams returned
      */
     public function getTeams(){
-        
+
         //Database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //Query String
         $query->select("t.*,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name");
         $query->from("#__teams AS t");
         $query->leftJoin("#__users AS u ON u.team_id = t.leader_id");
         $db->setQuery($query);
         $results = $db->loadAssocList();
-        
+
         //clean data
         $teams = array();
         if ( count($results) > 0 ){
@@ -49,21 +49,21 @@ class CobaltModelTeams extends JModelBase
                 $teams[$team['leader_id']] = $team['team_id'];
             }
         }
-        
+
         //return results
         return $teams;
-        
+
     }
-    
+
     /**
      * Create a team if it does not exist in the database
      * @param int $leader_id the id of the leader for the team to create
      * @return int $team_id the id of the newly created team
      */
     public function createTeam($leader_id,$name=NULL){
-        
+
         //Database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->clear();
@@ -82,12 +82,12 @@ class CobaltModelTeams extends JModelBase
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
@@ -97,7 +97,7 @@ class CobaltModelTeams extends JModelBase
         $this->assignLeader($leader_id,$team_id);
         return $team_id;
     }
-    
+
     /**
      * Assign a leader to a team and update the users table
      * @param int $leader_id the id of the new leader
@@ -105,36 +105,36 @@ class CobaltModelTeams extends JModelBase
      * @return void
      */
     public function assignLeader($leader_id,$team_id){
-        
+
         //bind user tables
-        $row =& JTable::getInstance('users','Table');
+        $row = JTable::getInstance('users','Table');
         $team_data = array ( 'id'=>$leader_id,'team_id'=>$team_id );
         if (!$row->bind($team_data)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
 
     }
-    
+
     public function updateTeam($old_team,$new_team){
         //update the database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete old team
         $query->delete('#__teams');
         $query->where("team_id=$old_team");
-        $db->setQuery($query);      
+        $db->setQuery($query);
         $db->query();
 
         //update users table for new team
@@ -145,10 +145,10 @@ class CobaltModelTeams extends JModelBase
 
         $db->setQuery($query);
         $db->query();
-        
-    }
-    
 
-    
+    }
+
+
+
 
 }

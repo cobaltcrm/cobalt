@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperBanter extends JObject
- {	
- 	
+ {
+
 	public function hasBanter()
 	{
         jimport('joomla.filesystem.folder');
@@ -24,7 +24,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 
  	function getAssociationName($associationId,$associationType){
- 		$db =& JFactory::getDBO();
+ 		$db = JFactory::getDBO();
  		$query = $db->getQuery(true);
 
  		switch ( $associationType ){

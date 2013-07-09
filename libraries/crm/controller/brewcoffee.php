@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerBrewCoffee extends CobaltControllerDefault
 {
 
     function execute()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('u.id, u.first_name, u.last_name, user.email');
 		$query->from('#__users AS u');

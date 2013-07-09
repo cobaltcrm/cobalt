@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerRemovePersonFromDeal extends CobaltControllerDefault
 {
@@ -20,7 +20,7 @@ class CobaltControllerRemovePersonFromDeal extends CobaltControllerDefault
         $person_id = $app->input->get('person_id');
         $deal_id = $app->input->get('deal_id');
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("COUNT(*)")

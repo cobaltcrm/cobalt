@@ -8,22 +8,22 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperDocument extends JObject
  {
-    
+
     //get users total associated documents
     function getTotalDocuments(){
-        
+
         //db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         //select
         $query->select("count(*)");
         $query->from("#__documents AS d");
-        
+
         //filter depending on user access
         $role = CobaltHelperUsers::getRole();
         $user_id = CobaltHelperUsers::getUserId();
@@ -36,14 +36,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 $query->where(array("d.owner_id=".$user_id,'d.shared=1'),'OR');
             }
         }
-        
-        
+
+
         //return count
         $db->setQuery($query);
         $result = $db->loadResult();
         return $result;
     }
-    
+
     //function to get possible document association types
     function getAssocTypes(){
         return array(   'all'=>CRMText::_('COBALT_ALL_DOCUMENTS'),
@@ -53,7 +53,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         'emails'=>CRMText::_('COBALT_DOCUMENTS_EMAILS'),
                         'shared'=>CRMText::_('COBALT_DOCUMENTS_SHARED'));
     }
-    
+
     //get different document doctypes
     function getDocTypes(){
         return array(   'all'=>CRMText::_('COBALT_ALL_TYPES'),
@@ -64,5 +64,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         'presentations'=>CRMText::_('COBALT_PRESENTATIONS'),
                         'others'=>CRMText::_('COBALT_OTHERS'));
     }
-    
+
  }

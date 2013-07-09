@@ -8,10 +8,10 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelDeal extends CobaltModelDefault
-{       
+{
         var $_types=null;
         var $_data = null;
         var $_id = null;
@@ -45,7 +45,7 @@ class CobaltModelDeal extends CobaltModelDefault
             $this->_view = $app->input->get('view');
             $this->_layout = str_replace('_filter','',$app->input->get('layout'));
         }
-        
+
         /**
          * Method to store a record
          *
@@ -57,16 +57,16 @@ class CobaltModelDeal extends CobaltModelDefault
             $db  = JFactory::getDBO();
 
             //Load Tables
-            $row =& JTable::getInstance('deal','Table');
-            $oldRow =& JTable::getInstance('deal','Table');
+            $row = JTable::getInstance('deal','Table');
+            $oldRow = JTable::getInstance('deal','Table');
 
             if ( $data == null ){
               $data = $app->input->getRequest('post');
             }
-            
+
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
-            
+
             //assign the creation date
             if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ){
                 $data['created'] = $date;
@@ -82,7 +82,7 @@ class CobaltModelDeal extends CobaltModelDefault
 
             //update our modified date
             $data['modified'] = $date;
-            
+
             //generate custom field string
             $customArray = array();
             foreach( $data as $name => $value ){
@@ -94,7 +94,7 @@ class CobaltModelDeal extends CobaltModelDefault
             }
 
              if((array_key_exists('company_name',$data) && $data['company_name']!="")  || (array_key_exists('company',$data) && $data['company'] != "")) {
-                
+
                 $company_name = array_key_exists('company_name',$data) ? $data['company_name'] : $data['company'];
 
                 $companyModel = new CobaltModelCompany();
@@ -172,7 +172,7 @@ class CobaltModelDeal extends CobaltModelDefault
                 $this->setError($db->getErrorMsg());
                 return false;
             }
-         
+
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onBeforeDealSave', array(&$row));
 
@@ -181,7 +181,7 @@ class CobaltModelDeal extends CobaltModelDefault
                 $this->setError($db->getErrorMsg());
                 return false;
             }
-         
+
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($db->getErrorMsg());
@@ -189,7 +189,7 @@ class CobaltModelDeal extends CobaltModelDefault
             }
 
             $deal_id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $row->id;
-            
+
             CobaltHelperActivity::saveActivity($oldRow, $row,'deal', $status);
 
             //if we receive no custom post data do not modify the custom fields
@@ -223,11 +223,11 @@ class CobaltModelDeal extends CobaltModelDefault
 
             /** Large SQL Selections **/
             $app = JFactory::getApplication();
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $db->setQuery("SET SQL_BIG_SELECTS=1");
             $db->query();
-            
+
             //set defaults
             $id = $this->_id;
             $type = $this->_type;
@@ -242,7 +242,7 @@ class CobaltModelDeal extends CobaltModelDefault
             $session = $this->_session;
             $user_id = $this->_user_id;
             $session = JFactory::getSession();
-            
+
             //determine which layout is requesting the information
             $view = $this->_view;
             $layout = $this->_layout;
@@ -254,7 +254,7 @@ class CobaltModelDeal extends CobaltModelDefault
             if ( $user ){
                 $session->set('deal_team_filter',null);
             }
-            
+
             /** -----------------------------
              * Session data for the default deals page
              */
@@ -293,19 +293,19 @@ class CobaltModelDeal extends CobaltModelDefault
             }
 
             /** ------------------
-             * Construct the Database Object 
+             * Construct the Database Object
              */
-            
+
             //db object
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //construct query string
 
             $export = $app->input->get('export');
 
             if ( $export ){
-                
+
                 $queryString  = 'd.name,d.summary,d.probability,d.amount,d.actual_close,d.archived,';
                 $queryString .= 'd.modified,d.category,d.expected_close,d.created,SUM(d.amount) AS filtered_total,';
                 $queryString .= '( d.amount * ( d.probability / 100 )) AS forecast,';
@@ -316,10 +316,10 @@ class CobaltModelDeal extends CobaltModelDefault
                 $queryString .= 'p.first_name as primary_contact_first_name,p.last_name as primary_contact_last_name,';
                 $queryString .= "p.email,p.phone";
                 $queryString .= ' FROM #__deals AS d';
-                
+
                 //select
                 $query->select($queryString);
-                
+
                 //left join
                 $query->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0');
                 $query->leftJoin('#__deal_status AS stat ON stat.id = d.status_id');
@@ -327,7 +327,7 @@ class CobaltModelDeal extends CobaltModelDefault
                 $query->leftJoin('#__stages AS stage on stage.id = d.stage_id');
                 $query->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0");
                 $query->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
-            
+
 
             } else {
 
@@ -343,10 +343,10 @@ class CobaltModelDeal extends CobaltModelDefault
                 $queryString .= 'p.first_name as primary_contact_first_name,p.last_name as primary_contact_last_name,';
                 $queryString .= "p.email,p.phone";
                 $queryString .= ' FROM #__deals AS d';
-                
+
                 //select
                 $query->select($queryString);
-                
+
                 //left join
                 $query->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0');
                 $query->leftJoin('#__deal_status AS stat ON stat.id = d.status_id');
@@ -363,7 +363,7 @@ class CobaltModelDeal extends CobaltModelDefault
             }
 
             if ( !$id ){
-            
+
                 /** --------------------
                  * Sort data for reports pages
                  */
@@ -379,7 +379,7 @@ class CobaltModelDeal extends CobaltModelDefault
                         $owner_type = $this->getState('Deal.'.$layout.'_owner_type');
                         if ( $owner_type == 'member' OR $owner_type == null ){
                             $query->where("d.owner_id=".$owner_filter);
-                            
+
                         }
                         if ( $owner_type == 'team' ){
                             //get team members
@@ -432,62 +432,62 @@ class CobaltModelDeal extends CobaltModelDefault
                         $created = $created_filter;
                     }
                 }
-                
+
                  //get current date to use for all date filtering
                 $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
-                
+
                 /** ------------------------------------------
-                 * Here we filter for diferent types of deals 
+                 * Here we filter for diferent types of deals
                  */
                 if ( $type != null  && $type != 'all' ){
-                    
+
                     //filter for deals//tasks due today
                     if ( $type == 'today' ){
                         $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date > '$date' AND event.due_date < '$tomorrow'");
                         $query->where("event.published>0");
                     }
-                    
+
                     //filter for deals//tasks due tomorrow
                     if ( $type == "tomorrow" ){
                         $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date='".$tomorrow."'");
                         $query->where("event.published>0");
                     }
-                    
+
                     //filter for deals updated in the last 30 days
                     if ( $type == "updated_thirty" ){
                         $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("d.modified >'$last_thirty_days'");
                     }
-                    
+
                     //filter for most valuable deals
                     if ( $type == "valuable" ){
                         $query->order('d.amount DESC');
                     }
-                    
+
                     //filter for past deals
                     if ( $type == "past" ){
                         $query->where("event.due_date < '$date'");
                         $query->where("event.published>0");
                     }
-                    
+
                     //filter for deals not updated in the last 30 days
                     if ( $type == "not_updated_thirty" ){
                         $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("d.modified < '$last_thirty_days'");
                     }
-                    
+
                     //filter for shared deals
-                    if ( $type == "shared" ){   
+                    if ( $type == "shared" ){
                         $query->where("shared.item_id IS NOT NULL");
                     }
-                    
+
                     //filter for archived deals
                     if ( $type == "archived" && is_null($this->archived) ){
                         $query->where("d.archived=1");
                     }
-                    
+
                 }else{
                     $query->where("d.archived=0");
                 }
@@ -496,128 +496,128 @@ class CobaltModelDeal extends CobaltModelDefault
                  * Search for closing deal filters
                  */
                 if ( $close != null && $close != "any" ){
-                        
+
                     if ( $close == "this_week" ){
                         $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
                         $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
                         $query->where("d.expected_close >= '$this_week'");
                         $query->where("d.expected_close < '$next_week'");
                     }
-                    
+
                     if ( $close == "next_week" ){
                         $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
-                        $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days")); 
+                        $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days"));
                         $query->where("d.expected_close >= '$next_week'");
                         $query->where("d.expected_close < '$week_after_next'");
                     }
-                    
+
                     if ( $close == "this_month" ){
                         $this_month = CobaltHelperDate::formatDBDate(date('Y-m-0 00:00:00'));
                         $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                         $query->where("d.expected_close >= '$this_month'");
                         $query->where("d.expected_close < '$next_month'");
                     }
-                    
+
                     if ( $close == "next_month" ){
                         $next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+1 month"));
                         $next_next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+2 months"));
                         $query->where("d.expected_close >= '$next_month'");
                         $query->where("d.expected_close < '$next_next_month'");
                     }
-                    
+
                 }
 
                 /** --------------------------------------------
                  * Search for modified deal filters
                  */
                 if ( $modified != null && $modified != "any" ){
-                        
+
                     if ( $modified == "this_week" ){
                         $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
                         $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
                         $query->where("d.modified >= '$last_week'");
                         $query->where("d.modified < '$this_week'");
                     }
-                    
+
                     if ( $modified == "last_week" ){
                         $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
                         $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                         $query->where("d.modified >= '$week_before_last'");
                         $query->where("d.modified < '$last_week'");
                     }
-                    
+
                     if ( $modified == "this_month" ){
                         $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                         $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                         $query->where("d.modified >= '$this_month'");
                         $query->where("d.modified < '$next_month'");
                     }
-                    
+
                     if ( $modified == "last_month" ){
                         $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                         $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
                         $query->where("d.modified >= '$last_month'");
                         $query->where("d.modified < '$this_month'");
                     }
-                    
+
                 }
 
                 /** --------------------------------------------
                  * Search for created deal filters
                  */
                 if ( $created != null && $created != "any" ){
-                        
+
                     if ( $created == "this_week" ){
                         $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
                         $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
                         $query->where("d.created >= '$last_week'");
                         $query->where("d.created < '$this_week'");
                     }
-                    
+
                     if ( $created == "last_week" ){
                         $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
                         $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                         $query->where("d.created >= '$week_before_last'");
                         $query->where("d.created < '$last_week'");
                     }
-                    
+
                     if ( $created == "this_month" ){
                         $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                         $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                         $query->where("d.created >= '$this_month'");
                         $query->where("d.created < '$next_month'");
                     }
-                    
+
                     if ( $created == "last_month" ){
                         $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
                         $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
                         $query->where("d.created >= '$last_month'");
                         $query->where("d.created < '$this_month'");
                     }
-                    
+
                     if ( $created == "today" ){
                         $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
                         $tomorrow = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 day"));
                         $query->where("d.created >= '$today'");
                         $query->where("d.created < '$tomorrow'");
                     }
-                    
+
                     if ( $created == "yesterday" ){
                         $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
                         $yesterday = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 day"));
                         $query->where("d.created >= '$yesterday'");
                         $query->where("d.created < '$today'");
                     }
-                    
+
                 }
 
-                /** ------------------------------------------ 
+                /** ------------------------------------------
                  * Search for status
                  */
                 if ( $status != null AND $status != 'all' ){
                     $query->where("d.status_id=".$status);
                 }
-                
+
                 /** -------------------------
                  * Search for sources
                  */
@@ -628,7 +628,7 @@ class CobaltModelDeal extends CobaltModelDefault
 
                 /** ----------------------------------------------------------------
                  * Filter for stage id associations
-                 */ 
+                 */
                 if ( $stage != null && $stage != 'all' and !$id ){
                     //if we want active deals we must retrieve the active stage ids to filter by
                     if ( $stage == 'active' ){
@@ -647,7 +647,7 @@ class CobaltModelDeal extends CobaltModelDefault
                         $query->where("d.stage_id='".$stage."'");
                     }
                 }
-                
+
                 /** --------------------------------------------------------
                  * Filter data for the sources page
                  */
@@ -656,7 +656,7 @@ class CobaltModelDeal extends CobaltModelDefault
                     //filter by active and closed stages
                     $active_and_closed_stages = CobaltHelperDeal::getNonInactiveStages();
                     $query->where("d.stage_id IN(".implode(',',$active_and_closed_stages).")");
-        
+
                     //filter by deals that are associated to sources
                     $query->where("d.source_id <> 0");
                 }
@@ -680,7 +680,7 @@ class CobaltModelDeal extends CobaltModelDefault
                  */
                 $query->group('d.id');
 
-                /** 
+                /**
                  * Set our sorting direction if set via post
                  */
                 //default deals view
@@ -698,11 +698,11 @@ class CobaltModelDeal extends CobaltModelDefault
                 } else {
                     $query->order("d.amount DESC");
                 }
-                
+
             }
 
-            /** --------------------- 
-             * Filter by id 
+            /** ---------------------
+             * Filter by id
              */
             if ( $id ){
                 if ( is_array($id) ){
@@ -750,7 +750,7 @@ class CobaltModelDeal extends CobaltModelDefault
             /** people **/
             if ( $this->person_id ){
                 $query->leftJoin("#__people_cf AS dpcf ON dpcf.association_id = d.id AND dpcf.association_type='deal'");
-                $query->where("dpcf.person_id=".$this->person_id); 
+                $query->where("dpcf.person_id=".$this->person_id);
             }
             /** archived **/
             if ( !is_null($this->archived) ){
@@ -758,11 +758,11 @@ class CobaltModelDeal extends CobaltModelDefault
             }
             /** published **/
             $query->where("d.published=".$this->published);
-            
+
             //set db query and load object list
             return $query;
         }
-        
+
         /**
          * Method to access deals
          * @param $id to search for
@@ -788,13 +788,13 @@ class CobaltModelDeal extends CobaltModelDefault
             $this->_source = null;
             $this->_modified = null;
             $this->_created = null;
-            
+
             //get session data
             $this->_session = JFactory::getSession();
             $this->_user_id = CobaltHelperUsers::getUserId();
-            
+
             //build our db query
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             /** ------------------------------------------
@@ -819,7 +819,7 @@ class CobaltModelDeal extends CobaltModelDefault
             $db->setQuery($query);
             $deals = $db->loadAssocList();
             /**------------------------------------------
-             * Generate queries to join essential data 
+             * Generate queries to join essential data
              */
 
             if ( count($deals) > 0 ){
@@ -827,14 +827,14 @@ class CobaltModelDeal extends CobaltModelDefault
                 $export = $app->input->get('export');
 
                 if ( !$export ){
-                
+
                     /** ------------------------------------------
                      *  Get data
                      */
                     foreach ( $deals as $key => $deal ) {
 
                         self::getDealDetails($deals[$key]);
-                    
+
                     /** ------------------------------------------
                      * Update last access for each deal
                      */
@@ -859,13 +859,13 @@ class CobaltModelDeal extends CobaltModelDefault
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onDealLoad', array(&$deals));
 
-            
+
             return $deals;
-            
+
         }
 
         function getDealDetails(&$deal){
-            
+
             $closed_stages = CobaltHelperDeal::getClosedStages();
             $deal['closed'] = in_array($deal['stage_id'],$closed_stages) ? TRUE : FALSE;
 
@@ -878,7 +878,7 @@ class CobaltModelDeal extends CobaltModelDefault
                 $people = $peopleModel->getContacts();
                 //assign results to company
                 $deal['people'] = $people;
-            
+
             /** ------------------------------------------
              *  Join conversations
              */
@@ -893,16 +893,16 @@ class CobaltModelDeal extends CobaltModelDefault
 
                $notesModel = new CobaltModelNote();
                $deal['notes'] = $notesModel->getNotes($deal['id'], 'deal');
-            
-            
+
+
              /** ------------------------------------------
              *  Join documents
              */
                 $docModel = new CobaltModelDocument();
                 $docModel->set('deal_id',$deal['id']);
                 $deal['documents'] = $docModel->getDocuments();
-            
-            
+
+
             /** ------------------------------------------
              *  Join tasks & events
              */
@@ -939,13 +939,13 @@ class CobaltModelDeal extends CobaltModelDefault
 
         }
 
-        /** 
+        /**
          * Get deals that are active for the reports page
          * @param none
          * @return mixed $results
          */
         function getReportDeals(){
-            
+
             //get filter
             $session = JFactory::getSession();
             $filter = $session->get('deal_stage_filter');
@@ -960,13 +960,13 @@ class CobaltModelDeal extends CobaltModelDefault
         /* ---------------------------------
          * Method to get list of deals
          */
-        
+
         function getDealList(){
-            
+
             $app = JFactory::getApplication();
 
             //db object
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             //gen query
             $query = $db->getQuery(true);
             $query->select("DISTINCT(d.id),d.name,d.id");
@@ -989,7 +989,7 @@ class CobaltModelDeal extends CobaltModelDefault
                     $query->where(array('d.owner_id = '.$member_id));
                 }
             }
-            
+
 
             $query->where("d.published=".$this->published);
 
@@ -1017,9 +1017,9 @@ class CobaltModelDeal extends CobaltModelDefault
             $return = array_merge($blank,$row);
             //return results
             return $return;
-            
+
         }
-        
+
         /**
          * Method to get graph deal information
          * @param $type type of deal to filter by, values 'stage','status'
@@ -1027,12 +1027,12 @@ class CobaltModelDeal extends CobaltModelDefault
          * @param $access_id the id of the $member_type to search by
          */
         function getGraphDeals($type=null,$access_type=null,$access_id=null){
-            
-            $db = & JFactory::getDBO();
+
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //search by type
-            if ( $type == 'stage' ){  
+            if ( $type == 'stage' ){
                 $query->select("d.stage_id,count(*) AS y, stage.name AS name");
                 $query->from("#__deals AS d");
                 $query->leftJoin("#__stages AS stage ON stage.id=d.stage_id");
@@ -1042,10 +1042,10 @@ class CobaltModelDeal extends CobaltModelDefault
                 $query->from("#__deals AS d");
                 $query->leftJoin("#__deal_status AS status ON status.id=d.status_id");
             }
-            
+
             //if user is not an executive then there are limitations
             if ( $access_type != 'company' ){
-                
+
                 //team sorting
                 if ( $access_type == 'team' ){
                     //get team members
@@ -1057,13 +1057,13 @@ class CobaltModelDeal extends CobaltModelDefault
                     }
                     $query->where("d.owner_id IN (".implode(",",$members).")");
                 }
-                
+
                 //member sorting
                 if ( $access_type == 'member' ){
                     $query->where("d.owner_id=$access_id");
                 }
-                
-                
+
+
             }
 
             //grouping
@@ -1081,22 +1081,22 @@ class CobaltModelDeal extends CobaltModelDefault
             }
 
             $query->where("d.published=".$this->published);
-            
+
             //set query and load results
             $db->setQuery($query);
             $results = $db->loadAssocList();
 
             //clean results and force datatypes for graph rendering
-            if ( count($results) > 0 ) { 
+            if ( count($results) > 0 ) {
                 foreach ( $results as $key => $stage ){
                     $results[$key]['y'] = (int)$stage['y'];
                     $results[$key]['data'] = array((int)$stage['y']);
                 }
-            }            
-            
+            }
+
             //return results
             return $results;
-            
+
         }
 
         /**
@@ -1106,36 +1106,36 @@ class CobaltModelDeal extends CobaltModelDefault
          * @return mixed $results
          */
         function getLeadSources($access_type=null,$access_id=null){
-            
+
             //get won stage id so we know what stage to filter by for the deals
             $won_stage_ids = CobaltHelperDeal::getWonStages();
-            
+
             //get database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //gen query
             $query->select("s.name,SUM(d.amount) as y");
             $query->from("#__people AS p");
-            
+
             //left join people that have won deals
             $query->leftJoin("#__sources AS s ON s.id = p.source_id");
             $query->leftJoin("#__people_cf AS dpcf ON dpcf.person_id = p.id AND dpcf.association_type='deal'");
             $query->leftJoin("#__deals AS d ON d.id = dpcf.association_id AND d.published>0");
-            
+
             //filter where we have associated source ids and the person is a lead contact
             $query->where("p.source_id <> 0");
             $query->where("p.type='lead'");
-            
+
             //filter by won deals
             $won_stage_ids[]=0;
             $query->where("d.stage_id IN(".implode(',',$won_stage_ids).")");
 
             $query->where("p.published=".$this->published);
-            
+
             //filter by access type
             if ( $access_type != 'company' ){
-                
+
                 //team sorting
                 if ( $access_type == 'team' ){
                     //get team members
@@ -1149,20 +1149,20 @@ class CobaltModelDeal extends CobaltModelDefault
                     $query  = substr($query,0,-1);
                     $query .= ") ";
                 }
-                
+
                 //member sorting
                 if ( $access_type == 'member' ){
                     $query .= " AND d.owner_id=$access_id ";
                 }
-                
+
             }
-            
+
             //group by source ids
             $query .= " GROUP BY s.id";
-            
+
             //get results
             $db->setQuery($query);
-            
+
             //return results
             $results = $db->loadAssocList();
 
@@ -1175,30 +1175,30 @@ class CobaltModelDeal extends CobaltModelDefault
             }
 
             return $results;
-            
+
         }
-        
+
         /**
          * Populate user state requests
          */
         function populateState(){
             //get states
             $app = JFactory::getApplication();
-            
+
             //determine view so we set correct states
             $view = $app->input->get('view');
             $layout = str_replace("_filter","",$app->input->get('layout'));
-            
+
             $limit = $app->getUserStateFromRequest($view.'_limit','limit',10);
             $limitstart = $app->getUserStateFromRequest($view.'_limitstart','limitstart',0);
-            
+
             // In case limit has been changed, adjust it
             $limitstart = ($limit != 0) ? (floor($limitstart / $limit) * $limit) : 0;
-     
+
             $state = new JRegistry();
             $state->set($view.'_limit', $limit);
             $state->set($view.'_limitstart', $limitstart);
-            
+
             /** --------------------------------------
              * Filter data for different views
              */
@@ -1217,7 +1217,7 @@ class CobaltModelDeal extends CobaltModelDefault
                     $expected_close_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_expected_close','expected_close',null);
                     $modified_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_modified','modified',null);
                     $created_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_created','created',null);
-                    
+
                     //set states for reports
                     $state->set('Deal.'.$layout.'_filter_order',$filter_order);
                     $state->set('Deal.'.$layout.'_filter_order_Dir',$filter_order_Dir);
@@ -1231,16 +1231,16 @@ class CobaltModelDeal extends CobaltModelDefault
                     $state->set('Deal.'.$layout.'_expected_close',$expected_close_filter);
                     $state->set('Deal.'.$layout.'_modified',$modified_filter);
                     $state->set('Deal.'.$layout.'_created',$created_filter);
-                    
+
                     break;
                 break;
-                
+
                 case "deals" :
                     //set defaults
                     $filter_order = $app->getUserStateFromRequest('Deal.filter_order','filter_order','d.name');
                     $filter_order_Dir = $app->getUserStateFromRequest('Deal.filter_order_Dir','filter_order_Dir','asc');
                     $deal_filter = $app->getUserStateFromRequest('Deal.'.$view.'_name','deal_name',null);
-                    
+
                     //set states
                     $state->set('Deal.filter_order',$filter_order);
                     $state->set('Deal.filter_order_Dir',$filter_order_Dir);
@@ -1260,7 +1260,7 @@ class CobaltModelDeal extends CobaltModelDefault
          */
         public function storeContact($deal_id,$contact_id){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $query->select("COUNT(*)")
@@ -1293,7 +1293,7 @@ class CobaltModelDeal extends CobaltModelDefault
          * @param  [var] $name company name to check
          * @return [int]       ID of existing company
          */
-        function checkDealName($name) 
+        function checkDealName($name)
         {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -1324,7 +1324,7 @@ class CobaltModelDeal extends CobaltModelDefault
             if ( count($names) > 0 ){
                 foreach ( $names as $key => $deal ){
                     $return[] = array('label'=>$deal['name'],'value'=>$deal['id']);
-                }   
+                }
             }
             return $json ? json_encode($return) : $return;
 

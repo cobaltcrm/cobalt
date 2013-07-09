@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelTemplate extends JModelBase
 {
-        
+
         /**
          * Constructor
          */
@@ -53,7 +53,7 @@ class CobaltModelTemplate extends JModelBase
                                 if ( !$event_model->store($event) ){
                                         return FALSE;
                                 }
-                        }       
+                        }
                 }
 
                 return TRUE;
@@ -69,7 +69,7 @@ class CobaltModelTemplate extends JModelBase
 
                 $template_id = $template_id ? $template_id : $this->id;
 
-                $db =& JFactory::getDBO();
+                $db = JFactory::getDBO();
                 $query = $db->getQuery(TRUE);
 
                 $query->select("t.*")
