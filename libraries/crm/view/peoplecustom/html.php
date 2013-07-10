@@ -32,13 +32,13 @@ class CobaltViewPeoplecustomHtml extends JViewHtml{
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
 
-        
+
         if ( $layout && $layout == 'edit' ){
-            
+
             //toolbar button
             CRMToolbarHelper::cancel('cancel');
             CRMToolbarHelper::save('save');
-            
+
             //assign view info
             $this->custom_types = CobaltHelperDropdown::getCustomTypes('people');
             $this->custom = $model->getItem();
@@ -46,27 +46,27 @@ class CobaltViewPeoplecustomHtml extends JViewHtml{
             if ( $this->custom['type'] != null ) {
                 $document->addScriptDeclaration('var type = "'.$this->custom['type'].'";');
             }
-            
+
         }else{
-            
+
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
             CRMToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
-           
+
             $custom = $model->getCustom();
             $this->custom_fields = $custom;
-                
+
             // Initialise state variables.
             $state = $model->getState();
             $this->state = $state;
 
             $this->listOrder  = $this->state->get('Peoplecustom.filter_order');
             $this->listDirn   = $this->state->get('Peoplecustom.filter_order_Dir');
-            $this->saveOrder  = $listOrder == 'c.ordering';
+            $this->saveOrder  = $this->listOrder == 'c.ordering';
 
         }
-        
+
         //display
         return parent::render();
     }
