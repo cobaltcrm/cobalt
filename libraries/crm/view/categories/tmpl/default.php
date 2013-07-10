@@ -19,7 +19,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="span9">
                     <legend><h3><?php echo JText::_('COBALT_NOTE_CATEGORIES'); ?></h3></legend>
                     <div class="alert alert-info">
-                        <?php echo JText::_('COBALT_NOTES_DESC_1'); ?> 
+                        <?php echo JText::_('COBALT_NOTES_DESC_1'); ?>
                         <?php echo JText::_('COBALT_NOTES_DESC_2'); ?>
                     </div>
                     <form action="index.php?view=categories" method="post" name="adminForm" id="adminForm">
@@ -35,7 +35,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->categories) ) { foreach($this->categories as $key=>$category){ ?>
+                                <?php $i=0;
+                                 if ( count($this->categories) ) { foreach($this->categories as $key=>$category){ ?>
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $category['id']); ?>
@@ -44,7 +45,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                             <?php echo JHtml::_('link','index.php?view=categories&layout=edit&id='.$category['id'],$category['name']); ?>
                                         </td>
                                     </tr>
-                                <?php }} ?>
+                                <?php $i++; }} ?>
                             </tbody>
                             <tfoot>
                                 <tr>
