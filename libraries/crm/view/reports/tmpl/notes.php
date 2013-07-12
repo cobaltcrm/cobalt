@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $view = $app->input->get('view');
 $layout = $app->input->get('layout');
@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<h1><?php echo CRMText::_('COBALT_NOTES_REPORT'); ?></h1>
 </div>
 <?php echo $this->menu; ?>
-<form id="list_form" class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
 <input type="hidden" name="layout" value="report" />
 <input type="hidden" name="model" value="note" />
 <input type="hidden" name="report" value="notes" />

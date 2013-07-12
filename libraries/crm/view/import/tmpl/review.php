@@ -27,20 +27,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<a href="javascript:void(0)" onclick="seekImport(1);"><?php echo CRMText::_('COBALT_NEXT'); ?></a>
 	</div>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?controller=import'); ?>" method="POST">
+<form action="<?php echo JRoute::_('index.php?controller=import'); ?>" method="post">
 		<div id="editForm">
 		<?php if ( isset($this->import_data) && count($this->import_data) > 0 ) { try { foreach ( $this->import_data as $key => $data ) { ?>
 		<?php if ( $key > 0 ){ $style = "style='display:none;'"; } else { $style = ""; } ?>
 		<div <?php echo $style; ?> id="import_entry_<?php echo $key; ?>">
 				<?php $memoryFlag = false; ?>
 				<?php foreach ( $data as $field => $value ){ ?>
-					<?php 
+					<?php
 						$scriptMemory = memory_get_peak_usage(true);
 						$serverMemory = CobaltHelperCobalt::getBytes(ini_get('memory_limit'));
 						if ( $scriptMemory >= $serverMemory) {
 							$memoryFlag = true;
 							?>
-							<p><?php echo CRMText::_('COBALT_REVIEW_IMPORT_MESSAGE_FILE_TOO_LARGE'); ?></p> 
+							<p><?php echo CRMText::_('COBALT_REVIEW_IMPORT_MESSAGE_FILE_TOO_LARGE'); ?></p>
 							<?php
 							return;
 						}
@@ -66,7 +66,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 					</div>
 			<?php }  ?>
 		<?php }catch(Exception $e){ ?>
-				
+
 		<?php } }?>
 		<?php if ($memoryFlag){ ?>
 

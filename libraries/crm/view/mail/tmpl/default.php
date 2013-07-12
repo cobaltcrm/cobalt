@@ -18,7 +18,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         <td>
             <a href="javascript:void(0);" onclick="deleteEmail(<?php echo $email['overview']->msgno; ?>);" class="delete"></a>
              <div class="email_modal" id="email_modal_<?php echo $email['overview']->msgno; ?>">
-                <form action="" method="POST" id="email_form_<?php echo $email['overview']->msgno; ?>">
+                <form action="" method="post" id="email_form_<?php echo $email['overview']->msgno; ?>">
                     <div class="email_association_message"><?php echo CRMText::_('COBALT_EMAIL_ASSOCIATION_MESSAGE'); ?></div>
                     <div class="message_header"><?php echo ucwords(CRMText::_('COBALT_PERSON_FIRST_OR_LAST')); ?></div>
                     <div>

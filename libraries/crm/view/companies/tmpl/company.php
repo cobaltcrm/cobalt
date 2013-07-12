@@ -108,12 +108,12 @@ $company = $this->companies[0];?>
 
 		<!-- DOCUMENT UPLOAD BUTTON -->
 		<span class="pull-right">
-		    <form id="upload_form" target="hidden" action="index.php?controller=upload" method="POST" enctype="multipart/form-data">
+		    <form id="upload_form" target="hidden" action="index.php?controller=upload" method="post" enctype="multipart/form-data">
 		        <div class="fileupload fileupload-new" data-provides="fileupload">
 		         	<span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo CRMText::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo CRMText::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
 		        </div>
 		        <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
-				<input type="hidden" name="association_type" value='company' />
+				<input type="hidden" name="association_type" value="company" />
 		    </form>
 		</span>
 		<!-- DOCUMENTS -->

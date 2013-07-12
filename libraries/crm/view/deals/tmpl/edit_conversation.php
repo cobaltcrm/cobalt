@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $conversation = $this->conversation;
 ?>
-<form id="convo_edit" method="POST" action="<?php echo 'index.php?controller=save&model=conversations'; ?>" onsubmit="return save(this)" >
+<form id="convo_edit" method="post" action="<?php echo 'index.php?controller=save&model=conversations'; ?>" onsubmit="return save(this)" >
 	<input type="hidden" name="id" value="<?php echo $conversation['id']; ?>" />
 	<div id="editForm">
 		<div class="cobaltRow">

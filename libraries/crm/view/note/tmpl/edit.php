@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $note = $this->notes[0];
 ?>
-<form id="note_edit" method="POST" action="<?php echo 'index.php?controller=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >
+<form id="note_edit" method="post" action="<?php echo 'index.php?controller=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >
 	<input type="hidden" name="id" value="<?php echo $note['id']; ?>" />
 	<div id="editForm">
 		<?php if ( array_key_exists('person_id', $note) && $note['person_id'] != 0 ){ ?>
@@ -20,7 +20,7 @@ $note = $this->notes[0];
 			<div class="cobaltField"><?php echo ucwords(CRMText::_('COBALT_PERSON')); ?></div>
 			<div class="cobaltValue">
 				<select class="inputbox" name="person_id">
-				<?php 
+				<?php
                     $people = CobaltHelperDropdown::getPeopleList();
                     echo JHtml::_('select.options', $people, 'value', 'text', $note['person_id'], true);
                 ?>
@@ -48,24 +48,24 @@ $note = $this->notes[0];
 			<div class="cobaltField"><?php echo ucwords(CRMText::_('COBALT_CATEGORY')); ?></div>
 			<div class="cobaltValue">
 				<select class="inputbox" name="category_id">
-					<?php 
+					<?php
                         $categories = CobaltHelperNote::getCategories();
                         echo JHtml::_('select.options', $categories, 'value', 'text', $note['category_id'], true);
                     ?>
 				</select>
-			</div>	
+			</div>
 		</div>
 		<div class="cobaltRow">
 			<div class="cobaltField"><?php echo CRMText::_('COBALT_CREATED_ON'); ?></div>
 			<div class="cobaltValue">
 				<span class="date"><?php echo CobaltHelperDate::formatDate($note['created']). ' '.CobaltHelperDate::formatTime($note['created']); ?></span>
-			</div>	
+			</div>
 		</div>
 		<div class="cobaltRow">
 			<div class="cobaltField"><?php echo CRMText::_('COBALT_CONTENT'); ?></div>
 			<div class="cobaltValue">
 				<textarea class="inputbox" name="note"><?php echo $note['note']; ?></textarea>
-			</div>	
+			</div>
 		</div>
 		<?php /**
 		<div class="actions"><a href="javascript:void(0);" onclick="addNoteEntry('note_edit');" class="button"><?php echo CRMText::_('COBALT_SAVE_BUTTON'); ?></a><a href="javascript:void(0);" onclick="window.top.window.jQuery('.ui-dialog-content').dialog('close');"><?php echo CRMText::_('COBALT_CANCEL_BUTTON'); ?></a></div>

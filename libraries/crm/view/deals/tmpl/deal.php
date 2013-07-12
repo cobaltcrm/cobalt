@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //define deal
 $deal = $this->dealList[0];
@@ -105,7 +105,7 @@ $deal = $this->dealList[0];
 		                <div class='dropdown'>
 	                        <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'><span id="owner_first_name_<?php echo $deal['id']; ?>"><?php echo $deal['owner_first_name']." ".$deal['owner_last_name']; ?></span></a>
 	                        <ul class="dropdown-menu" role="menu">
-                        	<?php 
+                        	<?php
 	                        $me = array(array('label'=>CRMText::_('COBALT_ME'),'value'=>CobaltHelperUsers::getLoggedInUser()->id));
                         	$users = CobaltHelperUsers::getUsers(null,TRUE);
                         	$users = array_merge($me,$users);
@@ -120,7 +120,7 @@ $deal = $this->dealList[0];
 	                    </div>
 					</div>
 				</div>
-			</div>	
+			</div>
 			<div class="span4 text-center">
 				<div class="text-center well well-small">
 					<?php echo CRMText::_('COBALT_EDIT_PROBABILITY'); ?>
@@ -164,7 +164,7 @@ $deal = $this->dealList[0];
 					</div>
 					<div id="expected_close_container"<?php if ( $actual_close ){ echo $style; } ?>>
 						<?php echo CRMText::_('COBALT_EXP_CLOSE'); ?>
-						<h2>		
+						<h2>
 							<form class="inline-form" name="expected_close_form">
 								<input type="text" class="input-invisible input-small inputbox-hidden date_input" name="expected_close_hidden" id="expected_close" value="<?php echo CobaltHelperDate::formatDate($deal['expected_close']); ?>" />
 								<input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal['expected_close']; ?>" />
@@ -183,7 +183,7 @@ $deal = $this->dealList[0];
 	                        	</span>
 	                        </a>
 	                        <ul class="dropdown-menu" role="menu">
-                        	<?php 
+                        	<?php
 	                        $sources = CobaltHelperDeal::getSources();
 	                        if (count($sources)) { foreach($sources as $id => $name ){ ?>
 	                            <li>
@@ -211,18 +211,18 @@ $deal = $this->dealList[0];
 				</div>
 			</div>
 		</div>
-		
+
 		<?php echo $deal['notes']->render(); ?>
 
 		<h2><?php echo CRMText::_('COBALT_ADDITIONAL_FIELDS'); ?></h2>
 				<div class="columncontainer">
 					<?php echo $this->custom_fields_view->render(); ?>
 				</div>
-		
-		
+
+
 
 		<span class="pull-right">
-	        <form id="upload_form" target="hidden" action="index.php?controller=upload" method="POST" enctype="multipart/form-data">
+	        <form id="upload_form" target="hidden" action="index.php?controller=upload" method="post" enctype="multipart/form-data">
 		        <div class="fileupload fileupload-new" data-provides="fileupload">
 	             	<span class="btn btn-file"><span class="fileupload-new" id="upload_button"><?php echo CRMText::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo CRMText::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
 		        </div>
@@ -230,12 +230,12 @@ $deal = $this->dealList[0];
 				<input type="hidden" name="association_type" value='deal' />
 	        </form>
 	    </span>
-	    
+
 		<h2><?php echo CRMText::_('COBALT_EDIT_DOCUMENTS'); ?></h2>
 	    <div class="large_info">
 	        <table class="table table-striped table-hover" id="documents_table">
 	        <thead>
-	            <th><?php echo CRMText::_('COBALT_TYPE'); ?></th> 
+	            <th><?php echo CRMText::_('COBALT_TYPE'); ?></th>
 	            <th><?php echo CRMText::_('COBALT_FILE_NAME'); ?></th>
 	            <th><?php echo CRMText::_('COBALT_OWNER'); ?></th>
 	            <th><?php echo CRMText::_('COBALT_SIZE'); ?></th>
@@ -255,10 +255,10 @@ $deal = $this->dealList[0];
 		<div class="widget" id='event_dock'>
 			<?php echo $this->event_dock->render(); ?>
 		</div>
-		<?php if ( isset($this->banter_dock) ){ 
+		<?php if ( isset($this->banter_dock) ){
 			echo $this->banter_dock->render();
 		}?>
-	</div>	
+	</div>
 </div>
 
 <?php echo CobaltHelperCobalt::showShareDialog(); ?>

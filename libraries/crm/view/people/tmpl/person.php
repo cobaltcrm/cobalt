@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //define person
 $person = $this->people[0];
@@ -69,14 +69,14 @@ $person = $this->people[0];
 							<?php echo CRMText::_('COBALT_VCARD'); ?>
 						</a>
 						<div style="display:none;">
-				        	<form id="vcard_form" action="" method="POST">
+				        	<form id="vcard_form" action="" method="post">
 				    			<input type="hidden" name="person_id" value="<?php echo $person['id']; ?>" />
 				    		</form>
-			    		</div>	
-			    	</li> 
+			    		</div>
+			    	</li>
 				</ul>
 			</div>
-			<!-- HEADER --> 
+			<!-- HEADER -->
 			<h1><?php echo $person['first_name'].' '.$person['last_name']; ?></h1>
 		</div>
 
@@ -85,7 +85,7 @@ $person = $this->people[0];
 		<div class="columncontainer">
 			<div class="threecolumn">
 				<div class="small_info first">
-					<?php echo CRMText::_('COBALT_PERSON_TOTAL'); ?>: 
+					<?php echo CRMText::_('COBALT_PERSON_TOTAL'); ?>:
 					<span class="amount"><?php echo CobaltHelperConfig::getCurrency(); ?>0</span>
 				</div>
 				<div class="cobaltRow top">
@@ -125,9 +125,9 @@ $person = $this->people[0];
 				</div>
 			</div>
 
-			<div class="threecolumn">	
+			<div class="threecolumn">
 				<div class="small_info middle">
-					<?php echo ucwords(CRMText::_('COBALT_PERSON_DEALS')); ?>: 
+					<?php echo ucwords(CRMText::_('COBALT_PERSON_DEALS')); ?>:
 					<span class="amount"><?php echo CobaltHelperConfig::getCurrency(); ?>0</span>
 				</div>
 				<div class="cobaltRow top">
@@ -151,7 +151,7 @@ $person = $this->people[0];
 	                        	</span>
 	                        </a>
 	                        <ul class="dropdown-menu" role="menu">
-	                    	<?php 
+	                    	<?php
 	                        	$types = CobaltHelperPeople::getPeopleTypes(FALSE);
 	                        	if ( count($types) ){ foreach ( $types as $key => $type ){ ?>
 	                            	<li>
@@ -166,7 +166,7 @@ $person = $this->people[0];
 
 			<div class="threecolumn">
 				<div class="small_info last">
-					<?php echo CRMText::_('COBALT_PERSON_CONTACTED'); ?>: 
+					<?php echo CRMText::_('COBALT_PERSON_CONTACTED'); ?>:
 					<?php echo CobaltHelperDate::formatDate($person['modified']); ?>
 				</div>
 				<div class="cobaltRow top">
@@ -203,7 +203,7 @@ $person = $this->people[0];
 	                        	</span>
 	                        </a>
 	                        <ul class="dropdown-menu" role="menu">
-	                    	<?php 
+	                    	<?php
 	                        $sources = CobaltHelperDeal::getSources();
 	                        if (count($sources)) { foreach($sources as $id => $name ){ ?>
 	                            <li>
@@ -222,7 +222,7 @@ $person = $this->people[0];
 		<div class="large_info">
 			<?php echo $this->deal_dock->render(); ?>
 		</div>
-			
+
 		<!-- NOTES -->
 		<?php echo $person['notes']->render(); ?>
 
@@ -234,7 +234,7 @@ $person = $this->people[0];
 
 		<!-- DOCUMENT UPLOAD BUTTON -->
 		<span class="pull-right">
-		    <form id="upload_form" target="hidden" action="index.php?controller=upload" method="POST" enctype="multipart/form-data">
+		    <form id="upload_form" target="hidden" action="index.php?controller=upload" method="post" enctype="multipart/form-data">
 		        <div class="fileupload fileupload-new" data-provides="fileupload">
 		         	<span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo CRMText::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo CRMText::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
 		        </div>
@@ -248,7 +248,7 @@ $person = $this->people[0];
 		<div class="large_info">
 	         <table class="table table-striped table-hover" id="documents_table">
 		        <thead>
-		            <th><?php echo CRMText::_('COBALT_TYPE'); ?></th> 
+		            <th><?php echo CRMText::_('COBALT_TYPE'); ?></th>
 		            <th><?php echo CRMText::_('COBALT_FILE_NAME'); ?></th>
 		            <th><?php echo CRMText::_('COBALT_OWNER'); ?></th>
 		            <th><?php echo CRMText::_('COBALT_SIZE'); ?></th>
@@ -289,7 +289,7 @@ $person = $this->people[0];
 					<div class="infoLabel"><?php echo CRMText::_('COBALT_WORK_PHONE_SHORT'); ?></div>
 					<div class="infoDetails"><?php echo $person['phone']; ?></div>
 				</div>
-				
+
 				<div class="infoBlock">
 					<div class="infoLabel"><?php echo CRMText::_('COBALT_EMAIL_SHORT'); ?></div>
 					<div class="infoDetails">
@@ -311,15 +311,15 @@ $person = $this->people[0];
 									<img class="google-image-modal"  style="background-image:url(<?php echo $urlString; ?>);" />
 								</div>
 								<?php echo $person['work_address_1']; ?><br />
-								<?php if ( array_key_exists('work_address_2',$person) && $person['work_address_2'] != "" ){ 
+								<?php if ( array_key_exists('work_address_2',$person) && $person['work_address_2'] != "" ){
 									echo $person['work_address_2'].'<br />';
 								} ?>
 								<?php echo $person['work_city'].', '.$person['work_state']." ".$person['work_zip']; ?><br />
 								<?php echo $person['work_country']; ?>
 							</div>
-						</div>	
+						</div>
 					</address>
-				<?php } ?>	
+				<?php } ?>
 
 				<?php if ( array_key_exists('home_address_1',$person) && $person['home_address_1'] != "" ) { ?>
 					<address>
@@ -333,7 +333,7 @@ $person = $this->people[0];
 									<img class="google-image-modal" style="background-image:url(<?php echo $urlString; ?>);" />
 								</div>
 								<?php echo $person['home_address_1']; ?><br />
-								<?php if ( array_key_exists('home_address_2',$person) && $person['home_address_2'] != "" ){ 
+								<?php if ( array_key_exists('home_address_2',$person) && $person['home_address_2'] != "" ){
 									echo $person['home_address_2'].'<br />';
 									}	?>
 								<?php echo $person['home_city'].', '.$person['home_state']." ".$person['home_zip']; ?><br />
@@ -422,14 +422,14 @@ $person = $this->people[0];
 			</div>
 		<?php } ?>
 
-		<?php if ( isset($this->banter_dock) ){ 
+		<?php if ( isset($this->banter_dock) ){
 			echo $this->banter_dock->render();
 		}?>
 
 		<?php if($person['twitter_user']) { ?>
 			<div class="widget">
 				<h3><?php echo CRMText::_('COBALT_LATEST_TWEETS'); ?></h3>
-				<?php if ( array_key_exists('tweets',$person) ){ for($i=0; $i<count($person['tweets']); $i++) { 
+				<?php if ( array_key_exists('tweets',$person) ){ for($i=0; $i<count($person['tweets']); $i++) {
 					$tweet = $person['tweets'][$i];
 				?>
 				<div class="tweet">
