@@ -161,7 +161,20 @@ function toggleFullScreen() {
 }
 
 function bindPopovers(){
-	jQuery("[rel=popover]").popover();
+    var $ = jQuery,
+        popOvers = $('[rel=popover]');
+
+    if (popOvers.length) {
+        popOvers.popover();
+
+        $.each(popOvers, function(index, ele) {
+            var base = $(ele);
+
+            base.bind('click', function () {
+                popOvers.not(base).popover('hide');
+            });
+        });
+    }
 }
 
 function bindTooltips(){
