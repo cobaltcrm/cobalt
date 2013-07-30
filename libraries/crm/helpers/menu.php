@@ -10,16 +10,15 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
  class CobaltHelperMenu extends JObject
  {
 
         //load the navigation menu
-        public static function loadNavi(){
-
+        public static function loadNavi()
+        {
             $links = self::getMenuLinks();
 
-            foreach($links as $link) {
+            foreach ($links as $link) {
                 JHtmlSidebar::addEntry(
                     $link['text'],
                     $link['link']
@@ -28,7 +27,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        public static function getMenuLinks(){
+        public static function getMenuLinks()
+        {
             return array(
                     array(
                         'link'   => JRoute::_('index.php?view=cobalt'),
@@ -177,7 +177,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 );
         }
 
-        public static function getQuickMenuLinks(){
+        public static function getQuickMenuLinks()
+        {
             return array(
                     array(
                         'link' => JRoute::_('index.php?controller=users&task=add'),
@@ -236,8 +237,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 );
         }
 
-        public static function getHelpMenuLinks(){
-
+        public static function getHelpMenuLinks()
+        {
             $types = array(
                      array(
                         'link' => 'index.php?view=users&layout=edit&show_fields=id',
@@ -299,12 +300,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             return $types;
 
-
         }
 
-
-        public static function getMenuModules(){
-
+        public static function getMenuModules()
+        {
             $modules = array();
 
             $app = JFactory::getApplication();
@@ -346,8 +345,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             $count = count($help_menu_links)-1;
             $completed = 0;
-            foreach ( $help_menu_links as $link ){
-                if ( $link['completed_status'] == 1 ){
+            foreach ($help_menu_links as $link) {
+                if ($link['completed_status'] == 1) {
                     $completed++;
                 }
             }
@@ -355,9 +354,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             /** Auto show input tooltips **/
             $input_fields = explode(',',$app->input->get('show_fields'));
-            if ( count ( $input_fields ) > 0 ){
+            if ( count ( $input_fields ) > 0 ) {
                 $document = JFactory::getDocument();
-                foreach ( $input_fields as $input_field){
+                foreach ($input_fields as $input_field) {
                     $document->addScriptDeclaration(
                             "$(document).ready(function(){showTooltip('".$input_field."');});"
                         );
@@ -368,12 +367,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        public static function getHelpTypes(){
+        public static function getHelpTypes()
+        {
             $links = self::getHelpMenuLinks();
             $types = array();
-            foreach ( $links as $link ){
+            foreach ($links as $link) {
                 $types[] = $link['config'];
             }
+
             return $types;
         }
 

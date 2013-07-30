@@ -14,11 +14,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltViewBrandingPhtml extends JViewHTML
 {
 
-    function render()
+    public function render()
     {
-    	//authenticate the current user to make sure they are an admin
+        //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
-        
-    	return parent::render();
- 	}
+
+        return parent::render();
+     }
 }

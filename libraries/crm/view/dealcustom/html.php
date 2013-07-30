@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewDealcustomHtml extends JViewHtml{
-
-    function render($tpl = null)
+class CobaltViewDealcustomHtml extends JViewHtml
+{
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -33,31 +33,31 @@ class CobaltViewDealcustomHtml extends JViewHtml{
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
-        
-        if ( $layout && $layout == 'edit' ){
-            
+
+        if ($layout && $layout == 'edit') {
+
             //toolbar
             CRMToolbarHelper::cancel('cancel');
             CRMToolbarHelper::save('save');
-            
+
             //assign view info
             $this->custom_types = CobaltHelperDropdown::getCustomTypes('deal');
             $this->custom = $model->getItem();
-            if ( $this->custom['type'] != null ) {
+            if ($this->custom['type'] != null) {
                     $document->addScriptDeclaration('var type = "'.$this->custom['type'].'";');
             }
-            
-        }else{
-            
+
+        } else {
+
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
             CRMToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
-                
+
             //assign view info
             $custom = $model->getCustom();
             $this->custom_fields = $custom;
-                
+
             // Initialise state variables.
             $state = $model->getState();
             $this->state = $state;
@@ -66,7 +66,7 @@ class CobaltViewDealcustomHtml extends JViewHtml{
             $this->listDirn   = $this->state->get('Dealcustom.filter_order_Dir');
             $this->saveOrder  = $this->listOrder == 'c.ordering';
         }
-        
+
         //display
         return parent::render();
     }

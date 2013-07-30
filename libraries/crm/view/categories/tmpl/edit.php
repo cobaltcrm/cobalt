@@ -23,7 +23,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <label><b><?php echo CRMText::_('COBALT_NAME'); ?></b></label>
                             <input type="text" class="inputbox" name="name" value="<?php echo $this->category['name']; ?>" />
                             <div>
-                                <?php if ( $this->category['id'] ) { ?>
+                                <?php if ($this->category['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->category['id']; ?>" />
                                 <?php } ?>
                                 <input type="hidden" name="controller" value="" />
@@ -36,5 +36,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <?php $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

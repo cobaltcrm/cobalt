@@ -14,33 +14,33 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <div class="goals_columns row-fluid">
     <div class="goals_left_column span6">
         <ul class="unstyled">
-        	<li class="alert alert-success">
-        	    <div class="goal_container media">
-            	    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/win_more_cash.png" /></div>
-            	    <div class="goal_info_container media-body">
-            	        <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=win_cash'); ?>"><?php echo ucwords(CRMText::_('COBALT_WIN_MORE_CASH').' '.CobaltHelperConfig::getConfigValue('currency')); ?></a></h2>
-            	        <div class="goal_info"><?php echo JText::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',CobaltHelperConfig::getConfigValue('currency')); ?></div>
-            	    </div>
-        	    </div>
-    	    </li>
-        	<li class="alert">
-        	    <div class="goal_container media">
-            	    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/win_more_deals.png" /></div>
-            	    <div class="goal_info_container media-body">
-            	        <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=win_deals'); ?>"><?php echo ucwords(CRMText::_('COBALT_WIN_MORE_DEALS')); ?></a></h2>
-            	        <div class="goal_info"><?php echo CRMText::_('COBALT_CREATE_GOAL_TRACK_DEALS'); ?></div>
-        	        </div>
-    	        </div>
-	        </li>
-        	<li class="alert alert-info">
-        	    <div class="goal_container media">
-            	    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/move_deals_forward.png" /></div>
-            	    <div class="goal_info_container media-body">
+            <li class="alert alert-success">
+                <div class="goal_container media">
+                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/win_more_cash.png" /></div>
+                    <div class="goal_info_container media-body">
+                        <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=win_cash'); ?>"><?php echo ucwords(CRMText::_('COBALT_WIN_MORE_CASH').' '.CobaltHelperConfig::getConfigValue('currency')); ?></a></h2>
+                        <div class="goal_info"><?php echo JText::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',CobaltHelperConfig::getConfigValue('currency')); ?></div>
+                    </div>
+                </div>
+            </li>
+            <li class="alert">
+                <div class="goal_container media">
+                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/win_more_deals.png" /></div>
+                    <div class="goal_info_container media-body">
+                        <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=win_deals'); ?>"><?php echo ucwords(CRMText::_('COBALT_WIN_MORE_DEALS')); ?></a></h2>
+                        <div class="goal_info"><?php echo CRMText::_('COBALT_CREATE_GOAL_TRACK_DEALS'); ?></div>
+                    </div>
+                </div>
+            </li>
+            <li class="alert alert-info">
+                <div class="goal_container media">
+                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/move_deals_forward.png" /></div>
+                    <div class="goal_info_container media-body">
                         <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=move_deals'); ?>"><?php echo ucwords(CRMText::_('COBALT_MOVE_DEALS_FORWARD')); ?></a></h2>
-        	            <div class="goal_info"><?php echo CRMText::_('COBALT_CREATE_GOAL_TRACK_DEAL_STAGES'); ?></div>
-        	        </div>
-    	        </div>
-    	    </li>
+                        <div class="goal_info"><?php echo CRMText::_('COBALT_CREATE_GOAL_TRACK_DEAL_STAGES'); ?></div>
+                    </div>
+                </div>
+            </li>
         </ul>
     </div>
     <div class="goals_right_column span6">
@@ -72,6 +72,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     </div>
                 </div>
             </li>
-        </ul>    
+        </ul>
     </div>
 </div>

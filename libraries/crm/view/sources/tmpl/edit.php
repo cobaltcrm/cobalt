@@ -31,7 +31,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo JHtml::_('select.options', $this->source_types, 'value', 'text', $this->source['type'], true);?>
                             </select>
                             <div>
-                                <?php if ( $this->source['id'] ) { ?>
+                                <?php if ($this->source['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->source['id']; ?>" />
                                 <?php } ?>
                                 <input type="hidden" name="controller" value="" />
@@ -44,5 +44,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <?php echo $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

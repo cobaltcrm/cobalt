@@ -67,7 +67,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 <ul class="unstyled adminformlist cobaltadminlist">
                                     <li>
                                         <div id="items">
-                                            <?php if ( array_key_exists("data",$this->template) && count($this->template['data']) ){ foreach($this->template['data'] as $data){ ?>
+                                            <?php if ( array_key_exists("data",$this->template) && count($this->template['data']) ){ foreach ($this->template['data'] as $data) { ?>
                                                 <span class="cobaltfield clrboth">
                                                 <div class="item">
                                                     <table>
@@ -89,7 +89,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                                     </table>
                                                 </div>
                                                 </span>
-                                            <?php } }else{ ?>
+                                            <?php } } else { ?>
                                                 <span class="cobaltfield clrboth">
                                                     <div class="item">
                                                         <table>
@@ -110,7 +110,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                                             </tr>
                                                         </table>
                                                     </div>
-                                                </span>  
+                                                </span>
                                             <?php } ?>
                                         </div>
                                     </li>
@@ -121,7 +121,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             </fieldset>
                         </div>
                         <div>
-                            <?php if ( $this->template['id'] ) { ?>
+                            <?php if ($this->template['id']) { ?>
                                 <input type="hidden" name="id" value="<?php echo $this->template['id']; ?>" />
                             <?php } ?>
                             <input type="hidden" name="controller" value="" />
@@ -156,5 +156,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <?php echo $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //Display partial views
 class CobaltViewCategoriesPhtml extends JViewHTML
 {
 
-    function render()
+    public function render()
     {
-    	//authenticate the current user to make sure they are an admin
+        //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
-        
-    	return parent::render();
- 	}
+
+        return parent::render();
+     }
 }

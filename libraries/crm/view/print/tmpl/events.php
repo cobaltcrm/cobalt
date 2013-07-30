@@ -8,24 +8,24 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  $events = $this->info;
-	if ( count($events) > 0 ){
-		foreach ( $events as $event ){
-		 echo '<div class="com_cobalt_task_event">';
+    if ( count($events) > 0 ) {
+        foreach ($events as $event) {
+         echo '<div class="com_cobalt_task_event">';
                     $display_date = ( $event['type'] == "event" ) ? $event['start_time'] : $event['due_date'];
                     if ( $display_date == "" ) $display_date = CRMText::_('COBALT_NA');
                     echo '<div class="date">'.CobaltHelperDate::formatDate($display_date).'</div>';
-                    if ( $event['completed'] == 1 ){
+                    if ($event['completed'] == 1) {
                         $completed = "line-through";
-                    }else{
+                    } else {
                         $completed = "";
                     }
                     echo '<span class="'.$completed.'" >';
                     echo '<b>'.$event['name'].'</b>';
                     echo '</a>';
-                   switch($event['association_type']){
+                   switch ($event['association_type']) {
                        case "company":
                            echo "<div class='task_association'>(".$event['company_name'].")</div>";
                            break;
@@ -36,14 +36,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                            echo "<div class='task_association'>(".$event['person_first_name']." ".$event['person_last_name'].")</div>";
                            break;
                    }
-                   if ( array_key_exists('category_name',$event)){
-                   		echo '<div class="task_category">';
-                   			echo $event['category_name'];
-               			echo '</div>';
-               		}
+                   if ( array_key_exists('category_name',$event)) {
+                           echo '<div class="task_category">';
+                               echo $event['category_name'];
+                           echo '</div>';
+                       }
                    echo '<div class="task_description">';
-                   		echo $event['description'];
+                           echo $event['description'];
                    echo '</div>';
-      	echo '</div>';
-} } ?>
-
+          echo '</div>';
+} }

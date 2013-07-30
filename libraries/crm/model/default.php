@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelDefault extends JModelBase
 {
-    var $__state_set = null;
-    var $_total = null;
-    var $_pagination = null;
-    var $_db = null;
-    var $id = null;
+    public $__state_set = null;
+    public $_total = null;
+    public $_pagination = null;
+    public $_db = null;
+    public $id = null;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->_db = JFactory::getDBO();
@@ -27,24 +27,23 @@ class CobaltModelDefault extends JModelBase
         $ids = $app->input->get("cids",null,'array');
 
         $id = $app->input->get("id");
-        if ( $id && $id > 0 ){
+        if ($id && $id > 0) {
             $this->id = $id;
-        }else if ( count($ids) == 1 ){
+        } elseif ( count($ids) == 1 ) {
             $this->id = $ids[0];
-        }else{
+        } else {
             $this->id = $ids;
         }
 
     }
 
-
      /**
      * Modifies a property of the object, creating it if it does not already exist.
      *
-     * @param   string  $property  The name of the property.
-     * @param   mixed   $value     The value of the property to set.
+     * @param string $property The name of the property.
+     * @param mixed  $value    The value of the property to set.
      *
-     * @return  mixed  Previous value of the property.
+     * @return mixed Previous value of the property.
      *
      * @since   11.1
      */
@@ -52,17 +51,18 @@ class CobaltModelDefault extends JModelBase
     {
         $previous = isset($this->$property) ? $this->$property : null;
         $this->$property = $value;
+
         return $previous;
     }
 
-	/**
+    /**
      * Gets an array of objects from the results of database query.
      *
-     * @param   string   $query       The query.
-     * @param   integer  $limitstart  Offset.
-     * @param   integer  $limit       The number of records.
+     * @param string  $query      The query.
+     * @param integer $limitstart Offset.
+     * @param integer $limit      The number of records.
      *
-     * @return  array  An array of results.
+     * @return array An array of results.
      *
      * @since   11.1
      */
@@ -78,9 +78,9 @@ class CobaltModelDefault extends JModelBase
     /**
      * Returns a record count for the query
      *
-     * @param   string  $query  The query.
+     * @param string $query The query.
      *
-     * @return  integer  Number of rows for query
+     * @return integer Number of rows for query
      *
      * @since   11.1
      */
@@ -89,22 +89,22 @@ class CobaltModelDefault extends JModelBase
         $db = JFactory::getDBO();
         $db->setQuery($query);
         $db->query();
+
         return $db->getNumRows();
     }
 
      /* Method to get model state variables
      *
-     * @param   string  $property  Optional parameter name
-     * @param   mixed   $default   Optional default value
+     * @param string $property Optional parameter name
+     * @param mixed  $default  Optional default value
      *
-     * @return  object  The property where specified, the state object where omitted
+     * @return object The property where specified, the state object where omitted
      *
      * @since   11.1
      */
     public function getState($property = null, $default = null)
     {
-        if (!$this->__state_set)
-        {   
+        if (!$this->__state_set) {
             // Protected method to auto-populate the model state.
             $this->populateState();
 
@@ -114,27 +114,30 @@ class CobaltModelDefault extends JModelBase
 
         return $property === null ? $this->state : $this->state->get($property, $default);
     }
-	
-	/**
+
+    /**
     * Get total number of rows for pagination
     */
-    function getTotal() {
-
-      if ( empty ( $this->_total ) ){
+    public function getTotal()
+    {
+      if ( empty ( $this->_total ) ) {
           $query = $this->_buildQuery();
           $this->_total = $this->_getListCount($query);
       }
+
       return $this->_total;
    }
 
     /**
      * Generate pagination
      */
-    function getPagination() {
+    public function getPagination()
+    {
       // Lets load the content if it doesn't already exist
       if (empty($this->_pagination)) {
          $this->_pagination = new CobaltPagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
       }
+
       return $this->_pagination;
     }
 

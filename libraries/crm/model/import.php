@@ -8,38 +8,39 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelImport extends JModelBase
 {
     /**
-     * 
+     *
      *
      * @access  public
-     * @return  void
+     * @return void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     /**
      * Import a CSV File
-     * @param  [String] $data
-     * @param  [String] $model [ Model to import ]
+     * @param  [String]  $data
+     * @param  [String]  $model [ Model to import ]
      * @return [Boolean] $success
      */
-    function importCSVData($data,$model){
-
+    public function importCSVData($data,$model)
+    {
         $success = false;
-        if ( count($data) > 0 && isset($model) ){
+        if ( count($data) > 0 && isset($model) ) {
             $modelName = "CobaltModel".ucwords($model);
             $model = new $modelName();
-            foreach ( $data as $import ){ 
+            foreach ($data as $import) {
                 $model->store($import);
             }
             $success = true;
         }
+
         return $success;
     }
 
@@ -48,7 +49,8 @@ class CobaltModelImport extends JModelBase
      * @param  [String] $file
      * @return [Mixed]  $data
      */
-    function readCSVFile($file){
+    public function readCSVFile($file)
+    {
         $app = JFactory::getApplication();
         ini_set("auto_detect_line_endings", "1");
         $data = array();
@@ -66,12 +68,12 @@ class CobaltModelImport extends JModelBase
                 $i++;
                 $num = count($read);
 
-                if ( $line == 1 ){
+                if ($line == 1) {
 
                     $headers = $read;
                     $data['headers'] = $headers;
 
-                }else{
+                } else {
 
                     $line_data = array();
 
@@ -79,22 +81,22 @@ class CobaltModelImport extends JModelBase
 
                         $header_name = array_key_exists($c,$headers) ? $headers[$c] : FALSE;
 
-                        if ( $header_name ){
+                        if ($header_name) {
 
-                            if ( in_array($header_name,$special_headers) ){
+                            if ( in_array($header_name,$special_headers) ) {
 
                                 $read[$c] = utf8_encode($read[$c]);
 
-                                switch($header_name){
+                                switch ($header_name) {
 
                                     case "company_id":
                                         $model = new CobaltModelCompany();
                                         $new_header = "company_id";
                                         $company_name = $model->getCompanyName($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        if ( $company_name != "" ){
+                                        if ($company_name != "") {
                                             $name = $company_name;
-                                        }else{
+                                        } else {
                                             $name = "";
                                         }
                                         $special_data = array('label'=>$read[$c],'value'=>$name);
@@ -106,9 +108,9 @@ class CobaltModelImport extends JModelBase
                                         $new_header = "company_id";
                                         $company_id = $model->getCompanyList($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        if ( count($company_id) > 0 ){
+                                        if ( count($company_id) > 0 ) {
                                             $name = $company_id[0]['name'];
-                                        }else{
+                                        } else {
                                             $name = $read[$c];
                                         }
                                         $special_data = array('label'=>$read[$c],'value'=>utf8_encode($name));
@@ -119,7 +121,7 @@ class CobaltModelImport extends JModelBase
                                         $new_header = "stage_id";
                                         $stage_id = CobaltHelperDeal::getStages($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        if ( count($stage_id) ){
+                                        if ( count($stage_id) ) {
                                             $keys = array_keys($stage_id);
                                             $stage_id = $keys[0];
                                         }
@@ -132,7 +134,7 @@ class CobaltModelImport extends JModelBase
                                         $new_header = "source_id";
                                         $source_id = CobaltHelperDeal::getSources($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        if ( count($source_id) ){
+                                        if ( count($source_id) ) {
                                             $keys = array_keys($source_id);
                                             $source_id = $keys[0];
                                         }
@@ -145,7 +147,7 @@ class CobaltModelImport extends JModelBase
                                         $new_header = "status_id";
                                         $status_id = CobaltHelperDeal::getStatuses($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        if ( count($status_id) ){
+                                        if ( count($status_id) ) {
                                             $keys = array_keys($status_id);
                                             $status_id = $keys[0];
                                         }
@@ -158,9 +160,9 @@ class CobaltModelImport extends JModelBase
                                         $new_header = "primary_contact_id";
                                         $model = new CobaltModelPeople();
                                         $contact = $model->searchForContact($read[$c]);
-                                        if ( $contact ){
+                                        if ($contact) {
                                             $special_data = array('label'=>$contact[0]->label,'value'=>$contact[0]->value);
-                                        }else{
+                                        } else {
                                             $special_data = array();
                                         }
 
@@ -184,9 +186,9 @@ class CobaltModelImport extends JModelBase
 
                                 $line_data[$new_header] = $special_data;
 
-                            }else{
+                            } else {
 
-                                if ( array_key_exists($header_name,$table) ){
+                                if ( array_key_exists($header_name,$table) ) {
 
                                     $line_data[$header_name] = utf8_encode($read[$c]);
 
@@ -197,10 +199,10 @@ class CobaltModelImport extends JModelBase
 
                     }
 
-                    if ( count($line_data) > 0 ){
+                    if ( count($line_data) > 0 ) {
 
                         $data[] = $line_data;
-                        
+
                     }
 
                 }
@@ -216,7 +218,5 @@ class CobaltModelImport extends JModelBase
         return $data;
 
     }
-
-
 
 }

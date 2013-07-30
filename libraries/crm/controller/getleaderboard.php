@@ -8,28 +8,28 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerGetLeaderBoard extends CobaltControllerDefault
 {
 
     //get a leaderboard
-    function execute(){
+    public function execute()
+    {
+        $app = JFactory::getApplication();
 
-    	$app = JFactory::getApplication();
-        
         //get model
         $model = new CobaltModelGoal();
-        
+
         //get data
         $leaderboard = $model->getLeaderBoards($app->input->get('id'));
-        
+
         //pass data to view
         $view = CobaltHelperView::getView('goals','leaderboard', 'raw', array('leaderboard'=>$leaderboard ));
-        
+
         //display view
         echo $view->render();
-        
+
     }
 
 }

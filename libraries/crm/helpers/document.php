@@ -14,8 +14,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  {
 
     //get users total associated documents
-    public static function getTotalDocuments(){
-
+    public static function getTotalDocuments()
+    {
         //db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -28,24 +28,25 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $role = CobaltHelperUsers::getRole();
         $user_id = CobaltHelperUsers::getUserId();
         $team_id = CobaltHelperUsers::getTeamId();
-        if ( $role != 'exec' ){
-            if ( $role == 'manager' ){
+        if ($role != 'exec') {
+            if ($role == 'manager') {
                 $query->join('inner','#__users AS u ON d.owner_id = u.id');
                 $query->where('u.team_id='.$team_id);
-            }else{
+            } else {
                 $query->where(array("d.owner_id=".$user_id,'d.shared=1'),'OR');
             }
         }
 
-
         //return count
         $db->setQuery($query);
         $result = $db->loadResult();
+
         return $result;
     }
 
     //function to get possible document association types
-    public static function getAssocTypes(){
+    public static function getAssocTypes()
+    {
         return array(   'all'=>CRMText::_('COBALT_ALL_DOCUMENTS'),
                         'deals'=>CRMText::_('COBALT_DOCUMENTS_DEALS'),
                         'people'=>CRMText::_('COM_CMRERY_DOCUMENTS_PEOPLE'),
@@ -55,7 +56,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get different document doctypes
-    public static function getDocTypes(){
+    public static function getDocTypes()
+    {
         return array(   'all'=>CRMText::_('COBALT_ALL_TYPES'),
                         'spreadsheets'=>CRMText::_('COBALT_SPREADSHEETS'),
                         'images'=>CRMText::_('COBALT_IMAGES'),

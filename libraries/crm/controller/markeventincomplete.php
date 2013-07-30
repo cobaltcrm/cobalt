@@ -8,14 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerMarkEventIncomplete extends CobaltControllerDefault
 {
 
-	function execute(){
-		$model = new CobaltModelEvent();
-		$model->markIncomplete();	
-	}
+    public function execute()
+    {
+        $model = new CobaltModelEvent();
+        $model->markIncomplete();
+    }
 
 }

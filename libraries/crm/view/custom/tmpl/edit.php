@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
     $custom = CobaltHelperDropdown::generateCustom($this->type,$this->item['id']);
-    foreach ( $custom as $field => $value ) {
-        if ( $value['type'] != 'forecast' ){
+    foreach ($custom as $field => $value) {
+        if ($value['type'] != 'forecast') {
             $custom_field_filter = array_key_exists('selected',$value) ? $value['selected'] : "";
             echo '<div class="control-group">';
             echo '<label class="control-label" for="custom_'.$value['id'].'">'.$value['name'].'</label>';
             echo '<div class="controls">';
                 //determine type of input
-                switch ( $value['type'] ){
+                switch ($value['type']) {
                     case "text": ?>
                     <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     <?php break;
@@ -44,8 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         <span class="add-on"><i class="icon-calendar"></i></span>
                     </div>
                     <?php break; ?>
-                <?php } 
+                <?php }
             echo '</div>';
             echo '</div>';
     } }
-?>

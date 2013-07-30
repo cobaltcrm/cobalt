@@ -8,22 +8,22 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
     $custom = CobaltHelperDropdown::generateCustom($this->type,$this->item['id']);
     $count = 0;
     echo '<div class="custom-fields">';
     echo '<table class="table table-striped table-hover table-bordered">';
-    if ( count($custom) > 0 ){
-    foreach ( $custom as $field => $value ) {
+    if ( count($custom) > 0 ) {
+    foreach ($custom as $field => $value) {
         $count++;
         $k=$count%3;
-        switch ( $value['type'] ){
+        switch ($value['type']) {
             case "forecast":
                 $custom_field_filter = array_key_exists('forecast',$this->item) ? $this->item['forecast'] : 0;
             break;
             case "text":
-                $custom_field_filter = array_key_exists('selected',$value) && strlen(trim($value['selected'])) > 0 ? $value['selected'] : CRMText::_('COBALT_CLICK_TO_EDIT'); 
+                $custom_field_filter = array_key_exists('selected',$value) && strlen(trim($value['selected'])) > 0 ? $value['selected'] : CRMText::_('COBALT_CLICK_TO_EDIT');
             break;
             case "number":
                 $custom_field_filter = array_key_exists('selected',$value) && strlen(trim($value['selected'])) > 0 ? $value['selected'] : CRMText::_('COBALT_CLICK_TO_EDIT');
@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             echo '<th class="customFieldHead">'.$value['name'].'</th>';
             echo '<td>';
                 //determine type of input
-                switch ( $value['type'] ){
+                switch ($value['type']) {
 
                     case "text":
                     case "number":
@@ -62,7 +62,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     <div class='dropdown'>
                         <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='custom_<?php echo $value['id']; ?>_field_link'><?php echo $custom_field_filter; ?></a>
                         <ul class="dropdown-menu" role="menu">
-                        <?php if ( is_array($value) && array_key_exists('values',$value) && count($value['values']) > 0 ){ foreach($value['values'] as $id => $name ) { ?>
+                        <?php if ( is_array($value) && array_key_exists('values',$value) && count($value['values']) > 0 ){ foreach ($value['values'] as $id => $name) { ?>
                             <li>
                                 <a href="javascript:void(0)" class="dropdown_item" data-field="custom_<?php echo $value['id']; ?>" data-item="<?php echo $this->type; ?>" data-item-id="<?php echo $this->item['id']; ?>" data-value="<?php echo $id; ?>">
                                     <?php echo $name; ?>
@@ -91,11 +91,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         </form>
                     <?php break; ?>
 
-                <?php } 
+                <?php }
             echo '</td>';
             echo '</tr>';
         }
     }
-    echo '</table>';                
+    echo '</table>';
     echo '</div>';
-?>

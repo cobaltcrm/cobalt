@@ -18,75 +18,75 @@ defined('JPATH_PLATFORM') or die;
  */
 class JDocumentXml extends JDocument
 {
-	/**
-	 * Document name
-	 *
-	 * @var    string
-	 * @since  12.1
-	 */
-	protected $name = 'joomla';
+    /**
+     * Document name
+     *
+     * @var    string
+     * @since  12.1
+     */
+    protected $name = 'joomla';
 
-	/**
-	 * Class constructor
-	 *
-	 * @param   array  $options  Associative array of options
-	 *
-	 * @since   11.1
-	 */
-	public function __construct($options = array())
-	{
-		parent::__construct($options);
+    /**
+     * Class constructor
+     *
+     * @param array $options Associative array of options
+     *
+     * @since   11.1
+     */
+    public function __construct($options = array())
+    {
+        parent::__construct($options);
 
-		// Set mime type
-		$this->_mime = 'application/xml';
+        // Set mime type
+        $this->_mime = 'application/xml';
 
-		// Set document type
-		$this->_type = 'xml';
-	}
+        // Set document type
+        $this->_type = 'xml';
+    }
 
-	/**
-	 * Render the document.
-	 *
-	 * @param   boolean  $cache   If true, cache the output
-	 * @param   array    $params  Associative array of attributes
-	 *
-	 * @return  The rendered data
-	 *
-	 * @since  11.1
-	 */
-	public function render($cache = false, $params = array())
-	{
-		parent::render();
-		JResponse::setHeader('Content-disposition', 'inline; filename="' . $this->getName() . '.xml"', true);
+    /**
+     * Render the document.
+     *
+     * @param boolean $cache  If true, cache the output
+     * @param array   $params Associative array of attributes
+     *
+     * @return The rendered data
+     *
+     * @since  11.1
+     */
+    public function render($cache = false, $params = array())
+    {
+        parent::render();
+        JResponse::setHeader('Content-disposition', 'inline; filename="' . $this->getName() . '.xml"', true);
 
-		return $this->getBuffer();
-	}
+        return $this->getBuffer();
+    }
 
-	/**
-	 * Returns the document name
-	 *
-	 * @return  string
-	 *
-	 * @since  11.1
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * Returns the document name
+     *
+     * @return string
+     *
+     * @since  11.1
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Sets the document name
-	 *
-	 * @param   string  $name  Document name
-	 *
-	 * @return  JDocumentXml instance of $this to allow chaining
-	 *
-	 * @since   11.1
-	 */
-	public function setName($name = 'joomla')
-	{
-		$this->name = $name;
+    /**
+     * Sets the document name
+     *
+     * @param string $name Document name
+     *
+     * @return JDocumentXml instance of $this to allow chaining
+     *
+     * @since   11.1
+     */
+    public function setName($name = 'joomla')
+    {
+        $this->name = $name;
 
-		return $this;
-	}
+        return $this;
+    }
 }

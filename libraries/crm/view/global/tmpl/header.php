@@ -8,16 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 /*
-if(CobaltHelperUsers::getLoggedInUser()) {
-  if ( CobaltHelperUsers::isFullscreen() && !(JFactory::getApplication()->input->get('view')=="print") ){
+if (CobaltHelperUsers::getLoggedInUser()) {
+  if ( CobaltHelperUsers::isFullscreen() && !(JFactory::getApplication()->input->get('view')=="print") ) {
 ?>
     <div id="logged_in_user"><?php echo CobaltHelperConfig::getConfigValue('welcome_message'); ?> <?php CobaltHelperUsers::getFirstName()."!";
                     echo self::displayLogout();
                 echo '</div>';
             }
-            
+
             echo '<script type="text/javascript">var userDateFormat = "'.CobaltHelperUsers::getDateFormat(FALSE).'";</script>';
             echo '<script type="text/javascript">var user_id = "'.CobaltHelperUsers::getUserId().'";</script>';
         }
@@ -34,6 +34,6 @@ if(CobaltHelperUsers::getLoggedInUser()) {
     <div id="document_preview_modal" style="display:none;"></div>
     <?php echo CobaltHelperTemplate::getEventDialog(); ?>
     <?php echo CobaltHelperTemplate::getAvatarDialog(); ?>
-    <?php if($this->isMobile) { ?>
+    <?php if ($this->isMobile) { ?>
       <div class='page' data-role='page' data-theme='b' id=''>
-    <?php } ?>
+    <?php }

@@ -32,7 +32,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <div id="custom_field_data">
                             </div>
                             <div>
-                                <?php if ( $this->custom['id'] ) { ?>
+                                <?php if ($this->custom['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->custom['id']; ?>" />
                                 <?php } ?>
                                 <input type="hidden" name="controller" value="" />
@@ -80,10 +80,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 <li>Picklist fields allow you to specify a list of pre-defined values for a user to pick from. Examples: Industry, Competitor, Regions, Product or Service Interest.</li>
                             </ul>
                             <div id="choices">
-                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom['values'] != null ){
+                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom['values'] != null ) {
                                 $values = $this->custom['values'];
-                                if ( count($values) > 0 ){
-                                    foreach ( $values as $value ){ ?>
+                                if ( count($values) > 0 ) {
+                                    foreach ($values as $value) { ?>
                                         <div class="choices">
                                             <table>
                                                 <tr>
@@ -93,8 +93,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                                 </tr>
                                             </table>
                                         </div>
-                                    <?php } 
-                                }}else{ ?>
+                                    <?php }
+                                }} else { ?>
                                      <div class="choices">
                                         <table>
                                             <tr>
@@ -103,12 +103,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                                 <td><a class="btn btn-danger remove_values">Remove</a></td>
                                             </tr>
                                         </table>
-                                    </div>   
+                                    </div>
                                 <?php } ?>
                             </div>
                             <table>
                                 <tr>
-                                    <td><a class="btn btn-primary" id="add_values">Add More Choices</a></td> 
+                                    <td><a class="btn btn-primary" id="add_values">Add More Choices</a></td>
                                 </tr>
                            </table>
                            <table>
@@ -149,5 +149,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <?php echo $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewPeopleRaw extends JViewHtml
 {
-    function render()
+    public function render()
     {
         $app = JFactory::getApplication();
         $document = JFactory::getDocument();
@@ -23,14 +23,14 @@ class CobaltViewPeopleRaw extends JViewHtml
         //retrieve people from model
         $model = new CobaltModelPeople();
         $model->set('company_id',$company_id);
-       
+
         $layout = $this->getLayout();
 
         $this->total = $model->getTotal();
         $this->pagination = $model->getPagination();
-        
+
         //assign refs
-        switch ( $layout ){
+        switch ($layout) {
             case "entry":
                 $this->k = 0;
                 $this->person = $model->getPerson();
@@ -57,9 +57,9 @@ class CobaltViewPeopleRaw extends JViewHtml
                 $this->state = $model->getState();
             break;
         }
-        
+
         //display view
-        echo parent::render();      
+        echo parent::render();
     }
-    
-}   
+
+}

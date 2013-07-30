@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewPrintHtml extends CobaltHelperView
 {
-	function render($tpl = null)
-	{
+    public function render($tpl = null)
+    {
 
         //app
         $app = JFactory::getApplication();
@@ -27,8 +27,8 @@ class CobaltViewPrintHtml extends CobaltHelperView
         //document
         $document = JFactory::getDocument();
 
-        if ( !$model_name ){
-            switch ( $layout ){
+        if (!$model_name) {
+            switch ($layout) {
                 case "person":
                     $model_name = "people";
                 break;
@@ -41,11 +41,11 @@ class CobaltViewPrintHtml extends CobaltHelperView
             }
         }
 
-        if ( $layout != "report" ){
+        if ($layout != "report") {
             $className = "CobaltModel".ucwords($model_name);
             $model = new $className();
             $params = NULL;
-            switch (  $model_name ){
+            switch ($model_name) {
                 case "company":
                     $func = "companies";
                 break;
@@ -58,13 +58,13 @@ class CobaltViewPrintHtml extends CobaltHelperView
                 case "event":
                 case "events":
                     $func = "events";
-                    if ( $layout == "calendar" ){
+                    if ($layout == "calendar") {
                         $params = "calendar";
 
                         //load js libs
                         $document->addScript( JURI::base().'libraries/crm/media/js/fullcalendar.js' );
                         $document->addScript( JURI::base().'libraries/crm/media/js/calendar_manager.js' );
-                        
+
                         //load required css for calendar
                         $document->addStyleSheet( JURI::base().'libraries/crm/media/css/fullcalendar.css' );
                     }
@@ -72,19 +72,19 @@ class CobaltViewPrintHtml extends CobaltHelperView
             }
         }
 
-        switch ( $layout ){
+        switch ($layout) {
             case "report":
                 $report = $app->input->get('report');
                 $item_id = ( $app->input->get('ids') ) ? $app->input->get('ids') : NULL;
-                if ( is_array($item_id) ){
+                if ( is_array($item_id) ) {
                     $items = array();
-                    foreach ( $item_id as $key => $item ){
+                    foreach ($item_id as $key => $item) {
                         $items[] = $item;
                     }
-                }else{
+                } else {
                     $items = $item_id;
                 }
-                switch ( $report ){
+                switch ($report) {
                     case "sales_pipeline":
                         $model = new CobaltModelDeal();
                         $model->set('_id',$items);
@@ -103,7 +103,7 @@ class CobaltViewPrintHtml extends CobaltHelperView
                         $table = CobaltHelperView::getView('reports','sales_pipeline_filter',array('reports'=>$reports));
                         $footer = CobaltHelperView::getView('reports','source_report_footer');
                     break;
-                    case "roi_report":   
+                    case "roi_report":
                         $model = new CobaltModelSource();
                         $model->set('_id',$items);
                         $sources = $model->getRoiSources();
@@ -144,21 +144,21 @@ class CobaltViewPrintHtml extends CobaltHelperView
                 $function = "get".ucwords($func);
                 $item_id = ( $app->input->get('item_id') ) ? $app->input->get('item_id') : NULL;
                 $ids = ( $app->input->get('ids') ) ? $app->input->get('ids') : NULL;
-                
+
                 $item_id = $item_id ? $item_id : $ids;
 
-                if ( is_array($item_id) ){
+                if ( is_array($item_id) ) {
                     $items = array();
-                    if ( $app->input->get('item_id') ){
-                        foreach ( $item_id as $key => $item ){
+                    if ( $app->input->get('item_id') ) {
+                        foreach ($item_id as $key => $item) {
                             $items[] = $key;
                         }
-                    }else{
-                        foreach ( $item_id as $key => $item ){
+                    } else {
+                        foreach ($item_id as $key => $item) {
                             $items[] = $item;
                         }
                     }
-                }else{
+                } else {
                     $items = $item_id;
                 }
 
@@ -169,14 +169,14 @@ class CobaltViewPrintHtml extends CobaltHelperView
                  /* Event list */
                 $model = new CobaltModelEvent();
                 $events = $model->getEvents("deal",NULL,$item_id);
-                if (count($events)>0){
+                if (count($events)>0) {
                     $ref = array( 'events'=>$events,'print'=>TRUE );
                     $eventDock = CobaltHelperView::getView('events','event_dock',$ref);
                     $this->event_dock = $eventDock;
                 }
 
                 /* Contact info */
-                if(is_array($info) && array_key_exists(0,$info) && array_key_exists('people',$info[0]) && count($info[0]['people'])>0){
+                if (is_array($info) && array_key_exists(0,$info) && array_key_exists('people',$info[0]) && count($info[0]['people'])>0) {
                     $peopleModel = new CobaltModelPeople();
                     $peopleModel->set('deal_id',$info[0]['id']);
                     $contacts = $peopleModel->getContacts();
@@ -185,18 +185,16 @@ class CobaltViewPrintHtml extends CobaltHelperView
                     $this->contact_info = $contact_info;
                 }
 
-
-                $this->info = $info; 
+                $this->info = $info;
             break;
         }
 
         $custom_fields = array('deal','company','person');
-        if ( in_array($layout,$custom_fields) ){
+        if ( in_array($layout,$custom_fields) ) {
             $this->custom_fields = CobaltHelperView::getView('print','custom_fields','phtml');
             $this->custom_fields->item_type = $layout;
             $this->custom_fields->item = $info[0];
         }
-
 
         $js = "jQuery(document).ready(function(){
                 window.print();
@@ -205,7 +203,7 @@ class CobaltViewPrintHtml extends CobaltHelperView
         $document->addScriptDeclaration($js);
 
         //display
-		return parent::render();
-	}
-	
+        return parent::render();
+    }
+
 }

@@ -13,25 +13,27 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  class CobaltHelperCompany extends JObject
  {
 
-	public static function getCompany($id){
+    public static function getCompany($id)
+    {
+        //get db object
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-		//get db object
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
+        //generate query
+        $query->select("name,id FROM #__companies");
+        $query->where('id='.$id);
+        $db->setQuery($query);
 
-		//generate query
-		$query->select("name,id FROM #__companies");
-		$query->where('id='.$id);
-		$db->setQuery($query);
+        //return results
+        $row = $db->loadAssocList();
 
-		//return results
-		$row = $db->loadAssocList();
-		return $row;
+        return $row;
 
-	}
+    }
 
     //get company filter types
-    public static function getTypes(){
+    public static function getTypes()
+    {
         return array(   'all'=>CRMText::_('COBALT_ALL_COMPANIES'),
                         'today'=>CRMText::_('COBALT_COMPANIES_TASKS_TODAY'),
                         'tomorrow'=>CRMText::_('COBALT_COMPANIES_TASKS_TOMORROW'),
@@ -41,7 +43,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get column filters
-    public static function getColumnFilters(){
+    public static function getColumnFilters()
+    {
         return array(   'avatar'        =>  ucwords(CRMText::_('COBALT_AVATAR')),
                         'description'   =>  ucwords(CRMText::_('COBALT_EDIT_TASK_DESCRIPTION')),
                         'phone'         =>  ucwords(CRMText::_('COBALT_PEOPLE_PHONE')),
@@ -57,8 +60,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get selected column filters
-    public static function getSelectedColumnFilters(){
-
+    public static function getSelectedColumnFilters()
+    {
         //get the user session data
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -71,18 +74,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //unserialize columns
         $columns = unserialize($results);
-        if ( is_array($columns) ){
+        if ( is_array($columns) ) {
             return $columns;
-        }else{
+        } else {
             //if it is empty then load a default set
             return CobaltHelperCompany::getDefaultColumnFilters();
         }
     }
 
     //get default column filters
-    public static function getDefaultColumnFilters(){
+    public static function getDefaultColumnFilters()
+    {
         return array( 'avatar','phone','notes','added','updated' );
     }
-
 
  }

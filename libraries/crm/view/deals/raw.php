@@ -12,26 +12,25 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewDealsRaw extends JViewHtml
 {
-	function render($tpl = null)
-	{
+    public function render($tpl = null)
+    {
         $app = JFactory::getApplication();
 
-	    $id = $app->input->get('id') ? $app->input->get('id') : null;
+        $id = $app->input->get('id') ? $app->input->get('id') : null;
         $company_id = $app->input->get('company_id');
         $person_id = $app->input->get('person_id');
 
         //get deals
         $model = new CobaltModelDeal();
 
-        if ( $company_id ){
+        if ($company_id) {
                 $model->set('company_id',$company_id);
-        } else if ( $person_id ){
+        } elseif ($person_id) {
                 $model->set('person_id',$person_id);
-        } else if ( $id ){
+        } elseif ($id) {
                 $model->set('_id',$id);
         }
 
-        
         $layout = $this->getLayout();
 
         $total = $model->getTotal();
@@ -39,9 +38,9 @@ class CobaltViewDealsRaw extends JViewHtml
 
         $pagination = $model->getPagination();
         $this->pagination = $pagination;
-        
+
         //assign references
-        switch ( $layout ){
+        switch ($layout) {
             case "entry":
                 $this->stages = CobaltHelperDeal::getStages(null,TRUE,FALSE);
                 $this->statuses = CobaltHelperDeal::getStatuses(null,true);
@@ -74,9 +73,9 @@ class CobaltViewDealsRaw extends JViewHtml
                     $this->state = $state;
             break;
         }
-                
+
         //display view
-		echo parent::render();		
-	}
-	
-}	
+        echo parent::render();
+    }
+
+}

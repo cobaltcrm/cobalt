@@ -8,16 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewLoginHtml extends JViewHtml
 {
-    function render()
+    public function render()
     {
-    	$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $app->input->set('view','login');
         $app->input->set('layout',$app->input->get('layout','default'));
-        
+
         return parent::render();
     }
 

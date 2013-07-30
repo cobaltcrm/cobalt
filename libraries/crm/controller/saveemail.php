@@ -8,14 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerSaveEmail extends CobaltControllerDefault
 {
 
-    function saveEmail(){
-    	$model = new CobaltModelMail();
-    	$model->saveEmail();
+    public function saveEmail()
+    {
+        $model = new CobaltModelMail();
+        $model->saveEmail();
     }
 
 }

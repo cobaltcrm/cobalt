@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerGetNoteEntry extends CobaltControllerDefault
 {
-   function execute(){
-
-   		$app = JFactory::getApplication();
+   public function execute()
+   {
+           $app = JFactory::getApplication();
 
         $note_id = $app->input->get('note_id');
 

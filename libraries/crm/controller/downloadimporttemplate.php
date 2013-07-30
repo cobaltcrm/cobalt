@@ -8,16 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerDownloadImportTemplate extends CobaltControllerDefault
 {
-       function execute(){
-
+       function execute()
+       {
             $app = JFactory::getApplication();
 
             $template_type = $app->input->get('template_type');
-        
+
             $path = JPATH_SITE.'/media/import_templates/import_'.$template_type.'.csv';
 
             ob_start();

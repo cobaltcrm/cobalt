@@ -30,9 +30,9 @@ class CobaltModelDocument extends CobaltModelDefault
             jimport('joomla.filesystem.file');
             jimport('joomla.filesystem.folder');
 
-            if ( $data ){
+            if ($data) {
 
-                $data = (array)$data;
+                $data = (array) $data;
 
                 $_FILES = array();
                 $_FILES['document'] = $data;
@@ -45,11 +45,10 @@ class CobaltModelDocument extends CobaltModelDefault
                 $data['is_attachment'] = 1;
                 $data['email'] = 1;
 
-            }else{
+            } else {
 
                 $association_id = $_POST['association_id'];
                 $association_type = $_POST['association_type'];
-
 
                 //this is the name of the field in the html form, filedata is the default name for swfupload
                 //so we will leave it as that
@@ -57,24 +56,26 @@ class CobaltModelDocument extends CobaltModelDefault
 
                 //any errors the server registered on uploading
                 $fileError = $_FILES[$fieldName]['error'];
-                if ($fileError > 0)
-                {
-                        switch ($fileError)
-                    {
+                if ($fileError > 0) {
+                        switch ($fileError) {
                         case 1:
                         echo CRMText::_( 'FILE TO LARGE THAN PHP INI ALLOWS' );
+
                         return;
 
                         case 2:
                         echo CRMText::_( 'FILE TO LARGE THAN HTML FORM ALLOWS' );
+
                         return;
 
                         case 3:
                         echo CRMText::_( 'ERROR PARTIAL UPLOAD' );
+
                         return;
 
                         case 4:
                         echo CRMText::_( 'ERROR NO FILE' );
+
                         return;
                         }
                 }
@@ -95,17 +96,15 @@ class CobaltModelDocument extends CobaltModelDefault
 
             //go through every ok extension, if the ok extension matches the file extension (case insensitive)
             //then the file extension is ok
-            foreach($validFileExts as $key => $value)
-            {
-                if( preg_match("/$value/i", $uploadedFileExtension ) )
-                {
+            foreach ($validFileExts as $key => $value) {
+                if ( preg_match("/$value/i", $uploadedFileExtension ) ) {
                     $extOk = true;
                 }
             }
 
-            if ($extOk == false)
-            {
+            if ($extOk == false) {
                 echo CRMText::_( 'INVALID EXTENSION' );
+
                     return;
             }
 
@@ -119,15 +118,16 @@ class CobaltModelDocument extends CobaltModelDefault
             //always use constants when making file paths, to avoid the possibilty of remote file inclusion
             $uploadPath = JPATH_SITE.'//documents/'.$hashFilename;
 
-            if ( $data['is_attachment'] ){
-                if(!JFile::write($uploadPath,$fileTemp)){
+            if ($data['is_attachment']) {
+                if (!JFile::write($uploadPath,$fileTemp)) {
                     echo CRMText::_( 'ERROR MOVING FILE' );
+
                     return;
                 }
-            }else{
-                if(!JFile::upload($fileTemp, $uploadPath))
-                {
+            } else {
+                if (!JFile::upload($fileTemp, $uploadPath)) {
                  echo CRMText::_( 'ERROR MOVING FILE' );
+
                     return;
                 }
             }
@@ -145,7 +145,7 @@ class CobaltModelDocument extends CobaltModelDefault
                         'created'               =>  $date
                         );
 
-            if ( array_key_exists('email',$data) && $data['email'] ){
+            if ( array_key_exists('email',$data) && $data['email'] ) {
                 $newData['email'] = 1;
             }
 
@@ -156,7 +156,7 @@ class CobaltModelDocument extends CobaltModelDefault
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
 
-            if ( !array_key_exists('id',$newData) ){
+            if ( !array_key_exists('id',$newData) ) {
                 $newData['created'] = $date;
                 $status = "created";
             } else {
@@ -174,6 +174,7 @@ class CobaltModelDocument extends CobaltModelDefault
             // Bind the form fields to the table
             if (!$row->bind($newData)) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
@@ -183,19 +184,20 @@ class CobaltModelDocument extends CobaltModelDefault
             // Make sure the record is valid
             if (!$row->check()) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
             $id = ( array_key_exists('id',$data) ) ? $data['id'] : $this->_db->insertId();
 
             CobaltHelperActivity::saveActivity($oldRow, $row,'document', $status);
-
 
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onAfterDocumentSave', array(&$row));
@@ -207,8 +209,8 @@ class CobaltModelDocument extends CobaltModelDefault
          * Method to retrieve documents
          * @param $id specific id to retrieve, if null all are returned
          */
-        function getDocuments($id=null){
-
+        function getDocuments($id=null)
+        {
             $app = JFactory::getApplication();
 
             //get DBO
@@ -242,54 +244,54 @@ class CobaltModelDocument extends CobaltModelDefault
             $team   = $app->input->get('team_id');
 
             //determine if we are searching for a team or a user
-            if ( $team ){
+            if ($team) {
                 $session->set('document_user_filter',null);
             }
 
-            if ( $user ){
+            if ($user) {
                 $session->set('document_team_filter',null);
             }
 
             //set user session data
-            if ( $assoc != null ) {
+            if ($assoc != null) {
                 $session->set('document_assoc_filter',$assoc);
             } else {
                 $sess_assoc = $session->get('document_assoc_filter');
                 $assoc = $sess_assoc;
             }
-            if ( $user != null ) {
+            if ($user != null) {
                 $session->set('document_user_filter',$user);
                 $session->set('document_team_filter',null);
             } else {
                 $sess_user = $session->get('document_user_filter');
                 $user = $sess_user;
             }
-            if ( $type != null ) {
+            if ($type != null) {
                 $session->set('document_type_filter',$type);
             } else {
                 $sess_type = $session->get('document_type_filter');
                 $type = $sess_type;
             }
-            if ( $team != null ) {
+            if ($team != null) {
                 $session->set('document_team_filter',$team);
                 $session->set('document_user_filter',null);
-            }else{
+            } else {
                 $sess_team = $session->get('document_team_filter');
                 $team = $sess_team;
             }
 
             //filter for team
-            if ( $team ){
+            if ($team) {
                 $query->where("u.team_id=$team");
             }
             //filter for user
-            if ( $user && $user != "all" ){
+            if ($user && $user != "all") {
                 $query->where('d.owner_id='.$user);
             }
 
             //filter data
-            if ( $assoc AND $assoc != 'all' ){
-                switch($assoc){
+            if ($assoc AND $assoc != 'all') {
+                switch ($assoc) {
                     case "deals":
                         $query->where("d.association_type='deal'");
                         break;
@@ -312,9 +314,9 @@ class CobaltModelDocument extends CobaltModelDefault
             $query->order($this->getState('Document.filter_order') . ' ' . $this->getState('Document.filter_order_Dir'));
 
             //filter for types
-            if ( $type AND $type != 'all' ){
+            if ($type AND $type != 'all') {
                 $doc_types = array();
-                switch($type){
+                switch ($type) {
                     case "spreadsheets":
                         $doc_types = array( 'xlr','xls','xlsx' );
                         break;
@@ -334,12 +336,12 @@ class CobaltModelDocument extends CobaltModelDefault
                         $doc_types = array();
                         break;
                 }
-                if ( count($doc_types) ){
+                if ( count($doc_types) ) {
                     $queryString = '';
-                    foreach ( $doc_types as $key => $type ){
-                       if ( $key ){
+                    foreach ($doc_types as $key => $type) {
+                       if ($key) {
                             $queryString .= " OR d.filetype='".$type."'";
-                       }else{
+                       } else {
                             $queryString .= " d.filetype='".$type."'";
                        }
                     }
@@ -348,30 +350,30 @@ class CobaltModelDocument extends CobaltModelDefault
             }
 
             //sort depending on member role
-            if ( $member_type != 'exec' ){
-                if ( $assoc != 'shared' ){
+            if ($member_type != 'exec') {
+                if ($assoc != 'shared') {
                     $shared = $assoc == "all" ? "OR d.shared=1" : "";
-                    if ( $member_type == 'manager' ){
+                    if ($member_type == 'manager') {
                         $query->where('(u.team_id='.$team_id." $shared)");
-                    }else{
+                    } else {
                         $query->where('(d.owner_id='.$member_id." $shared)");
                     }
                 }
             }
 
-            if ( $id ){
+            if ($id) {
                 $query->where("d.id=".$id);
             }
 
-            if ( $this->company_id ){
+            if ($this->company_id) {
                 $query->where("(d.association_type='company' AND d.association_id=".$this->company_id.')');
             }
 
-            if ( $this->deal_id ){
+            if ($this->deal_id) {
                 $query->where("(d.association_type='deal' AND d.association_id=".$this->deal_id.')');
             }
 
-            if ( $this->person_id ){
+            if ($this->person_id) {
                 $query->where("(d.association_type='person' AND d.association_id=".$this->person_id.')');
             }
 
@@ -387,8 +389,8 @@ class CobaltModelDocument extends CobaltModelDefault
 
         }
 
-        function getDocument($id=null){
-
+        function getDocument($id=null)
+        {
             $app = JFactory::getApplication();
 
             $db = JFactory::getDBO();
@@ -396,10 +398,10 @@ class CobaltModelDocument extends CobaltModelDefault
 
             $query->select("*")->from("#__documents");
 
-            if ( !$id ){
+            if (!$id) {
                 $document_hash = $app->input->get('document');
                 $query->where("filename=".$db->quote($document_hash));
-            }else{
+            } else {
                 $query->where("id=".$id);
             }
 
@@ -416,14 +418,13 @@ class CobaltModelDocument extends CobaltModelDefault
 
         }
 
-
         /**
          * Method to delete a record
          *
          * @return boolean True on success
          */
-        function deleteDocument($id){
-
+        function deleteDocument($id)
+        {
             //get dbo
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -452,17 +453,17 @@ class CobaltModelDocument extends CobaltModelDefault
         /**
          * Populate user state requests
          */
-        function populateState(){
-
+        function populateState()
+        {
             //get states
             $app = JFactory::getApplication();
 
-            if ( $app->input->get('view') == "documents" ){
+            if ( $app->input->get('view') == "documents" ) {
 
                 $filter_order = $app->getUserStateFromRequest('Document.filter_order','filter_order','d.created');
                 $filter_order_Dir = $app->getUserStateFromRequest('Document.filter_order_Dir','filter_order_Dir','desc');
 
-            }else{
+            } else {
 
                 $filter_order = "d.created";
                 $filter_order_Dir = "desc";
@@ -470,7 +471,6 @@ class CobaltModelDocument extends CobaltModelDefault
             }
 
             $state = new JRegistry();
-
 
             //set states
             $state->set('Document.filter_order',$filter_order);

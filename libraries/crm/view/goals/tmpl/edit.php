@@ -10,7 +10,6 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
-
 <h1><?php echo ucwords($this->header); ?></h1>
 <form id="edit-form" action="<?php echo JRoute::_('index.php?controller=editGoal'); ?>" method="post" onsubmit="return save(this);">
     <div id="goal_edit">
@@ -21,45 +20,45 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         //generate user dropdown
                         $user_html = '<select class="inputbox" id="assigned_id">';
                             //if an executive is creating a goal
-                            if ( $this->member_role == 'exec' ){
+                            if ($this->member_role == 'exec') {
                                 $user_html .= "<option value='company_0' selected='selected'>".ucwords(CRMText::_('COBALT_THE_COMPANY'))."</option>";
                             }
                             //individual assignment
                             $user_html .= "<option value='member_".$this->user_id."'>".CRMText::_('COBALT_ME')."</option>";
                             //if a manager is creating a goal
-                            if ( $this->member_role == 'manager' ){
-                                if ( $this->team_id != null ){
+                            if ($this->member_role == 'manager') {
+                                if ($this->team_id != null) {
                                     $user_html .= "<option value='team_".$this->team_id."'>".CRMText::_('COBALT_MY_TEAM')."</option>";
                                 }
-                                if ( count($this->users) > 0 ){
-                                    foreach ( $this->users as $user ){
+                                if ( count($this->users) > 0 ) {
+                                    foreach ($this->users as $user) {
                                         $user_html .= "<option value='member_".$user['id']."'>".$user['first_name']." ".$user['last_name']."</option>";
                                     }
                                 }
                             }
                             //an executive can also see all of the teams and individual users
-                            if ( $this->member_role == 'exec' ){
-                                if ( count($this->teams) > 0 ){
-                                    foreach ( $this->teams as $team ){
+                            if ($this->member_role == 'exec') {
+                                if ( count($this->teams) > 0 ) {
+                                    foreach ($this->teams as $team) {
                                         $user_html .= "<option value='team_".$team['team_id']."'>".$team['team_name'].CRMText::_('COBALT_TEAM_APPEND')."</option>";
-                                    }   
+                                    }
                                 }
-                                if ( count($this->users) > 0 ){
-                                    foreach ( $this->users as $user ){
+                                if ( count($this->users) > 0 ) {
+                                    foreach ($this->users as $user) {
                                         $user_html .= "<option value='member_".$user['id']."'>".$user['first_name']." ".$user['last_name']."</option>";
                                     }
                                 }
                             }
                             //if a basic member is creating a goal we show no more options
                         $user_html .= "</select>";
-                        
+
                         //generate date html
                         $date_html = "<select class='inputbox' id='date_picker'>";
                         $dates = CobaltHelperDate::getGoalDates();
-                        $date_html .= JHtml::_('select.options', $dates, 'value', 'text', '', true); 
+                        $date_html .= JHtml::_('select.options', $dates, 'value', 'text', '', true);
                         $date_html .= "</select>";
                     ?>
-                    <?php switch($this->type){
+                    <?php switch ($this->type) {
                         case "win_cash": ?>
                                 <?php echo CRMText::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
@@ -85,7 +84,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     <input class="inputbox required" type="text" placeholder="0" value="" name="amount" />
                                     <?php echo CRMText::_('COBALT_DEALS_FORWARD_TO_THE'); ?>
                                     <select class="inputbox" name="stage_id">
-                                        <?php 
+                                        <?php
                                             $stages = CobaltHelperDeal::getGoalStages();
                                             echo JHtml::_('select.options', $stages, 'value', 'text', '', true);
                                         ?>
@@ -102,7 +101,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     <?php echo CRMText::_('COBALT_TASKS_OF_TYPE'); ?>
                                     <select class="inputbox" name="category_id">
                                         <option value="">Any</option>
-                                        <?php 
+                                        <?php
                                             $categories = CobaltHelperEvent::getCategories();
                                             echo JHtml::_('select.options', $categories, 'value', 'text', '', true);
                                         ?>
@@ -118,7 +117,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     <?php echo CRMText::_('COBALT_NEW_NOTES_OF_TYPE'); ?>
                                     <select class="inputbox" name="category_id">
                                         <option value="">Any</option>
-                                        <?php 
+                                        <?php
                                             $categories = CobaltHelperNote::getCategories();
                                             echo JHtml::_('select.options', $categories, 'value', 'text', '', true);
                                         ?>
@@ -169,19 +168,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     <ul class="unstyled">
                         <li><label><?php echo CRMText::_('COBALT_GOAL_STEP_THREE_DESC'); ?></label></li>
                         <li><label class="small checkbox"><input type="checkbox" name="leaderboard"><?php echo CRMText::_('COBALT_GOAL_CREATE_LEADERBOARD'); ?></label></li>
-                    </ul> 
+                    </ul>
             </li>
             <li>
                 <div class="alert text-center">
                     <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="icon-plus icon-white"></i><?php echo CRMText::_('COBALT_ADD'); ?></a>
-                     - <?php echo CRMText::_('COBALT_OR'); ?> - 
+                     - <?php echo CRMText::_('COBALT_OR'); ?> -
                     <a href="javascript:void(0);" onclick="window.history.back()"><?php echo CRMText::_('COBALT_CANCEL_BUTTON'); ?></a>
                 </div>
             </li>
         </ul>
     </div>
     <div id="hidden">
-        <?php if ( $this->member_role == 'exec' ){ ?>
+        <?php if ($this->member_role == 'exec') { ?>
             <input type="hidden" name="assigned_id" value="0">
             <input type="hidden" name="assigned_type" value="company">
         <?php } else { ?>

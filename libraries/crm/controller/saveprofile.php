@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerSaveProfile extends CobaltControllerDefault
 {
 
-    function execute()
+    public function execute()
     {
         //set error
         $error = true;
@@ -24,20 +24,20 @@ class CobaltControllerSaveProfile extends CobaltControllerDefault
 
         //get model and store data
         $model = new CobaltModelUser();
-        if ( $model->store() ){
+        if ( $model->store() ) {
             $error = false;
         }
-        
+
         //return results
         $results = array ( 'error' => $error );
 
-        if ( array_key_exists('fullscreen',$data) ){
+        if ( array_key_exists('fullscreen',$data) ) {
             $append = CobaltHelperUsers::isFullscreen() ? "/?&tmpl=component" : "" ;
             $results['url'] = JRoute::_($data['url'].$append);
         }
 
         echo json_encode($results);
-            
+
     }
 
 }

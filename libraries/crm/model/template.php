@@ -8,23 +8,24 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelTemplate extends JModelBase
 {
-        
+
         /**
          * Constructor
          */
-        function __construct() {
+        function __construct()
+        {
             parent::__construct();
         }
 
         /**
          * Run items through template system
          */
-        public function createTemplate(){
-
+        public function createTemplate()
+        {
                 $app = JFactory::getApplication();
 
                 $template_id = $app->input->get('template_id');
@@ -35,11 +36,11 @@ class CobaltModelTemplate extends JModelBase
 
                 $current_date = date("Y-m-d 00:00:00");
 
-                if ( count($template) > 0 ){
+                if ( count($template) > 0 ) {
 
                         $event_model = new CobaltModelEvent();
 
-                        foreach ( $template as $event ){
+                        foreach ($template as $event) {
 
                                 unset($event['id']);
 
@@ -50,10 +51,10 @@ class CobaltModelTemplate extends JModelBase
                                 $event['due_date'] = CobaltHelperDate::formatDBDate(date("Y-m-d",strtotime($current_date." +".$event['day']." days")),false);
                                 $event['due_date_hour'] = "00:00:00";
 
-                                if ( !$event_model->store($event) ){
+                                if ( !$event_model->store($event) ) {
                                         return FALSE;
                                 }
-                        }       
+                        }
                 }
 
                 return TRUE;
@@ -65,8 +66,8 @@ class CobaltModelTemplate extends JModelBase
          * @param  [type] $template_id [description]
          * @return [type]              [description]
          */
-        public function getTemplate($template_id=null){
-
+        public function getTemplate($template_id=null)
+        {
                 $template_id = $template_id ? $template_id : $this->id;
 
                 $db =& JFactory::getDBO();
@@ -82,6 +83,5 @@ class CobaltModelTemplate extends JModelBase
                 return $events;
 
         }
-
 
 }

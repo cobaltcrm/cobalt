@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <legend><h3><?php echo JText::_("COBALT_ADMIN_UPLOAD_LOGO"); ?></h3></legend>
                                 <div class="fileupload fileupload-new" data-provides="fileupload">
                                   <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                    <?php if ( isset($this->site_logo) ){ ?>
+                                    <?php if ( isset($this->site_logo) ) { ?>
                                         <img src="<?php echo $this->site_logo; ?>" />
                                     <?php } else { ?>
                                         <img src="<?php echo JURI::base(); ?>libraries/crm/media/images/no-image.gif" />
@@ -67,11 +67,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         <fieldset class="adminform">
                             <legend><h3><?php echo JText::_("COBALT_ADMIN_CHOOSE_THEME"); ?></h3></legend>
                                 <label class="checkbox">
-                                    <input type="radio" name="id" value="1" <?php if ( $this->themes[0]['assigned'] ) { echo "checked"; } ?> />
+                                    <input type="radio" name="id" value="1" <?php if ($this->themes[0]['assigned']) { echo "checked"; } ?> />
                                     <?php echo JText::_("COBALT_ADMIN_STANDARD"); ?>
                                 </label>
                                 <label class="checkbox">
-                                    <input type="radio" name="id" value="2" <?php if ( $this->themes[1]['assigned'] ) { echo "checked"; } ?> >       
+                                    <input type="radio" name="id" value="2" <?php if ($this->themes[1]['assigned']) { echo "checked"; } ?> >
                                     <?php echo JText::_("COBALT_ADMIN_USER_DEFINED"); ?>
                                 </label>
                         </fieldset>

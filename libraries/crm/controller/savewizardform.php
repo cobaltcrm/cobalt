@@ -8,16 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerSaveWizardForm extends CobaltControllerDefault
 {
 
-    function execute(){
-
-    	$app = JFactory::getApplication();
+    public function execute()
+    {
+        $app = JFactory::getApplication();
         $type = $app->input->get('save_type');
-        switch($type){
+        switch ($type) {
             case "lead":
             case "contact":
                 $model = new CobaltModelPeople();

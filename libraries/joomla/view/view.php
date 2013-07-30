@@ -18,24 +18,24 @@ defined('JPATH_PLATFORM') or die;
  */
 interface JView
 {
-	/**
-	 * Method to escape output.
-	 *
-	 * @param   string  $output  The output to escape.
-	 *
-	 * @return  string  The escaped output.
-	 *
-	 * @since   12.1
-	 */
-	public function escape($output);
+    /**
+     * Method to escape output.
+     *
+     * @param string $output The output to escape.
+     *
+     * @return string The escaped output.
+     *
+     * @since   12.1
+     */
+    public function escape($output);
 
-	/**
-	 * Method to render the view.
-	 *
-	 * @return  string  The rendered view.
-	 *
-	 * @since   12.1
-	 * @throws  RuntimeException
-	 */
-	public function render();
+    /**
+     * Method to render the view.
+     *
+     * @return string The rendered view.
+     *
+     * @since   12.1
+     * @throws RuntimeException
+     */
+    public function render();
 }

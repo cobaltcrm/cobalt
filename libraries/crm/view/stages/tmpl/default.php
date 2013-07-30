@@ -43,10 +43,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                                <?php
                                 $i = 0;
-                                $ordering   = ($this->listOrder == 's.ordering'); 
-                                if ( count($this->stages) ) { foreach($this->stages as $key=>$stage){ ?>    
+                                $ordering   = ($this->listOrder == 's.ordering');
+                                if ( count($this->stages) ) { foreach ($this->stages as $key=>$stage) { ?>
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $stage['id']); ?>

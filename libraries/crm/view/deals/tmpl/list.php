@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 ?>
 <thead>
@@ -31,11 +31,11 @@ $app = JFactory::getApplication();
     $statuses = CobaltHelperDeal::getStatuses(null,true);
     $sources = CobaltHelperDeal::getSources(null);
     $users = CobaltHelperUsers::getUsers(null,TRUE);
-	$n = count($this->dealList);
-	$k = 0;
-		for($i=0;$i<$n;$i++) {
-			$deal = $this->dealList[$i];
-			$k = $i%2;
+    $n = count($this->dealList);
+    $k = 0;
+        for ($i=0;$i<$n;$i++) {
+            $deal = $this->dealList[$i];
+            $k = $i%2;
             $entryView = CobaltHelperView::getView('deals','entry','phtml');
             $entryView->deal = $deal;
             $entryView->stages = $stages;

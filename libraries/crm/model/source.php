@@ -20,8 +20,8 @@ class CobaltModelSource extends CobaltModelDefault
          * @param none
          * @return mixed $results
          */
-        function getRoiSources(){
-
+        function getRoiSources()
+        {
             //get DBO
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -42,10 +42,10 @@ class CobaltModelSource extends CobaltModelDefault
             //group data
             $query->group("s.id");
 
-            if ( $this->_id ){
-                if ( is_array($this->_id) ){
+            if ($this->_id) {
+                if ( is_array($this->_id) ) {
                     $query->where("s.id IN (".implode(',',$this->_id).")");
-                }else{
+                } else {
                     $query->where("s.id=$this->_id");
                 }
             }
@@ -55,11 +55,11 @@ class CobaltModelSource extends CobaltModelDefault
             $member_role = CobaltHelperUsers::getRole();
             $team_id = CobaltHelperUsers::getTeamId();
 
-            if ( $member_role != 'exec' ){
+            if ($member_role != 'exec') {
 
-                if ( $member_role == 'manager' ){
+                if ($member_role == 'manager') {
                     $query->where("u.team_id=$team_id");
-                }else{
+                } else {
                     $query->where("(d.owner_id=$user_id)");
                 }
 
@@ -68,13 +68,15 @@ class CobaltModelSource extends CobaltModelDefault
             //set query and load results
             $db->setQuery($query);
             $results = $db->loadAssocList();
+
             return $results;
         }
 
         /*
          * Populate the model based on user requests
          */
-        function populateState(){
+        function populateState()
+        {
             //get states
             $app = JFactory::getApplication();
             $filter_order = $app->getUserStateFromRequest('Source.filter_order','filter_order','s.name');

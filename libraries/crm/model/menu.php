@@ -12,7 +12,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelMenu extends JModelBase
 {
-    function store()
+    public function store()
     {
         $app = JFactory::getApplication();
 
@@ -30,26 +30,29 @@ class CobaltModelMenu extends JModelBase
         // Bind the form fields to the table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         return true;
     }
 
-    function getMenu(){
-
+    public function getMenu()
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -58,11 +61,13 @@ class CobaltModelMenu extends JModelBase
 
         $menu = $db->loadObject();
         $menu->menu_items = unserialize($menu->menu_items);
+
         return $menu;
 
     }
 
-    function getMenuTemplate(){
+    public function getMenuTemplate()
+    {
         return array('dashboard','deals','people','companies','calendar','documents','goals','reports');
     }
 

@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $c = count($this->people);
-	for( $i=0; $i<$c; $i++ ) {
-		
-		$person = $this->people[$i];
-		$k=$i%2;
-		$data = array(
-			array('ref'=>'k','data'=>$k),
-			array('ref'=>'person','data'=>$person)
-			);
-		$person_entry = CobaltHelperView::getView('people','people_dock_entry','phtml',array('person'=>$person,'k'=>$k));
-		echo $person_entry->render();
-	} ?>
+    for ($i=0; $i<$c; $i++) {
+
+        $person = $this->people[$i];
+        $k=$i%2;
+        $data = array(
+            array('ref'=>'k','data'=>$k),
+            array('ref'=>'person','data'=>$person)
+            );
+        $person_entry = CobaltHelperView::getView('people','people_dock_entry','phtml',array('person'=>$person,'k'=>$k));
+        echo $person_entry->render();
+    }

@@ -8,27 +8,27 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerFilterPeople extends CobaltControllerDefault
 {
 
-    function execute(){
-        
+    public function execute()
+    {
         //set view
         $view = CobaltHelperView::getView('people','raw');
         $view->setLayout('list');
-        
+
         //get deals
         $model = new CobaltModelPeople();
         $people = $model->getPeople();
-        
+
         //assign references
         $view->people = $people;
-        
+
         //display
         echo $view->render();
-        
+
     }
 
 }

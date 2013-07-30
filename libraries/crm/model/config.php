@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltModelConfig extends CobaltModelDefault
 {
 
-    function store($data=null)
+    public function store($data=null)
     {
 
         $app = JFactory::getApplication();
@@ -27,19 +27,19 @@ class CobaltModelConfig extends CobaltModelDefault
 
         $data['id'] = 1;
 
-        if ( !array_key_exists('id',$data) ){
+        if ( !array_key_exists('id',$data) ) {
             $data['created'] = $date;
         }
 
         $data['modified'] = $date;
 
-        if ( array_key_exists('imap_pass',$data) ){
+        if ( array_key_exists('imap_pass',$data) ) {
             $data['imap_pass'] = base64_encode($data['imap_pass']);
         }
 
         $data['show_help'] = array_key_exists('show_help',$data) ? $data['show_help'] : 0;
 
-        if ( array_key_exists("site_language",$data) ){
+        if ( array_key_exists("site_language",$data) ) {
             CobaltHelperConfig::saveLanguage($data['site_language']);
             unset($data['site_language']);
         }
@@ -47,26 +47,29 @@ class CobaltModelConfig extends CobaltModelDefault
         // Bind the form fields to the table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         return true;
     }
 
-    function _buildQuery(){
-
+    public function _buildQuery()
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -77,15 +80,15 @@ class CobaltModelConfig extends CobaltModelDefault
 
     }
 
-    function getConfig($array=FALSE){
-
+    public function getConfig($array=FALSE)
+    {
         $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
-        if ( $array ){
+        if ($array) {
             $config = $db->loadAssoc();
             $config['imap_pass'] = base64_decode($config['imap_pass']);
-        }else{
+        } else {
             $config = $db->loadObject();
             $config->imap_pass = base64_decode($config->imap_pass);
         }
@@ -96,9 +99,9 @@ class CobaltModelConfig extends CobaltModelDefault
 
     /**
      * Get an RSS feed for the Changelog on Cobalt.com
-     * @return array    The RSS feed and display parameters
+     * @return array The RSS feed and display parameters
      */
-    function getUpdatesRSS()
+    public function getUpdatesRSS()
     {
         $feed = array();
 
@@ -121,6 +124,7 @@ class CobaltModelConfig extends CobaltModelDefault
         $feed['doc'] = $rssDoc;
         */
         $feed['doc'] = "";
+
         return $feed;
     }
 

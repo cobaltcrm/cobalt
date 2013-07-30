@@ -8,20 +8,20 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewGlobalHtml extends JViewHTML
 {
 
     public function render()
-    {   
+    {
         //app
         $app = JFactory::getApplication();
         //document
         $document = JFactory::getDocument();
 
         //javascripts
-        if($this->getLayout()=='header') {
+        if ($this->getLayout()=='header') {
             $document->addScriptDeclaration('var base_url = "<?php echo JURI::base(); ?>";');
         }
 

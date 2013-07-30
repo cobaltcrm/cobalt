@@ -24,99 +24,101 @@ class CobaltModelCompany extends CobaltModelDefault
         /**
          * Constructor
          */
-        function __construct() {
-
+        function __construct()
+        {
             parent::__construct();
             $app = JFactory::getApplication();
             $this->_view = $app->input->get('view');
             $this->_layout = str_replace('_filter','',$app->input->get('layout'));
         }
 
-		/**
-		 * Method to store a record
-		 *
-		 * @return    boolean    True on success
-		 */
-		function store($data=null)
-		{
+        /**
+         * Method to store a record
+         *
+         * @return    boolean    True on success
+         */
+        function store($data=null)
+        {
             $app = JFactory::getApplication();
             $db = JFactory::getDBO();
 
-			//Load Tables
-			$row = JTable::getInstance('company','Table');
+            //Load Tables
+            $row = JTable::getInstance('company','Table');
             $oldRow = JTable::getInstance('company','Table');
 
-            if ( $data == null ){
-		      $data = $app->input->getRequest('post');
+            if ($data == null) {
+              $data = $app->input->getRequest('post');
             }
 
-			//date generation
-			$date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            //date generation
+            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
 
-			if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ){
-				$data['created'] = $date;
+            if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ) {
+                $data['created'] = $date;
                 $status = 'created';
-			} else {
+            } else {
                 $row->load($data['id']);
                 $oldRow->load($data['id']);
                 $status = 'updated';
             }
 
-			$data['modified'] = $date;
+            $data['modified'] = $date;
             $data['owner_id'] = CobaltHelperUsers::getUserId();
 
             //generate custom field string
             $customArray = array();
-            foreach( $data as $name => $value ){
-                if( strstr($name,'custom_') && !strstr($name,'_input') && !strstr($name,"_hidden") ){
+            foreach ($data as $name => $value) {
+                if ( strstr($name,'custom_') && !strstr($name,'_input') && !strstr($name,"_hidden") ) {
                     $id = str_replace('custom_','',$name);
                     $customArray[] = array('custom_field_id'=>$id,'custom_field_value'=>$value);
                     unset($data[$name]);
                 }
             }
 
-		    // Bind the form fields to the table
-		    if (!$row->bind($data)) {
-		        $this->setError($db->getErrorMsg());
-		        return false;
-		    }
+            // Bind the form fields to the table
+            if (!$row->bind($data)) {
+                $this->setError($db->getErrorMsg());
+
+                return false;
+            }
 
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onBeforeCompanySave', array(&$row));
 
+            // Make sure the record is valid
+            if (!$row->check()) {
+                $this->setError($db->getErrorMsg());
 
-		    // Make sure the record is valid
-		    if (!$row->check()) {
-		        $this->setError($db->getErrorMsg());
-		        return false;
-		    }
+                return false;
+            }
 
-		    // Store the web link table to the database
-		    if (!$row->store()) {
-		        $this->setError($db->getErrorMsg());
-		        return false;
-		    }
+            // Store the web link table to the database
+            if (!$row->store()) {
+                $this->setError($db->getErrorMsg());
+
+                return false;
+            }
 
             $id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $db->insertId();
 
             CobaltHelperActivity::saveActivity($oldRow, $row,'company', $status);
 
             //if we receive no custom post data do not modify the custom fields
-            if ( count($customArray) > 0 ){
+            if ( count($customArray) > 0 ) {
                 CobaltHelperCobalt::storeCustomCf($id,$customArray,'company');
             }
 
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onAfterCompanySave', array(&$row));
 
-		    return $row;
-		}
+            return $row;
+        }
 
         /**
          * Build our db query object
          */
-        function _buildQuery(){
-
+        function _buildQuery()
+        {
             $app = JFactory::getApplication();
 
             /** Large SQL Selections **/
@@ -131,34 +133,34 @@ class CobaltModelCompany extends CobaltModelDefault
             $type = $this->_type;
             $view = $app->input->get('view');
 
-            if ( !$id ){
+            if (!$id) {
 
                 $session = JFactory::getSession();
 
                 //determine whether we are searching for a team or user
-                if ( $user ){
+                if ($user) {
                     $session->set('company_team_filter',null);
                 }
-                if ( $team ){
+                if ($team) {
                     $session->set('company_user_filter',null);
                 }
 
                 //set user session data
-                if ( $type != null ) {
+                if ($type != null) {
                     $session->set('company_type_filter',$type);
                 } else {
                     $sess_type = $session->get('company_type_filter');
                     $type = $sess_type;
                 }
-                if ( $user != null ) {
+                if ($user != null) {
                     $session->set('company_user_filter',$user);
                 } else {
                     $sess_user = $session->get('company_user_filter');
                     $user = $sess_user;
                 }
-                if ( $team != null ){
+                if ($team != null) {
                     $session->set('company_team_filter',$team);
-                }else{
+                } else {
                     $sess_team = $session->get('company_team_filter');
                     $team = $sess_team;
                 }
@@ -171,7 +173,7 @@ class CobaltModelCompany extends CobaltModelDefault
             $query = $db->getQuery(true);
             $export = $app->input->get('export');
 
-            if ( $export ){
+            if ($export) {
 
                 $select_string  = 'c.name,c.description,c.address_1,c.address_2,c.address_city,';
                 $select_string .= 'c.address_state,c.address_zip,c.address_country,c.website,c.created,c.modified';
@@ -179,22 +181,22 @@ class CobaltModelCompany extends CobaltModelDefault
                 $query->select($select_string);
                 $query->from("#__companies as c");
                 $query->leftJoin("#__users AS u on u.id = c.owner_id");
-            }else{
+            } else {
                 $query->select('c.*');
                 $query->from("#__companies as c");
                 $query->leftJoin("#__users AS u on u.id = c.owner_id");
             }
 
-            if ( !$id ){
+            if (!$id) {
 
                 //get current date
                 $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
 
                 //filter for type
-                if ( $type != null && $type != "all" ){
+                if ($type != null && $type != "all") {
 
                     //filter for companies with tasks due today
-                    if ( $type == 'today' ){
+                    if ($type == 'today') {
                         $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type='company'");
                         $query->join('INNER',"#__events as event on event.id = event_company_cf.event_id");
                         $query->where("event.due_date='$date'");
@@ -202,7 +204,7 @@ class CobaltModelCompany extends CobaltModelDefault
                     }
 
                     //filter for companies and deals//tasks due tomorrow
-                    if ( $type == "tomorrow" ){
+                    if ($type == "tomorrow") {
                         $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type='company'");
                         $query->join('INNER',"#__events as event on event.id = event_company_cf.event_id");
@@ -211,19 +213,19 @@ class CobaltModelCompany extends CobaltModelDefault
                     }
 
                     //filter for companies updated in the last 30 days
-                    if ( $type == "updated_thirty" ){
+                    if ($type == "updated_thirty") {
                         $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("c.modified >'$last_thirty_days'");
                     }
 
                      //filter for past companies// last contacted 30 days ago or longer
-                    if ( $type == "past" ){
+                    if ($type == "past") {
                         $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("c.modified <'$last_thirty_days'");
                     }
 
                     //filter for recent companies
-                    if ( $type == "recent" ) {
+                    if ($type == "recent") {
                         $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("c.modified >'$last_thirty_days'");
                     }
@@ -234,17 +236,17 @@ class CobaltModelCompany extends CobaltModelDefault
 
                 /** company name filter **/
                 $company_name = $this->getState('Company.'.$view.'_name');
-                if ( $company_name != null ){
+                if ($company_name != null) {
                     $query->where("( c.name LIKE '%".$company_name."%' )");
                 }
 
             }
 
             //search for specific companies
-            if ( $id != null ){
-                if ( is_array($id) ){
+            if ($id != null) {
+                if ( is_array($id) ) {
                     $query->where("c.id IN (".implode(',',$id).")");
-                }else{
+                } else {
                     $query->where("c.id=$id");
                 }
             }
@@ -255,12 +257,12 @@ class CobaltModelCompany extends CobaltModelDefault
             $team_id = CobaltHelperUsers::getTeamId();
 
             //filter based on specified user
-            if ( $user AND $user != 'all' ){
+            if ($user AND $user != 'all') {
                 $query->where("c.owner_id = ".$user);
             }
 
             //filter based on team
-            if ( $team ){
+            if ($team) {
                 $team_members = CobaltHelperUsers::getTeamUsers($team,TRUE);
                 $query->where("c.owner_id IN (".implode(',',$team_members).")");
             }
@@ -275,13 +277,13 @@ class CobaltModelCompany extends CobaltModelDefault
 
         }
 
-		/*
-		 * Method to access companies
-		 *
-		 * @return mixed
-		 */
-		function getCompanies($id=null,$type=null,$user=null,$team=null){
-
+        /*
+         * Method to access companies
+         *
+         * @return mixed
+         */
+        function getCompanies($id=null,$type=null,$user=null,$team=null)
+        {
             $this->_id = $id;
             $this->_type = $type;
             $this->_user = $user;
@@ -298,11 +300,11 @@ class CobaltModelCompany extends CobaltModelDefault
              * Set query limits and load results
              */
 
-            if(!CobaltHelperTemplate::isMobile()) {
+            if (!CobaltHelperTemplate::isMobile()) {
                 $limit = $this->getState($this->_view.'_limit');
                 $limitStart = $this->getState($this->_view.'_limitstart');
-                if (  !$this->_id && $limit != 0 ){
-                    if ( $limitStart >= $this->getTotal() ){
+                if (!$this->_id && $limit != 0) {
+                    if ( $limitStart >= $this->getTotal() ) {
                         $limitStart = 0;
                         $limit = 10;
                         $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
@@ -318,16 +320,16 @@ class CobaltModelCompany extends CobaltModelDefault
             $companies = $db->loadAssocList();
 
             //generate query to join people
-            if ( count($companies) ){
+            if ( count($companies) ) {
                 $app = JFactory::getApplication();
                 $export = $app->input->get('export');
 
-                if ( !$export ){
+                if (!$export) {
 
-                    foreach ( $companies as $key => $company ) {
+                    foreach ($companies as $key => $company) {
 
                         /* Tweets */
-                        if($company['twitter_user']!="" && $company['twitter_user']!=" ") {
+                        if ($company['twitter_user']!="" && $company['twitter_user']!=" ") {
                             $companies[$key]['tweets'] = CobaltHelperTweets::getTweets($company['twitter_user']);
                         }
 
@@ -342,10 +344,10 @@ class CobaltModelCompany extends CobaltModelDefault
                         $deals = $dealModel->getDeals();
                         $companies[$key]['pipeline'] = 0;
                         $companies[$key]['won_deals'] = 0;
-                        for($i=0;$i<count($deals);$i++) {
+                        for ($i=0;$i<count($deals);$i++) {
                             $deal = $deals[$i];
                             $companies[$key]['pipeline'] += $deal['amount'];
-                            if($deal['percent']==100) {
+                            if ($deal['percent']==100) {
                                 $companies[$key]['won_deals'] += $deal['amount'];
                             }
                         }
@@ -375,21 +377,22 @@ class CobaltModelCompany extends CobaltModelDefault
 
             //return results
             return $companies;
-		}
+        }
 
-        function getCompany($id=null){
+        function getCompany($id=null)
+        {
             $app = JFactory::getApplication();
             $id = $id ? $id : $app->input->get('id');
 
-            if ( $id > 0 ){
+            if ($id > 0) {
                 $company = $this->getCompanies($id);
-                if ( is_array($company) && count($company) >= 1 ){
+                if ( is_array($company) && count($company) >= 1 ) {
                     return $company[0];
-                }else{
-                    return (array)JTable::getInstance('Company','Table');
+                } else {
+                    return (array) JTable::getInstance('Company','Table');
                 }
-            }else{
-                return (array)JTable::getInstance('Company','Table');
+            } else {
+                return (array) JTable::getInstance('Company','Table');
             }
         }
 
@@ -397,15 +400,15 @@ class CobaltModelCompany extends CobaltModelDefault
          * method to get list of companies
          */
 
-        function getCompanyList($company_name=null){
-
+        function getCompanyList($company_name=null)
+        {
             //db object
             $db = JFactory::getDBO();
             //gen query
             $query = $db->getQuery(true);
             $query->select("name,id FROM #__companies");
 
-            if ( $company_name ){
+            if ($company_name) {
                 $company_name = ucwords($company_name);
                 $query->where("LOWER(name) LIKE '%".$company_name."%'");
             }
@@ -422,14 +425,16 @@ class CobaltModelCompany extends CobaltModelDefault
 
         }
 
-        function getCompanyNames($json=FALSE){
+        function getCompanyNames($json=FALSE)
+        {
             $names = $this->getCompanyList();
             $return = array();
-            if ( count($names) > 0 ){
-                foreach ( $names as $key => $name ){
+            if ( count($names) > 0 ) {
+                foreach ($names as $key => $name) {
                     $return[] = array('label'=>$name['name'],'value'=>$name['id']);
                 }
             }
+
             return $json ? json_encode($return) : $return;
         }
 
@@ -451,7 +456,8 @@ class CobaltModelCompany extends CobaltModelDefault
             return $existingCompany;
         }
 
-        function getCompanyName($idOrName){
+        function getCompanyName($idOrName)
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select('c.name');
@@ -466,7 +472,8 @@ class CobaltModelCompany extends CobaltModelDefault
         /**
          * Populate user state requests
          */
-        function populateState(){
+        function populateState()
+        {
             //get states
             $app = JFactory::getApplication();
 

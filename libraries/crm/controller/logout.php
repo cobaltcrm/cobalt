@@ -8,19 +8,19 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerLogout extends CobaltControllerDefault
 {
-	    function execute() 
-	    {	
-	    	$app = JFactory::getApplication();
-			if($app->logout()) {
-				$app->redirect(base64_decode($app->input->get('return')));
-			}else{
-				$app->redirect(base64_decode($app->input->get('return')));
-			}
+        function execute()
+        {
+            $app = JFactory::getApplication();
+            if ($app->logout()) {
+                $app->redirect(base64_decode($app->input->get('return')));
+            } else {
+                $app->redirect(base64_decode($app->input->get('return')));
+            }
 
-	    }
-	
+        }
+
 }

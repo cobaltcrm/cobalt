@@ -12,4 +12,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <script type="text/javascript">
        setTimeout(function(){window.top.location = 'index.php?view=admindocuments';},1000);
 </script>
-<?php echo CRMText::_('COBALT_UPLOAD_SUCCESS'); ?>
+<?php echo CRMText::_('COBALT_UPLOAD_SUCCESS');

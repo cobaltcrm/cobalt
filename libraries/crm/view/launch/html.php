@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewLaunchHtml extends JViewHtml{
-
-    function render($tpl = null)
+class CobaltViewLaunchHtml extends JViewHtml
+{
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -20,7 +20,7 @@ class CobaltViewLaunchHtml extends JViewHtml{
         /** Menu Links **/
         $side_menu = CobaltHelperMenu::getMenuModules();
         $this->side_menu = $side_menu;
-        
+
         //display
         return parent::render();
     }

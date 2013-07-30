@@ -14,15 +14,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  {
 
     //get users depending on logged in member type
-    public static function getUsers($id=null,$idsOnly=FALSE){
-
+    public static function getUsers($id=null,$idsOnly=FALSE)
+    {
         //filter based on current logged in user
         $user = CobaltHelperUsers::getUserId();
         $user_role = CobaltHelperUsers::getRole();
         $results = array();
 
         //user role filters
-        if( $user_role != 'basic' ){
+        if ($user_role != 'basic') {
 
             //get db
             $db = JFactory::getDBO();
@@ -35,12 +35,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $query->from("#__users");
 
             //exec
-            if ( $id ){
+            if ($id) {
                 $query->where("id=$id");
-            }else if ( $user_role == 'exec') {
+            } elseif ($user_role == 'exec') {
                 $query->where("id<>".$user);
             //manager
-            }else if ( $user_role == 'manager' ){
+            } elseif ($user_role == 'manager') {
                 $team_id = CobaltHelperUsers::getTeamId();
                 $query->where('team_id='.$team_id.' AND id <> '.$user);
             }
@@ -53,9 +53,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
 
         //assign other user info
-        if ( !$idsOnly ){
-            if ( count($results) > 0 ){
-                foreach ( $results as $key=>$user ){
+        if (!$idsOnly) {
+            if ( count($results) > 0 ) {
+                foreach ($results as $key=>$user) {
                     $results[$key]['emails'] = CobaltHelperUsers::getEmails($user['id']);
                 }
             }
@@ -65,21 +65,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $results;
     }
 
-    public static function getFirstName($id=null){
-
+    public static function getFirstName($id=null)
+    {
         $id = $id ? $id : self::getLoggedInUser()->id;
 
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->clear()->select("first_name")->from("#__users")->where("id=".$id);
         $db->setQuery($query);
+
         return $db->loadResult();
 
     }
 
     //get all company users
-    public static function getCompanyUsers($id=null){
-
+    public static function getCompanyUsers($id=null)
+    {
         //filter based on current logged in user
         $user = JFactory::getUser();
         $user_role = CobaltHelperUsers::getRole();
@@ -99,7 +100,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $results = $db->loadAssocList();
 
         //assign other user info
-        foreach ( $results as $key=>$user ){
+        foreach ($results as $key=>$user) {
             $results[$key]['emails'] = CobaltHelperUsers::getEmails($user['id']);
         }
 
@@ -109,13 +110,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     /**
      * Get user email address for a user
-     * @param int $id user id to get emails for
+     * @param  int   $id user id to get emails for
      * @return mixed $results db results
      */
-    public static function getEmails($id=null){
-
+    public static function getEmails($id=null)
+    {
         //Cobalt User ID
-        if ( !$id ){
+        if (!$id) {
             $id = CobaltHelperUsers::getUserId();
         }
 
@@ -145,8 +146,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //return current logged in Cobalt user ID based on Joomla Id
-    public static function getUserId(){
-
+    public static function getUserId()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -161,18 +162,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return id
         $db->setQuery($query);
+
         return $db->loadResult();
 
     }
 
     //return user role
-    public static function getRole($user_id=null){
+    public static function getRole($user_id=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //logged in user
-        if ( !$user_id ){
+        if (!$user_id) {
             $user_id = JFactory::getUser()->id;
         }
 
@@ -183,11 +186,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return id
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 
     //return user team id
-    public static function getTeamId($user_id=null){
+    public static function getTeamId($user_id=null)
+    {
        //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -208,7 +213,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //return teams to execs
-    public static function getTeams($id=null){
+    public static function getTeams($id=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -219,13 +225,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->leftJoin("#__users AS u ON u.id = t.leader_id AND u.published=1");
 
         //search for specific team
-        if ( $id ){
+        if ($id) {
             $query->where("t.team_id=$id");
         }
 
         $user_role = CobaltHelperUsers::getRole();
         $user_id = CobaltHelperUsers::getUserId();
-        if ( $user_role == 'manager' ){
+        if ($user_role == 'manager') {
             $team_id = CobaltHelperUsers::getTeamId();
             $query->where('t.team_id='.$team_id);
         }
@@ -238,17 +244,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
     /**
      * Get users associated with a specific team
-     * @param int $id specific team id requested
+     * @param  int   $id specific team id requested
      * @return mixed $results results from database
      */
-    public static function getTeamUsers($id=null,$idsOnly=FALSE){
+    public static function getTeamUsers($id=null,$idsOnly=FALSE)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        if ( $idsOnly ){
+        if ($idsOnly) {
             $select = "u.id";
-        }else{
+        } else {
             $select = "u.*";
         }
 
@@ -260,18 +267,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         //return results
         $db->setQuery($query);
 
-
-        if ( $idsOnly ){
+        if ($idsOnly) {
             $users = $db->loadColumn();
-        }else{
+        } else {
             $users = $db->loadAssocList();
         }
 
         return $users;
     }
 
-    public static function getAllSharedUsers(){
-
+    public static function getAllSharedUsers()
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -280,7 +286,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         $role = CobaltHelperUsers::getRole();
 
-        switch ( $role ){
+        switch ($role) {
             case "manager":
             case "basic":
                 $query->where("team_id=".CobaltHelperUsers::getTeamId());
@@ -294,8 +300,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    public static function getItemSharedUsers($itemId,$itemType){
-
+    public static function getItemSharedUsers($itemId,$itemType)
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -320,8 +326,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      * @param $role String User role to filter for
      * @return int Count of deals returned from database
      */
-    public static function getDealCount($id,$team,$role){
-
+    public static function getDealCount($id,$team,$role)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -332,10 +338,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->leftJoin("#__users AS u ON u.id = d.owner_id AND u.published=1");
 
         //filter based on id and role
-        if  ( $role != 'exec' ){
-            if ( $role == 'manager' ){
+        if ($role != 'exec') {
+            if ($role == 'manager') {
                 $query->where("u.team_id=$team");
-            }else{
+            } else {
                 $query->where("d.owner_id=$id");
             }
         }
@@ -343,6 +349,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return results
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 
@@ -353,19 +360,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      * @param $role String User role to filter for
      * @return int Count of people returned from database
      */
-    public static function getPeopleCount($id=null,$team=null,$role=null){
-
+    public static function getPeopleCount($id=null,$team=null,$role=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        if ( !$id ){
+        if (!$id) {
             $id = CobaltHelperUsers::getUserId();
         }
-        if ( !$team ){
+        if (!$team) {
             $team = CobaltHelperUsers::getTeamId();
         }
-        if ( !$role ){
+        if (!$role) {
             $role = CobaltHelperUsers::getRole();
         }
 
@@ -375,10 +382,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->leftJoin("#__users AS u ON ( u.id = p.owner_id OR u.id = p.assignee_id ) AND u.published=1");
 
         //filter based on id and role
-        if  ( $role != 'exec' ){
-            if ( $role == 'manager' ){
+        if ($role != 'exec') {
+            if ($role == 'manager') {
                 $query->where("u.team_id=$team");
-            }else{
+            } else {
                 $query->where("( p.owner_id=$id OR p.assignee_id=$id )");
             }
         }
@@ -387,6 +394,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return results
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 
@@ -397,13 +405,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      * @param $role String User role to filter for
      * @return int Count of people returned from database
      */
-    public static function getPeopleEmails($id=null){
-
+    public static function getPeopleEmails($id=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        if ( !$id ){
+        if (!$id) {
             $id = CobaltHelperUsers::getUserId();
         }
 
@@ -418,8 +426,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //clean results
         $return = array();
-        if ( $results ){
-            foreach ( $results as $key=>$user ){
+        if ($results) {
+            foreach ($results as $key=>$user) {
                 $return[$user['id']] = $user['email'];
             }
         }
@@ -434,8 +442,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      * @param $role String User role to filter for
      * @return int Count of companies returned from database
      */
-    public static function getCompanyCount($id,$team,$role){
-
+    public static function getCompanyCount($id,$team,$role)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -447,10 +455,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //filter based on id and role
         /**
-        if  ( $role != 'exec' ){
-            if ( $role == 'manager' ){
+        if ($role != 'exec') {
+            if ($role == 'manager') {
                 $query->where("u.team_id=$team");
-            }else{
+            } else {
                 $query->where(array("c.owner_id=$id"));
             }
         }
@@ -460,24 +468,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return results
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 
     /**
      * Get commission rates for users
-     * @param int $id user id requested else logged in user id is used
+     * @param  int $id user id requested else logged in user id is used
      * @return int commission rate
      */
-    public static function getCommissionRate($id=null){
+    public static function getCommissionRate($id=null)
+    {
        //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //logged in user
-        if ( $id == null ){
+        if ($id == null) {
             $user = JFactory::getUser();
             $user_id = CobaltHelperUsers::getUserId();
-        }else{
+        } else {
             $user_id = $id;
         }
 
@@ -489,18 +499,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return id
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 
-
-    public static function isFullscreen() {
-
+    public static function isFullscreen()
+    {
         return true;
 
     }
 
-    public static function getDateFormat($php=TRUE){
-
+    public static function getDateFormat($php=TRUE)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -518,7 +528,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $format = $db->loadResult();
 
-        if ( !$php ){
+        if (!$php) {
             $format = str_replace("m","mm",$format);
             $format = str_replace("d","dd",$format);
             $format = str_replace("y","yy",$format);
@@ -528,17 +538,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    public static function getTimeFormat($id=null){
-
+    public static function getTimeFormat($id=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //logged in user
-        if ( $id == null ){
+        if ($id == null) {
             $user = JFactory::getUser();
             $user_id = CobaltHelperUsers::getUserId();
-        }else{
+        } else {
             $user_id = $id;
         }
 
@@ -549,21 +559,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return id
         $db->setQuery($query);
+
         return $db->loadResult();
 
     }
 
-    public static function getTimezone($id=null){
-
+    public static function getTimezone($id=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //logged in user
-        if ( $id == null ){
+        if ($id == null) {
             $user = JFactory::getUser();
             $user_id = CobaltHelperUsers::getUserId();
-        }else{
+        } else {
             $user_id = $id;
         }
 
@@ -574,6 +585,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //return id
         $db->setQuery($query);
+
         return $db->loadResult();
 
     }
@@ -583,7 +595,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $baseUser = JFactory::getUser();
         $user_id = $baseUser->get('id');
 
-        if($user_id > 0) {
+        if ($user_id > 0) {
             $db = JFactory::getDBO();
 
             $query = $db->getQuery(true);
@@ -613,9 +625,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->where('c.id = '.$db->Quote($user_id));
         $db->setQuery($query);
 
-        if ( !$array ){
+        if (!$array) {
             $user = $db->loadObject();
-        }else{
+        } else {
             $user = $db->loadColumn();
         }
 
@@ -623,8 +635,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     /** Determine if logged in user ( or specified user ) is an administrator **/
-    public static function isAdmin($user_id=null){
-
+    public static function isAdmin($user_id=null)
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -637,17 +649,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $user = $db->loadObject();
 
         $query = $db->getQuery(true);
-        if ( $user ){
+        if ($user) {
             return $user->admin == 1;
-        }else{
+        } else {
             return false;
         }
 
     }
 
     /** Determine if logged in user ( or specified user ) can delete items **/
-    public static function canDelete($user_id=null){
-
+    public static function canDelete($user_id=null)
+    {
         $db = JFactory::getDBO();
 
         $user_id = $user_id ? $user_id : CobaltHelperUsers::getUserId();
@@ -664,8 +676,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
      /** Determine if logged in user ( or specified user ) can export items **/
-    public static function canExport($user_id=null){
-
+    public static function canExport($user_id=null)
+    {
         $db = JFactory::getDBO();
 
         $user_id = $user_id ? $user_id : CobaltHelperUsers::getUserId();
@@ -681,18 +693,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    public static function authenticateAdmin(){
-        if (!self::isAdmin()){
+    public static function authenticateAdmin()
+    {
+        if (!self::isAdmin()) {
             $app = JFactory::getApplication();
             $app->redirect('index.php');
         }
     }
 
     //get assigned language for users from database
-    public static function getLanguage(){
+    public static function getLanguage()
+    {
         $userId = CobaltHelperUsers::getUserId();
 
-        if ( $userId > 0 ){
+        if ($userId > 0) {
 
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -704,14 +718,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return ( $lang != "" && $lang != null ) ? $lang : JFactory::getConfig()->get('language');
 
         } else {
-
             return JFactory::getConfig()->get('language');
 
         }
     }
 
     //load assigned language for users into joomla
-    public static function loadLanguage(){
+    public static function loadLanguage()
+    {
         $lng = self::getLanguage();
         $lang = JFactory::getLanguage();
         $lang->load("joomla",JPATH_BASE,$lng);

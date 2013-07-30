@@ -8,24 +8,24 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerUpdate extends CobaltControllerDefault
 {
 
-	function execute()
-	{
-			
-		$app = JFactory::getApplication();
-		$modelName = 'CobaltModel'.ucwords($app->input->get('model'));
+    public function execute()
+    {
 
-		$model = new $modelName();
+        $app = JFactory::getApplication();
+        $modelName = 'CobaltModel'.ucwords($app->input->get('model'));
 
-		//get tasks
-		$items = $model->getItems();
-		
-		//return json list of tasks
-		echo json_encode($items);
-		
-	}
+        $model = new $modelName();
+
+        //get tasks
+        $items = $model->getItems();
+
+        //return json list of tasks
+        echo json_encode($items);
+
+    }
 }

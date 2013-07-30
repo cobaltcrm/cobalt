@@ -20,18 +20,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         </tr>
     </thead>
     <tbody>
-        <?php 
-            for($i=0;$i<count($this->goals);$i++){
+        <?php
+            for ($i=0;$i<count($this->goals);$i++) {
                 $goal = $this->goals[$i]; ?>
                   <tr id="<?php echo $goal['id']; ?>">
                       <td><?php echo $goal['name']; ?></td>
-                      <?php if ( $goal['assigned_type'] == 'member' ){ ?>
+                      <?php if ($goal['assigned_type'] == 'member') { ?>
                           <td><?php echo $goal['first_name']." ".$goal['last_name']; ?></td>
                       <?php } ?>
-                      <?php if ( $goal['assigned_type'] == 'team' ){ ?>
+                      <?php if ($goal['assigned_type'] == 'team') { ?>
                           <td><?php echo $goal['first_name']." ".$goal['last_name']; ?><?php echo CRMText::_('COBALT_S_TEAM'); ?></td>
                       <?php } ?>
-                      <?php if ( $goal['assigned_type'] == 'company' ){ ?>
+                      <?php if ($goal['assigned_type'] == 'company') { ?>
                           <td><?php echo ucwords(CRMText::_('COBALT_THE_COMPANY')); ?></td>
                       <?php } ?>
                       <td><?php echo date("n/j/y",strtotime($goal['end_date'])); ?></td>

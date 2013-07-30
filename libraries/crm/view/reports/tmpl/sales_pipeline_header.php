@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 ?>
 <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <?php if ( $app->input->get('view') != "print" ){ ?>
+                <?php if ( $app->input->get('view') != "print" ) { ?>
                      <th class="checkbox_column"><input type="checkbox" onclick="selectAll(this);" /></th>
                  <?php } ?>
                 <th><div class="sort_order"><a class="d.name" onclick="sortTable('d.name',this)"><?php echo ucwords(CRMText::_('COBALT_DEAL_NAME')); ?></a></div></th>
@@ -28,7 +28,7 @@ $app = JFactory::getApplication();
                 <th><div class="sort_order"><a class="d.modified" onclick="sortTable('d.modified',this)"><?php echo ucwords(CRMText::_('COBALT_MODIFIED')); ?></a></div></th>
                 <th><div class="sort_order"><a class="d.created" onclick="sortTable('d.created',this)"><?php echo ucwords(CRMText::_('COBALT_CREATED')); ?></a></div></th>
             </tr>
-            <?php if ( $app->input->get('view') != "print" ){ ?>
+            <?php if ( $app->input->get('view') != "print" ) { ?>
             <tr>
                 <?php $deal_filter = $this->state->get('Deal.sales_pipeline_name'); ?>
                 <th></th>
@@ -36,20 +36,20 @@ $app = JFactory::getApplication();
                 <th>
                     <select class="span1 filter_input" name="owner_id" id="owner_id">
                         <?php $user_filter = $this->state->get('Deal.sales_pipeline_owner_id'); ?>
-                        <?php if ( CobaltHelperUsers::getRole() != 'basic' ){ ?>
+                        <?php if ( CobaltHelperUsers::getRole() != 'basic' ) { ?>
                             <?php   $all = array();
-                                $all[] = JHTML::_('select.option','all',CRMText::_('COBALT_ALL')); 
+                                $all[] = JHTML::_('select.option','all',CRMText::_('COBALT_ALL'));
                                 echo JHtml::_('select.options',$all,'value','text',$user_filter,true);
                             ?>
                         <?php } ?>
                          <optgroup label="<?php echo CRMText::_('COBALT_MEMBERS'); ?>" class="member" id="member" >
                             <?php   $member = array();
-                                    $member[] = JHTML::_('select.option',CobaltHelperUsers::getUserId(),CRMText::_('COBALT_ME')); 
+                                    $member[] = JHTML::_('select.option',CobaltHelperUsers::getUserId(),CRMText::_('COBALT_ME'));
                                     echo JHtml::_('select.options',$member,'value','text',$user_filter,true);
                             ?>
                             <?php echo JHtml::_('select.options', $this->user_names, 'value', 'text', $user_filter, true); ?>
                         </optgroup>
-                        <?php if ( CobaltHelperUsers::getRole() == 'exec' ){ ?>
+                        <?php if ( CobaltHelperUsers::getRole() == 'exec' ) { ?>
                         <optgroup label="<?php echo CRMText::_('COBALT_TEAM'); ?>" class="team" id="team" >
                             <?php echo JHtml::_('select.options', $this->team_names, 'value', 'text', $user_filter, true); ?>
                         </optgroup>
@@ -104,7 +104,7 @@ $app = JFactory::getApplication();
         </thead>
         <tfoot>
             <tr>
-                <?php if ( $app->input->get('view') != "print" ){ ?>
+                <?php if ( $app->input->get('view') != "print" ) { ?>
                     <td>&nbsp;</td>
                 <?php } ?>
                 <td><?php echo CRMText::_('COBALT_FILTERED_TOTAL'); ?></td>
@@ -113,12 +113,12 @@ $app = JFactory::getApplication();
                 <td>
                     <?php echo CobaltHelperConfig::getCurrency(); ?>
                     <span id="filtered_amount">
-                    <?php if ( count($this->reports) > 0 ){
+                    <?php if ( count($this->reports) > 0 ) {
                         $total = 0;
-                        foreach ( $this->reports as $key=>$report ){
+                        foreach ($this->reports as $key=>$report) {
                             $total += $report['amount'];
                         }
-                       echo $total; 
+                       echo $total;
                     }?>
                     </span>
                 </td>
@@ -130,7 +130,7 @@ $app = JFactory::getApplication();
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <?php if ( $app->input->get('view') != "print" ){ ?>
+                <?php if ( $app->input->get('view') != "print" ) { ?>
                     <td>&nbsp;</td>
                 <?php } ?>
                 <td><?php echo CRMText::_('COBALT_SALES_PIPELINE'); ?></td>
@@ -139,12 +139,12 @@ $app = JFactory::getApplication();
                 <td>
                     <?php echo CobaltHelperConfig::getCurrency(); ?>
                     <span id="total_amount">
-                    <?php if ( count($this->reports) > 0 ){
+                    <?php if ( count($this->reports) > 0 ) {
                         $total = 0;
-                        foreach ( $this->reports as $key=>$report ){
+                        foreach ($this->reports as $key=>$report) {
                             $total += $report['amount'];
                         }
-                       echo $total; 
+                       echo $total;
                     }?>
                     </span>
                 </td>

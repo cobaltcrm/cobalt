@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if ( count($this->templates) ) { foreach($this->templates as $key=>$template){ ?>
+                                    <?php if ( count($this->templates) ) { foreach ($this->templates as $key=>$template) { ?>
                                         <tr class="row<?php echo $i % 2; ?>">
                                             <td class="center">
                                                 <?php echo JHtml::_('grid.id', $key, $template['id']); ?>

@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewNoteHtml extends JViewHtml
 {
-	function render()
-	{
+    public function render()
+    {
 
       $app = JFactory::getApplication();
-  		$type = $app->input->get('type');
-  		$id = $app->input->get('id');
-  		$view = $app->input->get('view');
+          $type = $app->input->get('type');
+          $id = $app->input->get('id');
+          $view = $app->input->get('view');
 
       $document = JFactory::getDocument();
       $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
@@ -26,7 +26,7 @@ class CobaltViewNoteHtml extends JViewHtml
       //retrieve task list from model
       $model = new CobaltModelNote();
 
-      switch ( $view ){
+      switch ($view) {
         case "companies":
             $view = "company";
         break;
@@ -38,11 +38,11 @@ class CobaltViewNoteHtml extends JViewHtml
         break;
       }
 
-     	$notes = $model->getNotes($id,$view,FALSE);
-     	$this->notes = $notes;
-       
-    	//display
-     	return parent::render();
-	}
-	
+         $notes = $model->getNotes($id,$view,FALSE);
+         $this->notes = $notes;
+
+        //display
+         return parent::render();
+    }
+
 }

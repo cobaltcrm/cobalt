@@ -8,21 +8,21 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerDelete extends CobaltControllerDefault
 {
 
-    function execute(){
+    public function execute()
+    {
+        $app = JFactory::getApplication();
+        $view = $app->input->get("view");
+        $modelName = "CobaltModel".ucwords($app->input->get("model"));
+        $model = new $modelName();
 
-    	$app = JFactory::getApplication();
-    	$view = $app->input->get("view");
-    	$modelName = "CobaltModel".ucwords($app->input->get("model"));
-    	$model = new $modelName();
+        $model->delete($app->input->get("cid",null,'array'));
+        $app->redirect("index.php?view=".$view);
 
-    	$model->delete($app->input->get("cid",null,'array'));
-    	$app->redirect("index.php?view=".$view);
-    	
-	}
+    }
 
 }

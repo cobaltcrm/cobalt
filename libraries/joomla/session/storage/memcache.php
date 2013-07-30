@@ -18,57 +18,56 @@ defined('JPATH_PLATFORM') or die;
  */
 class JSessionStorageMemcache extends JSessionStorage
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   array  $options  Optional parameters.
-	 *
-	 * @since   11.1
-	 * @throws  RuntimeException
-	 */
-	public function __construct($options = array())
-	{
-		if (!self::isSupported())
-		{
-			throw new RuntimeException('Memcache Extension is not available', 404);
-		}
+    /**
+     * Constructor
+     *
+     * @param array $options Optional parameters.
+     *
+     * @since   11.1
+     * @throws RuntimeException
+     */
+    public function __construct($options = array())
+    {
+        if (!self::isSupported()) {
+            throw new RuntimeException('Memcache Extension is not available', 404);
+        }
 
-		parent::__construct($options);
+        parent::__construct($options);
 
-		$config = JFactory::getConfig();
+        $config = JFactory::getConfig();
 
-		// This will be an array of loveliness
-		// @todo: multiple servers
-		$this->_servers = array(
-			array(
-				'host' => $config->get('memcache_server_host', 'localhost'),
-				'port' => $config->get('memcache_server_port', 11211)
-			)
-		);
-	}
+        // This will be an array of loveliness
+        // @todo: multiple servers
+        $this->_servers = array(
+            array(
+                'host' => $config->get('memcache_server_host', 'localhost'),
+                'port' => $config->get('memcache_server_port', 11211)
+            )
+        );
+    }
 
-	/**
-	 * Register the functions of this class with PHP's session handler
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	public function register()
-	{
-		ini_set('session.save_path', $this->_servers['host'] . ':' . $this->_servers['port']);
-		ini_set('session.save_handler', 'memcache');
-	}
+    /**
+     * Register the functions of this class with PHP's session handler
+     *
+     * @return void
+     *
+     * @since   12.2
+     */
+    public function register()
+    {
+        ini_set('session.save_path', $this->_servers['host'] . ':' . $this->_servers['port']);
+        ini_set('session.save_handler', 'memcache');
+    }
 
-	/**
-	 * Test to see if the SessionHandler is available.
-	 *
-	 * @return boolean  True on success, false otherwise.
-	 *
-	 * @since   12.1
-	 */
-	static public function isSupported()
-	{
-		return (extension_loaded('memcache') && class_exists('Memcache'));
-	}
+    /**
+     * Test to see if the SessionHandler is available.
+     *
+     * @return boolean True on success, false otherwise.
+     *
+     * @since   12.1
+     */
+    public static function isSupported()
+    {
+        return (extension_loaded('memcache') && class_exists('Memcache'));
+    }
 }

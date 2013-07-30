@@ -8,22 +8,22 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerGetPeople extends CobaltControllerDefault
 {
 
-    	function execute(){
-			
-			//open model
-			$model = new CobaltModelPeople();
+        function execute()
+        {
+            //open model
+            $model = new CobaltModelPeople();
 
-			//retrieve all people
-			$people = $model->getPeopleList();
-			
-			//return results as json object
-			echo json_encode($people);
-			
-		}
+            //retrieve all people
+            $people = $model->getPeopleList();
+
+            //return results as json object
+            echo json_encode($people);
+
+        }
 
 }

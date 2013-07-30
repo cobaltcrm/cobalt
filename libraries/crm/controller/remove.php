@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerSave extends CobaltControllerDefault
 {
-    function execute()
+    public function execute()
     {
         $app = JFactory::getApplication();
         $modelName = 'CobaltModel'.ucwords($app->input->get('model'));
@@ -21,13 +21,11 @@ class CobaltControllerSave extends CobaltControllerDefault
         $objectName = $app->input->get('model');
 
         $model = new $modelName();
-        
+
         $ids = $app->input->get('id');
 
-        if ( is_array($ids) )
-        {
-            foreach( $ids as $id )
-            {
+        if ( is_array($ids) ) {
+            foreach ($ids as $id) {
                 $model->remove($id);
             }
         } else {

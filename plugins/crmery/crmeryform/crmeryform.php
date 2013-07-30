@@ -22,31 +22,31 @@ jimport( 'joomla.plugin.plugin' );
 class plgSystemCobaltform extends JPlugin
 {
 
-	function onAfterRender()
-	{
+    public function onAfterRender()
+    {
 
-		$mainframe = JFactory::getApplication();
-		if(!$mainframe->isAdmin()) {
-			$buffer = JResponse::getBody();
+        $mainframe = JFactory::getApplication();
+        if (!$mainframe->isAdmin()) {
+            $buffer = JResponse::getBody();
 
-			$regex  = '#\[cobaltform([0-9]*)\]#';
-			$buffer = preg_replace_callback($regex, array('plgSystemCobaltform', 'loadForm'), $buffer);
+            $regex  = '#\[cobaltform([0-9]*)\]#';
+            $buffer = preg_replace_callback($regex, array('plgSystemCobaltform', 'loadForm'), $buffer);
 
-			JResponse::setBody($buffer);
-		}
-		return true;
-	}
+            JResponse::setBody($buffer);
+        }
 
+        return true;
+    }
 
-	function loadForm(&$matches)
-	{
-		$db = JFactory::getDBO();
+    public function loadForm(&$matches)
+    {
+        $db = JFactory::getDBO();
 
-		$query = $db->getQuery(true);
-		$query->select('html')->from('#__formwizard')->where('id='.$matches[1]);
-		$db->setQuery($query);
-		$html = $db->loadResult();
+        $query = $db->getQuery(true);
+        $query->select('html')->from('#__formwizard')->where('id='.$matches[1]);
+        $db->setQuery($query);
+        $html = $db->loadResult();
 
-		return $html;
-	}
+        return $html;
+    }
 }

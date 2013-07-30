@@ -18,45 +18,44 @@ defined('JPATH_PLATFORM') or die;
  */
 class JSessionStorageWincache extends JSessionStorage
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   array  $options  Optional parameters.
-	 *
-	 * @since   11.1
-	 * @throws  RuntimeException
-	 */
-	public function __construct($options = array())
-	{
-		if (!self::isSupported())
-		{
-			throw new RuntimeException('Wincache Extension is not available', 404);
-		}
+    /**
+     * Constructor
+     *
+     * @param array $options Optional parameters.
+     *
+     * @since   11.1
+     * @throws RuntimeException
+     */
+    public function __construct($options = array())
+    {
+        if (!self::isSupported()) {
+            throw new RuntimeException('Wincache Extension is not available', 404);
+        }
 
-		parent::__construct($options);
-	}
+        parent::__construct($options);
+    }
 
-	/**
-	 * Register the functions of this class with PHP's session handler
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	public function register()
-	{
-		ini_set('session.save_handler', 'wincache');
-	}
+    /**
+     * Register the functions of this class with PHP's session handler
+     *
+     * @return void
+     *
+     * @since   12.2
+     */
+    public function register()
+    {
+        ini_set('session.save_handler', 'wincache');
+    }
 
-	/**
-	 * Test to see if the SessionHandler is available.
-	 *
-	 * @return boolean  True on success, false otherwise.
-	 *
-	 * @since   12.1
-	 */
-	static public function isSupported()
-	{
-		return (extension_loaded('wincache') && function_exists('wincache_ucache_get') && !strcmp(ini_get('wincache.ucenabled'), "1"));
-	}
+    /**
+     * Test to see if the SessionHandler is available.
+     *
+     * @return boolean True on success, false otherwise.
+     *
+     * @since   12.1
+     */
+    public static function isSupported()
+    {
+        return (extension_loaded('wincache') && function_exists('wincache_ucache_get') && !strcmp(ini_get('wincache.ucenabled'), "1"));
+    }
 }

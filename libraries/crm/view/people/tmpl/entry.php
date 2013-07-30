@@ -9,14 +9,14 @@
     $exp = explode('|',$person['tags']);
     $c = count($exp);
     $person['tags'] = '';
-    for( $a=0; $a<$c; $a++ ) {
+    for ($a=0; $a<$c; $a++) {
         $person['tags'] .= $exp[$a] . " ";
     }
     echo "<tr id='list_row_".$person['id']."' class='cobalt_row_".$k."'>";
         echo '<td><input type="checkbox" name="ids[]" value="'.$person['id'].'" /></td>';
-        if ( array_key_exists('avatar',$person) && $person['avatar'] != "" && $person['avatar'] != null ){
+        if ( array_key_exists('avatar',$person) && $person['avatar'] != "" && $person['avatar'] != null ) {
              echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'libraries/crm/media/avatars/'.$person['avatar'].'"/></td>';
-        }else{
+        } else {
             echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'libraries/crm/media/images/person.png'.'"/></td>';
         }
         echo '<td class="list_edit_button" id="list_'.$person['id'].'" ><div class="title_holder"><a href="'.JRoute::_('index.php?view=people&layout=person&id='.$person['id']).'">'.$person['first_name'].' '.$person['last_name']."</a></div></td>";
@@ -33,8 +33,8 @@
                     $users = CobaltHelperUsers::getUsers(null,TRUE);
                     $users = array_merge($me,$users); ?>
                     <ul class="dropdown-menu" aria-labelledby="deal_stage_<?php echo $deal['id']; ?>" role="menu">
-                <?php 
-                    if (count($users)) { foreach($users as $id => $user ){ ?>
+                <?php
+                    if (count($users)) { foreach ($users as $id => $user) { ?>
                     <li><a href="javascript:void(0)" class="owner_select dropdown_item" data-field="owner_id" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo $user['value']; ?>">
                             <?php echo $user['label']; ?>
                         </a>
@@ -43,7 +43,7 @@
                 </ul>
             </div>
         </td>
-        <?php 
+        <?php
         echo '<td class="email">'.$person['email'].'</td>';
         echo '<td class="phone">'.$person['phone'].'</td>';
         echo "<td class='status' >";
@@ -54,7 +54,7 @@
             </a>
                 <ul class="dropdown-menu" aria-labelledby="person_status<?php echo $person['id']; ?>" role="menu">
                     <?php $statuses = CobaltHelperPeople::getStatusList();
-                        if (count($statuses)) { foreach($statuses as $key => $status ){ ?>
+                        if (count($statuses)) { foreach ($statuses as $key => $status) { ?>
                             <li><a href="javascript:void(0)" class="person_status_select dropdown_item" data-field="status_id" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo $status['id']; ?>">
                                     <div class="person-status-color" style="background-color:#<?php echo $status['color']; ?>"></div><div class="person-status"><?php echo $status['name']; ?></div>
                                 </a>
@@ -70,7 +70,7 @@
             </a>
                 <ul class="dropdown-menu" aria-labelledby="person_status<?php echo $person['id']; ?>" role="menu">
                     <?php $sources = CobaltHelperDeal::getSources();
-                        if ( count($sources) ){ foreach($sources as $id => $name ) { ?>
+                        if ( count($sources) ){ foreach ($sources as $id => $name) { ?>
                             <li><a href="javascript:void(0)" class="source_select dropdown_item" data-field="source_id" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo $id; ?>">
                                     <?php echo $name; ?>
                                 </a>
@@ -78,7 +78,7 @@
                     <?php }} ?>
             </ul>
         </div></td>
-        <?php        
+        <?php
         echo "<td class='type' >";
         ?>
             <div class='dropdown'>
@@ -87,7 +87,7 @@
             </a>
                 <ul class="dropdown-menu" aria-labelledby="person_type_<?php echo $person['id']; ?>" role="menu">
                      <?php $types = CobaltHelperPeople::getPeopleTypes(FALSE);
-                        if ( count($types) ){ foreach($types as $id => $name ) { ?>
+                        if ( count($types) ){ foreach ($types as $id => $name) { ?>
                             <li><a href="javascript:void(0)" class="person_type_select dropdown_item" data-field="type" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo ucwords($id); ?>">
                                     <?php echo ucwords($name); ?>
                                 </a>
@@ -102,4 +102,3 @@
         echo '<td class="added">'.CobaltHelperDate::formatDate($person['created']).'</td>';
         echo '<td class="updated">'.CobaltHelperDate::formatDate($person['modified']).'</td>';
     echo "</tr>";
-    ?>

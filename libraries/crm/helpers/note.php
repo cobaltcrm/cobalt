@@ -14,8 +14,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  {
 
     //get category listings for notes
-    public static function getCategories() {
-
+    public static function getCategories()
+    {
         //grab db
         $db = JFactory::getDbo();
 
@@ -28,12 +28,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $results = $db->loadAssocList();
         $categories = array();
-        foreach ( $results as $key=>$category ){
+        foreach ($results as $key=>$category) {
             $categories[$category['id']] = $category['name'];
         }
+
         return $categories;
 
     }
-
 
  }

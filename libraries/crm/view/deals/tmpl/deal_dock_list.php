@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $n = count($this->deals);
-for ( $i=0; $i<$n; $i++ ) {
-	$deal = $this->deals[$i];
-	$k = $i%2;
-	$view = CobaltHelperView::getView('deals','deal_dock_entry','phtml',array('deal'=>$deal,'offset'=>$k));
-	echo $view->render();
-} ?>
+for ($i=0; $i<$n; $i++) {
+    $deal = $this->deals[$i];
+    $k = $i%2;
+    $view = CobaltHelperView::getView('deals','deal_dock_entry','phtml',array('deal'=>$deal,'offset'=>$k));
+    echo $view->render();
+}

@@ -21,12 +21,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     <form action="index.php?view=menu" method="post" name="adminForm" id="adminForm" class="form-validate"  >
                         <legend><h3 id="header"><?php echo JText::_('COBALT_EDIT_MENU'); ?></h3></legend>
                         <div class="alert alert-info"><?php echo JText::_('COBALT_EDIT_MENU_DESC'); ?></div>
-                        <?php foreach ( $this->menu_template as $menu_item ){ ?>
+                        <?php foreach ($this->menu_template as $menu_item) { ?>
                             <label class="checkbox">
-                                <input type="checkbox" class="inputbox" name="menu_items[]" value="<?php echo $menu_item; ?>" <?php if (is_array($this->menu->menu_items) && in_array($menu_item,$this->menu->menu_items)){ echo 'checked="checked"'; } ?> />
+                                <input type="checkbox" class="inputbox" name="menu_items[]" value="<?php echo $menu_item; ?>" <?php if (is_array($this->menu->menu_items) && in_array($menu_item,$this->menu->menu_items)) { echo 'checked="checked"'; } ?> />
                                 <?php echo JText::_('COBALT_'.strtoupper($menu_item)); ?>
                             </label>
-                        <?php } ?>    
+                        <?php } ?>
                         <div>
                             <input type="hidden" name="id" value="1" />
                             <input type="hidden" name="task" value="" />
@@ -38,5 +38,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
             </div>
         </div>
-	</div>
+    </div>
 </div>

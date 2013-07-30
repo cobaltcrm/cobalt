@@ -61,9 +61,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 <div class="alert alert-block">
                                     <a class="close" data-dismiss="alert" href="#">×</a>
                                     <h4 class="alert-heading"><?php echo JText::_('COBALT_IMAP_SETTINGS_TITLE'); ?></h4>
-                                    <?php echo JText::_('COBALT_IMAP_SETTINGS_DESCRIPTION'); ?>           
+                                    <?php echo JText::_('COBALT_IMAP_SETTINGS_DESCRIPTION'); ?>
                                 </div>
-                                <?php if ( !$this->imap_found ){ ?>
+                                <?php if (!$this->imap_found) { ?>
                                     <div class="alert alert-error">
                                         <?php echo JText::_("COBALT_WARNING_IMAP_NOT_ENABLED"); ?>
                                     </div>
@@ -145,5 +145,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
             </div>
         </div>
-	</div>
+    </div>
 </div>

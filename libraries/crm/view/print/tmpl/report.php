@@ -12,4 +12,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <?php echo $this->header->render(); ?>
 <?php echo $this->table->render(); ?>
-<?php echo $this->footer->render(); ?>
+<?php echo $this->footer->render();

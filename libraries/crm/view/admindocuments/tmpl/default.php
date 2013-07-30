@@ -41,14 +41,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->documents) ) { foreach($this->documents as $key=>$document){ ?>
+                                <?php if ( count($this->documents) ) { foreach ($this->documents as $key=>$document) { ?>
                                     <tr class="">
                                         <td class="center"><?php echo JHtml::_('grid.id', $key, $document['id']); ?></td>
                                         <td class="order"><?php echo '<img width="30px" height="30px" src="'.JURI::base().'libraries/crm/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>'; ?></td>
                                         <td class="order"><?php echo JHtml::_('link','index.php?view=documents&layout=download&document='.$document['filename'],$document['name'],array('target'=>'_blank')); ?></td>
                                         <td class="order"><?php echo $document['size']; ?>kb</td>
                                         <td class="order"><?php echo date("F j, Y",strtotime($document['created'])); ?></td>
-                                    </tr>                                
+                                    </tr>
                                 <?php }} ?>
                             </tbody>
                             <tfoot>
@@ -58,7 +58,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     </td>
                                 </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                         <div>
                             <input type="hidden" name="task" value="" />
                             <input type="hidden" name="boxchecked" value="0" />

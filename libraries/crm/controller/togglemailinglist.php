@@ -8,28 +8,28 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerToggleMailingList extends CobaltControllerDefault
 {
 
-    function execute()
+    public function execute()
     {
-		$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $data = $app->input->getRequest('post');
         $subscribe = $data['subscribe'];
         $success = FALSE;
-        if ( !$subscribe ){
-            if ( CobaltHelperMailinglists::addMailingList($data) ){
+        if (!$subscribe) {
+            if ( CobaltHelperMailinglists::addMailingList($data) ) {
                 $success = TRUE;
             }
-        }else{
-            if ( CobaltHelperMailinglists::removeMailingList($data) ){
+        } else {
+            if ( CobaltHelperMailinglists::removeMailingList($data) ) {
                 $success = TRUE;
             }
         }
         $return = array('success'=>$success);
         echo json_encode($return);
-   	}
+       }
 
 }

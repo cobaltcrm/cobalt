@@ -9,11 +9,11 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-    if($this->isMobile) {
-        if(!$this->isDashboard) {
+    if ($this->isMobile) {
+        if (!$this->isDashboard) {
             echo $this->footer_menu;
         }
     ?>
-	</div>
+    </div>
 <?php } ?>
 </div>

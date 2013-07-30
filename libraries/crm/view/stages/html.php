@@ -12,7 +12,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewStagesHtml extends JViewHtml
 {
-    function render($tpl = null)
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -23,15 +23,15 @@ class CobaltViewStagesHtml extends JViewHtml
 
         //gather information for view
         $model = new CobaltModelStages();
-        
+
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
         $document =& JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
-        
-        if ( $layout && $layout == 'edit' ){
-            
+
+        if ($layout && $layout == 'edit') {
+
             CRMToolbarHelper::cancel('cancel');
             CRMToolbarHelper::save('save');
 
@@ -41,10 +41,9 @@ class CobaltViewStagesHtml extends JViewHtml
             $document->addStylesheet(JURI::base().'libraries/crm/media/css/bootstrap-colorpicker.css');
 
             $this->stage = $model->getStage();
-            
-            
-        }else{
-            
+
+        } else {
+
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
@@ -52,7 +51,7 @@ class CobaltViewStagesHtml extends JViewHtml
 
             $stages = $model->getStages();
             $this->stages = $stages;
-                
+
             // Initialise state variables.
             $state = $model->getState();
             $this->state = $state;
@@ -61,7 +60,7 @@ class CobaltViewStagesHtml extends JViewHtml
             $this->listDirn   = $this->state->get('Stages.filter_order_Dir');
             $this->saveOrder  = $this->listOrder == 's.ordering';
         }
-        
+
         //display
         return parent::render();
     }

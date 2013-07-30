@@ -2,16 +2,16 @@
 /**
  * Mobile Detect
  * $Id: Mobile_Detect.php 49 2012-06-06 20:46:30Z serbanghita@gmail.com $
- * 
- * @usage      
+ *
+ * @usage
  *             For more specific usage see the documentation navigate to:
  *             http://code.google.com/p/php-mobile-detect/wiki/Mobile_Detect
- * 
+ *
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
-class Mobile_Detect {
-    
+class Mobile_Detect
+{
     protected $detectionRules;
     protected $userAgent = null;
     protected $accept = null;
@@ -23,7 +23,7 @@ class Mobile_Detect {
     protected $operatingSystemName = null;
     protected $userAgentName = null;
     // List of mobile devices (phones)
-    protected $phoneDevices = array(     
+    protected $phoneDevices = array(
             'iPhone'        => '(iPhone.*Mobile|iPod|iTunes)',
             'BlackBerry'    => 'BlackBerry|rim[0-9]+',
             'HTC'           => 'HTC|HTC.*(6800|8100|8900|A7272|S510e|C110e|Legend|Desire|T8282)|APX515CKT|Qtek9090|APA9292KT',
@@ -34,7 +34,7 @@ class Mobile_Detect {
             'Sony'          => 'E10i|SonyEricsson|SonyEricssonLT15iv',
             'Asus'          => 'Asus.*Galaxy',
             'Palm'          => 'PalmSource|Palm', // avantgo|blazer|elaine|hiptop|plucker|xiino ; @todo - complete the regex.
-	        'Vertu'         => 'Vertu|Vertu.*Ltd|Vertu.*Ascent|Vertu.*Ayxta|Vertu.*Constellation(F|Quest)?|Vertu.*Monika|Vertu.*Signature', // Just for fun ;)
+            'Vertu'         => 'Vertu|Vertu.*Ltd|Vertu.*Ascent|Vertu.*Ayxta|Vertu.*Constellation(F|Quest)?|Vertu.*Monika|Vertu.*Signature', // Just for fun ;)
             'GenericPhone'  => '(mmp|pocket|psp|symbian|Smartphone|smartfon|treo|up.browser|up.link|vodafone|wap|nokia|Series40|Series60|S60|SonyEricsson|N900|PPC;|MAUI.*WAP.*Browser|LG-P500)'
     );
     // List of tablet devices.
@@ -44,11 +44,11 @@ class Mobile_Detect {
         'Kindle'            => 'Kindle|Silk.*Accelerated',
         'SamsungTablet'     => 'SAMSUNG.*Tablet|Galaxy.*Tab|GT-P1000|GT-P1010|GT-P6210|GT-P6800|GT-P6810|GT-P7100|GT-P7300|GT-P7310|GT-P7500|GT-P7510|SCH-I800|SCH-I815|SCH-I905|SGH-I957|SGH-I987|SGH-T849|SGH-T859|SGH-T869|SPH-P100|GT-P1000|GT-P3100|GT-P3110|GT-P5100|GT-P5110|GT-P6200|GT-P7300|GT-P7320|GT-P7500|GT-P7510|GT-P7511',
         'HTCtablet'         => 'HTC Flyer|HTC Jetstream|HTC-P715a|HTC EVO View 4G|PG41200',
-	    'MotorolaTablet'    => 'xoom|sholest|MZ615|MZ605|MZ505|MZ601|MZ602|MZ603|MZ604|MZ606|MZ607|MZ608|MZ609|MZ615|MZ616|MZ617',
+        'MotorolaTablet'    => 'xoom|sholest|MZ615|MZ605|MZ505|MZ601|MZ602|MZ603|MZ604|MZ606|MZ607|MZ608|MZ609|MZ615|MZ616|MZ617',
         'AsusTablet'        => 'Transformer|TF101',
         'NookTablet'        => 'NookColor|nook browser|BNTV250A|LogicPD Zoom2',
         'AcerTablet'        => 'Android.*\b(A100|A101|A200|A500|A501|A510|W500|W500P|W501|W501P)\b',
-	    'YarvikTablet'      => 'Android.*(TAB210|TAB211|TAB224|TAB250|TAB260|TAB264|TAB310|TAB360|TAB364|TAB410|TAB411|TAB420|TAB424|TAB450|TAB460|TAB461|TAB464|TAB465|TAB467|TAB468)',
+        'YarvikTablet'      => 'Android.*(TAB210|TAB211|TAB224|TAB250|TAB260|TAB264|TAB310|TAB360|TAB364|TAB410|TAB411|TAB420|TAB424|TAB450|TAB460|TAB461|TAB464|TAB465|TAB467|TAB468)',
         'GenericTablet'     => 'Tablet(?!.*PC)|ViewPad7|LG-V909|MID7015|BNTV250A|LogicPD Zoom2|\bA7EB\b|CatNova8|A1_07|CT704|CT1002|\bM721\b',
     );
     // List of mobile Operating Systems.
@@ -67,7 +67,7 @@ class Mobile_Detect {
         'BREWOS'            => '',
     );
     // List of mobile User Agents.
-    protected $userAgents = array(      
+    protected $userAgents = array(
       'Chrome'          => '\bCrMo\b|Chrome\/[.0-9]* Mobile',
       'Dolfin'          => '\bDolfin\b',
       'Opera'           => 'Opera.*Mini|Opera.*Mobi|Android.*Opera',
@@ -81,25 +81,25 @@ class Mobile_Detect {
       'Midori'          => 'midori',
       'GenericBrowser'  => 'NokiaBrowser|OviBrowser|SEMC.*Browser'
     );
-    
-    function __construct(){
-        
+
+    public function __construct()
+    {
         // Merge all rules together.
         $this->detectionRules = array_merge(
-                                            $this->phoneDevices, 
-                                            $this->tabletDevices, 
-                                            $this->operatingSystems, 
+                                            $this->phoneDevices,
+                                            $this->tabletDevices,
+                                            $this->operatingSystems,
                                             $this->userAgents
                                             );
         $this->userAgent    = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
         $this->accept       = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
-        
+
         if (
-		isset($_SERVER['HTTP_X_WAP_PROFILE']) ||
+        isset($_SERVER['HTTP_X_WAP_PROFILE']) ||
         isset($_SERVER['HTTP_X_WAP_CLIENTID']) ||
         isset($_SERVER['HTTP_WAP_CONNECTION']) ||
-		isset($_SERVER['HTTP_PROFILE']) ||
-		isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']) || // Reported by Nokia devices (eg. C3)
+        isset($_SERVER['HTTP_PROFILE']) ||
+        isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']) || // Reported by Nokia devices (eg. C3)
         isset($_SERVER['HTTP_X_NOKIA_IPADDRESS']) ||
         isset($_SERVER['HTTP_X_NOKIA_GATEWAY_ID']) ||
         isset($_SERVER['HTTP_X_ORANGE_ID']) ||
@@ -107,84 +107,88 @@ class Mobile_Detect {
         isset($_SERVER['HTTP_X_HUAWEI_USERID']) ||
         isset($_SERVER['HTTP_UA_OS']) || // Reported by Windows Smartphones
         (isset($_SERVER['HTTP_UA_CPU']) && $_SERVER['HTTP_UA_CPU'] == 'ARM') // Seen this on a HTC
-		) {
+        ) {
                 $this->isMobile = true;
         } elseif (!empty($this->accept) && (strpos($this->accept, 'text/vnd.wap.wml') !== false || strpos($this->accept, 'application/vnd.wap.xhtml+xml') !== false)) {
                 $this->isMobile = true;
         } else {
                 $this->_detect();
-        }        
-        
+        }
+
     }
-	
+
     public function getRules()
     {
         return $this->detectionRules;
     }
-    
+
     /**
      * Magic overloading method.
-     * 
+     *
      * @method boolean is[...]()
-     * @param string $name
-     * @param array $arguments
-     * @return mixed 
+     * @param  string $name
+     * @param  array  $arguments
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
-                
+
         $key = substr($name, 2);
+
         return $this->_detect($key);
-        
+
     }
-    
+
     /**
-     * Private method that does the detection of the 
+     * Private method that does the detection of the
      * mobile devices.
-     * 
-     * @param string $key
-     * @return boolean|null 
+     *
+     * @param  string       $key
+     * @return boolean|null
      */
     private function _detect($key='')
     {
 
-        if(empty($key)){ 
+        if (empty($key)) {
 
             // Begin general search.
-            foreach($this->detectionRules as $_regex){
-                if(empty($_regex)){ continue; }
-                if(preg_match('/'.$_regex.'/is', $this->userAgent)){
+            foreach ($this->detectionRules as $_regex) {
+                if (empty($_regex)) { continue; }
+                if (preg_match('/'.$_regex.'/is', $this->userAgent)) {
                     $this->isMobile = true;
+
                     return true;
-                } 
+                }
             }
+
             return false;
 
         } else {
-            
+
             // Search for a certain key.
             // Make the keys lowecase so we can match: isIphone(), isiPhone(), isiphone(), etc.
             $key = strtolower($key);
             $_rules = array_change_key_case($this->detectionRules);
-            
-            if(array_key_exists($key, $_rules)){
-                if(empty($_rules[$key])){ return null; }
-                if(preg_match('/'.$_rules[$key].'/is', $this->userAgent)){
+
+            if (array_key_exists($key, $_rules)) {
+                if (empty($_rules[$key])) { return null; }
+                if (preg_match('/'.$_rules[$key].'/is', $this->userAgent)) {
                     $this->isMobile = true;
+
                     return true;
                 } else {
                     return false;
-                }           
+                }
             } else {
                 trigger_error("Method $key is not defined", E_USER_WARNING);
             }
-            
+
             return false;
 
         }
 
     }
-        
+
     /**
     * Check if the device is mobile.
     * Returns true if any type of mobile device detected, including special ones
@@ -192,27 +196,27 @@ class Mobile_Detect {
     */
     public function isMobile()
     {
-	    return $this->isMobile;
-    } 
-    
+        return $this->isMobile;
+    }
+
     /**
     * Check if the device is a tablet.
     * Return true if any type of tablet device is detected.
-    * @return boolean 
+    * @return boolean
     */
     public function isTablet()
     {
 
-	foreach($this->tabletDevices as $_regex){
-	    if(preg_match('/'.$_regex.'/is', $this->userAgent)){
-		$this->isTablet = true;
-		return true;
-	    }
-	}
+    foreach ($this->tabletDevices as $_regex) {
+        if (preg_match('/'.$_regex.'/is', $this->userAgent)) {
+        $this->isTablet = true;
 
-	return false;        
+        return true;
+        }
+    }
+
+    return false;
 
     }
-    
-    
+
 }

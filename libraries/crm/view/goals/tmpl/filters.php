@@ -10,8 +10,8 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if ( count($this->goals > 0 ) ){
-        foreach ( $this->goals as $goal ){ ?>
+if ( count($this->goals > 0 ) ) {
+        foreach ($this->goals as $goal) { ?>
            <div id="goal_<?php echo $goal['id']; ?>" class="goal_info well clearfix">
                 <div class="clearfix">
                     <span class="goal_info_name"><?php echo $goal['name']; ?></span>
@@ -24,23 +24,23 @@ if ( count($this->goals > 0 ) ){
                 <div class="clearfix">
                     <span class="goal_info_out_of">
                         <?php
-                            if ( $goal['goal_type'] == 'win_cash' ){
-                                echo "$".(int)$goal['goal_info'] ?> out of $<?php echo $goal['amount']." won.";
+                            if ($goal['goal_type'] == 'win_cash') {
+                                echo "$".(int) $goal['goal_info'] ?> out of $<?php echo $goal['amount']." won.";
                             }
-                            if ( $goal['goal_type'] == 'win_deals' ){
-                                echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals won.";
+                            if ($goal['goal_type'] == 'win_deals') {
+                                echo (int) $goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals won.";
                             }
-                            if ( $goal['goal_type'] == 'move_deals' ){
-                                echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals moved.";
+                            if ($goal['goal_type'] == 'move_deals') {
+                                echo (int) $goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals moved.";
                             }
-                            if ( $goal['goal_type'] == 'complete_tasks' ){
-                                echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " tasks completed.";
+                            if ($goal['goal_type'] == 'complete_tasks') {
+                                echo (int) $goal['goal_info'] ?> out of <?php echo $goal['amount'] . " tasks completed.";
                             }
-                            if ( $goal['goal_type'] == 'write_notes' ){
-                                echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " notes written.";
+                            if ($goal['goal_type'] == 'write_notes') {
+                                echo (int) $goal['goal_info'] ?> out of <?php echo $goal['amount'] . " notes written.";
                             }
-                            if ( $goal['goal_type'] == 'create_deals' ){
-                                echo (int)$goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals created.";
+                            if ($goal['goal_type'] == 'create_deals') {
+                                echo (int) $goal['goal_info'] ?> out of <?php echo $goal['amount'] . " deals created.";
                             }
                         ?>
                     </span>
@@ -48,7 +48,3 @@ if ( count($this->goals > 0 ) ){
                 </div>
             </div>
 <?php } }
-?>
-
-
-

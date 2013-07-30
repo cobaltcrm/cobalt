@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <label><b><?php echo JText::_("COBALT_WON_STAGE"); ?></b></label>
                             <input <?php if ( isset($this->stage) && array_key_exists('won',$this->stage) && $this->stage['won'] == 1 ) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
                             <div>
-                                <?php if ( $this->stage['id'] ) { ?>
+                                <?php if ($this->stage['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->stage['id']; ?>" />
                                 <?php } ?>
                                 <input type="hidden" name="controller" value="" />
@@ -42,9 +42,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             </div>
                         </div>
                     </form>
-                </div>      
+                </div>
             </div>
         </div>
         <?php echo $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

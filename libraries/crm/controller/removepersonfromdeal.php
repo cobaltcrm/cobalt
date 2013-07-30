@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerRemovePersonFromDeal extends CobaltControllerDefault
 {
 
-    function execute(){
-
-    	$app = JFactory::getApplication();
+    public function execute()
+    {
+        $app = JFactory::getApplication();
 
         $person_id = $app->input->get('person_id');
         $deal_id = $app->input->get('deal_id');
@@ -29,19 +29,19 @@ class CobaltControllerRemovePersonFromDeal extends CobaltControllerDefault
         $db->setQuery($query);
         $count = $db->loadResult();
 
-        if ( $count ){
+        if ($count) {
             $query->clear()
                 ->delete("#__people_cf")
                 ->where("association_id=".$deal_id)
                 ->where("association_type='deal'")
                 ->where("person_id=".$person_id);
             $db->setQuery($query);
-            if ( $db->query() ){
+            if ( $db->query() ) {
                 $success = true;
-            }else{
+            } else {
                 $success = false;
             }
-        }else{
+        } else {
             $success = false;
         }
 

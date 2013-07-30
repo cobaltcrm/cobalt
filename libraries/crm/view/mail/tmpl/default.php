@@ -9,11 +9,11 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<?php if ( is_array($this->mail) && count ( $this->mail ) > 0 ) { foreach ( $this->mail as $email ) { ?>
+<?php if ( is_array($this->mail) && count ( $this->mail ) > 0 ) { foreach ($this->mail as $email) { ?>
     <tr id="email_row_<?php echo $email['overview']->msgno; ?>">
         <td><a href="javascript:void(0);" onclick="readEmail(<?php echo $email['overview']->msgno; ?>);"><?php  echo $email['overview']->subject; ?></a></td>
-        <td><?php if ( array_key_exists('headers',$email) && isset($email['headers']->from) && array_key_exists(0,$email['headers']->from) ){ echo "<a href='mailto:".$email['headers']->from[0]->mailbox.'@'.$email['headers']->from[0]->host."'>".$email['headers']->from[0]->mailbox.'@'.$email['headers']->from[0]->host.'</a>'; } ?></td>
-        <td><?php if ( array_key_exists('headers',$email) && isset($email['headers']->to) && array_key_exists(0,$email['headers']->to) ){ echo "<a href='mailto:".$email['headers']->to[0]->mailbox.'@'.$email['headers']->to[0]->host."'>".$email['headers']->to[0]->mailbox.'@'.$email['headers']->to[0]->host.'</a>'; } ?></td>
+        <td><?php if ( array_key_exists('headers',$email) && isset($email['headers']->from) && array_key_exists(0,$email['headers']->from) ) { echo "<a href='mailto:".$email['headers']->from[0]->mailbox.'@'.$email['headers']->from[0]->host."'>".$email['headers']->from[0]->mailbox.'@'.$email['headers']->from[0]->host.'</a>'; } ?></td>
+        <td><?php if ( array_key_exists('headers',$email) && isset($email['headers']->to) && array_key_exists(0,$email['headers']->to) ) { echo "<a href='mailto:".$email['headers']->to[0]->mailbox.'@'.$email['headers']->to[0]->host."'>".$email['headers']->to[0]->mailbox.'@'.$email['headers']->to[0]->host.'</a>'; } ?></td>
         <td><?php  echo CobaltHelperDate::formatDate($email['overview']->date); ?></td>
         <td>
             <a href="javascript:void(0);" onclick="deleteEmail(<?php echo $email['overview']->msgno; ?>);" class="delete"></a>
@@ -43,4 +43,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </td>
     </tr>
-<?php } } ?>
+<?php } }

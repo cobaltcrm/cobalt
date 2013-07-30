@@ -8,19 +8,19 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerCheckEmailName extends CobaltControllerDefault
 {
 
-    function execute()
+    public function execute()
       {
-      		$app = JFactory::getApplication();
+              $app = JFactory::getApplication();
             $emailExists = CobaltHelperCobalt::checkEmailName($app->input->get('email'));
-            if ( $emailExists ){
+            if ($emailExists) {
                 $success = true;
                 $msg = CRMText::_('COBALT_EMAIL_EXISTS');
-            }else{
+            } else {
                 $success = true;
                 $msg = CRMText::_('COBALT_EMAIL_IS_AVAILABLE');
             }

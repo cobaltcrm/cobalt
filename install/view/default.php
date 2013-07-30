@@ -13,12 +13,12 @@
       <div id="wrapper">
         <div id="cobalt-3d-container"><img id="cobalt-3d" src="<?php echo $this->baseurl; ?>/install/assets/images/cobalt-3d.png" /></div>
         <div id="tab-container">
-          <?php if ( isset($this->error) && $this->error != null ){ ?>
-            <?php if ( is_array($this->error) ){foreach($this->error as $error){ ?>
+          <?php if ( isset($this->error) && $this->error != null ) { ?>
+            <?php if ( is_array($this->error) ){foreach ($this->error as $error) { ?>
               <div class="alert alert-error clearfix">
                   <?php echo $error; ?>
               </div>
-          <?php } }else{ ?>
+          <?php } } else { ?>
               <div class="alert alert-error clearfix">
                   <?php echo $this->error; ?>
               </div>

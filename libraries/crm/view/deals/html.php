@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltViewDealsHtml extends JViewHTML
 {
 
-    function render()
+    public function render()
     {
         $app = JFactory::getApplication();
 
@@ -32,17 +32,17 @@ class CobaltViewDealsHtml extends JViewHTML
 
         //determine if we are requesting a specific deal or all deals
         //if id requested
-        if( $app->input->get('id') ) {
+        if ( $app->input->get('id') ) {
             $model->set('_id',$app->input->get('id'));
             $dealList = $model->getDeals();
-            if ( is_null($dealList[0]['id']) ){
+            if ( is_null($dealList[0]['id']) ) {
                 $app->redirect(JRoute::_('index.php?view=deals'),CRMText::_('COBALT_NOT_AUTHORIZED'));
             }
-        }else{
+        } else {
         //else load all deals
-            if ( $app->input->get('layout') != 'edit' ){
+            if ( $app->input->get('layout') != 'edit' ) {
 
-                if(CobaltHelperTemplate::isMobile()) {
+                if (CobaltHelperTemplate::isMobile()) {
                     $model->set('ordering','d.name ASC');
                 }
 
@@ -51,11 +51,11 @@ class CobaltViewDealsHtml extends JViewHTML
         }
 
         //determine if we are editing an existing deal entry
-        if( count($dealList) == 1 ){
+        if ( count($dealList) == 1 ) {
             //grab deal object
             $deal = $dealList[0];
             $deal['header'] = ucwords(CRMText::_('COBALT_DEAL_EDIT'));
-        }else{
+        } else {
             //else we are creating a new entry
             $deal = array();
             $deal['name'] = "";
@@ -64,21 +64,21 @@ class CobaltViewDealsHtml extends JViewHTML
             $deal['person_id'] = ( $app->input->get('person_id') ) ? $app->input->get('person_id') : null;
 
             //get company name to prefill data and hidden fields
-            if ( $deal['company_id'] ) {
+            if ($deal['company_id']) {
                 $company = CobaltHelperCompany::getCompany($deal['company_id']);
                 $deal['company_name'] = $company[0]['name'];
                 $deal['company_id'] = $company[0]['id'];
             }
 
             //if a person is specified prefill data
-            if ( $deal['person_id'] ) {
+            if ($deal['person_id']) {
                 $person = CobaltHelperPeople::getPerson($deal['person_id']);
 
                 $deal['person_name'] = $person[0]['last_name'] . ', ' . $person[0]['first_name'];
                 $deal['person_id'] = $person[0]['id'];
 
                 //assign company if person is associated with company
-                if ( $person[0]['company_id'] ){
+                if ($person[0]['company_id']) {
                     $deal['company_id'] = $person[0]['company_id'];
                     $deal['company_name'] = $person[0]['company_name'];
                 }
@@ -96,7 +96,7 @@ class CobaltViewDealsHtml extends JViewHTML
         }
 
         //load javalibs
-        if(!CobaltHelperTemplate::isMobile()) {
+        if (!CobaltHelperTemplate::isMobile()) {
             $doc->addScript( JURI::base().'libraries/crm/media/js/deal_manager.js' );
         }
 
@@ -122,19 +122,19 @@ class CobaltViewDealsHtml extends JViewHTML
         //get session data to prefill filters
         $user_filter = $session->get('deal_user_filter');
         $team_filter = $session->get('deal_team_filter');
-        if ( $user_filter == "all" && $user_filter != $user_id ){
+        if ($user_filter == "all" && $user_filter != $user_id) {
             $user_name = CRMText::_('COBALT_ALL_USERS');
-        }else if ( $user_filter == "all" ){
+        } elseif ($user_filter == "all") {
             $user_name = CRMText::_('COBALT_ME');
-        }else if ( $user_filter AND $user_filter != $user_id AND $user_filter != 'all' ){
+        } elseif ($user_filter AND $user_filter != $user_id AND $user_filter != 'all') {
             $user_info = CobaltHelperUsers::getUsers($user_filter);
             $user_info = $user_info[0];
             $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
-        }else if ( $team_filter ){
+        } elseif ($team_filter) {
             $team_info = CobaltHelperUsers::getTeams($team_filter);
             $team = $team_info[0];
             $user_name = $team['team_name'].CRMText::_('COBALT_TEAM_APPEND');
-        }else{
+        } else {
             $user_name = CRMText::_('COBALT_ME');
         }
 
@@ -148,7 +148,7 @@ class CobaltViewDealsHtml extends JViewHTML
 
         //Load Events & Tasks for person
         $layout = $this->getLayout();
-        if ( $layout == "deal" ){
+        if ($layout == "deal") {
                 $model = new CobaltModelEvent();
                 $events = $model->getEvents("deal",null,$app->input->get('id'));
                 $this->event_dock = CobaltHelperView::getView('events','event_dock','phtml', array('events'=>$events));
@@ -159,7 +159,7 @@ class CobaltViewDealsHtml extends JViewHTML
                 $this->document_list = CobaltHelperView::getView('documents','document_row','phtml',array('documents'=>$deal['documents']));
                 $this->custom_fields_view = CobaltHelperView::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
 
-                if ( CobaltHelperBanter::hasBanter() ){
+                if ( CobaltHelperBanter::hasBanter() ) {
                     $room_list = new CobaltHelperTranscriptlists();
                     $room_lists = $room_list->getRooms();
                     $transcripts = array();
@@ -170,7 +170,7 @@ class CobaltViewDealsHtml extends JViewHTML
                 }
         }
 
-        if ( $layout == "default" ){
+        if ($layout == "default") {
             $pagination = $model->getPagination();
             $total = $model->getTotal();
             $this->deal_list = CobaltHelperView::getView('deals','list','phtml',array('dealList'=>$dealList,'total'=>$total,'pagination'=>$pagination));
@@ -185,12 +185,12 @@ class CobaltViewDealsHtml extends JViewHTML
             $this->deal_filter = $deal_name;
         }
 
-        if ( CobaltHelperTemplate::isMobile() ){
+        if ( CobaltHelperTemplate::isMobile() ) {
             $this->add_note = CobaltHelperView::getView('note','edit','phtml');
             $this->add_task = CobaltHelperView::getView('events','edit_task','phtml',array('association_type'=>'deal','assocation_id'=>$app->input->get('id')));
         }
 
-        if ( $layout == "edit" ){
+        if ($layout == "edit") {
             $item = $app->input->get('id') && array_key_exists(0,$dealList) ? $dealList[0] : array('id'=>'');
             $this->edit_custom_fields_view = CobaltHelperView::getView('custom','edit','phtml',array('type'=>'deal','item'=>$item));
 

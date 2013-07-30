@@ -8,25 +8,25 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  $fields = unserialize($this->report[0]['fields']); ?>
 <?php $rows = array(); ?>
-    <?php foreach ($fields as $id => $text){ ?>
+    <?php foreach ($fields as $id => $text) { ?>
         <?php $rows[] = $id; ?>
     <?php } ?>
  <?php
-for ( $i=0; $i<count($this->report_data); $i++ ){
-    $report = $this->report_data[$i]; 
+for ( $i=0; $i<count($this->report_data); $i++ ) {
+    $report = $this->report_data[$i];
     $k = $i%2; ?>
    <tr class="cobalt_row_<?php echo $k; ?>">
-       <?php foreach ( $rows as $row ){ ?>
+       <?php foreach ($rows as $row) { ?>
            <?php $custom_field = strstr($row,"custom_"); ?>
-           <?php if ( !$custom_field ){ ?>
-           <?php switch ($row){
+           <?php if (!$custom_field) { ?>
+           <?php switch ($row) {
                   case "summary": ?>
                       <td><?php echo $report['summary']; ?></td>
-                  <?php break; 
+                  <?php break;
                   case "status_id": ?>
                       <td><div class="deal-status-<?php echo strtolower($report['status_name']); ?>"></div></td>
                   <?php break;
@@ -67,7 +67,7 @@ for ( $i=0; $i<count($this->report_data); $i++ ){
                        <td><?php echo $report['first_name'] . ' ' . $report['last_name']; ?></td>
                   <?php break;
                   case "name": ?>
-                      <td><?php echo $report['name']; ?></td>    
+                      <td><?php echo $report['name']; ?></td>
                   <?php break;
                   case "stage_id" : ?>
                       <td><?php echo $report['stage_name']; ?></td>
@@ -81,10 +81,10 @@ for ( $i=0; $i<count($this->report_data); $i++ ){
                   case "company_name" ?>
                       <td><?php echo $report['company_name']; ?></td>
                   <?php break; ?>
-           <?php } ?>  
-           <?php }else{ ?>
+           <?php } ?>
+           <?php } else { ?>
                       <td><?php echo CobaltHelperDropdown::getCustomValue("deal",$custom_field,$report[$custom_field],$report['id']); ?></td>
-           <?php } ?> 
+           <?php } ?>
        <?php } ?>
-   </tr> 
-<?php }  ?>
+   </tr>
+<?php }

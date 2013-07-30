@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerDownloadCsv extends CobaltControllerDefault
 {
 
-   function execute(){
-    
+   public function execute()
+   {
         ob_start();
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');

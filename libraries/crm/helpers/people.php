@@ -14,26 +14,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  {
 
     //get an individual person
-	public static function getPerson($id){
+    public static function getPerson($id)
+    {
+        //get db object
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-		//get db object
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
+        //generate query
+        $query->select("p.first_name,p.last_name,p.id,p.company_id,c.name as company_name FROM #__people AS p");
+        $query->leftJoin("#__companies AS c ON c.id = p.company_id");
+        $query->where('p.id='.$id);
+        $db->setQuery($query);
 
-		//generate query
-		$query->select("p.first_name,p.last_name,p.id,p.company_id,c.name as company_name FROM #__people AS p");
-		$query->leftJoin("#__companies AS c ON c.id = p.company_id");
-		$query->where('p.id='.$id);
-		$db->setQuery($query);
+        //return results
+        $row = $db->loadAssocList();
 
-		//return results
-		$row = $db->loadAssocList();
-		return $row;
+        return $row;
 
     }
 
     //return statuses
-    public static function getStatusList($idsOnly = FALSE){
+    public static function getStatusList($idsOnly = FALSE)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -51,7 +53,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //return tags
-    public static function getTagList(){
+    public static function getTagList()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -66,18 +69,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //return people filter types
-    public static function getPeopleTypes($filters=TRUE){
-        if ( $filters ){
+    public static function getPeopleTypes($filters=TRUE)
+    {
+        if ($filters) {
             return array(   'all' => CRMText::_('COBALT_ALL_PEOPLE'),
                             'leads' => CRMText::_('COBALT_ALL_LEADS'),
                             'not_leads' => CRMText::_('COBALT_ALL_PEOPLE_WHO_ARE_NOT_LEADS')   );
-        }else{
+        } else {
             return array( 'contact' => CRMText::_('COBALT_CONTACT') , 'lead' => CRMText::_('COBALT_LEAD') );
         }
     }
 
     //return stages
-    public static function getStages(){
+    public static function getStages()
+    {
         return array(   'all'=> CRMText::_('COBALT_INCLUDE_EVERYTHING'),
                         'today'=> CRMText::_('COBALT_TASKS_DUE_TODAY'),
                         'tomorrow'=> CRMText::_('COBALT_TASKS_DUE_TOMORROW'),
@@ -89,7 +94,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     //TODO: Language File
     //get column filters
-    public static function getColumnFilters(){
+    public static function getColumnFilters()
+    {
         return array(   'avatar'        =>  ucwords(CRMText::_('COBALT_AVATAR')),
                         'company'       =>  ucwords(CRMText::_('COBALT_COMPANY')),
                         'email'         =>  ucwords(CRMText::_('COBALT_EMAIL')),
@@ -111,8 +117,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get selected column filters
-    public static function getSelectedColumnFilters(){
-
+    public static function getSelectedColumnFilters()
+    {
         //get the user session data
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -125,18 +131,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //unserialize columns
         $columns = unserialize($results);
-        if ( is_array($columns) ){
+        if ( is_array($columns) ) {
             return $columns;
-        }else{
+        } else {
             //if it is empty then load a default set
             return CobaltHelperPeople::getDefaultColumnFilters();
         }
     }
 
     //get default column filters
-    public static function getDefaultColumnFilters(){
+    public static function getDefaultColumnFilters()
+    {
         return array( 'avatar','company','email','phone','type','status','source','notes');
     }
-
 
  }

@@ -13,60 +13,61 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  class CobaltHelperBanter extends JObject
  {
 
-	public static function hasBanter()
-	{
+    public static function hasBanter()
+    {
         jimport('joomla.filesystem.folder');
-        if ( JFolder::exists(JPATH_ROOT.'/administrator/components/com_banter') ){
+        if ( JFolder::exists(JPATH_ROOT.'/administrator/components/com_banter') ) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
-	}
+    }
 
- 	public static function getAssociationName($associationId,$associationType){
- 		$db = JFactory::getDBO();
- 		$query = $db->getQuery(true);
+     public static function getAssociationName($associationId,$associationType)
+     {
+         $db = JFactory::getDBO();
+         $query = $db->getQuery(true);
 
- 		switch ( $associationType ){
- 			case "deal":
- 				$table = "deals";
- 				$select = "name";
- 			break;
- 			case "person":
- 				$table = "people";
- 				$select = "CONCAT(first_name,' ',last_name)";
- 			break;
- 			case "company":
- 				$table = "companies";
- 				$select = "name";
-			break;
- 		}
+         switch ($associationType) {
+             case "deal":
+                 $table = "deals";
+                 $select = "name";
+             break;
+             case "person":
+                 $table = "people";
+                 $select = "CONCAT(first_name,' ',last_name)";
+             break;
+             case "company":
+                 $table = "companies";
+                 $select = "name";
+            break;
+         }
 
- 		$query->select($select)
- 			->from("#__".$table)
- 			->where("id=".$associationId);
+         $query->select($select)
+             ->from("#__".$table)
+             ->where("id=".$associationId);
 
-		$db->setQuery($query);
-		$result = $db->loadResult();
+        $db->setQuery($query);
+        $result = $db->loadResult();
 
-		return $result;
- 	}
+        return $result;
+     }
 
- 	public static function getAssociationLink($associationId,$associationType){
+     public static function getAssociationLink($associationId,$associationType)
+     {
+         switch ($associationType) {
+             case "deal":
+                 $view = "deals";
+             break;
+             case "person":
+                 $view = "people";
+             break;
+             case "company":
+                 $view = "companies";
+             break;
+         }
 
- 		switch( $associationType ){
- 			case "deal":
- 				$view = "deals";
- 			break;
- 			case "person":
- 				$view = "people";
- 			break;
- 			case "company":
- 				$view = "companies";
- 			break;
- 		}
-
- 		return JRoute::_('index.php?view='.$view."&id=".$associationId);
- 	}
+         return JRoute::_('index.php?view='.$view."&id=".$associationId);
+     }
 
  }

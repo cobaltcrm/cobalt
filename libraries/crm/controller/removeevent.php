@@ -8,18 +8,19 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerRemoveEvent extends CobaltControllerDefault
 {
 
-	function execute(){
-		$model = new CobaltModelEvent();
-		if($model->removeEvent()) {
-			echo json_encode(array('success'=>true));
-		} else {
-			echo json_encode(array('success'=>false));
-		}
-	}
+    public function execute()
+    {
+        $model = new CobaltModelEvent();
+        if ($model->removeEvent()) {
+            echo json_encode(array('success'=>true));
+        } else {
+            echo json_encode(array('success'=>false));
+        }
+    }
 
 }

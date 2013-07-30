@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
-	var eventsObj = <?php echo json_encode($this->info); ?>;
-	var loc = 'calendar';	
+    var eventsObj = <?php echo json_encode($this->info); ?>;
+    var loc = 'calendar';
 </script>
 <div id="calendar"></div>

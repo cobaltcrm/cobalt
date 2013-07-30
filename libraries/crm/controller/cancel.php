@@ -8,15 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerCancel extends CobaltControllerDefault
 {
-	function execute()
-	{
-		$app = JFactory::getApplication();
-		$view = $app->input->get('view');
-		
+    public function execute()
+    {
+        $app = JFactory::getApplication();
+        $view = $app->input->get('view');
+
         $msg = JText::_('Entry cancelled!');
         $app->redirect('index.php?view='.$view,$msg);
     }

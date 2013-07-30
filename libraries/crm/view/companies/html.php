@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewCompaniesHtml extends JViewHTML
 {
@@ -17,11 +17,11 @@ class CobaltViewCompaniesHtml extends JViewHTML
         $app = JFactory::getApplication();
         $app->input->set('view','companies');
         $app->input->set('layout',$app->input->get('layout','default'));
-        
+
         //get model
         $model = new CobaltModelCompany();
         $state = $model->getState();
-        
+
         //session data
         $session = JFactory::getSession();
         $member_role = CobaltHelperUsers::getRole();
@@ -30,54 +30,53 @@ class CobaltViewCompaniesHtml extends JViewHTML
         $company = $session->get('company_type_filter');
         $user = $session->get('company_user_filter');
         $team = $session->get('company_team_filter');
-        
+
         //load java libs
         $doc = JFactory::getDocument();
         $doc->addScript( JURI::base().'libraries/crm/media/js/company_manager.js' );
-        
+
         //determine if we are requesting a specific company or all companies
         //if id requested
-        if( $app->input->get('id') ) {
-            $companies = $model->getCompanies($app->input->get('id'));  
-            if ( is_null($companies[0]['id']) ){
+        if ( $app->input->get('id') ) {
+            $companies = $model->getCompanies($app->input->get('id'));
+            if ( is_null($companies[0]['id']) ) {
                 $app = JFactory::getApplication();
                 $app->redirect(JRoute::_('index.php?view=companies'),CRMText::_('COBALT_NOT_AUTHORIZED'));
             }
-        }else{
+        } else {
             //else load all companies
-            if ( $app->input->get('layout') != 'edit' ){ 
+            if ( $app->input->get('layout') != 'edit' ) {
                 $companies = $model->getCompanies();
             }
         }
-        
+
         //assign pagination
         $pagination = $model->getPagination();
         $this->pagination = $pagination;
-        
-        
+
         //get company type filters
         $company_types = CobaltHelperCompany::getTypes();
         $company_type = ( $company ) ? $company_types[$company] : $company_types['all'];
-        
+
         //get user filter
-        if ( $user AND $user != $user_id AND $user != 'all' ){
+        if ($user AND $user != $user_id AND $user != 'all') {
             $user_info = CobaltHelperUsers::getUsers($user);
             $user_info = $user_info[0];
             $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
-        }else if ( $team ){
+        } elseif ($team) {
             $team_info = CobaltHelperUsers::getTeams($team);
             $team_info = $team_info[0];
             $user_name = $team_info['team_name'].CRMText::_('COBALT_TEAM_APPEND');
-        }else if ( $user == 'all' || $user == "" ) {
+        } elseif ($user == 'all' || $user == "") {
             $user_name = CRMText::_('COBALT_ALL_USERS');
-        }else{
-            $user_name = CRMText::_('COBALT_ME');            
+        } else {
+            $user_name = CRMText::_('COBALT_ME');
         }
 
         //get associated members and teams
         $teams = CobaltHelperUsers::getTeams();
         $users = CobaltHelperUsers::getUsers();
-        
+
         //get total associated companies for count display
         $company_count = CobaltHelperUsers::getCompanyCount($user_id,$team_id,$member_role);
 
@@ -101,11 +100,11 @@ class CobaltViewCompaniesHtml extends JViewHTML
                 $custom_fields_view->item = $companies[0];
                 $this->custom_fields_view = $custom_fields_view;
 
-                if ( CobaltHelperBanter::hasBanter() ){
+                if ( CobaltHelperBanter::hasBanter() ) {
                     $room_list = new CobaltHelperTranscriptlists();
                     $room_lists = $room_list->getRooms();
                     $transcripts = array();
-                    if ( is_array($room_lists) && count($room_lists) > 0 ) { 
+                    if ( is_array($room_lists) && count($room_lists) > 0 ) {
                         $transcripts = $room_list->getTranscripts($room_lists[0]->id);
                     }
                     $banter_dock = CobaltHelperView::getView('banter','default','html');
@@ -114,7 +113,7 @@ class CobaltViewCompaniesHtml extends JViewHTML
                     $this->banter_dock = $banter_dock;
                 }
 
-                if ( CobaltHelperTemplate::isMobile() ){
+                if ( CobaltHelperTemplate::isMobile() ) {
                     $add_note = CobaltHelperView::getView('note','edit','html');
                     $this->add_note = $add_note;
                 }
@@ -147,7 +146,7 @@ class CobaltViewCompaniesHtml extends JViewHTML
             break;
 
         }
-        
+
         //ref assignments
         $this->companies=$companies;
         $this->user_id=$user_id;
@@ -163,5 +162,5 @@ class CobaltViewCompaniesHtml extends JViewHTML
         //display
         return parent::render();
     }
-    
+
 }

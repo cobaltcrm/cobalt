@@ -8,18 +8,18 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewMailHtml extends JViewHtml
 {
-	function render($tpl = null)
-	{
+    public function render($tpl = null)
+    {
 
-		$model = new CobaltModelMail();
+        $model = new CobaltModelMail();
         $this->mail = $model->getMail();
-	
-		//display
-		return parent::render();
-	}
-	
+
+        //display
+        return parent::render();
+    }
+
 }

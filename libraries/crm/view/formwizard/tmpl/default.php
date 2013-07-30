@@ -35,8 +35,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->forms) ) { $i=0; foreach($this->forms as $key=>$form){ ?>
-                                    
+                                <?php if ( count($this->forms) ) { $i=0; foreach ($this->forms as $key=>$form) { ?>
+
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $form['id']); ?>
@@ -60,7 +60,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                         </td>
                                         <td>[cobaltform<?php echo $form['id']; ?>]</td>
                                     </tr>
-                                
+
                                 <?php $i++; } } ?>
                             </tbody>
                         </table>

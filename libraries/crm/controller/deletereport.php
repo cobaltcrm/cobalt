@@ -8,26 +8,26 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerDeleteReport extends CobaltControllerDefault
 {
-    
-    function execute(){
-        
+
+    public function execute()
+    {
         //gen return info
         $return = array();
         $return['error'] = true;
-        
+
         //get model
         $model = new CobaltModelReport();
-        if ( $model->deleteReport($app->input->get('id')) ){
+        if ( $model->deleteReport($app->input->get('id')) ) {
             $return['error'] = false;
         }
-        
+
         //return json info
         echo json_encode($return);
-        
+
     }
 
 }

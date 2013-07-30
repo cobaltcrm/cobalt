@@ -27,8 +27,8 @@ class CobaltModelEvent extends CobaltModelDefault
         var $filter_order_Dir = null;
         var $completed = null;
 
-        function __construct(){
-
+        function __construct()
+        {
             parent::__construct();
             $app = JFactory::getApplication();
             $this->view = $app->input->get('view');
@@ -65,7 +65,7 @@ class CobaltModelEvent extends CobaltModelDefault
                 $status = "updated";
             }
 
-            if ( array_key_exists('completed',$data) && $data['completed'] == 1 ){
+            if ( array_key_exists('completed',$data) && $data['completed'] == 1 ) {
                 $status = "completed";
                 $data['actual_close'] = $date;
             }
@@ -78,24 +78,24 @@ class CobaltModelEvent extends CobaltModelDefault
             if ( array_key_exists('associate_name',$data) ) unset($data['associate_name']);
 
             //create event dates
-            if ( array_key_exists('type',$data) && $data['type'] == "task" && array_key_exists('due_date_hour',$data) ){
+            if ( array_key_exists('type',$data) && $data['type'] == "task" && array_key_exists('due_date_hour',$data) ) {
                 $data['due_date'] = $data['due_date']." ".$data['due_date_hour'];
             }
-            if ( array_key_exists('type',$data) && $data['type'] == "event" && array_key_exists('start_time_hour',$data) ){
+            if ( array_key_exists('type',$data) && $data['type'] == "event" && array_key_exists('start_time_hour',$data) ) {
                 $data['start_time'] = $data['start_time']." ".$data['start_time_hour'];
             }
-            if ( array_key_exists('type',$data) && $data['type'] == "event" && array_key_exists('end_time_hour',$data) ){
+            if ( array_key_exists('type',$data) && $data['type'] == "event" && array_key_exists('end_time_hour',$data) ) {
                 $data['end_time'] = $data['end_time']." ".$data['end_time_hour'];
             }
 
-            if ( array_key_exists('due_date',$data) && $data['due_date'] != "" && $data['due_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ){
+            if ( array_key_exists('due_date',$data) && $data['due_date'] != "" && $data['due_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ) {
                 $data['due_date'] = CobaltHelperDate::formatDBDate($data['due_date']);
             }
-            if ( array_key_exists('start_date',$data) && $data['start_date'] != "" && $data['start_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ){
+            if ( array_key_exists('start_date',$data) && $data['start_date'] != "" && $data['start_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ) {
                 $data['start_date'] = CobaltHelperDate::formatDBDate($data['start_date']);
             }
 
-            if ( array_key_exists('end_date',$data) && $data['end_date'] != "" && $data['end_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ){
+            if ( array_key_exists('end_date',$data) && $data['end_date'] != "" && $data['end_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ) {
                 $data['end_date'] = CobaltHelperDate::formatDBDate($data['end_date']);
             }
 
@@ -112,17 +112,18 @@ class CobaltModelEvent extends CobaltModelDefault
                 unset($data['repeats']);
             }
 
-            if ( array_key_exists('start_time',$data) && $data['start_time'] != "" && $data['start_time'] != "0000-00-00 00:00:00" && !is_null($data['start_time']) ){
+            if ( array_key_exists('start_time',$data) && $data['start_time'] != "" && $data['start_time'] != "0000-00-00 00:00:00" && !is_null($data['start_time']) ) {
                 $data['start_time'] = CobaltHelperDate::formatDBDate($data['start_time']);
             }
 
-            if ( array_key_exists('end_time',$data) && $data['end_time'] != "" && $data['end_time'] != "0000-00-00 00:00:00" && !is_null($data['end_time']) ){
+            if ( array_key_exists('end_time',$data) && $data['end_time'] != "" && $data['end_time'] != "0000-00-00 00:00:00" && !is_null($data['end_time']) ) {
                 $data['end_time'] = CobaltHelperDate::formatDBDate($data['end_time']);
             }
 
             // Bind the form fields to the table
             if (!$row->bind($data)) {
                 $this->setError($db->getErrorMsg());
+
                 return false;
             }
 
@@ -132,20 +133,22 @@ class CobaltModelEvent extends CobaltModelDefault
             // Make sure the record is valid
             if (!$row->check()) {
                 $this->setError($db->getErrorMsg());
+
                 return false;
             }
 
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($db->getErrorMsg());
+
                 return false;
             }
 
-            if ( $oldRow->id && $row->type == "task" && ( $row->due_date > $oldRow->due_date )){
+            if ( $oldRow->id && $row->type == "task" && ( $row->due_date > $oldRow->due_date )) {
                 $status = "postponed";
             }
 
-            if ( $oldRow->id && $row->type == "event" && ( $row->start_time > $oldRow->start_time ) ){
+            if ( $oldRow->id && $row->type == "event" && ( $row->start_time > $oldRow->start_time ) ) {
                 $status = "postponed";
             }
 
@@ -157,7 +160,7 @@ class CobaltModelEvent extends CobaltModelDefault
             CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
 
             //if we receive information concerning cf tables
-            if ( array_key_exists('association_id',$data) ){
+            if ( array_key_exists('association_id',$data) ) {
                 $postcfdata = array(
                     'association_id'    => $data['association_id'],
                     'event_id'          => $event_id
@@ -167,7 +170,6 @@ class CobaltModelEvent extends CobaltModelDefault
 
             // $dispatcher = JEventDispatcher::getInstance();
             // $dispatcher->trigger('onAfterEventSave', array(&$row));
-
             return $event_id;
 
         }
@@ -177,8 +179,8 @@ class CobaltModelEvent extends CobaltModelDefault
          *
          * @return array
          */
-        function getEvents($loc=null,$user=null,$association=null){
-
+        function getEvents($loc=null,$user=null,$association=null)
+        {
             $app = JFactory::getApplication();
             $loc = $loc ? $loc : $this->loc;
 
@@ -208,101 +210,100 @@ class CobaltModelEvent extends CobaltModelDefault
             $team_id = CobaltHelperUsers::getTeamId();
 
             //filter based on user role
-            if ( $user_role != 'exec' && $this->view != "print" ){
+            if ($user_role != 'exec' && $this->view != "print") {
                 //manager filter
-                if ( $user_role == 'manager' ){
+                if ($user_role == 'manager') {
                     $query->where('(assignee.team_id = '.$team_id.' OR owner.team_id = '.$team_id.")");
-                }else{
+                } else {
                 //basic user filter
                     $query->where("(e.assignee_id = ".$user_id." OR e.owner_id =".$user_id.")");
                 }
             }
 
             //search for certain user events
-            if ( $user && $this->view != "print" ){
-                if ( $user == $user_id ){
+            if ($user && $this->view != "print") {
+                if ($user == $user_id) {
                     $query->where("(e.assignee_id=".$user_id.' OR e.owner_id='.$user_id.')');
-                }else if ( $user != 'all' ){
+                } elseif ($user != 'all') {
                     $query->where(array("e.assignee_id=".$user));
                 }
             }
 
-            if ( !$association ){
+            if (!$association) {
                 $association = $app->input->get('association_id') ? $app->input->get('association_id') : $app->input->get('id');
             }
             $association_type = $app->input->get('association_type') ? $app->input->get('association_type') : $app->input->get('layout');
             $association_types = array("company","deal","person");
 
-            if ( $association ){
+            if ($association) {
                 $association_type = $association_type ? $association_type : $loc;
-                if ( $association_type == "company" ){
-                    if ( is_array($association)){
+                if ($association_type == "company") {
+                    if ( is_array($association)) {
                         $query->where("(p.company_id=".$association." OR d.company_id=".$association." OR ( a.association_type=".$db->quote("company")." AND a.association_id IN(".implode(",",$association).") ))");
-                    }else{
+                    } else {
                         $query->where("(p.company_id=".$association." OR d.company_id=".$association." OR ( a.association_type=".$db->quote("company")." AND a.association_id=".$association." ))");
                     }
-                }else{
-                    if ( is_array($association) ){
+                } else {
+                    if ( is_array($association) ) {
                         $query->where("a.association_id IN(".implode(",",$association).")");
-                    }else{
+                    } else {
                         $query->where("a.association_id=".$association);
                     }
                     $query->where("a.association_type=".$db->quote($association_type));
                 }
-            }else if ( $association_type && in_array($association_type,$association_types)){
+            } elseif ( $association_type && in_array($association_type,$association_types)) {
                 $query->where("a.association_type=".$db->Quote($association_type));
-            }else{
+            } else {
                 /** hide events associated with archived deals **/
                 $query->where("(d.archived=0 OR d.archived IS NULL)");
             }
 
-            if ( $this->_id != null ){
-                if ( is_array($this->_id) ){
+            if ($this->_id != null) {
+                if ( is_array($this->_id) ) {
                     $query->where("e.id IN (".implode(',',$this->_id).")");
-                }else{
+                } else {
                     $query->where("e.id=$this->_id");
                 }
             }
 
-
-            if($this->current_events) {
+            if ($this->current_events) {
                $now = CobaltHelperDate::formatDBDate(date('Y-m-d'));
                $query->where('e.due_date != "0000-00-00 00:00:00" AND e.due_date >="'.$now.'"');
             }
 
             /** Filter by status **/
             $status_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_status');
-            if ( $status_filter != null && $this->view != "print" ){
+            if ($status_filter != null && $this->view != "print") {
                 $query->where("e.completed=$status_filter");
-            }else{
-                if ( $this->completed != null ){
-                    if ( $this->completed == 'true' ){
+            } else {
+                if ($this->completed != null) {
+                    if ($this->completed == 'true') {
                         $query->where("e.completed=1");
-                    }else if($this->completed != 'false'){
+                    } elseif ($this->completed != 'false') {
                         $query->where("e.completed=".$this->completed);
                     }
-                }else{
+                } else {
                     $query->where("e.completed=0");
                 }
             }
 
             /** Filter by type **/
             $type_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_type');
-            if ( $type_filter != null && $type_filter != "all" && $this->view != "print" ){
+            if ($type_filter != null && $type_filter != "all" && $this->view != "print") {
                 $query->where("e.type='$type_filter'");
             }
 
             /** Filter by category **/
             $category_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_category');
-            if ( $category_filter != null && $category_filter != "any" && $this->view != "print" ){
+            if ($category_filter != null && $category_filter != "any" && $this->view != "print") {
                 $query->where("e.category_id=$category_filter");
             }
 
             /** Filter by due date **/
             $due_date_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_due_date');
-            if ( $due_date_filter != null && $due_date_filter != "any" && $this->view != "print" ){
+            if ($due_date_filter != null && $due_date_filter != "any" && $this->view != "print") {
                 $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
-                switch ( $due_date_filter ){
+                switch ($due_date_filter) {
                     case "today":
                         $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("((e.due_date >= '$date' AND e.due_date < '$tomorrow') OR (e.start_time >= '$date' AND e.start_time < '$tomorrow'))");
@@ -333,8 +334,8 @@ class CobaltModelEvent extends CobaltModelDefault
             /** Filter by assignee id **/
             $assignee_id_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_assignee_id');
             $assignee_filter_type = $this->getState('Event.'.$this->view.'_'.$this->layout.'_assignee_filter_type');
-            if ( $loc != "calendar" && $assignee_id_filter != null && $assignee_id_filter != 'all' && $this->view != "print" ){
-                if ( $assignee_filter_type == "team" ){
+            if ($loc != "calendar" && $assignee_id_filter != null && $assignee_id_filter != 'all' && $this->view != "print") {
+                if ($assignee_filter_type == "team") {
                     $team_members = CobaltHelperUsers::getTeamUsers($assignee_id_filter,TRUE);
                     $query->where("e.assignee_id IN(".implode(',',$team_members).")");
                 } else {
@@ -344,22 +345,21 @@ class CobaltModelEvent extends CobaltModelDefault
 
             /** Filter by association type **/
             $association_type_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_association_type');
-            if ( $association_type_filter != null && $association_type_filter != "any" && !$association && $assignee_id_filter != 'all' && $this->view != "print" /*&& !$assignee_id_filter */ ){
+            if ($association_type_filter != null && $association_type_filter != "any" && !$association && $assignee_id_filter != 'all' && $this->view != "print" /*&& !$assignee_id_filter */) {
                 $query->where("a.association_type='".$association_type_filter."'");
             }
 
             $query->where("e.published=".$this->published);
 
-
-            if ( $this->start_date ){
+            if ($this->start_date) {
                 $query->where("(e.due_date >= '".$this->start_date."' OR e.start_time >= '".$this->start_date."' OR e.repeats != 'none' )");
             }
 
-            if ( $this->end_date ){
+            if ($this->end_date) {
                 $query->where("(e.due_date < '".$this->end_date."' OR e.end_time < '".$this->end_date."' OR e.repeats != 'none' )");
             }
 
-            if ( $this->deal_id > 0 ){
+            if ($this->deal_id > 0) {
                 $query->where("(a.association_id=".$this->deal_id." AND a.association_type='deal')");
             }
 
@@ -367,11 +367,10 @@ class CobaltModelEvent extends CobaltModelDefault
             $this->filter_order_Dir = $this->getState('Event.'.$this->view.'_'.$this->layout.'_filter_order_Dir');
             $query->order($this->filter_order . ' ' . $this->filter_order_Dir);
 
-
             /** ------------------------------------------
              * Set query limits and load results
              */
-            if (  $this->getState("Event.".$this->view.'_'.$this->layout.'_limit') != 0 ){
+            if (  $this->getState("Event.".$this->view.'_'.$this->layout.'_limit') != 0 ) {
                 $query .= " LIMIT ".($this->getState("Event.".$this->view.'_'.$this->layout.'_limit'))." OFFSET ".($this->getState("Event.".$this->view.'_'.$this->layout.'_limitstart'));
             }
 
@@ -389,14 +388,14 @@ class CobaltModelEvent extends CobaltModelDefault
             */
 
             $rowsToAdd = array();
-            if ( count($rows) > 0 ){
-                foreach ( $rows as $key=>$event ){
+            if ( count($rows) > 0 ) {
+                foreach ($rows as $key=>$event) {
 
                     $rows[$key]['association_link'] = $association_link = "";
                     $rows[$key]['association_link_lang'] = $association_link_lang = "";
 
-                    if ( $event['association_type'] != null ){
-                        switch($event['association_type']){
+                    if ($event['association_type'] != null) {
+                        switch ($event['association_type']) {
                             case "company":
                                 $view = "companies";
                             break;
@@ -411,7 +410,7 @@ class CobaltModelEvent extends CobaltModelDefault
                         $rows[$key]['association_link_lang'] = $association_link_lang = ucwords(CRMText::_("COBALT_ASSOCIATION_LINK_".strtoupper($event['association_type'])));
                     }
 
-                    if ( $event['type'] == "event" ){
+                    if ($event['type'] == "event") {
                         $stime = explode(" ",$event['start_time']);
                         $rows[$key]['start_time_hour'] = $stime[1];
                         $etime = explode(" ",$event['end_time']);
@@ -428,7 +427,7 @@ class CobaltModelEvent extends CobaltModelDefault
                     $rows[$key]['server'] = true;
 
                     //Determine if event is recurring
-                    if ( array_key_exists('repeats',$event) && $event['repeats'] != 'none' ){
+                    if ( array_key_exists('repeats',$event) && $event['repeats'] != 'none' ) {
 
                         //Get current date so we know when to stop looping for event virtualization
                         $date = CobaltHelperDate::formatDBDate(date("Y-m-d H:i:s"));
@@ -449,24 +448,24 @@ class CobaltModelEvent extends CobaltModelDefault
                         $initialKey = $key;
 
                         //Determine virtual events to generate
-                        switch ( $event['repeats'] ){
+                        switch ($event['repeats']) {
                         //Daily
                             case "daily":
-                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) )){
+                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) )) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . " +1 days"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 days"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( !in_array($event['start_time'],$excludes) && !$past_due ){
+                                        if ( !in_array($event['start_time'],$excludes) && !$past_due ) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) ){
+                                } else {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . " +1 days"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 days"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( !in_array($event['start_time'],$excludes) && !$past_due ){
+                                        if ( !in_array($event['start_time'],$excludes) && !$past_due ) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
@@ -475,21 +474,21 @@ class CobaltModelEvent extends CobaltModelDefault
                         //Weekdays
                             case "weekdays":
                                 $days = array( 1,2,3,4,5 );
-                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ){
+                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 days"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 days"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  ){
+                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  ) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) ){
+                                } else {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 days"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 days"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  ){
+                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  ) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
@@ -497,8 +496,8 @@ class CobaltModelEvent extends CobaltModelDefault
                                 break;
                         //Weekly
                             case "weekly":
-                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ){
+                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 week"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 week"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
@@ -506,8 +505,8 @@ class CobaltModelEvent extends CobaltModelDefault
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )){
+                                } else {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 week"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 week"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
@@ -520,21 +519,21 @@ class CobaltModelEvent extends CobaltModelDefault
                         //Weekly Monday Wednesday and Friday
                             case "weekly-mwf":
                                 $days = array ( 1,3,5 );
-                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ){
+                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 day"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 day"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  && !$past_due){
+                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  && !$past_due) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )){
+                                } else {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 day"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 day"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  && !$past_due){
+                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes)  && !$past_due) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
@@ -543,21 +542,21 @@ class CobaltModelEvent extends CobaltModelDefault
                         //Weekly Tuesday Thursday
                             case "weekly-tr":
                                 $days = array ( 2,4 );
-                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ){
+                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 day"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 day"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes) && !$past_due ){
+                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes) && !$past_due ) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )){
+                                } else {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 day"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 day"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
-                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes) && !$past_due ){
+                                        if ( in_array(date('w',strtotime($event['start_time'])),$days) && !in_array($event['start_time'],$excludes) && !$past_due ) {
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
@@ -565,8 +564,8 @@ class CobaltModelEvent extends CobaltModelDefault
                                 break;
                         //Monthly
                             case "monthly":
-                            if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ){
+                            if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 month"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 month"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
@@ -574,8 +573,8 @@ class CobaltModelEvent extends CobaltModelDefault
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )){
+                                } else {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 month"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 month"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
@@ -587,8 +586,8 @@ class CobaltModelEvent extends CobaltModelDefault
                                 break;
                         //Yearly
                             case "yearly":
-                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ){
-                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ){
+                                if ( isset($event['end_date']) && strtotime($event['end_date']) > 0 ) {
+                                    while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) ) && ( isset($event['end_date']) && strtotime($event['start_time']) < strtotime($event['end_date']) ) ) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 year"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 year"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
@@ -596,8 +595,8 @@ class CobaltModelEvent extends CobaltModelDefault
                                             $dates[] = array( 'start' => $event['start_time'], 'end' => $event['end_time'] );
                                         }
                                     }
-                                }else{
-                                     while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )){
+                                } else {
+                                     while ( ( strtotime($event['start_time']) < strtotime($end_month) || strtotime($event['repeat_end']) > strtotime($event['end_time']) )) {
                                         $event['start_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['start_time'])) . "+1 year"));
                                         $event['end_time'] = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($event['end_time'])) . "+1 year"));
                                         $past_due = $due_date_filter == "past_due" ? strtotime($event['start_time']) >= strtotime($date)  : false;
@@ -610,9 +609,9 @@ class CobaltModelEvent extends CobaltModelDefault
                         }
 
                         //Once we have generated the event dates for the virtual events, then add them to the object as new "unique" events
-                        if ( count($dates) > 0 ){
+                        if ( count($dates) > 0 ) {
                             $i=0;
-                            foreach ( $dates as $key=>$date ){
+                            foreach ($dates as $key=>$date) {
                                 $new_event = array(
                                     'assignee_color'            => $event['assignee_color'],
                                     // 'id'                     => null,
@@ -654,7 +653,7 @@ class CobaltModelEvent extends CobaltModelDefault
                                     'assignee_last_name'        => $event['assignee_last_name'],
                                     'end_date'                  => $event['end_date'],
                                 );
-                                if ( $event['type'] == "event" ){
+                                if ($event['type'] == "event") {
                                     $stime = explode(" ",$new_event['start_time']);
                                     $new_event['start_time_hour'] = $stime[1];
                                     $etime = explode(" ",$new_event['end_time']);
@@ -671,16 +670,16 @@ class CobaltModelEvent extends CobaltModelDefault
                             }
                         }
 
-                        if ( in_array($initialTime,$excludes) ){
-                            if ( $this->completed != null ){
-                                if ( $event['completed'] != $this->completed ){
+                        if ( in_array($initialTime,$excludes) ) {
+                            if ($this->completed != null) {
+                                if ($event['completed'] != $this->completed) {
                                     unset($rows[$initialKey]);
                                 }
-                            }else if ( isset($status_filter) && $status_filter != null ){
-                                if ( $event['completed'] != $status_filter ){
+                            } elseif ( isset($status_filter) && $status_filter != null ) {
+                                if ($event['completed'] != $status_filter) {
                                     unset($rows[$initialKey]);
                                 }
-                            }else{
+                            } else {
                                 unset($rows[$initialKey]);
                             }
                         }
@@ -690,24 +689,24 @@ class CobaltModelEvent extends CobaltModelDefault
                 }
             }
 
-            if ( is_array($rows) && is_array($rowsToAdd) ){
+            if ( is_array($rows) && is_array($rowsToAdd) ) {
                 $rows = array_merge($rows,$rowsToAdd);
             }
 
             //filter data for calendar rendering
-            if($loc=='calendar' || $this->loc == "calendar"){
-                if ( count($rows) > 0 ){
-                    foreach( $rows as $key => $row ) {
+            if ($loc=='calendar' || $this->loc == "calendar") {
+                if ( count($rows) > 0 ) {
+                    foreach ($rows as $key => $row) {
                         $rows[$key]['title']    = $row['name'];
                         $rows[$key]['allDay']   = $row['all_day'];
 
                         //determine event type
-                        if ( $row['type'] == 'event' ){
+                        if ($row['type'] == 'event') {
                             $rows[$key]['start']    = $row['start_time'];
                             $rows[$key]['end']      = $row['end_time'];
                         }
 
-                        if ( $row['type'] == 'task' ){
+                        if ($row['type'] == 'task') {
                             $rows[$key]['start'] = $row['due_date'];
                         }
 
@@ -715,10 +714,9 @@ class CobaltModelEvent extends CobaltModelDefault
                 }
             }
 
-
             /** Sort events after the virtual events have been created **/
-            if ( is_array($rows) && count($rows) > 0 ){
-                switch ( $this->filter_order ){
+            if ( is_array($rows) && count($rows) > 0 ) {
+                switch ($this->filter_order) {
                     case "e.due_date":
                         usort($rows,'self::dateSort');
                     break;
@@ -731,24 +729,23 @@ class CobaltModelEvent extends CobaltModelDefault
                 }
             }
 
-
             // filter events after event generation
-            if ( is_array($rows) && count($rows) > 0 ){
-                if ( $this->completed != null ){
-                    foreach ( $rows as $key => $row ){
-                        if ( $row['completed'] != $this->completed ){
+            if ( is_array($rows) && count($rows) > 0 ) {
+                if ($this->completed != null) {
+                    foreach ($rows as $key => $row) {
+                        if ($row['completed'] != $this->completed) {
                             unset($rows[$key]);
                         }
                     }
-                }else if ( isset($status_filter) && $status_filter != null ){
-                    foreach ( $rows as $key=>$row ){
-                        if ( $row['completed'] != $status_filter ){
+                } elseif ( isset($status_filter) && $status_filter != null ) {
+                    foreach ($rows as $key=>$row) {
+                        if ($row['completed'] != $status_filter) {
                             unset($rows[$key]);
                         }
                     }
-                }else{
-                    foreach ( $rows as $key=>$row ){
-                        if ( $row['completed'] == 1 ){
+                } else {
+                    foreach ($rows as $key=>$row) {
+                        if ($row['completed'] == 1) {
                             unset($rows[$key]);
                         }
                     }
@@ -763,30 +760,32 @@ class CobaltModelEvent extends CobaltModelDefault
 
         }
 
-        function dateSort($a,$b){
+        function dateSort($a,$b)
+        {
             $date1 = $a['type'] == "event" ? $a['start_time'] : $a['due_date'];
             $date2 = $b['type'] == "event" ? $b['start_time'] : $b['due_date'];
             if (strtotime($date1) == strtotime($date2)) {
                 return 0;
             }
-            if ( $this->filter_order == "e.due_date" ){
-                if ( $this->filter_order_Dir == "asc" ){
+            if ($this->filter_order == "e.due_date") {
+                if ($this->filter_order_Dir == "asc") {
                     return (strtotime($date1) < strtotime($date2)) ? -1 : 1;
-                }else{
+                } else {
                     return (strtotime($date1) > strtotime($date2)) ? -1 : 1;
                 }
-            }else{
+            } else {
                 return (strtotime($date1) < strtotime($date2)) ? -1 : 1;
             }
         }
 
-        function typeSort($a,$b){
-            if ( $a['category_id'] == $b['category_id'] ){
+        function typeSort($a,$b)
+        {
+            if ($a['category_id'] == $b['category_id']) {
                 return 0;
             }
-            if ( $this->filter_order_Dir == "asc" ){
+            if ($this->filter_order_Dir == "asc") {
                 return $a['category_id'] < $b['category_id'] ? -1 : 1;
-            }else{
+            } else {
                 return $a['category_id'] > $b['category_id'] ? -1 : 1;
             }
         }
@@ -797,18 +796,18 @@ class CobaltModelEvent extends CobaltModelDefault
          * @param int $id specific id requested
          * @return mixed
          */
-        function getEvent($id=null,$formatTime=true) {
-
+        function getEvent($id=null,$formatTime=true)
+        {
             $app = JFactory::getApplication();
 
             //db
             $db = JFactory::getDBO();
 
-            if(!$id) {
+            if (!$id) {
                 $event = JTable::getInstance('Event','Table');
+
                 return $event;
             }
-
 
             $data = $app->input->getRequest('post');
 
@@ -818,9 +817,8 @@ class CobaltModelEvent extends CobaltModelDefault
             $db->setQuery($query);
             $result = $db->loadAssocList();
 
-
             //if we dont find any results use the parent id instead
-            if ( count($result) == 0 || count(explode("-",$id)) > 1 ){
+            if ( count($result) == 0 || count(explode("-",$id)) > 1 ) {
                 $id = $app->input->get('parent_id');
             }
 
@@ -841,7 +839,6 @@ class CobaltModelEvent extends CobaltModelDefault
             $query->leftJoin('#__companies as c ON ecf.association_id = c.id AND ecf.association_type = "company" AND c.published>0');
             $query->leftJoin('#__users AS assignee ON assignee.id = e.assignee_id');
 
-
             $query->where("e.id=".$id);
 
             //set query
@@ -852,71 +849,71 @@ class CobaltModelEvent extends CobaltModelDefault
 
             //clean results
             //assign the parent id if needed
-            if ( count($result) == 0 && is_array($results) && array_key_exists(0,$results)){
+            if ( count($result) == 0 && is_array($results) && array_key_exists(0,$results)) {
                 $results[0]['parent_id'] = $results[0]['id'];
                 unset($results[0]['id']);
             }
 
-            if ( is_array($results) && array_key_exists(0,$results) ){
+            if ( is_array($results) && array_key_exists(0,$results) ) {
 
-                if ( $results[0]['repeats'] != "none" && $app->input->get('date') && count($results) > 0 ){
-                    if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ){
+                if ( $results[0]['repeats'] != "none" && $app->input->get('date') && count($results) > 0 ) {
+                    if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ) {
                         $stime = explode(" ",$results[0]['start_time']);
                         $results[0]['start_time_hour'] = $stime[1];
                         $etime = explode(" ",$results[0]['end_time']);
                         $results[0]['end_time_hour'] =   $etime[1];
                         $results[0]['start_time'] = $app->input->get('date');
                         $results[0]['end_time'] = $app->input->get('date');
-                    } else if ( array_key_exists('due_date',$results[0]) ) {
+                    } elseif ( array_key_exists('due_date',$results[0]) ) {
                         $dtime = explode(" ",$results[0]['due_date']);
                         $results[0]['due_date_hour'] = $dtime[1];
                         $results[0]['due_date'] = $app->input->get('date');
                     }
                 }
 
-                if ( $formatTime ){
+                if ($formatTime) {
                     $originalDate = $results[0]['created'];
-                    if ( array_key_exists('created',$results[0])){
+                    if ( array_key_exists('created',$results[0])) {
                         $results[0]['created_formatted'] = array_key_exists('created',$results[0]) ? CobaltHelperDate::formatDate($originalDate) : "";
                         $results[0]['created'] = CobaltHelperDate::formatDate($originalDate,true,false);
                     }
-                    if ( array_key_exists('repeat_end',$results[0])){
+                    if ( array_key_exists('repeat_end',$results[0])) {
                         $results[0]['repeat_end_formatted'] = CobaltHelperDate::formatDate($results[0]['repeat_end']);
                         $results[0]['repeat_end'] = CobaltHelperDate::formatDate($results[0]['repeat_end'],true,false);
                     }
-                    if ( array_key_exists('modified',$results[0])){
+                    if ( array_key_exists('modified',$results[0])) {
                         $results[0]['modified_formatted'] = CobaltHelperDate::formatDate($results[0]['modified']);
                         $results[0]['modified'] = CobaltHelperDate::formatDate($results[0]['modified'],true,false);
                     }
-                    if ( array_key_exists('actual_close',$results[0])){
+                    if ( array_key_exists('actual_close',$results[0])) {
                         $results[0]['actual_close_formatted'] = CobaltHelperDate::formatDate($results[0]['actual_close']);
                         $results[0]['actual_close'] = CobaltHelperDate::formatDate($results[0]['actual_close'],true,false);
                     }
-                    if ( array_key_exists('due_date',$results[0])){
+                    if ( array_key_exists('due_date',$results[0])) {
                         $results[0]['due_date_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['due_date']) : CobaltHelperDate::formatDate($results[0]['due_date']);
                         $results[0]['due_date'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['due_date']) : CobaltHelperDate::formatDate($results[0]['due_date'],true,false);
                     }
-                    if ( array_key_exists('end_date',$results[0])){
+                    if ( array_key_exists('end_date',$results[0])) {
                         $results[0]['end_date_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_date']) : CobaltHelperDate::formatDate($results[0]['end_date']);
                         $results[0]['end_date'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_date']) : CobaltHelperDate::formatDate($results[0]['end_date'],true,false);
                     }
-                    if ( array_key_exists('start_time',$results[0])){
+                    if ( array_key_exists('start_time',$results[0])) {
                         $results[0]['start_time_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['start_time']) : CobaltHelperDate::formatDate($results[0]['start_time']);
                         $results[0]['start_time'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['start_time']) : CobaltHelperDate::formatDate($results[0]['start_time'],true,false);
                     }
-                    if ( array_key_exists('end_time',$results[0])){
+                    if ( array_key_exists('end_time',$results[0])) {
                         $results[0]['end_time_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_time']) : CobaltHelperDate::formatDate($results[0]['end_time']);
                         $results[0]['end_time'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_time']) : CobaltHelperDate::formatDate($results[0]['end_time'],true,false);
                     }
                     if ( array_key_exists(0,$results) && !$app->input->get('date') ) {
-                        if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ){
+                        if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ) {
                             $stime = explode(" ",$results[0]['start_time']);
                             $results[0]['start_time_hour'] = $stime[1];
                             $etime = explode(" ",$results[0]['end_time']);
                             $results[0]['end_time_hour'] =   $etime[1];
                             $results[0]['start_time'] = $stime[0];
                             $results[0]['end_time'] = $etime[0];
-                        } else if ( array_key_exists('due_date',$results[0]) ) {
+                        } elseif ( array_key_exists('due_date',$results[0]) ) {
                             $dtime = explode(" ",$results[0]['due_date']);
                             $results[0]['due_date_hour'] = $dtime[1];
                             $results[0]['due_date'] = $dtime[0];
@@ -924,27 +921,26 @@ class CobaltModelEvent extends CobaltModelDefault
                     }
                 }
 
-
                 //filter results for calendar display
-                if ( $app->input->get('calendar_filter') ){
+                if ( $app->input->get('calendar_filter') ) {
                     $results[0]['title']    = $results[0]['name'];
                     $results[0]['allDay']   = $results[0]['all_day'];
 
                     //determine event type
-                    if ( $results[0]['type'] == 'event' ){
+                    if ($results[0]['type'] == 'event') {
                         $results[0]['start']    = $results[0]['start_time'];
                         $results[0]['end']      = $results[0]['end_time'];
                     }
 
-                    if ( $results[0]['type'] == 'task' ){
+                    if ($results[0]['type'] == 'task') {
                         $results[0]['start'] = $results[0]['due_date'];
                     }
                 }
 
                 //join any association data
-                if ( array_key_exists('association_id',$results[0] ) AND !is_null($results[0]['association_id']) AND $results[0]['association_id'] != 0 ){
+                if ( array_key_exists('association_id',$results[0] ) AND !is_null($results[0]['association_id']) AND $results[0]['association_id'] != 0 ) {
                     $query->clear();
-                    switch ( $results[0]['association_type'] ){
+                    switch ($results[0]['association_type']) {
                         case 'company':
                             $query->select("name as association_name, id as association_id");
                             $query->from("#__companies");
@@ -962,9 +958,9 @@ class CobaltModelEvent extends CobaltModelDefault
                     $query->where("id=".$results[0]['association_id']);
                     $db->setQuery($query);
                     $data = $db->loadAssocList();
-                    if ( !empty($data) ){
+                    if ( !empty($data) ) {
                         $results[0] = array_merge( $results[0], $data[0] );
-                        if ( $results[0]['association_type'] == 'person' ){
+                        if ($results[0]['association_type'] == 'person') {
                             $results[0]['association_name'] = $data[0]['association_first_name']. " ".$data[0]['association_last_name'];
                         }
                     }
@@ -976,10 +972,11 @@ class CobaltModelEvent extends CobaltModelDefault
             }
 
             //return results
-            if ( is_array($results) && array_key_exists(0,$results) ){
+            if ( is_array($results) && array_key_exists(0,$results) ) {
                 return $results[0];
-            }else{
+            } else {
                 $table = JTable::getInstance('event','Table');
+
                 return $table;
             }
 
@@ -989,8 +986,8 @@ class CobaltModelEvent extends CobaltModelDefault
          * Method to link events and cf tables
          */
 
-        function eventsCf($cfdata,$type){
-
+        function eventsCf($cfdata,$type)
+        {
             //get db
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -1005,7 +1002,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $search = $db->loadAssocList();
 
             //insert or update data depending on if we find any results
-            if ( count($search) > 0 ){
+            if ( count($search) > 0 ) {
                 //flush query object
                 $query->clear();
                 $query->update('#__events_cf');
@@ -1021,6 +1018,7 @@ class CobaltModelEvent extends CobaltModelDefault
             //return
             $db->setQuery($query);
             $db->query();
+
             return true;
 
         }
@@ -1030,8 +1028,8 @@ class CobaltModelEvent extends CobaltModelDefault
          * @param int $parent_id parent id to update
          * @param datetime timestamp $date date to exclude
          */
-        function addExcludes($parent_id,$date){
-
+        function addExcludes($parent_id,$date)
+        {
             //Dbo
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -1068,8 +1066,8 @@ class CobaltModelEvent extends CobaltModelDefault
          * @param int $parent_id the id of the parent event to update
          * @param mixed $data the array of data to update the parent with
          */
-        function updateEvent($parent_id,$data){
-
+        function updateEvent($parent_id,$data)
+        {
             //dbo
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -1087,7 +1085,7 @@ class CobaltModelEvent extends CobaltModelDefault
 
             //construct values
             $values = array();
-            foreach ( $data as $key=>$info ){
+            foreach ($data as $key=>$info) {
                     $values[] = $key." = '".$info."'";
             }
 
@@ -1109,8 +1107,8 @@ class CobaltModelEvent extends CobaltModelDefault
          * @param int $id of the REAL event we wish to modify
          * @param string $type 'single','series'
          */
-        function removeEvent($id=null,$type=null){
-
+        function removeEvent($id=null,$type=null)
+        {
             $app = JFactory::getApplication();
 
             $type = ( $type == null ) ? $app->input->get('type') : $type;
@@ -1124,7 +1122,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $query = $db->getQuery(true);
 
             //remove an entire series
-            if ( $type == 'series' ){
+            if ($type == 'series') {
                 $id = ( $app->input->get('parent_id') ) ? $app->input->get('parent_id') : $app->input->get('event_id');
                 $query->update('#__events')->set("published=-1")->where('id='.$id." OR parent_id=".$id);
                 //run database query
@@ -1138,10 +1136,10 @@ class CobaltModelEvent extends CobaltModelDefault
             $oldRow->load($rowId);
 
             //remove individual events
-            if ( $type == 'single' ){
+            if ($type == 'single') {
                     //if we are receiving the parent id
-                    if ( $data['parent_id'] == 0) {
-                        if ( !array_key_exists('repeats',$data) || $data['repeats'] == "" || $data['repeats'] == "none" ){
+                    if ($data['parent_id'] == 0) {
+                        if ( !array_key_exists('repeats',$data) || $data['repeats'] == "" || $data['repeats'] == "none" ) {
                             //delete event entry
                             $query->update('#__events')->set("published=-1")->where('id='.$data['event_id']);
                             $db->setQuery($query);
@@ -1152,30 +1150,30 @@ class CobaltModelEvent extends CobaltModelDefault
                             // $db->setQuery($query);
                             // $db->query();
 
-                        }else{
+                        } else {
 
                             //Determine virtual events to generate
-                            switch ( $data['repeats'] ){
+                            switch ($data['repeats']) {
                             //Daily
                                 case "daily":
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 days"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 days"));
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 days"));
                                     }
                                     break;
                             //Weekdays
                                 case "weekdays":
                                     $days = array ( 1,2,3,4,5 );
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 days"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 days"));
                                         while ( !in_array(date('w',strtotime($start_time)),$days) ) {
                                             $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($start_time)) . "+1 days"));
                                             $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($end_time)) . "+1 days"));
                                         }
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 days"));
                                         while ( !in_array(date('w',strtotime($due_date)),$days) ) {
                                             $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($due_date)) . "+1 days"));
@@ -1184,24 +1182,24 @@ class CobaltModelEvent extends CobaltModelDefault
                                     break;
                             //Weekly
                                 case "weekly":
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 week"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 week"));
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 week"));
                                     }
                                     break;
                             //Weekly Monday Wednesday and Friday
                                 case "weekly-mwf":
                                     $days = array ( 1,3,5 );
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 days"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 days"));
                                         while ( !in_array(date('w',strtotime($start_time)),$days) ) {
                                             $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($start_time)) . "+1 days"));
                                             $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($end_time)) . "+1 days"));
                                         }
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 days"));
                                         while ( !in_array(date('w',strtotime($due_date)),$days) ) {
                                             $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($due_date)) . "+1 days"));
@@ -1211,14 +1209,14 @@ class CobaltModelEvent extends CobaltModelDefault
                             //Weekly Tuesday Thursday
                                 case "weekly-tr":
                                     $days = array ( 2,4 );
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 days"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 days"));
                                         while ( !in_array(date('w',strtotime($start_time)),$days) ) {
                                             $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($start_time)) . "+1 days"));
                                             $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($end_time)) . "+1 days"));
                                         }
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 days"));
                                         while ( !in_array(date('w',strtotime($due_date)),$days) ) {
                                             $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($due_date)) . "+1 days"));
@@ -1227,27 +1225,27 @@ class CobaltModelEvent extends CobaltModelDefault
                                     break;
                             //Monthly
                                 case "monthly":
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 month"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 month"));
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 month"));
                                     }
                                     break;
                             //Yearly
                                 case "yearly":
-                                    if ( $event_type == 'event' ){
+                                    if ($event_type == 'event') {
                                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['start_time'])) . "+1 year"));
                                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['end_time'])) . "+1 year"));
-                                    }else{
+                                    } else {
                                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($data['due_date'])) . "+1 year"));
                                     }
                                     break;
                             }
                             $query->update("#__events");
-                            if ( $event_type == 'event' ){
+                            if ($event_type == 'event') {
                                 $query->set(array("start_time='".$start_time."'","end_time='".$end_time."'"));
-                            }else{
+                            } else {
                                 $query->set(array("due_date='".$due_date."'"));
                             }
                             $query->set(array("completed=0"));
@@ -1255,11 +1253,11 @@ class CobaltModelEvent extends CobaltModelDefault
                             $db->setQuery($query);
                             $db->query();
                         }
-                    }else if ( array_key_exists('event_id',$data) && $data['event_id'] != 0 ){
+                    } elseif ( array_key_exists('event_id',$data) && $data['event_id'] != 0 ) {
                         $query->update('#__events')->set("published=-1")->where('id='.$data['event_id']);
                         $db->setQuery($query);
                         $db->query();
-                    }else{
+                    } else {
                         //if we are receiving a virtual event
                         $this->addExcludes($data['parent_id'],$date);
                     }
@@ -1277,8 +1275,8 @@ class CobaltModelEvent extends CobaltModelDefault
          * Mark events as completed
          * @return [type] [description]
          */
-        function markComplete(){
-
+        function markComplete()
+        {
             $app = JFactory::getApplication();
 
             //Determine if we are editing a series of events of a single event
@@ -1294,7 +1292,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $oldRow->load($event_id);
 
             //We are only editing a single event entry OR a parent entry
-            if ( $repeats == 'none' /*|| $parent_id == 0*/){
+            if ($repeats == 'none' /*|| $parent_id == 0*/) {
 
                 $db = JFactory::getDBO();
                 $query = $db->getQuery(true);
@@ -1304,7 +1302,7 @@ class CobaltModelEvent extends CobaltModelDefault
                 $db->query();
 
             //We are dealing with a virtually generated event
-            }else{
+            } else {
 
                 $id = $parent_id > 0 ? $parent_id : $event_id;
 
@@ -1324,10 +1322,10 @@ class CobaltModelEvent extends CobaltModelDefault
                 $data['completed'] = $completed;
                 $new_data = array_merge($event,$data);
 
-                if ( $event['type'] == "task" ){
+                if ($event['type'] == "task") {
                     $new_data['due_date'] = CobaltHelperDate::formatDate($excludeDate,false,false);
                     $new_data['type'] = "task";
-                }else{
+                } else {
                     $new_data['start_time'] = CobaltHelperDate::formatDate($excludeDate,false,false);
                     $new_data['end_time'] = CobaltHelperDate::formatDate($excludeDate,false,false);
                     $new_data['type'] = "event";
@@ -1337,8 +1335,8 @@ class CobaltModelEvent extends CobaltModelDefault
                 unset($new_data['repeats']);
                 unset($new_data['excludes']);
                 // unset($new_data['parent_id']);
-                foreach ( $new_data as $key => $data ){
-                    if ( is_null($data) ){
+                foreach ($new_data as $key => $data) {
+                    if ( is_null($data) ) {
                         $new_data[$key] = 0;
                     }
                 }
@@ -1356,14 +1354,13 @@ class CobaltModelEvent extends CobaltModelDefault
 
             CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
 
-
         }
 
         /**
          * Mark events incomplete
          */
-        function markIncomplete(){
-
+        function markIncomplete()
+        {
             $app = JFactory::getApplication();
 
             //Determine if we are editing a series of events of a single event
@@ -1385,8 +1382,8 @@ class CobaltModelEvent extends CobaltModelDefault
          * Postpone events
          * @param  [int] $days
          */
-        function postponeEvent($days=null,$event_id=null){
-
+        function postponeEvent($days=null,$event_id=null)
+        {
                 $app = JFactory::getApplication();
 
                 $event_id = ( $event_id == null ) ? $app->input->get('event_id') : $event_id;
@@ -1402,14 +1399,14 @@ class CobaltModelEvent extends CobaltModelDefault
                 $oldRow = JTable::getInstance('event','Table');
                 $oldRow->load($event_id);
 
-                if ( count($dates) > 0 ){
-                    foreach ( $dates as $date ){
+                if ( count($dates) > 0 ) {
+                    foreach ($dates as $date) {
                         $query->clear();
                         $query->update('#__events');
-                        if ( $date->type == "task" ){
+                        if ($date->type == "task") {
                             $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($date->due_date)) . "+".$days." days"));
                             $query->set(array("due_date='".$due_date."'"));
-                        }else{
+                        } else {
                             $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($date->start_time)) . "+".$days." days"));
                             $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($date->end_time)) . "+".$days." days"));
                             $query->set(array("start_time='".$start_time."'","end_time='".$end_time."'"));
@@ -1426,14 +1423,13 @@ class CobaltModelEvent extends CobaltModelDefault
 
                 CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
 
-
-
         }
 
         /**
          * Populate user state requests
          */
-        function populateState(){
+        function populateState()
+        {
             //get states
             $app = JFactory::getApplication();
 
@@ -1441,7 +1437,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $view = $this->view;
             $layout = $this->layout;
 
-            // if ( $view == "events" && ( $layout == "default" || $layout == "list" || $layout == null ) ){
+            // if ( $view == "events" && ( $layout == "default" || $layout == "list" || $layout == null ) ) {
 
                 // Get pagination request variables
                 $limit = $app->getUserStateFromRequest("Event.".$view.'_'.$layout.'_limit','limit',10);
@@ -1453,7 +1449,6 @@ class CobaltModelEvent extends CobaltModelDefault
                 $state = new JRegistry();
                 $state->set("Event.".$view.'_limit', $limit);
                 $state->set("Event.".$view.'_limitstart', $limitstart);
-
 
                 //set default filter states for reports
                 $filterOrder = "CASE e.type WHEN 'event' THEN e.start_time WHEN 'task' THEN e.due_date ELSE e.due_date END";

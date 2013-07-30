@@ -18,8 +18,8 @@ class CobaltModelRevenue extends JModelBase
          * @param $access_id the id of the $access_type we want to filter by
          * @return mixed $results
          */
-        function getMonthlyRevenue($access_type=null,$access_id=null){
-
+        function getMonthlyRevenue($access_type=null,$access_id=null)
+        {
             //get db
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -35,7 +35,7 @@ class CobaltModelRevenue extends JModelBase
 
             //gen query
             $results = array();
-            foreach ( $weeks as $week ){
+            foreach ($weeks as $week) {
                 $start_date = $week['start_date'];
                 $end_date = $week['end_date'];
                 //flush query
@@ -52,15 +52,15 @@ class CobaltModelRevenue extends JModelBase
                 $query->where("d.published>0");
 
                 //filter by owner type
-                if ( $access_type != 'company' ){
+                if ($access_type != 'company') {
 
                     //team sorting
-                    if ( $access_type == 'team' ){
+                    if ($access_type == 'team') {
                         //get team members
                         $team_members = CobaltHelperUsers::getTeamUsers($access_id);
                         $query .= " AND d.owner_id IN (";
                         //loop to make string
-                        foreach ( $team_members as $key=>$member ){
+                        foreach ($team_members as $key=>$member) {
                             $query .= "'".$member['id']."',";
                         }
                         $query  = substr($query,0,-1);
@@ -68,7 +68,7 @@ class CobaltModelRevenue extends JModelBase
                     }
 
                     //member filter
-                    if ( $access_type == 'member' ){
+                    if ($access_type == 'member') {
                         $query->where("d.owner_id=$access_id");
                     }
                 }
@@ -77,11 +77,11 @@ class CobaltModelRevenue extends JModelBase
                 $db->setQuery($query);
 
                 $totals = $db->loadAssoc();
-                if(!$totals) {
+                if (!$totals) {
                     $totals = array('y'=>0);
                 }
 
-                $totals['y'] = (int)$totals['y'];
+                $totals['y'] = (int) $totals['y'];
                 $results[] = $totals;
             }
 
@@ -96,8 +96,8 @@ class CobaltModelRevenue extends JModelBase
          * @param $access_id the id of the $access_type we wish to filter by
          * @return mixed $results
          */
-        function getYearlyRevenue($access_type=null,$access_id=null){
-
+        function getYearlyRevenue($access_type=null,$access_id=null)
+        {
             //get db
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -112,7 +112,7 @@ class CobaltModelRevenue extends JModelBase
 
             //gen query
             $results = array();
-            foreach ( $months as $month ){
+            foreach ($months as $month) {
                 $start_date = $month['date'];
                 $end_date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',strtotime("$start_date + 1 months")));
                 //flush the query
@@ -129,15 +129,15 @@ class CobaltModelRevenue extends JModelBase
                 $query->where("d.published>0");
 
                 //filter by access type
-                if ( $access_type != 'company' ){
+                if ($access_type != 'company') {
 
                     //team sorting
-                    if ( $access_type == 'team' ){
+                    if ($access_type == 'team') {
                         //get team members
                         $team_members = CobaltHelperUsers::getTeamUsers($access_id);
                         $query .= " AND d.owner_id IN (";
                         //loop to make string
-                        foreach ( $team_members as $key=>$member ){
+                        foreach ($team_members as $key=>$member) {
                             $query .= "'".$member['id']."',";
                         }
                         $query  = substr($query,0,-1);
@@ -145,7 +145,7 @@ class CobaltModelRevenue extends JModelBase
                     }
 
                     //member filter
-                    if ( $access_type == 'member' ){
+                    if ($access_type == 'member') {
                         $query->where("d.owner_id=$access_id");
                     }
                 }
@@ -153,16 +153,15 @@ class CobaltModelRevenue extends JModelBase
                 //get results and assign to month
                 $db->setQuery($query);
                 $totals =  $db->loadAssoc();
-                if(!$totals) {
+                if (!$totals) {
                     $totals = array('y'=>0);
                 }
-                $totals['y'] = (int)$totals['y'];
+                $totals['y'] = (int) $totals['y'];
                 $results[] =  $totals;
             }
             //return
             return $results;
 
         }
-
 
 }

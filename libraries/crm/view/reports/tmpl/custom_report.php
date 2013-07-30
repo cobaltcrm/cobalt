@@ -17,13 +17,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     order_col = "<?php echo $this->state->get('Report.'.$report['id'].'_'.$this->layout.'_filter_order'); ?>";
 </script>
 <div class="page-header">
-	<div class="btn-group pull-right">
-	    <a class="btn" href="javascript:void(0)" onclick="printItems(this)"><i class="icon-print"></i> <?php echo CRMText::_('COBALT_PRINT'); ?></a>
-	    <?php if ( CobaltHelperUsers::canExport() ){?>
-	    	<a class="btn" href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i> <?php echo CRMText::_('COBALT_EXPORT_CSV'); ?></a>
-	    <?php } ?>
-	</div>
-	<h1><?php echo $report['name']; ?></h1>
+    <div class="btn-group pull-right">
+        <a class="btn" href="javascript:void(0)" onclick="printItems(this)"><i class="icon-print"></i> <?php echo CRMText::_('COBALT_PRINT'); ?></a>
+        <?php if ( CobaltHelperUsers::canExport() ) {?>
+            <a class="btn" href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i> <?php echo CRMText::_('COBALT_EXPORT_CSV'); ?></a>
+        <?php } ?>
+    </div>
+    <h1><?php echo $report['name']; ?></h1>
 </div>
 <?php echo $this->menu; ?>
 <form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">

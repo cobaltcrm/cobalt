@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewAdmindocumentsRaw extends JViewHtml
 {
-    function render($tpl = null)
+    public function render($tpl = null)
     {
-    	//authenticate the current user to make sure they are an admin
+        //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
 
         //Add styles for iframe popup
@@ -22,13 +22,13 @@ class CobaltViewAdmindocumentsRaw extends JViewHtml
         echo "<link href='".JURI::base()."libraries/crm/media/css/bootstrap.min.css' type='text/css' rel='stylesheet' />";
 
         //import document
-        if ( is_array($_FILES) && count($_FILES) > 0 ){
-        	$model = new CobaltModelDocuments();
-        	$model->upload();
+        if ( is_array($_FILES) && count($_FILES) > 0 ) {
+            $model = new CobaltModelDocuments();
+            $model->upload();
         }
-        
+
         //display
         return parent::render();
     }
-    
+
 }

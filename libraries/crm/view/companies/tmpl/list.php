@@ -24,7 +24,7 @@ $app = JFactory::getApplication();
 <tbody id="list">
 <?php
     $n = count($this->companies);
-    for ( $i=0; $i<$n; $i++ ) {
+    for ($i=0; $i<$n; $i++) {
         $company = $this->companies[$i];
         $k = $i%2;
         $cView = CobaltHelperView::getView('companies','entry','phtml');

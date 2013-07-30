@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewCategoriesHtml extends JViewHtml
 {
 
-    function render($tpl = null)
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -28,28 +28,28 @@ class CobaltViewCategoriesHtml extends JViewHtml
 
          //gather information for view
         $model = new CobaltModelCategories();
-        
+
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
-        
-        if ( $layout && $layout == 'edit' ){
-            
+
+        if ($layout && $layout == 'edit') {
+
             CRMToolbarHelper::cancel('cancel');
             CRMToolbarHelper::save('save');
 
             $this->category = $model->getCategory();
-            
-        }else{
-            
+
+        } else {
+
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
             CRMToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'remove');
-            
-            //view references        
+
+            //view references
             $categories = $model->getCategories();
             $this->categories = $categories;
-                
+
             // Initialise state variables.
             $state = $model->getState();
             $this->state = $state;
@@ -57,7 +57,7 @@ class CobaltViewCategoriesHtml extends JViewHtml
             $this->listOrder  = $state->get('Categories.filter_order');
             $this->listDirn   = $state->get('Categories.filter_order_Dir');
         }
-        
+
         //display
         return parent::render();
     }

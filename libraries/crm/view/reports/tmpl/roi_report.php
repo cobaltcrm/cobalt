@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <div class="page-header">
     <div class="btn-group pull-right">
         <a class="btn" href="javascript:void(0)" onclick="printItems(this)"><?php echo CRMText::_('COBALT_PRINT'); ?></a>
-        <?php if ( CobaltHelperUsers::canExport() ){?>
+        <?php if ( CobaltHelperUsers::canExport() ) {?>
             <a class="btn" href="javascript:void(0)" onclick="exportCsv()"><?php echo CRMText::_('COBALT_EXPORT_CSV'); ?></a>
         <?php } ?>
     </div>

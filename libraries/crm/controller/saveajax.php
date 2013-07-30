@@ -8,16 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerSaveAjax extends CobaltControllerDefault
 {
 
-    function execute()
+    public function execute()
     {
-    	$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
 
-    	$item_id = $app->input->get('item_id');
+        $item_id = $app->input->get('item_id');
         $item_type = $app->input->get('item_type');
         $field = $app->input->get('field');
         $value = $app->input->get('value');

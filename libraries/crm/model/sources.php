@@ -13,9 +13,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltModelSources extends CobaltModelDefault
 {
 
-    var $_view = "sources";
+    public $_view = "sources";
 
-    function store()
+    public function store()
     {
         $app = JFactory::getApplication();
 
@@ -26,7 +26,7 @@ class CobaltModelSources extends CobaltModelDefault
         //date generation
         $date = date('Y-m-d H:i:s');
 
-        if ( !array_key_exists('id',$data) ){
+        if ( !array_key_exists('id',$data) ) {
             $data['created'] = $date;
         }
 
@@ -35,26 +35,29 @@ class CobaltModelSources extends CobaltModelDefault
         // Bind the form fields to the table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
+
             return false;
         }
 
         return true;
     }
 
-    function _buildQuery(){
-
+    public function _buildQuery()
+    {
         //database
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -70,29 +73,29 @@ class CobaltModelSources extends CobaltModelDefault
 
     }
 
-
     /**
      * Get list of stages
-     * @param int $id specific search id
+     * @param  int   $id specific search id
      * @return mixed $results results
      */
-    function getSources(){
-
+    public function getSources()
+    {
         //database
         $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //return results
         $db->setQuery($query);
+
         return $db->loadAssocList();
 
     }
 
-    function getSource($id=null){
-
+    public function getSource($id=null)
+    {
         $id = $id ? $id : $this->id;
 
-        if ( $id > 0 ){
+        if ($id > 0) {
 
             //database
             $db = JFactory::getDBO();
@@ -102,17 +105,18 @@ class CobaltModelSources extends CobaltModelDefault
 
             //return results
             $db->setQuery($query);
+
             return $db->loadAssoc();
 
         } else {
-
-            return (array)JTable::getInstance('sources','Table');
+            return (array) JTable::getInstance('sources','Table');
 
         }
 
     }
 
-    function populateState(){
+    public function populateState()
+    {
         //get states
         $app = JFactory::getApplication();
         $filter_order = $app->getUserStateFromRequest('Sources.filter_order','filter_order','s.name');
@@ -127,7 +131,8 @@ class CobaltModelSources extends CobaltModelDefault
         $this->setState($state);
     }
 
-    function remove($id){
+    public function remove($id)
+    {
         //get dbo
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -137,7 +142,5 @@ class CobaltModelSources extends CobaltModelDefault
         $db->setQuery($query);
         $db->query();
     }
-
-
 
 }

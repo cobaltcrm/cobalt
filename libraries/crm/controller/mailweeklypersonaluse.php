@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerMailWeeklyPersonalUse extends CobaltControllerDefault
 {
 
-    function execute() 
-	{
+    public function execute()
+    {
 
-	}
+    }
 
 }

@@ -36,7 +36,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 <div id="alertMessageBody"></div>
               </div>';
 
-
           echo '<div id="google-map" style="display:none;"></div>';
           echo '<div id="edit_note_entry" style="display:none;"></div>';
           echo '<div id="edit_convo_entry" style="display:none;"></div>';
@@ -45,15 +44,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           echo CobaltHelperTemplate::getAvatarDialog();
           echo '<script type="text/javascript">var base_url = "'.JURI::base().'";</script>';
 
-        if(CobaltHelperUsers::getLoggedInUser()) {
+        if (CobaltHelperUsers::getLoggedInUser()) {
             echo '<script type="text/javascript">var userDateFormat = "'.CobaltHelperUsers::getDateFormat(FALSE).'";</script>';
             echo '<script type="text/javascript">var user_id = "'.CobaltHelperUsers::getUserId().'";</script>';
-        }else{
+        } else {
             echo '<script type="text/javascript">var userDateFormat = null;</script>';
             echo '<script type="text/javascript">var user_id = 0;</script>';
         }
 
-            if(self::isMobile()) {
+            if (self::isMobile()) {
                 echo "<div class='page' data-role='page' data-theme='b' id=''>";
             }
 
@@ -80,11 +79,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $string .= '<input type="submit" class="button" value="'.CRMText::_('COBALT_LOGOUT').'" />';
         $string .= JHtml::_('form.token');
         $string .= '</form>';
+
         return $string;
     }
 
-    public static function loadToolbar() {
-
+    public static function loadToolbar()
+    {
         $app = JFactory::getApplication();
 
         //load menu
@@ -104,7 +104,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $list_html .= '</div>';
         $list_html .= '<a id="site-name-link" class="brand" href="index.php">'.CobaltHelperStyles::getSiteName().'</a>';
         $list_html .= '<ul class="nav">';
-        foreach ( $list->menu_items as $name ) {
+        foreach ($list->menu_items as $name) {
             $class = $name == $controller || $name == $view ? "active" : "";
             $list_html .= '<li><a class="'.$class.'" href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(CRMText::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
@@ -124,11 +124,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $list_html .= '<a rel="tooltip" title="'.CRMText::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a>';
         $list_html .= '<a rel="tooltip" title="'.CRMText::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a>';
 
-        if ( CobaltHelperUsers::isAdmin() ){
+        if ( CobaltHelperUsers::isAdmin() ) {
             $list_html .= '<a rel="tooltip" title="'.CRMText::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a>';
         }
 
-        if ( CobaltHelperUsers::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ){
+        if ( CobaltHelperUsers::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
             $list_html .= '<form id="logout-form" class="inline-form block-btn" action="index.php?controller=logout" method="post">';
             $list_html .= '<input type="hidden" name="return" value="'.$returnURL.'" />';
@@ -147,13 +147,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         echo $list_html;
     }
 
-    public static function endCompWrap(){
-
+    public static function endCompWrap()
+    {
         $app = JFactory::getApplication();
 
-        if(self::isMobile()) {
+        if (self::isMobile()) {
 
-            if($app->input->get('view')!='dashboard') {
+            if ($app->input->get('view')!='dashboard') {
                 $footer_menu = self::loadFooterMenu();
                 echo $footer_menu;
             }
@@ -207,15 +207,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $str;
     }
 
-    public static function loadReportMenu(){
-
+    public static function loadReportMenu()
+    {
         $app = JFactory::getApplication();
         $activeLayout = $app->input->get('layout');
 
         $layouts = array('dashboard','sales_pipeline','source_report','roi_report','deal_milestones','notes','custom_reports');
         $str = "<ul class='nav nav-tabs'>";
 
-        foreach($layouts as $layout) {
+        foreach ($layouts as $layout) {
             $languageString = strtoupper('COBALT_'.$layout);
             if ($layout == 'dashboard' ) $layout = 'default';
             $class = $activeLayout == $layout ? 'class=active' : '';
@@ -227,17 +227,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $str;
     }
 
-    public static function getEventDialog(){
+    public static function getEventDialog()
+    {
         $html  = "";
         $html .= '<div id="new_event_dialog" style="display:none;">';
             $html .= '<div class="new_events">';
                 $html .= '<a href="javasript:void(0);" class="task" onclick="addTaskEvent(\'task\')">'.CRMText::_('COBALT_ADD_TASK').'</a><a  href="javasript:void(0);" class="event" onclick="addTaskEvent(\'event\')">'.CRMText::_('COBALT_ADD_EVENT').'</a><a href="javasript:void(0);" class="complete" onclick="jQuery(\'#new_event_dialog\').dialog(\'close\');">'.CRMText::_('COBALT_DONE').'</a>';
             $html .= '</div>';
         $html .= '</div>';
+
         return $html;
     }
 
-    public static function getAvatarDialog(){
+    public static function getAvatarDialog()
+    {
         $html = "<iframe id='avatar_frame' name='avatar_frame' style='display:none;border:0px;width:0px;height:0px;opacity:0;'></iframe>";
         $html .= '<div class="filters" id="avatar_upload_dialog" style="display:none;">';
             $html .= "<div id='avatar_message'>".CRMText::_('COBALT_SELECT_A_FILE_TO_UPLOAD').'</div>';
@@ -260,25 +263,25 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $mobile_auto = $mobile_detect->isMobile();
         $mobile_manual = $app->input->get('mobile');
 
-        if ( !is_array($_SESSION) ){
+        if ( !is_array($_SESSION) ) {
             session_start();
         }
 
-        if ( $mobile_manual ){
-            if ( $mobile_manual == "no"){
+        if ($mobile_manual) {
+            if ($mobile_manual == "no") {
                 $app->input->set('mobile','no');
                 $_SESSION['mobile'] = "no";
                 $mobile = false;
-            }else if ( $mobile_manual == "yes" ){
+            } elseif ($mobile_manual == "yes") {
                 $app->input->set('mobile','yes');
                 $_SESSION['mobile'] = "yes";
                 $mobile = true;
-            }else{
+            } else {
                 $app->input->set('mobile','no');
                 $_SESSION['mobile'] = "no";
                 $mobile = false;
             }
-        }else if($mobile_auto) {
+        } elseif ($mobile_auto) {
             $app->input->set('mobile','yes');
             $_SESSION['mobile'] = "yes";
             $mobile = true;
@@ -395,7 +398,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         CRMText::script('COBALT_CONTACTS');
     }
 
-    public static function getListEditActions(){
+    public static function getListEditActions()
+    {
         $list_html  = "";
 
         $list_html .= "<div id='list_edit_actions'>";
@@ -404,7 +408,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $list_html .= '<li class="dropdown">';
         $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >'.CRMText::_('COBALT_ACTIONS').'</a>';
             $list_html .= '<ul class="dropdown-menu" role="menu" aria-labelledby="">';
-                if ( CobaltHelperUsers::canDelete() ){
+                if ( CobaltHelperUsers::canDelete() ) {
                     $list_html .= '<li><a onclick="deleteListItems()">'.CRMText::_('COBALT_DELETE').'</a></li>';
                 }
             $list_html .= '</ul>';
@@ -416,7 +420,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $list_html;
     }
 
-    public static function getEventListEditActions(){
+    public static function getEventListEditActions()
+    {
         $list_html  = "";
 
         $list_html .= "<div id='list_edit_actions'>";

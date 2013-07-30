@@ -8,8 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
      $task_list = CobaltHelperView::getView('events','event_listings','phtml',array('events'=>$this->events));
      echo $task_list->render();
-?>

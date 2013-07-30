@@ -8,33 +8,33 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerAddPersonToCompany extends CobaltControllerDefault
 {
 
-	function execute(){
+    public function execute()
+    {
+        //app
+        $app = JFactory::getApplication();
 
-		//app
-		$app = JFactory::getApplication();
+        //parameters
+        $person_id = $app->input->get("person_id");
+        $company_id = $app->input->get('company_id');
 
-		//parameters
-		$person_id = $app->input->get("person_id");
-		$company_id = $app->input->get('company_id');
+        //construct data
+        $data = array('id'=>$person_id,'company_id'=>$company_id);
 
-		//construct data
-		$data = array('id'=>$person_id,'company_id'=>$company_id);
+        //load model and save
+        $model = new CobaltModelPeople();
+        if ( $model->store($data) ) {
+            $success = true;
+        } else {
+            $success = false;
+        }
 
-		//load model and save
-		$model = new CobaltModelPeople();
-		if ( $model->store($data) ){
-			$success = true;
-		}else{
-			$success = false;
-		}
-
-		//return json
-		echo json_encode(array('success'=>$success));
-	}
+        //return json
+        echo json_encode(array('success'=>$success));
+    }
 
 }

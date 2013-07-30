@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerInstallSampleData extends CobaltControllerDefault
 {
 
-    function installSampleData()
+    public function installSampleData()
     {
-    	$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $sampleIds = array();
 
         $importModel = new CobaltModelImport();
@@ -26,9 +26,9 @@ class CobaltControllerInstallSampleData extends CobaltControllerDefault
                 // 'sample-event'      => "events",
                 // 'sample-goal'       => "goals",
             );
-        foreach ($sampleCsvFiles as $file => $table ){
+        foreach ($sampleCsvFiles as $file => $table) {
             $importData = $importModel->readCSVFile(JPATH_SITE.'/sample/'.$file.'.csv',$table,FALSE);
-            switch ( $table ){
+            switch ($table) {
                 case "companies":
                     $model = "company";
                 break;

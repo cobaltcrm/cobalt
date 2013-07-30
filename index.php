@@ -6,10 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
-if (version_compare(PHP_VERSION, '5.3.1', '<'))
-{
-	die('Your host needs to use PHP 5.3.1 or higher to run this version of Joomla!');
+if (version_compare(PHP_VERSION, '5.3.1', '<')) {
+    die('Your host needs to use PHP 5.3.1 or higher to run this version of Joomla!');
 }
 
 /**
@@ -18,43 +16,34 @@ if (version_compare(PHP_VERSION, '5.3.1', '<'))
  */
 define('_JEXEC', 1);
 
-if (file_exists(__DIR__ . '/defines.php'))
-{
-	include_once __DIR__ . '/defines.php';
+if (file_exists(__DIR__ . '/defines.php')) {
+    include_once __DIR__ . '/defines.php';
 }
 
-
-if (!defined('_JDEFINES'))
-{
-	define('JPATH_BASE', __DIR__);
-	require_once JPATH_BASE . '/includes/defines.php';
+if (!defined('_JDEFINES')) {
+    define('JPATH_BASE', __DIR__);
+    require_once JPATH_BASE . '/includes/defines.php';
 
 }
 
 require_once JPATH_BASE . '/includes/framework.php';
 include_once JPATH_BASE . '/includes/application.php';
 
+try {
+    $app = JApplicationWeb::getInstance('cobalt');
+    JFactory::$application = $app;
 
+    // Initialise the application.
+    $app->initialise();
 
+    // Route the application.
+    $app->route();
 
-try
-{
-	$app = JApplicationWeb::getInstance('cobalt');
-	JFactory::$application = $app;
+    // Dispatch the application.
+    $app->execute();
 
-	// Initialise the application.
-	$app->initialise();
+} catch (Exception $e) {
+    print_r($e);
 
-	// Route the application.
-	$app->route();
-
-	// Dispatch the application.
-	$app->execute();
-
-}
-
-catch (Exception $e)
-{
-	print_r($e);
-	return;
+    return;
 }

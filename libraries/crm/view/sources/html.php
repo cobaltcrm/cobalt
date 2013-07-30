@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewSourcesHtml extends JViewHtml{
-
-    function render($tpl = null)
+class CobaltViewSourcesHtml extends JViewHtml
+{
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -30,19 +30,19 @@ class CobaltViewSourcesHtml extends JViewHtml{
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
-        
-        if ( $layout && $layout == 'edit' ){
-            
+
+        if ($layout && $layout == 'edit') {
+
             //toolbar
             CRMToolbarHelper::cancel('cancel');
             CRMToolbarHelper::save('save');
-            
+
             //information for view
             $this->source_types = CobaltHelperDropdown::getSources();
             $this->source = $model->getSource();
-            
-        }else{
-            
+
+        } else {
+
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
@@ -51,7 +51,7 @@ class CobaltViewSourcesHtml extends JViewHtml{
             //get sources
             $sources = $model->getSources();
             $this->sources = $sources;
-                
+
             // Initialise state variables.
             $state = $model->getState();
             $this->state = $state;
@@ -61,7 +61,7 @@ class CobaltViewSourcesHtml extends JViewHtml{
             $this->saveOrder  = $this->listOrder == 's.ordering';
 
         }
-        
+
         //display
         return parent::render();
     }

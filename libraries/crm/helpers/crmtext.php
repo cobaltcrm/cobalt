@@ -10,26 +10,25 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
  class CRMText extends JText
  {
 
- 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
-	{
-		$string = JText::_($string, $jsSafe, $interpretBackSlashes, $script);
+     public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
+    {
+        $string = JText::_($string, $jsSafe, $interpretBackSlashes, $script);
 
-		$configValues = CobaltHelperConfig::getNamingConventions();
+        $configValues = CobaltHelperConfig::getNamingConventions();
 
-		foreach ( $configValues as $key => $value ){
-			$key = str_replace("lang_","",$key);
-			$string = self::ext_str_ireplace($key,$value,$string);
-               if ( stripos($string,"people") !== FALSE ){
+        foreach ($configValues as $key => $value) {
+            $key = str_replace("lang_","",$key);
+            $string = self::ext_str_ireplace($key,$value,$string);
+               if ( stripos($string,"people") !== FALSE ) {
                     $string = self::ext_str_ireplace("people",$configValues["lang_persons"],$string);
                }
-		}
+        }
 
-		return $string;
-	}
+        return $string;
+    }
 
   public static function script($string = NULL, $jsSafe = false, $interpretBackSlashes = true)
      {
@@ -37,7 +36,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
           $configValues = CobaltHelperConfig::getNamingConventions();
 
-          foreach ( $configValues as $key => $value ){
+          foreach ($configValues as $key => $value) {
                $key = str_replace("lang_","",$key);
                $newString = self::ext_str_ireplace($key,$value,$newString);
           }
@@ -48,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           return parent::$strings;
      }
 
-	public static function ext_str_ireplace($findme, $replacewith, $subject)
+    public static function ext_str_ireplace($findme, $replacewith, $subject)
      {
           // Replaces $findme in $subject with $replacewith
           // Ignores the case and do keep the original capitalization by using $1 in $replacewith
@@ -74,6 +73,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
           return $result;
      }
-
 
  }

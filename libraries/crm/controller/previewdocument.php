@@ -8,19 +8,20 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerPreviewDocument extends CobaltControllerDefault
 {
 
-     function execute(){
+     function execute()
+     {
         $model = new CobaltModelDocument();
         $document = $model->getDocument();
 
         $filename = basename($document->name);
         $file_extension = strtolower(substr(strrchr($filename,"."),1));
 
-        switch( $file_extension ) {
+        switch ($file_extension) {
             case "gif": $ctype="image/gif"; break;
             case "png": $ctype="image/png"; break;
             case "jpeg":

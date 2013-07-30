@@ -21,50 +21,50 @@ defined('JPATH_PLATFORM') or die;
  */
 abstract class JLogLogger
 {
-	/**
-	 * Options array for the JLog instance.
-	 * @var    array
-	 * @since  12.2
-	 */
-	protected $options = array();
+    /**
+     * Options array for the JLog instance.
+     * @var    array
+     * @since  12.2
+     */
+    protected $options = array();
 
-	/**
-	 * @var    array  Translation array for JLogEntry priorities to text strings.
-	 * @since  12.2
-	 */
-	protected $priorities = array(
-		JLog::EMERGENCY => 'EMERGENCY',
-		JLog::ALERT => 'ALERT',
-		JLog::CRITICAL => 'CRITICAL',
-		JLog::ERROR => 'ERROR',
-		JLog::WARNING => 'WARNING',
-		JLog::NOTICE => 'NOTICE',
-		JLog::INFO => 'INFO',
-		JLog::DEBUG => 'DEBUG');
+    /**
+     * @var    array  Translation array for JLogEntry priorities to text strings.
+     * @since  12.2
+     */
+    protected $priorities = array(
+        JLog::EMERGENCY => 'EMERGENCY',
+        JLog::ALERT => 'ALERT',
+        JLog::CRITICAL => 'CRITICAL',
+        JLog::ERROR => 'ERROR',
+        JLog::WARNING => 'WARNING',
+        JLog::NOTICE => 'NOTICE',
+        JLog::INFO => 'INFO',
+        JLog::DEBUG => 'DEBUG');
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  &$options  Log object options.
-	 *
-	 * @since   12.2
-	 */
-	public function __construct(array &$options)
-	{
-		// Set the options for the class.
-		$this->options = & $options;
-	}
+    /**
+     * Constructor.
+     *
+     * @param   array  &$options  Log object options.
+     *
+     * @since   12.2
+     */
+    public function __construct(array &$options)
+    {
+        // Set the options for the class.
+        $this->options = & $options;
+    }
 
-	/**
-	 * Method to add an entry to the log.
-	 *
-	 * @param   JLogEntry  $entry  The log entry object to add to the log.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	abstract public function addEntry(JLogEntry $entry);
+    /**
+     * Method to add an entry to the log.
+     *
+     * @param JLogEntry $entry The log entry object to add to the log.
+     *
+     * @return void
+     *
+     * @since   12.2
+     */
+    abstract public function addEntry(JLogEntry $entry);
 }
 
 /**
@@ -77,17 +77,17 @@ abstract class JLogLogger
  */
 abstract class JLogger extends JLogLogger
 {
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  &$options  Log object options.
-	 *
-	 * @since   11.1
-	 * @deprecated  13.3
-	 */
-	public function __construct(array &$options)
-	{
-		JLog::add('JLogger is deprecated. Use JLogLogger instead.', JLog::WARNING, 'deprecated');
-		parent::__construct($options);
-	}
+    /**
+     * Constructor.
+     *
+     * @param   array  &$options  Log object options.
+     *
+     * @since   11.1
+     * @deprecated  13.3
+     */
+    public function __construct(array &$options)
+    {
+        JLog::add('JLogger is deprecated. Use JLogLogger instead.', JLog::WARNING, 'deprecated');
+        parent::__construct($options);
+    }
 }

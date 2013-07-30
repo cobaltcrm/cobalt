@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerEdit extends CobaltControllerDefault
 {
 
-    function execute()
+    public function execute()
     {
-        
+
         /*
         $app = JFactory::getApplication();
         $viewName = $app->input->get('view');

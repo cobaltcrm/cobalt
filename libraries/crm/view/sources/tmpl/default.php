@@ -48,15 +48,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->sources) ) { 
+                                <?php if ( count($this->sources) ) {
                                     $i=0;
                                     $ordering   = ($this->listOrder == 's.ordering');
-                                    foreach($this->sources as $key=>$source){ ?>
-                                    
-                                    <?php 
+                                    foreach ($this->sources as $key=>$source) { ?>
+
+                                    <?php
                                         $source['type'] = ( $source['type'] == "per" ) ? "Per Lead/Deal" : "Flat Fee";
                                     ?>
-                                    
+
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $source['id']); ?>
@@ -78,9 +78,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                         <td class="order"><?php echo "$".number_format($source['cost'],2); ?></td>
                                         <td class="order"><?php echo $source['type']; ?></td>
                                     </tr>
-                                
+
                                 <?php $i++;
-                                    } 
+                                    }
                                 } ?>
                             </tbody>
                             <tfoot>

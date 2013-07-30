@@ -8,10 +8,10 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 ?>
-<?php if ( !($app->input->get('id')) ){ ?>
+<?php if ( !($app->input->get('id')) ) { ?>
   <thead>
     <th class="checkbox_column"><input type="checkbox" onclick="selectAll(this);" /></th>
     <th class="avatar" ></th>
@@ -36,7 +36,7 @@ $app = JFactory::getApplication();
 <?php
         $n = count($this->people);
         $k = 0;
-            for($i=0;$i<$n;$i++) {
+            for ($i=0;$i<$n;$i++) {
                 $person = $this->people[$i];
                 $k = $i%2;
                 $pView = CobaltHelperView::getView('people','entry','phtml');
@@ -45,7 +45,7 @@ $app = JFactory::getApplication();
                 echo $pView->render();
             }
         ?>
-<?php if ( !($app->input->get('id')) ){ ?>
+<?php if ( !($app->input->get('id')) ) { ?>
     </tbody>
 <tfoot>
     <tr>
@@ -57,4 +57,4 @@ $app = JFactory::getApplication();
     jQuery("#people_matched").empty().html("<?php echo $this->total; ?>");
     window.top.window.assignFilterOrder();
 </script>
-<?php } ?>
+<?php }

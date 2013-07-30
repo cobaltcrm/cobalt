@@ -8,21 +8,21 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewGoalsHtml extends JViewHtml
 {
-	function render()
-	{
+    public function render()
+    {
         $app = JFactory::getApplication();
 
         //determine the type of goal we are creating//editing
         $type = $app->input->get('type');
 
-	    //edit layout
-	    if ( $this->getLayout() == 'edit' ){
-	        
-            switch($type){
+        //edit layout
+        if ( $this->getLayout() == 'edit' ) {
+
+            switch ($type) {
                 case "win_cash":
                     $header = ucwords(CRMText::_('COBALT_WIN_MORE_CASH'));
                     break;
@@ -43,38 +43,38 @@ class CobaltViewGoalsHtml extends JViewHtml
                     break;
                 default:
                    $app->redirect('index.php?view=goals');
-                    break;   
+                    break;
             }
-    
+
             $this->header = $header;
 
-	    } else if ( $this->getLayout() != 'add' ) {
-	        
+        } elseif ( $this->getLayout() != 'add' ) {
+
             //load model
             $model = new CobaltModelGoal();
-            
+
             //get all goals from model depending on user type
             $member_role = CobaltHelperUsers::getRole();
-            
+
             //basic members
-            if ( $member_role == 'basic' ){
+            if ($member_role == 'basic') {
                 $individual_goals = $model->getIndividualGoals();
                 $team_goals = $model->getTeamGoals();
                 $company_goals = $model->getCompanyGoals();
                 $leaderboards = $model->getLeaderBoards();
             }
-            
+
             //managers
-            if ( $member_role == 'manager' ){
+            if ($member_role == 'manager') {
                 // $individual_goals = $model->getManagerIndividualGoals();
                 $individual_goals = $model->getIndividualGoals();
                 $team_goals = $model->getTeamGoals();
                 $company_goals = $model->getCompanyGoals();
                 $leaderboards = $model->getLeaderBoards();
             }
-        
+
             //executives
-            if ( $member_role == 'exec' ){
+            if ($member_role == 'exec') {
                 // $individual_goals = $model->getExecIndividualGoals();
                 $individual_goals = $model->getIndividualGoals();
                 // $team_goals = $model->getExecTeamGoals();
@@ -82,31 +82,31 @@ class CobaltViewGoalsHtml extends JViewHtml
                 $company_goals = $model->getCompanyGoals();
                 $leaderboards = $model->getLeaderBoards();
             }
-            
-            //assign goals to global goal object to pass through to view   
+
+            //assign goals to global goal object to pass through to view
             $goals = new stdClass();
             $goals->individual_goals = $individual_goals;
             $goals->team_goals = $team_goals;
             $goals->company_goals = $company_goals;
             $goals->leaderboards = $leaderboards;
-            
+
             //if we get results then load the default goals page else show the add goals page
             $goal_count = false;
-            foreach ( $goals as $goal_list ){
-                if ( count($goal_list) > 0 ){
+            foreach ($goals as $goal_list) {
+                if ( count($goal_list) > 0 ) {
                     $goal_count = true;
                 }
             }
-            if ( $goal_count ){
-                //set layout    
+            if ($goal_count) {
+                //set layout
                 $this->setLayout('default');
                 //assign view refs
                 $this->goals = $goals;
-            }else{
+            } else {
                 //add goal layout
                 $this->setLayout('add');
             }
-	    }
+        }
 
         //load java libs
         $doc = JFactory::getDocument();
@@ -118,7 +118,7 @@ class CobaltViewGoalsHtml extends JViewHtml
         $member_role = CobaltHelperUsers::getRole();
         $user_id = CobaltHelperUsers::getUserId();
         $team_id = CobaltHelperUsers::getTeamId();
-        
+
         //assign view refs
         $this->type = $type;
         $this->teams = $teams;
@@ -128,8 +128,8 @@ class CobaltViewGoalsHtml extends JViewHtml
         $this->member_role = $member_role;
         $this->leaderboard_list = CobaltHelperDropdown::getLeaderBoards();
 
-	    //display
-		return parent::render();
-	}
-	
+        //display
+        return parent::render();
+    }
+
 }

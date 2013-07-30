@@ -46,15 +46,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );  ?>
                                 <select data-placement="right" class="inputbox" name="role_type" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_ROLE'); ?>" onchange="updateRole(this.value)" >
                                     <?php echo JHtml::_('select.options', $this->member_roles, 'value', 'text', $this->user['role_type'], true);?>
                                 </select>
-                                <div id="team_name" <?php if ( $this->user['role_type'] != "manager"){ ?> style="display:none;" <?php } ?> >
+                                <div id="team_name" <?php if ($this->user['role_type'] != "manager") { ?> style="display:none;" <?php } ?> >
                                     <label><b><?php echo JText::_('COBALT_TEAM_NAME'); ?></b></label>
                                     <input type="text" class="inputbox" name="team_name" value="<?php if ( isset($this->user) ) echo $this->user['team_name']; ?>" />
                                 </div>
                             </li>
-                            <?php if ( $this->user['role_type'] == 'basic' ){  ?>
-                            <li id="team_assignment">    
+                            <?php if ($this->user['role_type'] == 'basic') {  ?>
+                            <li id="team_assignment">
                             <?php } else { ?>
-                            <li style="display:none;" id="team_assignment">        
+                            <li style="display:none;" id="team_assignment">
                             <?php } ?>
                                 <label><b><?php echo JText::_('COBALT_USERS_HEADER_TEAM'); ?></b></label>
                                 <select class="inputbox" id="team_id" name="team_id" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_TEAM'); ?>"  >
@@ -62,7 +62,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );  ?>
                                         <?php echo JHtml::_('select.options', $this->teams, 'value', 'text', $this->user['team_id'], true);?>
                                 </select>
                             </li>
-                            <?php if ( $this->user['role_type'] == 'manager' ){ ?>
+                            <?php if ($this->user['role_type'] == 'manager') { ?>
                             <li style="display:none;" id="manager_assignment">
                                 <label><b><?php echo JText::_('COBALT_ASSIGN_NEW_MANAGER'); ?><span class="required">*</span></b></label>
                                 <select class="inputbox" id="manager_id" name="manager_assignment" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_MANAGER'); ?>"  >
@@ -81,14 +81,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );  ?>
                                 <label class="checkbox" >
                                       <input data-placement="left" type="checkbox" name="can_delete" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_IF_CHECKED_DELETE'); ?>" <?php echo ($this->user['can_delete'] ? 'checked' : ''); ?> />
                                       <?php echo JText::_('COBALT_ALLOWED_TO_DELETE'); ?>
-                                </label>        
+                                </label>
                             </li>
                             <li>
                                 <label class="checkbox" >
                                     <input data-placement="left" type="checkbox" name="exports" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_IF_CHECKED_EXPORT'); ?>" <?php echo ($this->user['exports'] ? 'checked' : ''); ?> />
                                     <?php echo JText::_('COBALT_ALLOWED_TO_EXPORT'); ?>
                                 </label>
-                                
+
                             </li>
                             <li>
                                 <label>
@@ -98,7 +98,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );  ?>
                             </li>
                         </ul>
                         <div>
-                            <?php if ( $this->user['id'] ) { ?>
+                            <?php if ($this->user['id']) { ?>
                                 <input type="hidden" name="id" value="<?php echo $this->user['id']; ?>" />
                             <?php } ?>
                             <input type="hidden" name="controller" value="" />

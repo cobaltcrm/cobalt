@@ -8,18 +8,18 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerShareItem extends CobaltControllerDefault
 {
 
-    function execute(){
-
+    public function execute()
+    {
         $return = array();
 
-        if ( CobaltHelperCobalt::shareItem() ){
+        if ( CobaltHelperCobalt::shareItem() ) {
             $return['success'] = true;
-        }else{
+        } else {
             $return['success'] = false;
         }
 

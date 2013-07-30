@@ -8,22 +8,22 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewProfileHtml extends JViewHtml
 {
-	function render()
-	{
-	    //javascript
-	    $document =& JFactory::getDocument();
+    public function render()
+    {
+        //javascript
+        $document =& JFactory::getDocument();
         $document->addScript( JURI::base().'libraries/crm/media/js/profile_manager.js' );
-        
+
         //get user data and pass to view
         $this->user = CobaltHelperUsers::getLoggedInUser();
         $this->user_id = CobaltHelperUsers::getUserId();
-        
+
         //display
-		return parent::render();
-	}
-	
+        return parent::render();
+    }
+
 }

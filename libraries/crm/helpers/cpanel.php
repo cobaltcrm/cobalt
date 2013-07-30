@@ -10,12 +10,12 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
  class CobaltHelperCpanel extends JObject
  {
 
         //load the navigation menu
-        public static function getUsers(){
+        public static function getUsers()
+        {
             return array(
                             array(
                                 'link' => JRoute::_('index.php?view=users'),
@@ -26,7 +26,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         );
         }
 
-        public static function getCustom(){
+        public static function getCustom()
+        {
             return array(
                             array(
                                 'link' => JRoute::_('index.php?view=branding'),
@@ -91,7 +92,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         );
         }
 
-    public static function getMenu(){
+    public static function getMenu()
+    {
         return array(
                             array(
                                 'link' => JRoute::_('index.php?view=cobalt'),
@@ -109,7 +111,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         );
     }
 
-    public static function button($button){
+    public static function button($button)
+    {
         $html  = '<div class="icon-wrapper">';
         $html .= '<div class="icon">';
         $html .= '<a href="'.$button['link'].'">';
@@ -117,6 +120,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $html .= '<span>'.$button['text'].'</span></a>';
         $html .= '</div>';
         $html .= '</div>';
+
         return $html;
     }
  }

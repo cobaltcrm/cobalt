@@ -69,16 +69,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 <h3><?php echo JText::_('COBALT_SELECT_FIELDS'); ?></h3>
                             </div>
                             <div class="modal-body">
-                                <?php if ( isset($this->fields) && count($this->fields) > 0 ){ 
-                                    foreach ( $this->fields as $type => $fields ){ ?>
+                                <?php if ( isset($this->fields) && count($this->fields) > 0 ) {
+                                    foreach ($this->fields as $type => $fields) { ?>
                                     <div id="<?php echo $type; ?>_fields" class="field_checkbox_container">
                                         <div class="span5">
                                         <ul class="unstyled">
                                                 <?php
                                                 $i=0;
-                                                foreach ( $fields as $key => $field ) { ?>
+                                                foreach ($fields as $key => $field) { ?>
                                                 <?php $row = $i%5; ?>
-                                                <?php if ( $row == 0 && $i != 0 ){ ?>
+                                                <?php if ($row == 0 && $i != 0) { ?>
                                                 </ul>
                                                 </div>
                                                 <div class="span5">
@@ -101,5 +101,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <?php echo $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

@@ -22,9 +22,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <td><b><?php echo JText::_('COBALT_NAME'); ?></b></td>
                             <td><input type="text" class="inputbox" name="filename" value="<?php echo $this->document['filename']; ?>" /></td>
                         </tr>
-                    </table> 
+                    </table>
                     <div>
-                        <?php if ( $this->document['id'] ) { ?>
+                        <?php if ($this->document['id']) { ?>
                             <input type="hidden" name="id" value="<?php echo $this->document['id']; ?>" />
                         <?php } ?>
                         <input type="hidden" name="task" value="" />

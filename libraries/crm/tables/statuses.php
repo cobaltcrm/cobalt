@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class TableStatuses extends JTable
 {
@@ -17,7 +17,8 @@ class TableStatuses extends JTable
      *
      * @param object Database connector object
      */
-    function __construct( &$db ) {
+    public function __construct( &$db )
+    {
         parent::__construct('#__people_status', 'id', $db);
     }
 }

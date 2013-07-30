@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewCobaltHtml extends JViewHtml
 {
 
-    function render($tpl = null)
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -41,7 +41,7 @@ class CobaltViewCobaltHtml extends JViewHtml
         $this->setup_percent = $percentage;
 
         /** php version check **/
-        $this->php_version = (float)phpversion();
+        $this->php_version = (float) phpversion();
         $this->php_version_check = $this->php_version >= 5.3 ? TRUE : FALSE;
 
         /** View Ref **/
@@ -49,7 +49,7 @@ class CobaltViewCobaltHtml extends JViewHtml
         $this->latestVersion = $latestVersion;
         $this->updateUrl = $updateUrl;
         $this->updatesFeed = $updatesFeed;
-        
+
         //display
         return parent::render();
     }

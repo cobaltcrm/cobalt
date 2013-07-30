@@ -8,26 +8,27 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelStats extends JModelBase
 {
 
-    var $person_id;
-    var $access;
-    var $users;
-    var $today;
-    var $previousDay;
+    public $person_id;
+    public $access;
+    public $users;
+    public $today;
+    public $previousDay;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->previousDay = CobaltHelperDate::formatDBDate(date('Y-m-d')." - 1 day");
         $this->today = CobaltHelperDate::formatDBDate(date('Y-m-d'));
-    	$this->access = CobaltHelperUsers::getRole($this->person_id);
-    	$this->users = $this->getUsers($this->person_id,$this->access);
+        $this->access = CobaltHelperUsers::getRole($this->person_id);
+        $this->users = $this->getUsers($this->person_id,$this->access);
     }
 
-    public function getDistinctEntries($type,$field){
-
+    public function getDistinctEntries($type,$field)
+    {
         $db =& JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -43,14 +44,15 @@ class CobaltModelStats extends JModelBase
 
     }
 
-    public function joinField($ids,$type,$field){
+    public function joinField($ids,$type,$field)
+    {
         $results = array();
 
         $db =& JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        if ( count ( $ids ) > 0 ){
-            foreach ( $ids as $id ){
+        if ( count ( $ids ) > 0 ) {
+            foreach ($ids as $id) {
                 $query->clear();
                 $query->select("h.type_id,".$type.".*,h.new_value");
                 $query->from("#__history AS h");
@@ -68,41 +70,40 @@ class CobaltModelStats extends JModelBase
         return $results;
     }
 
-    public function getUsers($user_id,$user_role){
-        
-        if( $user_role != 'basic' ){
-            
+    public function getUsers($user_id,$user_role)
+    {
+        if ($user_role != 'basic') {
+
             $db =& JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             $query->select("id");
             $query->from("#__users");
 
             //if manager
-            if ( $user_role == "manager" ){
-            	$team_id = CobaltHelperUsers::getTeamId($user_id);
+            if ($user_role == "manager") {
+                $team_id = CobaltHelperUsers::getTeamId($user_id);
                 $query->where('team_id='.$team_id);
             }
             //if exec there is no where clause, load all users
-            
+
             //load results
             $db->setQuery($query);
             $results = $db->loadColumn();
 
-        }else{
-        	$results = array($user_id);
+        } else {
+            $results = array($user_id);
         }
 
         return $results;
     }
 
+    public function getActiveDealsAmount()
+    {
+        $db =& JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-    public function getActiveDealsAmount(){
-
-    	$db =& JFactory::getDBO();
-    	$query = $db->getQuery(true);
-
-    	/** get unique history **/
+        /** get unique history **/
         $deal_ids = $this->getDistinctEntries('deal','stage_id');
 
         $query->clear();
@@ -111,17 +112,17 @@ class CobaltModelStats extends JModelBase
         $query->where("d.id IN(".implode(',',$deal_ids).')');
         // $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
 
-    	$db->setQuery($query);
-    	$result = $db->loadResult();
+        $db->setQuery($query);
+        $result = $db->loadResult();
 
-    	return $result;
+        return $result;
 
     }
 
-    public function getStages(){
-
-		$db =& JFactory::getDBO();
-    	$query = $db->getQuery(true);
+    public function getStages()
+    {
+        $db =& JFactory::getDBO();
+        $query = $db->getQuery(true);
 
         /** Select distinct history entries **/
         $results = $this->getDistinctEntries('deal','stage_id');
@@ -137,45 +138,46 @@ class CobaltModelStats extends JModelBase
         $stages = $db->loadAssocList('id');
 
         /** Sum amounts from above **/
-        if ( count ($deals) > 0 ){
-            foreach ( $deals as $deal ){
-                if ( array_key_exists($deal->new_value,$stages) ){
+        if ( count ($deals) > 0 ) {
+            foreach ($deals as $deal) {
+                if ( array_key_exists($deal->new_value,$stages) ) {
                     $stages[$deal->new_value]['amount'] += $deal->amount;
                 }
-            }   
+            }
         }
 
         usort($stages,'self::sortAmount');
 
-    	return $stages;
+        return $stages;
 
     }
 
-    function sortAmount($a,$b) {
+    public function sortAmount($a,$b)
+    {
           return $a['amount']<$b['amount'];
     }
 
-    public function getLeads(){
+    public function getLeads()
+    {
+        $db =& JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-    	$db =& JFactory::getDBO();
-    	$query = $db->getQuery(true);
-
-    	/** person ids **/
+        /** person ids **/
         $person_ids = $this->getDistinctEntries('person','type');
         $people = $this->joinField($person_ids,'people','type');
         $leads = array('lead'=>0,'contact'=>0);
-        if ( count($people) > 0 ){
-            foreach ( $people as $person ){
+        if ( count($people) > 0 ) {
+            foreach ($people as $person) {
                 $leads[$person->type]++;
             }
         }
 
-    	return $leads;
+        return $leads;
 
     }
 
-    public function getNotes(){
-
+    public function getNotes()
+    {
         $db =& JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -190,8 +192,8 @@ class CobaltModelStats extends JModelBase
 
         $totals = array();
 
-        if ( count($categories) > 0 ){
-            foreach ( $categories as $category ){
+        if ( count($categories) > 0 ) {
+            foreach ($categories as $category) {
                 $query->clear();
                 $query->select("COUNT(n.id)");
                 $query->from("#__notes AS n");
@@ -206,8 +208,8 @@ class CobaltModelStats extends JModelBase
 
     }
 
-    public function getTodos(){
-
+    public function getTodos()
+    {
         $db =& JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -222,8 +224,8 @@ class CobaltModelStats extends JModelBase
 
         $totals = array();
 
-        if ( count($categories) > 0 ){
-            foreach ( $categories as $category ){
+        if ( count($categories) > 0 ) {
+            foreach ($categories as $category) {
                 $query->clear();
                 $query->select("COUNT(e.id) AS total,SUM(e.completed) AS completed");
                 $query->from("#__events AS e");
@@ -238,10 +240,8 @@ class CobaltModelStats extends JModelBase
 
     }
 
-    public function getDealActivity(){
-
+    public function getDealActivity()
+    {
     }
-
-
 
 }

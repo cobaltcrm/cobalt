@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class TableTemplatedata extends JTable
 {
@@ -17,7 +17,8 @@ class TableTemplatedata extends JTable
      *
      * @param object Database connector object
      */
-    function __construct( &$db ) {
+    public function __construct( &$db )
+    {
         parent::__construct('#__template_data', 'id', $db);
     }
 }

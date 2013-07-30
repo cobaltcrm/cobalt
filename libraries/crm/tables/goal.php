@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class TableGoal extends JTable
 {
@@ -17,7 +17,8 @@ class TableGoal extends JTable
      *
      * @param object Database connector object
      */
-    function __construct( &$db ) {
+    public function __construct( &$db )
+    {
         parent::__construct('#__goals', 'id', $db);
     }
 }

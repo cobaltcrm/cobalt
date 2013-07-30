@@ -22,33 +22,32 @@ JFormHelper::loadFieldClass('list');
  */
 class JFormFieldCacheHandler extends JFormFieldList
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = 'CacheHandler';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $type = 'CacheHandler';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array    The field option objects.
-	 *
-	 * @since   11.1
-	 */
-	protected function getOptions()
-	{
-		$options = array();
+    /**
+     * Method to get the field options.
+     *
+     * @return array The field option objects.
+     *
+     * @since   11.1
+     */
+    protected function getOptions()
+    {
+        $options = array();
 
-		// Convert to name => name array.
-		foreach (JCache::getStores() as $store)
-		{
-			$options[] = JHtml::_('select.option', $store, JText::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
-		}
+        // Convert to name => name array.
+        foreach (JCache::getStores() as $store) {
+            $options[] = JHtml::_('select.option', $store, JText::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
+        }
 
-		$options = array_merge(parent::getOptions(), $options);
+        $options = array_merge(parent::getOptions(), $options);
 
-		return $options;
-	}
+        return $options;
+    }
 }

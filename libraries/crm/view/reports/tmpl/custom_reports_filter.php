@@ -8,10 +8,10 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-for ( $i=0; $i<count($this->reports); $i++ ){
-    $report = $this->reports[$i]; 
+for ( $i=0; $i<count($this->reports); $i++ ) {
+    $report = $this->reports[$i];
     $k = $i%2; ?>
     <tr id="custom_report_<?php echo $report['id']; ?>" class="cobalt_row_<?php echo $k; ?>">
         <td><a href="<?php echo JRoute::_('index.php?view=reports&layout=custom_report&id='.$report['id']); ?>"><?php echo $report['name']; ?></a></td>
@@ -23,4 +23,4 @@ for ( $i=0; $i<count($this->reports); $i++ ){
             <a href="javascript:void(0);" class="delete delete_custom_report"><i class="icon-trash"></i></a>
         </td>
     </tr>
-<?php } ?>
+<?php }

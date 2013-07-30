@@ -11,5 +11,5 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <p>
-	<?php echo CRMText::_('COBALT_DAILY_AGENDA_HEADER'); ?>
+    <?php echo CRMText::_('COBALT_DAILY_AGENDA_HEADER'); ?>
 </p>

@@ -13,25 +13,27 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  class CobaltHelperDeal
  {
 
-	public static function getDeal($id){
+    public static function getDeal($id)
+    {
+        //get db object
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-		//get db object
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
+        //generate query
+        $query->select("name,id FROM #__deals");
+        $query->where('id='.$id);
+        $db->setQuery($query);
 
-		//generate query
-		$query->select("name,id FROM #__deals");
-		$query->where('id='.$id);
-		$db->setQuery($query);
+        //return results
+        $row = $db->loadAssocList();
 
-		//return results
-		$row = $db->loadAssocList();
-		return $row;
+        return $row;
 
-	}
+    }
 
     //function to return filter types for deals
-    public static function getDealTypes(){
+    public static function getDealTypes()
+    {
         return array(   'all'=>CRMText::_('COBALT_ALL_DEALS'),
                         'today'=>CRMText::_('COBALT_DEALS_TASKS_TODAY'),
                         'tomorrow'=>CRMText::_('COBALT_DEALS_TASKS_TOMORROW'),
@@ -44,7 +46,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //function to return deal stages
-    public static function getStages($stage_name=null,$stagesOnly=FALSE,$idsOnly=TRUE){
+    public static function getStages($stage_name=null,$stagesOnly=FALSE,$idsOnly=TRUE)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -53,13 +56,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->select("*");
         $query->from("#__stages");
 
-        if ( $stage_name ){
+        if ($stage_name) {
             $query->where("LOWER(name) LIKE '%".ucwords($stage_name)."%'");
         }
 
-        if ( !$stagesOnly ){
+        if (!$stagesOnly) {
             $base = array( 'all'=>CRMText::_('COBALT_ALL_STAGES'),'active'=>CRMText::_('COBALT_ACTIVE_STAGES'));
-        }else{
+        } else {
             $base = array();
         }
 
@@ -68,9 +71,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $results = $db->loadAssocList();
 
-        if ( $idsOnly ){
+        if ($idsOnly) {
             $stages = array();
-            foreach ( $results as $key => $stage ){
+            foreach ($results as $key => $stage) {
                 $stages[$stage['id']] = $stage['name'];
             }
         } else {
@@ -81,7 +84,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //function to return deal stages
-    public static function getNonInactiveStages(){
+    public static function getNonInactiveStages()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -98,16 +102,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $results;
     }
 
-    public static function getPrimaryContact($deal_id){
+    public static function getPrimaryContact($deal_id)
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("primary_contact_id")->from("#__deals")->where("id=".$deal_id);
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 
     //get stages for sorting sources
-    public static function getSourceStages(){
+    public static function getSourceStages()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -127,16 +134,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $results = $db->loadAssocList();
         $stages = array();
-        if ( count($results) > 0 ){
-            foreach ( $results as $key => $stage ){
+        if ( count($results) > 0 ) {
+            foreach ($results as $key => $stage) {
                 $stages[$stage['id']] = $stage['name'];
             }
         }
+
         return $base + $stages;
     }
 
     //function to return active stages
-    public static function getActiveStages($idsOnly=FALSE){
+    public static function getActiveStages($idsOnly=FALSE)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -154,13 +163,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $results = $db->loadAssocList();
 
         $stages = array();
-        if ( $idsOnly ){
-            if ( count($results) > 0 ){
-                foreach ( $results as $key => $stage ){
+        if ($idsOnly) {
+            if ( count($results) > 0 ) {
+                foreach ($results as $key => $stage) {
                     $stages[$stage['id']] = $stage['name'];
                 }
             }
-        }else{
+        } else {
             return $results;
         }
 
@@ -168,7 +177,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //function to return deal stages
-    public static function getGoalStages(){
+    public static function getGoalStages()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -183,9 +193,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $results = $db->loadAssocList();
         $stages = array();
-        foreach ( $results as $key => $stage ){
+        foreach ($results as $key => $stage) {
             $stages[$stage['id']] = $stage['name'];
         }
+
         return $stages;
     }
 
@@ -199,29 +210,34 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get closing filters for deals
-    public static function getClosing(){
+    public static function getClosing()
+    {
         return CobaltHelperDeal::getDealFilters();
     }
 
     //get closing filters for deals
-    public static function getModified(){
+    public static function getModified()
+    {
          return CobaltHelperDeal::getDealFilters();
     }
 
     //get closing filters for deals
-    public static function getCreated(){
+    public static function getCreated()
+    {
         return CobaltHelperDeal::getDealFilters();
     }
 
     /**
      * Get amounts for dropdowns
      */
-    public static function getAmounts(){
+    public static function getAmounts()
+    {
         return array(  'small' => CRMText::_('COBALT_SMALL'), 'medium' => CRMText::_('COBALT_MEDIUM'), 'large' => CRMText::_('COBALT_LARGE') );
     }
 
     //get won stage
-    public static function getWonStages(){
+    public static function getWonStages()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -234,11 +250,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         $results = $db->loadColumn();
         $results[] = 0;
+
         return $results;
     }
 
     //get lost stage
-    public static function getInactiveStages(){
+    public static function getInactiveStages()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -251,10 +269,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $stages = $db->loadColumn();
 
         $base = array(0);
+
         return $stages + $base;
     }
 
-    public static function getClosedStages(){
+    public static function getClosedStages()
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -266,16 +286,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $results = $db->loadColumn();
 
-        if ( count($results) > 0 ){
+        if ( count($results) > 0 ) {
             return $results;
-        }else{
+        } else {
             return array();
         }
 
     }
 
     //get deal statuses
-    public static function getStatuses($status_name=null,$classOnly=FALSE){
+    public static function getStatuses($status_name=null,$classOnly=FALSE)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -284,7 +305,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->select("*");
         $query->from("#__deal_status");
 
-        if ( $status_name ){
+        if ($status_name) {
             $query->where("name LIKE '%".$status_name."%'");
         }
 
@@ -295,17 +316,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $results = $db->loadAssocList();
         $statuses = array();
 
-        if ( $classOnly ){
+        if ($classOnly) {
             $statuses[0] = 'none';
-        }else{
+        } else {
             $statuses[0] = CRMText::_('COBALT_NONE_STATUS');
         }
 
-        if ( count($results) > 0 ){
-            foreach ( $results as $key => $status ){
-                if ( $classOnly ){
+        if ( count($results) > 0 ) {
+            foreach ($results as $key => $status) {
+                if ($classOnly) {
                     $statuses[$status['id']] = $status['class'];
-                }else{
+                } else {
                     $statuses[$status['id']] = CRMText::_('COBALT_'.strtoupper($status['name']).'_STATUS');
                 }
             }
@@ -315,7 +336,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get deal sources
-    public static function getSources($source_name=null){
+    public static function getSources($source_name=null)
+    {
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -326,7 +348,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         $query->order('ordering');
 
-        if ( $source_name ){
+        if ($source_name) {
             $query->where("name LIKE '%".$source_name."%'");
         }
 
@@ -334,15 +356,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $db->setQuery($query);
         $results = $db->loadAssocList();
         $sources = array();
-        foreach ( $results as $key => $source ){
+        foreach ($results as $key => $source) {
             $sources[$source['id']] = $source['name'];
         }
+
         return $sources;
     }
 
     //get user created custom fields from database
-    public static function getUserCustomFields($id=null){
-
+    public static function getUserCustomFields($id=null)
+    {
         //get dbo
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -352,20 +375,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         $query->from("#__deal_custom");
 
         //specific field
-        if ( $id ){
+        if ($id) {
             $query->where("id=$id");
         }
 
         //run query and return results
         $db->setQuery($query);
+
         return $db->loadAssocList();
 
     }
 
-
     //get all custom fields for reports
-	public static function getAllCustomFields(){
-	    $base = array (
+    public static function getAllCustomFields()
+    {
+        $base = array (
             "summary"                       => ucwords(CRMText::_("COBALT_SUMMARY")),
             "amount"                        => ucwords(CRMText::_("COBALT_AMOUNT")),
             "name"                          => ucwords(CRMText::_("COBALT_DEALS_NAME")),
@@ -387,15 +411,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             "company_name"                  => ucwords(CRMText::_("COBALT_DEAL_COMPANY"))
         );
         $custom = CobaltHelperDeal::getUserCustomFields();
-        for ( $i=0; $i<count($custom); $i++ ){
+        for ( $i=0; $i<count($custom); $i++ ) {
             $field = $custom[$i];
             $base["custom_".$field['id']] = $field['name'];
         }
+
         return $base;
-	}
+    }
 
     //get column filters
-    public static function getColumnFilters(){
+    public static function getColumnFilters()
+    {
         return array(   'company'           => ucwords(CRMText::_('COBALT_DEALS_COMPANY')),
                         'primary_contact'   => ucwords(CRMText::_('COBALT_PRIMARY_CONTACT')),
                         'contacts'          => ucwords(CRMText::_('COBALT_DEALS_CONTACTS')),
@@ -416,8 +442,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get selected column filters
-    public static function getSelectedColumnFilters(){
-
+    public static function getSelectedColumnFilters()
+    {
         //get the user session data
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -430,21 +456,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         //unserialize columns
         $columns = unserialize($results);
-        if ( is_array($columns) ){
+        if ( is_array($columns) ) {
             return $columns;
-        }else{
+        } else {
             //if it is empty then load a default set
             return CobaltHelperDeal::getDefaultColumnFilters();
         }
     }
 
     //get default column filters
-    public static function getDefaultColumnFilters(){
+    public static function getDefaultColumnFilters()
+    {
         return array( 'company','primary_contact','amount','stage','expected_close','next_action','deals_due','notes','created','modified' );
     }
 
-    public static function downloadDocument(){
-
+    public static function downloadDocument()
+    {
         $model = new CobaltModelDocument();
         $document = $model->getDocument();
 
@@ -461,6 +488,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         readfile($document->path);
         exit;
     }
-
 
  }

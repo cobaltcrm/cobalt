@@ -44,9 +44,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <tbody>
                                 <?php if ( count($this->custom_fields) > 0 ) {
                                     $ordering   = ($this->listOrder == 'c.ordering');
-                                    $i=0; 
-                                    foreach($this->custom_fields as $key=>$custom){ ?>
-                                    
+                                    $i=0;
+                                    foreach ($this->custom_fields as $key=>$custom) { ?>
+
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $custom['id']); ?>
@@ -67,7 +67,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                         </td>
                                         <td class="order"><?php echo ucwords($custom['type']); ?></td>
                                     </tr>
-                                
+
                                 <?php $i++; } } ?>
                             </tbody>
                             <tfoot>

@@ -8,19 +8,19 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerCreateTemplate extends CobaltControllerDefault
 {
 
-   function execute(){
-
+   public function execute()
+   {
         $return = array();
         $return['success'] = FALSE;
 
         $model = new CobaltModelTemplate();
 
-        if ( $model->createTemplate() ){
+        if ( $model->createTemplate() ) {
             $return['success'] = TRUE;
         }
 

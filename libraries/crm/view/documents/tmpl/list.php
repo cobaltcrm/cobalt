@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
     <thead>
@@ -23,12 +23,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php
 
-    if ( count($this->documents) > 0 ){
-        foreach( $this->documents as $key => $document ){
+    if ( count($this->documents) > 0 ) {
+        foreach ($this->documents as $key => $document) {
             $k = $key%2;
-            
+
             //assign association link
-            switch($document['association_type']){
+            switch ($document['association_type']) {
                 case "deal":
                     $view = 'deals';
                     $association_type = "deal";
@@ -39,24 +39,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     $association_type = "person";
                     $document['association_name'] = $document['first_name']." ".$document['last_name'];
                     break;
-                case "company";          
+                case "company";
                     $view = "companies";
                     $association_type = "company";
                     $document['association_name'] = $document['company_name'];
                     break;
             }
-            if(array_key_exists('association_name',$document) AND $document['association_name'] != null){
+            if (array_key_exists('association_name',$document) AND $document['association_name'] != null) {
                 $association_link = '<a href="'.JRoute::_('index.php?view='.$view.'&layout='.$association_type.'&id='.$document['association_id']).'" >'.$document['association_name'];
-            }else{
+            } else {
                 $association_link = "";
             }
-            
+
             echo '<tr class="document_'.$key.'" id="document_row_'.$document['id'].'" class="cobalt_row_'.$k.'">';
                 echo '<td><img width="30px" height="30px" src="'.JURI::base().'libraries/crm/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
                 echo '<td><div class="dropdown"><span class="caret"></span> <a href="javascript:void(0);" class="document_edit dropdown-toggle" role="button" data-toggle="dropdown" id="'.$document['id'].'">'.$document['name'].'</a>';
                 echo '<ul class="dropdown-menu" role="menu">';
                 echo '<input type="hidden" name="document_'.$document['id'].'_hash" id="document_'.$document['id'].'_hash" value="'.$document['filename'].'" />';
-                    if ( $document['is_image'] ){
+                    if ($document['is_image']) {
                         echo '<li><a href="javascript:void(0);" class="document_preview" id="preview_'.$document['id'].'"><i class="icon-eye-open"></i> '.CRMText::_('COBALT_PREVIEW').'</a></li>';
                     }
                 echo '<li><a href="javascript:void(0);" class="document_download" id="download_'.$document['id'].'"> <i class="icon-download"></i> '.CRMText::_('COBALT_DOWNLOAD').'</a></li>';
@@ -78,13 +78,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                                 //assign document names for autocomplete dialogs
                                 $names = array();
 
-                                if ( count($this->documents)> 0 ){
-                                    foreach ( $this->documents as $key => $document ){
+                                if ( count($this->documents)> 0 ) {
+                                    foreach ($this->documents as $key => $document) {
                                         $names[] = $document['filename'];
                                     }
                                 }
-    
-                                 echo json_encode($names); 
+
+                                 echo json_encode($names);
                             ?>;
     order_url = "<?php echo 'index.php?view=documents&layout=list&format=raw&tmpl=component'; ?>";
     order_dir = "<?php echo $this->state->get('Document.filter_order_Dir'); ?>";

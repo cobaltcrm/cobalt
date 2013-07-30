@@ -8,28 +8,28 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $app = JFactory::getApplication();
 
-if ( $app->input->get('loc') ){
+if ( $app->input->get('loc') ) {
     $model = new CobaltModelEvent();
     $events = $model->getEvents($app->input->get('loc'),null,$app->input->get($app->input->get('loc').'_id'));
     $this->events = $events;
 }
 
-if ( count($this->events) > 0 ){
-    foreach ( $this->events as $event ){
+if ( count($this->events) > 0 ) {
+    foreach ($this->events as $event) {
         echo '<li>';
         echo "<a href='".JRoute::_('index.php?view=events&id='.$event['id'])."'>";
             echo '<span class="ui-li-count">'.CobaltHelperDate::formatDate($event['due_date']).'</span>';
-            if ( $event['completed'] == 1 ){
+            if ($event['completed'] == 1) {
                 $completed = "line-through";
-            }else{
+            } else {
                 $completed = "";
             }
             echo "<h3 class='ui-li-heading'>".$event['name']."</h3>";
-           switch($event['association_type']){
+           switch ($event['association_type']) {
                case "company":
                    echo "<div class='ui-li-desc'>(".$event['company_name'].")</div>";
                    break;

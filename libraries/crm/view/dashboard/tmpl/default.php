@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
            </li>
            <li class="widget">
-                <div class="dash_float" id="deals_container">   
+                <div class="dash_float" id="deals_container">
                     <div class="dash_float_header">
                         <h3><?php echo ucwords(CRMText::_('COBALT_RECENT_DEALS')); ?></h3>
                     </div>
@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             </tr>
                             <?php
                                 $n = count($this->recentDeals);
-                                for ( $i=0; $i<$n && $i<10; $i++ ) {
+                                for ($i=0; $i<$n && $i<10; $i++) {
                                     $deal = $this->recentDeals[$i];
                                     $k = $i%2;
                                     echo '<tr class="cobalt_row_'.$k.'">';
@@ -73,7 +73,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     </div>
                 </div>
            </li>
-            
+
             <li class='widget'>
                 <div class="dash_float" id="inbox_container">
                     <div class="dash_float_header">
@@ -97,7 +97,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     </div>
                 </div>
             </li>
-            <li class="widget">    
+            <li class="widget">
                 <div class="dash_float" id="latest_container">
                     <div class="dash_float_header">
                        <a class="minify"></a><h2><?php echo CRMText::_('COBALT_LATEST_HEADER'); ?></h2>

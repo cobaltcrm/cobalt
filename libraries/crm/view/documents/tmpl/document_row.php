@@ -8,9 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
-    if ( count($this->documents) > 0 ){
-        foreach( $this->documents as $key => $document ){
+defined( '_JEXEC' ) or die( 'Restricted access' );
+    if ( count($this->documents) > 0 ) {
+        foreach ($this->documents as $key => $document) {
             $k = $key%2;
             echo '<tr class="document_'.$key.'" id="document_row_'.$document['id'].'" class="cobalt_row_'.$k.'">';
                 echo '<td><img width="30px" height="30px" src="'.JURI::base().'libraries/crm/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
@@ -18,7 +18,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 echo'<div class="dropdown">';
                 echo '<a href="javascript:void(0);" class="dropdown-toggle" role="button" data-toggle="dropdown" id="'.$document['id'].'">'.$document['name'].'</a>';
                 echo '<ul class="dropdown-menu" role="menu">';
-                    if ( $document['is_image'] ){
+                    if ($document['is_image']) {
                         echo '<li><a href="javascript:void(0);" class="document_preview" id="preview_'.$document['id'].'">'.CRMText::_('COBALT_PREVIEW').'</a></li>';
                     }
                     echo '<li><a href="javascript:void(0);" class="document_download" id="download_'.$document['id'].'">'.CRMText::_('COBALT_DOWNLOAD').'</a></li>';
@@ -34,4 +34,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             echo '</tr>';
         }
     }
-?>

@@ -12,8 +12,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperStyles extends JObject
  {
-        public static function getSiteName(){
-
+        public static function getSiteName()
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
@@ -27,8 +27,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        public static function getSiteLogo(){
-
+        public static function getSiteLogo()
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
@@ -42,12 +42,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
 
         //get base stylesheets
-        public static function getBaseStyle(){
+        public static function getBaseStyle()
+        {
             return JURI::base()."libraries/crm/media/css/bootstrap.css";
         }
 
         //dynamically generate styles
-        public static function getDynamicStyle(){
+        public static function getDynamicStyle()
+        {
             //database
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -80,35 +82,35 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
 
         //load all styles
-        public static function loadStyleSheets(){
-
+        public static function loadStyleSheets()
+        {
             $app = JFactory::getApplication();
             $document = JFactory::getDocument();
 
             $view = $app->input->get('view');
-            if ( $view == "print" ){
+            if ($view == "print") {
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/print.css' );
             }
 
-			if(CobaltHelperTemplate::isMobile()) {
+            if (CobaltHelperTemplate::isMobile()) {
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/mobile.css' );
-				$document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.min.css' );
+                $document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.min.css' );
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.datepicker.css' );
-			} else {
-	            //base stylesheet
-	            $base_style = CobaltHelperStyles::getBaseStyle();
+            } else {
+                //base stylesheet
+                $base_style = CobaltHelperStyles::getBaseStyle();
 
-	            //dynamic stylesheet
-	            $dyn_style = CobaltHelperStyles::getDynamicStyle();
+                //dynamic stylesheet
+                $dyn_style = CobaltHelperStyles::getDynamicStyle();
 
-	            //add sheets to document
-	            $document->addStyleSheet($base_style);
+                //add sheets to document
+                $document->addStyleSheet($base_style);
                 $document->addStyleSheet(JURI::base().'libraries/crm/media/css/datepicker.css');
                 $document->addStyleSheet(JURI::base().'libraries/crm/media/css/bootstrap-responsive.css');
                 $document->addStyleSheet(JURI::base().'libraries/crm/media/css/bootstrap-colorpicker.css');
                 $document->addStyleSheet(JURI::base().'libraries/crm/media/css/style.css');
                 $document->addStyleSheet('http://fonts.googleapis.com/css?family=Open+Sans:300,400');
-	            $document->addStyleDeclaration($dyn_style);
+                $document->addStyleDeclaration($dyn_style);
 
             }
 
@@ -116,13 +118,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $browser = JBrowser::getInstance();
             $browserType = $browser->getBrowser();
             $browserVersion = $browser->getMajor();
-            if(($browserType == 'msie') && ($browserVersion < 8))
-            {
+            if (($browserType == 'msie') && ($browserVersion < 8)) {
               $document->addStyleSheet( JURI::base().'libraries/crm/media/css/ie.css' );
             }
 
         }
-
-
 
  }

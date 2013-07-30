@@ -8,33 +8,33 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewNoteRaw extends JViewHtml
 {
-	function render($tpl = null)
-	{
-		$app = JFactory::getApplication();
-		
-		$this->type = $app->input->get('type');
-		$this->id = $app->input->get('id');
-		$layout = $this->getLayout();
-		$this->format = $app->input->get('format');
-		$this->view = $app->input->get('view','default');
+    public function render($tpl = null)
+    {
+        $app = JFactory::getApplication();
 
-		//retrieve task list from model
-       	$model = new CobaltModelNote();
+        $this->type = $app->input->get('type');
+        $this->id = $app->input->get('id');
+        $layout = $this->getLayout();
+        $this->format = $app->input->get('format');
+        $this->view = $app->input->get('view','default');
 
-    	if ( $layout == "edit" ){
-       		$notes = $model->getNote($this->id);
-       	}else{
-       		$notes = $model->getNotes($this->id,$this->type, false);
-       	}
+        //retrieve task list from model
+           $model = new CobaltModelNote();
 
-    	$this->notes = $notes;
-         
-      	//display
-       	echo parent::render();
-	}
-	
+        if ($layout == "edit") {
+               $notes = $model->getNote($this->id);
+           } else {
+               $notes = $model->getNotes($this->id,$this->type, false);
+           }
+
+        $this->notes = $notes;
+
+          //display
+           echo parent::render();
+    }
+
 }

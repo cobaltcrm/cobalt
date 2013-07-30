@@ -13,82 +13,81 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  class CobaltHelperMail extends JObject
  {
 
+    public static function loadStats($person_id)
+    {
 
-	public static function loadStats($person_id)
-	{
+        //Load stats model
+        $statsModel = new CobaltModelStats();
+        $statsModel->set('person_id',$person_id);
 
-		//Load stats model
-		$statsModel = new CobaltModelStats();
-		$statsModel->set('person_id',$person_id);
+        //Load view
+        $coffeeView = CobaltHelperView::getView('emails','coffee.report');
 
-		//Load view
-		$coffeeView = CobaltHelperView::getView('emails','coffee.report');
+        //Get Total Deals Amount
+        $activeDeals = $statsModel->getActiveDealsAmount();
+        $coffeeView->totalDealsAmount = $activeDeals;
 
-		//Get Total Deals Amount
-		$activeDeals = $statsModel->getActiveDealsAmount();
-		$coffeeView->totalDealsAmount = $activeDeals;
+        //Get Stage Details
+        $stages = $statsModel->getStages();
+        $coffeeView->stages = $stages;
 
-		//Get Stage Details
-		$stages = $statsModel->getStages();
-		$coffeeView->stages = $stages;
+        //Get Number of Converted Leads
+        $leads = $statsModel->getLeads();
+        $coffeeView->numConvertedLeads = $leads['contact'];
 
-		//Get Number of Converted Leads
-		$leads = $statsModel->getLeads();
-		$coffeeView->numConvertedLeads = $leads['contact'];
+        //Get Number of New Leads
+        $coffeeView->numNewLeads = $leads['lead'];
 
-		//Get Number of New Leads
-		$coffeeView->numNewLeads = $leads['lead'];
+        //Get Note Details
+        $notes = $statsModel->getNotes();
+        $coffeeView->notes = $notes;
 
-		//Get Note Details
-		$notes = $statsModel->getNotes();
-		$coffeeView->notes = $notes;
+        //Get ToDo Details
+        $todos = $statsModel->getTodos();
+        $coffeeView->todos = $todos;
 
-		//Get ToDo Details
-		$todos = $statsModel->getTodos();
-		$coffeeView->todos = $todos;
+        //Get Deal Activity
+        $dealActivity = $statsModel->getDealActivity();
+        $coffeeView->dealActivity = $dealActivity;
 
-		//Get Deal Activity
-		$dealActivity = $statsModel->getDealActivity();
-		$coffeeView->dealActivity = $dealActivity;
+        //Get Lead Activity
+        $coffeeView->leadActivity = $leadActivity;
 
-		//Get Lead Activity
-		$coffeeView->leadActivity = $leadActivity;
+        //Get Contact Activity
+        $coffeeView->contactActivity = $contactActivity;
 
-		//Get Contact Activity
-		$coffeeView->contactActivity = $contactActivity;
+        return $coffeeView;
+    }
 
-		return $coffeeView;
-	}
+    public static function sendMail($layout,$recipient)
+    {
+        $mailer =& JFactory::getMailer();
+        $mailer->isHTML(true);
+        $mailer->Encoding = 'base64';
 
-	public static function sendMail($layout,$recipient)
-	{
-		$mailer =& JFactory::getMailer();
-		$mailer->isHTML(true);
-		$mailer->Encoding = 'base64';
+        $config =& JFactory::getConfig();
+        $sender = array(
+                    $config->getValue( 'config.mailfrom' ),
+                       $config->getValue( 'config.fromname' )
+                   );
 
-		$config =& JFactory::getConfig();
-		$sender = array(
-    				$config->getValue( 'config.mailfrom' ),
-   					$config->getValue( 'config.fromname' )
-   				);
+        $mailer->setSender($sender);
+        $mailer->addRecipient($recipient);
 
-		$mailer->setSender($sender);
-		$mailer->addRecipient($recipient);
+        $mailer->setSubject(CRMText::_('COBALT_COFFEE_REPORT_SUBJECT').' '.CobaltHelperDate::formatDate(date('Y-m-d')));
 
-		$mailer->setSubject(CRMText::_('COBALT_COFFEE_REPORT_SUBJECT').' '.CobaltHelperDate::formatDate(date('Y-m-d')));
+        ob_start();
 
-		ob_start();
+        $layout->display();
+        $body = ob_get_contents();
 
-		$layout->display();
-		$body = ob_get_contents();
+        ob_end_clean();
 
-		ob_end_clean();
-
-		$mailer->setBody($body);
-		$send =& $mailer->Send();
-		if ( $send !== true ) {
-			echo 'Error sending email: ' . $send->message;
-		}
-	}
+        $mailer->setBody($body);
+        $send =& $mailer->Send();
+        if ($send !== true) {
+            echo 'Error sending email: ' . $send->message;
+        }
+    }
 
 }

@@ -18,25 +18,25 @@ defined('JPATH_PLATFORM') or die;
  */
 interface JArchiveExtractable
 {
-	/**
-	 * Extract a compressed file to a given path
-	 *
-	 * @param   string  $archive      Path to archive to extract
-	 * @param   string  $destination  Path to extract archive to
-	 * @param   array   $options      Extraction options [may be unused]
-	 *
-	 * @return  boolean  True if successful
-	 *
-	 * @since   12.1
-	 */
-	public function extract($archive, $destination, array $options = array());
+    /**
+     * Extract a compressed file to a given path
+     *
+     * @param string $archive     Path to archive to extract
+     * @param string $destination Path to extract archive to
+     * @param array  $options     Extraction options [may be unused]
+     *
+     * @return boolean True if successful
+     *
+     * @since   12.1
+     */
+    public function extract($archive, $destination, array $options = array());
 
-	/**
-	 * Tests whether this adapter can unpack files on this computer.
-	 *
-	 * @return  boolean  True if supported
-	 *
-	 * @since   12.1
-	 */
-	public static function isSupported();
+    /**
+     * Tests whether this adapter can unpack files on this computer.
+     *
+     * @return boolean True if supported
+     *
+     * @since   12.1
+     */
+    public static function isSupported();
 }

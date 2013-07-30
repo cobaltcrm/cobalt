@@ -8,12 +8,12 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewBanter extends CobaltHelperView
 {
-	function render($tpl = null)
-	{
-		return parent::render();
-	}
+    public function render($tpl = null)
+    {
+        return parent::render();
+    }
 }

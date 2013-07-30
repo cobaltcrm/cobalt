@@ -53,8 +53,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->users) ) { foreach($this->users as $key=>$user){ ?>
-                                    
+                                <?php if ( count($this->users) ) { foreach ($this->users as $key=>$user) { ?>
+
                                     <tr class="row<?php echo $key % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $user['id']); ?>
@@ -63,7 +63,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                         <td class="order"><?php echo $user['username']; ?></td>
                                         <td class="order">
                                             <?php
-                                            if ( array_key_exists('team_id',$user) && $user['team_id'] ){ 
+                                            if ( array_key_exists('team_id',$user) && $user['team_id'] ) {
                                                 echo $user['team_name'].JText::_("COBALT_TEAM_APPEND");
                                             }
                                             ?>
@@ -72,7 +72,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                         <td class="order"><?php echo ucwords($user['role_type']); ?></td>
                                         <td class="order"><?php echo date("F j,Y g:iA",strtotime($user['last_login'])); ?></td>
                                     </tr>
-                                
+
                                 <?php }} ?>
                             </tbody>
                             <tfoot>

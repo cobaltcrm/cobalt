@@ -8,23 +8,23 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewBanterRaw extends JViewHtml
 {
-    function render($tpl = null)
+    public function render($tpl = null)
     {
 
-    	$layout = $this->getLayout();
+        $layout = $this->getLayout();
 
-		switch ( $layout ){
-			case "transcripts":
-				$this->transcripts = CobaltHelperTranscriptlists::getTranscripts();
-			break;
-		}
-	
-		//display
-		echo parent::render();
+        switch ($layout) {
+            case "transcripts":
+                $this->transcripts = CobaltHelperTranscriptlists::getTranscripts();
+            break;
+        }
+
+        //display
+        echo parent::render();
 
     }
 

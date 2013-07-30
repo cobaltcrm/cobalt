@@ -12,13 +12,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewReportsHtml extends JViewHtml
 {
-	function render()
-	{
+    public function render()
+    {
         //app
         $this->app = JFactory::getApplication();
 
-	    //load reports menu bar
-	    $this->menu = CobaltHelperTemplate::loadReportMenu();
+        //load reports menu bar
+        $this->menu = CobaltHelperTemplate::loadReportMenu();
 
         //get document
         $this->document = JFactory::getDocument();
@@ -26,7 +26,7 @@ class CobaltViewReportsHtml extends JViewHtml
         //determine view layout
         $this->layout = $this->getLayout();
         $func = "_display_".$this->layout;
-        if ( method_exists($this, $func) ){
+        if ( method_exists($this, $func) ) {
             $this->$func();
         }
 
@@ -36,10 +36,10 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->team_id = CobaltHelperUsers::getTeamId();
 
         //if the user is not basic then they are able to filter through company/team/user data
-        if ( $this->member_role != 'basic' ){
+        if ($this->member_role != 'basic') {
 
             //exec can see teams
-            if ( $this->member_role == 'exec' ){
+            if ($this->member_role == 'exec') {
                 $this->teams = CobaltHelperUsers::getTeams();
             }
 
@@ -56,12 +56,12 @@ class CobaltViewReportsHtml extends JViewHtml
         //assign categories for drop downs
         $this->categories = CobaltHelperNote::getCategories();
 
-	    //display
-		return parent::render();
-	}
+        //display
+        return parent::render();
+    }
 
-    function _display_default(){
-
+    public function _display_default()
+    {
         //load javascripts
         $this->document->addScript( JURI::base().'libraries/crm/media/js/highcharts.js' );
         $this->document->addScript( JURI::base().'libraries/crm/media/js/sales_dashboard.js' );
@@ -71,14 +71,14 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->graph_data = $graphModel->getGraphData();
     }
 
-    function _display_edit_custom_report(){
-
+    public function _display_edit_custom_report()
+    {
         //load javascripts
         $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
 
         //if we are editing an existing entry
         $id = $this->app->input->get('id');
-        if ( $id != null ){
+        if ($id != null) {
             $reportModel = new CobaltModelReport();
             $this->report = $reportModel->getCustomReports($id);
         }
@@ -87,8 +87,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->columns = CobaltHelperDeal::getAllCustomFields($id);
     }
 
-    function _display_custom_report(){
-
+    public function _display_custom_report()
+    {
         //get model
         $reportModel = new CobaltModelReport();
 
@@ -96,7 +96,6 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->report = $reportModel->getCustomReports($this->app->input->get('id'));
         $this->report_data = $reportModel->getCustomReportData($this->app->input->get('id'));
         $state = $reportModel->getState();
-
 
         //info for dropdowns
         $deal_amounts = CobaltHelperDeal::getAmounts();
@@ -128,8 +127,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->state = $state;
     }
 
-    function _display_custom_reports(){
-
+    public function _display_custom_reports()
+    {
         //load javascripts
         $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
 
@@ -147,8 +146,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->state = $state;
     }
 
-    function _display_notes(){
-
+    public function _display_notes()
+    {
         //get model for reports
         $noteModel = new CobaltModelNote();
         $note_entries = $noteModel->getNotes(NULL,NULL,FALSE);
@@ -175,8 +174,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->note_entries = $note_entries;
     }
 
-    function _display_deal_milestones(){
-
+    public function _display_deal_milestones()
+    {
         //get deals for reports
         $dealModel = new CobaltModelDeal();
         $dealModel->set('archived',0);
@@ -193,8 +192,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->deals = $deals;
     }
 
-    function _display_roi_report(){
-
+    public function _display_roi_report()
+    {
         //get sources for reports
         $sourceModel = new CobaltModelSource();
         $sources = $sourceModel->getRoiSources();
@@ -215,8 +214,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->sources = $sources;
     }
 
-    function _display_source_report(){
-
+    public function _display_source_report()
+    {
         //get deals for reports
         $dealModel = new CobaltModelDeal();
         $dealModel->set('archived',0);
@@ -257,8 +256,8 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->reports = $reports;
     }
 
-    function _display_sales_pipeline(){
-
+    public function _display_sales_pipeline()
+    {
          //get deals for reports
         $dealModel = new CobaltModelDeal();
         $dealModel->set('archived',0);

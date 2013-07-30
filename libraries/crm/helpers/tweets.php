@@ -22,13 +22,13 @@ class CobaltHelperTweets extends JObject
 
         $tweets = array();
 
-        if ( $buffer = @file_get_contents($twitter_url) ){
+        if ( $buffer = @file_get_contents($twitter_url) ) {
 
             libxml_use_internal_errors();
-            try{
+            try {
                 $xml = @new SimpleXMLElement($buffer);
 
-                if($xml->status) {
+                if ($xml->status) {
                     foreach ($xml->status as $status) {
                         $tweet =  $status -> text;
                         $date = $status -> created_at;
@@ -49,7 +49,7 @@ class CobaltHelperTweets extends JObject
                     }
                 }
 
-            }catch(Exception $e){
+            } catch (Exception $e) {
 
             }
 

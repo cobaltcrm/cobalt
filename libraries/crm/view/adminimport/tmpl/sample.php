@@ -21,7 +21,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="sample_text">
-                        	<h1><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h1>
+                            <h1><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h1>
                             <p><div class="alert alert-info"><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_DESC'); ?></div></p>
                             <form action="index.php?view=import" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                 <input type="submit" value="<?php echo JText::_('COBALT_INSTALL_SAMPLE_BUTTON'); ?>" class="btn btn-primary btn-large" />

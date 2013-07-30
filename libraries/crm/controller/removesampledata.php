@@ -8,21 +8,21 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerRemoveSampleData extends CobaltControllerDefault
 {
 
-    function removeSampleData(){
-
-    	$app = JFactory::getApplication();
+    public function removeSampleData()
+    {
+        $app = JFactory::getApplication();
 
         $sampleIds = unserialize(CobaltHelperConfig::getConfigValue('import_sample'));
 
         $db =& JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        foreach ( $sampleIds as $table => $ids ){
+        foreach ($sampleIds as $table => $ids) {
                 $query->clear()
                     ->delete("#__".$table)
                     ->where("id IN(".implode(',',$ids).")");

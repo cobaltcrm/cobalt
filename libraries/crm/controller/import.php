@@ -10,54 +10,53 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltControllerImport extends CobaltControllerDefault {
+class CobaltControllerImport extends CobaltControllerDefault
+{
+        function execute()
+        {
+            $app = JFactory::getApplication();
 
-		function execute(){
+            $success = false;
 
-			$app = JFactory::getApplication();
+            $data = $app->input->getRequest('post');
 
-			$success = false;
+            if ( is_array($data) && count($data) > 0 ) {
 
-			$data = $app->input->getRequest('post');
+                $import_type = $data['import_type'];
+                unset($data['import_type']);
 
-			if ( is_array($data) && count($data) > 0 ){
+                switch ($import_type) {
+                    case "companies":
+                            $import_model = "company";
+                        break;
+                    case "deals":
+                            $import_model = "deal";
+                        break;
+                    case "people":
+                            $import_model = "people";
+                        break;
+                }
 
-				$import_type = $data['import_type'];
-				unset($data['import_type']);
+                if ( isset($import_model) ) {
+                    $model = new CobaltModelImport();
+                    if ( $model->importCSVData($data['import_id'],$import_model) ) {
+                        $success = true;
+                    }
+                }
 
-				switch($import_type){
-	                case "companies":
-	                    	$import_model = "company";
-	                    break;
-	                case "deals":
-	                    	$import_model = "deal";
-	                    break;
-	                case "people":
-	                    	$import_model = "people";
-	                    break;
-            	}
+            }
 
-            	if ( isset($import_model) ) {
-            		$model = new CobaltModelImport();
-					if ( $model->importCSVData($data['import_id'],$import_model) ){
-						$success = true;
-					}
-				}
+            if ($success) {
 
-			}
+                $msg = CRMText::_('COBALT_IMPORT_WAS_SUCCESSFUL');
+                $app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
 
-			if ( $success ){
+            } else {
 
-				$msg = CRMText::_('COBALT_IMPORT_WAS_SUCCESSFUL');
-				$app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
+                $msg = CRMText::_('COBALT_ERROR_IMPORTING');
+                $app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
 
-			}else{
-
-				$msg = CRMText::_('COBALT_ERROR_IMPORTING');
-				$app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
-
-			}
-		}
-
+            }
+        }
 
 }

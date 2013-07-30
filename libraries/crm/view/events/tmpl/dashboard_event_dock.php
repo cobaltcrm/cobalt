@@ -36,21 +36,21 @@ $app = JFactory::getApplication();
                     $user_id = CobaltHelperUsers::getUserId();
                 ?>
                 <li><a class="filter_user_<?php echo $user_id; ?>" onclick="updateEventList(<?php echo $user_id; ?>,0)" ><?php echo CRMText::_('COBALT_ME'); ?></a></li>
-                <?php if ( $user_role != 'basic' ) { ?>
+                <?php if ($user_role != 'basic') { ?>
                     <li><a href="javascript:void(0);" class="filter_user_all" onclick="updateEventList('all',0)" >all users</a></li>
                 <?php } ?>
                 <?php
-                    if ( $user_role == 'exec' ){
+                    if ($user_role == 'exec') {
                         $teams = CobaltHelperUsers::getTeams();
-                        if ( count($teams) > 0 ){
-                            foreach($teams as $team){
+                        if ( count($teams) > 0 ) {
+                            foreach ($teams as $team) {
                                  echo "<li><a href='javascript:void(0);' class='filter_team_".$team['team_id']."' onclick='updateEventList(0,".$team['team_id'].")'>".$team['team_name'].CRMText::_('COBALT_TEAM_APPEND')."</a></li>";
                              }
                         }
                     }
                     $users = CobaltHelperUsers::getUsers();
-                    if ( count($users) > 0 ){
-                        foreach($users as $user){
+                    if ( count($users) > 0 ) {
+                        foreach ($users as $user) {
                             echo "<li><a href='javascript:void(0);' class='filter_user_".$user['id']."' onclick='updateEventList(".$user['id'].",0)'>".$user['first_name']."  ".$user['last_name']."</a></li>";
                         }
                     }
@@ -60,12 +60,12 @@ $app = JFactory::getApplication();
         </span>
 </div>
 <div id="task_container">
-	<div id="task_list">
-		<?php
-		     $task_list = CobaltHelperView::getView('events','event_listings','phtml', array('events'=>$this->events));
-		     echo $task_list->render();
-		?>
-	</div>
+    <div id="task_list">
+        <?php
+             $task_list = CobaltHelperView::getView('events','event_listings','phtml', array('events'=>$this->events));
+             echo $task_list->render();
+        ?>
+    </div>
     <div id="edit_task" style="display:none;"></div>
     <div id="edit_event" style="display:none;"></div>
     <div class="controls_area"><a class="btn" href="<?php echo JRoute::_('index.php?view=events'); ?>"><?php echo ucwords(CRMText::_('COBALT_SEE_ALL_TASKS')); ?></a></div>

@@ -13,51 +13,51 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltHelperTranscriptlists extends JObject
 {
 
-	public static function getRooms($associationId=null,$associationType=null){
+    public static function getRooms($associationId=null,$associationType=null)
+    {
+        $app = JFactory::getApplication();
 
-		$app = JFactory::getApplication();
+        $autoId = $app->input->get('id') ? $app->input->get('id') : $app->input->get('association_id');
+        $autoType = $app->input->get('layout') ? $app->input->get('layout') : $app->input->get('association_type');
 
-		$autoId = $app->input->get('id') ? $app->input->get('id') : $app->input->get('association_id');
-		$autoType = $app->input->get('layout') ? $app->input->get('layout') : $app->input->get('association_type');
+        $associationId = $associationId ? $associationId : $autoId;
+        $associationType = $associationType ? $associationType : $autoType;
 
-		$associationId = $associationId ? $associationId : $autoId;
-		$associationType = $associationType ? $associationType : $autoType;
+        $db =& JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-		$db =& JFactory::getDBO();
-		$query = $db->getQuery(true);
+        $query->select("id,name")
+            ->from("#__banter_rooms")
+            ->where("association_id=".$associationId)
+            ->where("association_type='".$associationType."'");
 
-		$query->select("id,name")
-			->from("#__banter_rooms")
-			->where("association_id=".$associationId)
-			->where("association_type='".$associationType."'");
+        $db->setQuery($query);
 
-		$db->setQuery($query);
+        $rooms =  $db->loadObjectList();
 
-		$rooms =  $db->loadObjectList();
+        return $rooms;
 
-		return $rooms;
+    }
 
-	}
+    public static function getTranscripts($roomId=null)
+    {
+        $app = JFactory::getApplication();
 
-	public static function getTranscripts($roomId=null){
+        $roomId = $roomId ? $roomId : $app->input->get('room_id');
 
-		$app = JFactory::getApplication();
+        $db =& JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-		$roomId = $roomId ? $roomId : $app->input->get('room_id');
+        $query->select("t.*,r.name AS room_name")
+            ->from("#__banter_transcripts AS t")
+            ->leftJoin("#__banter_rooms AS r ON r.id = t.room_id")
+            ->where("t.room_id=".$roomId);
 
-		$db =& JFactory::getDBO();
-		$query = $db->getQuery(true);
+        $db->setQuery($query);
+        $transcripts = $db->loadObjectList();
 
-		$query->select("t.*,r.name AS room_name")
-			->from("#__banter_transcripts AS t")
-			->leftJoin("#__banter_rooms AS r ON r.id = t.room_id")
-			->where("t.room_id=".$roomId);
+        return $transcripts;
 
-		$db->setQuery($query);
-		$transcripts = $db->loadObjectList();
-
-		return $transcripts;
-
-	}
+    }
 
 }

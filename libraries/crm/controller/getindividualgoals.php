@@ -8,28 +8,28 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerGetIndividualGoals extends CobaltControllerDefault
 {
 
     //get individual goals
-    function execute(){
+    public function execute()
+    {
+        $app = JFactory::getApplication();
 
-    	$app = JFactory::getApplication();
-        
         //get model
         $model = new CobaltModelGoal();
-        
+
         //get data
         $goals = $model->getIndividualGoals($app->input->get('id'));
-        
+
         //pass data to view
         $view = CobaltHelperView::getView('goals','filters', 'raw', array('goals'=>$goals));
-        
+
         //display view
         echo $view->render();
-        
+
     }
 
 }

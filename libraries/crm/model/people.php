@@ -30,7 +30,8 @@ class CobaltModelPeople extends CobaltModelDefault
         /**
          * Constructor
          */
-        function __construct(){
+        function __construct()
+        {
             parent::__construct();
 
             $this->app = JFactory::getApplication();
@@ -38,7 +39,6 @@ class CobaltModelPeople extends CobaltModelDefault
             $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
             $this->_id = $this->app->input->get('id');
         }
-
 
         /**
          * Method to store a record
@@ -50,14 +50,14 @@ class CobaltModelPeople extends CobaltModelDefault
             //Load Tables
             $row = JTable::getInstance('people','Table');
             $oldRow = JTable::getInstance('people','Table');
-            if ( $data == null ){
+            if ($data == null) {
               $data = $this->app->input->getRequest('post');
             }
 
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
 
-            if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ){
+            if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ) {
                 $data['created'] = $date;
                 $data['owner_id'] = array_key_exists('owner_id',$data) ? $data['owner_id'] : CobaltHelperUsers::getUserId();
                 $status = "created";
@@ -71,22 +71,22 @@ class CobaltModelPeople extends CobaltModelDefault
 
             //generate custom field string
             $customArray = array();
-            foreach( $data as $name => $value ){
-                if( strstr($name,'custom_') && !strstr($name,'_input') && !strstr($name,"_hidden") ){
+            foreach ($data as $name => $value) {
+                if ( strstr($name,'custom_') && !strstr($name,'_input') && !strstr($name,"_hidden") ) {
                     $id = str_replace('custom_','',$name);
                     $customArray[] = array('custom_field_id'=>$id,'custom_field_value'=>$value);
                     unset($data[$name]);
                 }
             }
 
-            if((array_key_exists('company_name',$data) && $data['company_name']!="")  || (array_key_exists('company',$data) && $data['company'] != "")) {
+            if ((array_key_exists('company_name',$data) && $data['company_name']!="")  || (array_key_exists('company',$data) && $data['company'] != "")) {
 
                 $company_name = array_key_exists('company_name',$data) ? $data['company_name'] : $data['company'];
 
                 $companyModel = new CobaltModelCompany();
                 $existingCompany = $companyModel->checkCompanyName($company_name);
 
-                if($existingCompany=="") {
+                if ($existingCompany=="") {
                     $cdata = array();
                     $cdata['name'] = $company_name;
                     $data['company_id'] = $companyModel->store($cdata)->id;
@@ -95,27 +95,28 @@ class CobaltModelPeople extends CobaltModelDefault
                 }
             }
 
-            if ( array_key_exists('company_id',$data) && is_array($data['company_id']) ){
+            if ( array_key_exists('company_id',$data) && is_array($data['company_id']) ) {
                 $company_name = $data['company_id']['value'];
                 $companyModel = new CobaltModelCompany();
                 $existingCompany = $companyModel->checkCompanyName($company_name);
-                if($existingCompany=="") {
+                if ($existingCompany=="") {
                     $cdata = array();
                     $cdata['name'] = $company_name;
                     $data['company_id'] = $companyModel->store($cdata)->id;
-                }else{
+                } else {
                     $data['company_id'] = $existingCompany;
                 }
             }
 
             /** retrieving joomla user id **/
-            if ( array_key_exists('email',$data) ){
+            if ( array_key_exists('email',$data) ) {
                 $data['id'] = self::associateJoomlaUser($data['email']);
             }
 
             // Bind the form fields to the table
             if (!$row->bind($data)) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
@@ -125,26 +126,28 @@ class CobaltModelPeople extends CobaltModelDefault
             // Make sure the record is valid
             if (!$row->check()) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
             $person_id = isset($data['id']) ? $data['id'] : $this->_db->insertId();
 
             /** Updating the joomla user **/
-            if ( array_key_exists('id',$data) && $data['id'] != "" ){
+            if ( array_key_exists('id',$data) && $data['id'] != "" ) {
                 self::updateJoomlaUser($data);
             }
 
             CobaltHelperActivity::saveActivity($oldRow, $row,'person', $status);
 
             //if we receive no custom post data do not modify the custom fields
-            if ( count($customArray) > 0 ){
+            if ( count($customArray) > 0 ) {
                 CobaltHelperCobalt::storeCustomCf($person_id,$customArray,'people');
             }
 
@@ -156,17 +159,16 @@ class CobaltModelPeople extends CobaltModelDefault
                             'person_id = '.$row->id,
                             "created = '$date'"
                         );
-                if(!$this->dealsPeople($deal)) {
-
+                if (!$this->dealsPeople($deal)) {
                     return false;
                 }
             }
 
             //Pass Status to plugin & form ID if available
             $row->status    = $status;
-            if ( isset($data) && is_array($data) && array_key_exists('form_id',$data) ){
+            if ( isset($data) && is_array($data) && array_key_exists('form_id',$data) ) {
                 $row->form_id   =  $data['form_id'];
-            }else{
+            } else {
                 $row->form_id   = '';
             }
             $dispatcher = JEventDispatcher::getInstance();
@@ -175,8 +177,8 @@ class CobaltModelPeople extends CobaltModelDefault
             return $person_id;
         }
 
-        function updateJoomlaUser($data){
-
+        function updateJoomlaUser($data)
+        {
             $name = $data['first_name'].' '.$data['last_name'];
 
             $db = JFactory::getDBO();
@@ -186,11 +188,13 @@ class CobaltModelPeople extends CobaltModelDefault
             $db->query();
         }
 
-        function associateJoomlaUser($email){
+        function associateJoomlaUser($email)
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select("id")->from("#__users")->where("email=".$db->Quote($email));
             $db->setQuery($query);
+
             return $db->loadResult();
         }
 
@@ -198,28 +202,27 @@ class CobaltModelPeople extends CobaltModelDefault
          * Method to link deals and people in cf tables
          */
 
-        function dealsPeople($cfdata){
-
+        function dealsPeople($cfdata)
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->insert('#__people_cf');
             $query->set($cfdata);
             $db->setQuery($query);
 
-            if($db->query()){
+            if ($db->query()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
 
         }
 
-
         /**
          * Build our query
          */
-        function _buildQuery(){
-
+        function _buildQuery()
+        {
             /** Large SQL Selections **/
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -229,7 +232,7 @@ class CobaltModelPeople extends CobaltModelDefault
             $view = $this->app->input->get('view');
             $layout = $this->app->input->get('layout');
             //retrieve person id
-            if ( !$this->_id ){
+            if (!$this->_id) {
 
                 //get filters
                 $type   = $this->app->input->get('type') ? $this->app->input->get('type') : $this->type;
@@ -243,47 +246,47 @@ class CobaltModelPeople extends CobaltModelDefault
                 $session    = JFactory::getSession();
 
                 //determine whether we are filtering with a team or user
-                if ( $team ){
+                if ($team) {
                     $session->set('people_user_filter',null);
                 }
-                if ( $user ){
+                if ($user) {
                     $session->set('people_team_filter',null);
                 }
 
                 //set user session data
-                if ( $type != null ) {
+                if ($type != null) {
                     $session->set('people_type_filter',$type);
                 } else {
                     $sess_type  = $session->get('people_type_filter');
                     $type = $sess_type;
                 }
-                if ( $user != null ) {
+                if ($user != null) {
                     $session->set('people_user_filter',$user);
                 } else {
                     $sess_user  = $session->get('people_user_filter');
                     $user = $sess_user;
                 }
-                if ( $stage != null ) {
+                if ($stage != null) {
                     $session->set('people_stage_filter',$stage);
                 } else {
                     $sess_stage = $session->get('people_stage_filter');
                     $stage = $sess_stage;
                 }
-                if ( $tag != null ) {
+                if ($tag != null) {
                     $session->set('people_tag_filter',$tag);
                 } else {
                     $sess_tag   = $session->get('people_tag_filter');
                     $tag = $sess_tag;
                 }
-                if ( $status != null ){
+                if ($status != null) {
                     $session->set('people_status_filter',$status);
-                }else{
+                } else {
                     $sess_status= $session->get('people_status_filter');
                     $status = $sess_status;
                 }
-                if ( $team != null ){
+                if ($team != null) {
                     $session->set('people_team_filter',$team);
-                }else{
+                } else {
                     $sess_team  = $session->get('people_team_filter');
                     $team = $sess_team;
                 }
@@ -297,7 +300,7 @@ class CobaltModelPeople extends CobaltModelDefault
 
             $export = $this->app->input->get('export');
 
-            if ( $export ){
+            if ($export) {
 
                 $query->select('p.first_name,p.last_name,p.position,p.phone,p.email,p.home_address_1,p.home_address_2,'.
                             'p.home_city,p.home_state,p.home_zip,p.home_country,p.fax,p.website,p.facebook_url,p.twitter_user,'.
@@ -314,8 +317,7 @@ class CobaltModelPeople extends CobaltModelDefault
                 $query->leftJoin("#__users AS u ON u.id = p.owner_id");
                 $query->leftJoin("#__users AS u2 ON u2.id = p.assignee_id");
 
-
-            }else{
+            } else {
 
                 $query->select('p.*,c.name as company_name, CONCAT(u2.first_name," ",u2.last_name) AS assignee_name,u.first_name AS owner_first_name,
                             u.last_name AS owner_last_name, stat.name as status_name,stat.color as status_color,
@@ -333,9 +335,7 @@ class CobaltModelPeople extends CobaltModelDefault
                 $query->leftJoin("#__events_cf as event_person_cf on event_person_cf.association_id = p.id AND event_person_cf.association_type ='person'");
                 $query->leftJoin("#__events as event on event.id = event_person_cf.event_id");
 
-
             }
-
 
             // group ids
             $query->group("p.id");
@@ -346,55 +346,53 @@ class CobaltModelPeople extends CobaltModelDefault
             $member_id = CobaltHelperUsers::getUserId();
             $member_role = CobaltHelperUsers::getRole();
             $team_id = CobaltHelperUsers::getTeamId();
-            if ( ( isset($user) && $user == "all" ) || ( isset($owner_filter) && $owner_filter == "all" ) ){
-                if ( $member_role != 'exec'){
+            if ( ( isset($user) && $user == "all" ) || ( isset($owner_filter) && $owner_filter == "all" ) ) {
+                if ($member_role != 'exec') {
                      //manager filter
-                    if ( $member_role == 'manager' ){
+                    if ($member_role == 'manager') {
                         $query->where("(u.team_id=$team_id OR u2.team_id=$team_id)");
-                    }else{
+                    } else {
                     //basic user filter
                         $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                     }
                 }
-            }else if ( isset($team) && $team ){
+            } elseif ( isset($team) && $team ) {
                 $query->where("(u.team_id=$team OR u2.team_id=$team)");
-            }else if ( isset($user) && $user != "all" ){
+            } elseif ( isset($user) && $user != "all" ) {
                 $query->where("(p.owner_id=$user OR p.assignee_id=$user)");
-            }else{
-                if ( !(isset($owner_filter)) ){
-                    if ( $this->_id ){
-                        if ( $member_role == "basic" ){
+            } else {
+                if ( !(isset($owner_filter)) ) {
+                    if ($this->_id) {
+                        if ($member_role == "basic") {
                             $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                         }
-                        if ( $member_role == "manager" ){
+                        if ($member_role == "manager") {
                             $team_members = CobaltHelperUsers::getTeamUsers($team_id,TRUE);
                             $team_members = array_merge($team_members,array(0=>$member_id));
                             $query->where("(p.owner_id IN(".implode(',',$team_members).") OR p.assignee_id IN(".implode(',',$team_members)."))");
                         }
-                    }else{
+                    } else {
                         $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                     }
                 }
             }
 
-
-
             //searching for specific person
-            if ( $this->_id ){
-                if ( is_array($this->_id) ){
+            if ($this->_id) {
+                if ( is_array($this->_id) ) {
                         $query->where("p.id IN (".implode(',',$this->_id).")");
-                }else{
+                } else {
                         $query->where("p.id=$this->_id");
                 }
             }
 
-            if ( !$this->_id ){
+            if (!$this->_id) {
 
-                if ( !$export ){
+                if (!$export) {
 
                 //filter data
-                if ( $type AND $type != 'all' ){
-                    switch($type){
+                if ($type AND $type != 'all') {
+                    switch ($type) {
                         case 'leads':
                             $query->where("p.type='lead'");
                         break;
@@ -405,12 +403,12 @@ class CobaltModelPeople extends CobaltModelDefault
                 }
 
                 //search with status
-                if ( $status AND $status != 'any' ){
+                if ($status AND $status != 'any') {
                     $query->where('p.status_id='.$status);
                 }
 
                 //search by tags
-                if ( $tag ){
+                if ($tag) {
 
                 }
 
@@ -418,42 +416,41 @@ class CobaltModelPeople extends CobaltModelDefault
                 $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
 
                 //filter for type
-                if ( $stage != null  && $stage != 'all' ){
+                if ($stage != null  && $stage != 'all') {
 
                     //filter for deals//tasks due today
-                    if ( $stage == 'today' ){
+                    if ($stage == 'today') {
                         $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date >'$date' AND event.due_date < '$tomorrow'");
                     }
 
                     //filter for deals//tasks due tomorrow
-                    if ( $stage == "tomorrow" ){
+                    if ($stage == "tomorrow") {
                         $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date='".$tomorrow."'");
                     }
 
                     //filter for people updated in the last 30 days
-                    if ( $stage == "past_thirty" ){
+                    if ($stage == "past_thirty") {
                         $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("p.modified >'$last_thirty_days'");
                     }
 
                     //filter for recently added people
-                    if ( $stage == "recently_added" ){
+                    if ($stage == "recently_added") {
                         $last_five_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
                         $query->where("p.modified >'$last_five_days'");
                     }
 
-
                     //filter for last imported people
-                    if ( $stage == "last_import" ){
+                    if ($stage == "last_import") {
 
                     }
 
                 } else {
                     //get latest task entry
 
-                    if($this->recent) {
+                    if ($this->recent) {
                         $query->where(  "( event.due_date IS NULL OR event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
                                         "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
                                         "WHERE e2cf.association_id=p.id AND e2.published>0) )");
@@ -462,19 +459,18 @@ class CobaltModelPeople extends CobaltModelDefault
 
                 }
 
-
                 /** company filter **/
-                if ( $this->company_id ){
+                if ($this->company_id) {
                     $query->where("p.company_id=".$this->company_id);
                 }
 
-                if ( $this->event_id ){
+                if ($this->event_id) {
                     $query->where("event.id=".$this->event_id);
                 }
 
                 /** person name filter **/
                 $people_filter = $this->getState('People.'.$view.'_name');
-                if ( $people_filter != null ){
+                if ($people_filter != null) {
                     $query->where("( p.first_name LIKE '%".$people_filter."%' OR p.last_name LIKE '%".$people_filter."%' OR CONCAT(p.first_name,' ',p.last_name) LIKE '%".$people_filter."%')");
                 }
 
@@ -491,8 +487,8 @@ class CobaltModelPeople extends CobaltModelDefault
          *
          * @return array
          */
-        function getPeople(){
-
+        function getPeople()
+        {
             //Get query
             $db = JFactory::getDBO();
             $query = $this->_buildQuery();
@@ -505,9 +501,9 @@ class CobaltModelPeople extends CobaltModelDefault
              */
             $limit = $this->getState($this->_view.'_limit');
             $limitStart = $this->getState($this->_view.'_limitstart');
-            if (  !$this->_id && $limit != 0 ){
+            if (!$this->_id && $limit != 0) {
                 $query->order($this->getState('People.filter_order') . ' ' . $this->getState('People.filter_order_Dir'));
-                if ( $limitStart >= $this->getTotal() ){
+                if ( $limitStart >= $this->getTotal() ) {
                     $limitStart = 0;
                     $limit = 10;
                     $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
@@ -520,14 +516,14 @@ class CobaltModelPeople extends CobaltModelDefault
             $people = $db->loadAssocList();
 
             //generate query to join deals
-            if ( count($people) > 0 ){
+            if ( count($people) > 0 ) {
 
                 $export = $this->app->input->get('export');
 
-                if ( !$export ){
+                if (!$export) {
 
                     //generate query to join notes
-                    foreach ( $people as $key => $person ) {
+                    foreach ($people as $key => $person) {
 
                         /* Deals */
                         $dealModel = new CobaltModelDeal();
@@ -544,7 +540,7 @@ class CobaltModelPeople extends CobaltModelDefault
                         $people[$key]['documents'] = $docsModel->getDocuments();
 
                         /* Tweets */
-                        if($person['twitter_user']!="" && $person['twitter_user']!=" ") {
+                        if ($person['twitter_user']!="" && $person['twitter_user']!=" ") {
                             $people[$key]['tweets'] = CobaltHelperTweets::getTweets($person['twitter_user']);
                         }
 
@@ -564,12 +560,12 @@ class CobaltModelPeople extends CobaltModelDefault
         /*
          * Method to retrieve person
          */
-        function getPerson($id=null){
-
+        function getPerson($id=null)
+        {
             $app = JFactory::getApplication();
             $id = $id ? $id : $app->input->get('id');
 
-            if ( $id > 0 ){
+            if ($id > 0) {
 
                 $db = JFactory::getDBO();
                 //generate query
@@ -607,16 +603,16 @@ class CobaltModelPeople extends CobaltModelDefault
                 $person['documents'] = $docsModel->getDocuments();
 
                 /* Tweets */
-                if($person['twitter_user']!="" && $person['twitter_user']!=" ") {
+                if ($person['twitter_user']!="" && $person['twitter_user']!=" ") {
                     $person['tweets'] = CobaltHelperTweets::getTweets($person['twitter_user']);
                 }
 
                  $this->person = $person;
 
-            }else{
+            } else {
 
                  //TODO update things to OBJECTS
-                $person = (array)JTable::getInstance('People','Table');
+                $person = (array) JTable::getInstance('People','Table');
                 $this->person = $person;
 
             }
@@ -630,8 +626,8 @@ class CobaltModelPeople extends CobaltModelDefault
         /*
          * Method to retrieve list of names and ids
          */
-        function getPeopleList(){
-
+        function getPeopleList()
+        {
             //db object
             $db = JFactory::getDBO();
             //gen query
@@ -646,11 +642,11 @@ class CobaltModelPeople extends CobaltModelDefault
             $member_role = CobaltHelperUsers::getRole();
             $team_id = CobaltHelperUsers::getTeamId();
 
-            if ( $member_role != 'exec' ){
+            if ($member_role != 'exec') {
 
-                if ( $member_role == 'manager' ){
+                if ($member_role == 'manager') {
                     $query->where("u.team_id=$team_id");
-                }else{
+                } else {
                     $query->where("(p.owner_id=$user_id OR p.assignee_id=$user_id )");
                 }
 
@@ -661,10 +657,10 @@ class CobaltModelPeople extends CobaltModelDefault
             $associationType = $this->app->input->get('association');
             $associationId = $this->app->input->get('association_id');
 
-            if ( $associationType == "company" ){
+            if ($associationType == "company") {
                 $query->where("p.company_id=".$associationId);
             }
-            if ( $associationType == "deal" ){
+            if ($associationType == "deal") {
                 $query->where("dcf.association_id=".$associationId." AND dcf.association_type='deal'");
             }
 
@@ -684,18 +680,21 @@ class CobaltModelPeople extends CobaltModelDefault
         /**
          * Get total number of rows for pagination
          */
-        function getTotal() {
-          if ( empty ( $this->_total ) ){
+        function getTotal()
+        {
+          if ( empty ( $this->_total ) ) {
               $query = $this->_buildQuery();
               $this->_total = $this->_getListCount($query);
           }
+
           return $this->_total;
        }
 
         /**
          * Generate pagination
          */
-        function getPagination() {
+        function getPagination()
+        {
           // Lets load the content if it doesn't already exist
 
           if (empty($this->_pagination)) {
@@ -704,6 +703,7 @@ class CobaltModelPeople extends CobaltModelDefault
              $total = $total ? $total : 0;
              $this->_pagination = new CobaltPagination( $total, $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view=people'));
           }
+
           return $this->_pagination;
 
         }
@@ -711,7 +711,8 @@ class CobaltModelPeople extends CobaltModelDefault
         /**
          * Populate user state requests
          */
-        function populateState(){
+        function populateState()
+        {
             //get states
             $app = JFactory::getApplication();
             $view = $this->app->input->get('view');
@@ -747,8 +748,8 @@ class CobaltModelPeople extends CobaltModelDefault
             return $dropdowns;
         }
 
-        function searchForContact($contact_name,$idsOnly=TRUE){
-
+        function searchForContact($contact_name,$idsOnly=TRUE)
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
@@ -785,22 +786,24 @@ class CobaltModelPeople extends CobaltModelDefault
             return $existingPerson;
         }
 
-        function getPeopleNames($json=FALSE){
+        function getPeopleNames($json=FALSE)
+        {
             $names = $this->getPeopleList();
             $return = array();
-            if ( count($names) > 0 ){
-                foreach ( $names as $key => $person ){
+            if ( count($names) > 0 ) {
+                foreach ($names as $key => $person) {
                     $personName = "";
                     $personName .= array_key_exists('first_name',$person) ? $person['first_name'] : "";
                     $personName .= array_key_exists('last_name',$person) ? " ".$person['last_name'] : "";
                     $return[] = array('label'=>$personName,'value'=>$person['id']);
                 }
             }
+
             return $json ? json_encode($return) : $return;
         }
 
-        function getEmail($person_id){
-
+        function getEmail($person_id)
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select('p.email');
@@ -815,8 +818,8 @@ class CobaltModelPeople extends CobaltModelDefault
 
         /** Functions for contact information **/
 
-        public function buildSelect(){
-
+        public function buildSelect()
+        {
         $this->query->select("DISTINCT(p.id),p.*,
                             u.first_name as owner_first_name,u.last_name as owner_last_name,
                             c.id as company_id,c.name as company_name,IF(p.id=d2.primary_contact_id, 1, 0) AS is_primary_contact");
@@ -830,17 +833,17 @@ class CobaltModelPeople extends CobaltModelDefault
 
         }
 
-        public function buildWhere(){
-
-            if ( $this->deal_id ){
+        public function buildWhere()
+        {
+            if ($this->deal_id) {
                 $this->query->where("(cf.association_id = ".$this->deal_id." OR d2.id = ".$this->deal_id.")");
             }
 
-            if ( $this->event_id ){
+            if ($this->event_id) {
                 $event_model = new CobaltModelEvent();
                 $event = $event_model->getEvent($this->event_id);
-                if ( array_key_exists('association_type',$event) && $event['association_type'] != null ){
-                    switch ( $event['association_type'] ){
+                if ( array_key_exists('association_type',$event) && $event['association_type'] != null ) {
+                    switch ($event['association_type']) {
                         case "person":
                             $this->query->where("p.id=".$event['association_id']);
                         break;
@@ -852,12 +855,12 @@ class CobaltModelPeople extends CobaltModelDefault
                             $this->query->where("p.company_id=".$event['association_id']);
                         break;
                     }
-                }else{
+                } else {
                     return false;
                 }
             }
 
-            if ( $this->company_id ){
+            if ($this->company_id) {
                 $this->query->where("p.company_id=".$this->company_id);
             }
 
@@ -866,31 +869,33 @@ class CobaltModelPeople extends CobaltModelDefault
             $member_role = CobaltHelperUsers::getRole();
             $team_id = CobaltHelperUsers::getTeamId();
 
-            if ( $member_role != 'exec' ){
+            if ($member_role != 'exec') {
 
-                if ( $member_role == 'manager' ){
+                if ($member_role == 'manager') {
                     $this->query->where("u.team_id=$team_id");
-                }else{
+                } else {
                     $this->query->where("p.owner_id=$user_id");
                 }
 
             }
 
             $this->query->where("p.published>0");
+
             return true;
         }
 
-        public function buildOrder(){
+        public function buildOrder()
+        {
             $this->query->order("is_primary_contact DESC");
         }
 
-        public function getContacts(){
-
+        public function getContacts()
+        {
             $db = JFactory::getDBO();
             $this->query = $db->getQuery(true);
 
             $this->buildSelect();
-            if ( !$this->buildWhere() ){
+            if ( !$this->buildWhere() ) {
                 return false;
             }
 
@@ -902,10 +907,10 @@ class CobaltModelPeople extends CobaltModelDefault
             $default_image = JURI::base().'libraries/crm/media/images/person.png';
 
             $n = count($people);
-            for($i=0;$i<$n;$i++) {
-                if($people[$i]['avatar']=="" && $people[$i]['email']!="") {
+            for ($i=0;$i<$n;$i++) {
+                if ($people[$i]['avatar']=="" && $people[$i]['email']!="") {
                     $people[$i]['avatar'] = CobaltHelperCobalt::getGravatar($people[$i]['email'],null,false,$default_image);
-                } elseif($people[$i]['avatar']=="") {
+                } elseif ($people[$i]['avatar']=="") {
                     $people[$i]['avatar'] = $default_image;
                 }
             }
@@ -913,6 +918,5 @@ class CobaltModelPeople extends CobaltModelDefault
             return $people;
 
         }
-
 
 }

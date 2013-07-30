@@ -32,8 +32,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                               $lngs = CobaltHelperConfig::getLanguages();
                               echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
                           ?>
-                      </select> 
-                </ul> 
+                      </select>
+                </ul>
             </fieldset>
         </form>
         <input type="button" value="<?php echo CRMText::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo CRMText::_('COBALT_CANCEL'); ?>" class="button btn cancel">
@@ -68,7 +68,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     </div>
     <div id="date" class="accordion-body collapse">
       <div class="accordion-inner">
-            <form> 
+            <form>
                 <fieldset>
                     <ul class="unstyled">
                         <li><label><?php echo CRMText::_('COBALT_TIMEZONE'); ?></label>
@@ -77,13 +77,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     $timezone_abbreviations = CobaltHelperDate::getTimezones();
                                     echo JHtml::_('select.options', $timezone_abbreviations, 'value', 'text', $this->user->time_zone, true);
                                 ?>
-                            </select>    
+                            </select>
                         </li>
                         <li>
                         </li>
                         <li><label><?php echo CRMText::_('COBALT_DATE_FORMAT'); ?></label>
                             <select class="inputbox" name="date_format">
-                                <?php 
+                                <?php
                                     $date_formats = CobaltHelperDate::getDateFormats();
                                     echo JHtml::_('select.options', $date_formats, 'value', 'text', $this->user->date_format, true);
                                 ?>
@@ -91,7 +91,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         </li>
                         <li><label><?php echo CRMText::_('COBALT_TIME_FORMAT'); ?></label>
                             <select class="inputbox" name="time_format">
-                                <?php 
+                                <?php
                                     $time_formats = CobaltHelperDate::getTimeFormats();
                                     echo JHtml::_('select.options', $time_formats, 'value', 'text', $this->user->time_format, true);
                                 ?>
@@ -118,15 +118,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         <li><?php echo CRMText::_('COBALT_MULTIPLE_INBOX_DESC_1'); ?></li>
                         <li><?php echo CRMText::_('COBALT_MULTIPLE_INBOX_DESC_2'); ?></li>
                         <li><label><?php echo CRMText::_('COBALT_PRIMARY_EMAIL'); ?></label><input class="inputbox" disabled="disabled" value="<?php echo $this->user->email; ?>" /></li>
-                        <?php if ( count($this->user->emails) ){
-                            foreach ( $this->user->emails as $key=>$email ){  if ( $email['email'] != $this->user->email ){ ?>
+                        <?php if ( count($this->user->emails) ) {
+                            foreach ($this->user->emails as $key=>$email) {  if ($email['email'] != $this->user->email) { ?>
                                  <li><label><?php echo CRMText::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value="<?php echo $email['email']; ?>"><span class="message"></span></li>
                              <?php } }
                                 $remaining = 2 - count($this->user->emails);
-                                for ( $i=0; $i<$remaining; $i++ ){ ?>
+                                for ($i=0; $i<$remaining; $i++) { ?>
                                      <li><label><?php echo CRMText::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value=""><span class="message"></span></li>
                                 <?php }
-                                }else{ ?>
+                                } else { ?>
                                     <li><label><?php echo CRMText::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value=""><span class="message"></span></li>
                                     <li><label><?php echo CRMText::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value=""><span class="message"></span></li>
                         <?php } ?>
@@ -162,7 +162,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <span class="faux_input_details"><?php echo CRMText::_('COBALT_MORNING_COFFEE_DESC'); ?></span>
                         </li>
                         <?php /**
-                        <?php if(CobaltHelperUsers::getRole()!='basic') { ?>
+                        <?php if (CobaltHelperUsers::getRole()!='basic') { ?>
                         <li>
                             <label class="small"><input type="checkbox" name="weekly_team_report" <?php if ( $this->user['weekly_team_report'] ) echo 'checked'; ?>></label>
                             <span class="faux_input"><b><?php echo CRMText::_('COBALT_TEAM_USE_REPORT'); ?></b></span>
@@ -202,7 +202,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         <li>
                             <label>
                                 <select class="inputbox" name="home_page_chart">
-                                    <?php 
+                                    <?php
                                         $charts = CobaltHelperCharts::getDashboardCharts();
                                         echo JHtml::_('select.options', $charts, 'value', 'text', $this->user->home_page_chart, true);
                                     ?>

@@ -10,49 +10,49 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if(!isset($this->association_id)) { ?>
-	<div data-role='header' data-theme='b'>
-		<h1><?php echo ucwords(CRMText::_('COBALT_ADD_TASK')); ?></h1>
-			<a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
-				<?php echo CRMText::_('COBALT_BACK'); ?>
-			</a>
-	</div>
+if (!isset($this->association_id)) { ?>
+    <div data-role='header' data-theme='b'>
+        <h1><?php echo ucwords(CRMText::_('COBALT_ADD_TASK')); ?></h1>
+            <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+                <?php echo CRMText::_('COBALT_BACK'); ?>
+            </a>
+    </div>
 
-	<div data-role="content">
+    <div data-role="content">
 <?php } ?>
 
-		<form id="task_edit" method="post" action="<?php echo JRoute::_('index.php?controller=save&model=event&return=events'); ?>" >
-		<div id="editForm">
-			<div class="cobaltRow">
-				<div class="cobaltField"><?php echo CRMText::_('COBALT_NAME'); ?></div>
-				<div class="cobaltValue">
-					<input type="text" class="inputbox" name="name" value="" />
-				</div>
-			</div>
-			<div class="cobaltRow">
-				<div class="cobaltField"><?php echo CRMText::_('COBALT_CATEGORY'); ?></div>
-				<div class="cobaltValue">
-					<select data-native-menu="false" data-overlay-theme="a" data-theme="c" name="category_id" tabindex="-1">
-						<?php
-	                        $categories = CobaltHelperEvent::getCategories();
-	                        echo JHtml::_('select.options', $categories, 'value', 'text', "", true);
-	                    ?>
-					</select>
-				</div>
-			</div>
-			<div class="cobaltRow">
-				<div class="cobaltField"></div>
-				<div class="cobaltValue">
-					<label for="due_date"><?php echo CRMText::_('COBALT_DUE_DATE'); ?>:</label>
-					<input type="date" name="due_date_hidden" class="inputbox" id="due_date" value="" />
-					<input type="hidden" name="due_date" id="due_date_hidden" value="" />
-				</div>
-			</div>
-			<input data-theme="c" type="button" onclick="addTaskEntry();" name="submit"  value="<?php echo CRMText::_('COBALT_SUBMIT'); ?>" />
-			<?php if(isset($this->association_id)) { ?>
-				<input type="hidden" name="association_id" id="association_id" value="<?php echo $this->association_id; ?>" />
-				<input type="hidden" name="association_type" id="association_type" value="<?php echo $this->association_type; ?>" />
-			<?php } ?>
-		</div>
-		</form>
-	</div>
+        <form id="task_edit" method="post" action="<?php echo JRoute::_('index.php?controller=save&model=event&return=events'); ?>" >
+        <div id="editForm">
+            <div class="cobaltRow">
+                <div class="cobaltField"><?php echo CRMText::_('COBALT_NAME'); ?></div>
+                <div class="cobaltValue">
+                    <input type="text" class="inputbox" name="name" value="" />
+                </div>
+            </div>
+            <div class="cobaltRow">
+                <div class="cobaltField"><?php echo CRMText::_('COBALT_CATEGORY'); ?></div>
+                <div class="cobaltValue">
+                    <select data-native-menu="false" data-overlay-theme="a" data-theme="c" name="category_id" tabindex="-1">
+                        <?php
+                            $categories = CobaltHelperEvent::getCategories();
+                            echo JHtml::_('select.options', $categories, 'value', 'text', "", true);
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="cobaltRow">
+                <div class="cobaltField"></div>
+                <div class="cobaltValue">
+                    <label for="due_date"><?php echo CRMText::_('COBALT_DUE_DATE'); ?>:</label>
+                    <input type="date" name="due_date_hidden" class="inputbox" id="due_date" value="" />
+                    <input type="hidden" name="due_date" id="due_date_hidden" value="" />
+                </div>
+            </div>
+            <input data-theme="c" type="button" onclick="addTaskEntry();" name="submit"  value="<?php echo CRMText::_('COBALT_SUBMIT'); ?>" />
+            <?php if (isset($this->association_id)) { ?>
+                <input type="hidden" name="association_id" id="association_id" value="<?php echo $this->association_id; ?>" />
+                <input type="hidden" name="association_type" id="association_type" value="<?php echo $this->association_type; ?>" />
+            <?php } ?>
+        </div>
+        </form>
+    </div>

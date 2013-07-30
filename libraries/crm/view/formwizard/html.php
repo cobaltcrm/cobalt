@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewFormwizardHtml extends JViewHtml
 {
 
-	function render()
-	{
+    public function render()
+    {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
 
@@ -22,26 +22,26 @@ class CobaltViewFormwizardHtml extends JViewHtml
         $layout = $this->getLayout();
         $model = new CobaltModelFormwizard();
         $model->set("_layout",$layout);
-        
+
         //document
         $document =& JFactory::getDocument();
-        
+
         //add toolbar buttons to manage users
-        if ( $layout == 'default' ){
+        if ($layout == 'default') {
 
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
             CRMToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'remove');
-            
+
             // Initialise variables.
             $this->state = $model->getState();;
             $this->forms = $model->getForms();
 
             $this->listOrder = $this->state->get('Formwizard.filter_order');
             $this->listDirn   = $this->state->get('Formwizard.filter_order_Dir');
-            
-        }else if ( $layout == 'edit' ){
+
+        } elseif ($layout == 'edit') {
 
             //buttons
             CRMToolbarHelper::cancel('cancel');
@@ -58,7 +58,7 @@ class CobaltViewFormwizardHtml extends JViewHtml
                     'lead'=>CobaltHelperDropdown::getFormFields('people'),
                     'contact'=>CobaltHelperDropdown::getFormFields('people'),
                     'deal'=>CobaltHelperDropdown::getFormFields('deal'),
-                    'company'=>CobaltHelperDropdown::getFormFields('company') 
+                    'company'=>CobaltHelperDropdown::getFormFields('company')
                 );
             $this->fields = $fields;
             $document->addScriptDeclaration('var fields='.json_encode($fields));
@@ -74,13 +74,13 @@ class CobaltViewFormwizardHtml extends JViewHtml
         $document->addScript(JURI::base().'libraries/crm/media/js/jquery.base64.js');
         $document->addScript(JURI::base().'libraries/crm/media/js/formwizard.js');
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
-        
+
         /** Menu Links **/
         $menu = CobaltHelperMenu::getMenuModules();
         $this->menu = $menu;
-	    
-	    //display
-		return parent::render();
-	}
-    
+
+        //display
+        return parent::render();
+    }
+
 }

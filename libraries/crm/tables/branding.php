@@ -8,17 +8,18 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class TableBranding extends JTable
-{                      
-    
+{
+
     /**
      * Constructor
      *
      * @param object Database connector object
      */
-    function __construct( &$db ) {
+    public function __construct( &$db )
+    {
         parent::__construct('#__branding', 'id', $db);
     }
 }

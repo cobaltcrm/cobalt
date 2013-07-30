@@ -13,9 +13,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltControllerGetTeamGoals extends CobaltControllerDefault
 {
 
-    function execute(){
-
-    	$app = JFactory::getApplication();
+    public function execute()
+    {
+        $app = JFactory::getApplication();
 
         //get model
         $model = newCobaltModelGoal();

@@ -10,13 +10,13 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <div class="span3">
-	<div class="sidebar-nav">
-		<ul class="nav nav-list">
+    <div class="sidebar-nav">
+        <ul class="nav nav-list">
             <li class="nav-header"><?php echo JText::_('Cobalt Menu'); ?></li>
             <?php $app = JFactory::getApplication(); ?>
             <?php $view = $app->input->get('view'); ?>
-            <?php if ( count($this->menu_links) > 0 ){ foreach ( $this->menu_links as $menu_link ){ ?>
-    	       <?php $active = $view == $menu_link['view'] ? "active" : ""; ?>
+            <?php if ( count($this->menu_links) > 0 ){ foreach ($this->menu_links as $menu_link) { ?>
+               <?php $active = $view == $menu_link['view'] ? "active" : ""; ?>
                 <li class="<?php echo $active; ?>" >
                     <i class="<?php echo $menu_link['class']; ?>"></i>
                     <span id="<?php echo $menu_link['id']; ?>">

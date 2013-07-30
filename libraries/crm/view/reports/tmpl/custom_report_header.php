@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $report = $this->report[0]; ?>
 
@@ -17,18 +17,18 @@ $report = $this->report[0]; ?>
         <tr>
             <?php $fields = unserialize($report['fields']); ?>
             <?php $rows = array(); ?>
-                <?php foreach ($fields as $id => $text){ ?>
+                <?php foreach ($fields as $id => $text) { ?>
                     <?php $rows[] = $id; ?>
                     <?php $primary_contact = strstr($id,"primary_contact_"); ?>
                     <?php $custom_field = strstr($id,"custom_field_"); ?>
-                    <?php if ( !$primary_contact && !$custom_field ){ ?>
+                    <?php if (!$primary_contact && !$custom_field) { ?>
                         <th><div class="sort_order"><a class="d.<?php echo $id; ?>" onclick="sortTable('d.<?php echo $id; ?>',this)"><?php echo $text; ?></a></div></th>
                     <?php } ?>
-                    <?php if ( $primary_contact ) { ?>
-                        <?php switch ( $id ) {
-                        case "primary_contact_name": ?> 
+                    <?php if ($primary_contact) { ?>
+                        <?php switch ($id) {
+                        case "primary_contact_name": ?>
                             <th><div class="sort_order"><a class="p.last_name" onclick="sortTable('p.last_name',this)"><?php echo $text; ?></a></div></th>
-                            <?php break; 
+                            <?php break;
                         case "primary_contact_email": ?>
                             <th><div class="sort_order"><a class="p.email" onclick="sortTable('p.email',this)"><?php echo $text; ?></a></div></th>
                         <?php break;
@@ -43,21 +43,21 @@ $report = $this->report[0]; ?>
                         <?php break;
                         case "primary_contact_state": ?>
                             <th><div class="sort_order"><a class="p.state" onclick="sortTable('p.state',this)"><?php echo $text; ?></a></div></th>
-                        <?php break; ?>  
-                         <?php } ?>    
+                        <?php break; ?>
+                         <?php } ?>
                     <?php } ?>
-                    <?php if ( $custom_field ) { ?>
+                    <?php if ($custom_field) { ?>
                         <th><div class="sort_order"><a class="" onclick="sortTable('',this)"><?php echo $text; ?></a></div></th>
                     <?php } ?>
                 <?php } ?>
         </tr>
         <?php if ( $app->input->get('view') != "print" ) { ?>
         <tr>
-            <?php foreach ( $fields as $id => $text) { ?>
+            <?php foreach ($fields as $id => $text) { ?>
                     <?php $primary_contact = strstr($id,"primary_contact_"); ?>
                     <?php $custom_field = strstr($id,"custom_"); ?>
-                    <?php if ( !$primary_contact && !$custom_field ){ ?>
-                        <?php switch ( $id ) {
+                    <?php if (!$primary_contact && !$custom_field) { ?>
+                        <?php switch ($id) {
                         case "name": ?>
                             <?php $deal_filter = $this->state->get('Report.'.$report['id'].'_custom_report_name'); ?>
                             <th><input class="input input-small filter_input" name="deal_name" type="text" value="<?php echo $deal_filter; ?>"  /></th>
@@ -66,20 +66,20 @@ $report = $this->report[0]; ?>
                         <th>
                             <select class="span1 filter_input" name="owner_id" id="owner_id">
                                 <?php $user_filter = $this->state->get('Report.'.$report['id'].'_custom_report_owner_id'); ?>
-                                <?php if ( CobaltHelperUsers::getRole() != 'basic' ){ ?>
+                                <?php if ( CobaltHelperUsers::getRole() != 'basic' ) { ?>
                                     <?php   $all = array();
-                                        $all[] = JHTML::_('select.option','all',CRMText::_('COBALT_ALL')); 
+                                        $all[] = JHTML::_('select.option','all',CRMText::_('COBALT_ALL'));
                                         echo JHtml::_('select.options',$all,'value','text',$user_filter,true);
                                     ?>
                                 <?php } ?>
                                  <optgroup label="<?php echo CRMText::_('COBALT_MEMBERS'); ?>" class="member" id="member" >
                                     <?php   $member = array();
-                                            $member[] = JHTML::_('select.option',CobaltHelperUsers::getUserId(),CRMText::_('COBALT_ME')); 
+                                            $member[] = JHTML::_('select.option',CobaltHelperUsers::getUserId(),CRMText::_('COBALT_ME'));
                                             echo JHtml::_('select.options',$member,'value','text',$user_filter,true);
                                     ?>
                                     <?php echo JHtml::_('select.options', $this->user_names, 'value', 'text', $user_filter, true); ?>
                                 </optgroup>
-                                <?php if ( CobaltHelperUsers::getRole() == 'exec' ){ ?>
+                                <?php if ( CobaltHelperUsers::getRole() == 'exec' ) { ?>
                                 <optgroup label="<?php echo CRMText::_('COBALT_TEAM'); ?>" class="team" id="team" >
                                     <?php echo JHtml::_('select.options', $this->team_names, 'value', 'text', $user_filter, true); ?>
                                 </optgroup>
@@ -167,14 +167,14 @@ $report = $this->report[0]; ?>
                             <input class="filter_input" name="company_name" type="text" value="<?php echo $company_filter; ?>"  />
                         </th>
                         <?php break; ?>
-                        <?php } ?> 
+                        <?php } ?>
                     <?php } ?>
-                    <?php if ( $primary_contact ) { ?>
-                        <?php switch ( $id ) {
-                        case "primary_contact_name": ?> 
+                    <?php if ($primary_contact) { ?>
+                        <?php switch ($id) {
+                        case "primary_contact_name": ?>
                             <?php $primary_contact_name = $this->state->get('Report.'.$report['id'].'_custom_report_primary_contact_name'); ?>
                             <th><input class="input input-small filter_input" name="primary_contact_name" type="text" value="<?php echo $primary_contact_name; ?>"  /></th>
-                            <?php break; 
+                            <?php break;
                         case "primary_contact_email": ?>
                             <?php $primary_contact_email = $this->state->get('Report.'.$report['id'].'_custom_report_primary_contact_email'); ?>
                             <th><input class="input input-small filter_input" name="primary_contact_email" type="text" value="<?php echo $primary_contact_email; ?>"  /></th>
@@ -191,21 +191,21 @@ $report = $this->report[0]; ?>
                             <?php $primary_contact_city = $this->state->get('Report.'.$report['id'].'_custom_report_primary_contact_city'); ?>
                             <th><input class="input input-small filter_input" name="primary_contact_city" type="text" value="<?php echo $primary_contact_city; ?>"  /></th>
                         <?php break;
-                        case "primary_contact_state": ?> 
+                        case "primary_contact_state": ?>
                             <?php $primary_contact_state = $this->state->get('Report.'.$report['id'].'_custom_report_primary_contact_state'); ?>
                             <th><input class="input input-small filter_input" name="primary_contact_state" type="text" value="<?php echo $primary_contact_state; ?>"  /></th>
                         <?php break; ?>
-                         <?php } ?>    
+                         <?php } ?>
                     <?php } ?>
-                    <?php if ( $custom_field ) { ?>
-                        <?php 
+                    <?php if ($custom_field) { ?>
+                        <?php
                         //get the custom field type
                         $custom_field_info = CobaltHelperDeal::getUserCustomFields(str_replace('custom_','',$id));
                         $info = $custom_field_info[0];
                         $custom_field_filter = '';
-                        
+
                         //determine type of input
-                        switch ( $info['type'] ){
+                        switch ($info['type']) {
                             case "text": ?>
                             <th><input class="input input-small filter_input" name="custom_<?php echo $info['id']; ?>" type="text" value="<?php echo $custom_field_filter; ?>"  /></th>
                             <?php break;
@@ -235,7 +235,7 @@ $report = $this->report[0]; ?>
                                 </select>
                             </th>
                             <?php break; ?>
-                    <?php } ?> 
+                    <?php } ?>
             <?php } ?>
             <?php } ?>
         </tr>

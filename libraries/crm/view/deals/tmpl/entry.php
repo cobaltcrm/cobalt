@@ -2,8 +2,8 @@
 $deal = $this->deal;
 $deal['status_name'] = $deal['status_name'] == "" ? "none" : $deal['status_name'];
 $stage_color = CRMText::_('COBALT_DEFAULT_DEAL_STAGE_COLOR');
-if ( count($this->stages) > 0 ){ foreach ( $this->stages as $stage ){
-    if ( $stage['id'] == $deal['stage_id'] ){
+if ( count($this->stages) > 0 ){ foreach ($this->stages as $stage) {
+    if ($stage['id'] == $deal['stage_id']) {
         $stage_color =  $stage['color'];
     }
 }}
@@ -32,7 +32,7 @@ $extras = '<b>'.CRMText::_('COBALT_PRIMARY_CONTACT').'</b>
                 <span class="deal-status-<?php echo $deal['status_name']; ?>"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="deal_stage_<?php echo $deal['id']; ?>" role="menu">
-            <?php if (count($this->statuses)) { foreach($this->statuses as $id => $class ){ ?>
+            <?php if (count($this->statuses)) { foreach ($this->statuses as $id => $class) { ?>
                 <li>
                     <a href="javascript:void(0)" class="stage_select dropdown_item" data-field="status_id" data-item="deal" data-item-id="<?php echo $deal['id']; ?>" data-value="<?php echo $id; ?>">
                         <span class="deal-status-<?php echo strtolower($class); ?>"></span>
@@ -49,7 +49,7 @@ $extras = '<b>'.CRMText::_('COBALT_PRIMARY_CONTACT').'</b>
                 <div class="status-dot" style="background-color: #<?php echo $stage_color; ?>"></div>
             </a>
             <ul class="dropdown-menu" aria-labelledby="deal_stage_<?php echo $deal['id']; ?>" role="menu">
-            <?php if ( count($this->stages) ){ foreach($this->stages as $id => $stage ) { ?>
+            <?php if ( count($this->stages) ){ foreach ($this->stages as $id => $stage) { ?>
                 <li>
                     <a href="javascript:void(0)" class="stage_select dropdown_item" data-field="stage_id" data-item="deal" data-item-id="<?php echo $deal['id']; ?>" data-value="<?php echo $stage['id']; ?>"><?php echo $stage['name']; ?>
                     <div class="status-dot" style="background-color: #<?php echo $stage['color']; ?>"></div></a>
@@ -61,7 +61,7 @@ $extras = '<b>'.CRMText::_('COBALT_PRIMARY_CONTACT').'</b>
     <td class="source">
         <div class='dropdown'><a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_source_<?php echo $deal['id']; ?>_link'><?php echo $source_name; ?></a>
             <ul class="dropdown-menu" aria-labelledby="deal_source_<?php echo $deal['id']; ?>" role="menu">
-            <?php if ( count($this->sources) ){ foreach($this->sources as $id => $source ) { ?>
+            <?php if ( count($this->sources) ){ foreach ($this->sources as $id => $source) { ?>
                 <li><a href="javascript:void(0)" class="source_select dropdown_item" data-field="source_id" data-item="deal" data-item-id="<?php echo $deal['id']; ?>" data-value="<?php echo $id; ?>"><?php echo $source; ?></a></li>
             <?php }} ?>
             </ul>
@@ -76,4 +76,4 @@ $extras = '<b>'.CRMText::_('COBALT_PRIMARY_CONTACT').'</b>
             <a rel="popover" title="<?php echo CRMText::_('COBALT_VIEW_DETAILS'); ?>" data-placement="top" data-html="true" data-content='<?php echo $extras; ?>' class="btn" href="javascript:void(0);"><i class="icon-info-sign"></i></a>
         </div>
     </td>
-</tr>         
+</tr>

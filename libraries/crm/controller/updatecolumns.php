@@ -8,25 +8,25 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerUpdateColumns extends CobaltControllerDefault
 {
 
-   function execute(){
+   public function execute()
+   {
+       $app = JFactory::getApplication();
 
-	   $app = JFactory::getApplication();
-       
        //get the location of the page
        $loc = $app->input->get('loc');
-       
+
        //get new data to insert into user tables
        $column = $app->input->get('column');
-       
+
        //get model
        $model = new CobaltModelUser();
-       $model->updateColumns($loc,$column); 
-       
+       $model->updateColumns($loc,$column);
+
    }
 
 }

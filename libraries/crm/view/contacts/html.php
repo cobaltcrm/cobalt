@@ -8,21 +8,21 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewContactsHtml extends JViewHtml
 {
-	function render($tpl = null)
-	{
-		$app = JFactory::getApplication();
-		$deal_id = $app->input->get('deal_id');
-		if ( $deal_id ){
-			$primary_contact_id = CobaltHelperDeal::getPrimaryContact($deal_id);
-			$this->primary_contact_id = $primary_contact_id;
-		}
-				
+    public function render($tpl = null)
+    {
+        $app = JFactory::getApplication();
+        $deal_id = $app->input->get('deal_id');
+        if ($deal_id) {
+            $primary_contact_id = CobaltHelperDeal::getPrimaryContact($deal_id);
+            $this->primary_contact_id = $primary_contact_id;
+        }
+
         //display
-		return parent::render();
-	}
-	
+        return parent::render();
+    }
+
 }

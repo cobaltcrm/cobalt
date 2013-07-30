@@ -8,15 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerGetCalendarEvents extends CobaltControllerDefault
 {
 
-    function execute(){
-
+    public function execute()
+    {
         //application
-    	$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
 
         //post data
         $data = $app->input->getRequest('get');

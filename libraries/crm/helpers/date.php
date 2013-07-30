@@ -15,12 +15,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      /**
       * Get timezone dropdown info for profile
       */
-     public static function getTimezones(){
-
+     public static function getTimezones()
+     {
              $list = timezone_identifiers_list();
              $zones =  array();
 
-             foreach( $list as $zone ){
+             foreach ($list as $zone) {
                 $zones[$zone] = $zone;
              }
 
@@ -30,21 +30,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      /*
       * Get date formates for profile
       */
-     public static function getDateFormats(){
+     public static function getDateFormats()
+     {
          return array( 'm/d/y' => 'mm/dd/yy', 'd/m/y' => 'dd/mm/yy' );
      }
 
      /*
       * Get time formates for profile
       */
-     public static function getTimeFormats(){
+     public static function getTimeFormats()
+     {
          return array( 'g:i A' => '7:30 PM', 'H:i' => '19:30' );
      }
 
      /*
       * Get goal dates for filtering
       */
-     public static function getGoalDates(){
+     public static function getGoalDates()
+     {
          return array(     'this_week'     => CRMText::_("COBALT_THIS_WEEK"),
                             'next_week'     => CRMText::_("COBALT_NEXT_WEEK"),
                             'this_month'    => CRMText::_("COBALT_THIS_MONTH"),
@@ -58,7 +61,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      /*
       * Get Created dates for filtering
       */
-     public static function getCreatedDates(){
+     public static function getCreatedDates()
+     {
          return array(     'this_week'     => CRMText::_("COBALT_THIS_WEEK"),
                             'last_week'     => CRMText::_("COBALT_LAST_WEEK"),
                             'this_month'    => CRMText::_("COBALT_THIS_MONTH"),
@@ -70,7 +74,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
      /*
       * Get the weeks in a month for report page data creation
       */
-     public static function getWeeksInMonth($current_month){
+     public static function getWeeksInMonth($current_month)
+     {
             $month = intval(date('m',strtotime($current_month))); //force month to single integer if '0x'
             $year = intval(date('Y',strtotime($current_month)));
             $suff = array('st','nd','rd','th','th','th'); //week suffixes
@@ -81,18 +86,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $output = ""; //initialize string
             $weeks = array();
             $monthlabel = str_pad($month, 2, '0', STR_PAD_LEFT);
-            for($x=1;$x<$noweeks+1;$x++){
-                if($x == 1){
+            for ($x=1;$x<$noweeks+1;$x++) {
+                if ($x == 1) {
                     $startdate = "$year-$monthlabel-01";
                     $day = $last - 6;
-                }else{
+                } else {
                     $day = $last + 1 + (($x-2)*7);
                     $day = str_pad($day, 2, '0', STR_PAD_LEFT);
                     $startdate = "$year-$monthlabel-$day";
                 }
-                if($x == $noweeks){
+                if ($x == $noweeks) {
                     $enddate = "$year-$monthlabel-$end";
-                }else{
+                } else {
                     $dayend = $day + 6;
                     $dayend = str_pad($dayend, 2, '0', STR_PAD_LEFT);
                     $enddate = "$year-$monthlabel-$dayend";
@@ -100,13 +105,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     $output .= "{$x}{$suff[$x-1]} week -> Start date=$startdate End date=$enddate <br />";
                     $weeks[] = array ( 'start_date'=>$startdate,'end_date'=>$enddate );
             }
+
             return $weeks;
      }
 
     /*
      * Get month names for report page charts and data creation
      */
-    public static function getMonthNames(){
+    public static function getMonthNames()
+    {
         return array(      CRMText::_('COBALT_JANUARY'),
                            CRMText::_('COBALT_FEBRUARY'),
                            CRMText::_('COBALT_MARCH'),
@@ -124,7 +131,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     /*
      * Get abbreviated month names for report page charts and data creation
      */
-    public static function getMonthNamesShort(){
+    public static function getMonthNamesShort()
+    {
         return array(   CRMText::_('COBALT_JAN'),
                         CRMText::_('COBALT_FEB'),
                         CRMText::_('COBALT_MAR'),
@@ -142,18 +150,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     /*
      * Get month start and end dates and names for report page charts and data creation
      */
-    public static function getMonthDates(){
+    public static function getMonthDates()
+    {
         $current_year = date('Y-01-01 00:00:00');
         $month_names = CobaltHelperDate::getMonthNames();
         $months = array();
-        for ( $i=0; $i<12; $i++ ){
+        for ($i=0; $i<12; $i++) {
                 $months[$i] = array( 'name'=>$month_names[$i],'date'=>date('Y-m-d 00:00:00',strtotime("$current_year + $i months")));
             }
+
         return $months;
     }
 
-    public static function getTimeIntervals(){
-
+    public static function getTimeIntervals()
+    {
         $starttime = "7:00:00";
         $temptime = strtotime($starttime);
         $nextday = strtotime($starttime." + 1 day");
@@ -169,24 +179,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    public static function getSiteTimezone(){
-
+    public static function getSiteTimezone()
+    {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("timezone")->from("#__config")->where("id=1");
         $db->setQuery($query);
+
         return $db->loadResult();
 
     }
 
-    public static function formatDBDate($date, $time=true){
+    public static function formatDBDate($date, $time=true)
+    {
         $userTz = CobaltHelperUsers::getTimezone();
         $dateTime = new DateTime($date, new DateTimeZone($userTz));
 
         $utc = "UTC";
         $dateTime->setTimeZone(new DateTimeZone($utc));
 
-        if(!$time) {
+        if (!$time) {
             $mysql = "Y-m-d";
         } else {
             $mysql = "Y-m-d H:i:s";
@@ -197,28 +209,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $time;
     }
 
-    public static function formatDate($date,$time=false,$useUserDateFormat=TRUE){
-
-      if ( strtotime($date) <= 0 ){
+    public static function formatDate($date,$time=false,$useUserDateFormat=TRUE)
+    {
+      if ( strtotime($date) <= 0 ) {
         return "";
       }
 
-      try{
+      try {
 
         $dateTime = CobaltHelperDate::convertDateToUserTimezone($date);
         $date_format = CobaltHelperUsers::getDateFormat();
 
-        if ( $useUserDateFormat ){
+        if ($useUserDateFormat) {
           $date = $dateTime->format($date_format);
-        }else{
+        } else {
           $date =  $dateTime->format("Y-m-d H:i:s");
         }
 
-        if($time) {
-            if ( !(date("H:i:s",strtotime($date))=="00:00:00")){
-              if ( is_string($time) ){
+        if ($time) {
+            if ( !(date("H:i:s",strtotime($date))=="00:00:00")) {
+              if ( is_string($time) ) {
                 $time_format = date($time,strtotime($date));
-              }else{
+              } else {
                 $time_format = self::formatTime($date);
               }
               $date .=' '.$time_format;
@@ -226,30 +238,32 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
 
         return $date;
-      }catch(Exception $e){
+      } catch (Exception $e) {
         return "";
       }
 
     }
 
-    public static function formatDateString($date){
+    public static function formatDateString($date)
+    {
       $dateFormat = CobaltHelperUsers::getDateFormat();
+
       return date($dateFormat,strtotime($date));
     }
 
-    public static function formatTimeString($time,$timeFormatOverride=null){
+    public static function formatTimeString($time,$timeFormatOverride=null)
+    {
       $timeFormat = $timeFormatOverride ? $timeFormatOverride : CobaltHelperUsers::getTimeFormat();
+
       return date($timeFormat,strtotime($time));
     }
 
-
-    public static function formatTime($time,$timeFormatOverride=null){
-
+    public static function formatTime($time,$timeFormatOverride=null)
+    {
           $exp = explode(" ",$time);
-          if ( count($exp) < 1 ){
+          if ( count($exp) < 1 ) {
             $time = "0000-00-00 ".$time;
           }
-
 
           $time_format = $timeFormatOverride ? $timeFormatOverride : CobaltHelperUsers::getTimeFormat();
           $dateTime = self::convertDateToUserTimezone($time);
@@ -258,8 +272,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    public static function convertDateToUserTimezone($date,$returnString=false){
-
+    public static function convertDateToUserTimezone($date,$returnString=false)
+    {
         $userTz = CobaltHelperUsers::getTimezone();
         $utc = "UTC";
 
@@ -270,20 +284,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-
-    public static function getCurrentTime($string=FALSE,$showTime=FALSE){
+    public static function getCurrentTime($string=FALSE,$showTime=FALSE)
+    {
         $timezone = CobaltHelperUsers::getTimezone();
         $current    = new DateTime();
         $current->setTimezone(new DateTimeZone($timezone));
-        if ( $string ){
+        if ($string) {
           $format = $showTime ? "Y-m-d H:i:s" : "Y-m-d";
+
           return $current->format($format);
         }
+
         return $current;
     }
 
-    public static function getElapsedTime($date,$showDays=TRUE,$showMonths=TRUE,$showYears=TRUE, $showHours=TRUE, $showMinutes=TRUE,$showSeconds=FALSE){
-
+    public static function getElapsedTime($date,$showDays=TRUE,$showMonths=TRUE,$showYears=TRUE, $showHours=TRUE, $showMinutes=TRUE,$showSeconds=FALSE)
+    {
         $time = time() - strtotime($date); // to get the time since that moment
 
         $tokens = array (
@@ -299,6 +315,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         foreach ($tokens as $unit => $text) {
             if ($time < $unit) continue;
             $numberOfUnits = floor($time / $unit);
+
             return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
         }
 
@@ -311,7 +328,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $count . ( ( $count == 1 ) ? ( " $text " ) : ( " ${text}s " ) );
     }
 
-    public static function x_week_range(&$start_date, &$end_date, $date) {
+    public static function x_week_range(&$start_date, &$end_date, $date)
+    {
       $ts = strtotime($date);
       $start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
       $start_date = date('Y-m-d H:i:s', $start);
@@ -336,19 +354,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $next_month           = date("Y-m-1",strtotime(self::getCurrentTime(TRUE,FALSE)." +1 month"));
             $next_next_month      = date("Y-m-1",strtotime(self::getCurrentTime(TRUE,FALSE)." +2 months"));
 
-            if(strtotime($display_date) < strtotime($now)) {
+            if (strtotime($display_date) < strtotime($now)) {
                 $current_heading = CRMText::_('COBALT_LATE_ITEMS');
-            } elseif(strtotime($display_date) >= strtotime($now) && strtotime($display_date) < strtotime($tomorrow) ) {
+            } elseif (strtotime($display_date) >= strtotime($now) && strtotime($display_date) < strtotime($tomorrow) ) {
                 $current_heading = CRMText::_('COBALT_TODAY');
-            } elseif(strtotime($display_date) >= strtotime($tomorrow) && strtotime($display_date) < strtotime($day_after_tomorrow) ) {
+            } elseif (strtotime($display_date) >= strtotime($tomorrow) && strtotime($display_date) < strtotime($day_after_tomorrow) ) {
                 $current_heading = CRMText::_('COBALT_TOMORROW');
-            } elseif(strtotime($display_date) >= strtotime($day_after_tomorrow) && strtotime($display_date) < strtotime($week_after_next)) {
+            } elseif (strtotime($display_date) >= strtotime($day_after_tomorrow) && strtotime($display_date) < strtotime($week_after_next)) {
                 $current_heading = CRMText::_('COBALT_THIS_WEEK');
-            } elseif(strtotime($display_date) >= strtotime($week_after_next) && strtotime($display_date) < strtotime($week_after_next_week)) {
+            } elseif (strtotime($display_date) >= strtotime($week_after_next) && strtotime($display_date) < strtotime($week_after_next_week)) {
                 $current_heading = CRMText::_('COBALT_NEXT_WEEK');
-            } elseif(strtotime($display_date) >= strtotime($week_after_next_week) && strtotime($display_date) < strtotime($next_month)) {
+            } elseif (strtotime($display_date) >= strtotime($week_after_next_week) && strtotime($display_date) < strtotime($next_month)) {
                 $current_heading = CRMText::_('COBALT_THIS_MONTH');
-            } elseif(strtotime($display_date) >= strtotime($next_month) && strtotime($display_date) < strtotime($next_next_month)){
+            } elseif (strtotime($display_date) >= strtotime($next_month) && strtotime($display_date) < strtotime($next_next_month)) {
                 $current_heading = CRMText::_('COBALT_NEXT_MONTH');
             } else {
                 $current_heading = CRMText::_('COBALT_IN_THE_FUTURE');

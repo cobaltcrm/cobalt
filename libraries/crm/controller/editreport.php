@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerEditReport extends CobaltControllerDefault
 {
@@ -18,17 +18,17 @@ class CobaltControllerEditReport extends CobaltControllerDefault
         //get model
         $model = new CobaltModelReport();
         $app = JFactory::getApplication();
-        
+
         //store data
         $link = 'index.php?view=reports&layout=custom_reports';
-        if ( $model->store() ){
+        if ( $model->store() ) {
             $msg = CRMText::_('COBALT_CUSTOM_REPORT_SUCCESSFULLY_ADDED');
-            $app->redirect($link, $msg);    
-        }else{
+            $app->redirect($link, $msg);
+        } else {
             $msg = CRMText::_('COBALT_PROBLEM_CREATING_CUSTOM_REPORT');
             $app->redirect($link, $msg);
         }
-        
+
     }
 
 }

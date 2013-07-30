@@ -8,23 +8,23 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerUploadAvatar extends CobaltControllerDefault
 {
 
-    function execute()
-    {   
+    public function execute()
+    {
         $app = JFactory::getApplication();
-    	 $model = new CobaltModelAvatar();
+         $model = new CobaltModelAvatar();
         $item_id = $app->input->get('item_id');
-        if ( $avatar = $model->saveAvatar() ){
+        if ( $avatar = $model->saveAvatar() ) {
 
             echo '<script type="text/javascript">
                     window.top.window.modalMessage("'.CRMText::_('COBALT_SUCCESS_MESSAGE').'","'.CRMText::_('COBALT_AVATAR_UPLOAD_SUCCESS').'");
                     window.top.window.updateAvatar('.$item_id.',"'.$avatar.'");
                     </script>';
-        }else{
+        } else {
             echo '<script type="text/javascript">
                         window.top.window.modalMessage("'.CRMText::_('COBALT_ERROR').'","'.CRMText::_('COBALT_AVATAR_UPLOAD_ERROR').'");
                         </script>';

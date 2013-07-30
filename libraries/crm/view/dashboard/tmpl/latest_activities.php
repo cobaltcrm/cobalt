@@ -13,19 +13,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <tbody id="latest_activities">
     <?php
     $n = count($this->activity);
-    for($i=0;$i<$n;$i++) {
+    for ($i=0;$i<$n;$i++) {
         $activity = $this->activity[$i];
         $k = $i%2;
-        if($activity->type=="notes") {
+        if ($activity->type=="notes") {
             $name_type = $activity->type.'_name';
             $name = CRMText::_("COBALT_NOTE");
             $link = "<a href='javascript:void(0);' onclick='editNoteEntry(".$activity->type_id.")'>";
-        }else if ( $activity->type=="event" ) {
+        } elseif ($activity->type=="event") {
             $name_type = $activity->type.'_name';
             $name = array_key_exists($name_type, $activity) ? $activity->$name_type : false;
             $link = "<a href='javascript:void(0);' onclick='editEvent(".$activity->type_id.",\"event\")'>";
 
-        }else if ( $activity->type=="note" ){
+        } elseif ($activity->type=="note") {
 
             $name_type = $activity->type.'_name';
             $name = array_key_exists($name_type, $activity) ? $activity->$name_type : false;
@@ -35,7 +35,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $name_type = $activity->type.'_name';
             $name = array_key_exists($name_type, $activity) ? $activity->$name_type : false;
 
-            switch($activity->type){
+            switch ($activity->type) {
                 case "company":
                     $view = "view=companies&layout=company";
                 break;
@@ -62,11 +62,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $link = "<a href=".JRoute::_('index.php?'.$view.'&id='.$activity->type_id).">";
         }
 
-        if ( $name ){
-            if(stripos($activity->field,'_id')!== false) {
+        if ($name) {
+            if (stripos($activity->field,'_id')!== false) {
                     $old_field_value = $activity->type.'_'.str_replace('_id', '_name_old' , $activity->field);
                     $old_value = isset($activity->$old_field_value) ? $activity->$old_field_value : "";
-                    if($old_value=="") { $old_value = CRMText::_('COBALT_NOTHING');}
+                    if ($old_value=="") { $old_value = CRMText::_('COBALT_NOTHING');}
                     $new_field_value = $activity->type.'_'.str_replace('_id', '_name' , $activity->field);
                     $new_value = isset($activity->$new_field_value) ? $activity->$new_field_value : "";
             } else {
@@ -75,12 +75,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             }
 
             $dates = array('due_date','modified');
-            if(in_array($activity->field,$dates)) {
+            if (in_array($activity->field,$dates)) {
                 $old_value = CobaltHelperDate::formatDate($activity->old_value,true);
                 $new_value = CobaltHelperDate::formatDate($activity->new_value,true);
             }
     ?>
-    <?php if ( $new_value != "" ){ ?>
+    <?php if ($new_value != "") { ?>
         <tr class="crmery_row_<?php echo $k; ?>">
             <td><?php echo $link.$name; ?></a></td>
             <td><?php echo JText::sprintf('COBALT_ACTIVITY_'.strtoupper($activity->action_type),ucwords(str_replace('_',' ',$activity->type)), ucwords(str_replace(' id','',str_replace(' 1','',str_replace('_',' ',$activity->field)))),$old_value,$new_value); ?></td>

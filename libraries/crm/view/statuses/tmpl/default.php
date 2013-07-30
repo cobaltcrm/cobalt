@@ -45,10 +45,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->statuses) ) { 
+                                <?php if ( count($this->statuses) ) {
                                     $ordering   = ($this->listOrder == 's.ordering');
                                     $i=0;
-                                    foreach($this->statuses as $key=>$status){ ?>
+                                    foreach ($this->statuses as $key=>$status) { ?>
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $status['id']); ?>

@@ -1,17 +1,17 @@
 <div class="infoContainer">
-	<h2><?php echo ucwords(CRMText::_('COBALT_BANTER_ROOMS')); ?></h2>
-	<div class="container">
+    <h2><?php echo ucwords(CRMText::_('COBALT_BANTER_ROOMS')); ?></h2>
+    <div class="container">
         <div class="filter_container">
             <?php echo CRMText::_('COBALT_SHOW_TRANSCRIPTS_FOR'); ?>:
-            <span class="filters" ><a class="dropdown" id="room_lists_link" ><?php if ( count($this->rooms) > 0 ){ echo $this->rooms[0]->name; } else { echo CRMText::_('COBALT_NO_ROOMS'); }  ?></a></span>
+            <span class="filters" ><a class="dropdown" id="room_lists_link" ><?php if ( count($this->rooms) > 0 ) { echo $this->rooms[0]->name; } else { echo CRMText::_('COBALT_NO_ROOMS'); }  ?></a></span>
             <div class="filters" id="room_lists">
                 <ul>
                     <?php
-                        if ( count($this->rooms) > 0 ){
-                            foreach($this->rooms as $room){
+                        if ( count($this->rooms) > 0 ) {
+                            foreach ($this->rooms as $room) {
                                 echo "<li><a class='filter_mailing_list_".$room->id." dropdown_item' onclick='updateTranscripts(".$room->id.")'>".$room->name."</a></li>";
                             }
-                        } 
+                        }
                     ?>
                 </ul>
             </div>

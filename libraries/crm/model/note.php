@@ -31,22 +31,22 @@ class CobaltModelNote extends CobaltModelDefault
             $row = JTable::getInstance('note','Table');
             $oldRow = JTable::getInstance('note','Table');
 
-            if ( $data == null ){
+            if ($data == null) {
                 $data = $app->input->getRequest( 'post' );
             }
 
-            if ( array_key_exists('is_email',$data) ){
+            if ( array_key_exists('is_email',$data) ) {
                 $model = new CobaltModelMail();
                 $email = $model->getEmail($data['email_id']);
                 $data['note'] = $email;
             }
 
             /** check for and automatically associate and create primary contacts or people **/
-            if ( array_key_exists('person_name',$data) && $data['person_name'] != "" ){
+            if ( array_key_exists('person_name',$data) && $data['person_name'] != "" ) {
                 $peopleModel = new CobaltModelPeople();
                 $existingPerson = $peopleModel->checkPersonName($data['person_name']);
 
-                if($existingPerson=="") {
+                if ($existingPerson=="") {
                     $pdata = array();
                     $name = explode(" ",$data['person_name']);
                     $pdata['first_name'] = array_key_exists(0,$name) ? $name[0] : "";
@@ -59,11 +59,11 @@ class CobaltModelNote extends CobaltModelDefault
             }
 
             /** check for and automatically associate and create deals **/
-            if ( array_key_exists('deal_name',$data) && $data['deal_name'] != "" ){
+            if ( array_key_exists('deal_name',$data) && $data['deal_name'] != "" ) {
                 $dealModel = new CobaltModelDeal();
                 $existingDeal = $dealModel->checkDealName($data['deal_name']);
 
-                if($existingDeal=="") {
+                if ($existingDeal=="") {
                     $pdata = array();
                     $pdata['name'] = $data['deal_name'];
                     $data['deal_id'] = $dealModel->store($pdata);
@@ -76,7 +76,7 @@ class CobaltModelNote extends CobaltModelDefault
             //date generation
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
 
-            if ( !array_key_exists('id',$data) ){
+            if ( !array_key_exists('id',$data) ) {
                 $data['created'] = $date;
                 $status = "created";
             } else {
@@ -91,6 +91,7 @@ class CobaltModelNote extends CobaltModelDefault
             // Bind the form fields to the table
             if (!$row->bind($data)) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
@@ -100,27 +101,27 @@ class CobaltModelNote extends CobaltModelDefault
             // Make sure the record is valid
             if (!$row->check()) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());
+
                 return false;
             }
 
-            if ( array_key_exists('id',$data) ){
+            if ( array_key_exists('id',$data) ) {
                 $id = $data['id'];
-            }else{
+            } else {
                 $id = $this->_db->insertId();
             }
 
-
             CobaltHelperActivity::saveActivity($oldRow, $row,'note', $status);
 
-
             //Store email attachments
-            if ( array_key_exists('is_email',$data) ){
+            if ( array_key_exists('is_email',$data) ) {
                 $model = new CobaltModelMail();
                 $model->storeAttachments($data['email_id'], $data['person_id']);
             }
@@ -131,14 +132,13 @@ class CobaltModelNote extends CobaltModelDefault
             return $id;
         }
 
-
         /*
          * Method to access a note
          *
          * @return array
          */
-        function getNote($id){
-
+        function getNote($id)
+        {
             //grab db
             $db = JFactory::getDBO();
 
@@ -164,8 +164,8 @@ class CobaltModelNote extends CobaltModelDefault
             $results = $db->loadAssocList();
 
             //clean results
-            if ( count ( $results ) > 0 ){
-                foreach ( $results as $key => $note ){
+            if ( count ( $results ) > 0 ) {
+                foreach ($results as $key => $note) {
                     $results[$key]['created_formatted'] = CobaltHelperDate::formatDate($note['created']);
                     $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($note['email']);
                 }
@@ -183,8 +183,8 @@ class CobaltModelNote extends CobaltModelDefault
          *
          * @return array
          */
-        function getNotes($object_id = NULL,$type = NULL, $display = true){
-
+        function getNotes($object_id = NULL,$type = NULL, $display = true)
+        {
             $app = JFactory::getApplication();
 
             //grab db
@@ -210,22 +210,22 @@ class CobaltModelNote extends CobaltModelDefault
             $query->leftJoin("#__users AS author ON author.id = owner.id");
 
             $company_filter = $this->getState('Note.company_name');
-            if ( $company_filter != null ){
+            if ($company_filter != null) {
                 $query->where("comp.name LIKE '%".$company_filter."%'");
             }
             //deal
             $deal_filter = $this->getState('Note.deal_name');
-            if ( $deal_filter != null ){
+            if ($deal_filter != null) {
                 $query->where("deal.name LIKE '%".$deal_filter."%'");
             }
             //person
              $person_filter = $this->getState('Note.person_name');
-            if ( $person_filter != null ){
+            if ($person_filter != null) {
 
             }
 
-            if($object_id) {
-                switch($type) {
+            if ($object_id) {
+                switch ($type) {
                     case 'people':
                         $query->where('n.person_id ='.$object_id);
                     break;
@@ -245,9 +245,9 @@ class CobaltModelNote extends CobaltModelDefault
 
             //owner
             $owner_filter = $this->getState('Note.owner_id');
-            if ( $owner_filter != null && $owner_filter != "all" ){
+            if ($owner_filter != null && $owner_filter != "all") {
                 $owner_type = $this->getState('Note.owner_type');
-                switch($owner_type){
+                switch ($owner_type) {
                     case "team":
                         $team_member_ids = CobaltHelperUsers::getTeamUsers($owner_filter,TRUE);
                         $query->where("n.owner_id IN (".implode(',',$team_member_ids).")");
@@ -259,19 +259,19 @@ class CobaltModelNote extends CobaltModelDefault
             }
             //created
              $created_filter = $this->getState('Note.created');
-            if ( $company_filter != null ){
+            if ($company_filter != null) {
 
             }
             //category
              $category_filter = $this->getState('Note.category_id');
-            if ( $category_filter != null ){
+            if ($category_filter != null) {
                 $query->where("n.category_id=".$category_filter);
             }
 
-             if ( $this->_id ){
-                if ( is_array($this->_id) ){
+             if ($this->_id) {
+                if ( is_array($this->_id) ) {
                     $query->where("n.id IN (".implode(',',$this->_id).")");
-                }else{
+                } else {
                     $query->where("n.id=$this->_id");
                 }
             }
@@ -282,12 +282,12 @@ class CobaltModelNote extends CobaltModelDefault
             $member_id = CobaltHelperUsers::getUserId();
             $member_role = CobaltHelperUsers::getRole();
             $team_id = CobaltHelperUsers::getTeamId();
-            if ( $this->public_notes != true ){
-                if ( $member_role != 'exec'){
+            if ($this->public_notes != true) {
+                if ($member_role != 'exec') {
                      //manager filter
-                    if ( $member_role == 'manager' ){
+                    if ($member_role == 'manager') {
                         $query->where('owner.team_id = '.$team_id);
-                    }else{
+                    } else {
                     //basic user filter
                         $query->where(array('n.owner_id = '.$member_id));
                     }
@@ -297,14 +297,13 @@ class CobaltModelNote extends CobaltModelDefault
             $query->where("n.published=".$this->published);
             $query->order("n.modified DESC");
 
-
             //load results
             $db->setQuery($query);
             $results = $db->loadAssocList();
 
             //clean results
-            if(count($results) > 0) {
-                foreach ( $results as $key => $note ){
+            if (count($results) > 0) {
+                foreach ($results as $key => $note) {
                     $results[$key]['created_formatted'] = CobaltHelperDate::formatDate($note['created']);
                     $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($note['email']);
                 }
@@ -313,12 +312,13 @@ class CobaltModelNote extends CobaltModelDefault
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onNoteLoad', array(&$results));
 
-            if(!$display) {
+            if (!$display) {
                 //return results
                 return $results;
 
             } else {
                 $notesView = CobaltHelperView::getView('note','default','phtml',array('notes'=>$results));
+
                 return $notesView;
             }
         }
@@ -327,8 +327,8 @@ class CobaltModelNote extends CobaltModelDefault
          * method to get list of deals
          */
 
-        function getNoteCategories(){
-
+        function getNoteCategories()
+        {
             //db object
             $db = JFactory::getDBO();
             //gen query
@@ -345,16 +345,14 @@ class CobaltModelNote extends CobaltModelDefault
 
         }
 
-        function populateState(){
-
-
+        function populateState()
+        {
             $app = JFactory::getApplication();
 
             //get states
             $app = JFactory::getApplication();
             $filter_order = $app->getUserStateFromRequest('Note.filter_order','filter_order','comp.name');
             $filter_order_Dir = $app->getUserStateFromRequest('Note.filter_order_Dir','filter_order_Dir','asc');
-
 
             //set default filter states
             $company_filter = $app->getUserStateFromRequest('Note.company_name','company_name',null);
@@ -380,7 +378,6 @@ class CobaltModelNote extends CobaltModelDefault
             $state->set('Note.category_id',$category_filter);
 
             $this->setState($state);
-
 
         }
 }

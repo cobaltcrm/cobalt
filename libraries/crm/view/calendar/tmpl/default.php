@@ -11,8 +11,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
-	var eventsObj = <?php echo $this->events; ?>;
-	var loc = 'calendar';
+    var eventsObj = <?php echo $this->events; ?>;
+    var loc = 'calendar';
 </script>
 
 <form class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
@@ -40,9 +40,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <div id="team_members" class="padding">
     <form class="inline-form">
-        <?php if(count($this->team_members)>0){
+        <?php if (count($this->team_members)>0) {
             echo '<ul id="team_member_calendar_filter">';
-            foreach ( $this->team_members as $team_member){
+            foreach ($this->team_members as $team_member) {
                 echo '<li class="badge user-filter-badge" style="background-color:#'.$team_member['color'].';"><label class="checkbox"><input type="checkbox" onclick="toggleTeamMemberEvents('.$team_member['id'].');" /><span>'.$team_member['first_name'].' '.$team_member['last_name'].'</span></label></li>';
             }
             echo '</ul>';

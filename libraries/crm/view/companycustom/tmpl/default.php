@@ -53,8 +53,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                                     $ordering   = ($this->listOrder == 'c.ordering');
                                     $i=0;
                                 ?>
-                                <?php if ( count($this->custom_fields) > 0 ) 
-                                    { foreach($this->custom_fields as $key=>$custom){ ?>
+                                <?php if ( count($this->custom_fields) > 0 ) { foreach ($this->custom_fields as $key=>$custom) { ?>
                                     <tr class="row<?php echo $i % 2; ?>">
                                         <td class="center">
                                             <?php echo JHtml::_('grid.id', $key, $custom['id']); ?>

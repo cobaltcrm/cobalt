@@ -38,22 +38,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
          * @param  [int] $id [Optional ID to get all events with a template]
          * @return [mixed] $results
          */
-        public static function getTaskTemplates($type,$id=null){
+        public static function getTaskTemplates($type,$id=null)
+        {
                 $db = JFactory::getDBO();
                 $query = $db->getQuery(true);
                 $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
                 $db->setQuery($query);
+
                 return $db->loadAssocList();
         }
 
         public static function getGravatar($email,$size = null,$image = false, $default=null)
         {
             //Default icon size
-            if(!$size) { $size = 50; }
+            if (!$size) { $size = 50; }
 
             $url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
 
-            if($image) {
+            if ($image) {
                 $url = '<img src="'.$url.'" />';
             }
 
@@ -67,8 +69,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
          * @return void
          *
          */
-        public static function storeCustomCf($id,$cf_data,$type){
-
+        public static function storeCustomCf($id,$cf_data,$type)
+        {
             //Get DBO
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
@@ -77,7 +79,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
 
             //Loop through $cf_data array to update/insert
-            for ( $i=0; $i<count($cf_data); $i++ ){
+            for ( $i=0; $i<count($cf_data); $i++ ) {
                 //assign the data
                 $row = $cf_data[$i];
 
@@ -89,7 +91,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 $db->setQuery($query);
                 $count = $db->loadResult();
 
-                if ( $count > 0 ){
+                if ($count > 0) {
                     //mysql query
                     $query->clear();
                     $query->update('#__'.$type.'_custom_cf');
@@ -100,7 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     $query->where($type."_id=$id AND custom_field_id=".$row['custom_field_id']);
                     $db->setQuery($query);
                     $db->query();
-                }else{
+                } else {
                     $query->clear();
                     $query->insert('#__'.$type.'_custom_cf');
                     $query->set($type."_id=".$id.
@@ -115,8 +117,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        public static function checkEmailName($email){
-
+        public static function checkEmailName($email)
+        {
             $db = JFactory::getDBO();
             $query = $db->getQuery(TRUE);
 
@@ -128,11 +130,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             $results = $db->loadObjectList();
 
-            if ( count($results) > 0 ){
-
+            if ( count($results) > 0 ) {
                 return TRUE;
 
-            }else{
+            } else {
 
                 $query->clear()
                         ->select("j.email")
@@ -144,8 +145,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
                 $results = $db->loadObjectList();
 
-                if ( count($results) > 0 ){
-
+                if ( count($results) > 0 ) {
                     return TRUE;
 
                 }
@@ -155,10 +155,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return FALSE;
         }
 
-        public static function getBytes($val) {
+        public static function getBytes($val)
+        {
             $val = trim($val);
             $last = strtolower($val[strlen($val)-1]);
-            switch($last) {
+            switch ($last) {
                 // The 'G' modifier is available since PHP 5.1.0
                 case 'g':
                     $val *= 1024;
@@ -171,8 +172,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return $val;
         }
 
-        public static function shareItem($itemId=null,$itemType=null,$userId=null){
-
+        public static function shareItem($itemId=null,$itemType=null,$userId=null)
+        {
             $app = JFactory::getApplication();
 
             $itemId = $itemId ? $itemId : $app->input->get('item_id');
@@ -192,8 +193,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return true;
         }
 
-        public static function unshareItem($itemId=null,$itemType=null,$userId=null){
-
+        public static function unshareItem($itemId=null,$itemType=null,$userId=null)
+        {
             $app = JFactory::getApplication();
 
             $itemId = $itemId ? $itemId : $app->input->get('item_id');
@@ -214,7 +215,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return true;
         }
 
-        public static function showShareDialog(){
+        public static function showShareDialog()
+        {
             $app = JFactory::getApplication();
 
             $document = JFactory::getDocument();
@@ -235,8 +237,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $itemType = $app->input->get('layout');
 
             $users = CobaltHelperUsers::getItemSharedUsers($itemId,$itemType);
-            if ( count ( $users ) > 0 ){
-                foreach ( $users as $user ){
+            if ( count ( $users ) > 0 ) {
+                foreach ($users as $user) {
                     $html .= '<div id="shared_user_'.$user->value.'"><i class="icon-user"></i>'.$user->label." - <a class='btn btn-danger btn-mini' href='javascript:void(0);' onclick='unshareItem(".$user->value.");'>".CRMText::_('COBALT_REMOVE')."</a></div>";
                 }
             }
@@ -244,11 +246,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $html .= '</div>';
             $html .= "</div>";
             $html .= '</div>';
+
             return $html;
 
         }
 
-        public static function getAssociationName($associationType=null,$associationId=null){
+        public static function getAssociationName($associationType=null,$associationId=null)
+        {
             $app = JFactory::getApplication();
             $associationType = $associationType ? $associationType : $app->input->get('association_type');
             $associationId = $associationId ? $associationId : $app->input->get('association_id');
@@ -256,7 +260,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
-            switch ($associationType){
+            switch ($associationType) {
                 case "company":
                     $select = "name";
                     $table = "companies";
@@ -275,17 +279,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $db->setQuery($query);
 
             $name = $db->loadResult();
+
             return $name;
         }
 
-        public static function loadHelpers(){
+        public static function loadHelpers()
+        {
             $array = array(
                     'version','toolbar','menu','config','crmtext','template','dropdown',
                     'view','company','deal','people','users','document','styles',
                     'date','charts','event','note','activity','mailinglists','transcriptlists',
                     'banter','tweets','pagination','mail'
                 );
-            foreach ( $array as $a ){
+            foreach ($array as $a) {
                 require_once(JPATH_COBALT.'/helpers/'.$a.".php");
             }
         }

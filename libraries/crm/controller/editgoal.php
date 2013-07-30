@@ -8,29 +8,29 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerEditGoal extends CobaltControllerDefault
 {
 
-    function execute(){
-
+    public function execute()
+    {
         //application
         //
         $app = JFactory::getApplication();
         //get model
         $model = new CobaltModelGoal();
-        
+
         //store data
         $link = JRoute::_('index.php?view=goals');
-        if ( $model->store() ){
+        if ( $model->store() ) {
             $msg = CRMText::_('COBALT_SUCCESS');
-            $app->redirect($link, $msg);    
-        }else{
+            $app->redirect($link, $msg);
+        } else {
             $msg = CRMText::_('COBALT_FAILURE');
             $app->redirect($link, $msg);
         }
-        
+
     }
 
 }

@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                             <label><b><?php echo JText::_('COBALT_HEADER_STATUS_COLOR'); ?></b></label>
                             <span class="cobaltfield"><input type="text" class="inputbox hascolorpicker" name="color" value="<?php echo $this->status['color']; ?>" /><div id="colorwheel" class="colorwheel"></div></span>
                             <div>
-                                <?php if ( $this->status['id'] ) { ?>
+                                <?php if ($this->status['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->status['id']; ?>" />
                                 <?php } ?>
                                 <input type="hidden" name="controller" value="" />
@@ -39,5 +39,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <?php echo $this->menu['quick_menu']->render(); ?>
-	</div>
+    </div>
 </div>

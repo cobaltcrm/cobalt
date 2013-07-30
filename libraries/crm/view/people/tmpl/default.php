@@ -35,9 +35,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     <div class="btn-group pull-right">
         <a rel="tooltip" title="<?php echo CRMText::_('COBALT_PEOPLE_ADD'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#personModal" data-toggle="modal"><i class="icon-plus icon-white"></i></a>
         <a rel="tooltip" title="<?php echo CRMText::_('COBALT_IMPORT_PEOPLE'); ?>" data-placement="bottom"  class="btn" href="<?php echo JRoute::_('index.php?view=import&import_type=companies'); ?>"><i class="icon-circle-arrow-up"></i></a>
-        <?php if ( CobaltHelperUsers::canExport() ){ ?>    
+        <?php if ( CobaltHelperUsers::canExport() ) { ?>
             <a rel="tooltip" title="<?php echo CRMText::_('COBALT_EXPORT_PEOPLE'); ?>" data-placement="bottom" class="btn"href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i></a>
-        <?php } ?>  
+        <?php } ?>
     </div>
 
     <h1><?php echo ucwords(CRMText::_('COBALT_PEOPLE_HEADER')); ?></h1>
@@ -47,29 +47,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" data-toggle="dropdown" role="button" id="people_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo $this->people_type_name; ?><span></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="people_type_link">
-            <?php foreach ( $this->people_types as $title => $text ){
+            <?php foreach ($this->people_types as $title => $text) {
             echo "<li><a href='javascript:void(0);' class='filter_".$title."' onclick=\"companyType('".$title."')\">".$text."</a></li>";
             }?>
         </ul>
-    </li> 
+    </li>
     <li><span><?php echo CRMText::_('COBALT_OWNED_BY'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="javascript:void(0);" data-toggle="dropdown" role="button" id="people_user_link"><span class="dropdown-label"><?php echo $this->user_name; ?></span></a>
         <ul class="dropdown-menu update-toggle-text" role="menu" aria-labelledby="people_user_link">
             <li><a href="javascript:void(0);" class="filter_user_<?php echo $this->user_id; ?>" onclick="peopleUser(<?php echo $this->user_id; ?>,0)"><span class="dropdown-label"><?php echo CRMText::_('COBALT_ME'); ?><span></a></li>
-            <?php if ( $this->member_role != 'basic' ){ ?>
+            <?php if ($this->member_role != 'basic') { ?>
                  <li><a href="javascript:void(0);" class="filter_user_all" onclick="peopleUser('all',0)"><?php echo CRMText::_('COBALT_ALL_USERS'); ?></a></li>
             <?php } ?>
             <?php
-                if ( $this->member_role == 'exec' ){
-                    if ( count($this->teams) > 0 ){
-                        foreach($this->teams as $team){
+                if ($this->member_role == 'exec') {
+                    if ( count($this->teams) > 0 ) {
+                        foreach ($this->teams as $team) {
                              echo "<li><a href='javascript:void(0);' class='filter_team_".$team['team_id']."' onclick='peopleUser(0,".$team['team_id'].")'>".$team['team_name'].CRMText::_('COBALT_TEAM_APPEND')."</a></li>";
                          }
                     }
                 }
-                if ( count($this->users) > 0 ){
-                    foreach($this->users as $user){
+                if ( count($this->users) > 0 ) {
+                    foreach ($this->users as $user) {
                         echo "<li><a href='javascript:void(0);' class='filter_user_".$user['id']."' onclick='peopleUser(".$user['id'].")'>".$user['first_name']."  ".$user['last_name']."</a></li>";
                     }
                 }
@@ -80,7 +80,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="javascript:void(0);" data-toggle="dropdown" role="button" id="people_stages_link"><span class="dropdown-label"><?php echo $this->stages_name; ?></span></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="people_stages_link">
-            <?php foreach ( $this->stages as $title => $text ){
+            <?php foreach ($this->stages as $title => $text) {
                 echo "<li><a href='javascript:void(0);' class='filter_".$title."' onclick=\"peopleUpdated('".$title."')\">".$text."</a></li>";
             }?>
         </ul>
@@ -91,10 +91,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         <ul class="dropdown-menu" role="menu" aria-labelledby="people_status_link">
             <li><a class="filter_any" onclick="peopleStatus('any')"><?php echo CRMText::_('COBALT_ANY_STATUS'); ?></a></li>
             <?php
-                foreach ( $this->status_list as $key => $status ){
+                foreach ($this->status_list as $key => $status) {
                     echo "<li><a href='javascript:void(0);' class='filter_".$status['id']."' onclick='peopleStatus(".$status['id'].")'>".$status['name']."</a></li>";
                 }
-            ?>            
+            ?>
         </ul>
     </li>
     <li>
@@ -110,7 +110,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <?php echo CobaltHelperTemplate::getListEditActions(); ?>
 <form method="post" id="list_form" action="<?php echo JRoute::_('index.php?view=people'); ?>">
 <table class="table table-striped table-hover" id="people">
-		  <?php echo $this->people_list->render(); ?>
+          <?php echo $this->people_list->render(); ?>
 </table>
 <input type="hidden" name="list_type" value="people" />
 </form>
@@ -122,4 +122,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     <div id="edit_button"><a class="edit_button_link" id="edit_button_link" href="javascript:void(0)"></a></div>
     <div id="edit_list_modal" style="display:none;" ></div>
 </div>
-*/ ?>
+*/

@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewDocumentsRaw extends JViewHtml
 {
-    function render($tpl = null)
+    public function render($tpl = null)
     {
         $app = JFactory::getApplication();
 
@@ -22,16 +22,16 @@ class CobaltViewDocumentsRaw extends JViewHtml
         $state = $model->getState();
         $layout = $this->getLayout();
 
-        if ( $app->input->get('document_id') && $layout != "document_row" ){
+        if ( $app->input->get('document_id') && $layout != "document_row" ) {
             $documents = $documents[0];
         }
-        
+
         //assign refs
         $this->documents = $documents;
         $this->state = $state;
-        
+
         //display view
-        echo parent::render();      
+        echo parent::render();
     }
-    
+
 }

@@ -8,17 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
 class CobaltViewCustomHtml extends JViewHTML
 {
-	function render($tpl = null)
-	{
+    public function render($tpl = null)
+    {
         //display
-		return parent::render();
-	}
-	
+        return parent::render();
+    }
+
 }
-?>

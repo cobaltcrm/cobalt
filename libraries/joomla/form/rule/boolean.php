@@ -18,19 +18,19 @@ defined('JPATH_PLATFORM') or die;
  */
 class JFormRuleBoolean extends JFormRule
 {
-	/**
-	 * The regular expression to use in testing a form field value.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	protected $regex = '^(?:[01]|true|false)$';
+    /**
+     * The regular expression to use in testing a form field value.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    protected $regex = '^(?:[01]|true|false)$';
 
-	/**
-	 * The regular expression modifiers to use when testing a form field value.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	protected $modifiers = 'i';
+    /**
+     * The regular expression modifiers to use when testing a form field value.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    protected $modifiers = 'i';
 }

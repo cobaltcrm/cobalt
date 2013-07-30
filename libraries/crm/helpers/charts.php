@@ -13,8 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  class CobaltHelperCharts extends JObject
  {
 
-    public static function getDashboardCharts(){
-
+    public static function getDashboardCharts()
+    {
         return  array( 'deals_by_status_pie_chart' =>  CRMText::_('COBALT_DEALS_BY_STATUS_PIE_CHART'),
                         'deals_by_status_bar_chart' =>  CRMText::_('COBALT_DEALS_BY_STATUS_BAR_CHART'),
                         'deals_by_stage_pie_chart'  =>  CRMText::_('COBALT_DEALS_BY_STAGE_PIE_CHART'),
@@ -25,6 +25,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         'year_to_date_revenue'      =>  CRMText::_('COBALT_YEAR_T0_DATE_REVENUE'),
                         'revenue_this_month'        =>  CRMText::_('COBALT_REVENUE_THIS_MONTH'));
     }
-
 
  }

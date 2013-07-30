@@ -8,9 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-for($i=0;$i<count($this->deals);$i++){
+for ($i=0;$i<count($this->deals);$i++) {
     $deal = $this->deals[$i]; ?>
     <div class="widget">
         <h2><a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id='.$deal['id']); ?>"><?php echo $deal['name']; ?></a></h2>
@@ -37,7 +37,7 @@ for($i=0;$i<count($this->deals);$i++){
                     <td><div class="deal-status-<?php echo strtolower($deal['status_name']); ?>"></div></td>
                 </tr>
                 <?php
-                    for($i2=0;$i2<count($deal['events']);$i2++){ 
+                    for ($i2=0;$i2<count($deal['events']);$i2++) {
                         $event = $deal['events'][$i2];?>
                         <tr>
                             <td><?php echo $event['name']; ?></td>
@@ -51,4 +51,3 @@ for($i=0;$i<count($this->deals);$i++){
         </div>
     </div>
 <?php }
-?>

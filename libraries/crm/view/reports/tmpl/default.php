@@ -18,22 +18,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 </div>
 
 <?php echo $this->menu; ?>
-<?php if ( $this->member_role != 'basic' ){ ?>
+<?php if ($this->member_role != 'basic') { ?>
 <div class="alert">
-    <?php echo CRMText::_("COBALT_SHOWING_SALES_DASHBOARD_FOR"); ?> 
+    <?php echo CRMText::_("COBALT_SHOWING_SALES_DASHBOARD_FOR"); ?>
         <span class="dropdown">
                 <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" href="javascript:void(0);" id="sales_dashboard_filter_link" ><span class="dropdown-label"><?php echo CRMText::_('COBALT_ME'); ?></span><span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="sales_dashboard_filter_link">
                     <li><a class="filter_member_<?php echo $this->user_id; ?> dropdown_item" onclick="salesDashboardFilter(<?php echo $this->user_id; ?>,null)"><?php echo CRMText::_('COBALT_ME'); ?></a></li>
-                <?php if ( $this->member_role == 'manager' ){ ?>
+                <?php if ($this->member_role == 'manager') { ?>
                     <li><a class="filter_team_<?php echo $this->team_id; ?> dropdown_item" onclick="salesDashboardFilter(null,<?php echo $this->team_id; ?>)"><?php echo CRMText::_('COBALT_MY_TEAM'); ?></a></li>
                 <?php } ?>
-                <?php if ( $this->member_role == 'exec' ){ ?>
+                <?php if ($this->member_role == 'exec') { ?>
                     <li><a class="filter_company dropdown_item" onclick="salesDashboardFilter(null,null)"><?php echo CRMText::_("COBALT_THE_COMPANY"); ?></a></li>
-                <?php foreach( $this->teams as $title => $text ){ ?>
+                <?php foreach ($this->teams as $title => $text) { ?>
                     <li><a class="filter_team_<?php echo $text['team_id']; ?> dropdown_item" onclick="salesDashboardFilter(null,<?php echo $text['team_id']; ?>)"><?php echo $text['team_name'].CRMText::_('COBALT_TEAM_APPEND'); ?></a></li>
                 <?php }} ?>
-                <?php foreach ( $this->users as $title => $text ){
+                <?php foreach ($this->users as $title => $text) {
                      echo "<li><a class='filter_member_".$text['id']." dropdown_item' onclick=\"salesDashboardFilter(".$text['id'].",null)\">".$text['first_name'].' '.$text['last_name']."</a></li>";
                 }?>
             </ul>

@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltViewBrandingHtml extends JViewHtml
 {
 
-    function render($tpl = null)
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -21,15 +21,15 @@ class CobaltViewBrandingHtml extends JViewHtml
         //menu Links
         $menu = CobaltHelperMenu::getMenuModules();
         $this->menu = $menu;
-        
+
          //add javascript
         $document =& JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/branding_manager.js');
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
-        
+
         //stylesheets
         CobaltHelperStyles::loadStyleSheets();
-        
+
         //view refs
         $model = new CobaltModelBranding();
         $themes = $model->getThemes();
@@ -38,7 +38,7 @@ class CobaltViewBrandingHtml extends JViewHtml
         CRMToolbarHelper::save('save','Save');
 
         //toolbar items
-        $list = array( 
+        $list = array(
             'dashboard',
             'deals',
             'people',
@@ -54,11 +54,11 @@ class CobaltViewBrandingHtml extends JViewHtml
         $this->site_name = CobaltHelperStyles::getSiteName();
 
         //assign default theme
-        foreach ( $this->themes as $key=>$row ){
+        foreach ($this->themes as $key=>$row) {
                 if ( $row['assigned'] )
                  $document->addScriptDeclaration("var assigned_theme=".$row['id'].";");
          }
-        
+
         //display
         return parent::render();
     }

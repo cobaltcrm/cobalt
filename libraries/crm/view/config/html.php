@@ -8,16 +8,16 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewConfigHtml extends JViewHtml 
+class CobaltViewConfigHtml extends JViewHtml
 {
 
-    function render($tpl = null)
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
-        
+
         //display toolbar
         CRMToolbarHelper::cancel('cancel');
         CRMToolbarHelper::save('save');
@@ -41,7 +41,7 @@ class CobaltViewConfigHtml extends JViewHtml
         //generate timezones
         $list = timezone_identifiers_list();
         $timezones =  array();
-        foreach( $list as $zone ){
+        foreach ($list as $zone) {
            $timezones[$zone] = $zone;
         }
 
@@ -52,7 +52,7 @@ class CobaltViewConfigHtml extends JViewHtml
         $this->time_formats = CobaltHelperDate::getTimeFormats();
         $this->languages = CobaltHelperConfig::getLanguages();
         $this->language = CobaltHelperConfig::getLanguage();
-        
+
         //display
         return parent::render();
     }

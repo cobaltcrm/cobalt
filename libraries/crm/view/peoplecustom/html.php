@@ -10,9 +10,9 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewPeoplecustomHtml extends JViewHtml{
-
-    function render($tpl = null)
+class CobaltViewPeoplecustomHtml extends JViewHtml
+{
+    public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
         CobaltHelperUsers::authenticateAdmin();
@@ -32,31 +32,30 @@ class CobaltViewPeoplecustomHtml extends JViewHtml{
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
 
-        
-        if ( $layout && $layout == 'edit' ){
-            
+        if ($layout && $layout == 'edit') {
+
             //toolbar button
             CRMToolbarHelper::cancel('cancel');
             CRMToolbarHelper::save('save');
-            
+
             //assign view info
             $this->custom_types = CobaltHelperDropdown::getCustomTypes('people');
             $this->custom = $model->getItem();
 
-            if ( $this->custom['type'] != null ) {
+            if ($this->custom['type'] != null) {
                 $document->addScriptDeclaration('var type = "'.$this->custom['type'].'";');
             }
-            
-        }else{
-            
+
+        } else {
+
             //buttons
             CRMToolbarHelper::addNew('edit');
             CRMToolbarHelper::editList('edit');
             CRMToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
-           
+
             $custom = $model->getCustom();
             $this->custom_fields = $custom;
-                
+
             // Initialise state variables.
             $state = $model->getState();
             $this->state = $state;
@@ -66,7 +65,7 @@ class CobaltViewPeoplecustomHtml extends JViewHtml{
             $this->saveOrder  = $listOrder == 'c.ordering';
 
         }
-        
+
         //display
         return parent::render();
     }

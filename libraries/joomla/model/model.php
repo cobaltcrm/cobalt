@@ -18,23 +18,23 @@ defined('JPATH_PLATFORM') or die;
  */
 interface JModel
 {
-	/**
-	 * Get the model state.
-	 *
-	 * @return  JRegistry  The state object.
-	 *
-	 * @since   12.1
-	 */
-	public function getState();
+    /**
+     * Get the model state.
+     *
+     * @return JRegistry The state object.
+     *
+     * @since   12.1
+     */
+    public function getState();
 
-	/**
-	 * Set the model state.
-	 *
-	 * @param   JRegistry  $state  The state object.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.1
-	 */
-	public function setState(JRegistry $state);
+    /**
+     * Set the model state.
+     *
+     * @param JRegistry $state The state object.
+     *
+     * @return void
+     *
+     * @since   12.1
+     */
+    public function setState(JRegistry $state);
 }

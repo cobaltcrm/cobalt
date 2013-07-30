@@ -8,50 +8,48 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewEventsRaw extends JViewHtml
 {
-	function render()
-	{
-		$app = JFactory::getApplication();
+    public function render()
+    {
+        $app = JFactory::getApplication();
 
-		//grab model
-		$model = new CobaltModelEvent();
+        //grab model
+        $model = new CobaltModelEvent();
 
-		if ( $this->getLayout() == "event_listings" || $this->getLayout() == "list" ){
+        if ( $this->getLayout() == "event_listings" || $this->getLayout() == "list" ) {
 
-			$events = $model->getEvents();
-			$this->events = $events;
+            $events = $model->getEvents();
+            $this->events = $events;
 
-		}else{
-			//null event
-			$event = array();
+        } else {
+            //null event
+            $event = array();
 
-			$id = null;
-			if ( $app->input->get('parent_id') && !$app->input->get('id') ){
-				$id = $app->input->get('parent_id');
-			}else{
-				$id = $app->input->get('id');
-			}
-			
-			//grab event
-			if ( $id != null ){
-				$event = $model->getEvent($id);
-			}
+            $id = null;
+            if ( $app->input->get('parent_id') && !$app->input->get('id') ) {
+                $id = $app->input->get('parent_id');
+            } else {
+                $id = $app->input->get('id');
+            }
 
+            //grab event
+            if ($id != null) {
+                $event = $model->getEvent($id);
+            }
 
+            //pass reference
+            $this->event = $event;
+        }
 
-			//pass reference
-			$this->event = $event;
-		}
-		
-		if ( $app->input->get('association_id') ){
-			$this->association_name = CobaltHelperCobalt::getAssociationName();
-		}
-		
-		//display
-		echo parent::render();
-	}
-	
+        if ( $app->input->get('association_id') ) {
+            $this->association_name = CobaltHelperCobalt::getAssociationName();
+        }
+
+        //display
+        echo parent::render();
+    }
+
 }

@@ -18,226 +18,225 @@ defined('JPATH_PLATFORM') or die;
  */
 class JDocumentFeed extends JDocument
 {
-	/**
-	 * Syndication URL feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $syndicationURL = "";
+    /**
+     * Syndication URL feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $syndicationURL = "";
 
-	/**
-	 * Image feed element
-	 *
-	 * optional
-	 *
-	 * @var    object
-	 * @since  11.1
-	 */
-	public $image = null;
+    /**
+     * Image feed element
+     *
+     * optional
+     *
+     * @var    object
+     * @since  11.1
+     */
+    public $image = null;
 
-	/**
-	 * Copyright feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $copyright = "";
+    /**
+     * Copyright feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $copyright = "";
 
-	/**
-	 * Published date feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $pubDate = "";
+    /**
+     * Published date feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $pubDate = "";
 
-	/**
-	 * Lastbuild date feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $lastBuildDate = "";
+    /**
+     * Lastbuild date feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $lastBuildDate = "";
 
-	/**
-	 * Editor feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $editor = "";
+    /**
+     * Editor feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $editor = "";
 
-	/**
-	 * Docs feed element
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $docs = "";
+    /**
+     * Docs feed element
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $docs = "";
 
-	/**
-	 * Editor email feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $editorEmail = "";
+    /**
+     * Editor email feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $editorEmail = "";
 
-	/**
-	 * Webmaster email feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $webmaster = "";
+    /**
+     * Webmaster email feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $webmaster = "";
 
-	/**
-	 * Category feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $category = "";
+    /**
+     * Category feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $category = "";
 
-	/**
-	 * TTL feed attribute
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $ttl = "";
+    /**
+     * TTL feed attribute
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $ttl = "";
 
-	/**
-	 * Rating feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $rating = "";
+    /**
+     * Rating feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $rating = "";
 
-	/**
-	 * Skiphours feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $skipHours = "";
+    /**
+     * Skiphours feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $skipHours = "";
 
-	/**
-	 * Skipdays feed element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $skipDays = "";
+    /**
+     * Skipdays feed element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $skipDays = "";
 
-	/**
-	 * The feed items collection
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	public $items = array();
+    /**
+     * The feed items collection
+     *
+     * @var    array
+     * @since  11.1
+     */
+    public $items = array();
 
-	/**
-	 * Class constructor
-	 *
-	 * @param   array  $options  Associative array of options
-	 *
-	 * @since  11.1
-	 */
-	public function __construct($options = array())
-	{
-		parent::__construct($options);
+    /**
+     * Class constructor
+     *
+     * @param array $options Associative array of options
+     *
+     * @since  11.1
+     */
+    public function __construct($options = array())
+    {
+        parent::__construct($options);
 
-		// Set document type
-		$this->_type = 'feed';
-	}
+        // Set document type
+        $this->_type = 'feed';
+    }
 
-	/**
-	 * Render the document
-	 *
-	 * @param   boolean  $cache   If true, cache the output
-	 * @param   array    $params  Associative array of attributes
-	 *
-	 * @return  The rendered data
-	 *
-	 * @since  11.1
-	 * @throws Exception
-	 * @todo   Make this cacheable
-	 */
-	public function render($cache = false, $params = array())
-	{
-		// Get the feed type
-		$type = JFactory::getApplication()->input->get('type', 'rss');
+    /**
+     * Render the document
+     *
+     * @param boolean $cache  If true, cache the output
+     * @param array   $params Associative array of attributes
+     *
+     * @return The rendered data
+     *
+     * @since  11.1
+     * @throws Exception
+     * @todo   Make this cacheable
+     */
+    public function render($cache = false, $params = array())
+    {
+        // Get the feed type
+        $type = JFactory::getApplication()->input->get('type', 'rss');
 
-		// Instantiate feed renderer and set the mime encoding
-		$renderer = $this->loadRenderer(($type) ? $type : 'rss');
-		if (!is_a($renderer, 'JDocumentRenderer'))
-		{
-			throw new Exception(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'), 404);
-		}
-		$this->setMimeEncoding($renderer->getContentType());
+        // Instantiate feed renderer and set the mime encoding
+        $renderer = $this->loadRenderer(($type) ? $type : 'rss');
+        if (!is_a($renderer, 'JDocumentRenderer')) {
+            throw new Exception(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'), 404);
+        }
+        $this->setMimeEncoding($renderer->getContentType());
 
-		// Output
-		// Generate prolog
-		$data = "<?xml version=\"1.0\" encoding=\"" . $this->_charset . "\"?>\n";
-		$data .= "<!-- generator=\"" . $this->getGenerator() . "\" -->\n";
+        // Output
+        // Generate prolog
+        $data = "<?xml version=\"1.0\" encoding=\"" . $this->_charset . "\"?>\n";
+        $data .= "<!-- generator=\"" . $this->getGenerator() . "\" -->\n";
 
-		// Generate stylesheet links
-		foreach ($this->_styleSheets as $src => $attr)
-		{
-			$data .= "<?xml-stylesheet href=\"$src\" type=\"" . $attr['mime'] . "\"?>\n";
-		}
+        // Generate stylesheet links
+        foreach ($this->_styleSheets as $src => $attr) {
+            $data .= "<?xml-stylesheet href=\"$src\" type=\"" . $attr['mime'] . "\"?>\n";
+        }
 
-		// Render the feed
-		$data .= $renderer->render();
+        // Render the feed
+        $data .= $renderer->render();
 
-		parent::render();
-		return $data;
-	}
+        parent::render();
 
-	/**
-	 * Adds an JFeedItem to the feed.
-	 *
-	 * @param   JFeedItem  $item  The feeditem to add to the feed.
-	 *
-	 * @return  JDocumentFeed  instance of $this to allow chaining
-	 *
-	 * @since   11.1
-	 */
-	public function addItem(JFeedItem $item)
-	{
-		$item->source = $this->link;
-		$this->items[] = $item;
+        return $data;
+    }
 
-		return $this;
-	}
+    /**
+     * Adds an JFeedItem to the feed.
+     *
+     * @param JFeedItem $item The feeditem to add to the feed.
+     *
+     * @return JDocumentFeed instance of $this to allow chaining
+     *
+     * @since   11.1
+     */
+    public function addItem(JFeedItem $item)
+    {
+        $item->source = $this->link;
+        $this->items[] = $item;
+
+        return $this;
+    }
 }
 
 /**
@@ -249,141 +248,141 @@ class JDocumentFeed extends JDocument
  */
 class JFeedItem
 {
-	/**
-	 * Title item element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $title;
+    /**
+     * Title item element
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $title;
 
-	/**
-	 * Link item element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $link;
+    /**
+     * Link item element
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $link;
 
-	/**
-	 * Description item element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $description;
+    /**
+     * Description item element
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $description;
 
-	/**
-	 * Author item element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $author;
+    /**
+     * Author item element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $author;
 
-	/**
-	 * Author email element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $authorEmail;
+    /**
+     * Author email element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $authorEmail;
 
-	/**
-	 * Category element
-	 *
-	 * optional
-	 *
-	 * @var    array or string
-	 * @since  11.1
-	 */
-	public $category;
+    /**
+     * Category element
+     *
+     * optional
+     *
+     * @var    array or string
+     * @since  11.1
+     */
+    public $category;
 
-	/**
-	 * Comments element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $comments;
+    /**
+     * Comments element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $comments;
 
-	/**
-	 * Enclosure element
-	 *
-	 * @var    object
-	 * @since  11.1
-	 */
-	public $enclosure = null;
+    /**
+     * Enclosure element
+     *
+     * @var    object
+     * @since  11.1
+     */
+    public $enclosure = null;
 
-	/**
-	 * Guid element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $guid;
+    /**
+     * Guid element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $guid;
 
-	/**
-	 * Published date
-	 *
-	 * optional
-	 *
-	 * May be in one of the following formats:
-	 *
-	 * RFC 822:
-	 * "Mon, 20 Jan 03 18:05:41 +0400"
-	 * "20 Jan 03 18:05:41 +0000"
-	 *
-	 * ISO 8601:
-	 * "2003-01-20T18:05:41+04:00"
-	 *
-	 * Unix:
-	 * 1043082341
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $date;
+    /**
+     * Published date
+     *
+     * optional
+     *
+     * May be in one of the following formats:
+     *
+     * RFC 822:
+     * "Mon, 20 Jan 03 18:05:41 +0400"
+     * "20 Jan 03 18:05:41 +0000"
+     *
+     * ISO 8601:
+     * "2003-01-20T18:05:41+04:00"
+     *
+     * Unix:
+     * 1043082341
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $date;
 
-	/**
-	 * Source element
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $source;
+    /**
+     * Source element
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $source;
 
-	/**
-	 * Set the JFeedEnclosure for this item
-	 *
-	 * @param   JFeedEnclosure  $enclosure  The JFeedEnclosure to add to the feed.
-	 *
-	 * @return  JFeedItem instance of $this to allow chaining
-	 *
-	 * @since   11.1
-	 */
-	public function setEnclosure(JFeedEnclosure $enclosure)
-	{
-		$this->enclosure = $enclosure;
+    /**
+     * Set the JFeedEnclosure for this item
+     *
+     * @param JFeedEnclosure $enclosure The JFeedEnclosure to add to the feed.
+     *
+     * @return JFeedItem instance of $this to allow chaining
+     *
+     * @since   11.1
+     */
+    public function setEnclosure(JFeedEnclosure $enclosure)
+    {
+        $this->enclosure = $enclosure;
 
-		return $this;
-	}
+        return $this;
+    }
 }
 
 /**
@@ -395,35 +394,35 @@ class JFeedItem
  */
 class JFeedEnclosure
 {
-	/**
-	 * URL enclosure element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $url = "";
+    /**
+     * URL enclosure element
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $url = "";
 
-	/**
-	 * Length enclosure element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $length = "";
+    /**
+     * Length enclosure element
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $length = "";
 
-	/**
-	 * Type enclosure element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = "";
+    /**
+     * Type enclosure element
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $type = "";
 }
 
 /**
@@ -435,63 +434,63 @@ class JFeedEnclosure
  */
 class JFeedImage
 {
-	/**
-	 * Title image attribute
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $title = "";
+    /**
+     * Title image attribute
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $title = "";
 
-	/**
-	 * URL image attribute
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $url = "";
+    /**
+     * URL image attribute
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $url = "";
 
-	/**
-	 * Link image attribute
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $link = "";
+    /**
+     * Link image attribute
+     *
+     * required
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $link = "";
 
-	/**
-	 * Width image attribute
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $width;
+    /**
+     * Width image attribute
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $width;
 
-	/**
-	 * Title feed attribute
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $height;
+    /**
+     * Title feed attribute
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $height;
 
-	/**
-	 * Title feed attribute
-	 *
-	 * optional
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $description;
+    /**
+     * Title feed attribute
+     *
+     * optional
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $description;
 }

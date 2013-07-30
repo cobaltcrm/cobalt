@@ -22,41 +22,38 @@ defined('JPATH_PLATFORM') or die;
  */
 class JFormFieldCheckbox extends JFormField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = 'Checkbox';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $type = 'Checkbox';
 
-	/**
-	 * Method to get the field input markup.
-	 * The checked element sets the field to selected.
-	 *
-	 * @return  string   The field input markup.
-	 *
-	 * @since   11.1
-	 */
-	protected function getInput()
-	{
-		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$value = $this->element['value'] ? (string) $this->element['value'] : '1';
-		if (empty($this->value))
-		{
-			$checked = (isset($this->element['checked'] )) ? ' checked="checked"' : '';
-		}
-		else
-		{
-			$checked = ' checked="checked"';
-		}
+    /**
+     * Method to get the field input markup.
+     * The checked element sets the field to selected.
+     *
+     * @return string The field input markup.
+     *
+     * @since   11.1
+     */
+    protected function getInput()
+    {
+        // Initialize some field attributes.
+        $class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $value = $this->element['value'] ? (string) $this->element['value'] : '1';
+        if (empty($this->value)) {
+            $checked = (isset($this->element['checked'] )) ? ' checked="checked"' : '';
+        } else {
+            $checked = ' checked="checked"';
+        }
 
-		// Initialize JavaScript field attributes.
-		$onclick = $this->element['onclick'] ? ' onclick="' . (string) $this->element['onclick'] . '"' : '';
+        // Initialize JavaScript field attributes.
+        $onclick = $this->element['onclick'] ? ' onclick="' . (string) $this->element['onclick'] . '"' : '';
 
-		return '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . ' />';
-	}
+        return '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+            . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . ' />';
+    }
 }

@@ -12,8 +12,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewDocumentsHtml extends JViewHTML
 {
-	function render()
-	{
+    public function render()
+    {
             $layout = $this->getLayout();
 
             //get model
@@ -41,16 +41,16 @@ class CobaltViewDocumentsHtml extends JViewHTML
             $user = $session->get('document_user_filter');
             $team = $session->get('document_team_filter');
 
-            if ( $user == "all" ){
+            if ($user == "all") {
                 $user_name = CRMText::_('COBALT_ALL_USERS');
-            }else if ( $user && $user != $user_id ){
+            } elseif ($user && $user != $user_id) {
                 $user_info = CobaltHelperUsers::getUser($user);
                 $user_name = $user_info->first_name . " " . $user_info->last_name;
-            }else if ( $team ){
+            } elseif ($team) {
                 $team_info = CobaltHelperUsers::getTeams($team);
                 $team_info = $team_info[0];
                 $user_name = $team_info['team_name'] . CRMText::_('COBALT_TEAM_APPEND');
-            }else{
+            } else {
                 $user_name = CRMText::_('COBALT_ME');
             }
 
@@ -67,7 +67,7 @@ class CobaltViewDocumentsHtml extends JViewHTML
             //list view
             $document_list = CobaltHelperView::getView('documents','list','phtml',array('documents'=>$documents,'state'=>$state));
 
-            if ( $layout == "download" ){
+            if ($layout == "download") {
                 CobaltHelperDeal::downloadDocument();
             }
 
@@ -85,7 +85,7 @@ class CobaltViewDocumentsHtml extends JViewHTML
             $this->users            = $users;
 
         //display
-		return parent::render();
-	}
+        return parent::render();
+    }
 
 }

@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerGetConvoEntry extends CobaltControllerDefault
 {
-     function execute(){
-
-     	$app = JFactory::getApplication();
+     function execute()
+     {
+         $app = JFactory::getApplication();
 
         $convo_id = $app->input->get('convo_id');
 
