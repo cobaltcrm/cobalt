@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltHelperTranscriptlists extends JObject
 {
 
-	function getRooms($associationId=null,$associationType=null){
+	public static function getRooms($associationId=null,$associationType=null){
 
 		$app = JFactory::getApplication();
 
@@ -39,7 +39,7 @@ class CobaltHelperTranscriptlists extends JObject
 
 	}
 
-	function getTranscripts($roomId=null){
+	public static function getTranscripts($roomId=null){
 
 		$app = JFactory::getApplication();
 

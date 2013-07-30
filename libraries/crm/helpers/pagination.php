@@ -584,7 +584,7 @@ class CobaltPagination extends JPagination
 	 *
 	 * @since    11.1
 	 */
-	protected function _item_active(&$item)
+	protected function _item_active(JPaginationObject $item)
 	{
 		return "<a title=\"" . $item->text . "\" href=\"" . $item->link . "\" class=\"active\">" . $item->text . "</a>";
 	}
@@ -598,7 +598,7 @@ class CobaltPagination extends JPagination
 	 *
 	 * @since   11.1
 	 */
-	protected function _item_inactive(&$item)
+	protected function _item_inactive(JPaginationObject $item)
 	{
 		return "<a class=\"disabled\">" . $item->text . "</a>";
 	}
@@ -690,7 +690,7 @@ class CobaltPagination extends JPagination
  * @subpackage  HTML
  * @since       11.1
  */
-class CobaltPaginationObject extends JObject
+class CobaltPaginationObject extends JPaginationObject
 {
 	/**
 	 * @var    string  The link text.

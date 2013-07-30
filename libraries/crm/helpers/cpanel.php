@@ -8,15 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
- 
+
  class CobaltHelperCpanel extends JObject
  {
-     
+
         //load the navigation menu
-        function getUsers(){
-            return array( 
+        public static function getUsers(){
+            return array(
                             array(
                                 'link' => JRoute::_('index.php?view=users'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/users.png',
@@ -25,9 +25,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                             )
                         );
         }
-        
-        function getCustom(){
-            return array( 
+
+        public static function getCustom(){
+            return array(
                             array(
                                 'link' => JRoute::_('index.php?view=branding'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/branding.png',
@@ -91,8 +91,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         );
         }
 
-    function getMenu(){
-        return array( 
+    public static function getMenu(){
+        return array(
                             array(
                                 'link' => JRoute::_('index.php?view=cobalt'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/home.png',
@@ -105,11 +105,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                                 'text' => JText::_(''),
                                 'access' => array( )
                             )
-                            
+
                         );
     }
 
-    function button($button){
+    public static function button($button){
         $html  = '<div class="icon-wrapper">';
         $html .= '<div class="icon">';
         $html .= '<a href="'.$button['link'].'">';
@@ -120,4 +120,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $html;
     }
  }
-    

@@ -48,8 +48,8 @@ class CobaltModelPeople extends CobaltModelDefault
         function store($data=null)
         {
             //Load Tables
-            $row =& JTable::getInstance('people','Table');
-            $oldRow =& JTable::getInstance('people','Table');
+            $row = JTable::getInstance('people','Table');
+            $oldRow = JTable::getInstance('people','Table');
             if ( $data == null ){
               $data = $this->app->input->getRequest('post');
             }
@@ -179,7 +179,7 @@ class CobaltModelPeople extends CobaltModelDefault
 
             $name = $data['first_name'].' '.$data['last_name'];
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->update("#__users")->set(array("email=".$db->Quote($data['email']),"name=".$db->Quote($name)))->where("id=".$data['id']);
             $db->setQuery($query);
@@ -187,7 +187,7 @@ class CobaltModelPeople extends CobaltModelDefault
         }
 
         function associateJoomlaUser($email){
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select("id")->from("#__users")->where("email=".$db->Quote($email));
             $db->setQuery($query);
@@ -200,7 +200,7 @@ class CobaltModelPeople extends CobaltModelDefault
 
         function dealsPeople($cfdata){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->insert('#__people_cf');
             $query->set($cfdata);
@@ -221,7 +221,7 @@ class CobaltModelPeople extends CobaltModelDefault
         function _buildQuery(){
 
             /** Large SQL Selections **/
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $db->setQuery("SET SQL_BIG_SELECTS=1");
             $db->query();
@@ -290,7 +290,7 @@ class CobaltModelPeople extends CobaltModelDefault
             }
 
             //TODO specific user id, access roles
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             //generate query
 
             $query = $db->getQuery(true);
@@ -494,7 +494,7 @@ class CobaltModelPeople extends CobaltModelDefault
         function getPeople(){
 
             //Get query
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             $view = $this->app->input->get('view');
@@ -571,7 +571,7 @@ class CobaltModelPeople extends CobaltModelDefault
 
             if ( $id > 0 ){
 
-                $db =& JFactory::getDBO();
+                $db = JFactory::getDBO();
                 //generate query
                 //
                 $query = $db->getQuery(true);
@@ -633,7 +633,7 @@ class CobaltModelPeople extends CobaltModelDefault
         function getPeopleList(){
 
             //db object
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             //gen query
             $query = $db->getQuery(true);
             $query->select("DISTINCT(p.id),p.first_name,p.last_name");
@@ -749,7 +749,7 @@ class CobaltModelPeople extends CobaltModelDefault
 
         function searchForContact($contact_name,$idsOnly=TRUE){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $select = $idsOnly ? "CONCAT(first_name,' ',last_name) AS label,id AS value" : "*";
@@ -886,7 +886,7 @@ class CobaltModelPeople extends CobaltModelDefault
 
         public function getContacts(){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $this->query = $db->getQuery(true);
 
             $this->buildSelect();

@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewDealsHtml extends JViewHTML
 {
@@ -22,14 +22,14 @@ class CobaltViewDealsHtml extends JViewHTML
         $state = $model->getState();
         $dealList = array();
         $deal = array();
-        $doc =& JFactory::getDocument();
-        
+        $doc = JFactory::getDocument();
+
         //session info
         $session = JFactory::getSession();
         $member_role = CobaltHelperUsers::getRole();
         $user_id = CobaltHelperUsers::getUserId();
         $team_id = CobaltHelperUsers::getTeamId();
-        
+
         //determine if we are requesting a specific deal or all deals
         //if id requested
         if( $app->input->get('id') ) {
@@ -40,7 +40,7 @@ class CobaltViewDealsHtml extends JViewHTML
             }
         }else{
         //else load all deals
-            if ( $app->input->get('layout') != 'edit' ){ 
+            if ( $app->input->get('layout') != 'edit' ){
 
                 if(CobaltHelperTemplate::isMobile()) {
                     $model->set('ordering','d.name ASC');
@@ -49,12 +49,12 @@ class CobaltViewDealsHtml extends JViewHTML
                 $dealList = $model->getDeals();
             }
         }
-        
+
         //determine if we are editing an existing deal entry
         if( count($dealList) == 1 ){
             //grab deal object
             $deal = $dealList[0];
-            $deal['header'] = ucwords(CRMText::_('COBALT_DEAL_EDIT')); 
+            $deal['header'] = ucwords(CRMText::_('COBALT_DEAL_EDIT'));
         }else{
             //else we are creating a new entry
             $deal = array();
@@ -62,29 +62,29 @@ class CobaltViewDealsHtml extends JViewHTML
             $deal['summary'] = "";
             $deal['company_id'] = ( $app->input->get('company_id') ) ? $app->input->get('company_id') : null;
             $deal['person_id'] = ( $app->input->get('person_id') ) ? $app->input->get('person_id') : null;
-            
+
             //get company name to prefill data and hidden fields
             if ( $deal['company_id'] ) {
                 $company = CobaltHelperCompany::getCompany($deal['company_id']);
                 $deal['company_name'] = $company[0]['name'];
                 $deal['company_id'] = $company[0]['id'];
             }
-            
+
             //if a person is specified prefill data
             if ( $deal['person_id'] ) {
                 $person = CobaltHelperPeople::getPerson($deal['person_id']);
-                
-                $deal['person_name'] = $person[0]['last_name'] . ', ' . $person[0]['first_name']; 
+
+                $deal['person_name'] = $person[0]['last_name'] . ', ' . $person[0]['first_name'];
                 $deal['person_id'] = $person[0]['id'];
-                
+
                 //assign company if person is associated with company
                 if ( $person[0]['company_id'] ){
                     $deal['company_id'] = $person[0]['company_id'];
                     $deal['company_name'] = $person[0]['company_name'];
                 }
-                
+
             }
-             
+
             //assign rest of null data
             $deal['amount'] = "";
             $deal['stage_id'] = 0;
@@ -92,33 +92,33 @@ class CobaltViewDealsHtml extends JViewHTML
             $deal['probability'] = 0;
             $deal['status_id'] = 0;
             $deal['expected_close'] = "";
-            $deal['header'] = ucwords(CRMText::_('COBALT_DEAL_HEADER')); 
+            $deal['header'] = ucwords(CRMText::_('COBALT_DEAL_HEADER'));
         }
-        
+
         //load javalibs
         if(!CobaltHelperTemplate::isMobile()) {
             $doc->addScript( JURI::base().'libraries/crm/media/js/deal_manager.js' );
         }
-        
+
         //dropdown info
         //get deal type filters
         $deal_types = CobaltHelperDeal::getDealTypes();
         $deal_type_name = $session->get('deal_type_filter');
         $deal_type_name = ( $deal_type_name ) ? $deal_types[$deal_type_name] : $deal_types['all'];
-        
+
         //get column filters
         $column_filters = CobaltHelperDeal::getColumnFilters();
         $selected_columns = CobaltHelperDeal::getSelectedColumnFilters();
-        
+
         //get member access info
         $teams = CobaltHelperUsers::getTeams();
         $users = CobaltHelperUsers::getUsers();
         $stages = CobaltHelperDeal::getStages();
-        
+
         //get deal stage filters
         $stage_name = $session->get('deal_stage_filter');
         $stage_name = ( $stage_name ) ? $stages[$stage_name] : $stages['all'];
-        
+
         //get session data to prefill filters
         $user_filter = $session->get('deal_user_filter');
         $team_filter = $session->get('deal_team_filter');
@@ -137,12 +137,12 @@ class CobaltViewDealsHtml extends JViewHTML
         }else{
             $user_name = CRMText::_('COBALT_ME');
         }
-        
+
         //get closing time filters
         $closing_names = CobaltHelperDeal::getClosing();
         $closing_name = $session->get('deal_close_filter');
         $closing_name = ( $closing_name ) ? $closing_names[$closing_name] : $closing_names['all'];
-        
+
         //get total deals associated with user
         $total_deals = CobaltHelperUsers::getDealCount($user_id,$team_id,$member_role);
 
@@ -163,7 +163,7 @@ class CobaltViewDealsHtml extends JViewHTML
                     $room_list = new CobaltHelperTranscriptlists();
                     $room_lists = $room_list->getRooms();
                     $transcripts = array();
-                    if ( is_array($room_lists) && count($room_lists) > 0 ) { 
+                    if ( is_array($room_lists) && count($room_lists) > 0 ) {
                         $transcripts = $room_list->getTranscripts($room_lists[0]->id);
                     }
                     $this->banter_dock = CobaltHelperView::getView('banter','default','phtml',array('rooms'=>$room_lists,'transcripts'=>$transcripts));
@@ -206,7 +206,7 @@ class CobaltViewDealsHtml extends JViewHTML
         }
 
         $closed_stages = CobaltHelperDeal::getClosedStages();
-        
+
         //assign results to view
         $this->closed_stages = $closed_stages;
         $this->dealList = $dealList;
@@ -230,5 +230,5 @@ class CobaltViewDealsHtml extends JViewHTML
         //display
         return parent::render();
     }
-    
+
 }

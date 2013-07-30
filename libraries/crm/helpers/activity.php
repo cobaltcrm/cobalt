@@ -8,14 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltHelperActivity extends JObject
 {
+	public static $limit = null;
 
-	var $limit = null;
-
-	function saveActivity($old_info, $new_info, $model, $action_type) {
+	public static function saveActivity($old_info, $new_info, $model, $action_type) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user_id = CobaltHelperUsers::getUserId();
@@ -42,8 +41,8 @@ class CobaltHelperActivity extends JObject
 		}
 	}
 
-	function saveUserLoginHistory(){
-		$db =& JFactory::getDBO();
+	public static function saveUserLoginHistory(){
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$user_id = CobaltHelperUsers::getUserId();
@@ -67,12 +66,12 @@ class CobaltHelperActivity extends JObject
 
 	}
 
-	function getActivity() {
+	public static function getActivity() {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
-		$query->select('h.*, CONCAT(u.first_name," ", u.last_name) AS owner_name, c.name as company_name, CONCAT(p.first_name," ", p.last_name) AS person_name, 
-						d.name as deal_name, e.name as event_name, note_cat.name as notes_category_name, 
+		$query->select('h.*, CONCAT(u.first_name," ", u.last_name) AS owner_name, c.name as company_name, CONCAT(p.first_name," ", p.last_name) AS person_name,
+						d.name as deal_name, e.name as event_name, note_cat.name as notes_category_name,
 						event_cat.name as events_category_name, old_event_cat.name as events_category_name_old, old_note_cat.name AS notes_category_name_old,
 						doc.name AS document_name,status.name AS deal_status_name_old, status2.name AS deal_status_name,deal_source.name AS deal_source_name_old,deal_source_2.name AS deal_source_name,
 						deal_stage.name AS deal_stage_name_old,deal_stage_2.name AS deal_stage_name,CONCAT(deal_owner.first_name," ",deal_owner.last_name) AS deal_owner_name_old,
@@ -121,7 +120,7 @@ class CobaltHelperActivity extends JObject
 
         $query->order('h.date DESC');
 
-        if ( $this->limit != null ){
+        if ( self::$limit != null ){
         	$query .= " LIMIT ".$this->limit;
         }else{
         	$query .= " LIMIT 10";
@@ -136,25 +135,25 @@ class CobaltHelperActivity extends JObject
 	}
 
 
-	function recursive_array_diff($a1, $a2) { 
-	    $r = array(); 
+	public static function recursive_array_diff($a1, $a2) {
+	    $r = array();
 	    foreach ($a1 as $k => $v) {
 	    	if($k[0]!='_' && $k!='modified') {
-		        if (array_key_exists($k, $a2)) { 
-		            if (is_array($v)) { 
-		                $rad = self::recursive_array_diff($v, $a2[$k]); 
-		                if (count($rad)) { $r[$k] = $rad; } 
-		            } else { 
-		                if ($v != $a2[$k]) { 
-		                    $r[$k] = $v; 
+		        if (array_key_exists($k, $a2)) {
+		            if (is_array($v)) {
+		                $rad = self::recursive_array_diff($v, $a2[$k]);
+		                if (count($rad)) { $r[$k] = $rad; }
+		            } else {
+		                if ($v != $a2[$k]) {
+		                    $r[$k] = $v;
 		                }
 		            }
-		        } else { 
-		            $r[$k] = $v; 
-		        } 
+		        } else {
+		            $r[$k] = $v;
+		        }
 		    }
-	    } 
-	    return $r; 
+	    }
+	    return $r;
 	}
 
 

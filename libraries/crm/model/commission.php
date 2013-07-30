@@ -8,11 +8,11 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelCommission extends JModelBase
 {
-        
+
         /**
          * Get Monthly Commission
          * @param $access_type we wish to filter by 'member','team','company'
@@ -20,16 +20,16 @@ class CobaltModelCommission extends JModelBase
          * @return mixed $results
          */
         function getMonthlyCommission($access_type=null,$access_id=null){
-            
+
             //get member data
             if ( $access_type == 'member' ){
                 return $this->getMonthlyCommissionData( $access_id );
             }else{
-                
+
                 //array to assign our data
                 $members = array();
                 $results = array();
-                
+
                 //get team data
                 if ( $access_type == 'team' ){
                     //get team members
@@ -38,7 +38,7 @@ class CobaltModelCommission extends JModelBase
                         $members[] = $this->getMonthlyCommissionData($member['id']);
                     }
                 }
-                
+
                 //get company data
                 if ( $access_type == 'company' ){
                     //get company users
@@ -47,7 +47,7 @@ class CobaltModelCommission extends JModelBase
                         $members[] = $this->getMonthlyCommissionData($member['id']);
                     }
                 }
-                
+
                 //combine data
                 foreach ( $members as $key=>$member ){
                     foreach ( $member as $date_key=>$data ){
@@ -58,12 +58,12 @@ class CobaltModelCommission extends JModelBase
                         }
                     }
                 }
-                
+
                 return $results;
-                
+
             }
         }
-        
+
         /**
          * Get Yearly Commission
          * @param $access_type we wish to filter by 'member','team','company'
@@ -71,16 +71,16 @@ class CobaltModelCommission extends JModelBase
          * @return mixed $results
          */
         function getYearlyCommission($access_type=null,$access_id=null){
-            
+
             //get member data
             if ( $access_type == 'member' ){
                 return $this->getYearlyCommissionData( $access_id );
             }else{
-                
+
                 //array to assign our data
                 $members = array();
                 $results = array();
-                
+
                 //get team data
                 if ( $access_type == 'team' ){
                     //get team members
@@ -89,7 +89,7 @@ class CobaltModelCommission extends JModelBase
                         $members[] = $this->getYearlyCommissionData($member['id']);
                     }
                 }
-                
+
                 //get company data
                 if ( $access_type == 'company' ){
                     //get company users
@@ -98,7 +98,7 @@ class CobaltModelCommission extends JModelBase
                         $members[] = $this->getYearlyCommissionData($member['id']);
                     }
                 }
-                
+
                 //combine data
                 foreach ( $members as $key=>$member ){
                     foreach ( $member as $date_key=>$data ){
@@ -109,12 +109,12 @@ class CobaltModelCommission extends JModelBase
                         }
                     }
                 }
-                
+
                 //return data
                 return $results;
-                
+
             }
-            
+
         }
 
         /**
@@ -124,27 +124,27 @@ class CobaltModelCommission extends JModelBase
          */
         function getMonthlyCommissionData($id){
             //get db
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //get current month
             $current_month = CobaltHelperDate::formatDBDate(date('Y-m-01 00:00:00'));
-            
+
             //get weeks in month
             $weeks = CobaltHelperDate::getWeeksInMonth($current_month);
-                        
+
             //get stage id to filter deals by
             $won_stage_ids = CobaltHelperDeal::getWonStages();
-            
+
             //gen query
             $results = array();
             foreach ( $weeks as $week ){
                 $start_date = $week['start_date'];
                 $end_date = $week['end_date'];
-                
+
                 //flush query
                 $query = $db->getQuery(true);
-                
+
                 //gen query string
                 $query->select("d.owner_id, SUM(d.amount) AS y");
                 $query->from("#__deals AS d");
@@ -153,25 +153,25 @@ class CobaltModelCommission extends JModelBase
                 $query->where("d.modified < '$end_date'");
                 $query->where("d.modified IS NOT NULL");
                 $query->where("d.owner_id=$id");
-                
+
                 //group results
                 $query->group("d.owner_id");
 
                 //sort by published deals
                 $query->where("d.published>0");
-                
+
                 //return results
                 $db->setQuery($query);
                 $results[] = $db->loadAssoc();
 
             }
-            
+
             //clean data for commission rate
             foreach( $results as $key=>$result ){
                 $commission_rate = CobaltHelperUsers::getCommissionRate($result['owner_id']);
                 $results[$key]['y'] = (int)$result['y']*($commission_rate/100);
             }
-            
+
             //return results
             return $results;
         }
@@ -183,26 +183,26 @@ class CobaltModelCommission extends JModelBase
          */
         function getYearlyCommissionData($id){
             //get db
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //get current year and months to loop through
             $current_year = CobaltHelperDate::formatDBDate(date('Y-01-01 00:00:00'));
             $month_names = CobaltHelperDate::getMonthNames();
             $months = CobaltHelperDate::getMonthDates();
-            
+
             //get stage id to filter deals by
             $won_stage_ids = CobaltHelperDeal::getWonStages();
-            
+
             //gen query
             $results = array();
             foreach ( $months as $month ){
                 $start_date = $month['date'];
                 $end_date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',strtotime("$start_date + 1 months")));
-                
+
                 //flush the query
                 $query = $db->getQuery(true);
-                
+
                 //generate query string
                 $query->select("d.owner_id,d.modified,SUM(d.amount) AS y");
                 $query->from("#__deals AS d");
@@ -211,29 +211,28 @@ class CobaltModelCommission extends JModelBase
                 $query->where("d.modified < '$end_date'");
                 $query->where("d.modified IS NOT NULL");
                 $query->where("d.owner_id=$id");
-                
+
                 //group results
                 $query->group("d.owner_id");
 
                 //sort by published deals
                 $query->where("d.published>0");
-                
+
                 //get results and assign to month
                 $db->setQuery($query);
                 $results[] = $db->loadAssoc();
 
             }
-            
+
             //clean data for commission rate
             foreach( $results as $key=>$result ){
                 $commission_rate = CobaltHelperUsers::getCommissionRate($result['owner_id']);
                 $results[$key]['y'] = (int)$result['y']*($commission_rate/100);
             }
-            
+
             //return
             return $results;
         }
-        
-        
+
+
 }
-    

@@ -8,32 +8,32 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperNote extends JObject
  {
 
     //get category listings for notes
-    function getCategories() {
- 
+    public static function getCategories() {
+
         //grab db
         $db = JFactory::getDbo();
-        
-        //generate query 
+
+        //generate query
         $query = $db->getQuery(true);
         $query->select("name,id");
         $query->from("#__notes_categories");
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
         $categories = array();
         foreach ( $results as $key=>$category ){
-            $categories[$category['id']] = $category['name']; 
+            $categories[$category['id']] = $category['name'];
         }
         return $categories;
-        
+
     }
 
-        
+
  }

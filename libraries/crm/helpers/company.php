@@ -8,30 +8,30 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperCompany extends JObject
  {
- 	
-	function getCompany($id){
-		
+
+	public static function getCompany($id){
+
 		//get db object
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		
+
 		//generate query
 		$query->select("name,id FROM #__companies");
 		$query->where('id='.$id);
 		$db->setQuery($query);
-		
+
 		//return results
 		$row = $db->loadAssocList();
 		return $row;
-		
+
 	}
-    
+
     //get company filter types
-    function getTypes(){
+    public static function getTypes(){
         return array(   'all'=>CRMText::_('COBALT_ALL_COMPANIES'),
                         'today'=>CRMText::_('COBALT_COMPANIES_TASKS_TODAY'),
                         'tomorrow'=>CRMText::_('COBALT_COMPANIES_TASKS_TOMORROW'),
@@ -39,9 +39,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         'recent'=>CRMText::_('COBALT_RECENTLY_ADDED'),
                         'past'=>CRMText::_('COBALT_CONTACTED_LONG_AGO'));
     }
-    
+
     //get column filters
-    function getColumnFilters(){
+    public static function getColumnFilters(){
         return array(   'avatar'        =>  ucwords(CRMText::_('COBALT_AVATAR')),
                         'description'   =>  ucwords(CRMText::_('COBALT_EDIT_TASK_DESCRIPTION')),
                         'phone'         =>  ucwords(CRMText::_('COBALT_PEOPLE_PHONE')),
@@ -57,20 +57,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
     //get selected column filters
-    function getSelectedColumnFilters(){
-        
+    public static function getSelectedColumnFilters(){
+
         //get the user session data
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        
+
         $query->select("companies_columns");
         $query->from("#__users");
         $query->where("id=".CobaltHelperUsers::getUserId());
         $db->setQuery($query);
         $results = $db->loadResult();
-        
+
         //unserialize columns
-        $columns = unserialize($results); 
+        $columns = unserialize($results);
         if ( is_array($columns) ){
             return $columns;
         }else{
@@ -78,12 +78,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return CobaltHelperCompany::getDefaultColumnFilters();
         }
     }
-    
+
     //get default column filters
-    function getDefaultColumnFilters(){
+    public static function getDefaultColumnFilters(){
         return array( 'avatar','phone','notes','added','updated' );
-    }	
-		
-		
+    }
+
+
  }
- 	

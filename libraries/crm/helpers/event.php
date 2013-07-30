@@ -8,38 +8,38 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperEvent extends JObject
  {
 
     //get category listings for events
-    function getCategories($appendLanguage=FALSE) {
- 
+    public static function getCategories($appendLanguage=FALSE) {
+
         //grab db
         $db = JFactory::getDbo();
-        
-        //generate query 
+
+        //generate query
         $query = $db->getQuery(true);
         $query->select("name,id");
         $query->from("#__events_categories");
-        
+
         //return results
         $db->setQuery($query);
         $results = $db->loadAssocList();
         $categories = array();
         foreach ( $results as $key=>$category ){
-            $categories[$category['id']] = $appendLanguage ? CRMText::_('COBALT_OF_TYPE').' '.$category['name'] : $category['name']; 
+            $categories[$category['id']] = $appendLanguage ? CRMText::_('COBALT_OF_TYPE').' '.$category['name'] : $category['name'];
         }
         return $categories;
-        
+
     }
-    
+
     //get repeat intervals
-    function getRepeatIntervals() {
-        
+    public static function getRepeatIntervals() {
+
         return array(
-            'none'      => CRMText::_("COBALT_DOESNT_REPEAT"), 
+            'none'      => CRMText::_("COBALT_DOESNT_REPEAT"),
             'daily'     => CRMText::_("COBALT_DAILY"),
             'weekdays'  => CRMText::_("COBALT_EVERY_WEEKDAY"),
             'weekly'    => CRMText::_("COBALT_WEEKLY"),
@@ -48,10 +48,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             'monthly'   => CRMText::_("COBALT_MONTHLY"),
             'yearly'    => CRMText::_("COBALT_YEARLY")
         );
-        
+
     }
 
-    function getEventStatuses(){
+    public static function getEventStatuses(){
 
         return array(
                 '0' =>  CRMText::_('COBALT_INCOMPLETE'),
@@ -60,7 +60,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    function getEventTypes(){
+    public static function getEventTypes(){
 
         return array(
                 'all'   =>  CRMText::_('COBALT_TASKS_SLASH_EVENTS'),
@@ -71,7 +71,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
 
-    function getEventDueDates(){
+    public static function getEventDueDates(){
 
         return array(
                 'any'           => CRMText::_('COBALT_DUE_ANY_TIME'),
@@ -84,7 +84,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    function getEventAssociations(){
+    public static function getEventAssociations(){
 
         return array(
                 'any'       => CRMText::_('COBALT_ANYTHING'),
@@ -95,5 +95,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-        
+
  }

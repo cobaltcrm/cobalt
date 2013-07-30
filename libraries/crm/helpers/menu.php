@@ -8,15 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
- 
+
  class CobaltHelperMenu extends JObject
  {
-     
+
         //load the navigation menu
-        function loadNavi(){
-            
+        public static function loadNavi(){
+
             $links = self::getMenuLinks();
 
             foreach($links as $link) {
@@ -28,8 +28,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        function getMenuLinks(){
-            return array( 
+        public static function getMenuLinks(){
+            return array(
                     array(
                         'link'   => JRoute::_('index.php?view=cobalt'),
                         'class' => 'icon-home',
@@ -177,8 +177,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 );
         }
 
-        function getQuickMenuLinks(){
-            return array( 
+        public static function getQuickMenuLinks(){
+            return array(
                     array(
                         'link' => JRoute::_('index.php?controller=users&task=add'),
                         'class' => 'icon-user',
@@ -236,7 +236,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 );
         }
 
-        function getHelpMenuLinks(){
+        public static function getHelpMenuLinks(){
 
             $types = array(
                      array(
@@ -296,14 +296,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         'completed_status' => CobaltHelperConfig::getConfigValue('launch_default')
                     )
                 );
-        
+
             return $types;
 
 
         }
 
 
-        function getMenuModules(){
+        public static function getMenuModules(){
 
             $modules = array();
 
@@ -355,7 +355,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             /** Auto show input tooltips **/
             $input_fields = explode(',',$app->input->get('show_fields'));
-            if ( count ( $input_fields ) > 0 ){ 
+            if ( count ( $input_fields ) > 0 ){
                 $document = JFactory::getDocument();
                 foreach ( $input_fields as $input_field){
                     $document->addScriptDeclaration(
@@ -368,7 +368,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        function getHelpTypes(){
+        public static function getHelpTypes(){
             $links = self::getHelpMenuLinks();
             $types = array();
             foreach ( $links as $link ){
@@ -376,6 +376,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             }
             return $types;
         }
-        
+
  }
-    

@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperMail extends JObject
  {
 
 
-	function loadStats($person_id)
+	public static function loadStats($person_id)
 	{
 
 		//Load stats model
@@ -27,61 +27,61 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		//Get Total Deals Amount
 		$activeDeals = $statsModel->getActiveDealsAmount();
 		$coffeeView->totalDealsAmount = $activeDeals;
-		
+
 		//Get Stage Details
 		$stages = $statsModel->getStages();
 		$coffeeView->stages = $stages;
-		
+
 		//Get Number of Converted Leads
 		$leads = $statsModel->getLeads();
 		$coffeeView->numConvertedLeads = $leads['contact'];
-		
+
 		//Get Number of New Leads
 		$coffeeView->numNewLeads = $leads['lead'];
-		
+
 		//Get Note Details
 		$notes = $statsModel->getNotes();
 		$coffeeView->notes = $notes;
-		
+
 		//Get ToDo Details
 		$todos = $statsModel->getTodos();
 		$coffeeView->todos = $todos;
-		
+
 		//Get Deal Activity
 		$dealActivity = $statsModel->getDealActivity();
 		$coffeeView->dealActivity = $dealActivity;
-		
+
 		//Get Lead Activity
 		$coffeeView->leadActivity = $leadActivity;
-		
+
 		//Get Contact Activity
 		$coffeeView->contactActivity = $contactActivity;
 
-		return $coffeeView;	
+		return $coffeeView;
 	}
 
-	function sendMail($layout,$recipient)
+	public static function sendMail($layout,$recipient)
 	{
 		$mailer =& JFactory::getMailer();
 		$mailer->isHTML(true);
 		$mailer->Encoding = 'base64';
-		
+
 		$config =& JFactory::getConfig();
-		$sender = array( 
+		$sender = array(
     				$config->getValue( 'config.mailfrom' ),
-   					$config->getValue( 'config.fromname' ) 
+   					$config->getValue( 'config.fromname' )
    				);
- 
-		$mailer->setSender($sender);		
+
+		$mailer->setSender($sender);
 		$mailer->addRecipient($recipient);
 
 		$mailer->setSubject(CRMText::_('COBALT_COFFEE_REPORT_SUBJECT').' '.CobaltHelperDate::formatDate(date('Y-m-d')));
-		
+
 		ob_start();
-		
+
 		$layout->display();
 		$body = ob_get_contents();
-		
+
 		ob_end_clean();
 
 		$mailer->setBody($body);

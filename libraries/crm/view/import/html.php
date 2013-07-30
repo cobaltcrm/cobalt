@@ -8,17 +8,17 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewImportHtml extends JViewHtml
 {
 	function render($tpl = null)
 	{
-        
+
 		$app = JFactory::getApplication();
 
 		//Load java libs
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScript(JURI::base().'libraries/crm/media/js/import_manager.js');
 
 		if ( count($_FILES) > 0 ){
@@ -51,12 +51,12 @@ class CobaltViewImportHtml extends JViewHtml
 						$success = "UNSUCCESSFULLY";
 						$view = "import&import_type=".$app->input->get('import_type');
 					}
-				$app =& JFactory::getApplication();
+				$app = JFactory::getApplication();
 				$msg = CRMText::_('COBALT_'.$success.'_IMPORTED_ITEMS');
 				$app->redirect(JRoute::_('index.php?view='.$view),$msg);
 			}
 
-			$doc =& JFactory::getDocument();
+			$doc = JFactory::getDocument();
          	$doc->addScriptDeclaration('import_length='.count($import_data).';');
 
 		}
@@ -69,5 +69,5 @@ class CobaltViewImportHtml extends JViewHtml
 	    //display
 		return parent::render();
 	}
-	
+
 }

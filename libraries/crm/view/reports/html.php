@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewReportsHtml extends JViewHtml
 {
@@ -21,15 +21,15 @@ class CobaltViewReportsHtml extends JViewHtml
 	    $this->menu = CobaltHelperTemplate::loadReportMenu();
 
         //get document
-        $this->document =& JFactory::getDocument();
-        
+        $this->document = JFactory::getDocument();
+
         //determine view layout
         $this->layout = $this->getLayout();
         $func = "_display_".$this->layout;
         if ( method_exists($this, $func) ){
             $this->$func();
         }
-        
+
         //assign user filter priviliges
         $this->member_role = CobaltHelperUsers::getRole();
         $this->user_id = CobaltHelperUsers::getUserId();
@@ -37,22 +37,22 @@ class CobaltViewReportsHtml extends JViewHtml
 
         //if the user is not basic then they are able to filter through company/team/user data
         if ( $this->member_role != 'basic' ){
-            
+
             //exec can see teams
             if ( $this->member_role == 'exec' ){
                 $this->teams = CobaltHelperUsers::getTeams();
             }
-            
+
             //manager and exec users
             $this->users = CobaltHelperUsers::getUsers();
         }
-        
+
         //assign team names for drop downs
         $this->team_names = CobaltHelperDropdown::getTeamNames();
-       
+
         //assign user names for drop downs
         $this->user_names = CobaltHelperDropdown::getUserNames();
-        
+
         //assign categories for drop downs
         $this->categories = CobaltHelperNote::getCategories();
 
@@ -61,28 +61,28 @@ class CobaltViewReportsHtml extends JViewHtml
 	}
 
     function _display_default(){
-        
+
         //load javascripts
         $this->document->addScript( JURI::base().'libraries/crm/media/js/highcharts.js' );
         $this->document->addScript( JURI::base().'libraries/crm/media/js/sales_dashboard.js' );
-        
+
         //get data for sales graphs
         $graphModel = new CobaltModelGraphs();
-        $this->graph_data = $graphModel->getGraphData(); 
+        $this->graph_data = $graphModel->getGraphData();
     }
 
     function _display_edit_custom_report(){
 
         //load javascripts
         $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
-        
+
         //if we are editing an existing entry
         $id = $this->app->input->get('id');
         if ( $id != null ){
             $reportModel = new CobaltModelReport();
             $this->report = $reportModel->getCustomReports($id);
         }
-        
+
         //assign references
         $this->columns = CobaltHelperDeal::getAllCustomFields($id);
     }
@@ -96,7 +96,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->report = $reportModel->getCustomReports($this->app->input->get('id'));
         $this->report_data = $reportModel->getCustomReportData($this->app->input->get('id'));
         $state = $reportModel->getState();
-        
+
 
         //info for dropdowns
         $deal_amounts = CobaltHelperDeal::getAmounts();
@@ -120,7 +120,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $custom_report_header->team_names = CobaltHelperDropdown::getTeamNames();
         $custom_report_header->user_names = CobaltHelperDropdown::getUserNames();
         $custom_report_header->state = $state;
-                    
+
         //assign refs to view
         $this->custom_report_header = $custom_report_header;
         $this->custom_report_list = $custom_report_list;
@@ -132,7 +132,7 @@ class CobaltViewReportsHtml extends JViewHtml
 
         //load javascripts
         $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
-        
+
         //get info from model
         $reportModel = new CobaltModelReport();
         $reports = $reportModel->getCustomReports();
@@ -140,7 +140,7 @@ class CobaltViewReportsHtml extends JViewHtml
 
         //list view
         $custom_reports_list = CobaltHelperView::getView('reports','custom_reports_filter','phtml', array('reports'=>$reports));
-        
+
         //assign references
         $this->custom_reports_list = $custom_reports_list;
         $this->reports = $reports;
@@ -164,10 +164,10 @@ class CobaltViewReportsHtml extends JViewHtml
         $categories = $noteModel->getNoteCategories();
         $notes_header->categories       = $categories;
         $notes_header->created_dates    = CobaltHelperDate::getCreatedDates();
-        
+
          // Initialise state variables.
         $state = $noteModel->getState();
-        
+
         //assign refs to view
         $this->notes_header = $notes_header;
         $this->notes_footer = $notes_footer;
@@ -181,10 +181,10 @@ class CobaltViewReportsHtml extends JViewHtml
         $dealModel = new CobaltModelDeal();
         $dealModel->set('archived',0);
         $deals = $dealModel->getDeals();
-        
+
         //pagination
         $this->pagination = $dealModel->getPagination();
-        
+
          // Initialise state variables.
         $this->state = $dealModel->getState();
 
@@ -198,7 +198,7 @@ class CobaltViewReportsHtml extends JViewHtml
         //get sources for reports
         $sourceModel = new CobaltModelSource();
         $sources = $sourceModel->getRoiSources();
-         
+
          // Initialise state variables.
         $state = $sourceModel->getState();
 
@@ -206,7 +206,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $roi_report_header = CobaltHelperView::getView('reports','roi_report_header','phtml',array('state'=>$state));
         $roi_report_list = CobaltHelperView::getView('reports','roi_report_filter','phtml',array('sources'=>$sources));
         $roi_report_footer = CobaltHelperView::getView('reports','roi_report_footer','phtml');
-        
+
         //assign rfs to view
         $this->roi_report_header = $roi_report_header;
         $this->roi_report_list = $roi_report_list;
@@ -222,10 +222,10 @@ class CobaltViewReportsHtml extends JViewHtml
         $dealModel->set('archived',0);
         $dealModel->set('limit',0);
         $reports = $dealModel->getDeals();
-        
+
         //get model state
         $state = $dealModel->getState();
-        
+
         //info for dropdowns
         $deal_amounts = CobaltHelperDeal::getAmounts();
         $deal_sources = CobaltHelperDeal::getSources();
@@ -264,10 +264,10 @@ class CobaltViewReportsHtml extends JViewHtml
         $dealModel->set('archived',0);
         $dealModel->set('limit',0);
         $reports = $dealModel->getReportDeals();
-        
+
          // Initialise state variables.
         $state = $dealModel->getState();
-        
+
         //info for dropdowns
         $deal_amounts       = CobaltHelperDeal::getAmounts();
         $deal_stages        = CobaltHelperDeal::getActiveStages(TRUE);
@@ -296,7 +296,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->sales_pipeline_footer = $sales_pipeline_footer;
         $this->state = $state;
         $this->reports = $reports;
-        
+
     }
-	
+
 }

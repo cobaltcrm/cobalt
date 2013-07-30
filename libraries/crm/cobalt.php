@@ -49,17 +49,17 @@ if( $format != "raw" && !in_array($controller,$overrides) ) {
 	}
 
 	//Grab document instance
-	$document = & JFactory::getDocument();
-	
+	$document = JFactory::getDocument();
+
 	//load scripts
 	$document->addScript( JURI::base().'libraries/crm/media/js/jquery.js' );
 	$document->addScript( JURI::base().'libraries/crm/media/js/jquery-ui.js' );
 	$document->addScript( JURI::base().'libraries/crm/media/js/jquery.tools.min.js' );
-	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap.min.js' );	
-	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-colorpicker.js' );	
-	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-datepicker.js' );	
+	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap.min.js' );
+	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-colorpicker.js' );
+	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-datepicker.js' );
 	$document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-fileupload.js' );
-	
+
     //start component div wrapper
 	if ( $app->input->get('view') != "print"){
 		CobaltHelperTemplate::loadToolbar();
@@ -68,13 +68,13 @@ if( $format != "raw" && !in_array($controller,$overrides) ) {
 
 		//mobile detection
 		if(CobaltHelperTemplate::isMobile()) {
-	  		 $app->input->set('tmpl','component');	
+	  		 $app->input->set('tmpl','component');
 			 $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
-			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' ); 
-			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' ); 
-			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.js' ); 
-			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.extensions.js' ); 
-			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.services.js' ); 
+			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' );
+			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' );
+			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.js' );
+			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.extensions.js' );
+			 $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.services.js' );
 			 $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.mobile.js');
 			 $document->setMetaData('viewport','width=device-width, initial-scale=1');
 		} else {
@@ -84,16 +84,16 @@ if( $format != "raw" && !in_array($controller,$overrides) ) {
 	    	$document->addScript( JURI::base().'libraries/crm/media/js/filters.js');
 	    	$document->addScript( JURI::base().'libraries/crm/media/js/autogrow.js');
 	    	$document->addScript( JURI::base().'libraries/crm/media/js/jquery.cluetip.min.js');
-	    	
+
 		}
 
 	//load styles
-	CobaltHelperStyles::loadStyleSheets();	   
+	CobaltHelperStyles::loadStyleSheets();
 
 	//get user object
 	$user = CobaltHelperUsers::getLoggedInUser();
 
-    //if the user is logged in continue else redirect to joomla login    
+    //if the user is logged in continue else redirect to joomla login
     if ( $user ){
 		CobaltHelperActivity::saveUserLoginHistory();
 	} elseif($app->input->getWord('view')!='login' && $app->input->getWord('controller')!='login') {
@@ -103,7 +103,7 @@ if( $format != "raw" && !in_array($controller,$overrides) ) {
 }
 
 //load javascript language
-CobaltHelperTemplate::loadJavascriptLanguage(); 
+CobaltHelperTemplate::loadJavascriptLanguage();
 
 // Create the controller
 $classname	= 'CobaltController'.$controller;
@@ -118,6 +118,6 @@ if(CobaltHelperUsers::isFullscreen()) {
 $controller->execute();
 
 //end componenet wrapper
-if( $format != "raw" && $controller != "ajax" ) { 
+if( $format != "raw" && $controller != "ajax" ) {
 	CobaltHelperTemplate::endCompWrap();
 }

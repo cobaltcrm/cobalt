@@ -8,61 +8,49 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelMenu extends JModelBase
 {
-    /**
-     * 
-     *
-     * @access  public
-     * @return  void
-     */
-    function __construct()
-    {
-        parent::__construct();
-        
-    }
-    
     function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('Menu','Table');
+        $row = JTable::getInstance('Menu','Table');
         $data = $app->input->getRequest( 'post' );
-        
+
         //date generation
         $date = date('Y-m-d H:i:s');
         $data['modified'] = $date;
 
         //serialize menu items for storage
         $data['menu_items'] = serialize($data['menu_items']);
-        
+
         // Bind the form fields to the table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-     
+
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-        
+
         return true;
     }
 
     function getMenu(){
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("*")->from("#__menu")->where("id=1");

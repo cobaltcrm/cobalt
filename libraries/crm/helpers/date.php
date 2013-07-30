@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperDate extends JObject
  {
      /**
       * Get timezone dropdown info for profile
       */
-     function getTimezones(){
+     public static function getTimezones(){
 
              $list = timezone_identifiers_list();
              $zones =  array();
@@ -26,25 +26,25 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             return $zones;
      }
-     
+
      /*
       * Get date formates for profile
       */
-     function getDateFormats(){
+     public static function getDateFormats(){
          return array( 'm/d/y' => 'mm/dd/yy', 'd/m/y' => 'dd/mm/yy' );
      }
-     
+
      /*
       * Get time formates for profile
       */
-     function getTimeFormats(){
+     public static function getTimeFormats(){
          return array( 'g:i A' => '7:30 PM', 'H:i' => '19:30' );
      }
-     
+
      /*
       * Get goal dates for filtering
       */
-     function getGoalDates(){
+     public static function getGoalDates(){
          return array(     'this_week'     => CRMText::_("COBALT_THIS_WEEK"),
                             'next_week'     => CRMText::_("COBALT_NEXT_WEEK"),
                             'this_month'    => CRMText::_("COBALT_THIS_MONTH"),
@@ -54,11 +54,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                             'this_year'     => CRMText::_("COBALT_THIS_YEAR"),
                             'custom'        => CRMText::_("COBALT_CUSTOM") );
      }
-     
+
      /*
       * Get Created dates for filtering
       */
-     function getCreatedDates(){
+     public static function getCreatedDates(){
          return array(     'this_week'     => CRMText::_("COBALT_THIS_WEEK"),
                             'last_week'     => CRMText::_("COBALT_LAST_WEEK"),
                             'this_month'    => CRMText::_("COBALT_THIS_MONTH"),
@@ -66,11 +66,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                             'today'         => CRMText::_("COBALT_TODAY"),
                             'yesterday'     => CRMText::_("COBALT_YESTERDAY"), );
      }
-     
+
      /*
       * Get the weeks in a month for report page data creation
       */
-     function getWeeksInMonth($current_month){
+     public static function getWeeksInMonth($current_month){
             $month = intval(date('m',strtotime($current_month))); //force month to single integer if '0x'
             $year = intval(date('Y',strtotime($current_month)));
             $suff = array('st','nd','rd','th','th','th'); //week suffixes
@@ -106,7 +106,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     /*
      * Get month names for report page charts and data creation
      */
-    function getMonthNames(){
+    public static function getMonthNames(){
         return array(      CRMText::_('COBALT_JANUARY'),
                            CRMText::_('COBALT_FEBRUARY'),
                            CRMText::_('COBALT_MARCH'),
@@ -120,11 +120,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                            CRMText::_('COBALT_NOVEMBER'),
                            CRMText::_('COBALT_DECEMBER')  );
     }
-    
+
     /*
      * Get abbreviated month names for report page charts and data creation
      */
-    function getMonthNamesShort(){
+    public static function getMonthNamesShort(){
         return array(   CRMText::_('COBALT_JAN'),
                         CRMText::_('COBALT_FEB'),
                         CRMText::_('COBALT_MAR'),
@@ -138,11 +138,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         CRMText::_('COBALT_NOV'),
                         CRMText::_('COBALT_DEC')  );
     }
-    
+
     /*
      * Get month start and end dates and names for report page charts and data creation
      */
-    function getMonthDates(){
+    public static function getMonthDates(){
         $current_year = date('Y-01-01 00:00:00');
         $month_names = CobaltHelperDate::getMonthNames();
         $months = array();
@@ -152,7 +152,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $months;
     }
 
-    function getTimeIntervals(){
+    public static function getTimeIntervals(){
 
         $starttime = "7:00:00";
         $temptime = strtotime($starttime);
@@ -169,7 +169,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    function getSiteTimezone(){
+    public static function getSiteTimezone(){
 
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -179,7 +179,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    function formatDBDate($date, $time=true){
+    public static function formatDBDate($date, $time=true){
         $userTz = CobaltHelperUsers::getTimezone();
         $dateTime = new DateTime($date, new DateTimeZone($userTz));
 
@@ -197,7 +197,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $time;
     }
 
-    function formatDate($date,$time=false,$useUserDateFormat=TRUE){
+    public static function formatDate($date,$time=false,$useUserDateFormat=TRUE){
 
       if ( strtotime($date) <= 0 ){
         return "";
@@ -229,21 +229,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       }catch(Exception $e){
         return "";
       }
-        
+
     }
 
-    function formatDateString($date){
+    public static function formatDateString($date){
       $dateFormat = CobaltHelperUsers::getDateFormat();
       return date($dateFormat,strtotime($date));
     }
 
-    function formatTimeString($time,$timeFormatOverride=null){
+    public static function formatTimeString($time,$timeFormatOverride=null){
       $timeFormat = $timeFormatOverride ? $timeFormatOverride : CobaltHelperUsers::getTimeFormat();
       return date($timeFormat,strtotime($time));
     }
 
 
-    function formatTime($time,$timeFormatOverride=null){
+    public static function formatTime($time,$timeFormatOverride=null){
 
           $exp = explode(" ",$time);
           if ( count($exp) < 1 ){
@@ -253,16 +253,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
           $time_format = $timeFormatOverride ? $timeFormatOverride : CobaltHelperUsers::getTimeFormat();
           $dateTime = self::convertDateToUserTimezone($time);
-          
+
           return $dateTime->format($time_format);
 
     }
 
-    function convertDateToUserTimezone($date,$returnString=false){
+    public static function convertDateToUserTimezone($date,$returnString=false){
 
         $userTz = CobaltHelperUsers::getTimezone();
         $utc = "UTC";
-        
+
         $dateTime = new DateTime($date, new DateTimeZone($utc));
         $dateTime->setTimezone(new DateTimeZone($userTz));
 
@@ -271,7 +271,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 
 
-    function getCurrentTime($string=FALSE,$showTime=FALSE){
+    public static function getCurrentTime($string=FALSE,$showTime=FALSE){
         $timezone = CobaltHelperUsers::getTimezone();
         $current    = new DateTime();
         $current->setTimezone(new DateTimeZone($timezone));
@@ -282,7 +282,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         return $current;
     }
 
-    function getElapsedTime($date,$showDays=TRUE,$showMonths=TRUE,$showYears=TRUE, $showHours=TRUE, $showMinutes=TRUE,$showSeconds=FALSE){
+    public static function getElapsedTime($date,$showDays=TRUE,$showMonths=TRUE,$showYears=TRUE, $showHours=TRUE, $showMinutes=TRUE,$showSeconds=FALSE){
 
         $time = time() - strtotime($date); // to get the time since that moment
 
@@ -303,22 +303,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
 
         return CobaltHelperDate::formatDate($date);
-        
+
     }
 
-    function pluralize( $count, $text )
+    public static function pluralize( $count, $text )
     {
         return $count . ( ( $count == 1 ) ? ( " $text " ) : ( " ${text}s " ) );
     }
 
-    function x_week_range(&$start_date, &$end_date, $date) {
+    public static function x_week_range(&$start_date, &$end_date, $date) {
       $ts = strtotime($date);
       $start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
       $start_date = date('Y-m-d H:i:s', $start);
       $end_date = date('Y-m-d H:i:s', strtotime('next saturday', $start));
     }
 
-    function getRelativeDate($display_date) 
+    public static function getRelativeDate($display_date)
     {
 
             $now                  = self::getCurrentTime(TRUE,FALSE);
@@ -332,7 +332,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             $week_after_next = null;
             $week_after_next_week = null;
             self::x_week_range($week_after_next,$week_after_next_week,self::getCurrentTime(true,FALSE)." + 1 week");
-            
+
             $next_month           = date("Y-m-1",strtotime(self::getCurrentTime(TRUE,FALSE)." +1 month"));
             $next_next_month      = date("Y-m-1",strtotime(self::getCurrentTime(TRUE,FALSE)." +2 months"));
 

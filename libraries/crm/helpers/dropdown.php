@@ -8,22 +8,22 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperDropdown extends JObject
  {
 
- 	function generateDropdown($type,$selection=null,$name=null, $raw=false) {
- 
+ 	public static function generateDropdown($type,$selection=null,$name=null, $raw=false) {
+
  		//base html
- 		$html = ''; 
-		
+ 		$html = '';
+
 		//grab db
 		$db = JFactory::getDbo();
-		
+
 		//generate query based on type
  		$query = $db->getQuery(true);
-		
+
 		switch ( $type ) {
 			case "company":
 				$query->select('id,name FROM #__companies AS c where c.published > 0');
@@ -62,7 +62,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	            }
 			break;
 		}
-		
+
 		//run query and grab results
 		if ( $query!="" ){
 			$db->setQuery($query);
@@ -74,7 +74,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		} else if ( !is_array($row) && !(count($row) > 0)){
 			$row = array();
 		}
-		
+
 		if($raw) {
 			return $row;
 		}
@@ -102,7 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			 				$selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
 							$html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
 						}
-						
+
 					$html .='</select>';
 				break;
 			case "source":
@@ -137,7 +137,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			 				$selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
 							$html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
 						}
-						
+
 					$html .='</select>';
 				break;
 			case "people_status":
@@ -149,7 +149,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			 				$selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
 							$html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
 						}
-						
+
 					$html .='</select>';
 				break;
 			case "deal":
@@ -161,7 +161,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			 				$selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
 							$html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
 						}
-						
+
 					$html .='</select>';
 				break;
 
@@ -173,15 +173,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				$html 	.= '<li><a href="javascript:void(0)" onclick="saveAjax(\''.$type.'\',\''.$model.'\',\'Lead\')">'.CRMText::_('COBALT_PERSON_LEAD').'</a></li>';
 				$html 	.= '<li><a href="javascript:void(0)" onclick="saveAjax(\''.$type.'\',\''.$model.'\',\'Contact\')">'.CRMText::_('COBALT_PEOPLE_CONTACT').'</a></li>';
 				$html 	.= "</ul>";
-				
+
 				break;
 		}
-		
+
 		return $html;
- 
+
  	}
 
- 	function getModelFromType($type) {
+ 	public static function getModelFromType($type) {
  		if(stripos($type,'person')!==false) {
  			$model = 'people';
  		}
@@ -190,30 +190,30 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
  	}
 
-	function generateCustom($type,$id=null) {
- 					
+	public static function generateCustom($type,$id=null) {
+
 	 		//base html
-	 		$return = array(); 
-			
+	 		$return = array();
+
 			//grab db
 			$db = JFactory::getDbo();
-			
+
 			//generate query based on type
 	 		$query = $db->getQuery(true);
 			//determine specific entry to generate
 			$query->select("cf.* FROM #__".$type."_custom AS cf");
 
 			$query->order("cf.ordering");
-			
+
 			//set query
 			$db->setQuery($query);
 			$row = $db->loadAssocList();
-            
+
             //determine selected values
             if ( $id ) {
                 $custom_data = self::getCustomData($id,$type);
             }
-            
+
 
             if( is_array($row) && count($row) > 0 ) {
 
@@ -225,7 +225,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	                //determine selected values
 	                if ( $id && $custom['type'] != 'forecast' ){
-	                    $custom['selected'] = ( array_key_exists($custom['id'],$custom_data) ) ? $custom_data[$custom['id']] : CRMText::_('COBALT_CLICK_TO_EDIT'); 
+	                    $custom['selected'] = ( array_key_exists($custom['id'],$custom_data) ) ? $custom_data[$custom['id']] : CRMText::_('COBALT_CLICK_TO_EDIT');
 	                }
 					//append items to array
 					$return[] = $custom;
@@ -234,20 +234,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 			//return
 			return $return;
-		
+
 		}
 
 		//get custom data to prefill dropdowns
-	    function getCustomData($id,$type){
-	        
+	    public static function getCustomData($id,$type){
+
 	        //get dbo
-	        $db =& JFactory::getDBO();
+	        $db = JFactory::getDBO();
 	        $query = $db->getQuery(true);
-	        
+
 	        //query
 	        $query->select("* FROM #__".$type."_custom_cf");
 	        $query->where($type."_id=$id");
-	        
+
 	        //return results
 	        $db->setQuery($query);
 	        $db_results = $db->loadAssocList();
@@ -260,14 +260,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	        }
 
 	        return $results;
-	        
+
 	    }
 
 	    /**
 	     * Get custom field values from picklists // forecasts // otherwise return the value as it was an input field
 	     */
-	    function getCustomValue($customType,$customNameOrId,$customValue,$itemId){
-	    	$db =& JFactory::getDBO();
+	    public static function getCustomValue($customType,$customNameOrId,$customValue,$itemId){
+	    	$db = JFactory::getDBO();
 	    	$query = $db->getQuery(true);
 
 	    	$id = str_replace("custom_","",$customNameOrId);
@@ -313,40 +313,40 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
          * @param none
          * @return mixed $list goals with leaderboards matched
          */
-        function getLeaderBoards(){
+        public static function getLeaderBoards(){
             //load database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //load goals associate with user depending on team//role that have a leaderboard flag in the database
             $query->select("g.*")->from("#__goals AS g")->where("g.leaderboard=1");
-            
+
             //return goals
             $db->setQuery($query);
             $results = $db->loadAssocList();
-            
+
             //generate dropdown list array
             $list = array();
 
             if(count($results) > 0) {
 	            foreach ( $results as $key=>$goal ){
-	                $list[$goal['id']] = $goal['name']; 
+	                $list[$goal['id']] = $goal['name'];
 	            }
 			}
-			            
+
             //return results
             return $list;
         }
-        
+
         /**
          * Get team names for dropdowns
          * @param mixed $return array of team names for dropdown
          */
-        function getTeamNames(){
-            
+        public static function getTeamNames(){
+
             //get all teams
             $teams = CobaltHelperUsers::getTeams();
-            
+
             //generate array
             $return = array();
             $managerTeam = CobaltHelperUsers::getTeamId();
@@ -356,21 +356,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	            }
 	        }
 	        unset($return[$managerTeam]);
-            
+
             //return array
             return $return;
-            
+
         }
-        
+
         /**
          * Get user names for dropdowns
          * @param mixed $return array of user names for dropdown
          */
-        function getUserNames(){
-            
+        public static function getUserNames(){
+
             //get all teams
             $users = CobaltHelperUsers::getUsers();
-            
+
             //generate array
             $return = array();
             if ( is_array($users) && count($users) > 0 ){
@@ -378,10 +378,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	                $return[$value['id']] = $value['first_name'] . ' ' . $value['last_name'];
 	            }
         	}
-            
+
             //return array
             return $return;
-            
+
         }
 
         /**
@@ -389,13 +389,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
          * @param  [type] $contact_types [description]
          * @return [type]                [description]
          */
-        
-        function getContactTypes($contact_type_name=null){
+
+        public static function getContactTypes($contact_type_name=null){
 
         	$contact_types = array('contact' => CRMText::_('COBALT_CONTACT'), 'lead' => CRMText::_('COBALT_LEAD'));
 
         	if ( !in_array($contact_type_name,$contact_types) ){
-        		$currentValue = '0'; //Set this value from DB, etc. 
+        		$currentValue = '0'; //Set this value from DB, etc.
 				$arr = array();
 				foreach ( $contact_types as $name => $value ){
 				  $arr[] = JHTML::_('select.option', $name, $value);
@@ -407,7 +407,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        function getPeopleList(){
+        public static function getPeopleList(){
         	//open model
             $model = new CobaltModelPeople();
             //retrieve all people
@@ -418,22 +418,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     $people_list[$row['id']] = $row['first_name'].' '.$row['last_name'];
                 }
             }
-            
+
             return $people_list;
         }
 
         //load the navigation menu
-        function getMemberRoles(){
+        public static function getMemberRoles(){
             return array(   'exec'=>'Executive',
                             'manager'=>'Manager',
                             'basic'=>'Basic'    );
         }
-        
-        
+
+
         //load teams to assign to users
-        public function getTeams($team=null){
+        public static function getTeams($team=null){
             //get database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             //query string
             //u.id//
@@ -457,10 +457,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             //return
             return $users;
         }
-        
-        public function getManagers($remove=null){
+
+        public static function getManagers($remove=null){
             //get database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             //query string
             $query->select("u.id,u.first_name,u.last_name,u.team_id");
@@ -481,14 +481,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             //return
             return $users;
         }
-        
-        function getSources(){
+
+        public static function getSources(){
             return array(  'per' => 'Per Lead/Deal',
                             'flat'=> 'Flat Fee'
                             );
         }
-        
-        function getCustomTypes($type){
+
+        public static function getCustomTypes($type){
         	switch ( $type ){
         		case "deal":
 		            $arr = array(  'number'    =>  JText::_('COBALT_NUMBER'),
@@ -515,17 +515,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         	}
         	return $arr;
         }
-        
-        function getTemplateTypes(){
+
+        public static function getTemplateTypes(){
             return array(  'milestone'     =>  JText::_('COBALT_MILESTONE'),
                             'call'          =>  JText::_('COBALT_CALL'),
                             'appointment'   =>  JText::_('COBALT_APPOINTMENT'),
                             'email'         =>  JText::_('COBALT_USERS_HEADER_EMAIL'),
                             'todo'          =>  JText::_('COBALT_TODO'),
-                            'fax'           =>  JText::_('COBALT_FAX')   );              
+                            'fax'           =>  JText::_('COBALT_FAX')   );
         }
 
-        function showImportTypes($selected="deals",$name="import_type",$class='class="inputbox"'){
+        public static function showImportTypes($selected="deals",$name="import_type",$class='class="inputbox"'){
 
             $import_types = array(
                 'deals'=>JText::_('COBALT_DEALS'),
@@ -541,7 +541,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        function getFormTypes($selected="lead",$name="type",$class="class='inputbox'"){
+        public static function getFormTypes($selected="lead",$name="type",$class="class='inputbox'"){
 
         	$import_types = array(
                 'lead'=>JText::_('COBALT_LEAD'),
@@ -558,9 +558,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
  		}
 
- 		function getFormFields($type){
+ 		public static function getFormFields($type){
  			$arr = array();
- 			
+
  			switch ( $type ){
  				case "people":
  					$base = array(
@@ -616,7 +616,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  			return $arr;
  		}
 
- 		function cleanCustomForm($data){
+ 		public static function cleanCustomForm($data){
  			if ( count($data) > 0 ){
  				foreach ( $data as $key => $field ){
  					if ( $field['type'] == "date" || $field['type'] == "forecast" ){
@@ -630,9 +630,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  			return $data;
  		}
 
- 		function generateDealStatuses($selected=null,$name="status_id",$class="class='inputbox'"){
+ 		public static function generateDealStatuses($selected=null,$name="status_id",$class="class='inputbox'"){
 
-        	$db =& JFactory::getDBO();
+        	$db = JFactory::getDBO();
         	$query = $db->getQuery(true);
         	$query->select("id,name")->from("#__deal_status");
 
@@ -656,6 +656,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             return JHTML::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
 
  		}
-        
-        
+
+
  }

@@ -8,14 +8,14 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
- 
+
  class CobaltHelperConfig extends JObject
  {
 
- 	public function getImapConfig(){
- 		$db =& JFactory::getDBO();
+ 	public static function getImapConfig(){
+ 		$db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("imap_host,imap_pass,imap_user")->from("#__config")->where("id=1");
         $db->setQuery($query);
@@ -31,7 +31,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	 * @param  boolean	$serializedArray		True if the field is stored as an array
 	 * @return mixed				The value of the field in the #__jf_configuration table
 	 */
-	function getConfigValue($field,$serializedArray=FALSE)
+	public static function getConfigValue($field,$serializedArray=FALSE)
 	{
 
 		$configModel = new CobaltModelConfig();
@@ -46,13 +46,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		return $value;
 	}
 
-	function getVersion(){
+	public static function getVersion(){
 
-		$xml =& JFactory::getXML( 'simple' );
- 
+		$xml = JFactory::getXML( 'simple' );
+
  		if ( file_exists(JPATH_SITE.'/administrator/cobalt.xml')) {
  			$xml->loadFile( JPATH_SITE.'/administrator/cobalt.xml' );
-			$position =& $xml->document->getElementByPath(  'version' );	
+			$position = $xml->document->getElementByPath(  'version' );
 			return $position->data();
  		} else {
  			return 0;
@@ -110,8 +110,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	        array( 'person', 'people'   )
 	        );
 
-	        $uncountable = array( 
-	        'sheep', 
+	        $uncountable = array(
+	        'sheep',
 	        'fish',
 	        'series',
 	        'species',
@@ -138,16 +138,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         if ( preg_match( $pattern[0], $string ) )
             return preg_replace( $pattern[0], $pattern[1], $string );
         }
-    
+
         return $string;
-    
+
     }
 
-    function getCurrency(){
+    public static function getCurrency(){
         return self::getConfigValue('currency');
     }
 
-    function checkAcymailing(){
+    public static function checkAcymailing(){
         jimport('joomla.filesystem.folder');
         if ( JFolder::exists(JPATH_ROOT.'/administrator/components/com_acymailing') ){
             return 1;
@@ -156,7 +156,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
     }
 
-    function getLanguages(){
+    public static function getLanguages(){
 
         jimport('joomla.filesystem.folder');
         $dirs = JFolder::folders(JPATH_SITE."/language");
@@ -171,14 +171,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     }
 
-    function getLanguage(){
+    public static function getLanguage(){
 
         $config = JFactory::getConfig();
         return $config->get('language');
 
     }
 
-    function saveLanguage($lang){
+    public static function saveLanguage($lang){
 
         $config = JFactory::getConfig();
         $config->set("language",$lang);

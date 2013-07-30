@@ -13,9 +13,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class CobaltHelperMailinglists extends JObject
 {
 
-	var $listId 	= NULL;
-	var $peopleIds 	= NULL;
-	var $subscriber = NULL;
+	public $listId 	= NULL;
+	public $peopleIds 	= NULL;
+	public $subscriber = NULL;
 
 	function __construct(){
 		$app = JFactory::getApplication();
@@ -24,7 +24,7 @@ class CobaltHelperMailinglists extends JObject
 		$this->subscriber = $this->getSubscriberId();
 	}
 
-	public function getSubscriberId(){
+	public static function getSubscriberId(){
 
 		$app = JFactory::getApplication();
 
@@ -52,7 +52,7 @@ class CobaltHelperMailinglists extends JObject
 	 * @param  [type] $listId=NULL [description]
 	 * @return [type] [description]
 	 */
-	public function getMailingLists($all=FALSE){
+	public static function getMailingLists($all=FALSE){
 
 		$subid = self::getSubscriberId();
 		$db =& JFactory::getDBO();
@@ -93,14 +93,14 @@ class CobaltHelperMailinglists extends JObject
 	 * @param  [type] $listId=NULL [description]
 	 * @return [type]              [description]
 	 */
-	public function getNewsletters($listId=NULL){
+	public static function getNewsletters($listId=NULL){
 
 		$listId = $listId ? $listId : $this->listId;
 		$subId = self::getSubscriberId();
 
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
-		
+
 		$query->select("mail.mailid,mail.subject,mail.published,mail.senddate,user.open,user.opendate")
 				->from("#__acymailing_mail AS mail")
 				->leftJoin("#__acymailing_listmail AS listmail ON listmail.mailid = mail.mailid")
@@ -119,7 +119,7 @@ class CobaltHelperMailinglists extends JObject
 	/**
 	 * Add Cobalt People to Acymailing Lists
 	 */
-	public function addMailingList($data){
+	public static function addMailingList($data){
 
 		$person_id = $data['person_id'];
 		$listid = $data['listid'];
@@ -179,7 +179,7 @@ class CobaltHelperMailinglists extends JObject
 	/**
 	 * Remove Cobalt People from Acymailing Lists
 	 */
-	public function removeMailingList($data){
+	public static function removeMailingList($data){
 
 		$person_id = $data['person_id'];
 		$listid = $data['listid'];
@@ -199,7 +199,7 @@ class CobaltHelperMailinglists extends JObject
 
 	}
 
-	public function getLinks(){
+	public static function getLinks(){
 
 		$app = JFactory::getApplication();
 

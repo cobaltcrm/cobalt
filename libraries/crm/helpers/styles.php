@@ -8,13 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelperStyles extends JObject
  {
-        function getSiteName(){
+        public static function getSiteName(){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $query->select("site_name")->from("#__branding")->where("assigned=1");
@@ -27,9 +27,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         }
 
-        function getSiteLogo(){
+        public static function getSiteLogo(){
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $query->select("site_logo")->from("#__branding")->where("assigned=1");
@@ -42,28 +42,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         }
 
         //get base stylesheets
-        function getBaseStyle(){
+        public static function getBaseStyle(){
             return JURI::base()."libraries/crm/media/css/bootstrap.css";
         }
-        
+
         //dynamically generate styles
-        function getDynamicStyle(){
+        public static function getDynamicStyle(){
             //database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
-            
+
             //query
             $query->select("b.*");
             $query->from("#__branding AS b");
             $query->where("assigned=1");
-            
+
             //return results
             $db->setQuery($query);
             $theme = $db->loadAssocList();
             $theme = $theme[0];
-            
+
             //assign style declarations
-            $style = ".google_map_center{background:".$theme['table_header_text'].";border:3px solid ".$theme['table_header_row'].";}";            
+            $style = ".google_map_center{background:".$theme['table_header_text'].";border:3px solid ".$theme['table_header_row'].";}";
             $style .= ".navbar-inner{background:".$theme['header']." ;}";
             $style .= ".navbar .nav > li > a:hover{background:".$theme['tabs_hover']." ;}";
             $style .= ".navbar .nav > li > a:hover{color:".$theme['tabs_hover_text']." ;}";
@@ -78,18 +78,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             //return
             return $style;
         }
-        
+
         //load all styles
-        function loadStyleSheets(){
-            
+        public static function loadStyleSheets(){
+
             $app = JFactory::getApplication();
-            $document =& JFactory::getDocument();
+            $document = JFactory::getDocument();
 
             $view = $app->input->get('view');
             if ( $view == "print" ){
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/print.css' );
             }
-							
+
 			if(CobaltHelperTemplate::isMobile()) {
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/mobile.css' );
 				$document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.min.css' );
@@ -97,10 +97,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			} else {
 	            //base stylesheet
 	            $base_style = CobaltHelperStyles::getBaseStyle();
-	            
+
 	            //dynamic stylesheet
 	            $dyn_style = CobaltHelperStyles::getDynamicStyle();
-	            
+
 	            //add sheets to document
 	            $document->addStyleSheet($base_style);
                 $document->addStyleSheet(JURI::base().'libraries/crm/media/css/datepicker.css');
@@ -109,21 +109,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 $document->addStyleSheet(JURI::base().'libraries/crm/media/css/style.css');
                 $document->addStyleSheet('http://fonts.googleapis.com/css?family=Open+Sans:300,400');
 	            $document->addStyleDeclaration($dyn_style);
-	            
-            }            
+
+            }
 
             jimport('joomla.environment.browser');
-            $browser = &JBrowser::getInstance();
+            $browser = JBrowser::getInstance();
             $browserType = $browser->getBrowser();
             $browserVersion = $browser->getMajor();
             if(($browserType == 'msie') && ($browserVersion < 8))
             {
-              $document->addStyleSheet( JURI::base().'libraries/crm/media/css/ie.css' );   
+              $document->addStyleSheet( JURI::base().'libraries/crm/media/css/ie.css' );
             }
 
         }
 
 
-        
+
  }
-    

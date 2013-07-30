@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltViewDocumentsHtml extends JViewHTML
 {
@@ -21,21 +21,21 @@ class CobaltViewDocumentsHtml extends JViewHTML
 
             $documents = $model->getDocuments();
             $state = $model->getState();
-            
+
             //add js
-            $document = & JFactory::getDocument();
+            $document = JFactory::getDocument();
             $document->addScript( JURI::base().'libraries/crm/media/js/document_manager.js' );
-            
+
             //session data
             $session = JFactory::getSession();
             $member_role = CobaltHelperUsers::getRole();
-            $user_id = CobaltHelperUsers::getUserId(); 
-            
+            $user_id = CobaltHelperUsers::getUserId();
+
             //associations
             $assoc = $session->get('document_assoc_filter');
             $assoc_names = CobaltHelperDocument::getAssocTypes();
             $assoc_name = ( $assoc ) ? $assoc_names[$assoc] : $assoc_names['all'];
-            
+
             //users
             $user_id = CobaltHelperUsers::getUserId();
             $user = $session->get('document_user_filter');
@@ -51,14 +51,14 @@ class CobaltViewDocumentsHtml extends JViewHTML
                 $team_info = $team_info[0];
                 $user_name = $team_info['team_name'] . CRMText::_('COBALT_TEAM_APPEND');
             }else{
-                $user_name = CRMText::_('COBALT_ME');            
+                $user_name = CRMText::_('COBALT_ME');
             }
-            
+
             //type
             $type = $session->get('document_type_filter');
             $type_names = CobaltHelperDocument::getDocTypes();
             $type_name = ( $type && array_key_exists($type,$type_names) ) ? $type_names[$type] : $type_names['all'];
-            
+
             //teams
             $teams = CobaltHelperUsers::getTeams();
             //users
@@ -70,7 +70,7 @@ class CobaltViewDocumentsHtml extends JViewHTML
             if ( $layout == "download" ){
                 CobaltHelperDeal::downloadDocument();
             }
-            
+
             //assign ref
             $this->state            = $state;
             $this->document_list    = $document_list;
@@ -83,9 +83,9 @@ class CobaltViewDocumentsHtml extends JViewHTML
             $this->user_id          = $user_id;
             $this->teams            = $teams;
             $this->users            = $users;
-		
+
         //display
 		return parent::render();
 	}
-	
+
 }

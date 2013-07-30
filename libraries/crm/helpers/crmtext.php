@@ -8,15 +8,15 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
- 
+
  class CRMText extends JText
  {
 
- 	public static function _($string)
+ 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
-		$string = JText::_($string);
+		$string = JText::_($string, $jsSafe, $interpretBackSlashes, $script);
 
 		$configValues = CobaltHelperConfig::getNamingConventions();
 
@@ -31,9 +31,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		return $string;
 	}
 
-  public static function script($string)
+  public static function script($string = NULL, $jsSafe = false, $interpretBackSlashes = true)
      {
-          $newString = JText::_($string);
+          $newString = JText::_($string, $jsSafe, $interpretBackSlashes);
 
           $configValues = CobaltHelperConfig::getNamingConventions();
 
@@ -73,7 +73,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           $result .= $rest;
 
           return $result;
-     } 
+     }
 
 
  }

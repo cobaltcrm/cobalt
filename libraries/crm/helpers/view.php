@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class CobaltHelperView
 {
-	function getView($viewName, $layoutName='default', $viewFormat='html', $vars=null)
+	public static function getView($viewName, $layoutName='default', $viewFormat='html', $vars=null)
 	{
 		// Get the application
 		$app = JFactory::getApplication();
@@ -30,7 +30,7 @@ class CobaltHelperView
 		$view->setLayout($layoutName);
 
 		if(isset($vars)) {
-			
+
 			$view->bypass = true;
 
 			foreach($vars as $varName => $var) {
