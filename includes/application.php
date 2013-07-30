@@ -8,6 +8,16 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Uri\Uri;
+use Joomla\Input\Input;
+use Joomla\String\String;
+use Joomla\Event\Dispatcher;
+use Joomla\Registry\Registry;
+use Joomla\Language\Language;
+use Joomla\Application\AbstractWebApplication;
+
+use Symfony\Component\HttpFoundation\Session\Session;
+
 /**
  * Cobalt Application class
  *
@@ -17,8 +27,16 @@ defined('_JEXEC') or die;
  * @subpackage  Application
  * @since       1.5
  */
-final class Cobalt extends JApplicationWeb
+final class Cobalt extends AbstractWebApplication
 {
+    /**
+     * The Dispatcher object.
+     *
+     * @var    Dispatcher
+     * @since  1.0
+     */
+    protected $dispatcher;
+
     /**
      * Currently active template
      * @var object
@@ -41,6 +59,22 @@ final class Cobalt extends JApplicationWeb
     public $router = null;
 
     /**
+     * A session object.
+     *
+     * @var    Session
+     * @since  1.0
+     * @note   This has been created to avoid a conflict with the $session member var from the parent class.
+     */
+    private $newSession = null;
+
+    /**
+     * JDocument
+     *
+     * @var  JDocument
+     */
+    public $document = null;
+
+    /**
      * The Unique Application Identifier
      */
     public $_name = 'Cobalt';
@@ -58,6 +92,14 @@ final class Cobalt extends JApplicationWeb
      */
     protected $messageQueue = array();
 
+    /**
+     * The Language object
+     *
+     * @var    Language
+     * @since  1.0
+     */
+    private $language;
+
     public function route()
     {
         // Get the full request URI.
@@ -73,13 +115,15 @@ final class Cobalt extends JApplicationWeb
         // Trigger the onAfterRoute event.
         JPluginHelper::importPlugin('system');
         $this->triggerEvent('onAfterRoute');
-
     }
 
-    public function __construct(JInput $input = null, JRegistry $config = null, JApplicationWebClient $client = null)
+    public function __construct()
     {
         // Run the parent constructor
         parent::__construct();
+
+        // Load the configuration object.
+        $this->loadConfiguration();
 
         // Register the event dispatcher
         $this->loadDispatcher();
@@ -96,14 +140,90 @@ final class Cobalt extends JApplicationWeb
 
         // Create the session if a session name is passed.
         if ($this->config->get('session') !== false) {
-            $this->loadSession();
+            $this->getSession();
 
             // Register the session with JFactory
             JFactory::$session = $this->getSession();
         }
 
-        // Register the application to JFactory
+        // Register the application to Factory
+        // @todo Decouple from Factory
         JFactory::$application = $this;
+        JFactory::$config = $this->config;
+
+        // Load the library language file
+        $this->getLanguage()->load('lib_joomla', JPATH_BASE);
+    }
+
+    /**
+     * Initialize the configuration object.
+     *
+     * @return  $this  Method allows chaining
+     *
+     * @since   1.0
+     * @throws \RuntimeException
+     */
+    private function loadConfiguration()
+    {
+        // Set the configuration file path for the application.
+        $file = JPATH_BASE . '/configuration.php';
+
+        // Verify the configuration exists and is readable.
+        if (!is_readable($file)) {
+            throw new \RuntimeException('Configuration file does not exist or is unreadable.');
+        }
+
+        include_once $file;
+
+        // Load the configuration file into an object.
+        $config = new JConfig;
+
+        if ($config === null) {
+            throw new \RuntimeException(sprintf('Unable to parse the configuration file %s.', $file));
+        }
+
+        $this->config->loadObject($config);
+
+        return $this;
+    }
+
+    /**
+     * Allows the application to load a custom or default dispatcher.
+     *
+     * The logic and options for creating this object are adequately generic for default cases
+     * but for many applications it will make sense to override this method and create event
+     * dispatchers, if required, based on more specific needs.
+     *
+     * @param Dispatcher $dispatcher An optional dispatcher object. If omitted, the factory dispatcher is created.
+     *
+     * @return  $this  Method allows chaining
+     *
+     * @since   1.0
+     */
+    public function loadDispatcher(Dispatcher $dispatcher = null)
+    {
+        $this->dispatcher = ($dispatcher === null) ? new Dispatcher : $dispatcher;
+
+        return $this;
+    }
+
+    /**
+     * Get a language object.
+     *
+     * @return Language
+     *
+     * @since   1.0
+     */
+    public function getLanguage()
+    {
+        if (is_null($this->language)) {
+            $this->language = Language::getInstance(
+                $this->get('language'),
+                $this->get('debug_lang')
+            );
+        }
+
+        return $this->language;
     }
 
     /**
@@ -121,49 +241,23 @@ final class Cobalt extends JApplicationWeb
     }
 
     /**
-     * Create the user session.
+     * Get a session object.
      *
-     * Old sessions are flushed based on the configuration value for the cookie
-     * lifetime. If an existing session, then the last access time is updated.
-     * If a new session, a session id is generated and a record is created in
-     * the #__sessions table.
+     * @return Session
      *
-     * @param string $name The sessions name.
-     *
-     * @return JSession JSession on success. May call exit() on database error.
-     *
-     * @since   11.1
+     * @since   1.0
      */
-    protected function _createSession($name)
+    public function getSession()
     {
-        $options = array();
-        $options['name'] = $name;
+        if (is_null($this->newSession)) {
+            $this->newSession = new Session;
+            $this->newSession->start();
 
-        if ($this->getCfg('force_ssl') == 2) {
-            $options['force_ssl'] = true;
+            // @todo Decouple from Factory
+            JFactory::$session = $this->newSession;
         }
 
-        $session = JFactory::getSession($options);
-
-        //TODO: At some point we need to get away from having session data always in the db.
-        $db = JFactory::getDBO();
-
-        // Remove expired sessions from the database.
-        $time = time();
-        if ($time % 2) {
-            // The modulus introduces a little entropy, making the flushing less accurate
-            // but fires the query less than half the time.
-            $query = $db->getQuery(true);
-            $db->setQuery('DELETE FROM ' . $query->qn('#__session') . ' WHERE ' . $query->qn('time') . ' < ' . (int) ($time - $session->getExpire()));
-            $db->query();
-        }
-
-        // Check to see the the session already exists.
-        if ($this->getCfg('session_handler') == 'database' && $session->isNew()) {
-            $this->checkSession();
-        }
-
-        return $session;
+        return $this->newSession;
     }
 
     /**
@@ -214,7 +308,7 @@ final class Cobalt extends JApplicationWeb
 
             // Session doesn't exist yet, so create session variables
             if ($session->isNew()) {
-                $session->set('registry', new JRegistry('session'));
+                $session->set('registry', new Registry('session'));
                 $session->set('user', new JUser);
             }
         }
@@ -257,12 +351,12 @@ final class Cobalt extends JApplicationWeb
      *
      * @return mixed The user state or null.
      *
-     * @since   11.1
+     * @since   1.0
      */
     public function getUserState($key, $default = null)
     {
-        $session = JFactory::getSession();
-        $registry = $session->get('registry');
+        /* @type Registry $registry */
+        $registry = $this->getSession()->get('registry');
 
         if (!is_null($registry)) {
             return $registry->get($key, $default);
@@ -315,10 +409,9 @@ final class Cobalt extends JApplicationWeb
     {
         try {
             $this->loadDocument();
-            $document = $this->getDocument();
 
             // Register the document object with JFactory
-            JFactory::$document = $document;
+            JFactory::$document = $this->document;
 
             // Register the template to the config
             $template = $this->getTemplate(true);
@@ -326,18 +419,20 @@ final class Cobalt extends JApplicationWeb
             $this->set('themeFile', $this->input->get('tmpl', 'index') . '.php');
 
             // Set metadata
-            $document->setTitle('Cobalt');
+            $this->document->setTitle('Cobalt');
 
             ob_start();
                 require_once JPATH_COBALT.'/cobalt.php';
                 $contents = ob_get_contents();
             ob_end_clean();
 
-            $document->setBuffer($contents, 'crm');
+            $this->document->setBuffer($contents, 'crm');
 
             // Trigger the onAfterDispatch event.
             JPluginHelper::importPlugin('system');
             $this->triggerEvent('onAfterDispatch');
+
+            $this->setBody($this->document->render(false, (array) $template));
         }
 
         // Mop up any uncaught exceptions.
@@ -345,6 +440,18 @@ final class Cobalt extends JApplicationWeb
             echo $e->getMessage();
             $this->close($e->getCode());
         }
+    }
+
+    public function loadDocument()
+    {
+        if (empty($this->document)) {
+            $this->document = JDocument::getInstance();
+        }
+    }
+
+    public function getDocument()
+    {
+        return $this->document;
     }
 
     /**
@@ -366,22 +473,18 @@ final class Cobalt extends JApplicationWeb
         // Set the access control action to check.
         $options['action'] = 'core.login.site';
 
-        $app = JFactory::getApplication();
-
         $authenticate = new ModularAuthenticate();
 
-        return $authenticate::login($credentials, $options);
+        $authenticate->login($credentials, $options);
     }
 
     public function logout()
     {
-        JSession::checkToken('request') or jexit(JText::_('JInvalid_Token'));
-
         $app = JFactory::getApplication();
         $authenticate = new ModularAuthenticate();
 
         // Perform the log in.
-        $error = $authenticate::logout();
+        $error = $authenticate->logout();
 
         // Check if the log out succeeded.
         if (!($error instanceof Exception)) {
@@ -489,6 +592,9 @@ final class Cobalt extends JApplicationWeb
             $template->template = '';
         }
 
+        $template->file = 'index.php';
+        $template->directory = 'themes';
+
         $this->template = $template;
         if ($params) {
             return $template;
@@ -497,28 +603,13 @@ final class Cobalt extends JApplicationWeb
         return $template->template;
     }
 
-    public function getMessageQueue()
-    {
-        if (!count($this->messageQueue)) {
-            $session = JFactory::getSession();
-            $sessionQueue = $session->get('application.queue');
-
-            if (count($sessionQueue)) {
-                $this->messageQueue = $sessionQueue;
-                $session->set('application.queue', null);
-            }
-        }
-
-        return $this->messageQueue;
-    }
-
     /**
      * Overrides the default template that would be used
      *
      * @param string	The template name
      * @param mixed		The template style parameters
      */
-    public function setTemplate($template, $styleParams=null)
+    public function setTemplate($template, $styleParams = null)
     {
         if (is_dir(JPATH_THEMES . '/' . $template)) {
             $this->template = new stdClass;
@@ -629,4 +720,149 @@ final class Cobalt extends JApplicationWeb
         return $this->_clientId;
     }
 
+    /**
+     * Registers a handler to a particular event group.
+     *
+     * @param string   $event   The event name.
+     * @param callable $handler The handler, a function or an instance of a event object.
+     *
+     * @return JApplicationBase The application to allow chaining.
+     *
+     * @since   12.1
+     */
+    public function registerEvent($event, $handler)
+    {
+        if ($this->dispatcher instanceof Dispatcher) {
+            $this->dispatcher->triggerEvent($event, $handler);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Calls all handlers associated with an event group.
+     *
+     * @param string $event The event name.
+     * @param array  $args  An array of arguments (optional).
+     *
+     * @return array An array of results from each function call, or null if no dispatcher is defined.
+     *
+     * @since   12.1
+     */
+    public function triggerEvent($event, array $args = null)
+    {
+        if ($this->dispatcher instanceof Dispatcher) {
+            return $this->dispatcher->triggerEvent($event, $args);
+        }
+
+        return null;
+    }
+
+    /**
+     * Enqueue a system message.
+     *
+     * @param string $msg  The message to enqueue.
+     * @param string $type The message type. Default is message.
+     *
+     * @return  $this  Method allows chaining
+     *
+     * @since   1.0
+     */
+    public function enqueueMessage($msg, $type = 'message')
+    {
+        $this->getSession()->getFlashBag()->add($type, $msg);
+
+        return $this;
+    }
+
+    /**
+     * Clear the system message queue.
+     *
+     * @return void
+     *
+     * @since   1.0
+     */
+    public function clearMessageQueue()
+    {
+        $this->getSession()->getFlashBag()->clear();
+    }
+
+    /**
+     * Get the system message queue.
+     *
+     * @return array The system message queue.
+     *
+     * @since   1.0
+     */
+    public function getMessageQueue()
+    {
+        return $this->getSession()->getFlashBag()->peekAll();
+    }
+
+    /**
+     * Set the system message queue for a given type.
+     *
+     * @param string $type    The type of message to set
+     * @param mixed  $message Either a single message or an array of messages
+     *
+     * @return void
+     *
+     * @since   1.0
+     */
+    public function setMessageQueue($type, $message = '')
+    {
+        $this->getSession()->getFlashBag()->set($type, $message);
+    }
+
+    /**
+     * Login or logout a user.
+     *
+     * @param User $user The user object.
+     *
+     * @return  $this  Method allows chaining
+     *
+     * @since   1.0
+     */
+    public function setUser(JUser $user = null)
+    {
+        if (is_null($user)) {
+            // Logout
+            $this->user = new JUser;
+
+            $this->getSession()->set('user', $this->user);
+
+            // @todo cleanup more ?
+        } else {
+            // Login
+            $user->isAdmin = true; // in_array($user->username, $this->get('acl.admin_users'));
+
+            $this->user = $user;
+
+            $this->getSession()->set('user', $user);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get a user object.
+     *
+     * @param integer $id The user id or the current user.
+     *
+     * @return User
+     *
+     * @since   1.0
+     */
+    public function getUser($id = 0)
+    {
+        if ($id) {
+            return new JUser($id);
+        }
+
+        if (is_null($this->user)) {
+            $this->user = ($this->getSession()->get('user')) ?: new JUser;
+        }
+
+        return $this->user;
+    }
 }

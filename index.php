@@ -30,11 +30,8 @@ require_once JPATH_BASE . '/includes/framework.php';
 include_once JPATH_BASE . '/includes/application.php';
 
 try {
-    $app = JApplicationWeb::getInstance('cobalt');
+    $app = new Cobalt;
     JFactory::$application = $app;
-
-    // Initialise the application.
-    $app->initialise();
 
     // Route the application.
     $app->route();

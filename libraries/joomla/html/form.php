@@ -30,6 +30,8 @@ abstract class JHtmlForm
      */
     public static function token()
     {
+        return false;
+
         return '<input type="hidden" name="' . JSession::getFormToken() . '" value="1" />';
     }
 }

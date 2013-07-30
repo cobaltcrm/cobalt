@@ -10,12 +10,13 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class CobaltControllerDefault extends JControllerBase
+use Joomla\Controller\AbstractController;
+
+class CobaltControllerDefault extends AbstractController
 {
 
     public function execute()
     {
-
         // Get the application
         $app = $this->getApplication();
 

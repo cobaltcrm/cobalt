@@ -258,6 +258,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     public static function isMobile()
     {
+        return false;
         $app = JFactory::getApplication();
         $mobile_detect = new Mobile_Detect();
         $mobile_auto = $mobile_detect->isMobile();

@@ -4,19 +4,8 @@
 	"license": "GPL-3.0",
 	"require": {
 		"php": ">=5.3.10",
-		"joomla/application": "dev-master",
-		"joomla/controller": "dev-master",
-		"joomla/data": "dev-master",
-		"joomla/database": "dev-master",
-		"joomla/form": "dev-master",
-		"joomla/input": "dev-master",
-		"joomla/language": "dev-master",
-		"joomla/model": "dev-master",
-		"joomla/profiler": "dev-master",
-		"joomla/registry": "dev-master",
-		"joomla/router": "dev-master",
-		"joomla/uri": "dev-master",
-		"joomla/view": "dev-master"
+		"joomla/framework": "dev-master",
+		"symfony/http-foundation": "2.3.*@stable"
 	},
 	"minimum-stability": "dev"
 }

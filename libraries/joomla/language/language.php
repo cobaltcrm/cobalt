@@ -12,7 +12,7 @@ defined('JPATH_PLATFORM') or die;
 /**
  * Allows for quoting in language .ini files.
  */
-define('_QQ_', '"');
+// define('_QQ_', '"');
 
 /**
  * Languages/translation handler class

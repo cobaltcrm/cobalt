@@ -34,6 +34,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         </div>
         <input type="hidden" name="return" value="<?php echo base64_encode('index.php?view=dashboard'); ?>">
-        <?php echo JHtml::_('form.token'); ?>
     </fieldset>
 </form>

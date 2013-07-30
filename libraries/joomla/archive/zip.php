@@ -343,8 +343,7 @@ class JArchiveZip implements JArchiveExtractable
 
         do {
             $last = $fhLast;
-        }
-        while (($fhLast = strpos($data, $this->_ctrlDirEnd, $fhLast + 1)) !== false);
+        } while (($fhLast = strpos($data, $this->_ctrlDirEnd, $fhLast + 1)) !== false);
 
         // Find the central directory offset
         $offset = 0;

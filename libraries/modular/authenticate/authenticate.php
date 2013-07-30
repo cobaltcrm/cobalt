@@ -23,10 +23,12 @@ class ModularAuthenticate
      */
     public function login($credentials, $options = array())
     {
+        $app = JFactory::getApplication();
+
         // Get the global JAuthentication object.
         jimport('joomla.user.authentication');
 
-        $authenticate = JAuthentication::getInstance();
+        $authenticate = new JAuthentication;
         $response = $authenticate->authenticate($credentials, $options);
 
         if ($response->status === JAuthentication::STATUS_SUCCESS) {
@@ -39,7 +41,7 @@ class ModularAuthenticate
                 $denied_states = array(JAuthentication::STATUS_EXPIRED, JAuthentication::STATUS_DENIED);
                 if (in_array($authorisation->status, $denied_states)) {
                     // Trigger onUserAuthorisationFailure Event.
-                    $this->triggerEvent('onUserAuthorisationFailure', array((array) $authorisation));
+                    $app->triggerEvent('onUserAuthorisationFailure', array((array) $authorisation));
 
                     // If silent is set, just return false.
                     if (isset($options['silent']) && $options['silent']) {
@@ -65,7 +67,7 @@ class ModularAuthenticate
             JPluginHelper::importPlugin('user');
 
             // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
-            $results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
+            $results = $app->triggerEvent('onUserLogin', array((array) $response, $options));
 
             /*
              * If any of the user plugins did not successfully complete the login routine
@@ -75,7 +77,7 @@ class ModularAuthenticate
              * to provide much more information about why the routine may have failed.
              */
 
-            if (!in_array(false, $results, true)) {
+            if ($response->status == 1) {
                 // Set the remember me cookie if enabled.
                 if (isset($options['remember']) && $options['remember']) {
                     jimport('joomla.utilities.simplecrypt');
@@ -93,12 +95,14 @@ class ModularAuthenticate
                     setcookie(self::getHash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain);
                 }
 
+                $app->setUser(new JUser($response->user_id));
+
                 return true;
             }
         }
 
         // Trigger onUserLoginFailure Event.
-        $this->triggerEvent('onUserLoginFailure', array((array) $response));
+        $app->triggerEvent('onUserLoginFailure', array((array) $response));
 
         // If silent is set, just return false.
         if (isset($options['silent']) && $options['silent']) {
@@ -132,6 +136,8 @@ class ModularAuthenticate
      */
     public function logout($userid = null, $options = array())
     {
+        $app = JFactory::getApplication();
+
         // Get a user object from the JApplication.
         $user = JFactory::getUser($userid);
 
@@ -141,28 +147,30 @@ class ModularAuthenticate
 
         // Set clientid in the options array if it hasn't been set already.
         if (!isset($options['clientid'])) {
-            $options['clientid'] = $this->getClientId();
+            $options['clientid'] = $app->getClientId();
         }
 
         // Import the user plugin group.
         JPluginHelper::importPlugin('user');
 
         // OK, the credentials are built. Lets fire the onLogout event.
-        $results = $this->triggerEvent('onUserLogout', array($parameters, $options));
+        $results = $app->triggerEvent('onUserLogout', array($parameters, $options));
 
         // Check if any of the plugins failed. If none did, success.
 
         if (!in_array(false, $results, true)) {
             // Use domain and path set in config for cookie if it exists.
-            $cookie_domain = $this->getCfg('cookie_domain', '');
-            $cookie_path = $this->getCfg('cookie_path', '/');
+            $cookie_domain = $app->getCfg('cookie_domain', '');
+            $cookie_path = $app->getCfg('cookie_path', '/');
             setcookie(self::getHash('JLOGIN_REMEMBER'), false, time() - 86400, $cookie_path, $cookie_domain);
+
+            $app->setUser(null);
 
             return true;
         }
 
         // Trigger onUserLoginFailure Event.
-        $this->triggerEvent('onUserLogoutFailure', array($parameters));
+        $app->triggerEvent('onUserLogoutFailure', array($parameters));
 
         return false;
     }

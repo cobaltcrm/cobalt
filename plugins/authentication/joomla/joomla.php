@@ -58,6 +58,7 @@ class plgAuthenticationJoomla extends JPlugin
 
             if ($crypt == $testcrypt) {
                 $user = JUser::getInstance($result->id); // Bring this in line with the rest of the system
+                $response->user_id = $result->id;
                 $response->email = $user->email;
                 $response->fullname = $user->name;
                 // if (JFactory::getApplication()->isAdmin()) {

@@ -556,8 +556,7 @@ class JStream extends JObject
                     $length = strlen($retval);
                 }
             }
-        }
-        while ($remaining || !$length);
+        } while ($remaining || !$length);
 
         // Restore error tracking to what it was before
         ini_set('track_errors', $track_errors);

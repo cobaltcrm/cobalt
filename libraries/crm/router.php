@@ -9,6 +9,8 @@
 // No direct access
 defined('JPATH_BASE') or die;
 
+use Joomla\Router\RestRouter;
+
 /**
  * Set the available masks for the routing mode
  */
@@ -21,7 +23,7 @@ const JROUTER_MODE_RAW = 0;
  * @subpackage	Application
  * @since		1.5
  */
-class CobaltRouter extends JApplicationWebRouterRest
+class CobaltRouter extends RestRouter
 {
     /**
      * The rewrite mode
@@ -155,7 +157,6 @@ class CobaltRouter extends JApplicationWebRouterRest
         $route = $this->CobaltParseRoute($vars);
 
         return $route;
-
     }
 
     public function _parse(&$uri)
@@ -412,7 +413,7 @@ class CobaltRouter extends JApplicationWebRouterRest
         // Make sure any menu vars are used if no others are specified
         if (($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2) {
 
-            $app	= JApplication::getInstance('site');
+            $app	= JFactory::getApplication();
             $menu	= $app->getMenu();
 
             // Get the active menu item
@@ -432,7 +433,6 @@ class CobaltRouter extends JApplicationWebRouterRest
         $route = $uri->getPath();
 
         if ($this->_mode == JROUTER_MODE_SEF && $route) {
-            $app = JApplication::getInstance('site');
 
             if ($limitstart = $uri->getVar('limitstart')) {
                 $uri->setVar('start', (int) $limitstart);
@@ -483,7 +483,6 @@ class CobaltRouter extends JApplicationWebRouterRest
 
     public function CobaltBuildRoute(&$query)
     {
-
         $array = array();
 
         if ( array_key_exists('view',$query) ) {
@@ -545,6 +544,10 @@ class CobaltRouter extends JApplicationWebRouterRest
     {
         $vars = array();
         $length = count($segments);
+
+        if (isset($segments['view'])) {
+            $vars['view'] = $segments['view'];
+        }
 
         if (isset($segments[0]) && file_exists(JPATH_BASE.'/libraries/crm/view/'.$segments[0].'/html.php') ) {
             $vars['view'] = $segments[0];
@@ -626,15 +629,14 @@ class CobaltRouter extends JApplicationWebRouterRest
             }
         }
 
-        if (array_key_exists('mobile',$_SESSION)) {
-            if ($_SESSION['mobile'] == "yes") {
-                $vars['mobile'] = "yes";
-            }
-            if ($_SESSION['mobile'] == "no") {
-                $vars['mobile'] = "no";
-            }
-        }
-
+        // if (array_key_exists('mobile',$_SESSION)) {
+        //     if ($_SESSION['mobile'] == "yes") {
+        //         $vars['mobile'] = "yes";
+        //     }
+        //     if ($_SESSION['mobile'] == "no") {
+        //         $vars['mobile'] = "no";
+        //     }
+        // }
         return $vars;
     }
 }

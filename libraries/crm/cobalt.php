@@ -107,7 +107,8 @@ CobaltHelperTemplate::loadJavascriptLanguage();
 
 // Create the controller
 $classname	= 'CobaltController'.$controller;
-$controller = new $classname();
+$app = JFactory::getApplication();
+$controller = new $classname($app->input, $app);
 
 //fullscreen detection
 if (CobaltHelperUsers::isFullscreen()) {

@@ -12,14 +12,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class CobaltControllerLogin extends CobaltControllerDefault
 {
-        function execute()
-        {
-            $app = JFactory::getApplication();
-            $credentials = array('username'=>$app->input->get('username'),'password'=>$app->input->get('password',null,'HTML'));
-            if ($app->login($credentials)) {
-                $app->redirect(base64_decode($app->input->get('return')));
-            }
-
+    public function execute()
+    {
+        $app = JFactory::getApplication();
+        $credentials = array('username'=>$app->input->get('username'),'password'=>$app->input->get('password',null,'HTML'));
+        if ($app->login($credentials)) {
+            $app->redirect(base64_decode($app->input->get('return')));
+        } else {
+            $app->redirect('/');
         }
+    }
 
 }
