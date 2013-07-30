@@ -2,3 +2,5 @@
 /configuration.php
 /.idea
 /_install
+/vendor
+/composer.lock
