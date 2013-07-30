@@ -33,7 +33,7 @@ class CobaltModelStatuses extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('statuses','Table');
+        $row = JTable::getInstance('statuses','Table');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -73,7 +73,7 @@ class CobaltModelStatuses extends CobaltModelDefault
     public function _buildQuery()
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -94,7 +94,7 @@ class CobaltModelStatuses extends CobaltModelDefault
     public function getStatuses($id=null)
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //return results
@@ -111,7 +111,7 @@ class CobaltModelStatuses extends CobaltModelDefault
         if ($id > 0) {
 
             //database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             $query->where("s.id=$id");
@@ -147,7 +147,7 @@ class CobaltModelStatuses extends CobaltModelDefault
     public function remove($id)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete id

@@ -30,7 +30,7 @@ class CobaltViewAdminimportHtml extends JViewHtml
         $this->menu = $menu;
 
         //javascripts
-        $doc =& JFactory::getDocument();
+        $doc = JFactory::getDocument();
         $doc->addScript(JURI::base()."/libraries/crm/media/js/cobalt-admin.js");
         $doc->addScript(JURI::base()."/libraries/crm/media/js/document_manager.js");
 
@@ -70,7 +70,7 @@ class CobaltViewAdminimportHtml extends JViewHtml
                 }
 
                 $view = "import";
-                $app =& JFactory::getApplication();
+                $app = JFactory::getApplication();
                 $msg = CRMText::_('COBALT_'.$success.'_IMPORTED_ITEMS');
                 $app->redirect('index.php?view='.$view,$msg);
 
@@ -97,7 +97,7 @@ class CobaltViewAdminimportHtml extends JViewHtml
         $menu = CobaltHelperMenu::getMenuModules();
         $this->menu = $menu;
 
-        $doc =& JFactory::getDocument();
+        $doc = JFactory::getDocument();
         $doc->addScript(JURI::base()."/libraries/crm/media/js/cobalt-admin.js");
 
         return parent::render();

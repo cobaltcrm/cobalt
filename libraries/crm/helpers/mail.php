@@ -61,11 +61,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     public static function sendMail($layout,$recipient)
     {
-        $mailer =& JFactory::getMailer();
+        $mailer = JFactory::getMailer();
         $mailer->isHTML(true);
         $mailer->Encoding = 'base64';
 
-        $config =& JFactory::getConfig();
+        $config = JFactory::getConfig();
         $sender = array(
                     $config->getValue( 'config.mailfrom' ),
                        $config->getValue( 'config.fromname' )
@@ -84,7 +84,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         ob_end_clean();
 
         $mailer->setBody($body);
-        $send =& $mailer->Send();
+        $send = $mailer->Send();
         if ($send !== true) {
             echo 'Error sending email: ' . $send->message;
         }

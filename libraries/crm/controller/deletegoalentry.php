@@ -20,7 +20,7 @@ class CobaltControllerDeleteGoalEntry extends CobaltControllerDefault
         $goal_id = $app->input->get('goal_id');
 
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //form query

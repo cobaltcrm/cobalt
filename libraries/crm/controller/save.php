@@ -84,7 +84,7 @@ class CobaltControllerSave extends CobaltControllerDefault
 
                     //get model
                     $model = new CobaltModelEvent();
-                    $db =& JFactory::getDBO();
+                    $db = JFactory::getDBO();
 
                     //determine whether we are inserting a new entry or editing an entry
                     $event_id = $db_id;

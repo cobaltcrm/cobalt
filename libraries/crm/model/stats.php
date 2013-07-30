@@ -29,7 +29,7 @@ class CobaltModelStats extends JModelBase
 
     public function getDistinctEntries($type,$field)
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("DISTINCT h.type_id");
@@ -48,7 +48,7 @@ class CobaltModelStats extends JModelBase
     {
         $results = array();
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         if ( count ( $ids ) > 0 ) {
@@ -74,7 +74,7 @@ class CobaltModelStats extends JModelBase
     {
         if ($user_role != 'basic') {
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             $query->select("id");
@@ -100,7 +100,7 @@ class CobaltModelStats extends JModelBase
 
     public function getActiveDealsAmount()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         /** get unique history **/
@@ -121,7 +121,7 @@ class CobaltModelStats extends JModelBase
 
     public function getStages()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         /** Select distinct history entries **/
@@ -159,7 +159,7 @@ class CobaltModelStats extends JModelBase
 
     public function getLeads()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         /** person ids **/
@@ -178,7 +178,7 @@ class CobaltModelStats extends JModelBase
 
     public function getNotes()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $note_ids = $this->getDistinctEntries('note','id');
@@ -210,7 +210,7 @@ class CobaltModelStats extends JModelBase
 
     public function getTodos()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $events = $this->getDistinctEntries('event','id');

@@ -27,7 +27,7 @@ class CobaltModelTags extends JModelBase
     public function store()
     {
         //Load Tables
-        $row =& JTable::getInstance('tags','Table');
+        $row = JTable::getInstance('tags','Table');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -71,7 +71,7 @@ class CobaltModelTags extends JModelBase
     public function getTags($id=null)
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -106,7 +106,7 @@ class CobaltModelTags extends JModelBase
     public function remove($id)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete id

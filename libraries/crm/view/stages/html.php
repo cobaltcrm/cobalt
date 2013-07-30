@@ -27,7 +27,7 @@ class CobaltViewStagesHtml extends JViewHtml
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
 
         if ($layout && $layout == 'edit') {

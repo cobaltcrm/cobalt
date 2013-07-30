@@ -61,7 +61,7 @@ class CobaltHelperVersion
      */
     public static function getLatestVersion()
     {
-        $session =& JFactory::getSession();
+        $session = JFactory::getSession();
         // $latestVersion = $session->get('cobalt_version', null);
         $latestVersion = null;
 

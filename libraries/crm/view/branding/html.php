@@ -23,7 +23,7 @@ class CobaltViewBrandingHtml extends JViewHtml
         $this->menu = $menu;
 
          //add javascript
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/branding_manager.js');
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
 

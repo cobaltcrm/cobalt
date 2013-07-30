@@ -31,7 +31,7 @@ class CobaltModelTeams extends JModelBase
     public function getTeams()
     {
         //Database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //Query String
@@ -62,7 +62,7 @@ class CobaltModelTeams extends JModelBase
     public function createTeam($leader_id,$name=NULL)
     {
         //Database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->clear();
@@ -70,7 +70,7 @@ class CobaltModelTeams extends JModelBase
         $db->setQuery($query);
         $team_id = $db->loadResult();
         $team_data = array( 'leader_id'=>$leader_id,'name'=>$name );
-        $row =& JTable::getInstance('teams','Table');
+        $row = JTable::getInstance('teams','Table');
 
         if ($team_id > 0) {
             $team_data['team_id'] = $team_id;
@@ -110,7 +110,7 @@ class CobaltModelTeams extends JModelBase
     public function assignLeader($leader_id,$team_id)
     {
         //bind user tables
-        $row =& JTable::getInstance('users','Table');
+        $row = JTable::getInstance('users','Table');
         $team_data = array ( 'id'=>$leader_id,'team_id'=>$team_id );
         if (!$row->bind($team_data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -135,7 +135,7 @@ class CobaltModelTeams extends JModelBase
     public function updateTeam($old_team,$new_team)
     {
         //update the database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete old team

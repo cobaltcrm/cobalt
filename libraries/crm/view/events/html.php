@@ -16,7 +16,7 @@ class CobaltViewEventsHtml extends JViewHtml
     {
         $app = JFactory::getApplication();
 
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
 
         //event model
         $model = new CobaltModelEvent();

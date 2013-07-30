@@ -113,7 +113,7 @@ function execute()
                         );
 
            $model = new CobaltModelDocuments();
-           $session =& JFactory::getSession();
+           $session = JFactory::getSession();
 
            if ($id=$model->store($data)) {
             echo '<script type="text/javascript">window.top.window.uploadSuccess('.$id.');</script>';

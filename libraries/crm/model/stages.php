@@ -32,7 +32,7 @@ class CobaltModelStages extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('stages','Table');
+        $row = JTable::getInstance('stages','Table');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -73,7 +73,7 @@ class CobaltModelStages extends CobaltModelDefault
     public function _buildQuery()
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -95,7 +95,7 @@ class CobaltModelStages extends CobaltModelDefault
     public function getStages($id=null)
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //return results
@@ -112,7 +112,7 @@ class CobaltModelStages extends CobaltModelDefault
         if ($id > 0 && $id != null) {
 
             //database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             $query->where("id=".$id);
@@ -148,7 +148,7 @@ class CobaltModelStages extends CobaltModelDefault
     public function remove($id)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete id

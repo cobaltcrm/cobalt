@@ -31,7 +31,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('Peoplecustom','Table');
+        $row = JTable::getInstance('Peoplecustom','Table');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -83,7 +83,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
     public function _buildQuery()
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -104,7 +104,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
     public function getCustom()
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //return results
@@ -128,7 +128,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
         if ($id > 0) {
 
             //database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             $query->where("c.id=$id");
@@ -167,7 +167,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
     public function remove($id)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete id

@@ -26,8 +26,8 @@ class CobaltModelConversation extends CobaltModelDefault
             $app = JFactory::getApplication();
 
             //Load Tables
-            $row =& JTable::getInstance('conversation','Table');
-            $oldRow =& JTable::getInstance('conversation','Table');
+            $row = JTable::getInstance('conversation','Table');
+            $oldRow = JTable::getInstance('conversation','Table');
             $data = $app->input->getRequest( 'post' );
 
             //date generation
@@ -75,7 +75,7 @@ class CobaltModelConversation extends CobaltModelDefault
 
         function getConversations()
         {
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name, author.email");
             $query->from("#__conversations AS c");
@@ -103,7 +103,7 @@ class CobaltModelConversation extends CobaltModelDefault
         function getConversation($id)
         {
             //grab db
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
 
             //initialize query
             $query = $db->getQuery(true);

@@ -33,7 +33,7 @@ class CobaltModelDocuments extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('documents','Table');
+        $row = JTable::getInstance('documents','Table');
         if ($data==null) {
             $data = $app->input->getRequest( 'post' );
         }
@@ -75,7 +75,7 @@ class CobaltModelDocuments extends CobaltModelDefault
     public function _buildQuery()
     {
          //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -95,7 +95,7 @@ class CobaltModelDocuments extends CobaltModelDefault
     public function getDocuments($id=null)
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //sort
@@ -129,7 +129,7 @@ class CobaltModelDocuments extends CobaltModelDefault
     public function remove($id)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete id
@@ -240,7 +240,7 @@ class CobaltModelDocuments extends CobaltModelDefault
                         );
 
            $model = new CobaltModelDocuments();
-           $session =& JFactory::getSession();
+           $session = JFactory::getSession();
 
            if ($model->store($data)) {
                $msg = JText::_('COM_CRMERY_DOC_UPLOAD_SUCCESS');

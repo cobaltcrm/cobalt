@@ -19,7 +19,7 @@ class CobaltViewTemplatesHtml extends JViewHtml
         CobaltHelperUsers::authenticateAdmin();
 
         //javascripts
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
 
         /** Menu Links **/

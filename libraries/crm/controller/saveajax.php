@@ -22,7 +22,7 @@ class CobaltControllerSaveAjax extends CobaltControllerDefault
         $field = $app->input->get('field');
         $value = $app->input->get('value');
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $data = array('id'=>$item_id,$field=>$db->escape($value));
         $post_data = $app->input->getRequest('post');

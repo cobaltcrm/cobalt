@@ -30,7 +30,7 @@ class CobaltViewAdmindocumentsHtml extends JViewHtml
         $model->set("_layout",$layout);
 
         //add javascript
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
 
         if ($layout != "upload") {

@@ -151,7 +151,7 @@ class CobaltModelAvatar extends JModelBase
 
     public function getAvatar($item_id,$item_type)
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->clear();
         $query->select("avatar")->from("#__".$item_type)->where("id=".$item_id);

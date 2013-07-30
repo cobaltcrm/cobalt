@@ -49,7 +49,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('formwizard','Table');
+        $row = JTable::getInstance('formwizard','Table');
         $data = $app->input->getRequest( 'post' );
 
         $userId = JFactory::getUser()->id;
@@ -118,7 +118,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
 
     public function _buildQuery()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("f.*,CONCAT(user.first_name,' ',user.last_name) AS owner_name")->from("#__formwizard AS f");
         $query->leftJoin("#__users AS user ON user.id = f.owner_id");
@@ -129,7 +129,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
     public function getForms()
     {
         $query = $this->_buildQuery();
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query->order($this->getState('Formwizard.filter_order') . ' ' . $this->getState('Formwizard.filter_order_Dir'));
         $db->setQuery($query);
         $results = $db->loadAssocList();
@@ -150,7 +150,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
         if ($formId > 0) {
 
             $query = $this->_buildQuery();
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query->where("f.id=".$formId);
             $db->setQuery($query);
             $result = $db->loadAssoc();
@@ -168,7 +168,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
     public function delete($ids)
     {
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->delete("#__formwizard");

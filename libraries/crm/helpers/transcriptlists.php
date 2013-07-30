@@ -23,7 +23,7 @@ class CobaltHelperTranscriptlists extends JObject
         $associationId = $associationId ? $associationId : $autoId;
         $associationType = $associationType ? $associationType : $autoType;
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("id,name")
@@ -45,7 +45,7 @@ class CobaltHelperTranscriptlists extends JObject
 
         $roomId = $roomId ? $roomId : $app->input->get('room_id');
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("t.*,r.name AS room_name")

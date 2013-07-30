@@ -29,7 +29,7 @@ class CobaltModelUser extends JModelBase
             $app = JFactory::getApplication();
 
             //Load Tables
-            $row =& JTable::getInstance('user','Table');
+            $row = JTable::getInstance('user','Table');
 
             if ($data['id']) {
                 $row->load($data['id']);
@@ -88,7 +88,7 @@ class CobaltModelUser extends JModelBase
         function updateEmail($user_id,$emails)
         {
             //get dbo
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             //delete any existing entries
@@ -129,7 +129,7 @@ class CobaltModelUser extends JModelBase
             $user_id = CobaltHelperUsers::getUserId();
 
             //get database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
 
             //get current array

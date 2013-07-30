@@ -29,7 +29,7 @@ class CobaltModelUsers extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('users','Table');
+        $row = JTable::getInstance('users','Table');
         $data = $app->input->getRequest( 'post' );
 
         $dispatcher = JEventDispatcher::getInstance();
@@ -72,7 +72,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
         //republish / register users
         if ( array_key_exists('id',$data) && $data['id'] != "" ) {
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $query->clear()->select("id")->from("#__users")->where("id=".$data['id']);
             $db->setQuery($query);
@@ -131,7 +131,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
     public function updateUserMap($user)
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->delete("#__user_usergroup_map")->where("user_id=".$user->id);
@@ -149,7 +149,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function _buildQuery()
     {
          //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
          //select
@@ -171,7 +171,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function getUsers($id=null)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //sort
@@ -195,7 +195,7 @@ class CobaltModelUsers extends CobaltModelDefault
 
         if ($id > 0) {
 
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             if ($id) {
@@ -231,7 +231,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function getJoomlaUsersToAdd()
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //select
@@ -260,7 +260,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function getCobaltUsers($idsOnly=FALSE)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //select
@@ -278,7 +278,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function getJoomlaUsersToAddList($namesOnly=FALSE)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //select
@@ -310,7 +310,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function getTeamId($user_id)
     {
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //get id
@@ -327,7 +327,7 @@ class CobaltModelUsers extends CobaltModelDefault
     public function delete($ids)
     {
         //get db
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $dispatcher = JEventDispatcher::getInstance();

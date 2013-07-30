@@ -22,7 +22,7 @@ class CobaltViewUsersHtml extends JViewHtml
         $app = JFactory::getApplication();
 
         //display title
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
 
         //load model

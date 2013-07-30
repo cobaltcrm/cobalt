@@ -24,7 +24,7 @@ class CobaltViewFormwizardHtml extends JViewHtml
         $model->set("_layout",$layout);
 
         //document
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
 
         //add toolbar buttons to manage users
         if ($layout == 'default') {

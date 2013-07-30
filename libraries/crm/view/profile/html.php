@@ -15,7 +15,7 @@ class CobaltViewProfileHtml extends JViewHtml
     public function render()
     {
         //javascript
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript( JURI::base().'libraries/crm/media/js/profile_manager.js' );
 
         //get user data and pass to view

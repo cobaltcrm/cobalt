@@ -28,7 +28,7 @@ class CobaltModelBranding extends JModelBase
     {
         //Load Tables
         $app = JFactory::getApplication();
-        $row =& JTable::getInstance('branding','Table');
+        $row = JTable::getInstance('branding','Table');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -119,7 +119,7 @@ class CobaltModelBranding extends JModelBase
 
     public function updateSiteLogo($logo)
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->update("#__branding")->set("site_logo=".$db->Quote($logo));
         $db->setQuery($query);
@@ -134,7 +134,7 @@ class CobaltModelBranding extends JModelBase
     public function getThemes($id=null)
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -156,7 +156,7 @@ class CobaltModelBranding extends JModelBase
     public function getDefaultTheme()
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -179,7 +179,7 @@ class CobaltModelBranding extends JModelBase
     public function changeDefault($id)
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //unassign default

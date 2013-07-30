@@ -15,7 +15,7 @@ class CobaltControllerBrewCoffee extends CobaltControllerDefault
 
     public function execute()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select('u.id, u.first_name, u.last_name, user.email');
         $query->from('#__users AS u');

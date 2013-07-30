@@ -32,7 +32,7 @@ class CobaltModelTemplates extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row =& JTable::getInstance('templates','Table');
+        $row = JTable::getInstance('templates','Table');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -111,7 +111,7 @@ class CobaltModelTemplates extends CobaltModelDefault
 
     public function _buildQuery()
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //query
@@ -130,7 +130,7 @@ class CobaltModelTemplates extends CobaltModelDefault
     public function getTemplates()
     {
         //database
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //sort
@@ -152,7 +152,7 @@ class CobaltModelTemplates extends CobaltModelDefault
         if ($id > 0) {
 
             //database
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             //sort
@@ -200,7 +200,7 @@ class CobaltModelTemplates extends CobaltModelDefault
     public function remove($id)
     {
         //get dbo
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         //delete id

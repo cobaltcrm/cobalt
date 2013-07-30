@@ -70,7 +70,7 @@ class CobaltModelTemplate extends JModelBase
         {
                 $template_id = $template_id ? $template_id : $this->id;
 
-                $db =& JFactory::getDBO();
+                $db = JFactory::getDBO();
                 $query = $db->getQuery(TRUE);
 
                 $query->select("t.*")

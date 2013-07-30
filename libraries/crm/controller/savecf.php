@@ -21,7 +21,7 @@ class CobaltControllerSaveCf extends CobaltControllerDefault
             //get post data
             $data = $app->input->getRequest('post');
             //get db Object
-            $db = & JFactory::getDBO();
+            $db = JFactory::getDBO();
             $query = $db->getQuery(true);
             $table = $data['table'];
             $loc = $data['loc'];

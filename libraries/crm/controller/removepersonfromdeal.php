@@ -20,7 +20,7 @@ class CobaltControllerRemovePersonFromDeal extends CobaltControllerDefault
         $person_id = $app->input->get('person_id');
         $deal_id = $app->input->get('deal_id');
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select("COUNT(*)")

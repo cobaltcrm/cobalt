@@ -57,7 +57,7 @@ class CobaltModelImport extends JModelBase
         $line = 1;
         $headers = array();
         $i = -2;
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $table = $db->getTableColumns("#__".$app->input->get('import_type'));
         $special_headers = array('company_id','company_name','stage_name','source_name','status_name','primary_contact_name','assignee_name','type');
 
