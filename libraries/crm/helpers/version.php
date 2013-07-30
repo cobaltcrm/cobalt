@@ -86,7 +86,7 @@ class CobaltHelperVersion
      * @param  array  $post The data to send to the remote site
      * @return mixed  The result of curl_exec() if successful; False otherwise
      */
-    public function get_url_contents($url, $post=null)
+    public static function get_url_contents($url, $post=null)
     {
         $timeout = 5;
         $crl = curl_init($url);
