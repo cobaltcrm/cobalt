@@ -7,10 +7,16 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\view\Login;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewLoginHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render()
     {

@@ -16,6 +16,7 @@ use Joomla\Registry\Registry;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
