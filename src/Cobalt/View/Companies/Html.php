@@ -104,7 +104,7 @@ class Html extends AbstractHtmlView
         switch ($layout) {
             case 'company':
 
-                $model = new EventModel
+                $model = new EventModel;
                 $events = $model->getEvents("company",null,$app->input->get('id'));
 
                 $this->event_dock = ViewHelper::getView('events','event_dock', 'phtml',array('events'=>$events));

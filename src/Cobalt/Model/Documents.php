@@ -7,29 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use JTable;
+use Cobalt\Helper\TextHelper;
+use Joomla\Filesystem\File;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelDocuments extends CobaltModelDefault
+class Documents extends DefaultModel
 {
-
     public $_view = "admindocuments";
-
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
 
     public function store($data=null)
     {
-
         $app = JFactory::getApplication();
 
         //Load Tables
@@ -140,12 +134,6 @@ class CobaltModelDocuments extends CobaltModelDefault
 
     public function upload()
     {
-        //import joomlas filesystem functions, we will do all the filewriting with joomlas functions,
-        //so if the ftp layer is on, joomla will write with that, not the apache user, which might
-        //not have the correct permissions
-        jimport('joomla.filesystem.file');
-        jimport('joomla.filesystem.folder');
-
         //this is the name of the field in the html form, filedata is the default name for swfupload
         //so we will leave it as that
         $fieldName = 'document';
@@ -155,22 +143,22 @@ class CobaltModelDocuments extends CobaltModelDefault
         if ($fileError > 0) {
                 switch ($fileError) {
                 case 1:
-                echo JText::_( 'FILE TO LARGE THAN PHP INI ALLOWS' );
+                echo TextHelper::_( 'FILE TO LARGE THAN PHP INI ALLOWS' );
 
                 return;
 
                 case 2:
-                echo JText::_( 'FILE TO LARGE THAN HTML FORM ALLOWS' );
+                echo TextHelper::_( 'FILE TO LARGE THAN HTML FORM ALLOWS' );
 
                 return;
 
                 case 3:
-                echo JText::_( 'ERROR PARTIAL UPLOAD' );
+                echo TextHelper::_( 'ERROR PARTIAL UPLOAD' );
 
                 return;
 
                 case 4:
-                echo JText::_( 'ERROR NO FILE' );
+                echo TextHelper::_( 'ERROR NO FILE' );
 
                 return;
                 }
@@ -179,7 +167,7 @@ class CobaltModelDocuments extends CobaltModelDefault
         //check for filesize
         $fileSize = $_FILES[$fieldName]['size'];
         if ($fileSize > 2000000) {
-            echo JText::_( 'FILE BIGGER THAN 2MB' );
+            echo TextHelper::_( 'FILE BIGGER THAN 2MB' );
         }
 
         //check the file extension is ok
@@ -201,7 +189,7 @@ class CobaltModelDocuments extends CobaltModelDefault
         }
 
         if ($extOk == false) {
-            echo JText::_( 'INVALID EXTENSION' );
+            echo TextHelper::_( 'INVALID EXTENSION' );
 
                 return;
         }
@@ -222,7 +210,7 @@ class CobaltModelDocuments extends CobaltModelDefault
 
         $app = JFactory::getApplication();
 
-        if (!JFile::upload($fileTemp, $uploadPath)) {
+        if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
             $app->redirect('index.php?view=admindocuments',$msg);
         } else {
@@ -239,15 +227,15 @@ class CobaltModelDocuments extends CobaltModelDefault
                         'is_image'          =>  is_array(getimagesize($uploadPath)) ? true : false
                         );
 
-           $model = new CobaltModelDocuments();
+           $model = new static;
            $session = JFactory::getSession();
 
            if ($model->store($data)) {
-               $msg = JText::_('COM_CRMERY_DOC_UPLOAD_SUCCESS');
+               $msg = TextHelper::_('COM_CRMERY_DOC_UPLOAD_SUCCESS');
                $app->redirect('index.php?view=admindocuments&layout=upload_success&format=raw',$msg);
                $session->set("upload_success", true);
            } else {
-               $msg = JText::_('COM_CRMERY_DOC_UPLOAD_FAIL');
+               $msg = TextHelper::_('COM_CRMERY_DOC_UPLOAD_FAIL');
                $app->redirect('index.php?view=admindocuments&layout=upload_success&format=raw',$msg);
                $session->set("upload_success", false);
            }

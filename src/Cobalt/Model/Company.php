@@ -292,6 +292,7 @@ class Company extends DefaultModel
      */
     function getCompanies($id=null,$type=null,$user=null,$team=null)
     {
+        $app = JFactory::getApplication();
         $this->_id = $id;
         $this->_type = $type;
         $this->_user = $user;
@@ -329,7 +330,6 @@ class Company extends DefaultModel
 
         //generate query to join people
         if ( count($companies) ) {
-            $app = JFactory::getApplication();
             $export = $app->input->get('export');
 
             if (!$export) {
