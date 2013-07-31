@@ -9,7 +9,7 @@
 defined('_CEXEC') or die;
 
 if (!defined('_JDEFINES')) {
-	require_once JPATH_BASE . '/defines.php';
+	require_once JPATH_BASE . '/src/defines.php';
 }
 
 @ini_set('magic_quotes_runtime', 0);
@@ -17,7 +17,6 @@ if (!defined('_JDEFINES')) {
 //
 // Installation check, and check on removal of the install directory.
 //
-
 //if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) || file_exists(JPATH_INSTALLATION.'/index.php')) {
 //
 //    if (file_exists(JPATH_INSTALLATION.'/index.php')) {
@@ -31,20 +30,33 @@ if (!defined('_JDEFINES')) {
 //    }
 //}
 
-//
-// Joomla system startup.
-//
-
 // System includes.
 require_once JPATH_LIBRARIES.'/import.php';
-
-// Pre-Load configuration.
-ob_start();
 require_once JPATH_CONFIGURATION.'/configuration.php';
-ob_end_clean();
 
-// System configuration.
-$config = new JConfig;
+$container = Cobalt\Container::getInstance();
+
+$container->bind('app', function() {
+        static $app;
+
+        if (is_null($app)) {
+            $app = new Cobalt\Application;
+        }
+
+        return $app;
+    });
+
+$container->bind('config', function () {
+        static $config;
+
+        if (is_null($config)) {
+            $config = new JConfig;
+        }
+
+        return $config;
+    });
+
+$config = $container->resolve('config');
 
 // Set the error_reporting
 switch ($config->error_reporting) {
@@ -79,8 +91,6 @@ switch ($config->error_reporting) {
 }
 
 define('JDEBUG', $config->debug);
-
-unset($config);
 
 JLoader::registerPrefix('Cobalt', JPATH_SITE.'/libraries/crm/');
 JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');

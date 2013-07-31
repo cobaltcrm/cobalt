@@ -47,4 +47,4 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 JLoader::register('JText', JPATH_PLATFORM . '/joomla/language/text.php');
 JLoader::register('JRoute', JPATH_PLATFORM . '/joomla/application/route.php');
 
-include __DIR__ . '/../vendor/autoload.php';
+include JPATH_VENDOR.'/autoload.php';

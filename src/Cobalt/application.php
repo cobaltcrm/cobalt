@@ -6,9 +6,15 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Cobalt;
+
 defined('_CEXEC') or die;
 
-namespace Cobalt;
+use JConfig;
+use JFactory;
+use JUri;
+use JPluginHelper;
+use JDocument;
 
 use Joomla\Uri\Uri;
 use Joomla\Input\Input;
@@ -400,8 +406,6 @@ final class Application extends AbstractWebApplication
      */
     public function loadRouter($router = null,$options = null)
     {
-
-        include_once(JPATH_SITE.'/libraries/crm/router.php');
         $this->router = ($router === null) ? new CobaltRouter($options) : $router;
 
         return $this->router;
@@ -587,7 +591,7 @@ final class Application extends AbstractWebApplication
         }
 
         // Fallback template
-        $template = new stdClass;
+        $template = new \stdClass;
 
         $template->template = 'default';
         if (!file_exists(JPATH_THEMES . '/default/index.php')) {

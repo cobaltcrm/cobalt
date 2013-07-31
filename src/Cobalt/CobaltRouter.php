@@ -6,8 +6,13 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Cobalt;
+
 // No direct access
-defined('JPATH_BASE') or die;
+defined('_CEXEC') or die;
+
+use JFactory;
+use JUri;
 
 use Joomla\Router\RestRouter;
 
@@ -123,7 +128,7 @@ class CobaltRouter extends RestRouter
         $path = $uri->getPath();
 
         // Remove the base URI path.
-        $path = substr_replace($path, '', 0, strlen(JURI::base(true)));
+        $path = substr_replace($path, '', 0, strlen(JUri::base(true)));
 
         // Check to see if a request to a specific entry point has been made.
         if (preg_match("#.*?\.php#u", $path, $matches)) {
@@ -248,7 +253,7 @@ class CobaltRouter extends RestRouter
         $app	= JFactory::getApplication();
 
         // Use the component routing handler if it exists
-        $path = JPATH_SITE . '/libraries/crm/router.php';
+        $path = JPATH_SITE . '/libraries/crm/CobaltRouter.php';
         $tmp = '';
 
         if ($tmp) {

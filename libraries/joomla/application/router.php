@@ -128,7 +128,7 @@ class JRouter
                 $info = JApplicationHelper::getClientInfo($client, true);
 
                 if (is_object($info)) {
-                    $path = $info->path . '/includes/router.php';
+                    $path = $info->path . '/includes/CobaltRouter.php';
                     if (file_exists($path)) {
                         include_once $path;
                     }
