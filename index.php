@@ -7,17 +7,15 @@
  */
 
 if (version_compare(PHP_VERSION, '5.3.10', '<')) {
-	die('Your host needs to use PHP 5.3.1 or higher to run this version of Cobalt!');
+	die('Your host needs to use PHP 5.3.10 or higher to run this version of Cobalt!');
 }
 
 const _CEXEC = 1;
-const JPATH_BASE = __DIR__;
 
 require_once __DIR__ . '/src/boot.php';
 
 try {
-    $container = Cobalt\Container::getInstance();
-
+    // $container setup in the previous require.
     $app = $container->resolve('app');
 
     $app->route();

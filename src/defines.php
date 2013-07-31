@@ -8,13 +8,9 @@
 
 defined('_CEXEC') or die;
 
-/**
- * Cobalt Application define.
- */
-
-
-// Path Definitions
+// Cobalt Application defines.
 define('JPATH_ROOT',          dirname(__DIR__));
+define('JPATH_BASE',          JPATH_ROOT);
 define('JPATH_SITE',          JPATH_ROOT);
 define('JPATH_COBALT',		  JPATH_ROOT . '/libraries/crm');
 define('JPATH_CONFIGURATION', JPATH_ROOT);
