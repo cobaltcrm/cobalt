@@ -197,7 +197,7 @@ class CobaltModelDocument extends CobaltModelDefault
 
             $id = ( array_key_exists('id',$data) ) ? $data['id'] : $this->_db->insertId();
 
-            CobaltHelperActivity::saveActivity($oldRow, $row,'document', $status);
+            ActivityHelper::saveActivity($oldRow, $row,'document', $status);
 
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onAfterDocumentSave', array(&$row));

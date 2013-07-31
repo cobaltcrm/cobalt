@@ -39,7 +39,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         if ($this->leaderboard[0]['goal_type'] == 'create_deals') {
             $width = $member['deals_created'] / $this->leaderboard[0]['amount'] * 100;
         }
-        echo '<div class="bar" style="background:#'.CobaltHelperCobalt::percent2color($width).';width:'.$width.'%;"></div>';
+        echo '<div class="bar" style="background:#'.CobaltHelper::percent2color($width).';width:'.$width.'%;"></div>';
         echo '</div>';
 
         //output info

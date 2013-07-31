@@ -18,7 +18,7 @@ if ( count($this->goals > 0 ) ) {
                     <span class="goal_info_due_date pull-right">by <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                 </div>
                 <div class="goal_info_progress progress progress-success clearfix">
-                    <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
+                    <?php $bgcolor=CobaltHelper::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
                     <div class="goal_info_progress_total bar" style="background-color:#<?php echo $bgcolor; ?>;width:<?php echo number_format($goal['goal_info']/$goal['amount']*100); ?>%;"></div>
                 </div>
                 <div class="clearfix">

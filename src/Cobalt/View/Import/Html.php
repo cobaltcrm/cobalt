@@ -7,10 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Import;
+
+use JUri;
+use JRoute;
+use JFactory;
+use Cobalt\Model\Import as ImportModel;
+use Cobalt\Helper\TextHelper;
+
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewImportHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -22,7 +33,7 @@ class CobaltViewImportHtml extends JViewHtml
         $document->addScript(JURI::base().'libraries/crm/media/js/import_manager.js');
 
         if ( count($_FILES) > 0 ) {
-            $model = new CobaltModelImport();
+            $model = new ImportModel;
             foreach ($_FILES as $file) {
                 $import_data = $model->readCSVFile($file['tmp_name']);
             }

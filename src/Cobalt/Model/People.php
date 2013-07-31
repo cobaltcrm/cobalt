@@ -10,17 +10,20 @@
 
 namespace Cobalt\Model;
 
+use JRoute;
 use JFactory;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\DateHelper;
+use Cobalt\Pagination;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class People extends DefaultModel
 {
-
     public $_view = null;
     public $_layout = null;
     public $_id = null;
@@ -152,11 +155,11 @@ class People extends DefaultModel
             self::updateJoomlaUser($data);
         }
 
-        CobaltHelperActivity::saveActivity($oldRow, $row,'person', $status);
+        ActivityHelper::saveActivity($oldRow, $row,'person', $status);
 
         //if we receive no custom post data do not modify the custom fields
         if ( count($customArray) > 0 ) {
-            CobaltHelperCobalt::storeCustomCf($person_id,$customArray,'people');
+            CobaltHelper::storeCustomCf($person_id,$customArray,'people');
         }
 
         //bind to cf tables for deal & person association
@@ -534,16 +537,16 @@ class People extends DefaultModel
                 foreach ($people as $key => $person) {
 
                     /* Deals */
-                    $dealModel = new CobaltModelDeal();
+                    $dealModel = new Deal;
                     $dealModel->set('person_id',$person['id']);
                     $people[$key]['deals'] = $dealModel->getDeals();;
 
                     /* Notes */
-                    $notesModel = new CobaltModelNote();
+                    $notesModel = new Note;
                     $people[$key]['notes'] = $notesModel->getNotes($person['id'],'people');
 
                     /* Docs */
-                    $docsModel = new CobaltModelDocument();
+                    $docsModel = new Document;
                     $docsModel->set('person_id',$person['id']);
                     $people[$key]['documents'] = $docsModel->getDocuments();
 
@@ -557,8 +560,7 @@ class People extends DefaultModel
             }
         }
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onPersonLoad', array(&$people));
+        $this->app->triggerEvent('onPersonLoad', array(&$people));
 
         //return results
         return $people;
@@ -709,7 +711,7 @@ class People extends DefaultModel
          jimport('joomla.html.pagination');
          $total = $this->getTotal();
          $total = $total ? $total : 0;
-         $this->_pagination = new CobaltPagination( $total, $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view=people'));
+         $this->_pagination = new Pagination( $total, $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view=people'));
       }
 
       return $this->_pagination;

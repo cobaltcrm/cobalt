@@ -68,7 +68,7 @@ class CobaltModelConversation extends CobaltModelDefault
 
             $id = array_key_exists('id',$data) ? $data['id'] : $this->_db->insertId();
 
-            CobaltHelperActivity::saveActivity($oldRow, $row,'conversation', $status);
+            ActivityHelper::saveActivity($oldRow, $row,'conversation', $status);
 
             return $id;
         }
@@ -89,7 +89,7 @@ class CobaltModelConversation extends CobaltModelDefault
             $conversations = $db->loadAssocList();
 
             for ($i=0;$i<count($conversations);$i++) {
-                $conversations[$i]['owner_avatar'] = CobaltHelperCobalt::getGravatar($conversations[$i]['email']);
+                $conversations[$i]['owner_avatar'] = CobaltHelper::getGravatar($conversations[$i]['email']);
             }
 
             return $conversations;
@@ -124,7 +124,7 @@ class CobaltModelConversation extends CobaltModelDefault
             if ( count($results) > 0 ) {
                 foreach ($results as $key => $convo) {
                     $results[$key]['created_formatted'] = DateHelper::formatDate($convo['created']);
-                    $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($convo['email']);
+                    $results[$key]['owner_avatar'] = CobaltHelper::getGravatar($convo['email']);
                 }
             }
 

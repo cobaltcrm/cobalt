@@ -7,17 +7,40 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\People;
+
+use JUri;
+use JRoute;
+use JFactory;
+use Cobalt\Model\People as PeopleModel;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Model\Company as CompanyModel;
+use Cobalt\Helper\BanterHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\CompanyHelper;
+use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\PeopleHelper;
+use Cobalt\Helper\ConfigHelper;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Helper\TranscriptlistsHelper;
+use Cobalt\Helper\MailinglistsHelper;
+use Cobalt\Helper\TemplateHelper;
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewPeopleHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render()
     {
         $app = JFactory::getApplication();
 
         ///retrieve task list from model
-        $model = new CobaltModelPeople();
+        $model = new PeopleModel;
 
         $state = $model->getState();
 
@@ -65,7 +88,7 @@ class CobaltViewPeopleHtml extends JViewHtml
 
             //get company name to prefill data on page and hidden fields
             if ($person['company_id']) {
-                $company = CobaltHelperCompany::getCompany($person['company_id']);
+                $company = CompanyHelper::getCompany($person['company_id']);
                 $person['company_name'] = $company[0]['name'];
                 $person['company_id'] = $company[0]['id'];
             }
@@ -145,7 +168,7 @@ class CobaltViewPeopleHtml extends JViewHtml
                 //Load Events & Tasks for person
                 $layout = $this->getLayout();
                 if ($layout == "person") {
-                        $model = new CobaltModelEvent();
+                        $model = new EventModel;
                         $events = $model->getEvents("person",null,$app->input->get('id'));
                         $this->event_dock = ViewHelper::getView('events','event_dock','phtml',array('events'=>$events));
                         $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml', array('deals'=>$person['deals']));
@@ -156,7 +179,7 @@ class CobaltViewPeopleHtml extends JViewHtml
                         $this->acymailing = ConfigHelper::checkAcymailing();
 
                         if ($this->acymailing) {
-                            $mailing_list = new MailinglistsHelper();
+                            $mailing_list = new MailinglistsHelper;
                             $mailing_lists = $mailing_list->getMailingLists();
                             $newsletters = array();
                             if ( is_array($mailing_lists) && array_key_exists(0,$mailing_lists) ) {
@@ -165,8 +188,8 @@ class CobaltViewPeopleHtml extends JViewHtml
                             $this->acymailing_dock = ViewHelper::getView('acymailing','default','phtml',array('newsletters'=>$newsletters,'mailing_lists'=>$mailing_lists));
                         }
 
-                        if ( CobaltHelperBanter::hasBanter() ) {
-                            $room_list = new TranscriptlistsHelper();
+                        if ( BanterHelper::hasBanter() ) {
+                            $room_list = new TranscriptlistsHelper;
                             $room_lists = $room_list->getRooms();
                             $transcripts = array();
                             if ( is_array($room_lists) && count($room_lists) > 0 ) {
@@ -187,7 +210,7 @@ class CobaltViewPeopleHtml extends JViewHtml
                     $item = $app->input->get('id') && array_key_exists(0,$people) ? $people[0] : array('id'=>'');
                     $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'people','item'=>$item));
 
-                    $companyModel = new CobaltModelCompany();
+                    $companyModel = new CompanyModel;
 
                     $json = TRUE;
                     $companyNames = $companyModel->getCompanyNames($json);

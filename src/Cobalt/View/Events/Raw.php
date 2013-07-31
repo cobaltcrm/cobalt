@@ -45,7 +45,7 @@ class CobaltViewEventsRaw extends JViewHtml
         }
 
         if ( $app->input->get('association_id') ) {
-            $this->association_name = CobaltHelperCobalt::getAssociationName();
+            $this->association_name = CobaltHelper::getAssociationName();
         }
 
         //display

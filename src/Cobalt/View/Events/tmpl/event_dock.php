@@ -21,7 +21,7 @@ $app = JFactory::getApplication();
             <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" class="btn"><i class="icon-print"></i></a>
             <a class="btn dropdown-toggle" rel="tooltip" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" href="javascript:void(0);" id="templates_link"><i class="icon-list"></i></a>
             <ul class="dropdown-menu padding">
-                <?php $templates = CobaltHelperCobalt::getTaskTemplates($app->input->get('layout'));
+                <?php $templates = CobaltHelper::getTaskTemplates($app->input->get('layout'));
                     if ( count($templates) > 0 ) { foreach ($templates as $template) { ?>
                         <li><a href="javascript:void(0)" onclick="createTemplate(<?php echo $template['id']; ?>)"><?php echo $template['name']; ?></a>
                     <?php } } else { ?>

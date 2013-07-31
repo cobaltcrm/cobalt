@@ -7,10 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Events;
+
+use JFactory;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Model\People as PeopleModel;
+use Cobalt\Helper\EventHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TemplateHelper;
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewEventsHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -19,7 +30,7 @@ class CobaltViewEventsHtml extends JViewHtml
         $document = JFactory::getDocument();
 
         //event model
-        $model = new CobaltModelEvent();
+        $model = new EventModel;
 
         $view = $app->input->get('view');
         $layout = $this->getLayout();
@@ -64,7 +75,7 @@ class CobaltViewEventsHtml extends JViewHtml
             }
 
         if ( TemplateHelper::isMobile() && isset($event_id)) {
-            $person_model = new CobaltModelPeople();
+            $person_model = new PeopleModel;
             $person_model->set('event_id',$event_id);
             $person_model->set('recent',false);
             $person_model->set('_id',null);

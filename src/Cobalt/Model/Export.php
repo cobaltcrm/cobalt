@@ -7,17 +7,16 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelExport extends JModelBase
+class Export extends DefaultModel
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Dynamically download CSV files based on type requested
      * @return [type] [description]
@@ -52,35 +51,35 @@ class CobaltModelExport extends JModelBase
 
         switch ($data_type) {
             case "deals":
-                $model = new CobaltModelDeal();
+                $model = new Deal;
                 $data = $model->getDeals($export_ids);
             break;
             case "companies":
-                $model = new CobaltModelCompany();
+                $model = new Company;
                 $data = $model->getCompanies($export_ids);
             break;
             case "people":
-                $model = new CobaltModelPeople();
+                $model = new People;
                 $data = $model->getPeople($export_ids);
             break;
             case "sales_pipeline":
-                $model = new CobaltModelDeal();
+                $model = new Deal;
                 $data = $model->getReportDeals($export_ids);
             break;
             case "source_report":
-                $model = new CobaltModelDeal();
+                $model = new Deal;
                 $data = $model->getDeals($export_ids);
             break;
             case "roi_report":
-                $model = new CobaltModelSource();
+                $model = new Source;
                 $data = $model->getRoiSources($export_ids);
             break;
             case "notes":
-                $model = new CobaltModelNote();
+                $model = new Note;
                 $data = $model->getNotes(NULL,NULL,FALSE);
             break;
             case "custom_report":
-                $model = new CobaltModelReport();
+                $model = new Report;
                 $data = $model->getCustomReportData($app->input->get('report_id'));
             break;
 
@@ -128,7 +127,7 @@ class CobaltModelExport extends JModelBase
 
         $person_id = $app->input->get('person_id');
 
-        $model = new CobaltModelPeople();
+        $model = new People;
 
         $person = $model->getPerson($person_id);
         $person = $person[0];

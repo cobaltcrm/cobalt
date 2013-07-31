@@ -7,14 +7,19 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\PrintFriendly;
+
+use JFactory;
+use Cobalt\Helper\ViewHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewPrintHtml extends ViewHelper
+class Html extends ViewHelper
 {
     public function render($tpl = null)
     {
-
         //app
         $app = JFactory::getApplication();
 

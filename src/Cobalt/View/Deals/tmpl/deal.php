@@ -72,8 +72,8 @@ $deal = $this->dealList[0];
         </div>
 
         <div rel="tooltip" id="stage_name_<?php echo $deal['id']; ?>" title="<?php echo ucwords(TextHelper::_('COBALT_STAGE')).": ".$deal['stage_name']; ?>" class="progress">
-            <?php $light = "#".CobaltHelperCobalt::percent2color($deal['percent']); ?>
-            <?php $dark = "#".CobaltHelperCobalt::percent2color($deal['percent']-20); ?>
+            <?php $light = "#".CobaltHelper::percent2color($deal['percent']); ?>
+            <?php $dark = "#".CobaltHelper::percent2color($deal['percent']-20); ?>
           <div class="bar" id="percent_<?php echo $deal['id']; ?>" style="
                   background-image: -moz-linear-gradient(top,<?php echo $light; ?>,<?php echo $dark; ?>);
                 background-image: -webkit-gradient(linear,0 0,0 100%,from(<?php echo $light; ?>),to(<?php echo $dark; ?>));
@@ -259,4 +259,4 @@ $deal = $this->dealList[0];
     </div>
 </div>
 
-<?php echo CobaltHelperCobalt::showShareDialog();
+<?php echo CobaltHelper::showShareDialog();

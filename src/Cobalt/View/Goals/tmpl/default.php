@@ -66,7 +66,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             if ($first_leaderboard['goal_type'] == 'create_deals') {
                                 $width = $member['deals_created'] / $first_leaderboard['amount'] * 100;
                             }
-                            echo '<div class="bar" style="background:#'.CobaltHelperCobalt::percent2color($width).';width:'.$width.'%;"></div>';
+                            echo '<div class="bar" style="background:#'.CobaltHelper::percent2color($width).';width:'.$width.'%;"></div>';
                             echo '</div>';
                             //output info
                             //win_cash
@@ -140,7 +140,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                     </div>
                                     <div class="goal_info_progress clearfix progress progress-success">
-                                        <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
+                                        <?php $bgcolor=CobaltHelper::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
                                         <div class="goal_info_progress_total bar" style="background-color:#<?php echo $bgcolor; ?>;width:<?php echo number_format($goal['goal_info']/$goal['amount']*100); ?>%;"></div>
                                     </div>
                                     <div class="clearfix">
@@ -211,7 +211,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                 </div>
                                 <div class="goal_info_progress clearfix progress progress-success">
-                                    <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
+                                    <?php $bgcolor=CobaltHelper::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
                                     <div class="goal_info_progress_total bar" style="background-color:#<?php echo $bgcolor; ?>;width:<?php echo number_format($goal['goal_info']/$goal['amount']*100); ?>%;"></div>
                                 </div>
                                 <div class="clearfix">
@@ -262,7 +262,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                     </div>
                                     <div class="goal_info_progress progress progress-success clearfix">
-                                        <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
+                                        <?php $bgcolor=CobaltHelper::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
                                         <div class="goal_info_progress_total bar" style="background-color:#<?php echo $bgcolor; ?>;width:<?php echo number_format($goal['goal_info']/$goal['amount']*100); ?>%;"></div>
                                     </div>
                                     <div class="clearfix">

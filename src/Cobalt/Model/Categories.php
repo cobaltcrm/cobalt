@@ -7,10 +7,17 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Joomla\Registry\Registry;
+use JTable;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelCategories extends CobaltModelDefault
+class Categories extends DefaultModel
 {
 
     public $_view = "categories";
@@ -136,7 +143,7 @@ class CobaltModelCategories extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Categories.filter_order','filter_order','c.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Categories.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Categories.filter_order', $filter_order);

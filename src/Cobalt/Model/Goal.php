@@ -67,7 +67,7 @@ class CobaltModelGoal extends JModelBase
                 return false;
             }
 
-            CobaltHelperActivity::saveActivity($oldRow, $row,'goal', $status);
+            ActivityHelper::saveActivity($oldRow, $row,'goal', $status);
 
             return true;
         }

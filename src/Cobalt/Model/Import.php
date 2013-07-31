@@ -7,22 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\DropdownHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelImport extends JModelBase
+class Import extends DefaultModel
 {
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Import a CSV File
      * @param  [String]  $data
@@ -90,7 +86,7 @@ class CobaltModelImport extends JModelBase
                                 switch ($header_name) {
 
                                     case "company_id":
-                                        $model = new CobaltModelCompany();
+                                        $model = new Company;
                                         $new_header = "company_id";
                                         $company_name = $model->getCompanyName($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
@@ -104,7 +100,7 @@ class CobaltModelImport extends JModelBase
 
                                     case "company_name":
 
-                                        $model = new CobaltModelCompany();
+                                        $model = new Company;
                                         $new_header = "company_id";
                                         $company_id = $model->getCompanyList($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
@@ -158,7 +154,7 @@ class CobaltModelImport extends JModelBase
                                     case "primary_contact_name":
 
                                         $new_header = "primary_contact_id";
-                                        $model = new CobaltModelPeople();
+                                        $model = new People;
                                         $contact = $model->searchForContact($read[$c]);
                                         if ($contact) {
                                             $special_data = array('label'=>$contact[0]->label,'value'=>$contact[0]->value);
@@ -171,7 +167,7 @@ class CobaltModelImport extends JModelBase
                                     case "assignee_name":
 
                                         $new_header = "assignee_id";
-                                        $model = new CobaltModelPeople();
+                                        $model = new People;
                                         $contact = $model->searchForContact($read[$c]);
 
                                     break;

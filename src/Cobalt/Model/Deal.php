@@ -204,11 +204,11 @@ class Deal extends DefaultModel
 
         $deal_id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $row->id;
 
-        CobaltHelperActivity::saveActivity($oldRow, $row,'deal', $status);
+        ActivityHelper::saveActivity($oldRow, $row,'deal', $status);
 
         //if we receive no custom post data do not modify the custom fields
         if ( count($customArray) > 0 ) {
-           CobaltHelperCobalt::storeCustomCf($deal_id,$customArray,'deal');
+           CobaltHelper::storeCustomCf($deal_id,$customArray,'deal');
         }
 
         if ( ( array_key_exists('primary_contact_id',$data) && $data['primary_contact_id'] > 0 ) ||  ( array_key_exists('person_id',$data) && $data['person_id'] > 0 ) ) {

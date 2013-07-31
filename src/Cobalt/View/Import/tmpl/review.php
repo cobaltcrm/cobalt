@@ -36,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <?php foreach ($data as $field => $value) { ?>
                     <?php
                         $scriptMemory = memory_get_peak_usage(true);
-                        $serverMemory = CobaltHelperCobalt::getBytes(ini_get('memory_limit'));
+                        $serverMemory = CobaltHelper::getBytes(ini_get('memory_limit'));
                         if ($scriptMemory >= $serverMemory) {
                             $memoryFlag = true;
                             ?>

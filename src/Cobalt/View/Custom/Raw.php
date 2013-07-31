@@ -7,12 +7,15 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Custom;
+
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view');
-
-class CobaltViewCustomRaw extends JViewHtml
+class CobaltViewCustomRaw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {

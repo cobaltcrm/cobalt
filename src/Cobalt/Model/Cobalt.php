@@ -7,10 +7,19 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Joomla\Registry\Registry;
+use JTable;
+use Joomla\Model\AbstractModel;
+use Cobalt\Pagination;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelCobalt extends JModelBase
+class Cobalt extends AbstractModel
 {
 
     public $view = null;
@@ -50,7 +59,8 @@ class CobaltModelCobalt extends JModelBase
         $conditions = array();
 
         if (empty($pks)) {
-            return JError::raiseWarning(500, JText::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
+            $app->enqueueMessage(TextHelper::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'), 'error');
+            return false;
         }
 
         // update ordering values
@@ -125,7 +135,7 @@ class CobaltModelCobalt extends JModelBase
 
         // Create the pagination object.
         jimport('joomla.html.pagination');
-        $page = new JPagination($this->getTotal(), $this->getState($this->view.'_limitstart'), $this->getState($this->view.'_limit'));
+        $page = new Pagination($this->getTotal(), $this->getState($this->view.'_limitstart'), $this->getState($this->view.'_limit'));
 
         // Add the object to the internal cache.
         $this->cache[$store] = $page;
@@ -144,7 +154,7 @@ class CobaltModelCobalt extends JModelBase
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         $state->set($this->view.'_limit', $limit);
         $state->set($this->view.'_limitstart', $limitstart);

@@ -7,10 +7,31 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Deals;
+
+use JUri;
+use JFactory;
+use JRoute;
+use Cobalt\Model\Deal as DealModel;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Model\Company as CompanyModel;
+use Cobalt\Model\People as PeopleModel;
+use Cobalt\Helper\BanterHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TemplateHelper;
+use Cobalt\Helper\CompanyHelper;
+use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\PeopleHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Helper\TranscriptlistsHelper;
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewDealsHtml extends JViewHTML
+class Html extends AbstractHtmlView
 {
 
     public function render()
@@ -18,7 +39,7 @@ class CobaltViewDealsHtml extends JViewHTML
         $app = JFactory::getApplication();
 
         //retrieve deal list from model
-        $model = new CobaltModelDeal();
+        $model = new DealModel;
         $state = $model->getState();
         $dealList = array();
         $deal = array();
@@ -65,7 +86,7 @@ class CobaltViewDealsHtml extends JViewHTML
 
             //get company name to prefill data and hidden fields
             if ($deal['company_id']) {
-                $company = CobaltHelperCompany::getCompany($deal['company_id']);
+                $company = CompanyHelper::getCompany($deal['company_id']);
                 $deal['company_name'] = $company[0]['name'];
                 $deal['company_id'] = $company[0]['id'];
             }
@@ -149,7 +170,7 @@ class CobaltViewDealsHtml extends JViewHTML
         //Load Events & Tasks for person
         $layout = $this->getLayout();
         if ($layout == "deal") {
-                $model = new CobaltModelEvent();
+                $model = new EventModel;
                 $events = $model->getEvents("deal",null,$app->input->get('id'));
                 $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
 
@@ -159,8 +180,8 @@ class CobaltViewDealsHtml extends JViewHTML
                 $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal['documents']));
                 $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
 
-                if ( CobaltHelperBanter::hasBanter() ) {
-                    $room_list = new TranscriptlistsHelper();
+                if ( BanterHelper::hasBanter() ) {
+                    $room_list = new TranscriptlistsHelper;
                     $room_lists = $room_list->getRooms();
                     $transcripts = array();
                     if ( is_array($room_lists) && count($room_lists) > 0 ) {
@@ -196,11 +217,11 @@ class CobaltViewDealsHtml extends JViewHTML
 
             $json = TRUE;
 
-            $companyModel = new CobaltModelCompany();
+            $companyModel = new CompanyModel;
             $companyNames = $companyModel->getCompanyNames($json);
             $doc->addScriptDeclaration("var company_names=".$companyNames.";");
 
-            $peopleModel = new CobaltModelPeople();
+            $peopleModel = new PeopleModel;
             $peopleNames = $peopleModel->getPeopleNames($json);
             $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
         }

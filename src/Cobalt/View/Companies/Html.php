@@ -7,10 +7,28 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Companies;
+
+use JUri;
+use JRoute;
+use JFactory;
+use Cobalt\Helper\BanterHelper;
+use Cobalt\Helper\TemplateHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\CompanyHelper;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Helper\TranscriptlistsHelper;
+use Cobalt\Model\Company as CompanyModel;
+use Cobalt\Model\Event as EventModel;
+
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCompaniesHtml extends JViewHTML
+class Html extends AbstractHtmlView
 {
     public function render()
     {
@@ -19,7 +37,7 @@ class CobaltViewCompaniesHtml extends JViewHTML
         $app->input->set('layout',$app->input->get('layout','default'));
 
         //get model
-        $model = new CobaltModelCompany();
+        $model = new CompanyModel;
         $state = $model->getState();
 
         //session data
@@ -55,7 +73,7 @@ class CobaltViewCompaniesHtml extends JViewHTML
         $this->pagination = $pagination;
 
         //get company type filters
-        $company_types = CobaltHelperCompany::getTypes();
+        $company_types = CompanyHelper::getTypes();
         $company_type = ( $company ) ? $company_types[$company] : $company_types['all'];
 
         //get user filter
@@ -86,7 +104,7 @@ class CobaltViewCompaniesHtml extends JViewHTML
         switch ($layout) {
             case 'company':
 
-                $model = new CobaltModelEvent();
+                $model = new EventModel
                 $events = $model->getEvents("company",null,$app->input->get('id'));
 
                 $this->event_dock = ViewHelper::getView('events','event_dock', 'phtml',array('events'=>$events));
@@ -100,8 +118,8 @@ class CobaltViewCompaniesHtml extends JViewHTML
                 $custom_fields_view->item = $companies[0];
                 $this->custom_fields_view = $custom_fields_view;
 
-                if ( CobaltHelperBanter::hasBanter() ) {
-                    $room_list = new TranscriptlistsHelper();
+                if ( BanterHelper::hasBanter() ) {
+                    $room_list = new TranscriptlistsHelper;
                     $room_lists = $room_list->getRooms();
                     $transcripts = array();
                     if ( is_array($room_lists) && count($room_lists) > 0 ) {
@@ -123,8 +141,8 @@ class CobaltViewCompaniesHtml extends JViewHTML
             default:
 
                 //get column filters
-                $this->column_filters = CobaltHelperCompany::getColumnFilters();
-                $this->selected_columns = CobaltHelperCompany::getSelectedColumnFilters();
+                $this->column_filters = CompanyHelper::getColumnFilters();
+                $this->selected_columns = CompanyHelper::getSelectedColumnFilters();
 
                 $company_list = ViewHelper::getView('companies','list','html',array('companies'=>$companies));
                 $total = $model->getTotal();

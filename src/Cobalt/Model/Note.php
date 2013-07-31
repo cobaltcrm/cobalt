@@ -129,7 +129,7 @@ class Note extends DefaultModel
             $id = $this->_db->insertId();
         }
 
-        CobaltHelperActivity::saveActivity($oldRow, $row,'note', $status);
+        ActivityHelper::saveActivity($oldRow, $row,'note', $status);
 
         //Store email attachments
         if ( array_key_exists('is_email',$data) ) {
@@ -315,7 +315,7 @@ class Note extends DefaultModel
         if (count($results) > 0) {
             foreach ($results as $key => $note) {
                 $results[$key]['created_formatted'] = DateHelper::formatDate($note['created']);
-                $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($note['email']);
+                $results[$key]['owner_avatar'] = CobaltHelper::getGravatar($note['email']);
             }
         }
 
