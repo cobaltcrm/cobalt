@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <table width="600" cellpadding="0" cellspacing="10" border="0" align="center" style="font-family:Arial, Helvetica, sans-serif; font-size:11px;">
     <tr>

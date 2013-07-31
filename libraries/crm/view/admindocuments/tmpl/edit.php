@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['help_menu']->render(); ?>
     <div class="row-fluid">

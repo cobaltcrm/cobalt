@@ -5,7 +5,13 @@
 	"require": {
 		"php": ">=5.3.10",
 		"joomla/framework": "dev-master",
-		"symfony/http-foundation": "2.3.*@stable"
+		"symfony/http-foundation": "2.3.*@stable",
+		"league/di": "1.1.*"
 	},
+    "autoload": {
+        "psr-0": {
+            "Cobalt\\": "src/"
+        }
+    },
 	"minimum-stability": "dev"
 }

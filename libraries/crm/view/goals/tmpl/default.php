@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
     <h1><?php echo ucwords(CRMText::_('COBALT_GOALS')); ?></h1>

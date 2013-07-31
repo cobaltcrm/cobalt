@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $convo = $this->conversation;
 echo '<div class="media" id="convo_entry_'.$convo['id'].'">';

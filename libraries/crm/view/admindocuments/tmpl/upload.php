@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <form action="index.php?view=admindocuments&format=raw" method="post" name="adminForm" id="adminForm" class="inline-form form-validate" enctype="multipart/form-data" >
     <input type="file" class="input-file" name="document" />
     <input type="submit" class="btn btn-primary" value="<?php echo CRMText::_('COBALT_UPLOAD'); ?>" />

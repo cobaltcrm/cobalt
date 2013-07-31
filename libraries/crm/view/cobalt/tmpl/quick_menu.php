@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <?php /**
 <div class="quick-icons">
         <?php if ( count( $this->quick_menu_links) > 0 ) { foreach ($this->quick_menu_links as $quick_menu_link) { ?>

@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
     if ( count($this->documents) > 0 ) {
         foreach ($this->documents as $key => $document) {
             $k = $key%2;

@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
 
 ?>
 <form id="note_edit" method="post" action="<?php echo 'index.php?controller=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >

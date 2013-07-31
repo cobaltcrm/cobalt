@@ -2,15 +2,15 @@
 /**
  * @package    Cobalt.CRM
  *
- * @copyright  Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2013 Webspark, LLC. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_CEXEC') or die;
 
-//
-// Joomla system checks.
-//
+if (!defined('_JDEFINES')) {
+	require_once JPATH_BASE . '/defines.php';
+}
 
 @ini_set('magic_quotes_runtime', 0);
 
@@ -18,19 +18,18 @@ defined('_JEXEC') or die;
 // Installation check, and check on removal of the install directory.
 //
 
-if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) || file_exists(JPATH_INSTALLATION.'/index.php')) {
-
-    if (file_exists(JPATH_INSTALLATION.'/index.php')) {
-
-        header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'install/index.php')).'install/index.php');
-        exit();
-
-    } else {
-        echo 'No configuration file found and no installation code available. Exiting...';
-        exit();
-    }
-
-}
+//if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) || file_exists(JPATH_INSTALLATION.'/index.php')) {
+//
+//    if (file_exists(JPATH_INSTALLATION.'/index.php')) {
+//
+//        header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'install/index.php')).'install/index.php');
+//        exit();
+//
+//    } else {
+//        echo 'No configuration file found and no installation code available. Exiting...';
+//        exit();
+//    }
+//}
 
 //
 // Joomla system startup.

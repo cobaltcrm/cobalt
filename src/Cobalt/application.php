@@ -6,7 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_CEXEC') or die;
+
+namespace Cobalt;
 
 use Joomla\Uri\Uri;
 use Joomla\Input\Input;
@@ -27,7 +29,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  * @subpackage  Application
  * @since       1.5
  */
-final class Cobalt extends AbstractWebApplication
+final class Application extends AbstractWebApplication
 {
     /**
      * The Dispatcher object.

@@ -50,8 +50,7 @@ class crmInstallController
             header('Location: '.CURI::base());
         }
 
-        require_once JPATH_BASE . '/includes/framework.php';
-        include_once JPATH_BASE . '/includes/application.php';
+        require_once JPATH_BASE . '/src/boot.php';
 
         $app = JApplicationWeb::getInstance('cobalt',$model->getRegistry());
         JFactory::$application = $app;

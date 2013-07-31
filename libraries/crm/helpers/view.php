@@ -1,6 +1,6 @@
 <?php
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_CEXEC') or die('Restricted access');
 
 class CobaltHelperView
 {

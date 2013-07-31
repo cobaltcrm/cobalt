@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
 
  include(JPATH_SITE.'/libraries/crm/helpers/mdetect.php');
  jimport('joomla.application.component.model');

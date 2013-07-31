@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
 
 //sessions
 jimport( 'joomla.session.session' );

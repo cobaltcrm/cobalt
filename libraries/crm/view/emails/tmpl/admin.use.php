@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <p>
     <?php echo JText::sprintf('COBALT_ADMIN_USE_EMAIL_HEADER',CobaltHelperDate::formatDate($starting_date),CobaltHelperDate::formatDate($ending_date)); ?>

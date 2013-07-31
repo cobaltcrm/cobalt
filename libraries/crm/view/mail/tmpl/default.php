@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <?php if ( is_array($this->mail) && count ( $this->mail ) > 0 ) { foreach ($this->mail as $email) { ?>
     <tr id="email_row_<?php echo $email['overview']->msgno; ?>">
         <td><a href="javascript:void(0);" onclick="readEmail(<?php echo $email['overview']->msgno; ?>);"><?php  echo $email['overview']->subject; ?></a></td>

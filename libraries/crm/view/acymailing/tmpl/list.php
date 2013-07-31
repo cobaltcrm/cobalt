@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
 if ( count($this->newsletters) > 0 ) {
     $i = 0;
     foreach ($this->newsletters as $newsletter) { ?>

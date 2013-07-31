@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die('Restricted access');
+defined('_CEXEC') or die('Restricted access');
 
 //assign event
 $event = $this->event;

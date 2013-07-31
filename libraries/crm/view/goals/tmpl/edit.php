@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <h1><?php echo ucwords($this->header); ?></h1>
 <form id="edit-form" action="<?php echo JRoute::_('index.php?controller=editGoal'); ?>" method="post" onsubmit="return save(this);">

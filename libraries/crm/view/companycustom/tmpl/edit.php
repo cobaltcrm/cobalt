@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <script type="text/javascript">
     <?php if ($this->custom['type'] != null) { ?>
         var type = "<?php echo $this->custom['type']; ?>";

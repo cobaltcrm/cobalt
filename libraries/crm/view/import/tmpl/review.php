@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <h1><?php echo CRMText::_('COBALT_REVIEW_YOUR_IMPORT'); ?></h1>
 <?php if ( count($this->import_data) > 0 ) { ?>

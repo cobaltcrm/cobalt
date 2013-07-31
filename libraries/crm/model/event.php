@@ -9,7 +9,7 @@
 # Version 1.170
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CobaltModelEvent extends CobaltModelDefault
 {
