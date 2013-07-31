@@ -33,14 +33,14 @@ class DefaultController extends AbstractController
         $app->input->set('view', $viewName);
 
         // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COBALT . '/view/' . $viewName . '/tmpl', 'normal');
+        $paths = new \SplPriorityQueue;
+        $paths->insert(JPATH_ROOT . 'src/Cobalt/View/' . ucfirst($viewName) . '/tmpl', 'normal');
 
-        $viewClass 	= 'CobaltView' . ucfirst($viewName) . ucfirst($viewFormat);
-        $modelClass = 'CobaltModel' . ucfirst($viewName);
+        $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
+        $modelClass = 'Cobalt\\Model\\' . ucfirst($viewName);
 
         if (false === class_exists($modelClass)) {
-            $modelClass = 'CobaltModelDefault';
+            $modelClass = 'Cobalt\\Model\\DefaultModel';
         }
 
         $view = new $viewClass(new $modelClass, $paths);

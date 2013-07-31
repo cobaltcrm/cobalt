@@ -7,10 +7,16 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TextHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelGraphs extends CobaltModelDefault
+class Graphs extends DefaultModel
 {
 
     /**
@@ -28,7 +34,7 @@ class CobaltModelGraphs extends CobaltModelDefault
             }
 
             //deal data
-            $model = new CobaltModelDeal();
+            $model = new Deal;
             $model->set('archived',0);
             $deals_by_stage = $model->getGraphDeals('stage',$type,$id);
             $deals_by_status = $model->getGraphDeals('status',$type,$id);
@@ -41,12 +47,12 @@ class CobaltModelGraphs extends CobaltModelDefault
             $lead_totals = array();
 
             //revenue data
-            $model = new CobaltModelRevenue();
+            $model = new Revenue;
             $monthly_revenue = $model->getMonthlyRevenue($type,$id);
             $yearly_revenue = $model->getYearlyRevenue($type,$id);
 
             //commission data
-            $model = new CobaltModelCommission();
+            $model = new Commision;
             $monthly_commissions = $model->getMonthlyCommission($type,$id);
             $yearly_commissions = $model->getYearlyCommission($type,$id);
 
@@ -81,7 +87,7 @@ class CobaltModelGraphs extends CobaltModelDefault
                 }
             }
             //get months
-            $months = CobaltHelperDate::getMonthNamesShort();
+            $months = DateHelper::getMonthNamesShort();
 
             //generate graph data
             $graph_data = array(

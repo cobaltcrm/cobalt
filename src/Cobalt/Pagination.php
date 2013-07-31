@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Cobalt;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -17,7 +19,7 @@ defined('JPATH_PLATFORM') or die;
  * @subpackage  HTML
  * @since       11.1
  */
-class CobaltPagination extends JPagination
+class Pagination extends \JPagination
 {
     /**
      * @var    integer  The record number to start displaying from.

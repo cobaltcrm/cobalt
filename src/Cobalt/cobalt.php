@@ -105,7 +105,10 @@ if ( $format != "raw" && !in_array($controller,$overrides) ) {
 TemplateHelper::loadJavascriptLanguage();
 
 // Create the controller
-$classname	= 'CobaltController'.$controller;
+if ($controller === 'default') {
+    $controller = 'DefaultController';
+}
+$classname	= 'Cobalt\\Controller\\'.ucfirst($controller);
 $app = JFactory::getApplication();
 $controller = new $classname($app->input, $app);
 

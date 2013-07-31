@@ -7,10 +7,17 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use JTable;
+use Cobalt\Helper\DealHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelDeal extends CobaltModelDefault
+class Deal extends DefaultModel
 {
         var $_types=null;
         var $_data = null;
@@ -205,7 +212,7 @@ class CobaltModelDeal extends CobaltModelDefault
                 $this->storeContact($deal_id,$contactId);
             }
 
-            $closed_stages = CobaltHelperDeal::getClosedStages();
+            $closed_stages = DealHelper::getClosedStages();
 
             $row->closed = in_array($row->stage_id,$closed_stages) ? TRUE : FALSE;
             $row->actual_close_formatted = isset($row->actual_close) ? CobaltHelperDate::formatDate($row->actual_close) : CobaltHelperDate::formatDate(date("Y-m-d"));
@@ -634,7 +641,7 @@ class CobaltModelDeal extends CobaltModelDefault
                     //if we want active deals we must retrieve the active stage ids to filter by
                     if ($stage == 'active') {
                         //get stage ids
-                        $stage_ids = CobaltHelperDeal::getActiveStages();
+                        $stage_ids = DealHelper::getActiveStages();
                         //filter by results having team ids
                         $stages = "";
                         for ($i=0;$i<count($stage_ids);$i++) {
@@ -655,7 +662,7 @@ class CobaltModelDeal extends CobaltModelDefault
                 //source view
                 if ($view == "reports" && $layout == "source_report") {
                     //filter by active and closed stages
-                    $active_and_closed_stages = CobaltHelperDeal::getNonInactiveStages();
+                    $active_and_closed_stages = DealHelper::getNonInactiveStages();
                     $query->where("d.stage_id IN(".implode(',',$active_and_closed_stages).")");
 
                     //filter by deals that are associated to sources
@@ -864,7 +871,7 @@ class CobaltModelDeal extends CobaltModelDefault
 
         function getDealDetails(&$deal)
         {
-            $closed_stages = CobaltHelperDeal::getClosedStages();
+            $closed_stages = DealHelper::getClosedStages();
             $deal['closed'] = in_array($deal['stage_id'],$closed_stages) ? TRUE : FALSE;
 
             /** ------------------------------------------
@@ -1102,7 +1109,7 @@ class CobaltModelDeal extends CobaltModelDefault
         function getLeadSources($access_type=null,$access_id=null)
         {
             //get won stage id so we know what stage to filter by for the deals
-            $won_stage_ids = CobaltHelperDeal::getWonStages();
+            $won_stage_ids = DealHelper::getWonStages();
 
             //get database
             $db = JFactory::getDBO();

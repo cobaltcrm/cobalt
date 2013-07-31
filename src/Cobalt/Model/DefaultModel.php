@@ -7,10 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+
+use Joomla\Model\AbstractModel;
+use Cobalt\Pagination;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelDefault extends JModelBase
+class DefaultModel extends AbstractModel
 {
     public $__state_set = null;
     public $_total = null;
@@ -135,7 +143,7 @@ class CobaltModelDefault extends JModelBase
     {
       // Lets load the content if it doesn't already exist
       if (empty($this->_pagination)) {
-         $this->_pagination = new CobaltPagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
+         $this->_pagination = new Pagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
       }
 
       return $this->_pagination;

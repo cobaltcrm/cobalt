@@ -7,10 +7,26 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Reports;
+
+use JUri;
+use JFactory;
+
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TemplateHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Model\Graphs as GraphsModel;
+use Cobalt\Model\Source as SourceModel;
+use Cobalt\Model\Deal as DealModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewReportsHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render()
     {
@@ -67,7 +83,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $this->document->addScript( JURI::base().'libraries/crm/media/js/sales_dashboard.js' );
 
         //get data for sales graphs
-        $graphModel = new CobaltModelGraphs();
+        $graphModel = new GraphsModel;
         $this->graph_data = $graphModel->getGraphData();
     }
 
@@ -84,7 +100,7 @@ class CobaltViewReportsHtml extends JViewHtml
         }
 
         //assign references
-        $this->columns = CobaltHelperDeal::getAllCustomFields($id);
+        $this->columns = DealHelper::getAllCustomFields($id);
     }
 
     public function _display_custom_report()
@@ -98,12 +114,12 @@ class CobaltViewReportsHtml extends JViewHtml
         $state = $reportModel->getState();
 
         //info for dropdowns
-        $deal_amounts = CobaltHelperDeal::getAmounts();
-        $deal_sources = CobaltHelperDeal::getSources();
-        $deal_stages  = CobaltHelperDeal::getSourceStages();
-        $deal_statuses = CobaltHelperDeal::getStatuses();
-        $deal_close_dates = CobaltHelperDeal::getClosing();
-        $modified_dates = CobaltHelperDeal::getModified();
+        $deal_amounts = DealHelper::getAmounts();
+        $deal_sources = DealHelper::getSources();
+        $deal_stages  = DealHelper::getSourceStages();
+        $deal_statuses = DealHelper::getStatuses();
+        $deal_close_dates = DealHelper::getClosing();
+        $modified_dates = DealHelper::getModified();
 
         $custom_report_header = ViewHelper::getView('reports','custom_report_header','phtml',array('report_data'=>$this->report_data,'report'=>$this->report,'state'=>$state));
         $custom_report_list = ViewHelper::getView('reports','custom_report_filter','phtml',array('report_data'=>$this->report_data,'report'=>$this->report,'state'=>$state));
@@ -177,7 +193,7 @@ class CobaltViewReportsHtml extends JViewHtml
     public function _display_deal_milestones()
     {
         //get deals for reports
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealModel->set('archived',0);
         $deals = $dealModel->getDeals();
 
@@ -195,7 +211,7 @@ class CobaltViewReportsHtml extends JViewHtml
     public function _display_roi_report()
     {
         //get sources for reports
-        $sourceModel = new CobaltModelSource();
+        $sourceModel = new SourceModel;
         $sources = $sourceModel->getRoiSources();
 
          // Initialise state variables.
@@ -217,7 +233,7 @@ class CobaltViewReportsHtml extends JViewHtml
     public function _display_source_report()
     {
         //get deals for reports
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealModel->set('archived',0);
         $dealModel->set('limit',0);
         $reports = $dealModel->getDeals();
@@ -226,12 +242,12 @@ class CobaltViewReportsHtml extends JViewHtml
         $state = $dealModel->getState();
 
         //info for dropdowns
-        $deal_amounts = CobaltHelperDeal::getAmounts();
-        $deal_sources = CobaltHelperDeal::getSources();
-        $deal_stages  = CobaltHelperDeal::getStages();
-        $deal_statuses = CobaltHelperDeal::getStatuses();
-        $deal_close_dates = CobaltHelperDeal::getClosing();
-        $modified_dates = CobaltHelperDeal::getModified();
+        $deal_amounts = DealHelper::getAmounts();
+        $deal_sources = DealHelper::getSources();
+        $deal_stages  = DealHelper::getStages();
+        $deal_statuses = DealHelper::getStatuses();
+        $deal_close_dates = DealHelper::getClosing();
+        $modified_dates = DealHelper::getModified();
 
          //list view
         $source_report_header  = ViewHelper::getView('reports','source_report_header','phtml', array('state'=>$state,'reports'=>$reports));
@@ -243,7 +259,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $source_report_header->deal_statuses = $deal_statuses;
         $source_report_header->deal_close_dates = $deal_close_dates;
         $source_report_header->modified_dates = $modified_dates;
-        $source_report_header->created_dates = CobaltHelperDate::getCreatedDates();
+        $source_report_header->created_dates = DateHelper::getCreatedDates();
         $source_report_header->team_names = DropdownHelper::getTeamNames();
         $source_report_header->user_names = DropdownHelper::getUserNames();
         $source_report_header->state = $state;
@@ -259,7 +275,7 @@ class CobaltViewReportsHtml extends JViewHtml
     public function _display_sales_pipeline()
     {
          //get deals for reports
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealModel->set('archived',0);
         $dealModel->set('limit',0);
         $reports = $dealModel->getReportDeals();
@@ -268,11 +284,11 @@ class CobaltViewReportsHtml extends JViewHtml
         $state = $dealModel->getState();
 
         //info for dropdowns
-        $deal_amounts       = CobaltHelperDeal::getAmounts();
-        $deal_stages        = CobaltHelperDeal::getActiveStages(TRUE);
-        $deal_statuses      = CobaltHelperDeal::getStatuses();
-        $deal_close_dates   = CobaltHelperDeal::getClosing();
-        $modified_dates     = CobaltHelperDeal::getModified();
+        $deal_amounts       = DealHelper::getAmounts();
+        $deal_stages        = DealHelper::getActiveStages(TRUE);
+        $deal_statuses      = DealHelper::getStatuses();
+        $deal_close_dates   = DealHelper::getClosing();
+        $modified_dates     = DealHelper::getModified();
 
         //list view
         $sales_pipeline_header  = ViewHelper::getView('reports','sales_pipeline_header','phtml', array('state'=>$state,'reports'=>$reports));
@@ -284,7 +300,7 @@ class CobaltViewReportsHtml extends JViewHtml
         $sales_pipeline_header->deal_statuses = $deal_statuses;
         $sales_pipeline_header->deal_close_dates = $deal_close_dates;
         $sales_pipeline_header->modified_dates = $modified_dates;
-        $sales_pipeline_header->created_dates = CobaltHelperDate::getCreatedDates();
+        $sales_pipeline_header->created_dates = DateHelper::getCreatedDates();
         $sales_pipeline_header->team_names = DropdownHelper::getTeamNames();
         $sales_pipeline_header->user_names = DropdownHelper::getUserNames();
         $sales_pipeline_header->state = $state;
