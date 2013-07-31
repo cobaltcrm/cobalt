@@ -86,7 +86,7 @@ $person = $this->people[0];
             <div class="threecolumn">
                 <div class="small_info first">
                     <?php echo TextHelper::_('COBALT_PERSON_TOTAL'); ?>:
-                    <span class="amount"><?php echo CobaltHelperConfig::getCurrency(); ?>0</span>
+                    <span class="amount"><?php echo ConfigHelper::getCurrency(); ?>0</span>
                 </div>
                 <div class="cobaltRow top">
                     <div class="cobaltField"><?php echo ucwords(TextHelper::_('COBALT_COMPANY')); ?>:</div>
@@ -128,7 +128,7 @@ $person = $this->people[0];
             <div class="threecolumn">
                 <div class="small_info middle">
                     <?php echo ucwords(TextHelper::_('COBALT_PERSON_DEALS')); ?>:
-                    <span class="amount"><?php echo CobaltHelperConfig::getCurrency(); ?>0</span>
+                    <span class="amount"><?php echo ConfigHelper::getCurrency(); ?>0</span>
                 </div>
                 <div class="cobaltRow top">
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_TITLE'); ?>:</div>
@@ -294,7 +294,7 @@ $person = $this->people[0];
                     <div class="infoLabel"><?php echo TextHelper::_('COBALT_EMAIL_SHORT'); ?></div>
                     <div class="infoDetails">
                         <?php if (array_key_exists('email',$person)) { ?>
-                            <a href="mailto:<?php echo $person['email']; ?>?bcc=<?php echo CobaltHelperConfig::getConfigValue('imap_user'); ?>"><?php echo $person['email']; ?></a>
+                            <a href="mailto:<?php echo $person['email']; ?>?bcc=<?php echo ConfigHelper::getConfigValue('imap_user'); ?>"><?php echo $person['email']; ?></a>
                         <?php } ?>
                     </div>
                 </div>

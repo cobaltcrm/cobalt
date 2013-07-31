@@ -48,7 +48,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     echo '<tr class="cobalt_row_'.$k.'">';
                                         echo '<td><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal['id']).'">'.$deal['name'].'</a></td>';
                                         echo '<td><div class="deal-status-'.strtolower($deal['status_name']).'"></div></td>';
-                                        echo '<td><span class="amount">'.CobaltHelperConfig::getConfigValue('currency').$deal['amount'].'</span></td>';
+                                        echo '<td><span class="amount">'.ConfigHelper::getConfigValue('currency').$deal['amount'].'</span></td>';
                                     echo '</tr>';
                                 }
                             ?>

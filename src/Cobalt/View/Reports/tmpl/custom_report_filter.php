@@ -73,7 +73,7 @@ for ( $i=0; $i<count($this->report_data); $i++ ) {
                       <td><?php echo $report['stage_name']; ?></td>
                   <?php break;
                   case "amount" : ?>
-                      <td><?php echo CobaltHelperConfig::getCurrency().$report['amount']; ?></td>
+                      <td><?php echo ConfigHelper::getCurrency().$report['amount']; ?></td>
                   <?php break;
                   case "probability" ?>
                       <td><?php echo $report['probability']; ?>%</td>

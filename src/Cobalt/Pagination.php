@@ -9,6 +9,11 @@
 
 namespace Cobalt;
 
+use JRoute;
+use JFactory;
+use JHtml;
+use Cobalt\Helper\TextHelper;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -533,7 +538,7 @@ class Pagination extends \JPagination
      *
      * @since    11.1
      */
-    protected function _item_active(JPaginationObject $item)
+    protected function _item_active(\JPaginationObject $item)
     {
         return "<a title=\"" . $item->text . "\" href=\"" . $item->link . "\" class=\"active\">" . $item->text . "</a>";
     }
@@ -547,7 +552,7 @@ class Pagination extends \JPagination
      *
      * @since   11.1
      */
-    protected function _item_inactive(JPaginationObject $item)
+    protected function _item_inactive(\JPaginationObject $item)
     {
         return "<a class=\"disabled\">" . $item->text . "</a>";
     }
@@ -562,7 +567,7 @@ class Pagination extends \JPagination
     protected function _buildDataObject()
     {
         // Initialise variables.
-        $data = new stdClass;
+        $data = new \stdClass;
 
         // Build the additional URL parameters string.
         $params = '';
@@ -633,7 +638,7 @@ class Pagination extends \JPagination
  * @subpackage  HTML
  * @since       11.1
  */
-class CobaltPaginationObject extends JPaginationObject
+class CobaltPaginationObject extends \JPaginationObject
 {
     /**
      * @var    string  The link text.

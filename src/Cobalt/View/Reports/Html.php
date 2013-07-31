@@ -14,6 +14,7 @@ use JUri;
 use JFactory;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TemplateHelper;
@@ -23,6 +24,8 @@ use Cobalt\Helper\NoteHelper;
 use Cobalt\Model\Graphs as GraphsModel;
 use Cobalt\Model\Source as SourceModel;
 use Cobalt\Model\Deal as DealModel;
+use Cobalt\Model\Note as NoteModel;
+use Cobalt\Model\Report as ReportModel;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -96,7 +99,7 @@ class Html extends AbstractHtmlView
         //if we are editing an existing entry
         $id = $this->app->input->get('id');
         if ($id != null) {
-            $reportModel = new CobaltModelReport();
+            $reportModel = new ReportModel;
             $this->report = $reportModel->getCustomReports($id);
         }
 
@@ -107,7 +110,7 @@ class Html extends AbstractHtmlView
     public function _display_custom_report()
     {
         //get model
-        $reportModel = new CobaltModelReport();
+        $reportModel = new ReportModel;
 
         //get report
         $this->report = $reportModel->getCustomReports($this->app->input->get('id'));
@@ -150,7 +153,7 @@ class Html extends AbstractHtmlView
         $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
 
         //get info from model
-        $reportModel = new CobaltModelReport();
+        $reportModel = new ReportModel;
         $reports = $reportModel->getCustomReports();
         $state = $reportModel->getState();
 
@@ -166,7 +169,7 @@ class Html extends AbstractHtmlView
     public function _display_notes()
     {
         //get model for reports
-        $noteModel = new CobaltModelNote();
+        $noteModel = new NoteModel;
         $note_entries = $noteModel->getNotes(NULL,NULL,FALSE);
         $this->notes_list = ViewHelper::getView('reports','notes_filter','phtml', array('note_entries'=>$note_entries));
 

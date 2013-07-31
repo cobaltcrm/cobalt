@@ -40,7 +40,7 @@ $deal = $this->info[0];
             <div class="small_info first">
                 <?php echo TextHelper::_('COBALT_EDIT_AMOUNT'); ?>:
                 <span class="amount">
-                    <?php echo CobaltHelperConfig::getCurrency(); ?>
+                    <?php echo ConfigHelper::getCurrency(); ?>
                     <div class="inline" id="editable_amount"><?php echo $deal['amount']; ?></div>
                 </span>
             </div>

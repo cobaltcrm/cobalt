@@ -58,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     break;
                     case "forecast":
                         echo '<span class="forecast">';
-                            echo CobaltHelperConfig::getCurrency().$custom_field_filter;
+                            echo ConfigHelper::getCurrency().$custom_field_filter;
                         echo '</span>';
                     break;
                 }

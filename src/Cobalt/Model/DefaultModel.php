@@ -14,6 +14,7 @@ use JFactory;
 
 use Joomla\Model\AbstractModel;
 use Cobalt\Pagination;
+use JRoute;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

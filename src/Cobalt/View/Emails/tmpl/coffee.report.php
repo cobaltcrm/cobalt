@@ -28,7 +28,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </tr>
                 <tr>
                     <td style="color: #039718; font-weight: bold; font-size: 14px;"><?php echo ucwords(TextHelper::_('COBALT_ACTIVE_DEALS')); ?></td>
-                     <td width="75" align="right" style="color: #039718; font-weight: bold; font-size: 14px;" id="sales_pipeline_total"><?php echo CobaltHelperConfig::getCurrency(); ?><?php echo $this->totalDealsAmount; ?></td>
+                     <td width="75" align="right" style="color: #039718; font-weight: bold; font-size: 14px;" id="sales_pipeline_total"><?php echo ConfigHelper::getCurrency(); ?><?php echo $this->totalDealsAmount; ?></td>
                 </tr>
             </table>
         </td>
@@ -47,7 +47,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <br /><a href="<?php echo JURI::base().'index.php?view=deals&stage='.$stage['id']; ?>" style="color:#999999;"><?php echo ucwords(JText::sprintf('COBALT_VIEW_DEALS',ucwords($stage['name']))); ?></a>
                     </td>
                       <td width="75" align="right" style="color: #<?php echo $stage['color']; ?>;" id="<?php echo $stage['name']; ?>_today">
-                          <?php echo CobaltHelperConfig::getCurrency(); ?><?php echo $stage['amount']; ?>
+                          <?php echo ConfigHelper::getCurrency(); ?><?php echo $stage['amount']; ?>
                       </td>
                   </tr>
                   <?php } } ?>

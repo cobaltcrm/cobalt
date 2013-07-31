@@ -7,10 +7,16 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+namespace Cobalt\Model;
+
+use JFactory;
+use JTable;
+use Cobalt\Helper\ConfigHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelConfig extends CobaltModelDefault
+class Config extends DefaultModel
 {
 
     public function store($data=null)
@@ -40,7 +46,7 @@ class CobaltModelConfig extends CobaltModelDefault
         $data['show_help'] = array_key_exists('show_help',$data) ? $data['show_help'] : 0;
 
         if ( array_key_exists("site_language",$data) ) {
-            CobaltHelperConfig::saveLanguage($data['site_language']);
+            ConfigHelper::saveLanguage($data['site_language']);
             unset($data['site_language']);
         }
 

@@ -69,7 +69,7 @@ $app = JFactory::getApplication();
                     <label class="control-label" for="amount"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><?php echo CobaltHelperConfig::getConfigValue('currency'); ?></span>
+                            <span class="add-on"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
                             <input class="inputbox required" type="text" name="amount" value="<?php echo $deal['amount']; ?>" />
                         </div>
                     </div>

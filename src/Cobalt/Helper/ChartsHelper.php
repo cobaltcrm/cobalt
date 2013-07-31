@@ -13,9 +13,8 @@ namespace Cobalt\Helper;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class ChartsHelper;
- {
-
+class ChartsHelper
+{
     public static function getDashboardCharts()
     {
         return  array( 'deals_by_status_pie_chart' =>  TextHelper::_('COBALT_DEALS_BY_STATUS_PIE_CHART'),
@@ -29,4 +28,4 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                         'revenue_this_month'        =>  TextHelper::_('COBALT_REVENUE_THIS_MONTH'));
     }
 
- }
+}

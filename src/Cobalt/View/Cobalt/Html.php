@@ -28,7 +28,7 @@ class CobaltViewCobaltHtml extends JViewHtml
         $configModel = new CobaltModelConfig();
 
         /** Component version **/
-        $installedVersion   = CobaltHelperConfig::getVersion();
+        $installedVersion   = ConfigHelper::getVersion();
         $latestVersion      = VersionHelper::getLatestVersion();
         $updateUrl = "http://www.cobaltcrm.org/support/login";
         $updatesFeed = $configModel->getUpdatesRSS();

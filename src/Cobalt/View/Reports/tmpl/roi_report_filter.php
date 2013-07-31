@@ -22,10 +22,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             <td>
                 <?php
                     if ($source['type'] != 'per') {
-                        echo CobaltHelperConfig::getCurrency().$source['cost'];
+                        echo ConfigHelper::getCurrency().$source['cost'];
                     } else {
                         $cost = $source['cost'] * $source['number_of_deals'];
-                        echo CobaltHelperConfig::getCurrency().$cost;
+                        echo ConfigHelper::getCurrency().$cost;
                     }
                 ?>
             </td>

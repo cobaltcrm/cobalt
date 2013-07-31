@@ -53,7 +53,7 @@ class CobaltModelMail extends JModelBase
          */
         private function _getConfig()
         {
-            $config = CobaltHelperConfig::getImapConfig();
+            $config = ConfigHelper::getImapConfig();
             $this->hostname = $config->imap_host;
             $this->username = $config->imap_user;
             $this->password = $config->imap_pass;

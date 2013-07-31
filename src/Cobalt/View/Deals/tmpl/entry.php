@@ -25,7 +25,7 @@ $extras = '<b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>
     <td class="company">
         <a href="<?php echo JRoute::_('index.php?view=companies&layout=company&id='.$deal['company_id']); ?>"><?php echo $deal['company_name']; ?></a><br>
     </td>
-    <td class="amount"><?php echo CobaltHelperConfig::getCurrency().$deal['amount']; ?></td>
+    <td class="amount"><?php echo ConfigHelper::getCurrency().$deal['amount']; ?></td>
     <td class='status' >
         <div class='dropdown'>
             <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id="deal_status_<?php echo $deal['id']; ?>_link">

@@ -66,11 +66,11 @@ $company = $this->companies[0];?>
         <div class="row-fluid">
             <div class="span4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_TOTAL_PIPELINE')); ?>:
-                    <span class="amount"><?php echo CobaltHelperConfig::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
+                    <span class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
             </div>
             <div class="span4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_DEALS')); ?>:
-                    <span class="text-success"><?php echo CobaltHelperConfig::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
+                    <span class="text-success"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
             </div>
 
             <div class="span4 well well-small">

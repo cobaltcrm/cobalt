@@ -89,9 +89,9 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_amount_container">
                         <div class="inline" id="editable_amount">
                             <h2>
-                                <?php echo CobaltHelperConfig::getCurrency(); ?>
+                                <?php echo ConfigHelper::getCurrency(); ?>
                                 <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<div class="input-prepend input-append"><form class="inline-form" id="amount_form">
-                                    <span class="add-on"><?php echo CobaltHelperConfig::getCurrency(); ?></span>
+                                    <span class="add-on"><?php echo ConfigHelper::getCurrency(); ?></span>
                                         <input type="text" class="inputbox input-small" name="amount" value="<?php echo $deal['amount']; ?>" />
                                         <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                                     </form></div>' ><span id="amount_<?php echo $deal['id']; ?>"><?php echo $deal['amount']; ?></span></a>

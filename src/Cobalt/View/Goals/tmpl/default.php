@@ -72,7 +72,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             //win_cash
                             echo '<span class="pull-right">';
                             if ($first_leaderboard['goal_type'] == 'win_cash') {
-                                echo CobaltHelperConfig::getConfigValue('currency').(int) $member['cash_won'].' '.TextHelper::_('COBALT_CASH_WON');
+                                echo ConfigHelper::getConfigValue('currency').(int) $member['cash_won'].' '.TextHelper::_('COBALT_CASH_WON');
                             }
                             //win_deals
                             if ($first_leaderboard['goal_type'] == 'win_deals') {
@@ -147,7 +147,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <span class="goal_info_out_of">
                                             <?php
                                                 if ($goal['goal_type'] == 'win_cash') {
-                                                    echo CobaltHelperConfig::getCurrency().(int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo CobaltHelperConfig::getConfigValue('currency'); ?><?php echo $goal['amount']." ".TextHelper::_('COBALT_WON');
+                                                    echo ConfigHelper::getCurrency().(int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo ConfigHelper::getConfigValue('currency'); ?><?php echo $goal['amount']." ".TextHelper::_('COBALT_WON');
                                                 }
                                                 if ($goal['goal_type'] == 'win_deals') {
                                                     echo (int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo $goal['amount'] . " ".TextHelper::_('COBALT_DEALS_WON');
@@ -218,7 +218,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <span class="goal_info_out_of">
                                         <?php
                                             if ($goal['goal_type'] == 'win_cash') {
-                                                echo CobaltHelperConfig::getCurrency().(int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo CobaltHelperConfig::getConfigValue('currency'); ?><?php echo $goal['amount']." ".TextHelper::_('COBALT_WON');
+                                                echo ConfigHelper::getCurrency().(int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo ConfigHelper::getConfigValue('currency'); ?><?php echo $goal['amount']." ".TextHelper::_('COBALT_WON');
                                             }
                                             if ($goal['goal_type'] == 'win_deals') {
                                                 echo (int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo $goal['amount'] . " ".TextHelper::_('COBALT_DEALS_WON');
@@ -269,7 +269,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <span class="goal_info_out_of">
                                             <?php
                                                 if ($goal['goal_type'] == 'win_cash') {
-                                                    echo CobaltHelperConfig::getCurrency().(int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo CobaltHelperConfig::getConfigValue('currency'); ?><?php echo $goal['amount']." ".TextHelper::_('COBALT_WON');
+                                                    echo ConfigHelper::getCurrency().(int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo ConfigHelper::getConfigValue('currency'); ?><?php echo $goal['amount']." ".TextHelper::_('COBALT_WON');
                                                 }
                                                 if ($goal['goal_type'] == 'win_deals') {
                                                     echo (int) $goal['goal_info'] ?> <?php echo TextHelper::_("COBALT_OUT_OF"); ?> <?php echo $goal['amount'] . " ".TextHelper::_('COBALT_DEALS_WON');

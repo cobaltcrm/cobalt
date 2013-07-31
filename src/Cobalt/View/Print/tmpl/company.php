@@ -47,13 +47,13 @@ $company = $this->info[0];
         <div class="threecolumn">
             <div class="small_info first">
                 <?php echo ucwords(TextHelper::_('COBALT_COMPANY_TOTAL')); ?></td>
-                <span class="amount"><?php echo CobaltHelperConfig::getConfigValue('currency'); ?>0</span></td>
+                <span class="amount"><?php echo ConfigHelper::getConfigValue('currency'); ?>0</span></td>
             </div>
         </div>
         <div class="threecolumn">
             <div class="small_info middle">
                 <?php echo ucwords(TextHelper::_('COBALT_COMPANY_DEALS')); ?>
-                <span class="amount"><?php echo CobaltHelperConfig::getConfigValue('currency'); ?>0</span>
+                <span class="amount"><?php echo ConfigHelper::getConfigValue('currency'); ?>0</span>
             </div>
         </div>
 

@@ -153,7 +153,7 @@ class CobaltViewPeopleHtml extends JViewHtml
                         $this->document_list = ViewHelper::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
                         $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'people','item'=>$person));
 
-                        $this->acymailing = CobaltHelperConfig::checkAcymailing();
+                        $this->acymailing = ConfigHelper::checkAcymailing();
 
                         if ($this->acymailing) {
                             $mailing_list = new MailinglistsHelper();

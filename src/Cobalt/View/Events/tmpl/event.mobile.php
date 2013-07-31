@@ -96,7 +96,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <li>
                         <a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id='.$event['association_id']); ?>">
                             <h3><?php echo $event['deal_name']; ?></h3>
-                            <div class="ui-li-count"><?php echo CobaltHelperConfig::getCurrency().$event['deal_amount']; ?></div>
+                            <div class="ui-li-count"><?php echo ConfigHelper::getCurrency().$event['deal_amount']; ?></div>
                         </a>
                     </li>
                 </ul>

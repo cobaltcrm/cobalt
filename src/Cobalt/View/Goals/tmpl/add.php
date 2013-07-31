@@ -18,8 +18,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="goal_container media">
                     <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>libraries/crm/media/images/win_more_cash.png" /></div>
                     <div class="goal_info_container media-body">
-                        <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=win_cash'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_CASH').' '.CobaltHelperConfig::getConfigValue('currency')); ?></a></h2>
-                        <div class="goal_info"><?php echo JText::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',CobaltHelperConfig::getConfigValue('currency')); ?></div>
+                        <h2><a href="<?php echo JRoute::_('index.php?view=goals&layout=edit&type=win_cash'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_CASH').' '.ConfigHelper::getConfigValue('currency')); ?></a></h2>
+                        <div class="goal_info"><?php echo JText::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',ConfigHelper::getConfigValue('currency')); ?></div>
                     </div>
                 </div>
             </li>

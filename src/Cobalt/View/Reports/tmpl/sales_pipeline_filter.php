@@ -21,7 +21,7 @@ $app = JFactory::getApplication();
          <td><a href="<?php echo JRoute::_("index.php?view=deals&layout=deal&id=".$report['id']); ?>"><?php echo $report['name']; ?></a></td>
          <td><?php echo $report['owner_first_name']." ".$report['owner_last_name']; ?></td>
          <td><?php echo $report['summary']; ?></td>
-         <td><?php echo CobaltHelperConfig::getCurrency().$report['amount']; ?></td>
+         <td><?php echo ConfigHelper::getCurrency().$report['amount']; ?></td>
          <td><?php echo $report['stage_name']; ?></td>
          <td><?php echo $report['percent']; ?>%</td>
          <td><div class="deal-status-<?php echo strtolower($report['status_name']); ?>"></div></td>

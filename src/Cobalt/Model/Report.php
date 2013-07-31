@@ -7,10 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use JTable;
+use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\UsersHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelReport extends CobaltModelDefault
+class Report extends DefaultModel
 {
 
     public $published = 1;

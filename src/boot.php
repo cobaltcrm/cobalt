@@ -95,3 +95,11 @@ switch ($config->error_reporting) {
 }
 
 define('JDEBUG', $config->debug);
+
+// Alias the helper classes, so we don't have to add the use statement to every layout.
+$helpers = glob(JPATH_ROOT . '/src/Cobalt/Helper/*.php');
+
+foreach ($helpers as $classFile) {
+    $className = basename(str_replace('.php', '', $classFile));
+    class_alias('Cobalt\\Helper\\' . $className, $className);
+}

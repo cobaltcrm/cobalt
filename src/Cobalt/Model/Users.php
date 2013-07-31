@@ -40,8 +40,8 @@ class CobaltModelUsers extends CobaltModelDefault
 
         if ( !array_key_exists('id',$data) ) {
             $data['created'] = $date;
-            $data['time_zone'] = CobaltHelperConfig::getConfigValue('timezone');
-            $data['time_format'] = CobaltHelperConfig::getConfigValue('time_format');
+            $data['time_zone'] = ConfigHelper::getConfigValue('timezone');
+            $data['time_format'] = ConfigHelper::getConfigValue('time_format');
 
             $data['block'] = 0;
             $data['registerDate'] = $date;

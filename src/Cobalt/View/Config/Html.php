@@ -50,8 +50,8 @@ class CobaltViewConfigHtml extends JViewHtml
         $this->config = $config;
         $this->timezones = $timezones;
         $this->time_formats = DateHelper::getTimeFormats();
-        $this->languages = CobaltHelperConfig::getLanguages();
-        $this->language = CobaltHelperConfig::getLanguage();
+        $this->languages = ConfigHelper::getLanguages();
+        $this->language = ConfigHelper::getLanguage();
 
         //display
         return parent::render();

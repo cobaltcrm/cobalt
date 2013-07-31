@@ -116,7 +116,7 @@ $app = JFactory::getApplication();
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>
-                    <?php echo CobaltHelperConfig::getCurrency(); ?>
+                    <?php echo ConfigHelper::getCurrency(); ?>
                     <span id="filtered_amount">
                     <?php if ( count($this->reports) > 0 ) {
                         $total = 0;
@@ -142,7 +142,7 @@ $app = JFactory::getApplication();
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>
-                    <?php echo CobaltHelperConfig::getCurrency(); ?>
+                    <?php echo ConfigHelper::getCurrency(); ?>
                     <span id="total_amount">
                     <?php if ( count($this->reports) > 0 ) {
                         $total = 0;

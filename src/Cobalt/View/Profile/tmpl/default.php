@@ -29,7 +29,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <ul class="unstyled">
                     <select class="inputbox" name="language">
                           <?php
-                              $lngs = CobaltHelperConfig::getLanguages();
+                              $lngs = ConfigHelper::getLanguages();
                               echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
                           ?>
                       </select>

@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     <?php break;
                     case "currency": ?>
                     <div class="input-prepend">
-                        <span class="add-on"><?php echo CobaltHelperConfig::getCurrency(); ?></span>
+                        <span class="add-on"><?php echo ConfigHelper::getCurrency(); ?></span>
                         <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     </div>
                     <?php break;
