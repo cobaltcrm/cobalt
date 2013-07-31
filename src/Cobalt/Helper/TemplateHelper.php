@@ -10,6 +10,12 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use JRoute;
+use JUri;
+
+use Cobalt\Model\Menu as MenuModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -44,9 +50,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
           echo TemplateHelper::getAvatarDialog();
           echo '<script type="text/javascript">var base_url = "'.JURI::base().'";</script>';
 
-        if (CobaltHelperUsers::getLoggedInUser()) {
-            echo '<script type="text/javascript">var userDateFormat = "'.CobaltHelperUsers::getDateFormat(FALSE).'";</script>';
-            echo '<script type="text/javascript">var user_id = "'.CobaltHelperUsers::getUserId().'";</script>';
+        if (UsersHelper::getLoggedInUser()) {
+            echo '<script type="text/javascript">var userDateFormat = "'.UsersHelper::getDateFormat(FALSE).'";</script>';
+            echo '<script type="text/javascript">var user_id = "'.UsersHelper::getUserId().'";</script>';
         } else {
             echo '<script type="text/javascript">var userDateFormat = null;</script>';
             echo '<script type="text/javascript">var user_id = 0;</script>';
@@ -88,7 +94,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $app = JFactory::getApplication();
 
         //load menu
-        $menu_model = new CobaltModelMenu();
+        $menu_model = new MenuModel;
         $list = $menu_model->getMenu();
 
         //Get controller to select active menu item
@@ -124,16 +130,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a>';
         $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a>';
 
-        if ( CobaltHelperUsers::isAdmin() ) {
+        if ( UsersHelper::isAdmin() ) {
             $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a>';
         }
 
-        if ( CobaltHelperUsers::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
+        if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
             $list_html .= '<form id="logout-form" class="inline-form block-btn" action="index.php?controller=logout" method="post">';
             $list_html .= '<input type="hidden" name="return" value="'.$returnURL.'" />';
             $list_html .= '<a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" href="javascript:void(0);" onclick="confirmLogout();" ><i class="icon-off icon-white"></i></a>';
-            $list_html .= JHtml::_('form.token');
+            // $list_html .= JHtml::_('form.token');
             $list_html .= '</form>';
         }
 
@@ -409,7 +415,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $list_html .= '<li class="dropdown">';
         $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >'.TextHelper::_('COBALT_ACTIONS').'</a>';
             $list_html .= '<ul class="dropdown-menu" role="menu" aria-labelledby="">';
-                if ( CobaltHelperUsers::canDelete() ) {
+                if ( UsersHelper::canDelete() ) {
                     $list_html .= '<li><a onclick="deleteListItems()">'.TextHelper::_('COBALT_DELETE').'</a></li>';
                 }
             $list_html .= '</ul>';

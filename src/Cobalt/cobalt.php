@@ -11,11 +11,10 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\StylesHelper;
-
-CobaltHelperCobalt::loadHelpers();
 
 // Load Language
 UsersHelper::loadLanguage();
@@ -95,7 +94,7 @@ if ( $format != "raw" && !in_array($controller,$overrides) ) {
 
     //if the user is logged in continue else redirect to joomla login
     if ($user) {
-        CobaltHelperActivity::saveUserLoginHistory();
+        ActivityHelper::saveUserLoginHistory();
     } elseif ($app->input->getWord('view')!='login' && $app->input->getWord('controller')!='login') {
         $app->redirect('index.php?view=login');
     }

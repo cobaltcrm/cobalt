@@ -10,6 +10,9 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use Cobalt\Model\People as PeopleModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -33,7 +36,7 @@ class MailinglistsHelper
         $app = JFactory::getApplication();
 
         $person_id = $app->input->get('person_id') ? $app->input->get('person_id') : $app->input->get('id');
-        $personModel = new CobaltModelPeople();
+        $personModel = new PeopleModel;
         $email = $personModel->getEmail($person_id);
 
         $db = JFactory::getDBO();
@@ -132,7 +135,7 @@ class MailinglistsHelper
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        $peopleModel = new CobaltModelPeople();
+        $peopleModel = new PeopleModel;
         $person = $peopleModel->getPerson($person_id);
         $person = $person[0];
 

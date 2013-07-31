@@ -416,7 +416,7 @@ final class Application extends AbstractWebApplication
             $this->document->setTitle('Cobalt');
 
             ob_start();
-                require_once JPATH_COBALT.'/cobalt.php';
+                require_once __DIR__.'/cobalt.php';
                 $contents = ob_get_contents();
             ob_end_clean();
 

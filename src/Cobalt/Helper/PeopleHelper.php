@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -128,7 +130,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $query->select("people_columns");
         $query->from("#__users");
-        $query->where("id=".CobaltHelperUsers::getUserId());
+        $query->where("id=".UsersHelper::getUserId());
         $db->setQuery($query);
         $results = $db->loadResult();
 

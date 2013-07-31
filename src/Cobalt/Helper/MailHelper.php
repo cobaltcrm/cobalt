@@ -10,6 +10,9 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use Cobalt\Model\Stats as StatsModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -20,11 +23,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     {
 
         //Load stats model
-        $statsModel = new CobaltModelStats();
+        $statsModel = new StatsModel;
         $statsModel->set('person_id',$person_id);
 
         //Load view
-        $coffeeView = CobaltHelperView::getView('emails','coffee.report');
+        $coffeeView = ViewHelper::getView('emails','coffee.report');
 
         //Get Total Deals Amount
         $activeDeals = $statsModel->getActiveDealsAmount();
@@ -77,7 +80,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $mailer->setSender($sender);
         $mailer->addRecipient($recipient);
 
-        $mailer->setSubject(TextHelper::_('COBALT_COFFEE_REPORT_SUBJECT').' '.CobaltHelperDate::formatDate(date('Y-m-d')));
+        $mailer->setSubject(TextHelper::_('COBALT_COFFEE_REPORT_SUBJECT').' '.DateHelper::formatDate(date('Y-m-d')));
 
         ob_start();
 

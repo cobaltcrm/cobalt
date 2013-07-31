@@ -10,6 +10,10 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use JHtml;
+use Cobalt\Model\People as PeopleModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -51,9 +55,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 /** ---------------------------------------------------------------
                  * Filter data using member role permissions
                  */
-                $member_id = CobaltHelperUsers::getUserId();
-                $member_role = CobaltHelperUsers::getRole();
-                $team_id = CobaltHelperUsers::getTeamId();
+                $member_id = UsersHelper::getUserId();
+                $member_role = UsersHelper::getRole();
+                $team_id = UsersHelper::getTeamId();
                 if ($member_role != 'exec') {
                      //manager filter
                     if ($member_role == 'manager') {
@@ -293,10 +297,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     $db->setQuery($query);
                     $result = $db->loadResult();
 
-                    return CobaltHelperConfig::getCurrency().$result;
+                    return ConfigHelper::getCurrency().$result;
                 break;
                 case "currency":
-                    return CobaltHelperConfig::getCurrency().$customValue;
+                    return ConfigHelper::getCurrency().$customValue;
                 break;
                 case "picklist":
                     $values = json_decode($custom->values);
@@ -304,7 +308,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     return array_key_exists($customValue,$values) ? $values[$customValue] : TextHelper::_('COBALT_NONE');
                 break;
                 case "date":
-                    return CobaltHelperDate::formatDate($customValue);
+                    return DateHelper::formatDate($customValue);
                 break;
                 default:
                     return $customValue;
@@ -352,11 +356,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getTeamNames()
         {
             //get all teams
-            $teams = CobaltHelperUsers::getTeams();
+            $teams = UsersHelper::getTeams();
 
             //generate array
             $return = array();
-            $managerTeam = CobaltHelperUsers::getTeamId();
+            $managerTeam = UsersHelper::getTeamId();
             if ( is_array($teams) && count($teams) > 0 ) {
                 foreach ($teams as $key=>$value) {
                     $return[$value['team_id']] = $value['team_name'] . TextHelper::_('COBALT_TEAM_APPEND');
@@ -376,7 +380,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getUserNames()
         {
             //get all teams
-            $users = CobaltHelperUsers::getUsers();
+            $users = UsersHelper::getUsers();
 
             //generate array
             $return = array();
@@ -405,10 +409,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $currentValue = '0'; //Set this value from DB, etc.
                 $arr = array();
                 foreach ($contact_types as $name => $value) {
-                  $arr[] = JHTML::_('select.option', $name, $value);
+                  $arr[] = JHtml::_('select.option', $name, $value);
                 }
 
-                return JHTML::_('select.genericlist', $arr, 'type', 'class="inputbox"', 'value', 'text', $currentValue);
+                return JHtml::_('select.genericlist', $arr, 'type', 'class="inputbox"', 'value', 'text', $currentValue);
             } else {
                 return $contact_type_name;
             }
@@ -418,7 +422,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getPeopleList()
         {
             //open model
-            $model = new CobaltModelPeople();
+            $model = new PeopleModel;
             //retrieve all people
             $people = $model->getPeopleList();
             $people_list = array();
@@ -504,26 +508,26 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         {
             switch ($type) {
                 case "deal":
-                    $arr = array(  'number'    =>  JText::_('COBALT_NUMBER'),
-                                    'text'      =>  JText::_('COBALT_ADMIN_GENERIC_TEXT'),
-                                    'currency'  =>  JText::_('COBALT_CURRENCY'),
-                                    'picklist'  =>  JText::_('COBALT_PICKLIST'),
-                                    'forecast'  =>  JText::_('COBALT_FORECAST'),
-                                    'date'      =>  JText::_('COBALT_DATE')  );
+                    $arr = array(  'number'    =>  TextHelper::_('COBALT_NUMBER'),
+                                    'text'      =>  TextHelper::_('COBALT_ADMIN_GENERIC_TEXT'),
+                                    'currency'  =>  TextHelper::_('COBALT_CURRENCY'),
+                                    'picklist'  =>  TextHelper::_('COBALT_PICKLIST'),
+                                    'forecast'  =>  TextHelper::_('COBALT_FORECAST'),
+                                    'date'      =>  TextHelper::_('COBALT_DATE')  );
                 break;
                 case "company":
-                    $arr = array(  'number'    =>  JText::_('COBALT_NUMBER'),
-                                    'text'      =>  JText::_('COBALT_ADMIN_GENERIC_TEXT'),
-                                    'currency'  =>  JText::_('COBALT_CURRENCY'),
-                                    'picklist'  =>  JText::_('COBALT_PICKLIST'),
-                                    'date'      =>  JText::_('COBALT_DATE')  );
+                    $arr = array(  'number'    =>  TextHelper::_('COBALT_NUMBER'),
+                                    'text'      =>  TextHelper::_('COBALT_ADMIN_GENERIC_TEXT'),
+                                    'currency'  =>  TextHelper::_('COBALT_CURRENCY'),
+                                    'picklist'  =>  TextHelper::_('COBALT_PICKLIST'),
+                                    'date'      =>  TextHelper::_('COBALT_DATE')  );
                 break;
                 case "people":
-                    $arr = array(  'number'    =>  JText::_('COBALT_NUMBER'),
-                                    'text'      =>  JText::_('COBALT_ADMIN_GENERIC_TEXT'),
-                                    'currency'  =>  JText::_('COBALT_CURRENCY'),
-                                    'picklist'  =>  JText::_('COBALT_PICKLIST'),
-                                    'date'      =>  JText::_('COBALT_DATE')  );
+                    $arr = array(  'number'    =>  TextHelper::_('COBALT_NUMBER'),
+                                    'text'      =>  TextHelper::_('COBALT_ADMIN_GENERIC_TEXT'),
+                                    'currency'  =>  TextHelper::_('COBALT_CURRENCY'),
+                                    'picklist'  =>  TextHelper::_('COBALT_PICKLIST'),
+                                    'date'      =>  TextHelper::_('COBALT_DATE')  );
                 break;
             }
 
@@ -532,46 +536,46 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         public static function getTemplateTypes()
         {
-            return array(  'milestone'     =>  JText::_('COBALT_MILESTONE'),
-                            'call'          =>  JText::_('COBALT_CALL'),
-                            'appointment'   =>  JText::_('COBALT_APPOINTMENT'),
-                            'email'         =>  JText::_('COBALT_USERS_HEADER_EMAIL'),
-                            'todo'          =>  JText::_('COBALT_TODO'),
-                            'fax'           =>  JText::_('COBALT_FAX')   );
+            return array(  'milestone'     =>  TextHelper::_('COBALT_MILESTONE'),
+                            'call'          =>  TextHelper::_('COBALT_CALL'),
+                            'appointment'   =>  TextHelper::_('COBALT_APPOINTMENT'),
+                            'email'         =>  TextHelper::_('COBALT_USERS_HEADER_EMAIL'),
+                            'todo'          =>  TextHelper::_('COBALT_TODO'),
+                            'fax'           =>  TextHelper::_('COBALT_FAX')   );
         }
 
         public static function showImportTypes($selected="deals",$name="import_type",$class='class="inputbox"')
         {
             $import_types = array(
-                'deals'=>JText::_('COBALT_DEALS'),
-                'people'=>JText::_('COBALT_PEOPLE'),
-                'companies'=>JText::_('COBALT_COMPANIES')
+                'deals'=>TextHelper::_('COBALT_DEALS'),
+                'people'=>TextHelper::_('COBALT_PEOPLE'),
+                'companies'=>TextHelper::_('COBALT_COMPANIES')
                 );
 
             $arr = array();
             foreach ($import_types as $value => $label) {
-              $arr[] = JHTML::_('select.option', $value, $label);
+              $arr[] = JHtml::_('select.option', $value, $label);
             }
 
-            return JHTML::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
+            return JHtml::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
 
         }
 
         public static function getFormTypes($selected="lead",$name="type",$class="class='inputbox'")
         {
             $import_types = array(
-                'lead'=>JText::_('COBALT_LEAD'),
-                'contact'=>JText::_('COBALT_CONTACT')
+                'lead'=>TextHelper::_('COBALT_LEAD'),
+                'contact'=>TextHelper::_('COBALT_CONTACT')
                 // 'company'=>JText::_('COBALT_COMPANY')
                 // 'deal'=>JText::_('COBALT_DEAL')
                 );
 
             $arr = array();
             foreach ($import_types as $value => $label) {
-              $arr[] = JHTML::_('select.option', $value, $label);
+              $arr[] = JHtml::_('select.option', $value, $label);
             }
 
-            return JHTML::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
+            return JHtml::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
 
          }
 
@@ -669,10 +673,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             $arr = array();
             foreach ($options as $value => $label) {
-              $arr[] = JHTML::_('select.option', $value, $label);
+              $arr[] = JHtml::_('select.option', $value, $label);
             }
 
-            return JHTML::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
+            return JHtml::_('select.genericlist', $arr, $name, $class, 'value', 'text', $selected);
 
          }
 

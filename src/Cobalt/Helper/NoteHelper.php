@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 

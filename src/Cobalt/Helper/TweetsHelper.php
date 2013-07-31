@@ -29,7 +29,7 @@ class TweetsHelper
 
             libxml_use_internal_errors();
             try {
-                $xml = @new SimpleXMLElement($buffer);
+                $xml = @new \SimpleXMLElement($buffer);
 
                 if ($xml->status) {
                     foreach ($xml->status as $status) {
@@ -43,7 +43,7 @@ class TweetsHelper
                         $tweet = preg_replace("/@(\w+)/", "<a href=\"http://twitter.com/\\1\">@\\1</a>", $tweet);
                         $tweet = preg_replace("/#(\w+)/", "<span class='twitter_hash'><a href=\"http://search.twitter.com/search?q=\\1\">#\\1</a></span>", $tweet);
 
-                        $formatted_date = CobalthelperDate::formatDate($date);
+                        $formatted_date = DateHelper::formatDate($date);
 
                         $tweets[$i]['tweet'] = $tweet;
                         $tweets[$i]['date'] = $formatted_date;
@@ -52,7 +52,7 @@ class TweetsHelper
                     }
                 }
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
 
             }
 

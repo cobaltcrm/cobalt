@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -21,8 +23,8 @@ class ActivityHelper
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        $user_id = CobaltHelperUsers::getUserId();
-        $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+        $user_id = UsersHelper::getUserId();
+        $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
         if ($action_type=='created') {
             $query->clear();
@@ -50,8 +52,8 @@ class ActivityHelper
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-        $user_id = CobaltHelperUsers::getUserId();
-        $today = CobaltHelperDate::formatDBDate(date("Y-m-d"));
+        $user_id = UsersHelper::getUserId();
+        $today = DateHelper::formatDBDate(date("Y-m-d"));
 
         $query->clear();
         $query->select("COUNT(id)");
@@ -108,9 +110,9 @@ class ActivityHelper
         $query->leftJoin("#__users AS deal_owner ON deal_owner.id = h.old_value AND h.type='deal'");
         $query->leftJoin("#__users AS deal_owner_2 ON deal_owner_2.id = h.new_value AND h.type='deal'");
 
-        $member_id = CobaltHelperUsers::getUserId();
-        $member_role = CobaltHelperUsers::getRole();
-        $team_id = CobaltHelperUsers::getTeamId();
+        $member_id = UsersHelper::getUserId();
+        $member_role = UsersHelper::getRole();
+        $team_id = UsersHelper::getTeamId();
         if ($member_role != 'exec') {
              //manager filter
             if ($member_role == 'manager') {

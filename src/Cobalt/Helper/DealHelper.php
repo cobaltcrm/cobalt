@@ -10,6 +10,9 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use Cobalt\Model\Document as DocumentModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -127,7 +130,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query->from("#__stages");
 
         //filter by active and closed stages
-        $inactive_stage_ids = CobaltHelperDeal::getInactiveStages();
+        $inactive_stage_ids = DealHelper::getInactiveStages();
         $query->where("id NOT IN(".implode(',',$inactive_stage_ids).")");
 
         $query->order('ordering');
@@ -215,19 +218,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     //get closing filters for deals
     public static function getClosing()
     {
-        return CobaltHelperDeal::getDealFilters();
+        return DealHelper::getDealFilters();
     }
 
     //get closing filters for deals
     public static function getModified()
     {
-         return CobaltHelperDeal::getDealFilters();
+         return DealHelper::getDealFilters();
     }
 
     //get closing filters for deals
     public static function getCreated()
     {
-        return CobaltHelperDeal::getDealFilters();
+        return DealHelper::getDealFilters();
     }
 
     /**
@@ -413,7 +416,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             "primary_contact_company_name"  => ucwords(TextHelper::_("COBALT_PRIMARY_CONTACT_COMPANY_NAME")),
             "company_name"                  => ucwords(TextHelper::_("COBALT_DEAL_COMPANY"))
         );
-        $custom = CobaltHelperDeal::getUserCustomFields();
+        $custom = DealHelper::getUserCustomFields();
         for ( $i=0; $i<count($custom); $i++ ) {
             $field = $custom[$i];
             $base["custom_".$field['id']] = $field['name'];
@@ -453,7 +456,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $query->select("deals_columns");
         $query->from("#__users");
-        $query->where("id=".CobaltHelperUsers::getUserId());
+        $query->where("id=".UsersHelper::getUserId());
         $db->setQuery($query);
         $results = $db->loadResult();
 
@@ -463,7 +466,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             return $columns;
         } else {
             //if it is empty then load a default set
-            return CobaltHelperDeal::getDefaultColumnFilters();
+            return DealHelper::getDefaultColumnFilters();
         }
     }
 
@@ -475,7 +478,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function downloadDocument()
     {
-        $model = new CobaltModelDocument();
+        $model = new DocumentModel;
         $document = $model->getDocument();
 
         header('Content-Description: File Transfer');

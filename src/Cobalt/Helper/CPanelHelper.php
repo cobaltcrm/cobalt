@@ -10,6 +10,11 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use JRoute;
+use JUri;
+use JHtml;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -22,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                             array(
                                 'link' => JRoute::_('index.php?view=users'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/users.png',
-                                'text' => JText::_('Manage Users'),
+                                'text' => TextHelper::_('Manage Users'),
                                 'access' => array( )
                             )
                         );
@@ -34,61 +39,61 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                             array(
                                 'link' => JRoute::_('index.php?view=branding'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/branding.png',
-                                'text' => JText::_('Colors and Branding'),
+                                'text' => TextHelper::_('Colors and Branding'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=stages'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/stages.png',
-                                'text' => JText::_('Deal Stages'),
+                                'text' => TextHelper::_('Deal Stages'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=categories'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/categories.png',
-                                'text' => JText::_('Note Categories'),
+                                'text' => TextHelper::_('Note Categories'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=sources'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/sources.png',
-                                'text' => JText::_('Sources'),
+                                'text' => TextHelper::_('Sources'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=custom'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/custom.png',
-                                'text' => JText::_('Deal Custom Fields'),
+                                'text' => TextHelper::_('Deal Custom Fields'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=statuses'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/statuses.png',
-                                'text' => JText::_('People Statuses'),
+                                'text' => TextHelper::_('People Statuses'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=templates'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/templates.png',
-                                'text' => JText::_('Templates'),
+                                'text' => TextHelper::_('Templates'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=documents'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/documents.png',
-                                'text' => JText::_('Shared Documents'),
+                                'text' => TextHelper::_('Shared Documents'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=menu'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/menu.png',
-                                'text' => JText::_('Menu'),
+                                'text' => TextHelper::_('Menu'),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=config'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/config.png',
-                                'text' => JText::_('Config'),
+                                'text' => TextHelper::_('Config'),
                                 'access' => array( )
                             ),
                         );
@@ -100,13 +105,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                             array(
                                 'link' => JRoute::_('index.php?view=cobalt'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/home.png',
-                                'text' => JText::_(''),
+                                'text' => TextHelper::_(''),
                                 'access' => array( )
                             ),
                             array(
                                 'link' => JRoute::_('index.php?view=users'),
                                 'image' => JURI::base().'libraries/crm/media/images/cpanel/users.png',
-                                'text' => JText::_(''),
+                                'text' => TextHelper::_(''),
                                 'access' => array( )
                             )
 

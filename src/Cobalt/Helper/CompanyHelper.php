@@ -10,6 +10,9 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -71,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $query->select("companies_columns");
         $query->from("#__users");
-        $query->where("id=".CobaltHelperUsers::getUserId());
+        $query->where("id=".UsersHelper::getUserId());
         $db->setQuery($query);
         $results = $db->loadResult();
 
@@ -81,7 +84,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             return $columns;
         } else {
             //if it is empty then load a default set
-            return CobaltHelperCompany::getDefaultColumnFilters();
+            return CompanyHelper::getDefaultColumnFilters();
         }
     }
 

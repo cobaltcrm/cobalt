@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -173,7 +175,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $times = array();
         do {
-              $times[date("H:i:s",$temptime)] = date(CobaltHelperUsers::getTimeFormat(),$temptime);
+              $times[date("H:i:s",$temptime)] = date(UsersHelper::getTimeFormat(),$temptime);
               $temptime = date("Y-m-d H:i:s",$temptime+(15*60));
               $temptime = strtotime($temptime);
         } while ($temptime<$nextday);
@@ -195,11 +197,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function formatDBDate($date, $time=true)
     {
-        $userTz = CobaltHelperUsers::getTimezone();
-        $dateTime = new DateTime($date, new DateTimeZone($userTz));
+        $userTz = UsersHelper::getTimezone();
+        $dateTime = new \DateTime($date, new \DateTimeZone($userTz));
 
         $utc = "UTC";
-        $dateTime->setTimeZone(new DateTimeZone($utc));
+        $dateTime->setTimeZone(new \DateTimeZone($utc));
 
         if (!$time) {
             $mysql = "Y-m-d";
@@ -220,8 +222,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
       try {
 
-        $dateTime = CobaltHelperDate::convertDateToUserTimezone($date);
-        $date_format = CobaltHelperUsers::getDateFormat();
+        $dateTime = DateHelper::convertDateToUserTimezone($date);
+        $date_format = UsersHelper::getDateFormat();
 
         if ($useUserDateFormat) {
           $date = $dateTime->format($date_format);
@@ -241,7 +243,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         }
 
         return $date;
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         return "";
       }
 
@@ -249,14 +251,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function formatDateString($date)
     {
-      $dateFormat = CobaltHelperUsers::getDateFormat();
+      $dateFormat = UsersHelper::getDateFormat();
 
       return date($dateFormat,strtotime($date));
     }
 
     public static function formatTimeString($time,$timeFormatOverride=null)
     {
-      $timeFormat = $timeFormatOverride ? $timeFormatOverride : CobaltHelperUsers::getTimeFormat();
+      $timeFormat = $timeFormatOverride ? $timeFormatOverride : UsersHelper::getTimeFormat();
 
       return date($timeFormat,strtotime($time));
     }
@@ -268,7 +270,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             $time = "0000-00-00 ".$time;
           }
 
-          $time_format = $timeFormatOverride ? $timeFormatOverride : CobaltHelperUsers::getTimeFormat();
+          $time_format = $timeFormatOverride ? $timeFormatOverride : UsersHelper::getTimeFormat();
           $dateTime = self::convertDateToUserTimezone($time);
 
           return $dateTime->format($time_format);
@@ -277,11 +279,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function convertDateToUserTimezone($date,$returnString=false)
     {
-        $userTz = CobaltHelperUsers::getTimezone();
+        $userTz = UsersHelper::getTimezone();
         $utc = "UTC";
 
-        $dateTime = new DateTime($date, new DateTimeZone($utc));
-        $dateTime->setTimezone(new DateTimeZone($userTz));
+        $dateTime = new \DateTime($date, new \DateTimeZone($utc));
+        $dateTime->setTimezone(new \DateTimeZone($userTz));
 
         return $returnString ? $dateTime->format("Y-m-d H:i:s") : $dateTime;
 
@@ -289,9 +291,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getCurrentTime($string=FALSE,$showTime=FALSE)
     {
-        $timezone = CobaltHelperUsers::getTimezone();
-        $current    = new DateTime();
-        $current->setTimezone(new DateTimeZone($timezone));
+        $timezone = UsersHelper::getTimezone();
+        $current    = new \DateTime();
+        $current->setTimezone(new \DateTimeZone($timezone));
         if ($string) {
           $format = $showTime ? "Y-m-d H:i:s" : "Y-m-d";
 
@@ -322,7 +324,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
         }
 
-        return CobaltHelperDate::formatDate($date);
+        return DateHelper::formatDate($date);
 
     }
 

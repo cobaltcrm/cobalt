@@ -10,10 +10,14 @@
 
 namespace Cobalt\Helper;
 
+use JBrowser;
+use JFactory;
+use JUri;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class StylesHelper extends JObject
+ class StylesHelper
  {
         public static function getSiteName()
         {
@@ -95,7 +99,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/print.css' );
             }
 
-            if (CobaltHelperTemplate::isMobile()) {
+            if (TemplateHelper::isMobile()) {
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/mobile.css' );
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.min.css' );
                 $document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.datepicker.css' );

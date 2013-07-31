@@ -10,6 +10,9 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+use Cobalt\Model\Config as ConfigModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -38,7 +41,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getConfigValue($field,$serializedArray=FALSE)
     {
 
-        $configModel = new CobaltModelConfig();
+        $configModel = new ConfigModel;
         $config = $configModel->getConfig(TRUE);
 
         if (is_array($config) && array_key_exists($field, $config)) {
