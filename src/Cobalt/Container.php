@@ -13,9 +13,14 @@ class Container extends LeagueContainer
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new static;
+            self::$instance = new LeagueContainer;
         }
 
         return self::$instance;
+    }
+
+    public static function get($key)
+    {
+        return self::getInstance()->resolve($key);
     }
 }

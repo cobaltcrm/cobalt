@@ -10,14 +10,12 @@ namespace Cobalt;
 
 defined('_CEXEC') or die;
 
-use JConfig;
 use JFactory;
 use JUri;
 use JPluginHelper;
 use JDocument;
+use JUser;
 
-use Joomla\Uri\Uri;
-use Joomla\Input\Input;
 use Joomla\String\String;
 use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
@@ -173,18 +171,7 @@ final class Application extends AbstractWebApplication
      */
     private function loadConfiguration()
     {
-        // Set the configuration file path for the application.
-        $file = JPATH_BASE . '/configuration.php';
-
-        // Verify the configuration exists and is readable.
-        if (!is_readable($file)) {
-            throw new \RuntimeException('Configuration file does not exist or is unreadable.');
-        }
-
-        include_once $file;
-
-        // Load the configuration file into an object.
-        $config = new JConfig;
+        $config = Container::get('config');
 
         if ($config === null) {
             throw new \RuntimeException(sprintf('Unable to parse the configuration file %s.', $file));
@@ -855,7 +842,7 @@ final class Application extends AbstractWebApplication
      *
      * @param integer $id The user id or the current user.
      *
-     * @return User
+     * @return JUser
      *
      * @since   1.0
      */
