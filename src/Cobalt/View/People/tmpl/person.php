@@ -167,7 +167,7 @@ $person = $this->people[0];
             <div class="threecolumn">
                 <div class="small_info last">
                     <?php echo TextHelper::_('COBALT_PERSON_CONTACTED'); ?>:
-                    <?php echo CobaltHelperDate::formatDate($person['modified']); ?>
+                    <?php echo DateHelper::formatDate($person['modified']); ?>
                 </div>
                 <div class="cobaltRow top">
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_STATUS'); ?>:</div>
@@ -204,7 +204,7 @@ $person = $this->people[0];
                             </a>
                             <ul class="dropdown-menu" role="menu">
                             <?php
-                            $sources = CobaltHelperDeal::getSources();
+                            $sources = DealHelper::getSources();
                             if (count($sources)) { foreach ($sources as $id => $name) { ?>
                                 <li>
                                     <a href="javascript:void(0)" class="dropdown_item" data-field="source_id" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo $id; ?>"><?php echo $name; ?></a>

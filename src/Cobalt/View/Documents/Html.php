@@ -68,7 +68,7 @@ class CobaltViewDocumentsHtml extends JViewHTML
             $document_list = ViewHelper::getView('documents','list','phtml',array('documents'=>$documents,'state'=>$state));
 
             if ($layout == "download") {
-                CobaltHelperDeal::downloadDocument();
+                DealHelper::downloadDocument();
             }
 
             //assign ref

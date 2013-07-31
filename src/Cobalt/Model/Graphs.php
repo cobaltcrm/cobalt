@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\DateHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -52,7 +53,7 @@ class Graphs extends DefaultModel
             $yearly_revenue = $model->getYearlyRevenue($type,$id);
 
             //commission data
-            $model = new Commision;
+            $model = new Commission;
             $monthly_commissions = $model->getMonthlyCommission($type,$id);
             $yearly_commissions = $model->getYearlyCommission($type,$id);
 

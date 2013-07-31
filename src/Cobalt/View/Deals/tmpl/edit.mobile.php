@@ -77,7 +77,7 @@ $app = JFactory::getApplication();
             </div>
             <?php
                 $custom = DropdownHelper::generateCustom('deal',$deal['id']);
-                $custom_data = ( array_key_exists('id',$deal) ) ? CobaltHelperDeal::getCustomData($deal['id'],"deal") : array();
+                $custom_data = ( array_key_exists('id',$deal) ) ? DealHelper::getCustomData($deal['id'],"deal") : array();
                 foreach ($custom as $field => $value) {
                     if ($value['type'] != 'forecast') {
                         $custom_field_filter = ( count($custom_data) != 0 ) ? $custom_data[$value['id']] : '';

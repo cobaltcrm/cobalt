@@ -109,7 +109,7 @@ class CobaltModelDocument extends CobaltModelDefault
             }
 
             //data generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
             $hashFilename = md5($fileName.$date).".".$uploadedFileExtension;
 
             //lose any special characters in the filename
@@ -154,7 +154,7 @@ class CobaltModelDocument extends CobaltModelDefault
             $oldRow = JTable::getInstance('document','Table');
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             if ( !array_key_exists('id',$newData) ) {
                 $newData['created'] = $date;

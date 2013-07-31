@@ -16,7 +16,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
          echo '<div class="com_cobalt_task_event">';
                     $display_date = ( $event['type'] == "event" ) ? $event['start_time'] : $event['due_date'];
                     if ( $display_date == "" ) $display_date = TextHelper::_('COBALT_NA');
-                    echo '<div class="date">'.CobaltHelperDate::formatDate($display_date).'</div>';
+                    echo '<div class="date">'.DateHelper::formatDate($display_date).'</div>';
                     if ($event['completed'] == 1) {
                         $completed = "line-through";
                     } else {

@@ -59,7 +59,7 @@ $deal = $this->info[0];
             <div class="small_info middle">
                 <?php echo TextHelper::_('COBALT_EDIT_AGE'); ?>:
                     <?php
-                        echo CobaltHelperDate::getElapsedTime($deal['created']);
+                        echo DateHelper::getElapsedTime($deal['created']);
                     ?>
             </div>
             <div class="cobaltRow top">
@@ -84,7 +84,7 @@ $deal = $this->info[0];
         <div class="threecolumn">
             <div class="small_info last">
                 <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>:
-                    <?php echo CobaltHelperDate::formatDate($deal['expected_close']); ?>
+                    <?php echo DateHelper::formatDate($deal['expected_close']); ?>
             </div>
             <div class="cobaltRow top">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_STATUS'); ?></div>
@@ -150,7 +150,7 @@ $deal = $this->info[0];
                         echo '<td>'.$person['phone'].'</td>';
                         echo '<td>'.$person['owner_first_name'].' '.$person['owner_last_name'].'</td>';
                         echo '<td>'.ucwords($person['type']).'</td>';
-                        echo '<td>'.CobaltHelperDate::formatDate($person['modified']).'</td>';
+                        echo '<td>'.DateHelper::formatDate($person['modified']).'</td>';
                     echo '</tr>';
                 }
             ?>
@@ -170,7 +170,7 @@ $deal = $this->info[0];
                 $convo = $deal['conversations'][$i];
                 echo '<div class="conversation">';
 
-                    echo '<div class="header"><b>'.CobaltHelperDate::formatDate($convo['created']).'</b></div>';
+                    echo '<div class="header"><b>'.DateHelper::formatDate($convo['created']).'</b></div>';
                     echo '<div class="convo_info"><b>'.TextHelper::_('COBALT_USER').'</b> '.TextHelper::_('COBALT_WROTE').':</div>';
                     echo '<div class="convo">'.$convo['conversation'].'</div>';
 

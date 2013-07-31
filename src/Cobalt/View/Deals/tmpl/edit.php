@@ -104,7 +104,7 @@ $app = JFactory::getApplication();
                 <div class="control-group">
                     <label class="control-label" for="expected_close"><?php echo TextHelper::_('COBALT_DEAL_CLOSE'); ?></label>
                     <div class="controls">
-                        <input class="inputbox date_input" type="text" id="expected_close" name="expected_close_input" value="<?php echo CobaltHelperDate::formatDate($deal['expected_close']); ?>">
+                        <input class="inputbox date_input" type="text" id="expected_close" name="expected_close_input" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>">
                         <input type="hidden" id="expected_close_hidden" name="expected_close" value="<?php if ( array_key_exists('expected_close',$deal) && !is_null($deal['expected_close']) && $deal['expected_close'] != "" && $deal['expected_close'] != "0000-00-00"   ) { echo $deal['expected_close']; } else { echo date("Y-m-d"); } ?>" />
                     </div>
                 </div>
@@ -112,7 +112,7 @@ $app = JFactory::getApplication();
                 <div class="control-group">
                     <label class="control-label" for="actual_close"><?php echo TextHelper::_('COBALT_DEAL_ACTUAL_CLOSE'); ?></label>
                     <div class="controls">
-                        <input class="inputbox date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo CobaltHelperDate::formatDate($deal['actual_close']); ?>">
+                        <input class="inputbox date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>">
                         <input type="hidden" id="actual_close_hidden" name="actual_close" value="<?php echo $deal['actual_close']; ?>" />
                     </div>
                 </div>

@@ -102,18 +102,18 @@ class CobaltViewDealsHtml extends JViewHTML
 
         //dropdown info
         //get deal type filters
-        $deal_types = CobaltHelperDeal::getDealTypes();
+        $deal_types = DealHelper::getDealTypes();
         $deal_type_name = $session->get('deal_type_filter');
         $deal_type_name = ( $deal_type_name ) ? $deal_types[$deal_type_name] : $deal_types['all'];
 
         //get column filters
-        $column_filters = CobaltHelperDeal::getColumnFilters();
-        $selected_columns = CobaltHelperDeal::getSelectedColumnFilters();
+        $column_filters = DealHelper::getColumnFilters();
+        $selected_columns = DealHelper::getSelectedColumnFilters();
 
         //get member access info
         $teams = UsersHelper::getTeams();
         $users = UsersHelper::getUsers();
-        $stages = CobaltHelperDeal::getStages();
+        $stages = DealHelper::getStages();
 
         //get deal stage filters
         $stage_name = $session->get('deal_stage_filter');
@@ -139,7 +139,7 @@ class CobaltViewDealsHtml extends JViewHTML
         }
 
         //get closing time filters
-        $closing_names = CobaltHelperDeal::getClosing();
+        $closing_names = DealHelper::getClosing();
         $closing_name = $session->get('deal_close_filter');
         $closing_name = ( $closing_name ) ? $closing_names[$closing_name] : $closing_names['all'];
 
@@ -153,7 +153,7 @@ class CobaltViewDealsHtml extends JViewHTML
                 $events = $model->getEvents("deal",null,$app->input->get('id'));
                 $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
 
-                $primary_contact_id = CobaltHelperDeal::getPrimaryContact($dealList[0]['id']);
+                $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]['id']);
                 $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]['people'],'primary_contact_id'=>$primary_contact_id));
 
                 $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal['documents']));
@@ -205,7 +205,7 @@ class CobaltViewDealsHtml extends JViewHTML
             $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
         }
 
-        $closed_stages = CobaltHelperDeal::getClosedStages();
+        $closed_stages = DealHelper::getClosedStages();
 
         //assign results to view
         $this->closed_stages = $closed_stages;

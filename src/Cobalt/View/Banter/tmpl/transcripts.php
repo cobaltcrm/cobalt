@@ -15,7 +15,7 @@ if ( count($this->transcripts) > 0 ) {
       <?php $i %= 2; ?>
         <tr class="cobalt_row_<?php echo $i; ?>">
           <td><?php echo $transcript->room_name; ?></td>
-          <td><?php echo CobaltHelperDate::formatDate($transcript->created); ?></td>
+          <td><?php echo DateHelper::formatDate($transcript->created); ?></td>
           <td>
               <a target="_blank" href="<?php echo JRoute::_('index.php?option=com_banter&view=transcripts&layout=transcript&id='.$transcript->id);?>">
                   <?php echo TextHelper::_('COBALT_VIEW'); ?>

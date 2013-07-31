@@ -9,8 +9,8 @@ if ( count($this->stages) > 0 ){ foreach ($this->stages as $stage) {
 }}
 $stage_name = ( array_key_exists('stage_id',$deal) && $deal['stage_id'] != 0 ) ? $deal['stage_name'] : TextHelper::_('COBALT_CLICK_TO_EDIT');
 $source_name = ( array_key_exists('source_id',$deal) && $deal['source_id'] != 0 ) ? $deal['source_name'] : TextHelper::_('COBALT_CLICK_TO_EDIT');
-$expected_close = $deal['expected_close'] != "0000-00-00 00:00:00" ? CobaltHelperDate::formatDate($deal['expected_close']) : TextHelper::_('COBALT_NOT_SET');
-$actual_close = $deal['actual_close'] != "0000-00-00 00:00:00" && $deal['closed'] != 0 ? CobaltHelperDate::formatDate($deal['actual_close']) : $actual_close = TextHelper::_('COBALT_ACTIVE_DEAL');
+$expected_close = $deal['expected_close'] != "0000-00-00 00:00:00" ? DateHelper::formatDate($deal['expected_close']) : TextHelper::_('COBALT_NOT_SET');
+$actual_close = $deal['actual_close'] != "0000-00-00 00:00:00" && $deal['closed'] != 0 ? DateHelper::formatDate($deal['actual_close']) : $actual_close = TextHelper::_('COBALT_ACTIVE_DEAL');
 $extras = '<b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>
             <a href="'.JRoute::_('index.php?view=people&layout=person&id='.$deal['primary_contact_id']).'">'.$deal['primary_contact_first_name'].'</a><br>
             <b>'.TextHelper::_('COBALT_NEXT_ACTION').'</b><br>';

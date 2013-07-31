@@ -8,10 +8,21 @@
 # Website: http://www.cobaltcrm.org
 # Version 1.170
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use JRoute;
+use Joomla\Registry\Registry;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\ActivityHelper;
+use Cobalt\Helper\TextHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelEvent extends CobaltModelDefault
+class Event extends DefaultModel
 {
 
         var $_id = null;
@@ -54,7 +65,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $data = ( $data == null ) ? $app->input->getRequest( 'post' ) : $data;
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             if ( !array_key_exists('id',$data) ) {
                 $data['created'] = $date;
@@ -89,14 +100,14 @@ class CobaltModelEvent extends CobaltModelDefault
             }
 
             if ( array_key_exists('due_date',$data) && $data['due_date'] != "" && $data['due_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ) {
-                $data['due_date'] = CobaltHelperDate::formatDBDate($data['due_date']);
+                $data['due_date'] = DateHelper::formatDBDate($data['due_date']);
             }
             if ( array_key_exists('start_date',$data) && $data['start_date'] != "" && $data['start_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ) {
-                $data['start_date'] = CobaltHelperDate::formatDBDate($data['start_date']);
+                $data['start_date'] = DateHelper::formatDBDate($data['start_date']);
             }
 
             if ( array_key_exists('end_date',$data) && $data['end_date'] != "" && $data['end_date'] != "0000-00-00 00:00:00" && !is_null($data['end_date']) ) {
-                $data['end_date'] = CobaltHelperDate::formatDBDate($data['end_date']);
+                $data['end_date'] = DateHelper::formatDBDate($data['end_date']);
             }
 
             //all day events
@@ -113,11 +124,11 @@ class CobaltModelEvent extends CobaltModelDefault
             }
 
             if ( array_key_exists('start_time',$data) && $data['start_time'] != "" && $data['start_time'] != "0000-00-00 00:00:00" && !is_null($data['start_time']) ) {
-                $data['start_time'] = CobaltHelperDate::formatDBDate($data['start_time']);
+                $data['start_time'] = DateHelper::formatDBDate($data['start_time']);
             }
 
             if ( array_key_exists('end_time',$data) && $data['end_time'] != "" && $data['end_time'] != "0000-00-00 00:00:00" && !is_null($data['end_time']) ) {
-                $data['end_time'] = CobaltHelperDate::formatDBDate($data['end_time']);
+                $data['end_time'] = DateHelper::formatDBDate($data['end_time']);
             }
 
             // Bind the form fields to the table
@@ -157,7 +168,7 @@ class CobaltModelEvent extends CobaltModelDefault
 
             $row->load($event_id);
 
-            CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
+            ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
             //if we receive information concerning cf tables
             if ( array_key_exists('association_id',$data) ) {
@@ -267,7 +278,7 @@ class CobaltModelEvent extends CobaltModelDefault
             }
 
             if ($this->current_events) {
-               $now = CobaltHelperDate::formatDBDate(date('Y-m-d'));
+               $now = DateHelper::formatDBDate(date('Y-m-d'));
                $query->where('e.due_date != "0000-00-00 00:00:00" AND e.due_date >="'.$now.'"');
             }
 
@@ -302,15 +313,15 @@ class CobaltModelEvent extends CobaltModelDefault
             /** Filter by due date **/
             $due_date_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_due_date');
             if ($due_date_filter != null && $due_date_filter != "any" && $this->view != "print") {
-                $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                 switch ($due_date_filter) {
                     case "today":
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("((e.due_date >= '$date' AND e.due_date < '$tomorrow') OR (e.start_time >= '$date' AND e.start_time < '$tomorrow'))");
                     break;
                     case "tomorrow":
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                        $day_after_tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (2*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $day_after_tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (2*24*60*60)));
                         $query->where("((e.due_date >= '$tomorrow' AND e.due_date < '$day_after_tomorrow') OR (e.start_time >= '$tomorrow' AND e.start_time < '$day_after_tomorrow'))");
                     break;
                     case "this_week":
@@ -318,8 +329,8 @@ class CobaltModelEvent extends CobaltModelDefault
                         $today = $date_info['wday'];
                         $days_to_remove = -1 + $today;
                         $days_to_add = 5 - $today;
-                        $beginning_of_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." - $days_to_remove days")));
-                        $end_of_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." + $days_to_add days")));
+                        $beginning_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." - $days_to_remove days")));
+                        $end_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." + $days_to_add days")));
                         $query->where("((e.due_date >= '$beginning_of_week' AND e.due_date < '$end_of_week') OR (e.start_time >= '$beginning_of_week' AND e.start_time < '$end_of_week'))");
                     break;
                     case "past_due":
@@ -430,8 +441,8 @@ class CobaltModelEvent extends CobaltModelDefault
                     if ( array_key_exists('repeats',$event) && $event['repeats'] != 'none' ) {
 
                         //Get current date so we know when to stop looping for event virtualization
-                        $date = CobaltHelperDate::formatDBDate(date("Y-m-d H:i:s"));
-                        $start_month = $this->start_date != null ? $this->start_date : CobaltHelperDate::formatDBDate(date("Y-m-1 00:00:00"));
+                        $date = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
+                        $start_month = $this->start_date != null ? $this->start_date : DateHelper::formatDBDate(date("Y-m-1 00:00:00"));
                         $end_month = $this->end_date != null ? $this->end_date : date("Y-m-1 00:00:00", strtotime($date . " +1 month"));
 
                         $dates = array();
@@ -752,8 +763,7 @@ class CobaltModelEvent extends CobaltModelDefault
                 }
             }
 
-            $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onEventLoad', array(&$rows));
+            $app->triggerEvent('onEventLoad', array(&$rows));
 
             //Return results
             return $rows;
@@ -874,36 +884,36 @@ class CobaltModelEvent extends CobaltModelDefault
                 if ($formatTime) {
                     $originalDate = $results[0]['created'];
                     if ( array_key_exists('created',$results[0])) {
-                        $results[0]['created_formatted'] = array_key_exists('created',$results[0]) ? CobaltHelperDate::formatDate($originalDate) : "";
-                        $results[0]['created'] = CobaltHelperDate::formatDate($originalDate,true,false);
+                        $results[0]['created_formatted'] = array_key_exists('created',$results[0]) ? DateHelper::formatDate($originalDate) : "";
+                        $results[0]['created'] = DateHelper::formatDate($originalDate,true,false);
                     }
                     if ( array_key_exists('repeat_end',$results[0])) {
-                        $results[0]['repeat_end_formatted'] = CobaltHelperDate::formatDate($results[0]['repeat_end']);
-                        $results[0]['repeat_end'] = CobaltHelperDate::formatDate($results[0]['repeat_end'],true,false);
+                        $results[0]['repeat_end_formatted'] = DateHelper::formatDate($results[0]['repeat_end']);
+                        $results[0]['repeat_end'] = DateHelper::formatDate($results[0]['repeat_end'],true,false);
                     }
                     if ( array_key_exists('modified',$results[0])) {
-                        $results[0]['modified_formatted'] = CobaltHelperDate::formatDate($results[0]['modified']);
-                        $results[0]['modified'] = CobaltHelperDate::formatDate($results[0]['modified'],true,false);
+                        $results[0]['modified_formatted'] = DateHelper::formatDate($results[0]['modified']);
+                        $results[0]['modified'] = DateHelper::formatDate($results[0]['modified'],true,false);
                     }
                     if ( array_key_exists('actual_close',$results[0])) {
-                        $results[0]['actual_close_formatted'] = CobaltHelperDate::formatDate($results[0]['actual_close']);
-                        $results[0]['actual_close'] = CobaltHelperDate::formatDate($results[0]['actual_close'],true,false);
+                        $results[0]['actual_close_formatted'] = DateHelper::formatDate($results[0]['actual_close']);
+                        $results[0]['actual_close'] = DateHelper::formatDate($results[0]['actual_close'],true,false);
                     }
                     if ( array_key_exists('due_date',$results[0])) {
-                        $results[0]['due_date_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['due_date']) : CobaltHelperDate::formatDate($results[0]['due_date']);
-                        $results[0]['due_date'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['due_date']) : CobaltHelperDate::formatDate($results[0]['due_date'],true,false);
+                        $results[0]['due_date_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['due_date']) : DateHelper::formatDate($results[0]['due_date']);
+                        $results[0]['due_date'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['due_date']) : DateHelper::formatDate($results[0]['due_date'],true,false);
                     }
                     if ( array_key_exists('end_date',$results[0])) {
-                        $results[0]['end_date_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_date']) : CobaltHelperDate::formatDate($results[0]['end_date']);
-                        $results[0]['end_date'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_date']) : CobaltHelperDate::formatDate($results[0]['end_date'],true,false);
+                        $results[0]['end_date_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_date']) : DateHelper::formatDate($results[0]['end_date']);
+                        $results[0]['end_date'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_date']) : DateHelper::formatDate($results[0]['end_date'],true,false);
                     }
                     if ( array_key_exists('start_time',$results[0])) {
-                        $results[0]['start_time_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['start_time']) : CobaltHelperDate::formatDate($results[0]['start_time']);
-                        $results[0]['start_time'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['start_time']) : CobaltHelperDate::formatDate($results[0]['start_time'],true,false);
+                        $results[0]['start_time_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['start_time']) : DateHelper::formatDate($results[0]['start_time']);
+                        $results[0]['start_time'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['start_time']) : DateHelper::formatDate($results[0]['start_time'],true,false);
                     }
                     if ( array_key_exists('end_time',$results[0])) {
-                        $results[0]['end_time_formatted'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_time']) : CobaltHelperDate::formatDate($results[0]['end_time']);
-                        $results[0]['end_time'] = $app->input->get('date') ? CobaltHelperDate::formatDateString($results[0]['end_time']) : CobaltHelperDate::formatDate($results[0]['end_time'],true,false);
+                        $results[0]['end_time_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_time']) : DateHelper::formatDate($results[0]['end_time']);
+                        $results[0]['end_time'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_time']) : DateHelper::formatDate($results[0]['end_time'],true,false);
                     }
                     if ( array_key_exists(0,$results) && !$app->input->get('date') ) {
                         if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ) {
@@ -1267,7 +1277,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $row->load($rowId);
             $status = "deleted";
 
-            CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
+            ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
         }
 
@@ -1296,7 +1306,7 @@ class CobaltModelEvent extends CobaltModelDefault
 
                 $db = JFactory::getDBO();
                 $query = $db->getQuery(true);
-                $date = CobaltHelperDate::formatDBDate(date("Y-m-d H:i:s"));
+                $date = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
                 $query->update("#__events")->set(array('completed='.$completed,'actual_close="'.$date.'"'))->where("id=".$event_id);
                 $db->setQuery($query);
                 $db->query();
@@ -1323,11 +1333,11 @@ class CobaltModelEvent extends CobaltModelDefault
                 $new_data = array_merge($event,$data);
 
                 if ($event['type'] == "task") {
-                    $new_data['due_date'] = CobaltHelperDate::formatDate($excludeDate,false,false);
+                    $new_data['due_date'] = DateHelper::formatDate($excludeDate,false,false);
                     $new_data['type'] = "task";
                 } else {
-                    $new_data['start_time'] = CobaltHelperDate::formatDate($excludeDate,false,false);
-                    $new_data['end_time'] = CobaltHelperDate::formatDate($excludeDate,false,false);
+                    $new_data['start_time'] = DateHelper::formatDate($excludeDate,false,false);
+                    $new_data['end_time'] = DateHelper::formatDate($excludeDate,false,false);
                     $new_data['type'] = "event";
                 }
 
@@ -1352,7 +1362,7 @@ class CobaltModelEvent extends CobaltModelDefault
             $row->load($event_id);
             $status = "completed";
 
-            CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
+            ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
         }
 
@@ -1421,7 +1431,7 @@ class CobaltModelEvent extends CobaltModelDefault
                 $row->load($event_id);
                 $status = "postponed";
 
-                CobaltHelperActivity::saveActivity($oldRow, $row,'event', $status);
+                ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
         }
 
@@ -1446,7 +1456,7 @@ class CobaltModelEvent extends CobaltModelDefault
                 // In case limit has been changed, adjust it
                 $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
-                $state = new JRegistry();
+                $state = new Registry();
                 $state->set("Event.".$view.'_limit', $limit);
                 $state->set("Event.".$view.'_limitstart', $limitstart);
 

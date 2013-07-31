@@ -18,9 +18,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
               $display_date = ( $event['type'] == "event" ) ? $event['start_time']." ".$event['start_time_hour'] : $event['due_date']." ".$event['due_date_hour'];
               $time = ( $event['type'] == "event" ) ? $event['start_time_hour'] : $event['due_date_hour'];
 
-              $display_date = $display_date == "" ? TextHelper::_('COBALT_NA') : CobaltHelperDate::formatDate($display_date,false,false);
+              $display_date = $display_date == "" ? TextHelper::_('COBALT_NA') : DateHelper::formatDate($display_date,false,false);
 
-              $relative_date_title = CobaltHelperDate::getRelativeDate($display_date);
+              $relative_date_title = DateHelper::getRelativeDate($display_date);
 
               if ($event['completed'] == 1) {
                   $completed = "line-through";
@@ -75,7 +75,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
                     $display_date = ( $event['type'] == "event" ) ? $event['start_time'] : $event['due_date'];
                     if ( $display_date == "" ) $display_date = TextHelper::_('COBALT_NA');
-                    echo '<td class="date"><small>'.CobaltHelperDate::formatDateString($display_date).' '.CobaltHelperDate::formatTime($time,"(".UsersHelper::getTimeFormat().")").'</small></td>';
+                    echo '<td class="date"><small>'.DateHelper::formatDateString($display_date).' '.DateHelper::formatTime($time,"(".UsersHelper::getTimeFormat().")").'</small></td>';
 
                    switch ($event['association_type']) {
                       case "company":

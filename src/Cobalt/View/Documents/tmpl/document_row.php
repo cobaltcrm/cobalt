@@ -30,7 +30,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 echo '</div></td>';
                 echo '<td>'.$document['owner_name'].'</td>';
                 echo '<td>'.$document['size'].'Kb</td>';
-                echo '<td>'.CobaltHelperDate::formatDate($document['created']).'</td>';
+                echo '<td>'.DateHelper::formatDate($document['created']).'</td>';
             echo '</tr>';
         }
     }

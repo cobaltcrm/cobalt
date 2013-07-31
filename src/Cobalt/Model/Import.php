@@ -119,7 +119,7 @@ class CobaltModelImport extends JModelBase
                                     case "stage_name":
 
                                         $new_header = "stage_id";
-                                        $stage_id = CobaltHelperDeal::getStages($read[$c]);
+                                        $stage_id = DealHelper::getStages($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
                                         if ( count($stage_id) ) {
                                             $keys = array_keys($stage_id);
@@ -132,7 +132,7 @@ class CobaltModelImport extends JModelBase
                                     case "source_name":
 
                                         $new_header = "source_id";
-                                        $source_id = CobaltHelperDeal::getSources($read[$c]);
+                                        $source_id = DealHelper::getSources($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
                                         if ( count($source_id) ) {
                                             $keys = array_keys($source_id);
@@ -145,7 +145,7 @@ class CobaltModelImport extends JModelBase
                                     case "status_name":
 
                                         $new_header = "status_id";
-                                        $status_id = CobaltHelperDeal::getStatuses($read[$c]);
+                                        $status_id = DealHelper::getStatuses($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
                                         if ( count($status_id) ) {
                                             $keys = array_keys($status_id);

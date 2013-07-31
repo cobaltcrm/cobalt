@@ -74,7 +74,7 @@ class CobaltModelNote extends CobaltModelDefault
             }
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             if ( !array_key_exists('id',$data) ) {
                 $data['created'] = $date;
@@ -166,7 +166,7 @@ class CobaltModelNote extends CobaltModelDefault
             //clean results
             if ( count ( $results ) > 0 ) {
                 foreach ($results as $key => $note) {
-                    $results[$key]['created_formatted'] = CobaltHelperDate::formatDate($note['created']);
+                    $results[$key]['created_formatted'] = DateHelper::formatDate($note['created']);
                     $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($note['email']);
                 }
             }
@@ -304,7 +304,7 @@ class CobaltModelNote extends CobaltModelDefault
             //clean results
             if (count($results) > 0) {
                 foreach ($results as $key => $note) {
-                    $results[$key]['created_formatted'] = CobaltHelperDate::formatDate($note['created']);
+                    $results[$key]['created_formatted'] = DateHelper::formatDate($note['created']);
                     $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($note['email']);
                 }
             }

@@ -27,9 +27,9 @@ $app = JFactory::getApplication();
 </thead>
 <tbody id="list">
 <?php
-    $stages = CobaltHelperDeal::getStages(null,TRUE,FALSE);
-    $statuses = CobaltHelperDeal::getStatuses(null,true);
-    $sources = CobaltHelperDeal::getSources(null);
+    $stages = DealHelper::getStages(null,TRUE,FALSE);
+    $statuses = DealHelper::getStatuses(null,true);
+    $sources = DealHelper::getSources(null);
     $users = UsersHelper::getUsers(null,TRUE);
     $n = count($this->dealList);
     $k = 0;

@@ -19,6 +19,7 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\ViewHelper;
+use Cobalt\Helper\NoteHelper;
 use Cobalt\Model\Graphs as GraphsModel;
 use Cobalt\Model\Source as SourceModel;
 use Cobalt\Model\Deal as DealModel;
@@ -131,7 +132,7 @@ class Html extends AbstractHtmlView
         $custom_report_header->deal_statuses = $deal_statuses;
         $custom_report_header->deal_close_dates = $deal_close_dates;
         $custom_report_header->modified_dates = $modified_dates;
-        $custom_report_header->created_dates = CobaltHelperDate::getCreatedDates();
+        $custom_report_header->created_dates = DateHelper::getCreatedDates();
         $custom_report_header->team_names = DropdownHelper::getTeamNames();
         $custom_report_header->user_names = DropdownHelper::getUserNames();
         $custom_report_header->state = $state;
@@ -178,7 +179,7 @@ class Html extends AbstractHtmlView
 
         $categories = $noteModel->getNoteCategories();
         $notes_header->categories       = $categories;
-        $notes_header->created_dates    = CobaltHelperDate::getCreatedDates();
+        $notes_header->created_dates    = DateHelper::getCreatedDates();
 
          // Initialise state variables.
         $state = $noteModel->getState();

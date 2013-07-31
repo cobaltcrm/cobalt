@@ -31,7 +31,7 @@ class CobaltModelReport extends CobaltModelDefault
         $data = $app->input->getRequest('post');
 
         //date generation
-        $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+        $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
         if ( !array_key_exists('id',$data) ) {
             $data['created'] = $date;
             $status = "created";
@@ -280,7 +280,7 @@ class CobaltModelReport extends CobaltModelDefault
         }
 
         //get current date to use for all date filtering
-        $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+        $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
 
         /** --------------------------------------------
          * Search for closing deal filters
@@ -288,21 +288,21 @@ class CobaltModelReport extends CobaltModelDefault
         if ($close != null && $close != "any") {
 
             if ($close == "this_week") {
-                $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                 $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
                 $query->where("d.expected_close >= '$this_week'");
                 $query->where("d.expected_close < '$next_week'");
             }
 
             if ($close == "next_week") {
-                $next_week = date('Y-m-d 00:00:00', strtotime(CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime($date))) . "+7 days"));
+                $next_week = date('Y-m-d 00:00:00', strtotime(DateHelper::formatDBDate(date("Y-m-d", strtotime($date))) . "+7 days"));
                 $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days"));
                 $query->where("d.expected_close >= '$next_week'");
                 $query->where("d.expected_close < '$week_after_next'");
             }
 
             if ($close == "this_month") {
-                $this_month = CobaltHelperDate::formatDBDate(date('Y-m-0 00:00:00'));
+                $this_month = DateHelper::formatDBDate(date('Y-m-0 00:00:00'));
                 $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                 $query->where("d.expected_close >= '$this_month'");
                 $query->where("d.expected_close < '$next_month'");
@@ -323,28 +323,28 @@ class CobaltModelReport extends CobaltModelDefault
         if ($modified != null && $modified != "any") {
 
             if ($modified == "this_week") {
-                $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                 $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
                 $query->where("d.modified >= '$last_week'");
                 $query->where("d.modified < '$this_week'");
             }
 
             if ($modified == "last_week") {
-                $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
-                $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
+                $last_week = DateHelper::formatDBDate(date("Y-m-d", strtotime("-7 days")));
+                $week_before_last = DateHelper::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                 $query->where("d.modified >= '$week_before_last'");
                 $query->where("d.modified < '$last_week'");
             }
 
             if ($modified == "this_month") {
-                $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                 $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                 $query->where("d.modified >= '$this_month'");
                 $query->where("d.modified < '$next_month'");
             }
 
             if ($modified == "last_month") {
-                $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                 $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
                 $query->where("d.modified >= '$last_month'");
                 $query->where("d.modified < '$this_month'");
@@ -358,42 +358,42 @@ class CobaltModelReport extends CobaltModelDefault
         if ($created != null && $created != "any") {
 
             if ($created == "this_week") {
-                $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                 $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date) . "-7 days")));
                 $query->where("d.created >= '$last_week'");
                 $query->where("d.created < '$this_week'");
             }
 
             if ($created == "last_week") {
-                $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
-                $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
+                $last_week = DateHelper::formatDBDate(date("Y-m-d", strtotime("-7 days")));
+                $week_before_last = DateHelper::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                 $query->where("d.created >= '$week_before_last'");
                 $query->where("d.created < '$last_week'");
             }
 
             if ($created == "this_month") {
-                $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                 $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                 $query->where("d.created >= '$this_month'");
                 $query->where("d.created < '$next_month'");
             }
 
             if ($created == "last_month") {
-                $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                 $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date) . "-1 month")));
                 $query->where("d.created >= '$last_month'");
                 $query->where("d.created < '$this_month'");
             }
 
             if ($created == "today") {
-                $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
+                $today = DateHelper::formatDBDate(date("Y-m-d 00:00:00"));
                 $tomorrow = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 day"));
                 $query->where("d.created >= '$today'");
                 $query->where("d.created < '$tomorrow'");
             }
 
             if ($created == "yesterday") {
-                $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
+                $today = DateHelper::formatDBDate(date("Y-m-d 00:00:00"));
                 $yesterday = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 day"));
                 $query->where("d.created >= '$yesterday'");
                 $query->where("d.created < '$today'");
@@ -422,7 +422,7 @@ class CobaltModelReport extends CobaltModelDefault
             //if we want active deals we must retrieve the active stage ids to filter by
             if ($stage == 'active') {
                 //get stage ids
-                $stage_ids = CobaltHelperDeal::getActiveStages();
+                $stage_ids = DealHelper::getActiveStages();
                 //filter by results having team ids
                 $stages = "";
                 for ($i=0;$i<count($stage_ids);$i++) {
@@ -441,7 +441,7 @@ class CobaltModelReport extends CobaltModelDefault
          * Field for custom field user states
          */
         //Get custom filters
-        $custom_fields = CobaltHelperDeal::getUserCustomFields();
+        $custom_fields = DealHelper::getUserCustomFields();
         //If the user has defined any custom fields we will left join the associated data here
         if ( count($custom_fields) > 0 ) {
             foreach ($custom_fields as $row) {
@@ -469,7 +469,7 @@ class CobaltModelReport extends CobaltModelDefault
                             case "date":
 
                                     if ($custom_field_filter == "this_week") {
-                                        $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                                        $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                                         $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
                                         $query->where("custom_".$row['id'].".value >= '$this_week'");
                                         $query->where("custom_".$row['id'].".value < '$next_week'");
@@ -483,7 +483,7 @@ class CobaltModelReport extends CobaltModelDefault
                                     }
 
                                     if ($custom_field_filter == "this_month") {
-                                        $this_month = CobaltHelperDate::formatDBDate(date('Y-m-0 00:00:00'));
+                                        $this_month = DateHelper::formatDBDate(date('Y-m-0 00:00:00'));
                                         $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                                         $query->where("custom_".$row['id'].".value >= '$this_month'");
                                         $query->where("custom_".$row['id'].".value < '$next_month'");
@@ -606,7 +606,7 @@ class CobaltModelReport extends CobaltModelDefault
                     $primary_contact_email  = $app->getUserStateFromRequest('Report.'.$id.'_'.$layout.'primary_contact_email','primary_contact_email',null);
 
                     //get custom filters
-                    $custom_fields = CobaltHelperDeal::getUserCustomFields();
+                    $custom_fields = DealHelper::getUserCustomFields();
                     $post_data = $app->input->post;
                     if ( count($custom_fields) > 0 ) {
                         foreach ($custom_fields as $row) {

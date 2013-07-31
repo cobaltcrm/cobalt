@@ -30,7 +30,7 @@ class CobaltModelGoal extends JModelBase
             $data = $app->input->getRequest( 'post' );
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
             if ( !array_key_exists('id',$data) ) {
                 $data['created'] = $date;
                 $status = "created";
@@ -105,7 +105,7 @@ class CobaltModelGoal extends JModelBase
             $results = $db->loadAssocList();
 
             //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            $this->won_stage_ids = DealHelper::getWonStages();
             if ( count($results) > 0 ){ foreach ($results as $key=>$goal) {
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
@@ -143,7 +143,7 @@ class CobaltModelGoal extends JModelBase
             $results = $db->loadAssocList();
 
             //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            $this->won_stage_ids = DealHelper::getWonStages();
             if ( count($results) > 0 ){ foreach ($results as $key=>$goal) {
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
@@ -192,7 +192,7 @@ class CobaltModelGoal extends JModelBase
             $results = $db->loadAssocList();
 
             //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            $this->won_stage_ids = DealHelper::getWonStages();
             if ( count($results) > 0 ){ foreach ($results as $key=>$goal) {
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
@@ -238,7 +238,7 @@ class CobaltModelGoal extends JModelBase
            $results = $db->loadAssocList();
 
             //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            $this->won_stage_ids = DealHelper::getWonStages();
             if ( count($results) > 0 ){ foreach ($results as $key=>$goal) {
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
@@ -275,7 +275,7 @@ class CobaltModelGoal extends JModelBase
            $results = $db->loadAssocList();
 
             //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            $this->won_stage_ids = DealHelper::getWonStages();
             if ( count($results) > 0 ){ foreach ($results as $key=>$goal) {
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
@@ -306,7 +306,7 @@ class CobaltModelGoal extends JModelBase
             $results = $db->loadAssocList();
 
             //get essential data
-            $this->won_stage_ids = CobaltHelperDeal::getWonStages();
+            $this->won_stage_ids = DealHelper::getWonStages();
             if ( count($results) > 0 ){ foreach ($results as $key=>$goal) {
                     $results[$key]['goal_info'] = $this->goalInfo($goal);
                 }
@@ -592,7 +592,7 @@ class CobaltModelGoal extends JModelBase
             $query = $db->getQuery(true);
 
             //get won stage id
-            $won_stage_ids = CobaltHelperDeal::getWonStages();
+            $won_stage_ids = DealHelper::getWonStages();
 
             //assign start_date and end_date
             $start_date = $leaderboard['start_date'];

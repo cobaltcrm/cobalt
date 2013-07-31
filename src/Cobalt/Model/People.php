@@ -55,7 +55,7 @@ class CobaltModelPeople extends CobaltModelDefault
             }
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ) {
                 $data['created'] = $date;
@@ -413,32 +413,32 @@ class CobaltModelPeople extends CobaltModelDefault
                 }
 
                 //get current date
-                $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
 
                 //filter for type
                 if ($stage != null  && $stage != 'all') {
 
                     //filter for deals//tasks due today
                     if ($stage == 'today') {
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date >'$date' AND event.due_date < '$tomorrow'");
                     }
 
                     //filter for deals//tasks due tomorrow
                     if ($stage == "tomorrow") {
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date='".$tomorrow."'");
                     }
 
                     //filter for people updated in the last 30 days
                     if ($stage == "past_thirty") {
-                        $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("p.modified >'$last_thirty_days'");
                     }
 
                     //filter for recently added people
                     if ($stage == "recently_added") {
-                        $last_five_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
+                        $last_five_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
                         $query->where("p.modified >'$last_five_days'");
                     }
 

@@ -22,7 +22,7 @@ if ( count($this->events) > 0 ) {
     foreach ($this->events as $event) {
         echo '<li>';
         echo "<a href='".JRoute::_('index.php?view=events&id='.$event['id'])."'>";
-            echo '<span class="ui-li-count">'.CobaltHelperDate::formatDate($event['due_date']).'</span>';
+            echo '<span class="ui-li-count">'.DateHelper::formatDate($event['due_date']).'</span>';
             if ($event['completed'] == 1) {
                 $completed = "line-through";
             } else {

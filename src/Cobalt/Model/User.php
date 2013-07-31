@@ -44,7 +44,7 @@ class CobaltModelUser extends JModelBase
             }
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
             $data['modified'] = $date;
 
             //update users email address
@@ -143,7 +143,7 @@ class CobaltModelUser extends JModelBase
             if ( !is_array($result) ) {
                 switch ($loc) {
                     case "deals":
-                        $result = CobaltHelperDeal::getDefaultColumnFilters();
+                        $result = DealHelper::getDefaultColumnFilters();
                         break;
                     case "people":
                         $result = PeopleHelper::getDefaultColumnFilters();

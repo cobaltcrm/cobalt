@@ -75,7 +75,7 @@ $company = $this->companies[0];?>
 
             <div class="span4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_CONTACTED')); ?>:
-                    <?php echo CobaltHelperDate::formatDate($company['modified']); ?>
+                    <?php echo DateHelper::formatDate($company['modified']); ?>
             </div>
         </div>
 

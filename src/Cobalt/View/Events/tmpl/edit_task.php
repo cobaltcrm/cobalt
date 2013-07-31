@@ -105,11 +105,11 @@ $app = JFactory::getApplication();
                 <?php if (array_key_exists('due_date',$event) ) { ?>
                     <span style="display:none;" class="due_date"><?php echo TextHelper::_('COBALT_EDIT_TASK_DUE_DATE_MESSAGE'); ?></span>
                 <div id="due_date">
-                    <input id="due_date_input"class="inputbox date_input" type="text" name="due_date_input" value="<?php if (array_key_exists('due_date',$event)) echo CobaltHelperDate::formatDate($event['due_date']); ?>" />
+                    <input id="due_date_input"class="inputbox date_input" type="text" name="due_date_input" value="<?php if (array_key_exists('due_date',$event)) echo DateHelper::formatDate($event['due_date']); ?>" />
                     <input id="due_date_input_hidden" name="due_date" type="hidden" value="<?php if ( array_key_exists('due_date',$event) ) { echo $event['due_date']; } ?>" />
                     <select class="inputbox" name="due_date_hour">
                         <?php
-                            $time = CobaltHelperDate::getTimeIntervals();
+                            $time = DateHelper::getTimeIntervals();
                             echo JHtml::_('select.options', $time, 'value', 'text', $event['due_date_hour'], true);
                         ?>
                     </select>
@@ -117,11 +117,11 @@ $app = JFactory::getApplication();
                 <?php } else { ?>
                 <span class="due_date"><?php echo TextHelper::_('COBALT_EDIT_TASK_DUE_DATE_MESSAGE'); ?></span>
                 <div style="display:none;" id="due_date">
-                    <input id="due_date_input" class="inputbox date_input" type="text" name="due_date_input" value="<?php if (array_key_exists('due_date',$event)) echo CobaltHelperDate::formatDate($event['due_date']); ?>" />
+                    <input id="due_date_input" class="inputbox date_input" type="text" name="due_date_input" value="<?php if (array_key_exists('due_date',$event)) echo DateHelper::formatDate($event['due_date']); ?>" />
                     <input id="due_date_input_hidden" name="due_date" type="hidden" value="<?php if ( array_key_exists('due_date',$event) ) { echo $event['due_date']; } ?>" />
                     <select class="inputbox" name="due_date_hour">
                         <?php
-                            $time = CobaltHelperDate::getTimeIntervals();
+                            $time = DateHelper::getTimeIntervals();
                             echo JHtml::_('select.options', $time, 'value', 'text', $event['due_date_hour'], true);
                         ?>
                     </select>
@@ -136,7 +136,7 @@ $app = JFactory::getApplication();
                 <?php if ( array_key_exists('end_date',$event) && $event['end_date'] != null ) { $hidden = "style='display:none;'"; $show = ""; } else { $hidden = ""; $show = "style='display:none;'"; } ?>
                 <span <?php echo $hidden; ?> class="end_date"><?php echo TextHelper::_('COBALT_END_DATE_MESSAGE'); ?></span>
                 <div <?php echo $show; ?> id="end_date">
-                    <input id="end_date_input" class="inputbox date_input" type="text" name="end_date_input" value="<?php if (array_key_exists('end_date',$event)) echo CobaltHelperDate::formatDate($event['end_date']); ?>" />
+                    <input id="end_date_input" class="inputbox date_input" type="text" name="end_date_input" value="<?php if (array_key_exists('end_date',$event)) echo DateHelper::formatDate($event['end_date']); ?>" />
                     <input id="end_date_input_hidden" name="end_date" type="hidden" value="<?php if ( array_key_exists('end_date',$event) ) { echo $event['end_date']; } ?>" />
                 </div>
         </div>

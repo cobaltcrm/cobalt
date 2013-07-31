@@ -51,7 +51,7 @@ class CobaltModelCompany extends CobaltModelDefault
             }
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ) {
                 $data['created'] = $date;
@@ -190,7 +190,7 @@ class CobaltModelCompany extends CobaltModelDefault
             if (!$id) {
 
                 //get current date
-                $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
 
                 //filter for type
                 if ($type != null && $type != "all") {
@@ -205,7 +205,7 @@ class CobaltModelCompany extends CobaltModelDefault
 
                     //filter for companies and deals//tasks due tomorrow
                     if ($type == "tomorrow") {
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type='company'");
                         $query->join('INNER',"#__events as event on event.id = event_company_cf.event_id");
                         $query->where("event.due_date='$tomorrow'");
@@ -214,19 +214,19 @@ class CobaltModelCompany extends CobaltModelDefault
 
                     //filter for companies updated in the last 30 days
                     if ($type == "updated_thirty") {
-                        $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("c.modified >'$last_thirty_days'");
                     }
 
                      //filter for past companies// last contacted 30 days ago or longer
                     if ($type == "past") {
-                        $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("c.modified <'$last_thirty_days'");
                     }
 
                     //filter for recent companies
                     if ($type == "recent") {
-                        $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("c.modified >'$last_thirty_days'");
                     }
 

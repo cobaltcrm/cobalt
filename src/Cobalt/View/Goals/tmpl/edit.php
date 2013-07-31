@@ -54,7 +54,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         //generate date html
                         $date_html = "<select class='inputbox' id='date_picker'>";
-                        $dates = CobaltHelperDate::getGoalDates();
+                        $dates = DateHelper::getGoalDates();
                         $date_html .= JHtml::_('select.options', $dates, 'value', 'text', '', true);
                         $date_html .= "</select>";
                     ?>
@@ -85,7 +85,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <?php echo TextHelper::_('COBALT_DEALS_FORWARD_TO_THE'); ?>
                                     <select class="inputbox" name="stage_id">
                                         <?php
-                                            $stages = CobaltHelperDeal::getGoalStages();
+                                            $stages = DealHelper::getGoalStages();
                                             echo JHtml::_('select.options', $stages, 'value', 'text', '', true);
                                         ?>
                                     </select>

@@ -137,7 +137,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                <div id="goal_<?php echo $goal['id']; ?>" class="goal_info clearfix well">
                                     <div class="clearfix">
                                         <span class="goal_info_name"><?php echo $goal['name']; ?></span>
-                                        <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo CobaltHelperDate::formatDate($goal['end_date']); ?></span>
+                                        <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                     </div>
                                     <div class="goal_info_progress clearfix progress progress-success">
                                         <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
@@ -208,7 +208,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <div id="goal_<?php echo $goal['id']; ?>" class="goal_info well">
                                 <div class="clearfix">
                                     <span class="goal_info_name"><?php echo $goal['name']; ?></span>
-                                    <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo CobaltHelperDate::formatDate($goal['end_date']); ?></span>
+                                    <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                 </div>
                                 <div class="goal_info_progress clearfix progress progress-success">
                                     <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>
@@ -259,7 +259,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                               <div id="goal_<?php echo $goal['id']; ?>" class="goal_info well">
                                     <div class="clearfix">
                                         <span class="goal_info_name"><?php echo $goal['name']; ?></span>
-                                        <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo CobaltHelperDate::formatDate($goal['end_date']); ?></span>
+                                        <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                     </div>
                                     <div class="goal_info_progress progress progress-success clearfix">
                                         <?php $bgcolor=CobaltHelperCobalt::percent2Color($goal['goal_info']/$goal['amount']*100); ?>

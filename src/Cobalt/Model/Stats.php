@@ -21,8 +21,8 @@ class CobaltModelStats extends JModelBase
 
     public function __construct()
     {
-        $this->previousDay = CobaltHelperDate::formatDBDate(date('Y-m-d')." - 1 day");
-        $this->today = CobaltHelperDate::formatDBDate(date('Y-m-d'));
+        $this->previousDay = DateHelper::formatDBDate(date('Y-m-d')." - 1 day");
+        $this->today = DateHelper::formatDBDate(date('Y-m-d'));
         $this->access = UsersHelper::getRole($this->person_id);
         $this->users = $this->getUsers($this->person_id,$this->access);
     }

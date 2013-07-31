@@ -7,16 +7,32 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Dashboard;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Model\Graphs as GraphsModel;
+use Cobalt\Model\Deal as DealModel;
+use Cobalt\Model\Company as CompanyModel;
+use Cobalt\Model\People as PeopleModel;
+use Cobalt\Helper\TemplateHelper;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Helper\ActivityHelper;
+use Cobalt\Helper\UsersHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewDashboardHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
 
         //get model and retrieve info
-        $model = new CobaltModelEvent();
+        $model = new EventModel;
 
         if (TemplateHelper::isMobile()) {
             $model->set('current_events',true);
@@ -25,7 +41,7 @@ class CobaltViewDashboardHtml extends JViewHtml
         $events = $model->getEvents();
         $eventDock = ViewHelper::getView('events','dashboard_event_dock','phtml', array('events'=>$events));
 
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealModel->set('recent',true);
         $dealModel->set('archived',0);
         $recentDeals = $dealModel->getDeals();
@@ -36,10 +52,10 @@ class CobaltViewDashboardHtml extends JViewHtml
         $doc->addScript( JURI::base().'libraries/crm/media/js/dashboard.js' );
 
         //get data for sales graphs
-        $model = new CobaltModelGraphs();
+        $model = new GraphsModel;
         $graph_data = $model->getGraphData();
 
-        $activityHelper = new CobaltHelperActivity;
+        $activityHelper = new ActivityHelper;
         $activity = $activityHelper->getActivity();
 
         //assign results to view
@@ -49,7 +65,7 @@ class CobaltViewDashboardHtml extends JViewHtml
         $this->activity 	= $activity;
 
         $json = TRUE;
-        $peopleModel = new CobaltModelPeople();
+        $peopleModel = new PeopleModel;
 
         if (TemplateHelper::isMobile()) {
 
@@ -62,7 +78,7 @@ class CobaltViewDashboardHtml extends JViewHtml
             $peopleModel->set('type','not_leads');
             $totalContacts = $peopleModel->getTotal();
 
-            $companyModel = new CobaltModelCompany();
+            $companyModel = new CompanyModel;
             $totalCompanies = $companyModel->getTotal();
 
             $user = UsersHelper::getLoggedInUser();
@@ -79,14 +95,14 @@ class CobaltViewDashboardHtml extends JViewHtml
         $peopleNames = $peopleModel->getPeopleNames($json);
         $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
 
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealNames = $dealModel->getDealNames($json);
         $doc->addScriptDeclaration("var deal_names=".$dealNames.";");
 
          /** get latest activities **/
         $this->latest_activities = ViewHelper::getView('dashboard','latest_activities','phtml');
         $this->latest_activities->activity = $activity;
-        $activityHelper = new CobaltHelperActivity;
+        $activityHelper = new ActivityHelper;
         $activity = $activityHelper->getActivity();
 
         //display

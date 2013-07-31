@@ -58,7 +58,7 @@ $note = $this->notes[0];
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_CREATED_ON'); ?></div>
             <div class="cobaltValue">
-                <span class="date"><?php echo CobaltHelperDate::formatDate($note['created']). ' '.CobaltHelperDate::formatTime($note['created']); ?></span>
+                <span class="date"><?php echo DateHelper::formatDate($note['created']). ' '.DateHelper::formatTime($note['created']); ?></span>
             </div>
         </div>
         <div class="cobaltRow">

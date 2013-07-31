@@ -14,7 +14,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <td><a href="javascript:void(0);" onclick="readEmail(<?php echo $email['overview']->msgno; ?>);"><?php  echo $email['overview']->subject; ?></a></td>
         <td><?php if ( array_key_exists('headers',$email) && isset($email['headers']->from) && array_key_exists(0,$email['headers']->from) ) { echo "<a href='mailto:".$email['headers']->from[0]->mailbox.'@'.$email['headers']->from[0]->host."'>".$email['headers']->from[0]->mailbox.'@'.$email['headers']->from[0]->host.'</a>'; } ?></td>
         <td><?php if ( array_key_exists('headers',$email) && isset($email['headers']->to) && array_key_exists(0,$email['headers']->to) ) { echo "<a href='mailto:".$email['headers']->to[0]->mailbox.'@'.$email['headers']->to[0]->host."'>".$email['headers']->to[0]->mailbox.'@'.$email['headers']->to[0]->host.'</a>'; } ?></td>
-        <td><?php  echo CobaltHelperDate::formatDate($email['overview']->date); ?></td>
+        <td><?php  echo DateHelper::formatDate($email['overview']->date); ?></td>
         <td>
             <a href="javascript:void(0);" onclick="deleteEmail(<?php echo $email['overview']->msgno; ?>);" class="delete"></a>
              <div class="email_modal" id="email_modal_<?php echo $email['overview']->msgno; ?>">

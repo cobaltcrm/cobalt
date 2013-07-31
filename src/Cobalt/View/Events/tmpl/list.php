@@ -18,10 +18,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $event = $this->events[$i];
 
         if ($event['type']=='task') {
-            $due_date = $event['due_date']!= '0000-00-00 00:00:00' ? CobaltHelperDate::formatDate($event['due_date']) : TextHelper::_('COBALT_NA');
+            $due_date = $event['due_date']!= '0000-00-00 00:00:00' ? DateHelper::formatDate($event['due_date']) : TextHelper::_('COBALT_NA');
             $time = $event['due_date_hour'];
         } else {
-            $due_date = CobaltHelperDate::formatDate($event['start_time']);
+            $due_date = DateHelper::formatDate($event['start_time']);
             $time = $event['start_time_hour'];
         }
 
@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             echo '<td><a class="dropdown '.$completed.'" id="event_menu_'.$event['id'].'_link" >';
             echo $event['name'];
             echo '</a></td>';
-            echo '<td class="due_date_column">'.$due_date.' '.CobaltHelperDate::formatTime($time,"(".UsersHelper::getTimeFormat().")").'</td>';
+            echo '<td class="due_date_column">'.$due_date.' '.DateHelper::formatTime($time,"(".UsersHelper::getTimeFormat().")").'</td>';
             echo '<td>';
                 if ($event['deal_name']) { echo '<a href='.JRoute::_('index.php?view=deals&layout=deal&id='.$event['deal_id']).'>'.$event['deal_name'].'</a><br />';}
                 if ($event['company_name']) { echo '<a href='.JRoute::_('index.php?view=companies&layout=company&id='.$event['company_id']).'>'.$event['company_name'].'</a>';}

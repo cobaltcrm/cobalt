@@ -32,8 +32,8 @@ for ($i=0;$i<count($this->deals);$i++) {
             <tbody id="reports">
                 <tr>
                     <td><?php echo $deal['name']; ?></td>
-                    <td><?php echo CobaltHelperDate::formatDate($deal['expected_close']); ?></td>
-                    <td><?php echo CobaltHelperDate::formatDate($deal['actual_close']); ?></td>
+                    <td><?php echo DateHelper::formatDate($deal['expected_close']); ?></td>
+                    <td><?php echo DateHelper::formatDate($deal['actual_close']); ?></td>
                     <td><div class="deal-status-<?php echo strtolower($deal['status_name']); ?>"></div></td>
                 </tr>
                 <?php
@@ -41,8 +41,8 @@ for ($i=0;$i<count($this->deals);$i++) {
                         $event = $deal['events'][$i2];?>
                         <tr>
                             <td><?php echo $event['name']; ?></td>
-                            <td><?php echo CobaltHelperDate::formatDate($event['due_date']); ?></td>
-                            <td><?php echo CobaltHelperDate::formatDate($event['actual_close']); ?></td>
+                            <td><?php echo DateHelper::formatDate($event['due_date']); ?></td>
+                            <td><?php echo DateHelper::formatDate($event['actual_close']); ?></td>
                             <td></td>
                         </tr>
                 <?php } ?>

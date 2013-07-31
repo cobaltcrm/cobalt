@@ -461,7 +461,7 @@ final class Application extends AbstractWebApplication
 
         // Set the application login entry point
         if (!array_key_exists('entry_url', $options)) {
-            $options['entry_url'] = JURI::base().'index.php?view=login';
+            $options['entry_url'] = Uri::base().'index.php?view=login';
         }
 
         // Set the access control action to check.

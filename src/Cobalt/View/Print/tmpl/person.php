@@ -116,7 +116,7 @@ $person = $this->info[0];
             <div class="small_info last">
                 <?php echo TextHelper::_('COBALT_PERSON_CONTACTED'); ?>:
                 <?php
-                    echo CobaltHelperDate::formatDate($person['modified']);
+                    echo DateHelper::formatDate($person['modified']);
                 ?>
             </div>
             <div class="cobaltRow top">

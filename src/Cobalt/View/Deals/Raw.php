@@ -42,9 +42,9 @@ class CobaltViewDealsRaw extends JViewHtml
         //assign references
         switch ($layout) {
             case "entry":
-                $this->stages = CobaltHelperDeal::getStages(null,TRUE,FALSE);
-                $this->statuses = CobaltHelperDeal::getStatuses(null,true);
-                $this->sources = CobaltHelperDeal::getSources(null);
+                $this->stages = DealHelper::getStages(null,TRUE,FALSE);
+                $this->statuses = DealHelper::getStatuses(null,true);
+                $this->sources = DealHelper::getSources(null);
                 $this->users = UsersHelper::getUsers(null,TRUE);
                 $this->k = 0;
                 $this->deal = $model->getDeal();

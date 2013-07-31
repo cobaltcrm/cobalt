@@ -31,19 +31,19 @@ for ( $i=0; $i<count($this->report_data); $i++ ) {
                       <td><div class="deal-status-<?php echo strtolower($report['status_name']); ?>"></div></td>
                   <?php break;
                   case "modified": ?>
-                   <td><?php echo CobaltHelperDate::formatDate($report['modified']); ?></td>
+                   <td><?php echo DateHelper::formatDate($report['modified']); ?></td>
                   <?php break;
                   case "expected_close": ?>
-                      <td><?php echo CobaltHelperDate::formatDate($report['expected_close']); ?></td>
+                      <td><?php echo DateHelper::formatDate($report['expected_close']); ?></td>
                   <?php break;
                   case "actual_close": ?>
-                      <td><?php echo CobaltHelperDate::formatDate($report['actual_close']); ?></td>
+                      <td><?php echo DateHelper::formatDate($report['actual_close']); ?></td>
                   <?php break;
                   case "source_id": ?>
                       <td><?php echo $report['source_name']; ?></td>
                   <?php break;
                   case "created": ?>
-                      <td><?php echo CobaltHelperDate::formatDate($report['created']); ?></td>
+                      <td><?php echo DateHelper::formatDate($report['created']); ?></td>
                   <?php break;
                   case "primary_contact_name": ?>
                       <td><?php echo $report['primary_contact_first_name'] . ' ' . $report['primary_contact_last_name']; ?></td>

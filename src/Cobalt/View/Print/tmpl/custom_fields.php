@@ -37,7 +37,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $custom_field_filter = array_key_exists('selected',$value) ? $value['selected'] : "";
             break;
             case "date":
-                $custom_field_filter = array_key_exists('selected',$value) && $value['selected'] != 0 && $value['selected'] != "0000-00-00 00:00:00" ? CobaltHelperDate::formatDate($value['selected']) : "";
+                $custom_field_filter = array_key_exists('selected',$value) && $value['selected'] != 0 && $value['selected'] != "0000-00-00 00:00:00" ? DateHelper::formatDate($value['selected']) : "";
             break;
             case "picklist":
                 $custom_field_filter = ( is_array($value) && array_key_exists('values',$value) && is_array($value['values']) && array_key_exists('selected',$value) && array_key_exists($value['selected'],$value['values']) ) ? $value['values'][$value['selected']] : "";

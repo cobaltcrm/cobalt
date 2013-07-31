@@ -76,8 +76,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             $dates = array('due_date','modified');
             if (in_array($activity->field,$dates)) {
-                $old_value = CobaltHelperDate::formatDate($activity->old_value,true);
-                $new_value = CobaltHelperDate::formatDate($activity->new_value,true);
+                $old_value = DateHelper::formatDate($activity->old_value,true);
+                $new_value = DateHelper::formatDate($activity->new_value,true);
             }
     ?>
     <?php if ($new_value != "") { ?>
@@ -85,7 +85,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             <td><?php echo $link.$name; ?></a></td>
             <td><?php echo JText::sprintf('COBALT_ACTIVITY_'.strtoupper($activity->action_type),ucwords(str_replace('_',' ',$activity->type)), ucwords(str_replace(' id','',str_replace(' 1','',str_replace('_',' ',$activity->field)))),$old_value,$new_value); ?></td>
             <td><?php echo $activity->owner_name; ?></td>
-            <td><?php echo CobaltHelperDate::getElapsedTime($activity->date,true,true,true,true,true); ?></td>
+            <td><?php echo DateHelper::getElapsedTime($activity->date,true,true,true,true,true); ?></td>
         </tr>
     <?php } ?>
     <?php } } ?>

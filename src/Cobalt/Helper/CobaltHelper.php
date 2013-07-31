@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -79,7 +81,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query = $db->getQuery(true);
 
         //date generation
-        $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+        $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
         //Loop through $cf_data array to update/insert
         for ( $i=0; $i<count($cf_data); $i++ ) {

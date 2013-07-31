@@ -25,9 +25,9 @@ $app = JFactory::getApplication();
          <td><?php echo $report['stage_name']; ?></td>
          <td><?php echo $report['percent']; ?>%</td>
          <td><div class="deal-status-<?php echo strtolower($report['status_name']); ?>"></div></td>
-         <td><?php echo CobaltHelperDate::formatDate($report['expected_close']); ?></td>
-         <td><?php echo CobaltHelperDate::formatDate($report['modified']); ?></td>
-         <td><?php echo CobaltHelperDate::formatDate($report['created']); ?></td>
+         <td><?php echo DateHelper::formatDate($report['expected_close']); ?></td>
+         <td><?php echo DateHelper::formatDate($report['modified']); ?></td>
+         <td><?php echo DateHelper::formatDate($report['created']); ?></td>
      </tr>
   <?php }
 ?>

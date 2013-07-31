@@ -16,7 +16,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <a href="<?php echo JURI::base(); ?>"><?php echo JURI::base(); ?></a>
         </td>
         <td width="300" height="60" valign="top" align="right">
-      <p><strong><?php echo TextHelper::_('COBALT_MORNING_COFFEE_REPORT_TITLE') ?> <?php echo $this->user->first_name.' '.$this->user->last_name; ?><br><?php echo TextHelper::_('COBALT_SUMMARY_FOR'); ?> <?php echo CobaltHelperDate::formatDate(date('Y-m-d')); ?></strong> <br>
+      <p><strong><?php echo TextHelper::_('COBALT_MORNING_COFFEE_REPORT_TITLE') ?> <?php echo $this->user->first_name.' '.$this->user->last_name; ?><br><?php echo TextHelper::_('COBALT_SUMMARY_FOR'); ?> <?php echo DateHelper::formatDate(date('Y-m-d')); ?></strong> <br>
         <a href="<?php echo JURI::base().'/index.php?option=com_user&view=login'; ?>" style="color:#999999;"><?php echo TextHelper::_('COBALT_LOGIN'); ?></a>      </p>
         </td>
     </tr>

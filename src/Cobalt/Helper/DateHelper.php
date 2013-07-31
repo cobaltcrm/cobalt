@@ -158,7 +158,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getMonthDates()
     {
         $current_year = date('Y-01-01 00:00:00');
-        $month_names = CobaltHelperDate::getMonthNames();
+        $month_names = self::getMonthNames();
         $months = array();
         for ($i=0; $i<12; $i++) {
                 $months[$i] = array( 'name'=>$month_names[$i],'date'=>date('Y-m-d 00:00:00',strtotime("$current_year + $i months")));

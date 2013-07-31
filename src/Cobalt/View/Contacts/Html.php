@@ -17,7 +17,7 @@ class CobaltViewContactsHtml extends JViewHtml
         $app = JFactory::getApplication();
         $deal_id = $app->input->get('deal_id');
         if ($deal_id) {
-            $primary_contact_id = CobaltHelperDeal::getPrimaryContact($deal_id);
+            $primary_contact_id = DealHelper::getPrimaryContact($deal_id);
             $this->primary_contact_id = $primary_contact_id;
         }
 

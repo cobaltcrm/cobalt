@@ -200,7 +200,7 @@ $report = $this->report[0]; ?>
                     <?php if ($custom_field) { ?>
                         <?php
                         //get the custom field type
-                        $custom_field_info = CobaltHelperDeal::getUserCustomFields(str_replace('custom_','',$id));
+                        $custom_field_info = DealHelper::getUserCustomFields(str_replace('custom_','',$id));
                         $info = $custom_field_info[0];
                         $custom_field_filter = '';
 
@@ -228,7 +228,7 @@ $report = $this->report[0]; ?>
                             <?php break;
                             case "date": ?>
                             <!-- make this a custom date picker -->
-                            <?php $custom_dates = CobaltHelperDeal::getDealFilters(); ?>
+                            <?php $custom_dates = DealHelper::getDealFilters(); ?>
                             <th>
                                 <select class="span1 filter_input" name="custom_<?php echo $info['id']; ?>">
                                     <?php echo JHtml::_('select.options', $custom_dates, 'value', 'text', $custom_field_filter, true); ?>

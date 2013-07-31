@@ -74,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <li><label><?php echo TextHelper::_('COBALT_TIMEZONE'); ?></label>
                             <select class="inputbox" name="time_zone">
                                 <?php
-                                    $timezone_abbreviations = CobaltHelperDate::getTimezones();
+                                    $timezone_abbreviations = DateHelper::getTimezones();
                                     echo JHtml::_('select.options', $timezone_abbreviations, 'value', 'text', $this->user->time_zone, true);
                                 ?>
                             </select>
@@ -84,7 +84,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <li><label><?php echo TextHelper::_('COBALT_DATE_FORMAT'); ?></label>
                             <select class="inputbox" name="date_format">
                                 <?php
-                                    $date_formats = CobaltHelperDate::getDateFormats();
+                                    $date_formats = DateHelper::getDateFormats();
                                     echo JHtml::_('select.options', $date_formats, 'value', 'text', $this->user->date_format, true);
                                 ?>
                             </select>
@@ -92,7 +92,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <li><label><?php echo TextHelper::_('COBALT_TIME_FORMAT'); ?></label>
                             <select class="inputbox" name="time_format">
                                 <?php
-                                    $time_formats = CobaltHelperDate::getTimeFormats();
+                                    $time_formats = DateHelper::getTimeFormats();
                                     echo JHtml::_('select.options', $time_formats, 'value', 'text', $this->user->time_format, true);
                                 ?>
                             </select>

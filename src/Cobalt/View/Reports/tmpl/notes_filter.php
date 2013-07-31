@@ -40,7 +40,7 @@ $app = JFactory::getApplication();
              ?>
          </td>
          <td><?php echo $note['owner_first_name']." ".$note['owner_last_name']; ?></td>
-         <td><?php echo CobaltHelperDate::formatDate(($note['created'])); ?></td>
+         <td><?php echo DateHelper::formatDate(($note['created'])); ?></td>
          <td><?php echo $note['category_name']; ?></td>
          <td><?php echo $note['note']; ?></td>
      </tr>

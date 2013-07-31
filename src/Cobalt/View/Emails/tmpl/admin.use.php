@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <p>
-    <?php echo JText::sprintf('COBALT_ADMIN_USE_EMAIL_HEADER',CobaltHelperDate::formatDate($starting_date),CobaltHelperDate::formatDate($ending_date)); ?>
+    <?php echo JText::sprintf('COBALT_ADMIN_USE_EMAIL_HEADER',DateHelper::formatDate($starting_date),DateHelper::formatDate($ending_date)); ?>
 </p>
 
 <table>

@@ -30,11 +30,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             $n = count($this->events);
             for ($i=0; $i<$n; $i++) {
                 $event = $this->events[$i];
-                $event_date = CobaltHelperDate::formatDate($event['due_date']);
+                $event_date = DateHelper::formatDate($event['due_date']);
                 $k = $i%2;
 
                     if ($i==0 || substr_compare($event['due_date'],$this->events[$i-1]['due_date'],0)) {
-                        echo "<li data-role='list-divider'>".CobaltHelperDate::getRelativeDate($event_date)." ".$event_date."</li>";
+                        echo "<li data-role='list-divider'>".DateHelper::getRelativeDate($event_date)." ".$event_date."</li>";
                     }
                 ?>
                     <li data-filtertext="<?php echo $event['name']; ?>">

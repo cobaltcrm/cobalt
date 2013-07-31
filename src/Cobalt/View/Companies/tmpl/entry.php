@@ -17,8 +17,8 @@
         <div class="hidden"><small><?php echo $company['description']; ?></small></div>
     </td>
     <td class="contact" ><?php echo $company['phone'].'<br>'.$company['email']; ?></td>
-    <td class="added" ><?php echo CobaltHelperDate::formatDate($company['created']); ?></td>
-    <td class="updated" ><?php echo CobaltHelperDate::formatDate($company['modified']); ?></td>
+    <td class="added" ><?php echo DateHelper::formatDate($company['created']); ?></td>
+    <td class="updated" ><?php echo DateHelper::formatDate($company['modified']); ?></td>
     <td class="notes" >
         <div class="btn-group">
             <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_CONTACTS'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="showCompanyContactsDialogModal(<?php echo $company['id']; ?>);"><i class="icon-user"></i></a>

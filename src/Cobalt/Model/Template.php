@@ -48,7 +48,7 @@ class CobaltModelTemplate extends JModelBase
                                 $event['association_type'] = $association_type;
                                 $event['type'] = "task";
 
-                                $event['due_date'] = CobaltHelperDate::formatDBDate(date("Y-m-d",strtotime($current_date." +".$event['day']." days")),false);
+                                $event['due_date'] = DateHelper::formatDBDate(date("Y-m-d",strtotime($current_date." +".$event['day']." days")),false);
                                 $event['due_date_hour'] = "00:00:00";
 
                                 if ( !$event_model->store($event) ) {

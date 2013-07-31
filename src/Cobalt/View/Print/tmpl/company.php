@@ -60,7 +60,7 @@ $company = $this->info[0];
         <div class="threecolumn">
             <div class="small_info">
                 <?php echo ucwords(TextHelper::_('COBALT_COMPANY_CONTACTED')); ?>
-                <?php echo CobaltHelperDate::formatDate($company['modified']); ?>
+                <?php echo DateHelper::formatDate($company['modified']); ?>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ $company = $this->info[0];
                         echo '<td>'.$person['phone'].'</td>';
                         echo '<td>'.$person['owner_first_name'].' '.$person['owner_last_name'].'</td>';
                         echo '<td>'.ucwords($person['type']).'</td>';
-                        echo '<td>'.CobaltHelperDate::formatDate($person['modified']).'</td>';
+                        echo '<td>'.DateHelper::formatDate($person['modified']).'</td>';
                     echo '</tr>';
                 }
             ?>

@@ -22,7 +22,7 @@ if ( count($this->newsletters) > 0 ) {
               <?php if ($newsletter->open) { ?>
                   </a>
               <?php } ?>
-          <td class="mailing_list_senddate"><?php echo CobaltHelperDate::formatDate($newsletter->senddate); ?></td>
+          <td class="mailing_list_senddate"><?php echo DateHelper::formatDate($newsletter->senddate); ?></td>
           <td class="mailing_list_open"><?php echo $newsletter->open ? TextHelper::_('COBALT_YES') : TextHelper::_('COBALT_NO') ; ?></td>
         </tr>
      <?php $i++; ?>

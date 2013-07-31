@@ -29,7 +29,7 @@ class CobaltViewContactsRaw extends JViewHtml
         $this->contacts = $contacts;
 
         if ($deal_id) {
-            $primary_contact_id = CobaltHelperDeal::getPrimaryContact($deal_id);
+            $primary_contact_id = DealHelper::getPrimaryContact($deal_id);
             $this->primary_contact_id = $primary_contact_id;
         }
 

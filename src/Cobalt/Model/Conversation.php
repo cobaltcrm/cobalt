@@ -31,7 +31,7 @@ class CobaltModelConversation extends CobaltModelDefault
             $data = $app->input->getRequest( 'post' );
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             if ( !array_key_exists('id',$data) ) {
                 $data['created'] = $date;
@@ -123,7 +123,7 @@ class CobaltModelConversation extends CobaltModelDefault
             //clean results
             if ( count($results) > 0 ) {
                 foreach ($results as $key => $convo) {
-                    $results[$key]['created_formatted'] = CobaltHelperDate::formatDate($convo['created']);
+                    $results[$key]['created_formatted'] = DateHelper::formatDate($convo['created']);
                     $results[$key]['owner_avatar'] = CobaltHelperCobalt::getGravatar($convo['email']);
                 }
             }

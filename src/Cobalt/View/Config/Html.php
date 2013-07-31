@@ -49,7 +49,7 @@ class CobaltViewConfigHtml extends JViewHtml
         $this->imap_found = function_exists('imap_open') ? TRUE : FALSE ;
         $this->config = $config;
         $this->timezones = $timezones;
-        $this->time_formats = CobaltHelperDate::getTimeFormats();
+        $this->time_formats = DateHelper::getTimeFormats();
         $this->languages = CobaltHelperConfig::getLanguages();
         $this->language = CobaltHelperConfig::getLanguage();
 

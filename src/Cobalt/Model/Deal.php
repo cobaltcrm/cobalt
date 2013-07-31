@@ -73,7 +73,7 @@ class Deal extends DefaultModel
             }
 
             //date generation
-            $date = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+            $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
             //assign the creation date
             if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ) {
@@ -215,8 +215,8 @@ class Deal extends DefaultModel
             $closed_stages = DealHelper::getClosedStages();
 
             $row->closed = in_array($row->stage_id,$closed_stages) ? TRUE : FALSE;
-            $row->actual_close_formatted = isset($row->actual_close) ? CobaltHelperDate::formatDate($row->actual_close) : CobaltHelperDate::formatDate(date("Y-m-d"));
-            $row->expected_close_formatted = isset($row->expected_close) ? CobaltHelperDate::formatDate($row->expected_close) : CobaltHelperDate::formatDate(date("Y-m-d"));
+            $row->actual_close_formatted = isset($row->actual_close) ? DateHelper::formatDate($row->actual_close) : DateHelper::formatDate(date("Y-m-d"));
+            $row->expected_close_formatted = isset($row->expected_close) ? DateHelper::formatDate($row->expected_close) : DateHelper::formatDate(date("Y-m-d"));
 
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onAfterDealSave', array(&$row));
@@ -443,7 +443,7 @@ class Deal extends DefaultModel
                 }
 
                  //get current date to use for all date filtering
-                $date = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
 
                 /** ------------------------------------------
                  * Here we filter for diferent types of deals
@@ -452,21 +452,21 @@ class Deal extends DefaultModel
 
                     //filter for deals//tasks due today
                     if ($type == 'today') {
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date > '$date' AND event.due_date < '$tomorrow'");
                         $query->where("event.published>0");
                     }
 
                     //filter for deals//tasks due tomorrow
                     if ($type == "tomorrow") {
-                        $tomorrow = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                         $query->where("event.due_date='".$tomorrow."'");
                         $query->where("event.published>0");
                     }
 
                     //filter for deals updated in the last 30 days
                     if ($type == "updated_thirty") {
-                        $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("d.modified >'$last_thirty_days'");
                     }
 
@@ -483,7 +483,7 @@ class Deal extends DefaultModel
 
                     //filter for deals not updated in the last 30 days
                     if ($type == "not_updated_thirty") {
-                        $last_thirty_days = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                         $query->where("d.modified < '$last_thirty_days'");
                     }
 
@@ -507,7 +507,7 @@ class Deal extends DefaultModel
                 if ($close != null && $close != "any") {
 
                     if ($close == "this_week") {
-                        $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                        $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                         $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
                         $query->where("d.expected_close >= '$this_week'");
                         $query->where("d.expected_close < '$next_week'");
@@ -521,7 +521,7 @@ class Deal extends DefaultModel
                     }
 
                     if ($close == "this_month") {
-                        $this_month = CobaltHelperDate::formatDBDate(date('Y-m-0 00:00:00'));
+                        $this_month = DateHelper::formatDBDate(date('Y-m-0 00:00:00'));
                         $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                         $query->where("d.expected_close >= '$this_month'");
                         $query->where("d.expected_close < '$next_month'");
@@ -542,28 +542,28 @@ class Deal extends DefaultModel
                 if ($modified != null && $modified != "any") {
 
                     if ($modified == "this_week") {
-                        $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                        $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                         $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
                         $query->where("d.modified >= '$last_week'");
                         $query->where("d.modified < '$this_week'");
                     }
 
                     if ($modified == "last_week") {
-                        $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
-                        $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
+                        $last_week = DateHelper::formatDBDate(date("Y-m-d", strtotime("-7 days")));
+                        $week_before_last = DateHelper::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                         $query->where("d.modified >= '$week_before_last'");
                         $query->where("d.modified < '$last_week'");
                     }
 
                     if ($modified == "this_month") {
-                        $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                        $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                         $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                         $query->where("d.modified >= '$this_month'");
                         $query->where("d.modified < '$next_month'");
                     }
 
                     if ($modified == "last_month") {
-                        $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                        $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                         $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
                         $query->where("d.modified >= '$last_month'");
                         $query->where("d.modified < '$this_month'");
@@ -577,42 +577,42 @@ class Deal extends DefaultModel
                 if ($created != null && $created != "any") {
 
                     if ($created == "this_week") {
-                        $this_week = CobaltHelperDate::formatDBDate(date('Y-m-d 00:00:00'));
+                        $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                         $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
                         $query->where("d.created >= '$last_week'");
                         $query->where("d.created < '$this_week'");
                     }
 
                     if ($created == "last_week") {
-                        $last_week = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-7 days")));
-                        $week_before_last = CobaltHelperDate::formatDBDate(date("Y-m-d", strtotime("-14 days")));
+                        $last_week = DateHelper::formatDBDate(date("Y-m-d", strtotime("-7 days")));
+                        $week_before_last = DateHelper::formatDBDate(date("Y-m-d", strtotime("-14 days")));
                         $query->where("d.created >= '$week_before_last'");
                         $query->where("d.created < '$last_week'");
                     }
 
                     if ($created == "this_month") {
-                        $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                        $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                         $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
                         $query->where("d.created >= '$this_month'");
                         $query->where("d.created < '$next_month'");
                     }
 
                     if ($created == "last_month") {
-                        $this_month = CobaltHelperDate::formatDBDate(date('Y-m-1 00:00:00'));
+                        $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                         $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
                         $query->where("d.created >= '$last_month'");
                         $query->where("d.created < '$this_month'");
                     }
 
                     if ($created == "today") {
-                        $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
+                        $today = DateHelper::formatDBDate(date("Y-m-d 00:00:00"));
                         $tomorrow = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 day"));
                         $query->where("d.created >= '$today'");
                         $query->where("d.created < '$tomorrow'");
                     }
 
                     if ($created == "yesterday") {
-                        $today = CobaltHelperDate::formatDBDate(date("Y-m-d 00:00:00"));
+                        $today = DateHelper::formatDBDate(date("Y-m-d 00:00:00"));
                         $yesterday = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 day"));
                         $query->where("d.created >= '$yesterday'");
                         $query->where("d.created < '$today'");
@@ -679,7 +679,7 @@ class Deal extends DefaultModel
                  */
 
                 if ($this->recent) {
-                    $past = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s')." - 30 days");
+                    $past = DateHelper::formatDBDate(date('Y-m-d H:i:s')." - 30 days");
                     $query->where('d.last_viewed > '.$db->Quote($past));
                 }
 
@@ -846,7 +846,7 @@ class Deal extends DefaultModel
                      */
 
                         if ($this->_id) {
-                            $now = CobaltHelperDate::formatDBDate(date("Y-m-d H:i:s"));
+                            $now = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
                             $query = $db->getQuery(true);
                             $query->set("last_viewed=".$db->Quote($now));
                             $query->update("#__deals");
@@ -1276,7 +1276,7 @@ class Deal extends DefaultModel
 
             if ($contacts == 0) {
 
-                $created = CobaltHelperDate::formatDBDate(date('Y-m-d H:i:s'));
+                $created = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
                 $data = array($deal_id.",'deal',".$contact_id.",'".$created."'");
 

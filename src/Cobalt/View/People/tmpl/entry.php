@@ -69,7 +69,7 @@
                 <?php echo $person['source_name']; ?>
             </a>
                 <ul class="dropdown-menu" aria-labelledby="person_status<?php echo $person['id']; ?>" role="menu">
-                    <?php $sources = CobaltHelperDeal::getSources();
+                    <?php $sources = DealHelper::getSources();
                         if ( count($sources) ){ foreach ($sources as $id => $name) { ?>
                             <li><a href="javascript:void(0)" class="source_select dropdown_item" data-field="source_id" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo $id; ?>">
                                     <?php echo $name; ?>
@@ -99,6 +99,6 @@
         <td class="notes"><a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(<?php echo $person['id']; ?>,'people');"><i class="icon-file"></i></a>
         <?php
         echo '<td class="address">'.$person['work_city'].'<br>'.$person['work_state'].'<br>'.$person['work_zip'].'<br>'.$person['work_country'].'</td>';
-        echo '<td class="added">'.CobaltHelperDate::formatDate($person['created']).'</td>';
-        echo '<td class="updated">'.CobaltHelperDate::formatDate($person['modified']).'</td>';
+        echo '<td class="added">'.DateHelper::formatDate($person['created']).'</td>';
+        echo '<td class="updated">'.DateHelper::formatDate($person['modified']).'</td>';
     echo "</tr>";

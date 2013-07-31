@@ -72,7 +72,7 @@ class CobaltViewPeopleHtml extends JViewHtml
 
             //get deal name to prefill data on page and hidden fields
             if ($person['deal_id']) {
-                $deal = CobaltHelperDeal::getDeal($person['deal_id']);
+                $deal = DealHelper::getDeal($person['deal_id']);
                 $person['deal_name'] = $deal[0]['name'];
                 $person['deal_id'] = $deal[0]['id'];
             }

@@ -33,7 +33,7 @@ $note = $this->note; ?>
             if ( array_key_exists('event_name',$note) && $note['event_name'] !=  "" ) {
                 echo TextHelper::_('COBALT_ON_THE_EVENT').' <b>'.$note['event_name'].'</b>';
             }
-            echo ' '.CobaltHelperDate::formatDate($note['created']); ?>
+            echo ' '.DateHelper::formatDate($note['created']); ?>
             </small>
         </div>
         <?php echo nl2br($note['note']); ?>

@@ -21,5 +21,5 @@ echo '<tr class="cobalt_row_'.$this->k.'">';
         echo '<td>'.$person['phone'].'</td>';
         echo '<td>'.$person['owner_first_name'].' '.$person['owner_last_name'].'</td>';
         echo '<td>'.ucwords($person['type']).'</td>';
-        echo '<td>'.CobaltHelperDate::formatDate($person['modified']).'</td>';
+        echo '<td>'.DateHelper::formatDate($person['modified']).'</td>';
     echo '</tr>';

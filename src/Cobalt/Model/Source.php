@@ -32,7 +32,7 @@ class CobaltModelSource extends CobaltModelDefault
             $query->from("#__sources AS s");
 
             //left join data
-            $won_stage_ids = CobaltHelperDeal::getWonStages();
+            $won_stage_ids = DealHelper::getWonStages();
             $query->leftJoin("#__deals AS d ON d.source_id = s.id AND d.stage_id IN (".implode(',',$won_stage_ids).") AND d.published=1 AND d.archived=0");
             $query->leftJoin("#__users AS u ON u.id = d.owner_id");
 

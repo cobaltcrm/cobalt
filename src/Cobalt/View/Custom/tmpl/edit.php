@@ -39,7 +39,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     case "date": ?>
                     <!-- make this a custom date picker -->
                     <div class="input-append">
-                        <input id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_input" class="inputbox filter_input date_input" type="text" value="<?php echo CobaltHelperDate::formatDate($custom_field_filter); ?>"  />
+                        <input id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_input" class="inputbox filter_input date_input" type="text" value="<?php echo DateHelper::formatDate($custom_field_filter); ?>"  />
                         <input id="custom_<?php echo $value['id']; ?>_hidden" name="custom_<?php echo $value['id']; ?>" type="hidden" value="<?php echo $custom_field_filter; ?>" />
                         <span class="add-on"><i class="icon-calendar"></i></span>
                     </div>

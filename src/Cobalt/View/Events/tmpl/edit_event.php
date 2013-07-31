@@ -104,11 +104,11 @@ $app = JFactory::getApplication();
           <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_EVENT_START_TIME'); ?><span class="required">*</span></div>
             <div class="cobaltValue">
-                        <input id="start_time" class="required inputbox date_input" type="text" value="<?php if ( array_key_exists('start_time',$event) ) echo CobaltHelperDate::formatDate($event['start_time']); ?>" name="start_time_input" />
+                        <input id="start_time" class="required inputbox date_input" type="text" value="<?php if ( array_key_exists('start_time',$event) ) echo DateHelper::formatDate($event['start_time']); ?>" name="start_time_input" />
                         <input id="start_time_hidden" name="start_time" type="hidden" value="<?php if ( array_key_exists('start_time',$event) ) { echo $event['start_time']; } ?>" />
                         <select class="inputbox" name="start_time_hour">
                             <?php
-                                $time = CobaltHelperDate::getTimeIntervals();
+                                $time = DateHelper::getTimeIntervals();
                                 echo JHtml::_('select.options', $time, 'value', 'text', $event['start_time_hour'], true);
                             ?>
                         </select>
@@ -117,11 +117,11 @@ $app = JFactory::getApplication();
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_EVENT_END_TIME'); ?><span class="required">*</span></div>
             <div class="cobaltValue">
-                        <input id="end_time" class="required inputbox date_input" type="text" value="<?php if ( array_key_exists('end_time',$event) ) echo CobaltHelperDate::formatDate($event['end_time']); ?>" name="end_time_input" />
+                        <input id="end_time" class="required inputbox date_input" type="text" value="<?php if ( array_key_exists('end_time',$event) ) echo DateHelper::formatDate($event['end_time']); ?>" name="end_time_input" />
                         <input id="end_time_hidden" type="hidden" name="end_time" value="<?php if ( array_key_exists('end_time',$event) ) { echo $event['end_time']; } ?>" />
                         <select class="inputbox" name="end_time_hour">
                             <?php
-                                $time = CobaltHelperDate::getTimeIntervals();
+                                $time = DateHelper::getTimeIntervals();
                                 echo JHtml::_('select.options', $time, 'value', 'text', $event['end_time_hour'], true);
                             ?>
                         </select>
@@ -149,7 +149,7 @@ $app = JFactory::getApplication();
                 <?php if ( array_key_exists('end_date',$event) && $event['end_date'] != null ) { $hidden = "style='display:none;'"; $show = ""; } else { $hidden = ""; $show = "style='display:none;'"; } ?>
                     <span <?php echo $hidden; ?> class="end_date"><?php echo TextHelper::_('COBALT_END_DATE_MESSAGE'); ?></span>
                     <div <?php echo $show; ?> id="end_date">
-                        <input id="end_date" class="inputbox date_input" type="text" name="end_date_input" value="<?php if (array_key_exists('end_date',$event)) echo CobaltHelperDate::formatDate($event['end_date']); ?>" />
+                        <input id="end_date" class="inputbox date_input" type="text" name="end_date_input" value="<?php if (array_key_exists('end_date',$event)) echo DateHelper::formatDate($event['end_date']); ?>" />
                         <input id="end_date_input_hidden" name="end_date" type="hidden" value="<?php if ( array_key_exists('end_date',$event) ) { echo $event['end_date']; } ?>" />
                     </div>
             </div>

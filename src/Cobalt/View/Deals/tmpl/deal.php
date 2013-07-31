@@ -140,7 +140,7 @@ $deal = $this->dealList[0];
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_AGE'); ?></div>
                     <div class="cobaltValue">
                         <?php
-                            echo CobaltHelperDate::getElapsedTime($deal['created']);
+                            echo DateHelper::getElapsedTime($deal['created']);
                         ?>
                     </div>
                 </div>
@@ -157,7 +157,7 @@ $deal = $this->dealList[0];
                         <?php echo TextHelper::_('COBALT_ACTUAL_CLOSE'); ?>
                         <h2>
                             <form class="inline-form" name="actual_close_form">
-                                <input type="text" class="input-invisible input-small inputbox-hidden date_input" name="actual_close_hidden" id="actual_close" value="<?php echo CobaltHelperDate::formatDate($deal['actual_close']); ?>" />
+                                <input type="text" class="input-invisible input-small inputbox-hidden date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>" />
                                 <input type="hidden" name="actual_close" id="actual_close_hidden" value="<?php echo $deal['actual_close']; ?>" />
                             </form>
                         </h2>
@@ -166,7 +166,7 @@ $deal = $this->dealList[0];
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
                             <form class="inline-form" name="expected_close_form">
-                                <input type="text" class="input-invisible input-small inputbox-hidden date_input" name="expected_close_hidden" id="expected_close" value="<?php echo CobaltHelperDate::formatDate($deal['expected_close']); ?>" />
+                                <input type="text" class="input-invisible input-small inputbox-hidden date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>" />
                                 <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal['expected_close']; ?>" />
                             </form>
                         </h2>
@@ -184,7 +184,7 @@ $deal = $this->dealList[0];
                             </a>
                             <ul class="dropdown-menu" role="menu">
                             <?php
-                            $sources = CobaltHelperDeal::getSources();
+                            $sources = DealHelper::getSources();
                             if (count($sources)) { foreach ($sources as $id => $name) { ?>
                                 <li>
                                     <a href="javascript:void(0)" class="dropdown_item" data-field="source_id" data-item="deal" data-item-id="<?php echo $deal['id']; ?>" data-value="<?php echo $id; ?>"><?php echo $name; ?></a>
