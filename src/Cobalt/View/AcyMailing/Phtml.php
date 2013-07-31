@@ -15,7 +15,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 use Joomla\View\AbstractHtmlView;
 
-class PHtml extends AbstractHtmlView
+class Phtml extends AbstractHtmlView
 {
     public function render()
     {

@@ -40,8 +40,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     /**
      * Get task and event templates
      * @param  [String] $type ["deal","person"]
-     * @param  [int] $id [Optional ID to get all events with a template]
-     * @return [mixed] $results
+     * @param  [int]    $id   [Optional ID to get all events with a template]
+     * @return [mixed]  $results
      */
     public static function getTaskTemplates($type,$id=null)
     {
@@ -69,8 +69,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     /**
      * Method to store custom field cf data associated with items
-     * @param int $id : The id of the item we wish to store associated data
-     * @param mixed $cf_data : The data to be stored
+     * @param  int   $id      : The id of the item we wish to store associated data
+     * @param  mixed $cf_data : The data to be stored
      * @return void
      *
      */

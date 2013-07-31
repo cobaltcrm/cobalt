@@ -9,7 +9,7 @@
 defined('_CEXEC') or die;
 
 if (!defined('_JDEFINES')) {
-	require_once __DIR__ . '/defines.php';
+    require_once __DIR__ . '/defines.php';
 }
 
 @ini_set('magic_quotes_runtime', 0);

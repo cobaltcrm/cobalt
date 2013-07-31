@@ -23,34 +23,34 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Deal extends DefaultModel
 {
-    var $_types=null;
-    var $_data = null;
-    var $_id = null;
-    var $_type = null;
-    var $_user = null;
-    var $_stage = null;
-    var $_close = null;
-    var $_team = null;
-    var $_status = null;
-    var $_source = null;
-    var $_modified = null;
-    var $_created = null;
-    var $_session = null;
-    var $_user_id = null;
-    var $_view = null;
-    var $_layout = null;
-    var $recent = null;
-    var $published = 1;
-    var $person_id = null;
-    var $company_id = null;
-    var $ordering = null;
-    var $archived = null;
-    var $limit = 1;
+    public $_types=null;
+    public $_data = null;
+    public $_id = null;
+    public $_type = null;
+    public $_user = null;
+    public $_stage = null;
+    public $_close = null;
+    public $_team = null;
+    public $_status = null;
+    public $_source = null;
+    public $_modified = null;
+    public $_created = null;
+    public $_session = null;
+    public $_user_id = null;
+    public $_view = null;
+    public $_layout = null;
+    public $recent = null;
+    public $published = 1;
+    public $person_id = null;
+    public $company_id = null;
+    public $ordering = null;
+    public $archived = null;
+    public $limit = 1;
 
     /**
      * Constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $app = JFactory::getApplication();
@@ -61,9 +61,9 @@ class Deal extends DefaultModel
     /**
      * Method to store a record
      *
-     * @return    boolean    True on success
+     * @return boolean True on success
      */
-    function store($data=null,$returnRow=FALSE)
+    public function store($data=null,$returnRow=FALSE)
     {
         $app = JFactory::getApplication();
         $db  = JFactory::getDBO();
@@ -233,7 +233,7 @@ class Deal extends DefaultModel
         }
     }
 
-    function _buildQuery()
+    public function _buildQuery()
     {
         /** Large SQL Selections **/
         $app = JFactory::getApplication();
@@ -783,7 +783,7 @@ class Deal extends DefaultModel
      * @param $team to filter by
      * @return $results
      */
-    function getDeals($id=null,$type=null,$user=null,$stage=null,$close=null,$team=null)
+    public function getDeals($id=null,$type=null,$user=null,$stage=null,$close=null,$team=null)
     {
         $app = JFactory::getApplication();
 
@@ -872,7 +872,7 @@ class Deal extends DefaultModel
 
     }
 
-    function getDealDetails(&$deal)
+    public function getDealDetails(&$deal)
     {
         $closed_stages = DealHelper::getClosedStages();
         $deal['closed'] = in_array($deal['stage_id'],$closed_stages) ? TRUE : FALSE;
@@ -919,7 +919,7 @@ class Deal extends DefaultModel
 
     }
 
-    function getDeal($id=null)
+    public function getDeal($id=null)
     {
         $app = JFactory::getApplication();
         $id = $id ? $id : $app->input->get('id');
@@ -950,7 +950,7 @@ class Deal extends DefaultModel
      * @param none
      * @return mixed $results
      */
-    function getReportDeals()
+    public function getReportDeals()
     {
         //get filter
         $session = JFactory::getSession();
@@ -967,7 +967,7 @@ class Deal extends DefaultModel
      * Method to get list of deals
      */
 
-    function getDealList()
+    public function getDealList()
     {
         $app = JFactory::getApplication();
 
@@ -1031,7 +1031,7 @@ class Deal extends DefaultModel
      * @param $access_type to search by 'company','team','member'
      * @param $access_id the id of the $member_type to search by
      */
-    function getGraphDeals($type=null,$access_type=null,$access_id=null)
+    public function getGraphDeals($type=null,$access_type=null,$access_id=null)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -1109,7 +1109,7 @@ class Deal extends DefaultModel
      * @param $access_id id of $access_type to filter by
      * @return mixed $results
      */
-    function getLeadSources($access_type=null,$access_id=null)
+    public function getLeadSources($access_type=null,$access_id=null)
     {
         //get won stage id so we know what stage to filter by for the deals
         $won_stage_ids = DealHelper::getWonStages();
@@ -1184,7 +1184,7 @@ class Deal extends DefaultModel
     /**
      * Populate user state requests
      */
-    function populateState()
+    public function populateState()
     {
         //get states
         $app = JFactory::getApplication();
@@ -1260,7 +1260,7 @@ class Deal extends DefaultModel
      * Store contacts to CF tables
      * @param  [type] $deal_id    [description]
      * @param  [type] $contact_id [description]
-     * @return [type]             [description]
+     * @return [type] [description]
      */
     public function storeContact($deal_id,$contact_id)
     {
@@ -1295,9 +1295,9 @@ class Deal extends DefaultModel
      /**
      * Checks for existing company by name
      * @param  [var] $name company name to check
-     * @return [int]       ID of existing company
+     * @return [int] ID of existing company
      */
-    function checkDealName($name)
+    public function checkDealName($name)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -1310,7 +1310,7 @@ class Deal extends DefaultModel
         return $existingDeal;
     }
 
-    function getClosedStages()
+    public function getClosedStages()
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -1323,7 +1323,7 @@ class Deal extends DefaultModel
         return $stages;
     }
 
-    function getDealNames($json=FALSE)
+    public function getDealNames($json=FALSE)
     {
         $names = $this->getDealList();
         $return = array();

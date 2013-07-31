@@ -16,7 +16,7 @@ use Cobalt\Helper\ViewHelper;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltControllerFilterDocuments extends DefaultController
+class FilterDocuments extends DefaultController
 {
 
     public function execute()

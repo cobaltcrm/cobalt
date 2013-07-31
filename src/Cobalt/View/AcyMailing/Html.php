@@ -14,7 +14,6 @@ namespace Cobalt\View\AcyMailing;
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 use Joomla\View\AbstractHtmlView;
-use Cobalt\Helper\MailinglistsHelper;
 
 class Html extends AbstractHtmlView
 {

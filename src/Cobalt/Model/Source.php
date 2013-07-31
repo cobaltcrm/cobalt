@@ -19,14 +19,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Source extends DefaultModel
 {
-    var $_id = null;
+    public $_id = null;
 
     /**
      * Get sources for return on investment reports
      * @param none
      * @return mixed $results
      */
-    function getRoiSources()
+    public function getRoiSources()
     {
         //get DBO
         $db = JFactory::getDBO();
@@ -81,7 +81,7 @@ class Source extends DefaultModel
     /*
      * Populate the model based on user requests
      */
-    function populateState()
+    public function populateState()
     {
         //get states
         $app = JFactory::getApplication();

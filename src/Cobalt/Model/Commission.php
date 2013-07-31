@@ -79,7 +79,7 @@ class Commission extends AbstractModel
      * @param $access_id the id of the $access_type we wish to filter by
      * @return mixed $results
      */
-    function getYearlyCommission($access_type=null,$access_id=null)
+    public function getYearlyCommission($access_type=null,$access_id=null)
     {
         //get member data
         if ($access_type == 'member') {
@@ -131,7 +131,7 @@ class Commission extends AbstractModel
      * @param $id to search for
      * @return mixed $results
      */
-    function getMonthlyCommissionData($id)
+    public function getMonthlyCommissionData($id)
     {
         //get db
         $db = JFactory::getDBO();
@@ -188,10 +188,10 @@ class Commission extends AbstractModel
 
     /**
      * Get yearly commission data for user
-     * @param int $id to search for
+     * @param  int   $id to search for
      * @return mixed $results
      */
-    function getYearlyCommissionData($id)
+    public function getYearlyCommissionData($id)
     {
         //get db
         $db = JFactory::getDBO();

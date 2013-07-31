@@ -26,7 +26,7 @@ class Revenue extends DefaultModel
      * @param $access_id the id of the $access_type we want to filter by
      * @return mixed $results
      */
-    function getMonthlyRevenue($access_type=null,$access_id=null)
+    public function getMonthlyRevenue($access_type=null,$access_id=null)
     {
         //get db
         $db = JFactory::getDBO();
@@ -104,7 +104,7 @@ class Revenue extends DefaultModel
      * @param $access_id the id of the $access_type we wish to filter by
      * @return mixed $results
      */
-    function getYearlyRevenue($access_type=null,$access_id=null)
+    public function getYearlyRevenue($access_type=null,$access_id=null)
     {
         //get db
         $db = JFactory::getDBO();

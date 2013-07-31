@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 
-namespace Cobalt\view\Login;
+namespace Cobalt\View\Login;
 
 use Joomla\View\AbstractHtmlView;
 use JFactory;

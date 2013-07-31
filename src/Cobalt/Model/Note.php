@@ -25,16 +25,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class Note extends DefaultModel
 {
 
-    var $_id = null;
-    var $published = 1;
-    var $public_notes = null;
+    public $_id = null;
+    public $published = 1;
+    public $public_notes = null;
 
     /**
      * Method to store a record
      *
-     * @return    boolean    True on success
+     * @return boolean True on success
      */
-    function store($data=null)
+    public function store($data=null)
     {
 
         $app = JFactory::getApplication();
@@ -148,7 +148,7 @@ class Note extends DefaultModel
      *
      * @return array
      */
-    function getNote($id)
+    public function getNote($id)
     {
         //grab db
         $db = JFactory::getDBO();
@@ -193,7 +193,7 @@ class Note extends DefaultModel
      *
      * @return array
      */
-    function getNotes($object_id = NULL,$type = NULL, $display = true)
+    public function getNotes($object_id = NULL,$type = NULL, $display = true)
     {
         $app = JFactory::getApplication();
 
@@ -336,7 +336,7 @@ class Note extends DefaultModel
      * method to get list of deals
      */
 
-    function getNoteCategories()
+    public function getNoteCategories()
     {
         //db object
         $db = JFactory::getDBO();
@@ -354,7 +354,7 @@ class Note extends DefaultModel
 
     }
 
-    function populateState()
+    public function populateState()
     {
         $app = JFactory::getApplication();
 

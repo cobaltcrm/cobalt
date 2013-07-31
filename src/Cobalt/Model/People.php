@@ -21,24 +21,24 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class People extends DefaultModel
 {
 
-    var $_view = null;
-    var $_layout = null;
-    var $_id = null;
-    var $person = null;
-    var $recent = false;
-    var $published = 1;
-    var $company_id = null;
-    var $event_id = null;
-    var $type = null;
-    var $app = null;
-    var $person_id = null;
-    var $deal_id = null;
-    var $query = null;
+    public $_view = null;
+    public $_layout = null;
+    public $_id = null;
+    public $person = null;
+    public $recent = false;
+    public $published = 1;
+    public $company_id = null;
+    public $event_id = null;
+    public $type = null;
+    public $app = null;
+    public $person_id = null;
+    public $deal_id = null;
+    public $query = null;
 
     /**
      * Constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -51,9 +51,9 @@ class People extends DefaultModel
     /**
      * Method to store a record
      *
-     * @return    boolean    True on success
+     * @return boolean True on success
      */
-    function store($data=null)
+    public function store($data=null)
     {
         //Load Tables
         $row = JTable::getInstance('people','Table');
@@ -185,7 +185,7 @@ class People extends DefaultModel
         return $person_id;
     }
 
-    function updateJoomlaUser($data)
+    public function updateJoomlaUser($data)
     {
         $name = $data['first_name'].' '.$data['last_name'];
 
@@ -196,7 +196,7 @@ class People extends DefaultModel
         $db->query();
     }
 
-    function associateJoomlaUser($email)
+    public function associateJoomlaUser($email)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -210,7 +210,7 @@ class People extends DefaultModel
      * Method to link deals and people in cf tables
      */
 
-    function dealsPeople($cfdata)
+    public function dealsPeople($cfdata)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -229,7 +229,7 @@ class People extends DefaultModel
     /**
      * Build our query
      */
-    function _buildQuery()
+    public function _buildQuery()
     {
         /** Large SQL Selections **/
         $db = JFactory::getDBO();
@@ -495,7 +495,7 @@ class People extends DefaultModel
      *
      * @return array
      */
-    function getPeople()
+    public function getPeople()
     {
         //Get query
         $db = JFactory::getDBO();
@@ -568,7 +568,7 @@ class People extends DefaultModel
     /*
      * Method to retrieve person
      */
-    function getPerson($id=null)
+    public function getPerson($id=null)
     {
         $app = JFactory::getApplication();
         $id = $id ? $id : $app->input->get('id');
@@ -634,7 +634,7 @@ class People extends DefaultModel
     /*
      * Method to retrieve list of names and ids
      */
-    function getPeopleList()
+    public function getPeopleList()
     {
         //db object
         $db = JFactory::getDBO();
@@ -688,7 +688,7 @@ class People extends DefaultModel
     /**
      * Get total number of rows for pagination
      */
-    function getTotal()
+    public function getTotal()
     {
       if ( empty ( $this->_total ) ) {
           $query = $this->_buildQuery();
@@ -701,7 +701,7 @@ class People extends DefaultModel
     /**
      * Generate pagination
      */
-    function getPagination()
+    public function getPagination()
     {
       // Lets load the content if it doesn't already exist
 
@@ -719,7 +719,7 @@ class People extends DefaultModel
     /**
      * Populate user state requests
      */
-    function populateState()
+    public function populateState()
     {
         //get states
         $app = JFactory::getApplication();
@@ -749,14 +749,14 @@ class People extends DefaultModel
 
     }
 
-    function getDropdowns()
+    public function getDropdowns()
     {
         $dropdowns['person_type'] = DropdownHelper::generateDropdown('person_type',$this->person['type']);
 
         return $dropdowns;
     }
 
-    function searchForContact($contact_name,$idsOnly=TRUE)
+    public function searchForContact($contact_name,$idsOnly=TRUE)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -779,9 +779,9 @@ class People extends DefaultModel
      /**
      * Checks for existing company by name
      * @param  [var] $name company name to check
-     * @return [int]       ID of existing company
+     * @return [int] ID of existing company
      */
-    function checkPersonName($name)
+    public function checkPersonName($name)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -794,7 +794,7 @@ class People extends DefaultModel
         return $existingPerson;
     }
 
-    function getPeopleNames($json=FALSE)
+    public function getPeopleNames($json=FALSE)
     {
         $names = $this->getPeopleList();
         $return = array();
@@ -810,7 +810,7 @@ class People extends DefaultModel
         return $json ? json_encode($return) : $return;
     }
 
-    function getEmail($person_id)
+    public function getEmail($person_id)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
