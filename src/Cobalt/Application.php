@@ -11,11 +11,12 @@ namespace Cobalt;
 defined('_CEXEC') or die;
 
 use JFactory;
-use JUri;
 use JPluginHelper;
 use JDocument;
 use JUser;
+use JRoute;
 
+use JUri as Uri;
 use Joomla\String\String;
 use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
@@ -109,7 +110,7 @@ final class Application extends AbstractWebApplication
     public function route()
     {
         // Get the full request URI.
-        $uri = clone JURI::getInstance();
+        $uri = clone Uri::getInstance();
 
         $router = $this->getRouter();
         $result = $router->parse($uri);
@@ -466,7 +467,7 @@ final class Application extends AbstractWebApplication
         // Set the access control action to check.
         $options['action'] = 'core.login.site';
 
-        $authenticate = new ModularAuthenticate();
+        $authenticate = new \ModularAuthenticate();
 
         $authenticate->login($credentials, $options);
     }
@@ -474,16 +475,16 @@ final class Application extends AbstractWebApplication
     public function logout()
     {
         $app = JFactory::getApplication();
-        $authenticate = new ModularAuthenticate();
+        $authenticate = new \ModularAuthenticate();
 
         // Perform the log in.
         $error = $authenticate->logout();
 
         // Check if the log out succeeded.
-        if (!($error instanceof Exception)) {
+        if (!($error instanceof \Exception)) {
             // Get the return url from the request and validate that it is internal.
             $return = base64_decode($app->input->get('return'));
-            if (!JURI::isInternal($return)) {
+            if (!Uri::isInternal($return)) {
                 $return = '';
             }
 
@@ -605,12 +606,12 @@ final class Application extends AbstractWebApplication
     public function setTemplate($template, $styleParams = null)
     {
         if (is_dir(JPATH_THEMES . '/' . $template)) {
-            $this->template = new stdClass;
+            $this->template = new \stdClass;
             $this->template->template = $template;
-            if ($styleParams instanceof JRegistry) {
+            if ($styleParams instanceof Registry) {
                 $this->template->params = $styleParams;
             } else {
-                $this->template->params = new JRegistry($styleParams);
+                $this->template->params = new Registry($styleParams);
             }
         }
     }
@@ -719,7 +720,7 @@ final class Application extends AbstractWebApplication
      * @param string   $event   The event name.
      * @param callable $handler The handler, a function or an instance of a event object.
      *
-     * @return JApplicationBase The application to allow chaining.
+     * @return Application The application to allow chaining.
      *
      * @since   12.1
      */
@@ -810,7 +811,7 @@ final class Application extends AbstractWebApplication
     /**
      * Login or logout a user.
      *
-     * @param User $user The user object.
+     * @param JUser $user The user object.
      *
      * @return  $this  Method allows chaining
      *
