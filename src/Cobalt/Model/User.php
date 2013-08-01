@@ -26,9 +26,9 @@ class User extends DefaultModel
     /**
      * Method to store a record
      *
-     * @return    boolean    True on success
+     * @return boolean True on success
      */
-    function store($data=null)
+    public function store($data=null)
     {
         $app = JFactory::getApplication();
 
@@ -85,11 +85,11 @@ class User extends DefaultModel
 
     /**
      * Use post data and update a users email address(es) in the users_email_cf db table
-     * @param int $user_id the user id of the user being updated
-     * @param mixed $emails an array of new email addresses to be associated with the user
+     * @param  int   $user_id the user id of the user being updated
+     * @param  mixed $emails  an array of new email addresses to be associated with the user
      * @return void
      */
-    function updateEmail($user_id,$emails)
+    public function updateEmail($user_id,$emails)
     {
         //get dbo
         $db = JFactory::getDBO();
@@ -124,10 +124,10 @@ class User extends DefaultModel
 
     /**
      * Update a users database columns for displaying data on individual pages
-     * @param string $loc the column in the database to update
+     * @param string $loc    the column in the database to update
      * @param string $column the column in the serialized array that will be updated
      */
-    function updateColumns($loc,$column)
+    public function updateColumns($loc,$column)
     {
         //get user id
         $user_id = UsersHelper::getUserId();

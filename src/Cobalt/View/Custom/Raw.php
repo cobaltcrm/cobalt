@@ -15,7 +15,7 @@ use Joomla\View\AbstractHtmlView;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCustomRaw extends AbstractHtmlView
+class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {

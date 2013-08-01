@@ -21,5 +21,5 @@ class Phtml extends AbstractHtmlView
     public function render()
     {
         return parent::render();
-     }
+    }
 }

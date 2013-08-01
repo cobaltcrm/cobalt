@@ -24,16 +24,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Document extends DefaultModel
 {
-    var $company_id = null;
-    var $deal_id = null;
-    var $person_id = null;
+    public $company_id = null;
+    public $deal_id = null;
+    public $person_id = null;
 
     /**
      * Method to store a record
      *
-     * @return    boolean    True on success
+     * @return boolean True on success
      */
-    function store($data=null)
+    public function store($data=null)
     {
         if ($data) {
 
@@ -213,7 +213,7 @@ class Document extends DefaultModel
      * Method to retrieve documents
      * @param $id specific id to retrieve, if null all are returned
      */
-    function getDocuments($id=null)
+    public function getDocuments($id=null)
     {
         $app = JFactory::getApplication();
 
@@ -392,7 +392,7 @@ class Document extends DefaultModel
 
     }
 
-    function getDocument($id=null)
+    public function getDocument($id=null)
     {
         $app = JFactory::getApplication();
 
@@ -425,7 +425,7 @@ class Document extends DefaultModel
      *
      * @return boolean True on success
      */
-    function deleteDocument($id)
+    public function deleteDocument($id)
     {
         //get dbo
         $db = JFactory::getDBO();
@@ -455,7 +455,7 @@ class Document extends DefaultModel
     /**
      * Populate user state requests
      */
-    function populateState()
+    public function populateState()
     {
         //get states
         $app = JFactory::getApplication();

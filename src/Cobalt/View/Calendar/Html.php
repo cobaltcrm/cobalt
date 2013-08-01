@@ -7,15 +7,24 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Calendar;
+
+use JUri;
+use JFactory;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Helper\UsersHelper;
+use Joomla\View\AbstractHtmlView;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCalendarHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render()
     {
         //load model and retrieve events to pass to calendar
-        $model = new CobaltModelEvent();
+        $model = new EventModel;
         $events = $model->getEvents('calendar');
 
         //load js libs

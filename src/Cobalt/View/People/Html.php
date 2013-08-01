@@ -19,7 +19,6 @@ use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Helper\BanterHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CompanyHelper;
-use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\PeopleHelper;

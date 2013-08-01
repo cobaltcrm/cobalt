@@ -23,18 +23,18 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Company extends DefaultModel
 {
-    var $_view      = null;
-    var $_layout    = null;
-    var $_user      = null;
-    var $_team      = null;
-    var $_id        = null;
-    var $_type      = null;
-    var $published  = 1;
+    public $_view      = null;
+    public $_layout    = null;
+    public $_user      = null;
+    public $_team      = null;
+    public $_id        = null;
+    public $_type      = null;
+    public $published  = 1;
 
     /**
      * Constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $app = JFactory::getApplication();
@@ -45,9 +45,9 @@ class Company extends DefaultModel
     /**
      * Method to store a record
      *
-     * @return    boolean    True on success
+     * @return boolean True on success
      */
-    function store($data=null)
+    public function store($data=null)
     {
         $app = JFactory::getApplication();
         $db = JFactory::getDBO();
@@ -125,7 +125,7 @@ class Company extends DefaultModel
     /**
      * Build our db query object
      */
-    function _buildQuery()
+    public function _buildQuery()
     {
         $app = JFactory::getApplication();
 
@@ -290,7 +290,7 @@ class Company extends DefaultModel
      *
      * @return mixed
      */
-    function getCompanies($id=null,$type=null,$user=null,$team=null)
+    public function getCompanies($id=null,$type=null,$user=null,$team=null)
     {
         $app = JFactory::getApplication();
         $this->_id = $id;
@@ -386,7 +386,7 @@ class Company extends DefaultModel
         return $companies;
     }
 
-    function getCompany($id=null)
+    public function getCompany($id=null)
     {
         $app = JFactory::getApplication();
         $id = $id ? $id : $app->input->get('id');
@@ -407,7 +407,7 @@ class Company extends DefaultModel
      * method to get list of companies
      */
 
-    function getCompanyList($company_name=null)
+    public function getCompanyList($company_name=null)
     {
         //db object
         $db = JFactory::getDBO();
@@ -432,7 +432,7 @@ class Company extends DefaultModel
 
     }
 
-    function getCompanyNames($json=FALSE)
+    public function getCompanyNames($json=FALSE)
     {
         $names = $this->getCompanyList();
         $return = array();
@@ -448,9 +448,9 @@ class Company extends DefaultModel
     /**
      * Checks for existing company by name
      * @param  [var] $name company name to check
-     * @return [int]       ID of existing company
+     * @return [int] ID of existing company
      */
-    function checkCompanyName($name)
+    public function checkCompanyName($name)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -463,7 +463,7 @@ class Company extends DefaultModel
         return $existingCompany;
     }
 
-    function getCompanyName($idOrName)
+    public function getCompanyName($idOrName)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -479,7 +479,7 @@ class Company extends DefaultModel
     /**
      * Populate user state requests
      */
-    function populateState()
+    public function populateState()
     {
         //get states
         $app = JFactory::getApplication();

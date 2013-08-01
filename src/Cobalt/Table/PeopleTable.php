@@ -7,18 +7,13 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Table;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class TableCategories extends JTable
+class PeopleTable extends AbstractTable
 {
-    /**
-     * Constructor
-     *
-     * @param object Database connector object
-     */
-    public function __construct( &$db )
-    {
-        parent::__construct('#__notes_categories', 'id', $db);
-    }
+    protected $_tbl = '#__people';
 }

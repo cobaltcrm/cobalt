@@ -7,11 +7,19 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Table;
+
+use JTable;
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class TableCompanycustom extends JTable
-{
+class AbstractTable extends JTable
+{\
+    protected $_tbl_key = 'id';
+
     /**
      * Constructor
      *
@@ -19,6 +27,11 @@ class TableCompanycustom extends JTable
      */
     public function __construct( &$db )
     {
-        parent::__construct('#__company_custom', 'id', $db);
+        if (empty($this->_tbl)) {
+            throw new \InvalidArgumentException('The $_tbl key has not been set in ' . get_class($this));
+        }
+
+        $db = JFactory::getDbo();
+        parent::__construct($this->_tbl, $this->_tbl_key, $db);
     }
 }

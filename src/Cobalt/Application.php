@@ -430,7 +430,7 @@ final class Application extends AbstractWebApplication
         }
 
         // Mop up any uncaught exceptions.
-        catch (Exception $e) {
+        catch (\Exception $e) {
             echo $e->getMessage();
             $this->close($e->getCode());
         }

@@ -60,6 +60,7 @@ class Cobalt extends AbstractModel
 
         if (empty($pks)) {
             $app->enqueueMessage(TextHelper::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'), 'error');
+
             return false;
         }
 

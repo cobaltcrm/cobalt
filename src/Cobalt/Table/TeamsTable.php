@@ -8,18 +8,13 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 
-namespace Cobalt\View\Calendar;
-
-use Joomla\View\AbstractHtmlView;
+namespace Cobalt\Table;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-//Display partial views
-class Phtml extends AbstractHtmlView
+class TeamsTable extends AbstractTable
 {
-    public function render()
-    {
-        return parent::render();
-     }
+    protected $_tbl = '#__teams';
+    protected $_tbl_key = 'team_id';
 }
