@@ -15,6 +15,7 @@ class crmInstall
 
     public function __construct()
     {
+        include 'helpers/uri.php';
         //construct base url
         $this->baseurl = CURI::base();
         session_start();
