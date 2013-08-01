@@ -14,6 +14,7 @@ use JFactory;
 use Cobalt\Table\DocumentsTable;
 use Cobalt\Helper\TextHelper;
 use Joomla\Filesystem\File;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -114,7 +115,7 @@ class Documents extends DefaultModel
         $filter_order_Dir = $app->getUserStateFromRequest('Documents.filter_order_Dir','filter_order_Dir','asc');
 
         //set states
-        $state = new JRegistry();
+        $state = new Registry;
         $state->set('Documents.filter_order', $filter_order);
         $state->set('Documents.filter_order_Dir',$filter_order_Dir);
         $this->setState($state);

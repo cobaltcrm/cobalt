@@ -7,16 +7,27 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\AdminDocuments;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use JUri;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Model\Documents as DocumentsModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewAdmindocumentsHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     /**
      * display method
-     * @return void
      **/
-    public function render($tpl = null)
+    public function render()
     {
 
         //authenticate the current user to make sure they are an admin
@@ -26,7 +37,7 @@ class CobaltViewAdmindocumentsHtml extends JViewHtml
         $layout = $this->getLayout();
 
         //gather information for view
-        $model = new CobaltModelDocuments();
+        $model = new DocumentsModel;
         $model->set("_layout",$layout);
 
         //add javascript
@@ -49,7 +60,7 @@ class CobaltViewAdmindocumentsHtml extends JViewHtml
 
             //buttons
             ToolbarHelper::popup( 'upload', TextHelper::_('COBALT_UPLOAD'), 'index.php?view=admindocuments&layout=upload&format=raw', 375, 150 );
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'remove');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'remove');
 
             $documents = $model->getDocuments();
             $this->documents = $documents;

@@ -116,7 +116,7 @@ class Statuses extends DefaultModel
             return $db->loadAssoc();
 
         } else {
-            return (array) JTable::getInstance("statuses","Table");
+            return (array) new StatusesTable;
 
         }
 

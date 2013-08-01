@@ -143,7 +143,7 @@ class DealCustom extends DefaultModel
             return $result;
 
         } else {
-            return (array) JTable::getInstance("dealcustom","table");
+            return (array) new DealCustomTable;
 
         }
 

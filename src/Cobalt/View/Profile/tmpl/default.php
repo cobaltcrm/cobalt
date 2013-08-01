@@ -203,7 +203,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <label>
                                 <select class="inputbox" name="home_page_chart">
                                     <?php
-                                        $charts = CobaltHelperCharts::getDashboardCharts();
+                                        $charts = ChartsHelper::getDashboardCharts();
                                         echo JHtml::_('select.options', $charts, 'value', 'text', $this->user->home_page_chart, true);
                                     ?>
                                 </select>

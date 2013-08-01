@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\TemplatesTable;
 use JFactory;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -181,7 +182,7 @@ class Templates extends DefaultModel
         $filter_order = $app->getUserStateFromRequest('Templates.filter_order','filter_order','t.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Templates.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Templates.filter_order', $filter_order);

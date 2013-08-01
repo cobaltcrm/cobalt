@@ -7,10 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Config;
+
+use Joomla\View\AbstractHtmlView;
+use JUri;
+use JFactory;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\MenuHelper;;
+use Cobalt\Helper\DateHelper;;
+use Cobalt\Helper\ConfigHelper;
+use Cobalt\Model\Config as ConfigModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewConfigHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
 
     public function render($tpl = null)
@@ -31,7 +44,7 @@ class CobaltViewConfigHtml extends JViewHtml
         $this->menu = $menu;
 
         //get model
-        $model = new CobaltModelConfig();
+        $model = new ConfigModel;
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
 

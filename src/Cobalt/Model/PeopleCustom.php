@@ -11,7 +11,7 @@
 namespace Cobalt\Model;
 
 use JFactory;
-use Cobalt\Table\PeopleCustom;
+use Cobalt\Table\PeopleCustomTable;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -26,7 +26,7 @@ class PeopleCustom extends DefaultModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = new PeopleCustom;
+        $row = new PeopleCustomTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -137,8 +137,7 @@ class PeopleCustom extends DefaultModel
             return $result;
 
         } else {
-            return (array) new PeopleCustom;
-
+            return (array) new PeopleCustomTable;
         }
 
     }

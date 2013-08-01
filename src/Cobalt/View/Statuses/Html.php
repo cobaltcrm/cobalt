@@ -7,12 +7,24 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Statuses;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Model\Statuses as StatusesModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewStatusesHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
-    public function render($tpl = null)
+    public function render()
     {
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
@@ -28,7 +40,7 @@ class CobaltViewStatusesHtml extends JViewHtml
         $layout = $this->getLayout();
 
         //gather information for view
-        $model = new CobaltModelStatuses();
+        $model = new StatusesModel;
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
 
@@ -59,7 +71,7 @@ class CobaltViewStatusesHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
 
             //statuses
             $statuses = $model->getStatuses();

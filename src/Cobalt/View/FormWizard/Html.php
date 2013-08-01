@@ -7,12 +7,25 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\FormWizard;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Model\FormWizard as FormWizardModel;
+use Cobalt\Model\Users as UsersModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewFormwizardHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
-
     public function render()
     {
         //authenticate the current user to make sure they are an admin
@@ -20,7 +33,7 @@ class CobaltViewFormwizardHtml extends JViewHtml
 
         //load model
         $layout = $this->getLayout();
-        $model = new CobaltModelFormwizard();
+        $model = new FormWizardModel;
         $model->set("_layout",$layout);
 
         //document
@@ -32,7 +45,7 @@ class CobaltViewFormwizardHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'remove');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'remove');
 
             // Initialise variables.
             $this->state = $model->getState();;
@@ -64,7 +77,7 @@ class CobaltViewFormwizardHtml extends JViewHtml
             $document->addScriptDeclaration('var fields='.json_encode($fields));
 
             //get joomla users to add
-            $model = new CobaltModelUsers();
+            $model = new UsersModel;
             $user_list = $model->getUsers();
             $document->addScriptDeclaration('var user_list='.json_encode($user_list).';');
 

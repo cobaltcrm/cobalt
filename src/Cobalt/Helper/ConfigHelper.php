@@ -12,16 +12,16 @@ namespace Cobalt\Helper;
 
 use JFactory;
 use Cobalt\Model\Config as ConfigModel;
+use Joomla\Filesystem\Folder;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class ConfigHelper
- {
-
+class ConfigHelper
+{
      public static function getImapConfig()
      {
-         $db = JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select("imap_host,imap_pass,imap_user")->from("#__config")->where("id=1");
         $db->setQuery($query);
@@ -40,7 +40,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      */
     public static function getConfigValue($field,$serializedArray=FALSE)
     {
-
         $configModel = new ConfigModel;
         $config = $configModel->getConfig(TRUE);
 
@@ -169,7 +168,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getLanguages()
     {
         jimport('joomla.filesystem.folder');
-        $dirs = JFolder::folders(JPATH_SITE."/language");
+        $dirs = Folder::folders(JPATH_SITE."/language");
 
         $ret = array();
         if ( count($dirs) > 0 ) {
@@ -198,5 +197,4 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         file_put_contents($file, $config->toString('PHP', array('class' => 'JConfig', 'closingtag' => false)));
 
     }
-
 }

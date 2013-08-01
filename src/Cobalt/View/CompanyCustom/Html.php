@@ -7,10 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\CompanyCustom;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Model\CompanyCustom as CompanyCustomModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCompanycustomHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -26,7 +39,7 @@ class CobaltViewCompanycustomHtml extends JViewHtml
         $document->addScript(JURI::base().'libraries/crm/media/js/custom_manager.js');
 
         //gather information for view
-        $model = new CobaltModelCompanycustom();
+        $model = new CompanyCustomModel;
 
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
@@ -46,7 +59,7 @@ class CobaltViewCompanycustomHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
 
             $custom = $model->getCustom();
             $this->custom_fields = $custom;

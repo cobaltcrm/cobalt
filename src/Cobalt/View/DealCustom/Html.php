@@ -7,10 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\DealCustom;
+
+use Cobalt\Model\DealCustom as DealCustomModel;
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use JUri;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\TextHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewDealcustomHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -27,7 +40,7 @@ class CobaltViewDealcustomHtml extends JViewHtml
         $this->menu = $menu;
 
         //model
-        $model = new CobaltModelDealcustom();
+        $model = new DealCustomModel;
 
         //gather information for view
         $layout = $this->getLayout();
@@ -52,7 +65,7 @@ class CobaltViewDealcustomHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
 
             //assign view info
             $custom = $model->getCustom();

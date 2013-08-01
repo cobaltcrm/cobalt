@@ -39,7 +39,6 @@ class FormWizard extends DefaultModel
 
     public function store()
     {
-
         $app = JFactory::getApplication();
 
         //Load Tables
@@ -114,8 +113,10 @@ class FormWizard extends DefaultModel
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        $query->select("f.*,CONCAT(user.first_name,' ',user.last_name) AS owner_name")->from("#__formwizard AS f");
-        $query->leftJoin("#__users AS user ON user.id = f.owner_id");
+        $query
+            ->select("f.*,CONCAT(user.first_name,' ',user.last_name) AS owner_name")
+            ->from("#__formwizard AS f")
+            ->leftJoin("#__users AS user ON user.id = f.owner_id");
 
         return $query;
     }
@@ -154,7 +155,7 @@ class FormWizard extends DefaultModel
             return $result;
 
         } else {
-            return (array) JTable::getInstance("formwizard","Table");
+            return (array) new FormWizardTable;
 
         }
     }
@@ -172,7 +173,7 @@ class FormWizard extends DefaultModel
                     $query->where("id=".$ids);
                 }
         $db->setQuery($query);
-        if ( $db->query() ) {
+        if ( $db->execute() ) {
             return true;
         } else {
             return false;

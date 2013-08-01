@@ -7,10 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Templates;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Model\Templates as TemplatesModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewTemplatesHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
 
     public function render($tpl = null)
@@ -27,7 +40,7 @@ class CobaltViewTemplatesHtml extends JViewHtml
         $this->menu = $menu;
 
         //gather information for view
-        $model = new CobaltModelTemplates();
+        $model = new TemplatesModel;
 
         //get layout
         $layout = $this->getLayout();
@@ -52,7 +65,7 @@ class CobaltViewTemplatesHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
 
             $templates = $model->getTemplates();
             $this->templates = $templates;

@@ -7,15 +7,13 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Table;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewPrintRaw extends JViewHtml
+class PeopleCustomTable extends AbstractTable
 {
-    public function render($tpl = null)
-    {
-        //display view
-        echo parent::render();
-    }
-
+    protected $_tbl = '#__people_custom';
 }

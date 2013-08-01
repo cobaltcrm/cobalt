@@ -7,10 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Menu;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Model\Menu as MenuModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewMenuHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -27,7 +38,7 @@ class CobaltViewMenuHtml extends JViewHtml
         ToolbarHelper::cancel('cancel');
         ToolbarHelper::save('save');
 
-        $model = new CobaltModelMenu();
+        $model = new MenuModel;
         $menu = $model->getMenu();
         $menu_template = $model->getMenuTemplate();
         $this->menu = $menu;

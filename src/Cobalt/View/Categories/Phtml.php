@@ -17,7 +17,7 @@ use Joomla\View\AbstractHtmlView;
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 //Display partial views
-class CobaltViewCategoriesPhtml extends AbstractHtmlView
+class Phtml extends AbstractHtmlView
 {
 
     public function render()

@@ -8,12 +8,19 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 
-namespace Cobalt\Table;
+namespace Cobalt\View\PrintFriendly;
+
+use Joomla\View\AbstractHtmlView;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class PeopleCustom extends AbstractTable
+class Raw extends AbstractHtmlView
 {
-    protected $_tbl = '#__people_custom';
+    public function render()
+    {
+        //display view
+        echo parent::render();
+    }
+
 }
