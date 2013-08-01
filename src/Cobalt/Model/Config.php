@@ -10,7 +10,7 @@
 namespace Cobalt\Model;
 
 use JFactory;
-use JTable;
+use Cobalt\Table\ConfigTable;
 use Cobalt\Helper\ConfigHelper;
 
 // no direct access
@@ -25,7 +25,7 @@ class Config extends DefaultModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('config','Table');
+        $row = new ConfigTable;
         $data = isset($data) && is_array($data) && count($data) > 0 ? $data : $app->input->getRequest( 'post' );
 
         //date generation

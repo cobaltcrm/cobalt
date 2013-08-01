@@ -11,7 +11,7 @@
 namespace Cobalt\Model;
 
 use JFactory;
-use JTable;
+use Cobalt\Table\DocumentsTable;
 use Cobalt\Helper\TextHelper;
 use Joomla\Filesystem\File;
 
@@ -27,7 +27,7 @@ class Documents extends DefaultModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('documents','Table');
+        $row = new DocumentsTable;
         if ($data==null) {
             $data = $app->input->getRequest( 'post' );
         }

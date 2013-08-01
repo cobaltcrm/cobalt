@@ -12,9 +12,9 @@ namespace Cobalt\Model;
 
 use JFactory;
 use Joomla\Registry\Registry;
-use JTable;
 use Joomla\Model\AbstractModel;
 use Cobalt\Pagination;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -55,7 +55,13 @@ class Cobalt extends AbstractModel
         // Initialise variables.
         $app = JFactory::getApplication();
         $data = $app->input->getRequest('post');
-        $table = JTable::getInstance($data['view'],'Table');
+
+        $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';
+
+        if (!class_exists()) {
+            return false;
+        }
+        $table = new $tableClass;
         $conditions = array();
 
         if (empty($pks)) {
@@ -192,7 +198,13 @@ class Cobalt extends AbstractModel
         // Initialise variables.
         $app = JFactory::getApplication();
         $data = $app->input->getRequest('post');
-        $table = JTable::getInstance($data['view'],'Table');
+
+        $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';
+
+        if (!class_exists()) {
+            return false;
+        }
+        $table = new $tableClass;
         $pks = (array) $pks;
         $result = true;
 

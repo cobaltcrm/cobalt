@@ -10,9 +10,10 @@
 
 namespace Cobalt\Model;
 
-use JTable;
+use Cobalt\Table\NoteTable;
 use JFactory;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\DateHelper;
@@ -40,8 +41,8 @@ class Note extends DefaultModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('note','Table');
-        $oldRow = JTable::getInstance('note','Table');
+        $row = new NoteTable;
+        $oldRow = new NoteTable;
 
         if ($data == null) {
             $data = $app->input->getRequest( 'post' );
@@ -137,8 +138,7 @@ class Note extends DefaultModel
             $model->storeAttachments($data['email_id'], $data['person_id']);
         }
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onAfterNoteSave', array(&$row));
+        $app->triggerEvent('onAfterNoteSave', array(&$row));
 
         return $id;
     }
@@ -356,8 +356,6 @@ class Note extends DefaultModel
 
     public function populateState()
     {
-        $app = JFactory::getApplication();
-
         //get states
         $app = JFactory::getApplication();
         $filter_order = $app->getUserStateFromRequest('Note.filter_order','filter_order','comp.name');

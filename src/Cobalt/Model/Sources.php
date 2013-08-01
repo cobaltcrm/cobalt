@@ -7,12 +7,17 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\SourcesTable;
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelSources extends CobaltModelDefault
+class Sources extends DefaultModel
 {
-
     public $_view = "sources";
 
     public function store()
@@ -20,7 +25,7 @@ class CobaltModelSources extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('sources','Table');
+        $row = new SourcesTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation

@@ -7,12 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\UsersHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelStats extends JModelBase
+class Stats extends DefaultModel
 {
-
     public $person_id;
     public $access;
     public $users;

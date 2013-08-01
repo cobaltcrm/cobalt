@@ -7,81 +7,76 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Cobalt\Helper\DateHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelTemplate extends JModelBase
+class Template extends DefaultModel
 {
+    /**
+     * Run items through template system
+     */
+    public function createTemplate()
+    {
+        $app = JFactory::getApplication();
 
-        /**
-         * Constructor
-         */
-        function __construct()
-        {
-            parent::__construct();
-        }
+        $template_id = $app->input->get('template_id');
+        $association_id = $app->input->get('association_id');
+        $association_type = $app->input->get('association_type');
 
-        /**
-         * Run items through template system
-         */
-        public function createTemplate()
-        {
-                $app = JFactory::getApplication();
+        $template = $this->getTemplate($template_id);
 
-                $template_id = $app->input->get('template_id');
-                $association_id = $app->input->get('association_id');
-                $association_type = $app->input->get('association_type');
+        $current_date = date("Y-m-d 00:00:00");
 
-                $template = $this->getTemplate($template_id);
+        if ( count($template) > 0 ) {
 
-                $current_date = date("Y-m-d 00:00:00");
+            $event_model = new Event;
 
-                if ( count($template) > 0 ) {
+            foreach ($template as $event) {
 
-                        $event_model = new CobaltModelEvent();
+                unset($event['id']);
 
-                        foreach ($template as $event) {
+                $event['association_id'] = $association_id;
+                $event['association_type'] = $association_type;
+                $event['type'] = "task";
 
-                                unset($event['id']);
+                $event['due_date'] = DateHelper::formatDBDate(date("Y-m-d",strtotime($current_date." +".$event['day']." days")),false);
+                $event['due_date_hour'] = "00:00:00";
 
-                                $event['association_id'] = $association_id;
-                                $event['association_type'] = $association_type;
-                                $event['type'] = "task";
-
-                                $event['due_date'] = DateHelper::formatDBDate(date("Y-m-d",strtotime($current_date." +".$event['day']." days")),false);
-                                $event['due_date_hour'] = "00:00:00";
-
-                                if ( !$event_model->store($event) ) {
-                                        return FALSE;
-                                }
-                        }
+                if ( !$event_model->store($event) ) {
+                    return false;
                 }
-
-                return TRUE;
-
+            }
         }
 
-        /**
-         * Get template events
-         * @param  [type] $template_id [description]
-         * @return [type]              [description]
-         */
-        public function getTemplate($template_id=null)
-        {
-                $template_id = $template_id ? $template_id : $this->id;
+        return true;
+    }
 
-                $db = JFactory::getDBO();
-                $query = $db->getQuery(TRUE);
+    /**
+     * Get template events
+     * @param  [type] $template_id [description]
+     * @return [type] [description]
+     */
+    public function getTemplate($template_id=null)
+    {
+        $template_id = $template_id ? $template_id : $this->id;
 
-                $query->select("t.*")
-                        ->from("#__template_data AS t")
-                        ->where("t.template_id=".$template_id);
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
 
-                $db->setQuery($query);
-                $events = $db->loadAssocList();
+        $query->select("t.*")
+            ->from("#__template_data AS t")
+            ->where("t.template_id=".$template_id);
 
-                return $events;
+        $db->setQuery($query);
+        $events = $db->loadAssocList();
 
-        }
+        return $events;
+    }
 
 }

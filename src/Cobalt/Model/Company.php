@@ -11,8 +11,9 @@
 namespace Cobalt\Model;
 
 use JFactory;
-use JTable;
+use Cobalt\Table\CompanyTable;
 use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\TweetsHelper;
 use Cobalt\Helper\UsersHelper;
@@ -53,8 +54,8 @@ class Company extends DefaultModel
         $db = JFactory::getDBO();
 
         //Load Tables
-        $row = JTable::getInstance('company','Table');
-        $oldRow = JTable::getInstance('company','Table');
+        $row = new CompanyTable;
+        $oldRow = new CompanyTable;
 
         if ($data == null) {
           $data = $app->input->getRequest('post');

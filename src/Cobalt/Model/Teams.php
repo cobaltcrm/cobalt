@@ -7,23 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\TeamsTable;
+use Cobalt\Table\UsersTable;
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelTeams extends JModelBase
+class Teams extends DefaultModel
 {
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
-
     /**
      * Get list of existing teams
      * @return mixed $teams array of teams returned
@@ -70,7 +65,7 @@ class CobaltModelTeams extends JModelBase
         $db->setQuery($query);
         $team_id = $db->loadResult();
         $team_data = array( 'leader_id'=>$leader_id,'name'=>$name );
-        $row = JTable::getInstance('teams','Table');
+        $row = new TeamsTable;
 
         if ($team_id > 0) {
             $team_data['team_id'] = $team_id;
@@ -110,7 +105,7 @@ class CobaltModelTeams extends JModelBase
     public function assignLeader($leader_id,$team_id)
     {
         //bind user tables
-        $row = JTable::getInstance('users','Table');
+        $row = new UsersTable;
         $team_data = array ( 'id'=>$leader_id,'team_id'=>$team_id );
         if (!$row->bind($team_data)) {
             $this->setError($this->_db->getErrorMsg());

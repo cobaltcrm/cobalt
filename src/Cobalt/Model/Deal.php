@@ -10,13 +10,15 @@
 
 namespace Cobalt\Model;
 
-use JTable;
 use JFactory;
 use Joomla\Registry\Registry;
+use Cobalt\Table\DealTable;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\ActivityHelper;
+use Cobalt\Helper\CobaltHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -69,8 +71,8 @@ class Deal extends DefaultModel
         $db  = JFactory::getDBO();
 
         //Load Tables
-        $row = JTable::getInstance('deal','Table');
-        $oldRow = JTable::getInstance('deal','Table');
+        $row = new DealTable;
+        $oldRow = new DealTable;
 
         if ($data == null) {
           $data = $app->input->getRequest('post');
@@ -108,7 +110,7 @@ class Deal extends DefaultModel
 
             $company_name = array_key_exists('company_name',$data) ? $data['company_name'] : $data['company'];
 
-            $companyModel = new CobaltModelCompany();
+            $companyModel = new Company;
             $existingCompany = $companyModel->checkCompanyName($company_name);
 
             if ($existingCompany=="") {
@@ -122,7 +124,7 @@ class Deal extends DefaultModel
 
         if ( array_key_exists('company_id',$data) && is_array($data['company_id']) ) {
             $company_name = $data['company_id']['value'];
-            $companyModel = new CobaltModelCompany();
+            $companyModel = new Company;
             $existingCompany = $companyModel->checkCompanyName($company_name);
             if ($existingCompany=="") {
                 $cdata = array();
@@ -141,7 +143,7 @@ class Deal extends DefaultModel
 
         /** check for and automatically associate and create primary contacts or people **/
         if ( array_key_exists('person_name',$data) && $data['person_name'] != "" ) {
-            $peopleModel = new CobaltModelPeople();
+            $peopleModel = new People;
             $existingPerson = $peopleModel->checkPersonName($data['person_name']);
 
             if ($existingPerson=="") {
@@ -160,7 +162,7 @@ class Deal extends DefaultModel
         }
 
         if ( array_key_exists('primary_contact_name',$data) && $data['primary_contact_name'] != "" ) {
-            $peopleModel = new CobaltModelPeople();
+            $peopleModel = new People;
             $existingPerson = $peopleModel->checkPersonName($data['primary_contact_name']);
 
             if ($existingPerson=="") {
@@ -185,8 +187,7 @@ class Deal extends DefaultModel
             return false;
         }
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeDealSave', array(&$row));
+        $app->triggerEvent('onBeforeDealSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -222,8 +223,7 @@ class Deal extends DefaultModel
         $row->actual_close_formatted = isset($row->actual_close) ? DateHelper::formatDate($row->actual_close) : DateHelper::formatDate(date("Y-m-d"));
         $row->expected_close_formatted = isset($row->expected_close) ? DateHelper::formatDate($row->expected_close) : DateHelper::formatDate(date("Y-m-d"));
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onAfterDealSave', array(&$row));
+        $app->triggerEvent('onAfterDealSave', array(&$row));
 
         //return success
         if ($returnRow) {
@@ -881,7 +881,7 @@ class Deal extends DefaultModel
          *  Join contacts
          */
 
-            $peopleModel = new CobaltModelPeople();
+            $peopleModel = new People;
             $peopleModel->set('deal_id',$deal['id']);
             $people = $peopleModel->getContacts();
             //assign results to company
@@ -890,7 +890,7 @@ class Deal extends DefaultModel
         /** ------------------------------------------
          *  Join conversations
          */
-            $convoModel = new CobaltModelConversation();
+            $convoModel = new Conversation;
             $convoModel->set('deal_id',$deal['id']);
             $conversations = $convoModel->getConversations();
             $deal['conversations'] = $conversations;
@@ -899,20 +899,20 @@ class Deal extends DefaultModel
          *  Join notes
          */
 
-           $notesModel = new CobaltModelNote();
+           $notesModel = new Note;
            $deal['notes'] = $notesModel->getNotes($deal['id'], 'deal');
 
          /** ------------------------------------------
          *  Join documents
          */
-            $docModel = new CobaltModelDocument();
+            $docModel = new Document;
             $docModel->set('deal_id',$deal['id']);
             $deal['documents'] = $docModel->getDocuments();
 
         /** ------------------------------------------
          *  Join tasks & events
          */
-            $eventModel = new CobaltModelEvent();
+            $eventModel = new Event;
             $eventModel->set('deal_id',$deal['id']);
             $events = $eventModel->getEvents();
             $deal['events'] = $events;
@@ -937,7 +937,7 @@ class Deal extends DefaultModel
         } else {
 
             //TODO update things to OBJECTS
-            $deal = (array) JTable::getInstance('Deal','Table');
+            $deal = (array) new DealTable;
 
         }
 

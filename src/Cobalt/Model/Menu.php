@@ -11,7 +11,7 @@
 namespace Cobalt\Model;
 
 use JFactory;
-use JTable;
+use Cobalt\Table\MenuTable;
 
 use Joomla\Model\AbstractModel;
 
@@ -25,7 +25,7 @@ class Menu extends AbstractModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('Menu','Table');
+        $row = new MenuTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation

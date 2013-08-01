@@ -13,7 +13,7 @@ namespace Cobalt\Table;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class ReportsTable extends AbstractTable
+class ReportTable extends AbstractTable
 {
     protected $_tbl = '#__reports';
 }

@@ -7,33 +7,27 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Cobalt\Table\DealCustomTable;
+use Joomla\Registry\Registry;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelDealcustom extends CobaltModelDefault
+class DealCustom extends DefaultModel
 {
 
     public $_view = "dealcustom";
 
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
-
     public function store()
     {
-
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('Dealcustom','Table');
+        $row = new DealCustomTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -162,7 +156,7 @@ class CobaltModelDealcustom extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Dealcustom.filter_order','filter_order','c.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Dealcustom.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Dealcustom.filter_order', $filter_order);

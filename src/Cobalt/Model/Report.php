@@ -10,8 +10,8 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Table\ReportTable;
 use JFactory;
-use JTable;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 
@@ -33,8 +33,8 @@ class Report extends DefaultModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('report','Table');
-        $oldRow = JTable::getInstance('report','Table');
+        $row = new ReportTable;
+        $oldRow = new ReportTable;
 
         $data = $app->input->getRequest('post');
 

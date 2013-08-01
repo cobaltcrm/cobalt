@@ -1,5 +1,4 @@
 <?php
-
 /*------------------------------------------------------------------------
 # Cobalt
 # ------------------------------------------------------------------------
@@ -8,32 +7,29 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\UsersTable;
+use JFactory;
+use Joomla\Registry\Registry;
+use JUserHelper;
+use Cobalt\Helper\ConfigHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelUsers extends CobaltModelDefault
+class Users extends DefaultModel
 {
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('users','Table');
+        $row = new UsersTable;
         $data = $app->input->getRequest( 'post' );
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeCRMUserSave', array(&$data));
+        $app->triggerEvent('onBeforeCRMUserSave', array(&$data));
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -59,7 +55,7 @@ class CobaltModelUsers extends CobaltModelDefault
         }
 
         //generate team data
-        $model = new CobaltModelTeams();
+        $model = new Teams;
         if ( array_key_exists('id',$data) && $data['id'] > 0 ) {
             $teamId = $this->getTeamId($data['id']);
         }
@@ -109,7 +105,7 @@ class CobaltModelUsers extends CobaltModelDefault
         }
 
         if ( array_key_exists('role_type',$data) && $data['role_type'] == "manager"  ) {
-            $teamModel = new CobaltModelTeams();
+            $teamModel = new Teams;
             $teamName = array_key_exists('team_name',$data) ? $data['team_name'] : "";
             $teamModel->createTeam($row->id,$teamName);
         }
@@ -123,8 +119,7 @@ class CobaltModelUsers extends CobaltModelDefault
         $row->id = ( array_key_exists('id',$data) && $data['id'] > 0 ) ? $data['id'] : $this->_db->insertId();
         $this->updateUserMap($row);
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onAfterCRMUserSave', array(&$data));
+        $app->triggerEvent('onAfterCRMUserSave', array(&$data));
 
         return true;
     }
@@ -219,7 +214,7 @@ class CobaltModelUsers extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Users.filter_order','filter_order','u.last_name');
         $filter_order_Dir = $app->getUserStateFromRequest('Users.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Users.filter_order', $filter_order);
@@ -326,12 +321,12 @@ class CobaltModelUsers extends CobaltModelDefault
 
     public function delete($ids)
     {
+        $app = JFactory::getApplication();
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeCRMUserDelete', array(&$ids));
+        $app->triggerEvent('onBeforeCRMUserDelete', array(&$ids));
 
         $query->update("#__users");
                 if ( is_array($ids) ) {
@@ -341,10 +336,8 @@ class CobaltModelUsers extends CobaltModelDefault
                 }
         $query->set("published=-1");
         $db->setQuery($query);
-        if ( $db->query() ) {
-
-            $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onAfterCRMUserDelete', array(&$ids));
+        if ( $db->execute() ) {
+            $app->trigger('onAfterCRMUserDelete', array(&$ids));
 
             return true;
         } else {

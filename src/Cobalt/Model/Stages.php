@@ -7,12 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Cobalt\Table\StagesTable;
+use Joomla\Registry\Registry;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelStages extends CobaltModelDefault
+class Stages extends DefaultModel
 {
-
     public $_view = "stages";
 
     /**
@@ -32,7 +38,7 @@ class CobaltModelStages extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('stages','Table');
+        $row = new StagesTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -136,7 +142,7 @@ class CobaltModelStages extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Stages.filter_order','filter_order','s.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Stages.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Stages.filter_order', $filter_order);

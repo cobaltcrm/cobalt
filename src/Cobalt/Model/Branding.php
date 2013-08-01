@@ -15,7 +15,8 @@ use Joomla\Model\AbstractModel;
 use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TextHelper;
-use Cobalt\Table\Branding as BrandingTable;
+use Cobalt\Table\BrandingTable;
+use Joomla\Filesystem\File;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -79,7 +80,7 @@ class Branding extends AbstractModel
             //always use constants when making file paths, to avoid the possibilty of remote file inclusion
             $uploadPath = JPATH_SITE.'/libraries/crm/media/logos/'.$hashFilename;
 
-            if (!JFile::upload($fileTemp, $uploadPath)) {
+            if (!File::upload($fileTemp, $uploadPath)) {
                 echo TextHelper::_( 'ERROR MOVING FILE' );
 
                 return;
@@ -183,13 +184,11 @@ class Branding extends AbstractModel
 
         //unassign default
         $queryString = "UPDATE #__branding SET assigned=0 WHERE id <> $id";
-        $db->setQuery($queryString);
-        $db->query();
+        $db->setQuery($queryString)->execute();
 
         //assign default
         $queryString = "UPDATE #__branding SET assigned=1 WHERE id=$id";
-        $db->setQuery($queryString);
-        $db->query();
+        $db->setQuery($queryString)->execute();
 
     }
 

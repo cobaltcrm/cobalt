@@ -10,7 +10,7 @@
 
 namespace Cobalt\Model;
 
-use JTable;
+use Cobalt\Table\UserTable;
 use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CompanyHelper;
@@ -33,7 +33,7 @@ class User extends DefaultModel
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('user','Table');
+        $row = new UserTable;
 
         if ($data['id']) {
             $row->load($data['id']);
@@ -113,7 +113,7 @@ class User extends DefaultModel
         $query->insert('#__users_email_cf')->columns(array('member_id,email'))->values($values);
          //return
         $db->setQuery($query);
-        if ($db->query()) {
+        if ($db->execute()) {
             return true;
         } else {
             print_r($db);

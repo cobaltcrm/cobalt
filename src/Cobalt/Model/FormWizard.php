@@ -7,25 +7,19 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\FormWizardTable;
+use JFactory;
+use Joomla\Registry\Registry;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelFormwizard extends CobaltModelDefault
+class FormWizard extends DefaultModel
 {
-
     public $_view = "formwizard";
-
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
 
     public function populateState()
     {
@@ -34,7 +28,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Formwizard.filter_order','filter_order','f.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Formwizard.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Formwizard.filter_order', $filter_order);
@@ -49,7 +43,7 @@ class CobaltModelFormwizard extends CobaltModelDefault
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('formwizard','Table');
+        $row = new FormWizardTable;
         $data = $app->input->getRequest( 'post' );
 
         $userId = JFactory::getUser()->id;

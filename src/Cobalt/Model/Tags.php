@@ -7,27 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\TagsTable;
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelTags extends JModelBase
+class Tags extends DefaultModel
 {
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
-
     public function store()
     {
         //Load Tables
-        $row = JTable::getInstance('tags','Table');
+        $row = new TagsTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation

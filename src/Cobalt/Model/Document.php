@@ -10,7 +10,7 @@
 
 namespace Cobalt\Model;
 
-use JTable;
+use Cobalt\Table\DocumentTable;
 use JFactory;
 use Joomla\Registry\Registry;
 use Joomla\Filesystem\File;
@@ -155,8 +155,8 @@ class Document extends DefaultModel
         }
 
         //Load Tables
-        $row = JTable::getInstance('document','Table');
-        $oldRow = JTable::getInstance('document','Table');
+        $row = new DocumentTable;
+        $oldRow = new DocumentTable;
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));

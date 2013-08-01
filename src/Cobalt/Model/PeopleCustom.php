@@ -7,31 +7,26 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use JFactory;
+use Cobalt\Table\PeopleCustom;
+use Joomla\Registry\Registry;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelPeoplecustom extends CobaltModelDefault
+class PeopleCustom extends DefaultModel
 {
     public $_view = "peoplecustom";
-
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
 
     public function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('Peoplecustom','Table');
+        $row = new PeopleCustom;
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -142,7 +137,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
             return $result;
 
         } else {
-            return (array) JTable::getInstance("peoplecustom","Table");
+            return (array) new PeopleCustom;
 
         }
 
@@ -155,7 +150,7 @@ class CobaltModelPeoplecustom extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Peoplecustom.filter_order','filter_order','c.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Peoplecustom.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Peoplecustom.filter_order', $filter_order);

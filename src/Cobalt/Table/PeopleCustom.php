@@ -13,7 +13,7 @@ namespace Cobalt\Table;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class PeopleCustomTable extends AbstractTable
+class PeopleCustom extends AbstractTable
 {
     protected $_tbl = '#__people_custom';
 }

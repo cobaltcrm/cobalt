@@ -7,33 +7,27 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\StatusesTable;
+use JFactory;
+use Joomla\Registry\Registry;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelStatuses extends CobaltModelDefault
+class Statuses extends DefaultModel
 {
-
     public $id = null;
     public $_view = "statuses";
-
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
 
     public function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('statuses','Table');
+        $row = new StatusesTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -135,7 +129,7 @@ class CobaltModelStatuses extends CobaltModelDefault
         $filter_order = $app->getUserStateFromRequest('Statuses.filter_order','filter_order','s.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Statuses.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Statuses.filter_order', $filter_order);

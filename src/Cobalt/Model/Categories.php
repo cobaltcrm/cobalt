@@ -12,7 +12,7 @@ namespace Cobalt\Model;
 
 use JFactory;
 use Joomla\Registry\Registry;
-use JTable;
+use Cobalt\Table\CategoriesTable;;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -38,7 +38,7 @@ class Categories extends DefaultModel
     {
         //Load Tables
         $app = JFactory::getApplication();
-        $row = JTable::getInstance('categories','Table');
+        $row = new CategoriesTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation

@@ -7,32 +7,25 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\Model;
+
+use Cobalt\Table\TemplatesTable;
+use JFactory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltModelTemplates extends CobaltModelDefault
+class Templates extends DefaultModel
 {
-
     public $_view = "templates";
-
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
 
     public function store()
     {
         $app = JFactory::getApplication();
 
         //Load Tables
-        $row = JTable::getInstance('templates','Table');
+        $row = new TemplatesTable;
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -175,7 +168,7 @@ class CobaltModelTemplates extends CobaltModelDefault
             return $result;
 
         } else {
-            return (array) JTable::getInstance("templates","Table");
+            return (array) new TemplatesTable;
 
         }
 

@@ -10,13 +10,16 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Table\PeopleTable;
 use JRoute;
 use JFactory;
 use Cobalt\Helper\CobaltHelper;
+use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\TweetsHelper;
 use Cobalt\Pagination;
 
 // no direct access
@@ -59,8 +62,8 @@ class People extends DefaultModel
     public function store($data=null)
     {
         //Load Tables
-        $row = JTable::getInstance('people','Table');
-        $oldRow = JTable::getInstance('people','Table');
+        $row = new PeopleTable;
+        $oldRow = new PeopleTable;
         if ($data == null) {
           $data = $this->app->input->getRequest('post');
         }
@@ -94,7 +97,7 @@ class People extends DefaultModel
 
             $company_name = array_key_exists('company_name',$data) ? $data['company_name'] : $data['company'];
 
-            $companyModel = new CobaltModelCompany();
+            $companyModel = new Company;
             $existingCompany = $companyModel->checkCompanyName($company_name);
 
             if ($existingCompany=="") {
@@ -108,7 +111,7 @@ class People extends DefaultModel
 
         if ( array_key_exists('company_id',$data) && is_array($data['company_id']) ) {
             $company_name = $data['company_id']['value'];
-            $companyModel = new CobaltModelCompany();
+            $companyModel = new Company;
             $existingCompany = $companyModel->checkCompanyName($company_name);
             if ($existingCompany=="") {
                 $cdata = array();
@@ -131,8 +134,8 @@ class People extends DefaultModel
             return false;
         }
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onBeforePersonSave', array(&$row));
+        $app = JFactory::getApplication();
+        $app->triggerEvent('onBeforePersonSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -182,8 +185,8 @@ class People extends DefaultModel
         } else {
             $row->form_id   = '';
         }
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onAfterPersonSave', array(&$row));
+
+        $app->triggerEvent('onAfterPersonSave', array(&$row));
 
         return $person_id;
     }
