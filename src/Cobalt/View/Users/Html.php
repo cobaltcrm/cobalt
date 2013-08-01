@@ -7,12 +7,24 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Users;
+
+use Joomla\View\AbstractHtmlView;
+use JUri;
+use JFactory;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Model\Users as UsersModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewUsersHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
-
     public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
@@ -27,7 +39,7 @@ class CobaltViewUsersHtml extends JViewHtml
 
         //load model
         $layout = $this->getLayout();
-        $model = new CobaltModelUsers();
+        $model = new UsersModel;
         $model->set("_layout",$layout);
 
         //add toolbar buttons to manage users
@@ -36,7 +48,7 @@ class CobaltViewUsersHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'delete');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
 
             //get users
             $users = $model->getUsers();
@@ -64,8 +76,7 @@ class CobaltViewUsersHtml extends JViewHtml
             }
 
             //plugins
-            $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onBeforeCRMUserEdit', array(&$id));
+            $app->triggerEvent('onBeforeCRMUserEdit', array(&$id));
 
             //get user
             $this->user = $model->getUser($id);

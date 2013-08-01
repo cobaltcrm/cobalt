@@ -7,10 +7,22 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Categories;
+
+use Cobalt\Helper\TextHelper;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\UsersHelper;
+use JFactory;
+use JUri;
+use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Model\Categories as CategoriesModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCategoriesHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
 
     public function render($tpl = null)
@@ -27,7 +39,7 @@ class CobaltViewCategoriesHtml extends JViewHtml
         $document->addScript(JURI::base()."/libraries/crm/media/js/cobalt-admin.js");
 
          //gather information for view
-        $model = new CobaltModelCategories();
+        $model = new CategoriesModel;
 
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
@@ -44,7 +56,7 @@ class CobaltViewCategoriesHtml extends JViewHtml
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(JText::_('COBALT_CONFIRMATION'),'remove');
+            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'remove');
 
             //view references
             $categories = $model->getCategories();

@@ -21,18 +21,6 @@ class Stages extends DefaultModel
 {
     public $_view = "stages";
 
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
-
     public function store()
     {
         $app = JFactory::getApplication();
@@ -129,7 +117,7 @@ class Stages extends DefaultModel
             return $db->loadAssoc();
 
         } else {
-            return (array) JTable::getInstance("stages","Table");
+            return (array) new StagesTable;
 
         }
 

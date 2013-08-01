@@ -7,12 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Branding;
+
+use Joomla\View\AbstractHtmlView;
+use JUri;
+use JFactory;
+use Cobalt\Model\Branding as BrandingModel;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\StylesHelper;
+use Cobalt\Helper\ToolbarHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewBrandingHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
-
     public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
@@ -31,7 +42,7 @@ class CobaltViewBrandingHtml extends JViewHtml
         StylesHelper::loadStyleSheets();
 
         //view refs
-        $model = new CobaltModelBranding();
+        $model = new BrandingModel;
         $themes = $model->getThemes();
 
         //toolbar buttons

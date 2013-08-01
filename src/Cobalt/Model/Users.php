@@ -202,7 +202,7 @@ class Users extends DefaultModel
             return $db->loadAssoc();
 
         } else {
-            return (array) JTable::getInstance('users','Table');
+            return (array) new UsersTable;
         }
 
     }

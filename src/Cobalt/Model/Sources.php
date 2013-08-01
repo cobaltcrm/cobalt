@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\SourcesTable;
 use JFactory;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -114,7 +115,7 @@ class Sources extends DefaultModel
             return $db->loadAssoc();
 
         } else {
-            return (array) JTable::getInstance('sources','Table');
+            return (array) new SourcesTable;
 
         }
 
@@ -127,7 +128,7 @@ class Sources extends DefaultModel
         $filter_order = $app->getUserStateFromRequest('Sources.filter_order','filter_order','s.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Sources.filter_order_Dir','filter_order_Dir','asc');
 
-        $state = new JRegistry();
+        $state = new Registry;
 
         //set states
         $state->set('Sources.filter_order', $filter_order);

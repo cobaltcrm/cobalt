@@ -17,7 +17,7 @@ use JFactory;
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class AbstractTable extends JTable
-{\
+{
     protected $_tbl_key = 'id';
 
     /**
@@ -25,7 +25,7 @@ class AbstractTable extends JTable
      *
      * @param object Database connector object
      */
-    public function __construct( &$db )
+    public function __construct()
     {
         if (empty($this->_tbl)) {
             throw new \InvalidArgumentException('The $_tbl key has not been set in ' . get_class($this));

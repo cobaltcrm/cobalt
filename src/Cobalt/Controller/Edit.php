@@ -10,26 +10,20 @@
 
 namespace Cobalt\Controller;
 
+use JFactory;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Edit extends DefaultController
 {
-
     public function execute()
     {
-        /*
         $app = JFactory::getApplication();
         $viewName = $app->input->get('view');
-        $app->input->set('layout','edit');
+        $app->input->set('layout', 'edit');
         $app->input->set('view', $viewName);
 
-        $view = ViewHelper::getView($viewName,'edit','html');
-
-        //display view
-        echo $view->render();
-        */
-       parent::execute();
+        parent::execute();
     }
 
 }
