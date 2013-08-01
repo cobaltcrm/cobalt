@@ -7,14 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Goals;
+
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Model\Goal as GoalModel;
+use Cobalt\Helper\UsersHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewGoalsRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-
         $app = JFactory::getApplication();
 
         //if we are deleting goals determine which goals the user is allowed to delete
@@ -27,7 +34,7 @@ class CobaltViewGoalsRaw extends JViewHtml
             $member_role = UsersHelper::getRole();
 
             //get model
-            $model = new CobaltModelGoal();
+            $model = new GoalModel;
 
             //show individual goals
             if ($type == 'member') {

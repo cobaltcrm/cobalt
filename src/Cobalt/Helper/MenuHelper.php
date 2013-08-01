@@ -322,7 +322,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             /** Quick Menu Links **/
             $quick_menu_links = MenuHelper::getQuickMenuLinks();
-            $quick_menu = CobaltHelperview::getView('cobalt','quick_menu','phtml');
+            $quick_menu = ViewHelper::getView('cobalt','quick_menu','phtml');
             $quick_menu->quick_menu_links = $quick_menu_links;
             $modules['quick_menu'] = $quick_menu;
 

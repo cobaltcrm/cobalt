@@ -7,12 +7,22 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Cobalt;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\ConfigHelper;
+use Cobalt\Helper\VersionHelper;
+use Cobalt\Model\Config as ConfigModel;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCobaltHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
-
     public function render($tpl = null)
     {
         //authenticate the current user to make sure they are an admin
@@ -25,7 +35,7 @@ class CobaltViewCobaltHtml extends JViewHtml
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
 
-        $configModel = new CobaltModelConfig();
+        $configModel = new ConfigModel;
 
         /** Component version **/
         $installedVersion   = ConfigHelper::getVersion();
@@ -34,7 +44,6 @@ class CobaltViewCobaltHtml extends JViewHtml
         $updatesFeed = $configModel->getUpdatesRSS();
 
         /** Launch completion **/
-        $configModel = new CobaltModelConfig();
         $config = $configModel->getConfig();
         $this->launch_default = $config->launch_default;
         $percentage = $menu['percentage'];

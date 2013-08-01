@@ -7,10 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Goals;
+
+use JUri;
+use JFactory;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\DropdownHelper;
+use Cobalt\Model\Goal as GoalModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewGoalsHtml extends JViewHtml
+class Html extends AbstractHtmlView
 {
     public function render()
     {
@@ -51,7 +62,7 @@ class CobaltViewGoalsHtml extends JViewHtml
         } elseif ( $this->getLayout() != 'add' ) {
 
             //load model
-            $model = new CobaltModelGoal();
+            $model = new GoalModel;
 
             //get all goals from model depending on user type
             $member_role = UsersHelper::getRole();
@@ -84,7 +95,7 @@ class CobaltViewGoalsHtml extends JViewHtml
             }
 
             //assign goals to global goal object to pass through to view
-            $goals = new stdClass();
+            $goals = new \stdClass();
             $goals->individual_goals = $individual_goals;
             $goals->team_goals = $team_goals;
             $goals->company_goals = $company_goals;
