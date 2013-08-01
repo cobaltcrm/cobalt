@@ -7,10 +7,21 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Deals;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Model\Deal as DealModel;
+use Cobalt\Model\Conversation as ConversationModel;
+use Cobalt\Model\Deal as DealModel;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewDealsRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -21,7 +32,7 @@ class CobaltViewDealsRaw extends JViewHtml
         $person_id = $app->input->get('person_id');
 
         //get deals
-        $model = new CobaltModelDeal();
+        $model = new DealModel;
 
         if ($company_id) {
                 $model->set('company_id',$company_id);
@@ -58,12 +69,12 @@ class CobaltViewDealsRaw extends JViewHtml
                     $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'deal','item'=>$this->deal));
             break;
             case "edit_conversation":
-                    $model = new CobaltModelConversation();
+                    $model = new ConversationModel;
                     $conversation = $model->getConversation($id);
                     $this->conversation = $conversation[0];
             break;
             case "conversation_entry":
-                    $model = new CobaltModelConversation();
+                    $model = new ConversationModel;
                     $conversation = $model->getConversation($id);
                     $this->conversation = $conversation[0];
             break;

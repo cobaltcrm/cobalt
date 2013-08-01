@@ -7,14 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Banter;
+
+use Joomla\View\AbstractHtmlView;;
+use Cobalt\Helper\TranscriptlistsHelper;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewBanterRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
-    public function render($tpl = null)
+    public function render()
     {
-
         $layout = $this->getLayout();
 
         switch ($layout) {

@@ -7,10 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
+namespace Cobalt\View\Companies;
+
+use JFactory;
+use Joomla\View\AbstractHtmlView;;
+use Cobalt\Helper\ViewHelper;
+use Cobalt\Model\Company as CompanyModel;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewCompaniesRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render()
     {
@@ -20,7 +28,7 @@ class CobaltViewCompaniesRaw extends JViewHtml
         $layout = $this->getLayout();
 
         //get model
-        $model = new CobaltModelCompany();
+        $model = new CompanyModel;
 
         //layout
         switch ($layout) {

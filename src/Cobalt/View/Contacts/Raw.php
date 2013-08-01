@@ -7,10 +7,17 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Contacts;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Helper\DealHelper;
+use Cobalt\Model\People as PeopleModel;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewContactsRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -20,7 +27,7 @@ class CobaltViewContactsRaw extends JViewHtml
         $event_id = $app->input->get('event_id');
         $companyId = $app->input->get('company_id');
 
-        $model = new CobaltModelPeople();
+        $model = new PeopleModel;
         $model->set('deal_id',$deal_id);
         $model->set('event_id',$event_id);
         $model->set('company_id',$companyId);

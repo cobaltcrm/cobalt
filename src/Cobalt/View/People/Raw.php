@@ -7,10 +7,18 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\People;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Model\People as PeopleModel;
+use Cobalt\Model\Company as CompanyModel;
+use Cobalt\Helper\ViewHelper;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewPeopleRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render()
     {
@@ -21,7 +29,7 @@ class CobaltViewPeopleRaw extends JViewHtml
         $company_id = $app->input->get('company_id');
 
         //retrieve people from model
-        $model = new CobaltModelPeople();
+        $model = new PeopleModel;
         $model->set('company_id',$company_id);
 
         $layout = $this->getLayout();
@@ -41,7 +49,7 @@ class CobaltViewPeopleRaw extends JViewHtml
 
                 $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'people','item'=>$this->person));
 
-                $companyModel = new CobaltModelCompany();
+                $companyModel = new CompanyModel;
                 $json = TRUE;
 
                 $companyNames = $companyModel->getCompanyNames($json);

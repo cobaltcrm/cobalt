@@ -45,7 +45,7 @@ function Timepicker() {
 		millisecText: 'Millisecond',
 		timezoneText: 'Time Zone'
 	};
-	this._defaults = { // Global defaults for all the datetime picker instances
+	this._defaults = { // GlobalMarkup defaults for all the datetime picker instances
 		showButtonPanel: true,
 		timeOnly: false,
 		showHour: true,

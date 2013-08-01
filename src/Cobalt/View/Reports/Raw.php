@@ -7,10 +7,20 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Reports;
+
+use Cobalt\Model\Deal;
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Model\Note as NoteModel;
+use Cobalt\Model\Deal as DealModel;
+use Cobalt\Model\Source as SourceModel;
+use Cobalt\Model\Report as ReportModel;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewReportsRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render()
     {
@@ -32,7 +42,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_notes_filter()
     {
         //get model for reports
-        $noteModel = new CobaltModalNote();
+        $noteModel = new NoteModel;
         $this->note_entries = $noteModel->getNotes(NULL,NULL,FALSE);
     }
 
@@ -40,7 +50,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_deal_milestones_filter()
     {
         //get deals for reports
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealModel->set('archived',0);
         $this->deals = $dealModel->getDeals();
     }
@@ -49,7 +59,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_roi_report_filter()
     {
         //get sources for reports
-        $sourceModel = new CobaltModelSource();
+        $sourceModel = new SourceModel;
         $this->sources = $sourceModel->getRoiSources();
     }
 
@@ -57,7 +67,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_sales_pipeline_filter()
     {
         //get deals for reports
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
 
         $dealModel->set('archived',0);
         $dealModel->set('limit',0);
@@ -68,7 +78,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_source_report_filter()
     {
         //get deals for reports
-        $dealModel = new CobaltModelDeal();
+        $dealModel = new DealModel;
         $dealModel->set('archived',0);
         $dealModel->set('limit',0);
         $this->reports = $dealModel->getDeals();
@@ -78,7 +88,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_custom_reports_filter()
     {
         //get model
-        $reportModel = new CobaltModelReport();
+        $reportModel = new ReportModel;
         $this->reports = $reportModel->getCustomReports();
         $this->state = $reportModel->getState();
     }
@@ -87,7 +97,7 @@ class CobaltViewReportsRaw extends JViewHtml
     public function _display_custom_report_filter()
     {
         //get report
-        $reportModel = new CobaltModelReport();
+        $reportModel = new ReportModel;
         $this->report = $reportModel->getCustomReports($app->input->get('id'));
         $this->report_data = $reportModel->getCustomReportData($app->input->get('id'));
         $this->state = $reportModel->getState();

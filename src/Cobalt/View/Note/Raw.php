@@ -7,10 +7,16 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Note;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Model\Note as NoteModel;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewNoteRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -23,18 +29,18 @@ class CobaltViewNoteRaw extends JViewHtml
         $this->view = $app->input->get('view','default');
 
         //retrieve task list from model
-           $model = new CobaltModelNote();
+        $model = new NoteModel;
 
         if ($layout == "edit") {
-               $notes = $model->getNote($this->id);
-           } else {
-               $notes = $model->getNotes($this->id,$this->type, false);
-           }
+           $notes = $model->getNote($this->id);
+        } else {
+           $notes = $model->getNotes($this->id,$this->type, false);
+        }
 
         $this->notes = $notes;
 
-          //display
-           echo parent::render();
+        //display
+        echo parent::render();
     }
 
 }

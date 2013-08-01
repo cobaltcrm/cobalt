@@ -7,17 +7,24 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Events;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Helper\CobaltHelper;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewEventsRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render()
     {
         $app = JFactory::getApplication();
 
         //grab model
-        $model = new CobaltModelEvent();
+        $model = new EventModel;
 
         if ( $this->getLayout() == "event_listings" || $this->getLayout() == "list" ) {
 

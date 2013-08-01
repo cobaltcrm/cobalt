@@ -7,17 +7,23 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
-// no direct access
+
+namespace Cobalt\View\Documents;
+
+use Joomla\View\AbstractHtmlView;
+use JFactory;
+use Cobalt\Model\Document as DocumentModel;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CobaltViewDocumentsRaw extends JViewHtml
+class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
         $app = JFactory::getApplication();
 
          //get model
-        $model = new CobaltModelDocument();
+        $model = new DocumentModel;
         $documents = $model->getDocuments($app->input->get('document_id'));
         $state = $model->getState();
         $layout = $this->getLayout();
