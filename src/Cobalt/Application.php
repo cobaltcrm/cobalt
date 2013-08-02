@@ -298,7 +298,7 @@ final class Application extends AbstractWebApplication
             }
 
             // If the insert failed, exit the application.
-            if (!$db->query()) {
+            if (!$db->execute()) {
                 jexit($db->getErrorMSG());
             }
 
@@ -420,7 +420,7 @@ final class Application extends AbstractWebApplication
                 $contents = ob_get_contents();
             ob_end_clean();
 
-            $this->document->setBuffer($contents, 'crm');
+            $this->document->setBuffer($contents, 'cobalt');
 
             // Trigger the onAfterDispatch event.
             JPluginHelper::importPlugin('system');
@@ -536,7 +536,7 @@ final class Application extends AbstractWebApplication
                 $option = $this->input->get('option');
             }
             // Get new instance of component global parameters
-            $params[$hash] = new JRegistry;
+            $params[$hash] = new Registry;
 
             // Get language
             $lang_code = JFactory::getLanguage()->getTag();
@@ -581,7 +581,7 @@ final class Application extends AbstractWebApplication
         // Fallback template
         $template = new \stdClass;
 
-        $template->template = 'default';
+        $template->template = 'bootstrap'; //'default';
         if (!file_exists(JPATH_THEMES . '/default/index.php')) {
             $template->template = '';
         }
