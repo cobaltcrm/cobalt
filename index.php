@@ -16,11 +16,7 @@ require_once __DIR__ . '/src/boot.php';
 
 try {
     // $container is setup in the previous require.
-    $app = $container->resolve('app');
-
-    $app->route();
-
-    $app->execute();
+    $container->resolve('app')->execute();
 
 } catch (Exception $e) {
 

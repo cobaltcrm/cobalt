@@ -107,23 +107,6 @@ final class Application extends AbstractWebApplication
      */
     private $language;
 
-    public function route()
-    {
-        // Get the full request URI.
-        $uri = clone Uri::getInstance();
-
-        $router = $this->getRouter();
-        $result = $router->parse($uri);
-
-        foreach ($result as $key => $value) {
-            $this->input->def($key, $value);
-        }
-
-        // Trigger the onAfterRoute event.
-        JPluginHelper::importPlugin('system');
-        $this->triggerEvent('onAfterRoute');
-    }
-
     public function __construct()
     {
         // Run the parent constructor
@@ -383,25 +366,24 @@ final class Application extends AbstractWebApplication
         return null;
     }
 
-    /**
-     * Allows the application to load a custom or default router.
-     *
-     * @param WebServiceApplicationWebRouter $router An optional router object. If omitted, the standard router is created.
-     *
-     * @return JApplicationWeb This method is chainable.
-     *
-     * @since   1.0
-     */
-    public function loadRouter($router = null,$options = null)
-    {
-        $this->router = ($router === null) ? new CobaltRouter($options) : $router;
-
-        return $this->router;
-    }
-
     public function doExecute()
     {
         try {
+            // Instantiate the router
+            $router = new CobaltRouter($this->input, $this);
+            $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
+
+            if (!$maps)
+            {
+                throw new \RuntimeException('Invalid router file.', 500);
+            }
+
+            $router->addMaps($maps, true);
+            $router->setDefaultController('Cobalt\\Controller\\DefaultController');
+
+            // Fetch the controller
+            $controller = $router->getController($this->get('uri.route'));
+
             $this->loadDocument();
 
             // Register the document object with JFactory
@@ -416,9 +398,8 @@ final class Application extends AbstractWebApplication
             $this->document->setTitle('Cobalt');
 
             ob_start();
-                require_once __DIR__.'/cobalt.php';
-                $contents = ob_get_contents();
-            ob_end_clean();
+            require_once __DIR__.'/cobalt.php';
+            $contents = ob_get_clean();
 
             $this->document->setBuffer($contents, 'cobalt');
 
@@ -474,7 +455,6 @@ final class Application extends AbstractWebApplication
 
     public function logout()
     {
-        $app = JFactory::getApplication();
         $authenticate = new \ModularAuthenticate();
 
         // Perform the log in.
@@ -483,15 +463,15 @@ final class Application extends AbstractWebApplication
         // Check if the log out succeeded.
         if (!($error instanceof \Exception)) {
             // Get the return url from the request and validate that it is internal.
-            $return = base64_decode($app->input->get('return'));
+            $return = base64_decode($this->input->get('return'));
             if (!Uri::isInternal($return)) {
                 $return = '';
             }
 
             // Redirect the user.
-            $app->redirect(JRoute::_($return, false));
+            $this->redirect(JRoute::_($return, false));
         } else {
-            $app->redirect(JRoute::_('index.php', false));
+            $this->redirect(JRoute::_('index.php', false));
         }
 
     }
@@ -627,11 +607,26 @@ final class Application extends AbstractWebApplication
      */
     public static function getRouter($name = null, array $options = array())
     {
-        $app = JFactory::getApplication();
+        $app = Container::get('app');
         $options['mode'] = $app->getCfg('sef');
-        $router = $app->loadRouter(null,$options);
 
-        return $router;
+        return $app->loadRouter(null, $options);
+    }
+
+    /**
+     * Allows the application to load a custom or default router.
+     *
+     * @param WebServiceApplicationWebRouter $router An optional router object. If omitted, the standard router is created.
+     *
+     * @return JApplicationWeb This method is chainable.
+     *
+     * @since   1.0
+     */
+    public function loadRouter($router = null,$options = null)
+    {
+        $this->router = ($router === null) ? new CobaltRouter($this->input, $this) : $router;
+
+        return $this->router;
     }
 
     /**

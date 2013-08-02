@@ -10,6 +10,7 @@
 
 namespace Cobalt\Controller;
 
+use JRoute;
 use JFactory;
 use Cobalt\Helper\TextHelper;
 
@@ -40,7 +41,7 @@ class Trash extends DefaultController
             $data['success'] = true;
         } else {
             $data['success'] = false;
-            $data['error_msg'] = $db->errorMsg;
+            $data['error_msg'] = $db->getErrorMsg();
         }
 
         $redirect = $app->input->get('page_redirect');

@@ -35,6 +35,7 @@ require_once JPATH_LIBRARIES.'/import.php';
 require_once JPATH_VENDOR.'/autoload.php';
 require_once JPATH_CONFIGURATION.'/configuration.php';
 
+JLoader::register('JRoute', JPATH_ROOT . '/src/compat/JRoute.php');
 JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
 
 $container = Cobalt\Container::getInstance();
@@ -74,11 +75,11 @@ $container->bind('db', function($c) {
                 'password' => $config->password,
                 'database' => $config->db,
                 'prefix' => $config->dbprefix
-            );
+            );;
 
             try {
                 $db = Joomla\Database\DatabaseDriver::getInstance($options);
-            } catch (RuntimeException $e) {
+            } catch (\Exception $e) {
                 if (!headers_sent()) {
                     header('HTTP/1.1 500 Internal Server Error');
                 }
