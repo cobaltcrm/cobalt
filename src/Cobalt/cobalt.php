@@ -32,9 +32,7 @@ JPluginHelper::importPlugin('cobalt');
 $app = JFactory::getApplication();
 
 // Require specific controller if requested
-if ($controller = $app->input->get('controller','default')) {
-    require_once (JPATH_COBALT.'/controller/'.$controller.'.php');
-}
+$controller = $app->input->get('controller','default');
 
 //load user toolbar
 $format = $app->input->get('format');

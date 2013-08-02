@@ -45,7 +45,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             $logo = $db->loadResult();
 
-            return JURI::base()."/libraries/crm/media/logos/".$logo;
+            return JUri::base()."/src/Cobalt/media/logos/".$logo;
         }
 
         //get base stylesheets

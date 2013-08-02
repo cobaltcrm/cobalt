@@ -35,7 +35,6 @@ require_once JPATH_LIBRARIES.'/import.php';
 require_once JPATH_VENDOR.'/autoload.php';
 require_once JPATH_CONFIGURATION.'/configuration.php';
 
-JLoader::registerPrefix('Cobalt', JPATH_SITE.'/libraries/crm/');
 JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
 
 $container = Cobalt\Container::getInstance();
