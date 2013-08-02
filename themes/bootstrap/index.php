@@ -2,9 +2,11 @@
 defined('_CEXEC') or die;
 unset($this->_scripts);
 unset($this->_styleSheets);
+$this->_style = array();
 $this
     // Add stylesheets
     ->addStyleSheet('/themes/bootstrap/css/bootstrap.min.css')
+    ->addStyleSheet('/themes/bootstrap/css/bootstrap-icons.css')
 
     // Add Scripts
     ->addScript('//code.jquery.com/jquery.js')
@@ -24,9 +26,6 @@ $this
     <jdoc:include type="head" />
 </head>
 <body>
-    <?php if ( UsersHelper::isAdmin() && count(JToolbar::getInstance()->getItems()) > 0 ) {
-        echo '<div class="container">'.JToolbar::getInstance()->render().'</div>';
-    } ?>
     <jdoc:include type="message" />
     <jdoc:include type="cobalt" />
 </body>

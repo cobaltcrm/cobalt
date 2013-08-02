@@ -104,50 +104,54 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         //generate html
         $list_html  = '<div class="navbar navbar-fixed-top">';
-        $list_html .= '<div class="navbar-inner"><div class="container">';
-        $list_html .= "<div class='site-logo'>";
+        $list_html .= '<div class="container">';
+        $list_html .= '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>';
+        $list_html .= "<div class='navbar-brand' style='padding:0'>";
         $list_html .= "<img id='site-logo-img' src='".StylesHelper::getSiteLogo()."' />";
-        $list_html .= '</div>';
         $list_html .= '<a id="site-name-link" class="brand" href="index.php">'.StylesHelper::getSiteName().'</a>';
-        $list_html .= '<ul class="nav">';
+        $list_html .= '</div>';
+        $list_html .= '<div class="nav-collapse collapse navbar-responsive-collapse"><ul class="nav navbar-nav">';
         foreach ($list->menu_items as $name) {
             $class = $name == $controller || $name == $view ? "active" : "";
             $list_html .= '<li><a class="'.$class.'" href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
         $list_html .= '</ul>';
-        $list_html .= '<div class="pull-right dropdown">';
-        $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn" href="javascript:void(0);" id="create_button" ><i class="icon-plus icon-white"></i></a>';
-        $list_html .= '<div id="create" style="display:none;">';
-        $list_html .= "<ul>";
+        $list_html .= "<ul class='nav navbar-nav pull-right'>";
+        $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="icon-plus icon-white"></i></a><ul class="dropdown-menu">';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_COMPANY').'" data-placement="bottom"  href="'.JRoute::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_PERSON').'" data-placement="bottom" href="'.JRoute::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_DEAL').'" data-placement="bottom" href="'.JRoute::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_GOAL').'" data-placement="bottom" href="'.JRoute::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
-        $list_html .= '</ul>';
-        $list_html .= '</div>';
-        $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a>';
-        $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_ENTER_FULLSCREEN').'" data-placement="bottom" class="block-btn" href="javascript:void(0);" onclick="toggleFullScreen();" ><i class="icon-fullscreen icon-white"></i></a>';
-        $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a>';
-        $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a>';
+        $list_html .= '</ul></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ENTER_FULLSCREEN').'" data-placement="bottom" class="block-btn" href="javascript:void(0);" onclick="toggleFullScreen();" ><i class="icon-fullscreen icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a></li>';
 
         if ( UsersHelper::isAdmin() ) {
-            $list_html .= '<a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a>';
+            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a></li>';
         }
 
         if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
+            $list_html .= '<li>';
+            $list_html .= '<a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" href="javascript:void(0);" onclick="confirmLogout();" ><i class="icon-off icon-white"></i></a>';
             $list_html .= '<form id="logout-form" class="inline-form block-btn" action="index.php?controller=logout" method="post">';
             $list_html .= '<input type="hidden" name="return" value="'.$returnURL.'" />';
-            $list_html .= '<a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" href="javascript:void(0);" onclick="confirmLogout();" ><i class="icon-off icon-white"></i></a>';
             // $list_html .= JHtml::_('form.token');
-            $list_html .= '</form>';
+            $list_html .= '</form></li>';
         }
+        $list_html .= '</ul></div>';
 
         $list_html .= '</div>';
         $list_html .= '</div>';
         $list_html .= '<div style="display:none;" class="pull-right" id="site_search">';
         $list_html .= '<input class="inputbox site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
-        $list_html .= '</div></div></div>';
+        $list_html .= '</div></div>';
 
         //return html
         echo $list_html;
