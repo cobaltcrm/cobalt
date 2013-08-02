@@ -17,7 +17,6 @@ use Joomla\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
-
     public function execute()
     {
         // Get the application
@@ -39,7 +38,7 @@ class DefaultController extends AbstractController
             $paths->insert($themeOverride, 'normal');
         }
 
-        $paths->insert(JPATH_ROOT . '/src/Cobalt/View/' . ucfirst($viewName) . '/tmpl', 'normal');
+        $paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
 
         $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
         $modelClass = 'Cobalt\\Model\\' . ucfirst($viewName);
@@ -48,6 +47,7 @@ class DefaultController extends AbstractController
             $modelClass = 'Cobalt\\Model\\DefaultModel';
         }
 
+        /** @var $view \Joomla\View\AbstractHtmlView **/
         $view = new $viewClass(new $modelClass, $paths);
         $view->setLayout($layoutName);
 

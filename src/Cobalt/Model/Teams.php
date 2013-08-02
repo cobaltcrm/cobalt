@@ -73,19 +73,19 @@ class Teams extends DefaultModel
         }
 
         if (!$row->bind($team_data)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -108,19 +108,19 @@ class Teams extends DefaultModel
         $row = new UsersTable;
         $team_data = array ( 'id'=>$leader_id,'team_id'=>$team_id );
         if (!$row->bind($team_data)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }

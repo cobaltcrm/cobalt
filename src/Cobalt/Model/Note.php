@@ -103,7 +103,7 @@ class Note extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -112,14 +112,14 @@ class Note extends DefaultModel
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -127,7 +127,7 @@ class Note extends DefaultModel
         if ( array_key_exists('id',$data) ) {
             $id = $data['id'];
         } else {
-            $id = $this->_db->insertId();
+            $id = $this->db->insertId();
         }
 
         ActivityHelper::saveActivity($oldRow, $row,'note', $status);

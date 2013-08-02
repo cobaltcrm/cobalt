@@ -554,7 +554,7 @@ class CobaltRouter extends RestRouter
             $vars['view'] = $segments['view'];
         }
 
-        if (isset($segments[0]) && file_exists(JPATH_BASE.'/libraries/crm/view/'.$segments[0].'/html.php') ) {
+        if (isset($segments[0]) && file_exists(JPATH_COBALT . '/View/'.$segments[0].'/html.php') ) {
             $vars['view'] = $segments[0];
         }
 

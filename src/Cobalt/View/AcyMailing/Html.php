@@ -10,7 +10,8 @@
 
 namespace Cobalt\View\AcyMailing;
 
-// no direct access
+use Cobalt\Helper\MailinglistsHelper;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 use Joomla\View\AbstractHtmlView;

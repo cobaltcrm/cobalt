@@ -12,7 +12,7 @@ namespace Cobalt\Model;
 
 use JFactory;
 use Cobalt\Helper\DateHelper;
-use Cobalt\Helper\UsersHelper
+use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Table\ConversationTable;
@@ -57,26 +57,26 @@ class Conversation extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        $id = array_key_exists('id',$data) ? $data['id'] : $this->_db->insertId();
+        $id = array_key_exists('id',$data) ? $data['id'] : $this->db->insertId();
 
         ActivityHelper::saveActivity($oldRow, $row,'conversation', $status);
 

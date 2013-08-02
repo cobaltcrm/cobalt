@@ -59,28 +59,28 @@ class Templates extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         //get newly inserted template id
         if ( !array_key_exists('id',$data) ) {
-            $template_id = $this->_db->insertid();
+            $template_id = $this->db->insertid();
         } else {
             $template_id = $data['id'];
         }

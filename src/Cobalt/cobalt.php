@@ -22,27 +22,24 @@ UsersHelper::loadLanguage();
 //set site timezone
 $tz = DateHelper::getSiteTimezone();
 
-//load tables
-JTable::addIncludePath(JPATH_COBALT.'/tables');
-
 //Load plugins
 JPluginHelper::importPlugin('cobalt');
 
 //application
-$app = JFactory::getApplication();
+$app = Cobalt\Container::get('app');
 
 // Require specific controller if requested
-$controller = $app->input->get('controller','default');
+$controller = $app->input->get('controller', 'default');
 
 //load user toolbar
 $format = $app->input->get('format');
 $overrides = array('ajax','mail','login');
 
-if ( $format != "raw" && !in_array($controller,$overrides) ) {
+if ($format != "raw" && !in_array($controller, $overrides)) {
 
     // Set a default view if none exists
-    if ( ! JFactory::getApplication()->input->get( 'view' ) ) {
-            JFactory::getApplication()->input->set('view', 'dashboard' );
+    if (! $app->input->get( 'view' ) ) {
+        $app->input->set('view', 'dashboard' );
     }
 
     //Grab document instance
@@ -65,7 +62,7 @@ if ( $format != "raw" && !in_array($controller,$overrides) ) {
 
         //mobile detection
         if (TemplateHelper::isMobile()) {
-               $app->input->set('tmpl','component');
+             $app->input->set('tmpl','component');
              $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
              $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' );
              $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' );
@@ -107,12 +104,11 @@ if ($controller === 'default') {
     $controller = 'DefaultController';
 }
 $classname	= 'Cobalt\\Controller\\'.ucfirst($controller);
-$app = JFactory::getApplication();
 $controller = new $classname($app->input, $app);
 
 //fullscreen detection
 if (UsersHelper::isFullscreen()) {
-    JFactory::getApplication()->input->set('tmpl', 'component' );
+    $app->input->set('tmpl', 'component' );
 }
 
 // Perform the Request task

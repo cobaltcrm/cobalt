@@ -129,7 +129,7 @@ class People extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -139,19 +139,19 @@ class People extends DefaultModel
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        $person_id = isset($data['id']) ? $data['id'] : $this->_db->insertId();
+        $person_id = isset($data['id']) ? $data['id'] : $this->db->insertId();
 
         /** Updating the joomla user **/
         if ( array_key_exists('id',$data) && $data['id'] != "" ) {

@@ -59,6 +59,39 @@ $container->bind('config', function () {
         return $config;
     });
 
+$container->bind('db', function($c) {
+        static $db;
+
+        if (is_null($db)) {
+            /* @var $c Cobalt\Container */
+            $config = $c->resolve('config');
+            $debug = $config->debug;
+
+            $options = array(
+                'driver' => $config->dbtype,
+                'host' => $config->host,
+                'user' => $config->user,
+                'password' => $config->password,
+                'database' => $config->db,
+                'prefix' => $config->dbprefix
+            );
+
+            try {
+                $db = Joomla\Database\DatabaseDriver::getInstance($options);
+            } catch (RuntimeException $e) {
+                if (!headers_sent()) {
+                    header('HTTP/1.1 500 Internal Server Error');
+                }
+
+                exit('Database Error: ' . $e->getMessage());
+            }
+
+            $db->setDebug($debug);
+        }
+
+        return $db;
+    });
+
 $config = $container->resolve('config');
 
 // Set the error_reporting

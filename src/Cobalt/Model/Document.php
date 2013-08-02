@@ -178,7 +178,7 @@ class Document extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($newData)) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -188,19 +188,19 @@ class Document extends DefaultModel
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        $id = ( array_key_exists('id',$data) ) ? $data['id'] : $this->_db->insertId();
+        $id = ( array_key_exists('id',$data) ) ? $data['id'] : $this->db->insertId();
 
         ActivityHelper::saveActivity($oldRow, $row,'document', $status);
 

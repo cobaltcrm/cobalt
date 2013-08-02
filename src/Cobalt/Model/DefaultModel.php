@@ -10,29 +10,29 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
-
-use Joomla\Model\AbstractModel;
-use Cobalt\Pagination;
 use JRoute;
+use Cobalt\Container;
+use Cobalt\Pagination;
+use Joomla\Model\AbstractModel;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DefaultModel extends AbstractModel
 {
-    public $__state_set = null;
-    public $_total = null;
-    public $_pagination = null;
-    public $_db = null;
-    public $id = null;
+    protected $__state_set;
+    protected $_total;
+    protected $_pagination;
+    protected $db;
+    protected $id;
 
     public function __construct()
     {
         parent::__construct();
-        $this->_db = JFactory::getDBO();
 
-        $app = JFactory::getApplication();
+        $this->db = Container::get('db');
+
+        $app = Container::get('app');
         $ids = $app->input->get("cids",null,'array');
 
         $id = $app->input->get("id");
@@ -77,11 +77,9 @@ class DefaultModel extends AbstractModel
      */
     protected function _getList($query, $limitstart = 0, $limit = 0)
     {
-        $db = JFactory::getDBO();
-        $db->setQuery($query, $limitstart, $limit);
-        $result = $db->loadObjectList();
+        $this->db->setQuery($query, $limitstart, $limit);
 
-        return $result;
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -95,11 +93,9 @@ class DefaultModel extends AbstractModel
      */
     protected function _getListCount($query)
     {
-        $db = JFactory::getDBO();
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query)->execut();
 
-        return $db->getNumRows();
+        return $this->db->getNumRows();
     }
 
      /* Method to get model state variables

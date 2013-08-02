@@ -12,7 +12,7 @@ defined('_CEXEC') or die;
 define('JPATH_ROOT',          dirname(__DIR__));
 define('JPATH_BASE',          JPATH_ROOT);
 define('JPATH_SITE',          JPATH_ROOT);
-define('JPATH_COBALT',		  JPATH_ROOT . '/libraries/crm');
+define('JPATH_COBALT',		  JPATH_ROOT . '/src/Cobalt');
 define('JPATH_CONFIGURATION', JPATH_ROOT);
 define('JPATH_ADMINISTRATOR', JPATH_ROOT . '/admin');
 define('JPATH_LIBRARIES',     JPATH_ROOT . '/libraries');

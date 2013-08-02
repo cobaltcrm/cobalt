@@ -24,7 +24,7 @@ class ViewHelper
             $paths->insert($themeOverride, 'normal');
         }
 
-        $paths->insert(JPATH_ROOT . '/src/Cobalt/View/' . ucfirst($viewName) . '/tmpl', 'normal');
+        $paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
 
         $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
         $modelClass = 'Cobalt\\Model\\' . ucfirst($viewName);
