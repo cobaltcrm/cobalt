@@ -71,7 +71,7 @@ class TemplateHelper
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-default"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
                                     <button type="button" onclick="document.getElementById('logout-form').submit();" class="btn btn-primary"><?php echo TextHelper::_('COBALT_LOGOUT'); ?></button>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@ class TemplateHelper
                                 <div class="modal-body" id="CobaltAjaxModalBody">
                                 </div>
                                 <div class="modal-footer" id="CobaltAjaxModalFooter">
-                                    <button id="CobaltAjaxModalCloseButton" class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
+                                    <button id="CobaltAjaxModalCloseButton" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
                                     <button id="CobaltAjaxModalSaveButton" onclick="saveModal(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
                                 </div>
                             </div>
