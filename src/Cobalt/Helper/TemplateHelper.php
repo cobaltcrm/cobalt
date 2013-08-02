@@ -19,62 +19,114 @@ use Cobalt\Model\Menu as MenuModel;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class TemplateHelper
- {
+class TemplateHelper
+{
     public static function startCompWrap()
     {
-          echo '<div class="container">';
+        ?>
+        <div class="container">
+            <div id="com_cobalt">
+                <div id="message" style="display:none;"></div>
+                    <div id="CobaltModalMessage" class="modal hide fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header small">
+                            <h3 id="CobaltModalMessageHeader"></h3>
+                        </div>
+                        <div id="CobaltModalMessageBody" class="modal-body">
+                        <p></p>
+                        </div>
+                    </div>
+                    <div id="alertMessage" class="page-alert alert alert-success">
+                        <div id="alertMessageHeader"></div>
+                        <div id="alertMessageBody"></div>
+                    </div>
+                    <div id="google-map" style="display:none;"></div>
+                    <div id="edit_note_entry" style="display:none;"></div>
+                    <div id="edit_convo_entry" style="display:none;"></div>
+                    <div id="document_preview_modal" style="display:none;"></div>
+                    <?php echo TemplateHelper::getEventDialog(); ?>
+                    <?php echo TemplateHelper::getAvatarDialog(); ?>
+                    <script type="text/javascript">var base_url = "<?php echo JUri::base(); ?>";</script>
+                    <?php if (UsersHelper::getLoggedInUser()) : ?>
+                    <script type="text/javascript">var userDateFormat = "<?php echo UsersHelper::getDateFormat(false); ?>";</script>
+                    <script type="text/javascript">var user_id = "<?php echo UsersHelper::getUserId(); ?>";</script>
+                    <?php else : ?>
+                    <script type="text/javascript">var userDateFormat = null;</script>
+                    <script type="text/javascript">var user_id = 0;</script>
+                    <?php endif;
+                    if (self::isMobile()) : ?>
+                    <div class='page' data-role='page' data-theme='b' id=''>
+                    <?php endif; ?>
+                    <div id="logoutModal" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h3><?php echo TextHelper::_('COBALT_LOGOUT_HEADER'); ?></h3>
+                                </div>
+                                <div class="modal-body">
+                                    <p><?php echo TextHelper::_('COBALT_LOGOUT_MESSAGE'); ?></p>
+                                    <form id="logout-form" class="inline-form block-btn" action="index.php?controller=logout" method="post">
+                                        <input type="hidden" name="return" value="<?php echo base64_encode('/'); ?>" />
+                                        <?php // echo JHtml::_('form.token'); ?>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
+                                    <button type="button" onclick="document.getElementById('logout-form').submit();" class="btn btn-primary"><?php echo TextHelper::_('COBALT_LOGOUT'); ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        <?php
+    }
 
-          echo '<div id="com_cobalt">';
-          echo '<div id="message" style="display:none;"></div>';
+    public static function endCompWrap()
+    {
+        $app = JFactory::getApplication();
 
-          echo '<div id="CobaltModalMessage" class="modal hide fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-header small">
-            <h3 id="CobaltModalMessageHeader"></h3>
-          </div>
-          <div id="CobaltModalMessageBody" class="modal-body">
-            <p></p>
-          </div>
-        </div>';
+        if (self::isMobile()) {
 
-            echo ' <div id="alertMessage" class="page-alert alert alert-success">
-                <div id="alertMessageHeader"></div>
-                <div id="alertMessageBody"></div>
-              </div>';
-
-          echo '<div id="google-map" style="display:none;"></div>';
-          echo '<div id="edit_note_entry" style="display:none;"></div>';
-          echo '<div id="edit_convo_entry" style="display:none;"></div>';
-          echo '<div id="document_preview_modal" style="display:none;"></div>';
-          echo TemplateHelper::getEventDialog();
-          echo TemplateHelper::getAvatarDialog();
-          echo '<script type="text/javascript">var base_url = "'.JURI::base().'";</script>';
-
-        if (UsersHelper::getLoggedInUser()) {
-            echo '<script type="text/javascript">var userDateFormat = "'.UsersHelper::getDateFormat(FALSE).'";</script>';
-            echo '<script type="text/javascript">var user_id = "'.UsersHelper::getUserId().'";</script>';
-        } else {
-            echo '<script type="text/javascript">var userDateFormat = null;</script>';
-            echo '<script type="text/javascript">var user_id = 0;</script>';
-        }
-
-            if (self::isMobile()) {
-                echo "<div class='page' data-role='page' data-theme='b' id=''>";
+            if ($app->input->get('view')!='dashboard') {
+                $footer_menu = self::loadFooterMenu();
+                echo $footer_menu;
             }
-
-        echo '<div id="logout-modal" class="modal hide fade">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>'.TextHelper::_('COBALT_LOGOUT_HEADER').'</h3>
-                  </div>
-                  <div class="modal-body">
-                    <p>'.TextHelper::_('COBALT_LOGOUT_MESSAGE').'</p>
-                  </div>
-                  <div class="modal-footer">
-                    <a href="#" onclick="hideLogoutModal();" class="btn">'.TextHelper::_('COBALT_CANCEL').'</a>
-                    <a href="#" onclick="performLogout();" class="btn btn-primary">'.TextHelper::_('COBALT_LOGOUT').'</a>
-                  </div>
-                </div>';
+        }
+        ?>
+                    <div class="modal fade" role="dialog" id="CobaltAjaxModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h3 id="CobaltAjaxModalHeader">&nbsp;</h3>
+                                </div>
+                                <div class="modal-body" id="CobaltAjaxModalBody">
+                                </div>
+                                <div class="modal-footer" id="CobaltAjaxModalFooter">
+                                    <button id="CobaltAjaxModalCloseButton" class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
+                                    <button id="CobaltAjaxModalSaveButton" onclick="saveModal(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" role="dialog" id="CobaltAjaxModalPreview">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h3 id="CobaltAjaxModalPreviewHeader">&nbsp;</h3>
+                                </div>
+                                <div class="text-center dmodal-body" id="CobaltAjaxModalPreviewBody">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if (self::isMobile()) : ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
     public static function displayLogout()
@@ -138,12 +190,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
-            $list_html .= '<li>';
-            $list_html .= '<a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" href="javascript:void(0);" onclick="confirmLogout();" ><i class="icon-off icon-white"></i></a>';
-            $list_html .= '<form id="logout-form" class="inline-form block-btn" action="index.php?controller=logout" method="post">';
-            $list_html .= '<input type="hidden" name="return" value="'.$returnURL.'" />';
-            // $list_html .= JHtml::_('form.token');
-            $list_html .= '</form></li>';
+            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
         }
         $list_html .= '</ul></div>';
 
@@ -155,49 +202,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         //return html
         echo $list_html;
-    }
-
-    public static function endCompWrap()
-    {
-        $app = JFactory::getApplication();
-
-        if (self::isMobile()) {
-
-            if ($app->input->get('view')!='dashboard') {
-                $footer_menu = self::loadFooterMenu();
-                echo $footer_menu;
-            }
-        }
-
-            echo ' <div class="modal hide fade" role="dialog" id="CobaltAjaxModal">
-                       <div class="modal-header">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                           <h3 id="CobaltAjaxModalHeader">
-                               &nbsp;
-                           </h3>
-                       </div>
-                       <div class="modal-body" id="CobaltAjaxModalBody">
-                       </div>
-                       <div class="modal-footer" id="CobaltAjaxModalFooter">
-                           <button id="CobaltAjaxModalCloseButton" class="btn" data-dismiss="modal" aria-hidden="true">'.ucwords(TextHelper::_('COBALT_CANCEL')).'</button>
-                           <button id="CobaltAjaxModalSaveButton" onclick="saveModal(this)" class="btn btn-primary">'.ucwords(TextHelper::_('COBALT_SAVE')).'</button>
-                       </div>
-                    </div>';
-
-            echo ' <div class="modal hide fade" role="dialog" id="CobaltAjaxModalPreview">
-               <div class="modal-header">
-                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                   <h3 id="CobaltAjaxModalPreviewHeader">
-                       &nbsp;
-                   </h3>
-               </div>
-               <div class="text-center dmodal-body" id="CobaltAjaxModalPreviewBody">
-               </div>
-            </div>';
-            //Ends starting page div
-            echo '</div>';
-        echo '</div>';
-
     }
 
     public static function loadFooterMenu()
@@ -447,4 +451,4 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         return $list_html;
     }
 
- }
+}

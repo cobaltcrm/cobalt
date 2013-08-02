@@ -3122,14 +3122,6 @@ function unshareItem(user_id){
 
 }
 
-function confirmLogout(){
-	jQuery("#logout-modal").modal('show');
-}
-
-function hideLogoutModal(){
-	jQuery("#logout-modal").modal('hide');
-}
-
 function performLogout(){
 	jQuery("#logout-form").submit();
 }
