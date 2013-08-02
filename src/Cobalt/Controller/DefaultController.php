@@ -34,6 +34,11 @@ class DefaultController extends AbstractController
         // Register the layout paths for the view
         $paths = new \SplPriorityQueue;
 
+        $themeOverride = JPATH_THEMES . '/' . $app->get('theme') . '/html/' . strtolower($viewName);
+        if (is_dir($themeOverride)) {
+            $paths->insert($themeOverride, 'normal');
+        }
+
         $paths->insert(JPATH_ROOT . '/src/Cobalt/View/' . ucfirst($viewName) . '/tmpl', 'normal');
 
         $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
