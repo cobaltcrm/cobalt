@@ -13,23 +13,22 @@ $app = JFactory::getApplication();
 
 ?>
 <form class="print_form">
-
-    <?php if ($app->input->get('view')!="print") { ?>
-        <div class="btn-group pull-right">
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="addTaskEvent('task');" class="btn"><i class="icon-tasks"></i></a>
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="addTaskEvent('event');" class="btn"><i class="icon-calendar"></i></a>
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" class="btn"><i class="icon-print"></i></a>
-            <a class="btn dropdown-toggle" rel="tooltip" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" href="javascript:void(0);" id="templates_link"><i class="icon-list"></i></a>
-            <ul class="dropdown-menu padding">
-                <?php $templates = CobaltHelper::getTaskTemplates($app->input->get('layout'));
-                    if ( count($templates) > 0 ) { foreach ($templates as $template) { ?>
-                        <li><a href="javascript:void(0)" onclick="createTemplate(<?php echo $template['id']; ?>)"><?php echo $template['name']; ?></a>
-                    <?php } } else { ?>
-                        <li><?php echo TextHelper::_('COBALT_NO_TEMPLATES_HAVE_BEEN_CREATED'); ?></li>
-                <?php } ?>
-            </ul>
-        </div>
-    <?php } ?>
+<?php if ($app->input->get('view')!="print") { ?>
+<div class="btn-group pull-right">
+    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="addTaskEvent('task');"><i class="icon-tasks"></i></a>
+    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="addTaskEvent('event');"><i class="icon-calendar"></i></a>
+    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)"><i class="icon-print"></i></a>
+    <button rel="tooltip" class="btn btn-small btn-default dropdown-toggle" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" id="templates_link"><i class="icon-list"></i></a>
+    <ul class="dropdown-menu padding">
+        <?php $templates = CobaltHelper::getTaskTemplates($app->input->get('layout'));
+            if ( count($templates) > 0 ) { foreach ($templates as $template) { ?>
+                <li><a href="javascript:void(0)" onclick="createTemplate(<?php echo $template['id']; ?>)"><?php echo $template['name']; ?></a>
+            <?php } } else { ?>
+                <li><?php echo TextHelper::_('COBALT_NO_TEMPLATES_HAVE_BEEN_CREATED'); ?></li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
 
 <h3><?php echo ucwords(TextHelper::_('COBALT_TASKS_AND_EVENTS')); ?></h3>
 
@@ -69,25 +68,22 @@ $app = JFactory::getApplication();
         </span>
     <?php } ?>
     </div>
-<div id="task_container">
+    <div id="task_container">
         <div id="task_list">
             <?php
                  $task_list = ViewHelper::getView('events','event_listings','phtml',array('events'=>$this->events));
                  echo $task_list->render();
             ?>
         </div>
-
-<div id="edit_task" style="display:none;">
-</div>
-
-<div id="edit_event" style="display:none;">
-</div>
-
-</div>
+        <div id="edit_task" style="display:none;">
+        </div>
+        <div id="edit_event" style="display:none;">
+        </div>
+    </div>
 </div>
 <?php if ($app->input->get('view')!="print") { ?>
-    <div class="text-center" id="controls_area_bottom">
-        <a class="btn" href="<?php echo JRoute::_('index.php?view=events'); ?>"><?php echo ucwords(TextHelper::_('COBALT_SEE_ALL_TASKS')); ?></a>
-    </div>
+<div class="text-center" id="controls_area_bottom">
+    <a class="btn" href="<?php echo JRoute::_('index.php?view=events'); ?>"><?php echo ucwords(TextHelper::_('COBALT_SEE_ALL_TASKS')); ?></a>
+</div>
 <?php } ?>
 </form>
