@@ -14,8 +14,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h1>
 </div>
 
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
     <ul class="goal_float_list unstyled" id="goal_floats_left">
         <li class="widget clearfix">
             <h3><?php echo ucwords(TextHelper::_('COBALT_LEADERBOARD')); ?></h3>
@@ -105,7 +105,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </ul>
 </div>
 
-<div class="span6">
+<div class="col-lg-6">
     <ul class="goal_float_list unstyled" id="goal_floats_right">
         <li class="widget clearfix">
                 <h3><?php echo TextHelper::_('COBALT_INDIVIDUAL_GOALS'); ?></h3>

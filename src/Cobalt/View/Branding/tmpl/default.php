@@ -11,12 +11,12 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-lg-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-lg-9">
                     <form enctype="multipart/form-data" action="index.php?view=branding" method="post" name="adminForm" id="adminForm">
                         <fieldset class="adminform">
                             <legend><h3><?php echo JText::_("COBALT_PREVIEW"); ?></h3></legend>

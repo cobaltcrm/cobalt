@@ -34,7 +34,7 @@ $app = JFactory::getApplication();
                 <th></th>
                 <th><input class="input input-small filter_input" name="deal_name" type="text" value="<?php echo $deal_filter; ?>"  /></th>
                 <th>
-                    <select class="span1 filter_input" name="owner_id" id="owner_id">
+                    <select class="col-lg-1 filter_input" name="owner_id" id="owner_id">
                         <?php $user_filter = $this->state->get('Deal.sales_pipeline_owner_id'); ?>
                         <?php if ( UsersHelper::getRole() != 'basic' ) { ?>
                             <?php   $all = array();
@@ -58,14 +58,14 @@ $app = JFactory::getApplication();
                 </th>
                 <th></th>
                 <th>
-                    <select class="span1 filter_input" name="deal_amount">
+                    <select class="col-lg-1 filter_input" name="deal_amount">
                         <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                         <?php $amount_filter = $this->state->get('Deal.sales_pipeline_amount'); ?>
                         <?php echo JHtml::_('select.options', $this->deal_amounts, 'value', 'text', $amount_filter, true); ?>
                     </select>
                 </th>
                 <th>
-                    <select class="span1 filter_input" name="stage_id">
+                    <select class="col-lg-1 filter_input" name="stage_id">
                         <?php $stage_filter = $this->state->get('Deal.sales_pipeline_stage_id'); ?>
                         <?php $base = array('all'=>TextHelper::_('COBALT_ALL_ACTIVE_STAGES')); ?>
                         <?php $this->deal_stages = $base + $this->deal_stages; ?>
@@ -74,26 +74,26 @@ $app = JFactory::getApplication();
                 </th>
                 <th></th>
                 <th>
-                    <select class="span1 filter_input" name="status_id">
+                    <select class="col-lg-1 filter_input" name="status_id">
                         <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                         <?php $status_filter = $this->state->get('Deal.sales_pipeline_status_id'); ?>
                         <?php echo JHtml::_('select.options', $this->deal_statuses, 'value', 'text', $status_filter, true); ?>
                     </select>
                 </th>
                 <th>
-                    <select class="span1 filter_input" name="expected_close">
+                    <select class="col-lg-1 filter_input" name="expected_close">
                          <?php $expected_close_filter = $this->state->get('Deal.sales_pipeline_expected_close'); ?>
                         <?php echo JHtml::_('select.options', $this->deal_close_dates, 'value', 'text', $expected_close_filter, true); ?>
                     </select>
                 </th>
                 <th>
-                    <select class="span1 filter_input" name="modified">
+                    <select class="col-lg-1 filter_input" name="modified">
                         <?php $modified_filter = $this->state->get('Deal.sales_pipeline_modified'); ?>
                         <?php echo JHtml::_('select.options', $this->modified_dates, 'value', 'text', $modified_filter, true); ?>
                     </select>
                 </th>
                 <th>
-                    <select class="span1 filter_input" name="created">
+                    <select class="col-lg-1 filter_input" name="created">
                         <?php $created_filter = $this->state->get('Deal.sales_pipeline_created'); ?>
                         <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                         <?php echo JHtml::_('select.options', $this->created_dates, 'value', 'text', $created_filter, true); ?>

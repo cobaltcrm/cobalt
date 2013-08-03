@@ -45,7 +45,7 @@ $deal = $this->dealList[0];
 
 <div class="row">
 
-    <div class="span8">
+    <div class="col-lg-8">
 
         <div class="page-header">
             <div class="btn-group pull-right">
@@ -86,8 +86,8 @@ $deal = $this->dealList[0];
                 background-image: linear-gradient(to bottom,<?php echo $light; ?>,<?php echo $dark; ?>);
                 background-color:<?php echo $light; ?> !important; width: <?php echo $deal['percent']; ?>%;"></div>
         </div>
-        <div class="row-fluid">
-            <div class="span4 text-center">
+        <div class="row">
+            <div class="col-lg-4 text-center">
                 <div class="text-center well well-small">
                     <?php echo TextHelper::_('COBALT_EDIT_AMOUNT'); ?>
                     <span class="editable parent" id="editable_amount_container">
@@ -125,7 +125,7 @@ $deal = $this->dealList[0];
                     </div>
                 </div>
             </div>
-            <div class="span4 text-center">
+            <div class="col-lg-4 text-center">
                 <div class="text-center well well-small">
                     <?php echo TextHelper::_('COBALT_EDIT_PROBABILITY'); ?>
                     <span class="editable parent" id="editable_probability_container">
@@ -149,7 +149,7 @@ $deal = $this->dealList[0];
                     </div>
                 </div>
             </div>
-            <div class="span4 text-center">
+            <div class="col-lg-4 text-center">
                 <div class="text-center well well-small">
                     <?php $style = "style='display:none;'"; ?>
                     <?php if (in_array($deal['stage_id'],$this->closed_stages) ) {
@@ -249,7 +249,7 @@ $deal = $this->dealList[0];
             </table>
         </div>
     </div>
-    <div class="span4">
+    <div class="col-lg-4">
         <div class="widget">
             <h3><?php echo ucwords(TextHelper::_('COBALT_DEAL_CONTACTS')); ?></h3>
             <?php echo $this->contact_info->render(); ?>

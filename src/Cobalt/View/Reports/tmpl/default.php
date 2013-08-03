@@ -42,8 +42,8 @@ use Cobalt\Helper\TextHelper;
         </span>
     <?php } ?>
 </div>
-<div class="row-fluid" id="sales_dashboard_graphs">
-    <div class="span6">
+<div class="row" id="sales_dashboard_graphs">
+    <div class="col-lg-6">
         <ul class="dash_float_list unstyled" id="dash_floats_right">
             <li class="graph widget">
                 <div class="btn-group pull-right">
@@ -61,7 +61,7 @@ use Cobalt\Helper\TextHelper;
             </li>
         </ul>
     </div>
-    <div class="span6">
+    <div class="col-lg-6">
         <ul class="dash_float_list unstyled" id="dash_floats_right">
             <li class="graph widget">
                 <div id="yearly_commissions"></div>

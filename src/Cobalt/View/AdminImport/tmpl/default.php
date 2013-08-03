@@ -12,12 +12,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-lg-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-lg-9">
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="active"><a data-toggle="tab" href="#import_begin"><?php echo JText::_('COBALT_IMPORT_BEGIN'); ?></a></li>
                         <li><a data-toggle="tab" href="#import_review"><?php echo JText::_('COBALT_IMPORT_REVIEW'); ?></a></li>

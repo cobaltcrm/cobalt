@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
 
-    <div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component" class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></h3>

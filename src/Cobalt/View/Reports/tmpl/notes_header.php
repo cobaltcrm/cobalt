@@ -40,7 +40,7 @@ $layout = $app->input->get('layout');
                 <th><input class="input input-small filter_input" name="deal_name" type="text" value="<?php echo $deal_filter; ?>"></th>
                 <th><input class="input input-small filter_input" name="person_name" type="text" value="<?php echo $person_filter; ?>"></th>
                 <th>
-                   <select class="span1 filter_input" name="owner_id" id="owner_id">
+                   <select class="col-lg-1 filter_input" name="owner_id" id="owner_id">
                         <?php $user_filter = $this->state->get('Note.reports.notes.owner_id'); ?>
                         <?php if ( UsersHelper::getRole() != 'basic' ) { ?>
                             <?php   $all = array();
@@ -63,14 +63,14 @@ $layout = $app->input->get('layout');
                     </select>
                 </th>
                 <th>
-                    <select class="span1 filter_input" name="created">
+                    <select class="col-lg-1 filter_input" name="created">
                         <?php $created_filter = $this->state->get('Note.'.$view.'.'.$layout.'.created'); ?>
                         <option value=""><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                         <?php echo JHtml::_('select.options', $this->created_dates, 'value', 'text', $created_filter, true); ?>
                     </select>
                 </th>
                 <th>
-                    <select class="span1 filter_input" name="category_id">
+                    <select class="col-lg-1 filter_input" name="category_id">
                         <?php $category_filter = $this->state->get('Note.'.$view.'.'.$layout.'.category_id'); ?>
                         <option value=""><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                         <?php echo JHtml::_('select.options',$this->categories, 'id', 'name', $category_filter, true); ?>

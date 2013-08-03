@@ -21,7 +21,7 @@ $company = $this->companies[0];?>
 </script>
 
 <!-- COMPANY EDIT MODAL -->
-<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company['id']; ?>" class="modal hide fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company['id']; ?>" class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_COMPANY')); ?></h3>
@@ -37,10 +37,10 @@ $company = $this->companies[0];?>
 
 <iframe id="hidden" name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
 
-<div class="row-fluid">
+<div class="row">
 
     <!-- LEFT MODULE -->
-    <div class="span8">
+    <div class="col-lg-8">
         <div class="page-header">
             <!-- ACTIONS -->
             <div class="btn-group pull-right">
@@ -63,17 +63,17 @@ $company = $this->companies[0];?>
             <h1><?php echo $company['name']; ?></h1>
         </div>
 
-        <div class="row-fluid">
-            <div class="span4 well well-small">
+        <div class="row">
+            <div class="col-lg-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_TOTAL_PIPELINE')); ?>:
                     <span class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
             </div>
-            <div class="span4 well well-small">
+            <div class="col-lg-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_DEALS')); ?>:
                     <span class="text-success"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
             </div>
 
-            <div class="span4 well well-small">
+            <div class="col-lg-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_CONTACTED')); ?>:
                     <?php echo DateHelper::formatDate($company['modified']); ?>
             </div>
@@ -135,7 +135,7 @@ $company = $this->companies[0];?>
     </div>
 
     <!-- RIGHT MODULE -->
-    <div class="span4">
+    <div class="col-lg-4">
         <div class="widget" id="details">
 
             <!-- COMPANY DETAILS -->
@@ -285,7 +285,7 @@ $company = $this->companies[0];?>
 <div id="message" style="display:none;"><?php echo TextHelper::_('COBALT_SUCCESS_MESSAGE'); ?></div>
 
 <!-- PERSON ASSOCIATION -->
-<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_person_dialog'>
+<div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_person_dialog'>
     <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_PERSON'); ?></h3></div>
     <div class="modal-body text-center">
         <div class="input-append">
@@ -297,7 +297,7 @@ $company = $this->companies[0];?>
 </div>
 
 <!--- DEAL ASSOCIATION -->
-<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
+<div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
     <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_DEAL'); ?></h3></div>
     <div class="modal-body text-center">
         <form id="deal">

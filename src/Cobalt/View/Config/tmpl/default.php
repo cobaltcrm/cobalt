@@ -12,12 +12,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-lg-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-lg-9">
                     <form action="index.php?view=config" method="post" name="adminForm" id="adminForm" class="form-validate"  >
                         <ul class="nav nav-tabs" id="myTab">
                             <li class="active"><a data-toggle="tab" href="#locale"><?php echo JText::_('COBALT_LOCALE'); ?></a></li>

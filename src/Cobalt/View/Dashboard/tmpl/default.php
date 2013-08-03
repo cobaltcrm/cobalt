@@ -20,8 +20,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <iframe name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
 
-<div class="row-fluid">
-    <div class="span4">
+<div class="row">
+    <div class="col-lg-4">
         <ul class="dash_float_list unstyled" id="dash_floats_left">
             <li class="widget">
                 <div class="dash_float" id="com_cobalt_tasks_events">
@@ -58,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
        </ul>
     </div>
-    <div class="span8">
+    <div class="col-lg-8">
         <ul class="dash_float_list unstyled" id="dash_floats_right">
             <li class="widget">
                 <div class="dash_float" id="sales_container">

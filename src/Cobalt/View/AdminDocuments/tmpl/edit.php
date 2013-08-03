@@ -11,10 +11,10 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['help_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-lg-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <h3><?php echo $this->header; ?></h3>
                 <form action="index.php?view=documents" method="post" name="adminForm" id="adminForm" class="form-validate" >
                     <table>

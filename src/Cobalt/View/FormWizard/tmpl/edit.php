@@ -12,14 +12,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-lg-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-lg-9">
                     <form action="index.php?view=formwizard" method="post" name="adminForm" id="adminForm" class="form-validate" >
-                        <div class="row-fluid">
+                        <div class="row">
                             <legend><h2><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FORM'); ?></h2></legend>
                             <ul class="unstyled adminformlist cobaltadminlist">
                                 <li>
@@ -63,7 +63,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo JHtml::_('form.token'); ?>
                             </div>
                         </div>
-                        <div class="modal hide fade in" id="show_fields_button_modal">
+                        <div class="modal fade in" id="show_fields_button_modal">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">×</button>
                                 <h3><?php echo JText::_('COBALT_SELECT_FIELDS'); ?></h3>
@@ -72,7 +72,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php if ( isset($this->fields) && count($this->fields) > 0 ) {
                                     foreach ($this->fields as $type => $fields) { ?>
                                     <div id="<?php echo $type; ?>_fields" class="field_checkbox_container">
-                                        <div class="span5">
+                                        <div class="col-lg-5">
                                         <ul class="unstyled">
                                                 <?php
                                                 $i=0;
@@ -81,7 +81,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                 <?php if ($row == 0 && $i != 0) { ?>
                                                 </ul>
                                                 </div>
-                                                <div class="span5">
+                                                <div class="col-lg-5">
                                                 <ul class="unstyled">
                                                 <?php } ?>
                                                 <?php $checked = isset($this->form) && is_array($this->form['fields']) && in_array($field['name'],$this->form['fields']) ? "checked='checked'" : ""; ?>

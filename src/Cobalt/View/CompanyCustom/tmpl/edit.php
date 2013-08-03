@@ -18,15 +18,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
 
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-    <div class="span12" id="content">
+    <div class="row">
+    <div class="col-lg-12" id="content">
     <div id="system-message-container"></div>
-        <div class="row-fluid">
+        <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-        <div class="span9">
+        <div class="col-lg-9">
 
 <form action="index.php?view=companycustom" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-    <div class="row-fluid">
+    <div class="row">
             <legend><h3><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FIELD'); ?></h3></legend>
                     <label><b>Name</b></label>
                     <input type="text" class="inputbox required" name="name" value="<?php echo $this->custom['name']; ?>" />

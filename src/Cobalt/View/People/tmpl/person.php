@@ -42,10 +42,10 @@ $person = $this->people[0];
     </div>
 </div>
 <iframe id="hidden" name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
-<div class="row-fluid">
+<div class="row">
 
     <!-- LEFT MODULES AND DOCKS -->
-    <div class="span8">
+    <div class="col-lg-8">
 
         <div class="page-header">
             <!-- ACTIONS -->
@@ -85,7 +85,7 @@ $person = $this->people[0];
         </div>
 
     <!-- EDITABLE FIELDS AND INFO -->
-    <div class="row-fluid">
+    <div class="row">
         <div class="columncontainer">
             <div class="threecolumn">
                 <div class="small_info first">
@@ -268,7 +268,7 @@ $person = $this->people[0];
 </div>
 
     <!-- RIGHT MODULES AND DOCKS -->
-    <div class="span4">
+    <div class="col-lg-4">
 
             <div class="widget" id="details">
                 <h3><?php echo ucwords(TextHelper::_('COBALT_CONTACT_INFO')); ?></h3>
