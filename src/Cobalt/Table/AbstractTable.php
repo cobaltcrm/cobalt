@@ -11,7 +11,6 @@
 namespace Cobalt\Table;
 
 use Cobalt\Container;
-use JFactory;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseQuery;
 
@@ -65,9 +64,9 @@ class AbstractTable implements \IteratorAggregate
      * be overridden by child classes to explicitly set the table and key fields
      * for a particular database table.
      *
-     * @param   string          $table  Name of the table to model.
-     * @param   mixed           $keys   Name of the primary key field in the table or array of field names that compose the primary key.
-     * @param   DatabaseDriver  $db     DatabaseDriver object.
+     * @param string         $table Name of the table to model.
+     * @param mixed          $keys  Name of the primary key field in the table or array of field names that compose the primary key.
+     * @param DatabaseDriver $db    DatabaseDriver object.
      *
      * @since   1.0
      */
@@ -82,16 +81,11 @@ class AbstractTable implements \IteratorAggregate
         $this->tableFields = new \stdClass;
 
         // Set the key to be an array.
-        if (is_null($keys))
-        {
+        if (is_null($keys)) {
             $keys = array('id');
-        }
-        elseif (is_string($keys))
-        {
+        } elseif (is_string($keys)) {
             $keys = array($keys);
-        }
-        elseif (is_object($keys))
-        {
+        } elseif (is_object($keys)) {
             $keys = (array) $keys;
         }
 
@@ -102,10 +96,8 @@ class AbstractTable implements \IteratorAggregate
         // Initialise the table properties.
         $fields = $this->getFields();
 
-        if ($fields)
-        {
-            foreach ($fields as $name => $v)
-            {
+        if ($fields) {
+            foreach ($fields as $name => $v) {
                 // Add the field if it is not already present.
                 $this->tableFields->$name = null;
             }
@@ -115,10 +107,10 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Magic setter to set a table field.
      *
-     * @param   string  $key    The key name.
-     * @param   mixed   $value  The value to set.
+     * @param string $key   The key name.
+     * @param mixed  $value The value to set.
      *
-     * @return  boolean  False if property doesn't exist, true if it does and is set.
+     * @return boolean False if property doesn't exist, true if it does and is set.
      *
      * @since   1.0
      */
@@ -128,6 +120,7 @@ class AbstractTable implements \IteratorAggregate
             return false;
         } else {
             $this->tableFields->$key = $value;
+
             return true;
         }
     }
@@ -135,17 +128,16 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Magic getter to get a table field.
      *
-     * @param   string  $key  The key name.
+     * @param string $key The key name.
      *
-     * @return  mixed
+     * @return mixed
      *
      * @since   1.0
-     * @throws  \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __get($key)
     {
-        if (isset($this->tableFields->$key) || is_null($this->tableFields->$key))
-        {
+        if (isset($this->tableFields->$key) || is_null($this->tableFields->$key)) {
             return $this->tableFields->$key;
         }
 
@@ -160,8 +152,8 @@ class AbstractTable implements \IteratorAggregate
      * property name.  The rows that will be reordered are those whose value matches
      * the AbstractDatabaseTable instance for the property specified.
      *
-     * @param   mixed  $src     An associative array or object to bind to the AbstractDatabaseTable instance.
-     * @param   mixed  $ignore  An optional array or space separated list of properties
+     * @param mixed $src    An associative array or object to bind to the AbstractDatabaseTable instance.
+     * @param mixed $ignore An optional array or space separated list of properties
      *                          to ignore while binding.
      *
      * @return  $this  Method allows chaining
@@ -186,42 +178,36 @@ class AbstractTable implements \IteratorAggregate
      * method only binds properties that are publicly accessible and optionally
      * takes an array of properties to ignore when binding.
      *
-     * @param   mixed  $src     An associative array or object to bind to the AbstractDatabaseTable instance.
-     * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
+     * @param mixed $src    An associative array or object to bind to the AbstractDatabaseTable instance.
+     * @param mixed $ignore An optional array or space separated list of properties to ignore while binding.
      *
      * @return  $this  Method allows chaining
      *
      * @since   1.0
-     * @throws  \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function bind($src, $ignore = array())
     {
         // If the source value is not an array or object return false.
-        if (!is_object($src) && !is_array($src))
-        {
+        if (!is_object($src) && !is_array($src)) {
             throw new \InvalidArgumentException(sprintf('%s::bind(*%s*)', get_class($this), gettype($src)));
         }
 
         // If the source value is an object, get its accessible properties.
-        if (is_object($src))
-        {
+        if (is_object($src)) {
             $src = get_object_vars($src);
         }
 
         // If the ignore value is a string, explode it over spaces.
-        if (!is_array($ignore))
-        {
+        if (!is_array($ignore)) {
             $ignore = explode(' ', $ignore);
         }
 
         // Bind the source value, excluding the ignored fields.
-        foreach ($this->tableFields as $k => $v)
-        {
+        foreach ($this->tableFields as $k => $v) {
             // Only process fields not in the ignore array.
-            if (!in_array($k, $ignore))
-            {
-                if (isset($src[$k]))
-                {
+            if (!in_array($k, $ignore)) {
+                if (isset($src[$k])) {
                     $this->tableFields->$k = $src[$k];
                 }
             }
@@ -234,59 +220,49 @@ class AbstractTable implements \IteratorAggregate
      * Method to load a row from the database by primary key and bind the fields
      * to the AbstractDatabaseTable instance properties.
      *
-     * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
+     * @param mixed $keys An optional primary key value to load the row by, or an array of fields to match.  If not
      *                           set the instance property value is used.
-     * @param   boolean  $reset  True to reset the default values before loading the new row.
+     * @param boolean $reset True to reset the default values before loading the new row.
      *
      * @return  $this  Method allows chaining
      *
      * @since   1.0
-     * @throws  \RuntimeException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \UnexpectedValueException
+     * @throws \InvalidArgumentException
      */
     public function load($keys = null, $reset = true)
     {
-        if (empty($keys))
-        {
+        if (empty($keys)) {
             $empty = true;
             $keys  = array();
 
             // If empty, use the value of the current key
-            foreach ($this->tableKeys as $key)
-            {
+            foreach ($this->tableKeys as $key) {
                 $empty      = $empty && empty($this->$key);
                 $keys[$key] = $this->$key;
             }
 
             // If empty primary key there's is no need to load anything
-            if ($empty)
-            {
+            if ($empty) {
                 return $this;
             }
-        }
-        elseif (!is_array($keys))
-        {
+        } elseif (!is_array($keys)) {
             // Load by primary key.
             $keyCount = count($this->tableKeys);
 
-            if ($keyCount)
-            {
-                if ($keyCount > 1)
-                {
+            if ($keyCount) {
+                if ($keyCount > 1) {
                     throw new \InvalidArgumentException('Table has multiple primary keys specified, only one primary key value provided.');
                 }
 
                 $keys = array($this->getKeyName() => $keys);
-            }
-            else
-            {
+            } else {
                 throw new \RuntimeException('No table keys defined.');
             }
         }
 
-        if ($reset)
-        {
+        if ($reset) {
             $this->reset();
         }
 
@@ -295,17 +271,13 @@ class AbstractTable implements \IteratorAggregate
         $query->select('*');
         $query->from($this->db->quoteName($this->tableName));
 
-        foreach ($keys as $field => $value)
-        {
+        foreach ($keys as $field => $value) {
             // Check that $field is in the table.
 
-            if (isset($this->tableFields->$field) || is_null($this->tableFields->$field))
-            {
+            if (isset($this->tableFields->$field) || is_null($this->tableFields->$field)) {
                 // Add the search tuple to the query.
                 $query->where($this->db->quoteName($field) . ' = ' . $this->db->quote($value));
-            }
-            else
-            {
+            } else {
                 throw new \UnexpectedValueException(sprintf('Missing field in database: %s &#160; %s.', get_class($this), $field));
             }
         }
@@ -315,8 +287,7 @@ class AbstractTable implements \IteratorAggregate
         $row = $this->db->loadAssoc();
 
         // Check that we have a result.
-        if (empty($row))
-        {
+        if (empty($row)) {
             throw new \RuntimeException(__METHOD__ . ' can not bind.');
         }
 
@@ -327,12 +298,12 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Method to delete a row from the database table by primary key value.
      *
-     * @param   mixed  $pKey  An optional primary key value to delete.  If not set the instance property value is used.
+     * @param mixed $pKey An optional primary key value to delete.  If not set the instance property value is used.
      *
      * @return  $this  Method allows chaining
      *
      * @since   1.0
-     * @throws  \UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function delete($pKey = null)
     {
@@ -341,8 +312,7 @@ class AbstractTable implements \IteratorAggregate
         $pKey = (is_null($pKey)) ? $this->$key : $pKey;
 
         // If no primary key is given, return false.
-        if ($pKey === null)
-        {
+        if ($pKey === null) {
             throw new \UnexpectedValueException('Null primary key not allowed.');
         }
 
@@ -362,18 +332,16 @@ class AbstractTable implements \IteratorAggregate
      * definition. It will ignore the primary key as well as any private class
      * properties.
      *
-     * @return  void
+     * @return void
      *
      * @since   1.0
      */
     public function reset()
     {
         // Get the default values for the class from the table.
-        foreach ($this->getFields() as $k => $v)
-        {
+        foreach ($this->getFields() as $k => $v) {
             // If the property is not the primary key, reset it.
-            if (!in_array($k, $this->tableKeys))
-            {
+            if (!in_array($k, $this->tableKeys)) {
                 $this->$k = $v->Default;
             }
         }
@@ -401,7 +369,7 @@ class AbstractTable implements \IteratorAggregate
      * a new row will be inserted into the database with the properties from the
      * AbstractDatabaseTable instance.
      *
-     * @param   boolean  $updateNulls  True to update fields even if they are null.
+     * @param boolean $updateNulls True to update fields even if they are null.
      *
      * @return  $this  Method allows chaining
      *
@@ -410,12 +378,9 @@ class AbstractTable implements \IteratorAggregate
     public function store($updateNulls = false)
     {
         // If a primary key exists update the object, otherwise insert it.
-        if ($this->hasPrimaryKey())
-        {
+        if ($this->hasPrimaryKey()) {
             $this->db->updateObject($this->tableName, $this->tableFields, $this->tableKeys, $updateNulls);
-        }
-        else
-        {
+        } else {
             $this->db->insertObject($this->tableName, $this->tableFields, $this->tableKeys[0]);
         }
 
@@ -425,23 +390,19 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Validate that the primary key has been set.
      *
-     * @return  boolean  True if the primary key(s) have been set.
+     * @return boolean True if the primary key(s) have been set.
      *
      * @since   1.0
      */
     public function hasPrimaryKey()
     {
-        if ($this->autoIncrement)
-        {
+        if ($this->autoIncrement) {
             $empty = true;
 
-            foreach ($this->tableKeys as $key)
-            {
+            foreach ($this->tableKeys as $key) {
                 $empty = $empty && !$this->$key;
             }
-        }
-        else
-        {
+        } else {
             $query = $this->db->getQuery(true);
             $query->select('COUNT(*)');
             $query->from($this->tableName);
@@ -450,12 +411,9 @@ class AbstractTable implements \IteratorAggregate
             $this->db->setQuery($query);
             $count = $this->db->loadResult();
 
-            if ($count == 1)
-            {
+            if ($count == 1) {
                 $empty = false;
-            }
-            else
-            {
+            } else {
                 $empty = true;
             }
         }
@@ -466,8 +424,8 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Method to append the primary keys for this table to a query.
      *
-     * @param   DatabaseQuery  $query  A query object to append.
-     * @param   mixed          $pk     Optional primary key parameter.
+     * @param DatabaseQuery $query A query object to append.
+     * @param mixed         $pk    Optional primary key parameter.
      *
      * @return  $this  Method allows chaining
      *
@@ -475,24 +433,18 @@ class AbstractTable implements \IteratorAggregate
      */
     public function appendPrimaryKeys($query, $pk = null)
     {
-        if (is_null($pk))
-        {
-            foreach ($this->tableKeys as $k)
-            {
+        if (is_null($pk)) {
+            foreach ($this->tableKeys as $k) {
                 $query->where($this->db->quoteName($k) . ' = ' . $this->db->quote($this->$k));
             }
-        }
-        else
-        {
-            if (is_string($pk))
-            {
+        } else {
+            if (is_string($pk)) {
                 $pk = array($this->tableKeys[0] => $pk);
             }
 
             $pk = (object) $pk;
 
-            foreach ($this->tableKeys AS $k)
-            {
+            foreach ($this->tableKeys AS $k) {
                 $query->where($this->db->quoteName($k) . ' = ' . $this->db->quote($pk->$k));
             }
         }
@@ -503,24 +455,20 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Method to get the primary key field name for the table.
      *
-     * @param   boolean  $multiple  True to return all primary keys (as an array) or false to return just the first one (as a string).
+     * @param boolean $multiple True to return all primary keys (as an array) or false to return just the first one (as a string).
      *
-     * @return  mixed  Array of primary key field names or string containing the first primary key field.
+     * @return mixed Array of primary key field names or string containing the first primary key field.
      *
      * @since   1.0
      */
     public function getKeyName($multiple = false)
     {
         // Count the number of keys
-        if (count($this->tableKeys))
-        {
-            if ($multiple)
-            {
+        if (count($this->tableKeys)) {
+            if ($multiple) {
                 // If we want multiple keys, return the raw array.
                 return $this->tableKeys;
-            }
-            else
-            {
+            } else {
                 // If we want the standard method, just return the first key.
                 return $this->tableKeys[0];
             }
@@ -532,22 +480,20 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Get the columns from database table.
      *
-     * @return  mixed  An array of the field names, or false if an error occurs.
+     * @return mixed An array of the field names, or false if an error occurs.
      *
      * @since   1.0
-     * @throws  \UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function getFields()
     {
         static $cache = null;
 
-        if ($cache === null)
-        {
+        if ($cache === null) {
             // Lookup the fields for this table only once.
             $fields = $this->db->getTableColumns($this->tableName, false);
 
-            if (empty($fields))
-            {
+            if (empty($fields)) {
                 throw new \UnexpectedValueException(sprintf('No columns found for %s table', $this->tableName));
             }
 
@@ -560,7 +506,7 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Get the table name.
      *
-     * @return  string
+     * @return string
      *
      * @since   1.0
      */
@@ -572,7 +518,7 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Get an iterator object.
      *
-     * @return  \ArrayIterator
+     * @return \ArrayIterator
      *
      * @since   1.0
      */
@@ -584,7 +530,7 @@ class AbstractTable implements \IteratorAggregate
     /**
      * Clone the table.
      *
-     * @return  \ArrayIterator
+     * @return \ArrayIterator
      *
      * @since   1.0
      */

@@ -31,9 +31,9 @@ class CobaltRouter extends Router
     /**
      * Constructor.
      *
-     * @param   Input                $input  An optional input object from which to derive the route.  If none
+     * @param Input $input An optional input object from which to derive the route.  If none
      *                                       is given than the input from the application object will be used.
-     * @param   AbstractApplication  $app    An optional application object to inject to controllers
+     * @param AbstractApplication $app An optional application object to inject to controllers
      *
      * @since   1.0
      */
@@ -47,12 +47,12 @@ class CobaltRouter extends Router
     /**
      * Get a ControllerInterface object for a given name.
      *
-     * @param   string  $name  The controller name (excluding prefix) for which to fetch and instance.
+     * @param string $name The controller name (excluding prefix) for which to fetch and instance.
      *
-     * @return  ControllerInterface
+     * @return ControllerInterface
      *
      * @since   1.0
-     * @throws  \RuntimeException
+     * @throws \RuntimeException
      */
     protected function fetchController($name)
     {
@@ -60,23 +60,19 @@ class CobaltRouter extends Router
         $class = $this->controllerPrefix . ucfirst($name);
 
         // Check for the requested controller.
-        if ($class === $this->default || !class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface'))
-        {
+        if ($class === $this->default || !class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface')) {
             // See if there's an action class in the libraries if we aren't calling the default task
             $task = $this->input->getCmd('task');
 
-            if ($task && $task != 'default')
-            {
+            if ($task && $task != 'default') {
                 $class = 'Cobalt\\Controller\\' . ucfirst($task);
             }
 
-            if (!class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface'))
-            {
+            if (!class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface')) {
                 // Look for a default controller for the component
                 $class = 'Cobalt\\Controller\\DefaultController';
 
-                if (!class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface'))
-                {
+                if (!class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface')) {
                     // Nothing found. Panic.
                     throw new \RuntimeException(sprintf('Controller not found for %s task', $task));
                 }

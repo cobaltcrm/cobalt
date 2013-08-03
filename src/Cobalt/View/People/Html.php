@@ -21,9 +21,7 @@ use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\PeopleHelper;
-use Cobalt\Helper\ConfigHelper;
 use Cobalt\Helper\ViewHelper;
-use Cobalt\Helper\MailinglistsHelper;
 use Cobalt\Helper\TemplateHelper;
 use Joomla\View\AbstractHtmlView;
 

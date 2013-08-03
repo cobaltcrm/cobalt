@@ -373,8 +373,7 @@ final class Application extends AbstractWebApplication
             $router = new CobaltRouter($this->input, $this);
             $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
 
-            if (!$maps)
-            {
+            if (!$maps) {
                 throw new \RuntimeException('Invalid router file.', 500);
             }
 

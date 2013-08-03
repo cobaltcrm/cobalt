@@ -24,7 +24,6 @@ use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\ViewHelper;
-use Cobalt\Helper\TranscriptlistsHelper;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access

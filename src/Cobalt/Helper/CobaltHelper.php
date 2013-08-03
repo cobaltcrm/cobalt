@@ -19,22 +19,22 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
  {
     public static function percent2Color($value,$brightness = 255, $max = 100,$min = 0, $thirdColorHex = '00')
     {
-            // Calculate first and second color (Inverse relationship)
-            $value = number_format($value);
-            $first = (1-($value/$max))*$brightness;
-            $second = ($value/$max)*$brightness;
+        // Calculate first and second color (Inverse relationship)
+        $value = number_format($value);
+        $first = (1-($value/$max))*$brightness;
+        $second = ($value/$max)*$brightness;
 
-            // Find the influence of the middle color (yellow if 1st and 2nd are red and green)
-            $diff = abs($first-$second);
-            $influence = ($brightness-$diff)/2;
-            $first = intval($first + $influence);
-            $second = intval($second + $influence);
+        // Find the influence of the middle color (yellow if 1st and 2nd are red and green)
+        $diff = abs($first-$second);
+        $influence = ($brightness-$diff)/2;
+        $first = intval($first + $influence);
+        $second = intval($second + $influence);
 
-            // Convert to HEX, format and return
-            $firstHex = str_pad(dechex($first),2,0,STR_PAD_LEFT);
-            $secondHex = str_pad(dechex($second),2,0,STR_PAD_LEFT);
+        // Convert to HEX, format and return
+        $firstHex = str_pad(dechex($first),2,0,STR_PAD_LEFT);
+        $secondHex = str_pad(dechex($second),2,0,STR_PAD_LEFT);
 
-            return $firstHex . $secondHex . $thirdColorHex ;
+        return $firstHex . $secondHex . $thirdColorHex ;
     }
 
     /**
@@ -45,12 +45,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      */
     public static function getTaskTemplates($type,$id=null)
     {
-            $db = JFactory::getDBO();
-            $query = $db->getQuery(true);
-            $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
-            $db->setQuery($query);
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
+        $db->setQuery($query);
 
-            return $db->loadAssocList();
+        return $db->loadAssocList();
     }
 
     public static function getGravatar($email,$size = null,$image = false, $default=null)
@@ -225,7 +225,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $app = JFactory::getApplication();
 
         $document = JFactory::getDocument();
-        $document->addScriptDeclaration('var users='.json_encode(CobaltHelperUsers::getAllSharedUsers()).';');
+        $document->addScriptDeclaration('var users='.json_encode(UsersHelper::getAllSharedUsers()).';');
 
         $html = "<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='share_item_dialog'>";
         $html .= '<div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3>'.TextHelper::_('COBALT_SHARING_ITEM').'</h3></div>';
@@ -241,7 +241,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $itemId = $app->input->get('id');
         $itemType = $app->input->get('layout');
 
-        $users = CobaltHelperUsers::getItemSharedUsers($itemId,$itemType);
+        $users = UsersHelper::getItemSharedUsers($itemId,$itemType);
         if ( count ( $users ) > 0 ) {
             foreach ($users as $user) {
                 $html .= '<div id="shared_user_'.$user->value.'"><i class="icon-user"></i>'.$user->label." - <a class='btn btn-danger btn-mini' href='javascript:void(0);' onclick='unshareItem(".$user->value.");'>".TextHelper::_('COBALT_REMOVE')."</a></div>";

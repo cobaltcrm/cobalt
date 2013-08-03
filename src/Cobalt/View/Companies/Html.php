@@ -18,7 +18,6 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\ViewHelper;
-use Cobalt\Helper\TranscriptlistsHelper;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\Event as EventModel;
 
