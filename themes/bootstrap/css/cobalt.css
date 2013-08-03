@@ -2,3 +2,6 @@
 #com_cobalt .list-inline > li > a {
     position: relative;
 }
+#com_cobalt .popover {
+    min-width:200px;
+}

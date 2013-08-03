@@ -170,7 +170,7 @@ $deal = $this->dealList[0];
                         <?php echo TextHelper::_('COBALT_ACTUAL_CLOSE'); ?>
                         <h2>
                             <form class="form-inline" name="actual_close_form">
-                                <input type="text" class="input-invisible input-small form-control-hidden date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>" />
+                                <input type="text" class="input-invisible input-small form-control date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>" />
                                 <input type="hidden" name="actual_close" id="actual_close_hidden" value="<?php echo $deal['actual_close']; ?>" />
                             </form>
                         </h2>
@@ -179,7 +179,7 @@ $deal = $this->dealList[0];
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
                             <form class="form-inline" name="expected_close_form">
-                                <input type="text" class="input-invisible input-small form-control-hidden date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>" />
+                                <input type="text" class="input-invisible input-small form-control date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>" />
                                 <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal['expected_close']; ?>" />
                             </form>
                         </h2>
