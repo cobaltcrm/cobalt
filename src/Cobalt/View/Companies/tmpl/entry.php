@@ -5,9 +5,9 @@
 <tr id='list_row_<?php echo $company['id']; ?>' class='cobalt_row_<?php echo $k; ?>'>
     <td><input type="checkbox" name="ids[]" value="<?php echo $company['id']; ?>" /></td>
     <?php if ( array_key_exists('avatar',$company) && $company['avatar'] != "" && $company['avatar'] != null ) { ?>
-        <td class="avatar" ><img id="avatar_img_<?php echo $company['id']; ?>" data-item-type="companies" data-item-id="<?php echo $company['id']; ?>" class="avatar" src="<?php echo JURI::base().'libraries/crm/media/avatars/'.$company['avatar']; ?>" /></td>
+        <td class="avatar" ><img id="avatar_img_<?php echo $company['id']; ?>" data-item-type="companies" data-item-id="<?php echo $company['id']; ?>" class="avatar" src="<?php echo JURI::base().'src/Cobalt/media/avatars/'.$company['avatar']; ?>" /></td>
     <?php } else { ?>
-        <td class="avatar" ><img id="avatar_img_<?php echo $company['id']; ?>" data-item-type="companies" data-item-id="<?php echo $company['id']; ?>" class="avatar" src="<?php echo JURI::base().'libraries/crm/media/images/company.png'; ?>"/></td>
+        <td class="avatar" ><img id="avatar_img_<?php echo $company['id']; ?>" data-item-type="companies" data-item-id="<?php echo $company['id']; ?>" class="avatar" src="<?php echo JURI::base().'src/Cobalt/media/images/company.png'; ?>"/></td>
     <?php } ?>
     <td class="list_edit_button" id="list_<?php echo $company['id']; ?>" >
         <div class="title_holder">

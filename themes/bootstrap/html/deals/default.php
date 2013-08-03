@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_DEALS_HEADER')); ?></h1>
 </div>
-<ul class="inline-list">
+<ul class="list-inline">
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" ><span class="dropdown-label"><?php echo $this->deal_type_name; ?><span></a>
