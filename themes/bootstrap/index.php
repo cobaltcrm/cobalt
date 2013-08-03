@@ -11,7 +11,8 @@ $this
 
     // Add Scripts
     ->addScript('//code.jquery.com/jquery.js')
-    ->addScript('/themes/bootstrap/js/bootstrap.min.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap.min.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 
     // Add Meta tags
     ->setMetaData('viewport', 'width=device-width, initial-scale=1.0')
