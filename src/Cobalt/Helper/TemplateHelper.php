@@ -169,7 +169,7 @@ class TemplateHelper
         $list_html .= '<div class="nav-collapse collapse navbar-responsive-collapse"><ul class="nav navbar-nav">';
         foreach ($list->menu_items as $name) {
             $class = $name == $controller || $name == $view ? "active" : "";
-            $list_html .= '<li><a class="'.$class.'" href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
+            $list_html .= '<li class="'.$class.'"><a href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
         $list_html .= '</ul>';
         $list_html .= "<ul class='nav navbar-nav pull-right'>";
