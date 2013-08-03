@@ -1,3 +1,6 @@
+body {
+    padding-top:50px;
+}
 #com_cobalt .list-inline > li,
 #com_cobalt .list-inline > li > a {
     position: relative;
