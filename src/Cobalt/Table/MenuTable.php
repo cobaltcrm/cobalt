@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class MenuTable extends AbstractTable
 {
-    protected $_tbl = '#__menu';
+    protected $tableName = '#__menu';
 }

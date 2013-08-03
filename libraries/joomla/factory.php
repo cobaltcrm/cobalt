@@ -17,7 +17,7 @@ defined('JPATH_PLATFORM') or die;
 abstract class JFactory
 {
     /**
-     * @var    JApplication
+     * @var    \Joomla\Application\AbstractWebApplication
      * @since  11.1
      */
     public static $application = null;
@@ -86,7 +86,7 @@ abstract class JFactory
      * @param array  $config An optional associative array of configuration settings.
      * @param string $prefix Application prefix
      *
-     * @return JApplication object
+     * @return \Joomla\Application\AbstractWebApplication object
      *
      * @see     JApplication
      * @since   11.1

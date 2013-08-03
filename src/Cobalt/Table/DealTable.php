@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DealTable extends AbstractTable
 {
-    protected $_tbl = '#__deals';
+    protected $tableName = '#__deals';
 }

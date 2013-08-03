@@ -17,7 +17,6 @@ use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\People as PeopleModel;
-use Cobalt\Helper\BanterHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\CompanyHelper;
@@ -170,25 +169,15 @@ class Html extends AbstractHtmlView
         //Load Events & Tasks for person
         $layout = $this->getLayout();
         if ($layout == "deal") {
-                $model = new EventModel;
-                $events = $model->getEvents("deal",null,$app->input->get('id'));
-                $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
+            $model = new EventModel;
+            $events = $model->getEvents("deal",null,$app->input->get('id'));
+            $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
 
-                $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]['id']);
-                $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]['people'],'primary_contact_id'=>$primary_contact_id));
+            $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]['id']);
+            $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]['people'],'primary_contact_id'=>$primary_contact_id));
 
-                $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal['documents']));
-                $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
-
-                if ( BanterHelper::hasBanter() ) {
-                    $room_list = new TranscriptlistsHelper;
-                    $room_lists = $room_list->getRooms();
-                    $transcripts = array();
-                    if ( is_array($room_lists) && count($room_lists) > 0 ) {
-                        $transcripts = $room_list->getTranscripts($room_lists[0]->id);
-                    }
-                    $this->banter_dock = ViewHelper::getView('banter','default','phtml',array('rooms'=>$room_lists,'transcripts'=>$transcripts));
-                }
+            $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal['documents']));
+            $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
         }
 
         if ($layout == "default") {

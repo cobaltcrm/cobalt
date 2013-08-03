@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class FormWizardTable extends AbstractTable
 {
-    protected $_tbl = '#__formwizard';
+    protected $tableName = '#__formwizard';
 }

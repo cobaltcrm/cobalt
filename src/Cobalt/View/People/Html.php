@@ -16,7 +16,6 @@ use JFactory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;
-use Cobalt\Helper\BanterHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
@@ -24,7 +23,6 @@ use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\ConfigHelper;
 use Cobalt\Helper\ViewHelper;
-use Cobalt\Helper\TranscriptlistsHelper;
 use Cobalt\Helper\MailinglistsHelper;
 use Cobalt\Helper\TemplateHelper;
 use Joomla\View\AbstractHtmlView;
@@ -108,119 +106,97 @@ class Html extends AbstractHtmlView
             $person['header'] = TextHelper::_('COBALT_PERSON_ADD');
         }
 
-                //get total people associated with users account
-                $total_people = UsersHelper::getPeopleCount($user_id,$team_id,$member_role);
+        //get total people associated with users account
+        $total_people = UsersHelper::getPeopleCount($user_id,$team_id,$member_role);
 
-                //get filter types
-                $people_types = PeopleHelper::getPeopleTypes();
-                $people_type_name = ( $people_type_name && array_key_exists($people_type_name,$people_types) ) ? $people_types[$people_type_name] : $people_types['all'];
+        //get filter types
+        $people_types = PeopleHelper::getPeopleTypes();
+        $people_type_name = ( $people_type_name && array_key_exists($people_type_name,$people_types) ) ? $people_types[$people_type_name] : $people_types['all'];
 
-                //get column filters
-                $column_filters = PeopleHelper::getColumnFilters();
-                $selected_columns = PeopleHelper::getSelectedColumnFilters();
+        //get column filters
+        $column_filters = PeopleHelper::getColumnFilters();
+        $selected_columns = PeopleHelper::getSelectedColumnFilters();
 
-                //get user filter
-                //get associated users//teams
-                $teams = UsersHelper::getTeams();
-                $users = UsersHelper::getUsers();
+        //get user filter
+        //get associated users//teams
+        $teams = UsersHelper::getTeams();
+        $users = UsersHelper::getUsers();
 
-                if ($user AND $user != $user_id AND $user != 'all') {
-                    $user_info = UsersHelper::getUsers($user);
-                    $user_info = $user_info[0];
-                    $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
-                } elseif ($team) {
-                    $team_info = UsersHelper::getTeams($team);
-                    $team_info = $team_info[0];
-                    $user_name = $team_info['team_name'].TextHelper::_('COBALT_TEAM_APPEND');
-                } elseif ($user == 'all') {
-                    $user_name = TextHelper::_('COBALT_ALL_USERS');
-                } else {
-                    $user_name = TextHelper::_('COBALT_ME');
-                }
+        if ($user AND $user != $user_id AND $user != 'all') {
+            $user_info = UsersHelper::getUsers($user);
+            $user_info = $user_info[0];
+            $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
+        } elseif ($team) {
+            $team_info = UsersHelper::getTeams($team);
+            $team_info = $team_info[0];
+            $user_name = $team_info['team_name'].TextHelper::_('COBALT_TEAM_APPEND');
+        } elseif ($user == 'all') {
+            $user_name = TextHelper::_('COBALT_ALL_USERS');
+        } else {
+            $user_name = TextHelper::_('COBALT_ME');
+        }
 
-                //get stage filter
-                $stages = PeopleHelper::getStages();
-                $stages_name = ( $stage ) ? $stages[$stage] : $stages['past_thirty'];
+        //get stage filter
+        $stages = PeopleHelper::getStages();
+        $stages_name = ( $stage ) ? $stages[$stage] : $stages['past_thirty'];
 
-                //get tag filter
-                $tag_list = PeopleHelper::getTagList();
-                for ( $i=0; $i<count($tag_list); $i++ ) {
-                    if ($tag_list[$i]['id'] == $tag AND $tag != 'any') {
-                        $tag_name = $tag_list[$i]['name'];
-                        break;
-                    }
-                }
-                $tag_name = ( $tag AND $tag != 'any' ) ? $tag_name : 'all tags';
+        //get tag filter
+        $tag_list = PeopleHelper::getTagList();
+        for ( $i=0; $i<count($tag_list); $i++ ) {
+            if ($tag_list[$i]['id'] == $tag AND $tag != 'any') {
+                $tag_name = $tag_list[$i]['name'];
+                break;
+            }
+        }
+        $tag_name = ( $tag AND $tag != 'any' ) ? $tag_name : 'all tags';
 
-                //get status filter
-                $status_list = PeopleHelper::getStatusList();
-                for ( $i=0; $i<count($status_list); $i++ ) {
-                    if ($status_list[$i]['id'] == $status AND $status != 'any') {
-                        $status_name = $status_list[$i]['name'];
-                        break;
-                    }
-                }
-                $status_name = ( $status AND $status != 'any' ) ? $status_name : 'any status';
+        //get status filter
+        $status_list = PeopleHelper::getStatusList();
+        for ( $i=0; $i<count($status_list); $i++ ) {
+            if ($status_list[$i]['id'] == $status AND $status != 'any') {
+                $status_name = $status_list[$i]['name'];
+                break;
+            }
+        }
+        $status_name = ( $status AND $status != 'any' ) ? $status_name : 'any status';
 
-                $dropdowns = $model->getDropdowns();
+        $dropdowns = $model->getDropdowns();
 
-                //Load Events & Tasks for person
-                $layout = $this->getLayout();
-                if ($layout == "person") {
-                        $model = new EventModel;
-                        $events = $model->getEvents("person",null,$app->input->get('id'));
-                        $this->event_dock = ViewHelper::getView('events','event_dock','phtml',array('events'=>$events));
-                        $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml', array('deals'=>$person['deals']));
+        //Load Events & Tasks for person
+        $layout = $this->getLayout();
+        if ($layout == "person") {
+            $model = new EventModel;
+            $events = $model->getEvents("person",null,$app->input->get('id'));
+            $this->event_dock = ViewHelper::getView('events','event_dock','phtml',array('events'=>$events));
+            $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml', array('deals'=>$person['deals']));
 
-                        $this->document_list = ViewHelper::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
-                        $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'people','item'=>$person));
+            $this->document_list = ViewHelper::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
+            $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'people','item'=>$person));
+        }
 
-                        $this->acymailing = ConfigHelper::checkAcymailing();
+        if ($layout == "default") {
+            $total = $model->getTotal();
+            $pagination = $model->getPagination();
+            $this->people_list = ViewHelper::getView('people','list','phtml',array('people'=>$people,'total'=>$total,'pagination'=>$pagination));
+            $this->people_filter = $state->get('Deal.people_name');
+        }
 
-                        if ($this->acymailing) {
-                            $mailing_list = new MailinglistsHelper;
-                            $mailing_lists = $mailing_list->getMailingLists();
-                            $newsletters = array();
-                            if ( is_array($mailing_lists) && array_key_exists(0,$mailing_lists) ) {
-                                $newsletters = $mailing_list->getNewsletters($mailing_lists[0]->listid);
-                            }
-                            $this->acymailing_dock = ViewHelper::getView('acymailing','default','phtml',array('newsletters'=>$newsletters,'mailing_lists'=>$mailing_lists));
-                        }
+        if ($layout == "edit") {
+            $item = $app->input->get('id') && array_key_exists(0,$people) ? $people[0] : array('id'=>'');
+            $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'people','item'=>$item));
 
-                        if ( BanterHelper::hasBanter() ) {
-                            $room_list = new TranscriptlistsHelper;
-                            $room_lists = $room_list->getRooms();
-                            $transcripts = array();
-                            if ( is_array($room_lists) && count($room_lists) > 0 ) {
-                                $transcripts = $room_list->getTranscripts($room_lists[0]->id);
-                            }
-                            $this->banter_dock = ViewHelper::getView('banter','default','phtml',array('rooms'=>$room_lists,'transcripts'=>$transcripts));
-                        }
-                }
+            $companyModel = new CompanyModel;
 
-                if ($layout == "default") {
-                    $total = $model->getTotal();
-                    $pagination = $model->getPagination();
-                    $this->people_list = ViewHelper::getView('people','list','phtml',array('people'=>$people,'total'=>$total,'pagination'=>$pagination));
-                    $this->people_filter = $state->get('Deal.people_name');
-                }
+            $json = TRUE;
+            $companyNames = $companyModel->getCompanyNames($json);
+            $document->addScriptDeclaration("var company_names=".$companyNames.";");
+        }
 
-                if ($layout == "edit") {
-                    $item = $app->input->get('id') && array_key_exists(0,$people) ? $people[0] : array('id'=>'');
-                    $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'people','item'=>$item));
+        if ( TemplateHelper::isMobile() && $app->input->get('id')) {
+            $this->add_note = ViewHelper::getView('note','edit','phtml',array('add_note'=>$add_note));
 
-                    $companyModel = new CompanyModel;
-
-                    $json = TRUE;
-                    $companyNames = $companyModel->getCompanyNames($json);
-                    $document->addScriptDeclaration("var company_names=".$companyNames.";");
-                }
-
-                if ( TemplateHelper::isMobile() && $app->input->get('id')) {
-                    $this->add_note = ViewHelper::getView('note','edit','phtml',array('add_note'=>$add_note));
-
-                    $this->add_task = ViewHelper::getView('events','edit_task','phtml',array('association_type'=>'person','assocation_id'=>$app->input->get('id')));
-                }
+            $this->add_task = ViewHelper::getView('events','edit_task','phtml',array('association_type'=>'person','assocation_id'=>$app->input->get('id')));
+        }
 
         //assign results to view
         $this->people = $people;

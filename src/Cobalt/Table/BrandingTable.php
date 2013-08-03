@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class BrandingTable extends AbstractTable
 {
-    protected $_tbl = '#__branding';
+    protected $tableName = '#__branding';
 }

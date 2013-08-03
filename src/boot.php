@@ -93,6 +93,8 @@ $container->bind('db', function($c) {
         return $db;
     });
 
+JFactory::$database = $container->resolve('db');
+
 $config = $container->resolve('config');
 
 // Set the error_reporting

@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class TemplateDataTable extends AbstractTable
 {
-    protected $_tbl = '#__template_data';
+    protected $tableName = '#__template_data';
 }

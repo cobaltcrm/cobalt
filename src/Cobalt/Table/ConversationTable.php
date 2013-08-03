@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class ConversationTable extends AbstractTable
 {
-    protected $_tbl = '#__conversations';
+    protected $tableName = '#__conversations';
 }

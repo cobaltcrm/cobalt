@@ -381,9 +381,6 @@ final class Application extends AbstractWebApplication
             $router->addMaps($maps, true);
             $router->setDefaultController('Cobalt\\Controller\\DefaultController');
 
-            // Fetch the controller
-            $controller = $router->getController($this->get('uri.route'));
-
             $this->loadDocument();
 
             // Register the document object with JFactory

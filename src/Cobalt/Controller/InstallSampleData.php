@@ -20,13 +20,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class InstallSampleData extends DefaultController
 {
-
-    public function installSampleData()
+    public function execute()
     {
         $app = JFactory::getApplication();
         $sampleIds = array();
 
-        $importModel = new ImporModel;
+        $importModel = new ImportModel;
         $sampleCsvFiles = array(
                 'sample-company'    => "companies",
                 'sample-person'     => "people",
@@ -35,7 +34,7 @@ class InstallSampleData extends DefaultController
                 // 'sample-goal'       => "goals",
             );
         foreach ($sampleCsvFiles as $file => $table) {
-            $importData = $importModel->readCSVFile(JPATH_SITE.'/sample/'.$file.'.csv',$table,FALSE);
+            $importData = $importModel->readCSVFile(JPATH_COBALT.'/sample/'.$file.'.csv', $table, false);
             switch ($table) {
                 case "companies":
                     $model = "company";
@@ -48,18 +47,17 @@ class InstallSampleData extends DefaultController
                 break;
             }
             unset($importData['headers']);
-            $ids = $importModel->importCSVData($importData,$model,TRUE);
+            $ids = $importModel->importCSVData($importData, $model, true);
             $sampleIds[$table] = $ids;
         }
 
-        $data = array('import_sample'=>serialize($sampleIds));
+        $data = array('import_sample' => serialize($sampleIds));
 
         $configModel = new ConfigModel;
         $configModel->store($data);
 
         $msg = TextHelper::_('COBALT_SAMPLE_DATA_INSTALLED');
-        $app->redirect('index.php?view=import',$msg);
-
+        $app->redirect('index.php?view=import', $msg);
     }
 
 }

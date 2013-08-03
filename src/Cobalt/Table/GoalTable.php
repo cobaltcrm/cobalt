@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class GoalTable extends AbstractTable
 {
-    protected $_tbl = '#__goals';
+    protected $tableName = '#__goals';
 }

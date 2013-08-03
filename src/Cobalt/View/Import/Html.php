@@ -25,7 +25,6 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-
         $app = JFactory::getApplication();
 
         //Load java libs

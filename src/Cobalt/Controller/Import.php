@@ -10,6 +10,7 @@
 
 namespace Cobalt\Controller;
 
+use JRoute;
 use JFactory;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
@@ -50,7 +51,6 @@ class Import extends DefaultController
                     $success = true;
                 }
             }
-
         }
 
         if ($success) {

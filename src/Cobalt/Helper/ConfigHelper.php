@@ -155,16 +155,6 @@ class ConfigHelper
         return self::getConfigValue('currency');
     }
 
-    public static function checkAcymailing()
-    {
-        jimport('joomla.filesystem.folder');
-        if ( JFolder::exists(JPATH_ROOT.'/administrator/components/com_acymailing') ) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     public static function getLanguages()
     {
         jimport('joomla.filesystem.folder');

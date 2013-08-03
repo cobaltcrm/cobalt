@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CategoriesTable extends AbstractTable
 {
-    protected $_tbl = '#__notes_categories';
+    protected $tableName = '#__notes_categories';
 }

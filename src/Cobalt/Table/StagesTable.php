@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class StagesTable extends AbstractTable
 {
-    protected $_tbl = '#__stages';
+    protected $tableName = '#__stages';
 }

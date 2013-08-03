@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class StatusesTable extends AbstractTable
 {
-    protected $_tbl = '#__people_status';
+    protected $tableName = '#__people_status';
 }

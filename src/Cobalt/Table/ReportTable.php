@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class ReportTable extends AbstractTable
 {
-    protected $_tbl = '#__reports';
+    protected $tableName = '#__reports';
 }

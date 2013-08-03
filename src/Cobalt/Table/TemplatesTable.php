@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class TemplatesTable extends AbstractTable
 {
-    protected $_tbl = '#__templates';
+    protected $tableName = '#__templates';
 }

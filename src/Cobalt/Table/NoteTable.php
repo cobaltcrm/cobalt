@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class NoteTable extends AbstractTable
 {
-    protected $_tbl = '#__note';
+    protected $tableName = '#__note';
 }

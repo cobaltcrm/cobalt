@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class PeopleCustomTable extends AbstractTable
 {
-    protected $_tbl = '#__people_custom';
+    protected $tableName = '#__people_custom';
 }

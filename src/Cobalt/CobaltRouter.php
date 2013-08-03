@@ -60,7 +60,7 @@ class CobaltRouter extends Router
         $class = $this->controllerPrefix . ucfirst($name);
 
         // Check for the requested controller.
-        if (!class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface'))
+        if ($class === $this->default || !class_exists($class) || !is_subclass_of($class, 'Joomla\\Controller\\ControllerInterface'))
         {
             // See if there's an action class in the libraries if we aren't calling the default task
             $task = $this->input->getCmd('task');
@@ -107,30 +107,10 @@ class CobaltRouter extends Router
         }
 
         if ( array_key_exists('layout',$query)) {
-            if ($query['layout'] == 'edit') {
-                $array[] = $query['layout'];
-            }
-            if ($query['view'] == "reports") {
-                $array[] = $query['layout'];
-            }
-            if ($query['view'] == "import") {
-                $array[] = $query['layout'];
-            }
-            if ($query['view'] == "companies") {
-                if ($query['layout'] != "edit") {
-                    $array[] = $query['layout'];
-                }
-            }
-            if ($query['view'] == "goals") {
-                if ($query['layout'] != "edit") {
-                    $array[] = $query['layout'];
-                }
-                if ( array_key_exists('type',$query) ) {
-                    $array[] = $query['type'];
-                }
-            }
-            if ($query['layout'] == "edit_task") {
-                $array[] = $query['layout'];
+            $array[] = $query['layout'];
+
+            if ($query['view'] == "goals" && array_key_exists('type', $query)) {
+                $array[] = $query['type'];
             }
         }
 

@@ -19,9 +19,7 @@ class Edit extends DefaultController
     public function execute()
     {
         $app = JFactory::getApplication();
-        $viewName = $app->input->get('view');
         $app->input->set('layout', 'edit');
-        $app->input->set('view', $viewName);
 
         parent::execute();
     }

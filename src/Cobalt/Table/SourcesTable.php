@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class SourcesTable extends AbstractTable
 {
-    protected $_tbl = '#__sources';
+    protected $tableName = '#__sources';
 }

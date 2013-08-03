@@ -11,6 +11,7 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\PeopleTable;
+use JUri;
 use JRoute;
 use JFactory;
 use Cobalt\Helper\CobaltHelper;

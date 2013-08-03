@@ -75,7 +75,7 @@ class Deal extends DefaultModel
         $oldRow = new DealTable;
 
         if ($data == null) {
-          $data = $app->input->getRequest('post');
+            $data = $app->input->getRequest('post');
         }
 
         //date generation
@@ -212,9 +212,9 @@ class Deal extends DefaultModel
            CobaltHelper::storeCustomCf($deal_id,$customArray,'deal');
         }
 
-        if ( ( array_key_exists('primary_contact_id',$data) && $data['primary_contact_id'] > 0 ) ||  ( array_key_exists('person_id',$data) && $data['person_id'] > 0 ) ) {
-            $contactId = array_key_exists('primary_contact_id',$data) ? $data['primary_contact_id'] : $data['person_id'];
-            $this->storeContact($deal_id,$contactId);
+        if (!empty($data['primary_contact_id']) || !empty($data['person_id'])) {
+            $contactId = array_key_exists('primary_contact_id', $data) ? $data['primary_contact_id'] : $data['person_id'];
+            $this->storeContact($deal_id, $contactId);
         }
 
         $closed_stages = DealHelper::getClosedStages();
@@ -1264,6 +1264,7 @@ class Deal extends DefaultModel
      */
     public function storeContact($deal_id,$contact_id)
     {
+        if (is_array($contact_id))
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 

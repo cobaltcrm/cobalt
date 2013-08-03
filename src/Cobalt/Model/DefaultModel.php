@@ -93,7 +93,7 @@ class DefaultModel extends AbstractModel
      */
     protected function _getListCount($query)
     {
-        $this->db->setQuery($query)->execut();
+        $this->db->setQuery($query)->execute();
 
         return $this->db->getNumRows();
     }

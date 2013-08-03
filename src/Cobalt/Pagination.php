@@ -228,7 +228,7 @@ class Pagination extends \JPagination
         // Initialise variables.
         $html = null;
         if ($this->get('pages.total') > 1) {
-            $html .= JText::sprintf('JLIB_HTML_PAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
+            $html .= TextHelper::sprintf('JLIB_HTML_PAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
         }
 
         return $html;
@@ -256,7 +256,7 @@ class Pagination extends \JPagination
 
         // If there are results found.
         if ($this->total > 0) {
-            $msg = JText::sprintf('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
+            $msg = TextHelper::sprintf('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
             $html .= "\n" . $msg;
         } else {
             $html .= "\n" . TextHelper::_('JLIB_HTML_NO_RECORDS_FOUND');

@@ -17,7 +17,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DeleteReport extends DefaultController
 {
-
     public function execute()
     {
         //gen return info

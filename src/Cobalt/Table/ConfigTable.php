@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class ConfigTable extends AbstractTable
 {
-    protected $_tbl = '#__config';
+    protected $tableName = '#__config';
 }

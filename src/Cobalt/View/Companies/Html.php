@@ -13,7 +13,6 @@ namespace Cobalt\View\Companies;
 use JUri;
 use JRoute;
 use JFactory;
-use Cobalt\Helper\BanterHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
@@ -117,19 +116,6 @@ class Html extends AbstractHtmlView
                 $custom_fields_view->type = $type;
                 $custom_fields_view->item = $companies[0];
                 $this->custom_fields_view = $custom_fields_view;
-
-                if ( BanterHelper::hasBanter() ) {
-                    $room_list = new TranscriptlistsHelper;
-                    $room_lists = $room_list->getRooms();
-                    $transcripts = array();
-                    if ( is_array($room_lists) && count($room_lists) > 0 ) {
-                        $transcripts = $room_list->getTranscripts($room_lists[0]->id);
-                    }
-                    $banter_dock = ViewHelper::getView('banter','default','html');
-                    $banter_dock->rooms = $room_lists;
-                    $banter_dock->transcripts = $transcripts;
-                    $this->banter_dock = $banter_dock;
-                }
 
                 if ( TemplateHelper::isMobile() ) {
                     $add_note = ViewHelper::getView('note','edit','html');

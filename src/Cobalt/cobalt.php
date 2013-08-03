@@ -28,6 +28,9 @@ JPluginHelper::importPlugin('cobalt');
 //application
 $app = Cobalt\Container::get('app');
 
+// Fetch the controller
+$classname = $router->getController($this->get('uri.route'));
+
 // Require specific controller if requested
 $controller = $app->input->get('controller', 'default');
 
@@ -38,7 +41,7 @@ $overrides = array('ajax','mail','login');
 if ($format != "raw" && !in_array($controller, $overrides)) {
 
     // Set a default view if none exists
-    if (! $app->input->get( 'view' ) ) {
+    if (! $app->input->get('view')) {
         $app->input->set('view', 'dashboard' );
     }
 
@@ -99,11 +102,6 @@ if ($format != "raw" && !in_array($controller, $overrides)) {
 //load javascript language
 TemplateHelper::loadJavascriptLanguage();
 
-// Create the controller
-if ($controller === 'default') {
-    $controller = 'DefaultController';
-}
-$classname	= 'Cobalt\\Controller\\'.ucfirst($controller);
 $controller = new $classname($app->input, $app);
 
 //fullscreen detection

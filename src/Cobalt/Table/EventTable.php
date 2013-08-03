@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class EventTable extends AbstractTable
 {
-    protected $_tbl = '#__events';
+    protected $tableName = '#__events';
 }

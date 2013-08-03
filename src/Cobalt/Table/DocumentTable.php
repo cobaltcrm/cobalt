@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DocumentTable extends AbstractTable
 {
-    protected $_tbl = '#__documents';
+    protected $tableName = '#__documents';
 }

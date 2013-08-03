@@ -25,11 +25,11 @@ class Import extends DefaultModel
      * @param  [String]  $model [ Model to import ]
      * @return [Boolean] $success
      */
-    public function importCSVData($data,$model)
+    public function importCSVData($data, $model)
     {
         $success = false;
         if ( count($data) > 0 && isset($model) ) {
-            $modelName = "CobaltModel".ucwords($model);
+            $modelName = "Cobalt\\Model\\".ucwords($model);
             $model = new $modelName();
             foreach ($data as $import) {
                 $model->store($import);
@@ -45,7 +45,7 @@ class Import extends DefaultModel
      * @param  [String] $file
      * @return [Mixed]  $data
      */
-    public function readCSVFile($file)
+    public function readCSVFile($file, $table = null)
     {
         $app = JFactory::getApplication();
         ini_set("auto_detect_line_endings", "1");
@@ -54,12 +54,12 @@ class Import extends DefaultModel
         $headers = array();
         $i = -2;
         $db = JFactory::getDBO();
-        $table = $db->getTableColumns("#__".$app->input->get('import_type'));
+        $table = $db->getTableColumns("#__".$app->input->get('import_type', $table));
         $special_headers = array('company_id','company_name','stage_name','source_name','status_name','primary_contact_name','assignee_name','type');
 
-        if (($handle = fopen($file, "r")) !== FALSE) {
+        if (($handle = fopen($file, "r")) !== false) {
 
-            while (($read = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            while (($read = fgetcsv($handle, 1000, ",")) !== false) {
 
                 $i++;
                 $num = count($read);
@@ -75,7 +75,7 @@ class Import extends DefaultModel
 
                     for ($c=0; $c < $num; $c++) {
 
-                        $header_name = array_key_exists($c,$headers) ? $headers[$c] : FALSE;
+                        $header_name = array_key_exists($c, $headers) ? $headers[$c] : false;
 
                         if ($header_name) {
 

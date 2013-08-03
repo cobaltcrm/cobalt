@@ -24,17 +24,21 @@ $person = $this->people[0];
 </script>
 
 <!-- PERSON EDIT MODAL -->
-<div data-remote="index.php?view=people&layout=edit&format=raw&tmpl=component&id=<?php echo $person['id']; ?>" class="modal hide fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_PERSON')); ?></h3>
-    </div>
-    <div class="modal-body">
-        <p></p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-        <button onclick="saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+<div data-remote="index.php?view=people&layout=edit&format=raw&tmpl=component&id=<?php echo $person['id']; ?>" class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_PERSON')); ?></h3>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
+                <button onclick="saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+            </div>
+        </div>
     </div>
 </div>
 <iframe id="hidden" name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
@@ -415,17 +419,6 @@ $person = $this->people[0];
                     </div>
             </div>
 
-        <?php if ($this->acymailing) { ?>
-            <div class="widget" id='acymailing'>
-                <h3><?php echo ucwords(TextHelper::_('COBALT_ACYMAILING_HEADER')); ?></h3>
-                <?php echo $this->acymailing_dock->render(); ?>
-            </div>
-        <?php } ?>
-
-        <?php if ( isset($this->banter_dock) ) {
-            echo $this->banter_dock->render();
-        }?>
-
         <?php if ($person['twitter_user']) { ?>
             <div class="widget">
                 <h3><?php echo TextHelper::_('COBALT_LATEST_TWEETS'); ?></h3>
@@ -448,15 +441,22 @@ $person = $this->people[0];
 </div>
 
 <!--- DEAL ASSOCIATION -->
-<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
-    <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_DEAL'); ?></h3></div>
-    <div class="modal-body text-center">
-        <form id="deal">
-            <div class="input-append">
-                <input name="deal_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
-                <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
-                <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+<div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header small">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3><?php echo TextHelper::_('COBALT_ASSOCIATE_DEAL'); ?></h3>
             </div>
-        </form>
+            <div class="modal-body text-center">
+                <form id="deal">
+                    <div class="input-append">
+                        <input name="deal_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
+                        <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
+                        <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

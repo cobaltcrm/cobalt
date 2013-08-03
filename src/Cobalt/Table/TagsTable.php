@@ -15,5 +15,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class TagsTable extends AbstractTable
 {
-    protected $_tbl = '#__people_tags';
+    protected $tableName = '#__people_tags';
 }
