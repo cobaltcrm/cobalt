@@ -42,8 +42,8 @@ class Html extends AbstractHtmlView
 
         //javascripts
         $doc = JFactory::getDocument();
-        $doc->addScript(JURI::base()."/libraries/crm/media/js/cobalt-admin.js");
-        $doc->addScript(JURI::base()."/libraries/crm/media/js/document_manager.js");
+        $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
+        $doc->addScript(JURI::base()."/src/Cobalt/media/js/document_manager.js");
 
         //import data
         $import_post = FALSE;
@@ -109,7 +109,7 @@ class Html extends AbstractHtmlView
         $this->menu = $menu;
 
         $doc = JFactory::getDocument();
-        $doc->addScript(JURI::base()."/libraries/crm/media/js/cobalt-admin.js");
+        $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
 
         return parent::render();
     }

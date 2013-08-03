@@ -33,7 +33,7 @@ class Html extends AbstractHtmlView
 
         //javascripts
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
@@ -54,7 +54,7 @@ class Html extends AbstractHtmlView
             ToolbarHelper::save('save');
 
             //javascripts
-            $document->addScript(JURI::base().'libraries/crm/media/js/template_manager.js');
+            $document->addScript(JURI::base().'src/Cobalt/media/js/template_manager.js');
 
             //assign view data
             $this->template_types = DropdownHelper::getTemplateTypes();

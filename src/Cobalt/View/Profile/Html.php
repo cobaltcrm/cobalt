@@ -24,7 +24,7 @@ class Html extends AbstractHtmlView
     {
         //javascript
         $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'libraries/crm/media/js/profile_manager.js' );
+        $document->addScript( JURI::base().'src/Cobalt/media/js/profile_manager.js' );
 
         //get user data and pass to view
         $this->user = UsersHelper::getLoggedInUser();

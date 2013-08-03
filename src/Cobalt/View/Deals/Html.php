@@ -116,7 +116,7 @@ class Html extends AbstractHtmlView
 
         //load javalibs
         if (!TemplateHelper::isMobile()) {
-            $doc->addScript( JURI::base().'libraries/crm/media/js/deal_manager.js' );
+            $doc->addScript( JURI::base().'src/Cobalt/media/js/deal_manager.js' );
         }
 
         //dropdown info

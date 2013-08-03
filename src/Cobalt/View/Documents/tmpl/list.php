@@ -52,7 +52,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             }
 
             echo '<tr class="document_'.$key.'" id="document_row_'.$document['id'].'" class="cobalt_row_'.$k.'">';
-                echo '<td><img width="30px" height="30px" src="'.JURI::base().'libraries/crm/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
+                echo '<td><img width="30px" height="30px" src="'.JURI::base().'src/Cobalt/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
                 echo '<td><div class="dropdown"><span class="caret"></span> <a href="javascript:void(0);" class="document_edit dropdown-toggle" role="button" data-toggle="dropdown" id="'.$document['id'].'">'.$document['name'].'</a>';
                 echo '<ul class="dropdown-menu" role="menu">';
                 echo '<input type="hidden" name="document_'.$document['id'].'_hash" id="document_'.$document['id'].'_hash" value="'.$document['filename'].'" />';

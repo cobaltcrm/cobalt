@@ -20,9 +20,9 @@ $person = $this->info[0];
             <div class="infoLabel">
                 <?php
                 if ( array_key_exists('avatar',$person) && $person['avatar'] != "" && $person['avatar'] != null ) {
-                         echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'libraries/crm/media/avatars/'.$person['avatar'].'"/></td>';
+                         echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$person['avatar'].'"/></td>';
                     } else {
-                        echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'libraries/crm/media/images/person.png'.'"/></td>';
+                        echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
                     } ?>
             </div>
             <div class="infoDetails">

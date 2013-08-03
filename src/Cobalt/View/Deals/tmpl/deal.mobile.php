@@ -73,7 +73,7 @@ $deal = $this->dealList[0];?>
             <?php if ( array_key_exists('people',$deal) && count($deal['people']) > 0 ){ foreach ($deal['people'] as $person) { ?>
                 <li>
                     <a href="<?php echo JRoute::_('index.php?view=person&id='.$person['id']); ?>">
-                        <img src="<?php echo JURI::base().'libraries/crm/media/images/person.png'; ?>" class="ui-li-thumb">
+                        <img src="<?php echo JURI::base().'src/Cobalt/media/images/person.png'; ?>" class="ui-li-thumb">
                         <h3 class="ui-li-heading"><?php echo $person['first_name'].' '.$person['last_name']; ?></h3>
                         <p class="ui-li-desc"><?php echo ucwords(JText::sprintf('COBALT_MOBILE_PERSON_DESC',$person['position'],$person['company_name'])); ?></p>
                     </a>

@@ -67,11 +67,11 @@ class Html extends ViewHelper
                         $params = "calendar";
 
                         //load js libs
-                        $document->addScript( JURI::base().'libraries/crm/media/js/fullcalendar.js' );
-                        $document->addScript( JURI::base().'libraries/crm/media/js/calendar_manager.js' );
+                        $document->addScript( JURI::base().'src/Cobalt/media/js/fullcalendar.js' );
+                        $document->addScript( JURI::base().'src/Cobalt/media/js/calendar_manager.js' );
 
                         //load required css for calendar
-                        $document->addStyleSheet( JURI::base().'libraries/crm/media/css/fullcalendar.css' );
+                        $document->addStyleSheet( JURI::base().'src/Cobalt/media/css/fullcalendar.css' );
                     }
                 break;
             }

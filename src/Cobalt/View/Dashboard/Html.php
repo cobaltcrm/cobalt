@@ -48,8 +48,8 @@ class Html extends AbstractHtmlView
 
         // load java libs
         $doc = JFactory::getDocument();
-        $doc->addScript( JURI::base().'libraries/crm/media/js/highcharts.js' );
-        $doc->addScript( JURI::base().'libraries/crm/media/js/dashboard.js' );
+        $doc->addScript( JURI::base().'src/Cobalt/media/js/highcharts.js' );
+        $doc->addScript( JURI::base().'src/Cobalt/media/js/dashboard.js' );
 
         //get data for sales graphs
         $model = new GraphsModel;

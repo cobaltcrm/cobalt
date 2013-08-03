@@ -35,8 +35,8 @@ class Html extends AbstractHtmlView
 
          //add javascript
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/branding_manager.js');
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/branding_manager.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         //stylesheets
         StylesHelper::loadStyleSheets();

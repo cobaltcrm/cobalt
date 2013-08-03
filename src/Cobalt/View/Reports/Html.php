@@ -83,8 +83,8 @@ class Html extends AbstractHtmlView
     public function _display_default()
     {
         //load javascripts
-        $this->document->addScript( JURI::base().'libraries/crm/media/js/highcharts.js' );
-        $this->document->addScript( JURI::base().'libraries/crm/media/js/sales_dashboard.js' );
+        $this->document->addScript( JURI::base().'src/Cobalt/media/js/highcharts.js' );
+        $this->document->addScript( JURI::base().'src/Cobalt/media/js/sales_dashboard.js' );
 
         //get data for sales graphs
         $graphModel = new GraphsModel;
@@ -94,7 +94,7 @@ class Html extends AbstractHtmlView
     public function _display_edit_custom_report()
     {
         //load javascripts
-        $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
+        $this->document->addScript( JURI::base().'src/Cobalt/media/js/custom_reports.js' );
 
         //if we are editing an existing entry
         $id = $this->app->input->get('id');
@@ -150,7 +150,7 @@ class Html extends AbstractHtmlView
     public function _display_custom_reports()
     {
         //load javascripts
-        $this->document->addScript( JURI::base().'libraries/crm/media/js/custom_reports.js' );
+        $this->document->addScript( JURI::base().'src/Cobalt/media/js/custom_reports.js' );
 
         //get info from model
         $reportModel = new ReportModel;

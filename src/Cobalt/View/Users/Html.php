@@ -35,7 +35,7 @@ class Html extends AbstractHtmlView
 
         //display title
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         //load model
         $layout = $this->getLayout();
@@ -93,10 +93,10 @@ class Html extends AbstractHtmlView
         }
 
         //javascripts
-        $document->addScript(JURI::base().'libraries/crm/media/js/bootstrap-colorpicker.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
 
         //stylesheets
-        $document->addStylesheet(JURI::base().'libraries/crm/media/css/bootstrap-colorpicker.css');
+        $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

@@ -121,7 +121,7 @@ class Html extends AbstractHtmlView
 
         //load java libs
         $doc = JFactory::getDocument();
-        $doc->addScript( JURI::base().'libraries/crm/media/js/goal_manager.js' );
+        $doc->addScript( JURI::base().'src/Cobalt/media/js/goal_manager.js' );
 
         //get associated members and teams
         $teams = UsersHelper::getTeams();

@@ -84,9 +84,9 @@ class Html extends AbstractHtmlView
         }
 
         //javascripts
-        $document->addScript(JURI::base().'libraries/crm/media/js/jquery.base64.js');
-        $document->addScript(JURI::base().'libraries/crm/media/js/formwizard.js');
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/jquery.base64.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/formwizard.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

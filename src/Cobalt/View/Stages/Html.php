@@ -40,17 +40,17 @@ class Html extends AbstractHtmlView
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         if ($layout && $layout == 'edit') {
 
             ToolbarHelper::cancel('cancel');
             ToolbarHelper::save('save');
 
-            $document->addScript(JURI::base().'libraries/crm/media/js/stage_manager.js');
-            $document->addScript(JURI::base().'libraries/crm/media/js/bootstrap-colorpicker.js');
+            $document->addScript(JURI::base().'src/Cobalt/media/js/stage_manager.js');
+            $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
             //stylesheets
-            $document->addStylesheet(JURI::base().'libraries/crm/media/css/bootstrap-colorpicker.css');
+            $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
 
             $this->stage = $model->getStage();
 

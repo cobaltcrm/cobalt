@@ -36,7 +36,7 @@ class Html extends AbstractHtmlView
 
         //add js
         $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'libraries/crm/media/js/document_manager.js' );
+        $document->addScript( JURI::base().'src/Cobalt/media/js/document_manager.js' );
 
         //session data
         $session = JFactory::getSession();

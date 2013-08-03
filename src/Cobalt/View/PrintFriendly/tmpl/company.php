@@ -21,9 +21,9 @@ $company = $this->info[0];
         <div class="infoBlock">
             <div class="infoLabel">
                 <?php if ( array_key_exists('avatar',$company) && $company['avatar'] != "" && $company['avatar'] != null ) {
-                         echo '<td class="avatar" ><img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="avatar" src="'.JURI::base().'libraries/crm/media/avatars/'.$company['avatar'].'"/></td>';
+                         echo '<td class="avatar" ><img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$company['avatar'].'"/></td>';
                     } else {
-                        echo '<td class="avatar" ><img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="avatar" src="'.JURI::base().'libraries/crm/media/images/company.png'.'"/></td>';
+                        echo '<td class="avatar" ><img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/images/company.png'.'"/></td>';
                     } ?>
             </div>
             <div class="infoDetails">
@@ -111,9 +111,9 @@ $company = $this->info[0];
                     $k=$i%2;
                     echo '<tr class="cobalt_row_'.$k.'">';
                         if ( array_key_exists('avatar',$person) && $person['avatar'] != "" ) {
-                            echo '<td><img src="'.JURI::base().'libraries/crm/media/avatars/'.$person['avatar'].'"/></td>';
+                            echo '<td><img src="'.JURI::base().'src/Cobalt/media/avatars/'.$person['avatar'].'"/></td>';
                         } else {
-                            echo '<td><img src="'.JURI::base().'libraries/crm/media/images/person.png'.'"/></td>';
+                            echo '<td><img src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
                         }
                         echo '<td>'.$person['last_name'] . ', ' . $person['first_name'] . '</td>';
                         echo '<td>'.$person['phone'].'</td>';

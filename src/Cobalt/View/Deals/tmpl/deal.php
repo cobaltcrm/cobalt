@@ -49,10 +49,10 @@ $deal = $this->dealList[0];
 
         <div class="page-header">
             <div class="btn-group pull-right">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
                     <?php echo TextHelper::_('COBALT_ACTION_BUTTON'); ?>
                     <span class="caret"></span>
-                </a>
+                </button>
                 <ul class="dropdown-menu">
                     <li><a role="button" href="#dealModal" data-toggle="modal"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a></li>
                     <li><a href="javascript:void(0);" id="archive" ><?php if($deal['archived']==0) echo TextHelper::_('COBALT_ARCHIVE'); if($deal['archived']==1) echo TextHelper::_('COBALT_UNARCHIVE'); ?></a></li>

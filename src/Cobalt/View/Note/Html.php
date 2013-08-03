@@ -27,7 +27,7 @@ class Html extends AbstractHtmlView
         $view = $app->input->get('view');
 
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         //retrieve task list from model
         $model = new NoteModel;

@@ -49,7 +49,7 @@ class Html extends AbstractHtmlView
 
         //load java libs
         $doc = JFactory::getDocument();
-        $doc->addScript( JURI::base().'libraries/crm/media/js/company_manager.js' );
+        $doc->addScript( JURI::base().'src/Cobalt/media/js/company_manager.js' );
 
         //determine if we are requesting a specific company or all companies
         //if id requested

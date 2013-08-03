@@ -32,7 +32,7 @@ class Html extends AbstractHtmlView
 
         //document
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/cobalt-admin.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
          /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

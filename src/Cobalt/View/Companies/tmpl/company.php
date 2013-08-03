@@ -22,16 +22,20 @@ $company = $this->companies[0];?>
 
 <!-- COMPANY EDIT MODAL -->
 <div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company['id']; ?>" class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_COMPANY')); ?></h3>
-    </div>
-    <div class="modal-body">
-        <p></p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-        <button onclick="saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_COMPANY')); ?></h3>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
+                <button onclick="saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -44,10 +48,10 @@ $company = $this->companies[0];?>
         <div class="page-header">
             <!-- ACTIONS -->
             <div class="btn-group pull-right">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
                     <?php echo TextHelper::_('COBALT_ACTION_BUTTON'); ?>
                     <span class="caret"></span>
-                </a>
+                </button>
                 <ul class="dropdown-menu">
                     <li><a role="button" href="#companyModal" data-toggle="modal"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a></li>
                     <?php if ( UsersHelper::isAdmin() ) { ?>
@@ -143,9 +147,9 @@ $company = $this->companies[0];?>
             <div class="media">
                 <span class="pull-left">
                     <?php if ( array_key_exists('avatar',$company) && $company['avatar'] != "" && $company['avatar'] != null ) {
-                             echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.JURI::base().'libraries/crm/media/avatars/'.$company['avatar'].'"/>';
+                             echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$company['avatar'].'"/>';
                         } else {
-                            echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.JURI::base().'libraries/crm/media/images/company.png'.'"/>';
+                            echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.JURI::base().'src/Cobalt/media/images/company.png'.'"/>';
                         } ?>
                 </span>
                 <div class="media-body">

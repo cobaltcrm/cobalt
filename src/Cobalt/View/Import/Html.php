@@ -29,7 +29,7 @@ class Html extends AbstractHtmlView
 
         //Load java libs
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'libraries/crm/media/js/import_manager.js');
+        $document->addScript(JURI::base().'src/Cobalt/media/js/import_manager.js');
 
         if ( count($_FILES) > 0 ) {
             $model = new ImportModel;

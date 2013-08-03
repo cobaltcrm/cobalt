@@ -55,7 +55,7 @@ class Html extends AbstractHtmlView
 
         //load java
         $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'libraries/crm/media/js/people_manager.js' );
+        $document->addScript( JURI::base().'src/Cobalt/media/js/people_manager.js' );
 
         //get list of people
         $people = $model->getPeople();

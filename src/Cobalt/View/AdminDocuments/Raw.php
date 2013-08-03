@@ -26,8 +26,8 @@ class Raw extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //Add styles for iframe popup
-        echo "<link href='".JURI::base()."libraries/crm/media/css/style.css' type='text/css' rel='stylesheet' />";
-        echo "<link href='".JURI::base()."libraries/crm/media/css/bootstrap.min.css' type='text/css' rel='stylesheet' />";
+        echo "<link href='".JURI::base()."src/Cobalt/media/css/style.css' type='text/css' rel='stylesheet' />";
+        echo "<link href='".JURI::base()."src/Cobalt/media/css/bootstrap.min.css' type='text/css' rel='stylesheet' />";
 
         //import document
         if ( is_array($_FILES) && count($_FILES) > 0 ) {
