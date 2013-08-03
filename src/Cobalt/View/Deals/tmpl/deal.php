@@ -94,7 +94,7 @@ $deal = $this->dealList[0];
                         <div class="inline" id="editable_amount">
                             <h2>
                                 <?php echo ConfigHelper::getCurrency(); ?>
-                                <a href="#" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<form id="amount_form">
+                                <a href="javascript:void(0)" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<form id="amount_form">
                                 <div class="input-group">
                                     <span class="input-group-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
                                     <input type="text" class="form-control" name="amount" value="<?php echo $deal['amount']; ?>" />

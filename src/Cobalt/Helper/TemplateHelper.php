@@ -174,10 +174,10 @@ class TemplateHelper
         $list_html .= '</ul>';
         $list_html .= "<ul class='nav navbar-nav pull-right'>";
         $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="icon-plus icon-white"></i></a><ul class="dropdown-menu">';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_COMPANY').'" data-placement="bottom"  href="'.JRoute::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_PERSON').'" data-placement="bottom" href="'.JRoute::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_DEAL').'" data-placement="bottom" href="'.JRoute::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADD_GOAL').'" data-placement="bottom" href="'.JRoute::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
+        $list_html .= '<li><a href="'.JRoute::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
+        $list_html .= '<li><a href="'.JRoute::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
+        $list_html .= '<li><a href="'.JRoute::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
+        $list_html .= '<li><a href="'.JRoute::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ENTER_FULLSCREEN').'" data-placement="bottom" class="block-btn" href="javascript:void(0);" onclick="toggleFullScreen();" ><i class="icon-fullscreen icon-white"></i></a></li>';
@@ -190,7 +190,7 @@ class TemplateHelper
 
         if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
-            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
+            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
         }
         $list_html .= '</ul></div>';
 
