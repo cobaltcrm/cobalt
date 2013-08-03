@@ -31,24 +31,24 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                             </li>
                             <li>
                                 <label><b><?php echo JText::_('COBALT_FIRST_NAME'); ?></b></label>
-                                <input data-placement="right" class="inputbox required" type="text" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ENTER_FIRST_NAME_HERE'); ?>" name="first_name" value="<?php echo $this->user['first_name']; ?>" />
+                                <input data-placement="right" class="form-control required" type="text" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ENTER_FIRST_NAME_HERE'); ?>" name="first_name" value="<?php echo $this->user['first_name']; ?>" />
                             </li>
                             <li>
                                 <label><b><?php echo JText::_('COBALT_LAST_NAME'); ?></b></label>
-                                <input data-placement="right" class="inputbox" type="text" name="last_name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ENTER_LAST_NAME_HERE'); ?>" value="<?php echo $this->user['last_name']; ?>" />
+                                <input data-placement="right" class="form-control" type="text" name="last_name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ENTER_LAST_NAME_HERE'); ?>" value="<?php echo $this->user['last_name']; ?>" />
                             </li>
                             <li>
                                 <label><b><?php echo JText::_('COBALT_EMAIL'); ?></b></label>
-                                <input data-placement="right" type="text" id="email" class="inputbox" name="email" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EDIT_USER_EMAIL'); ?>" value="<?php echo $this->user['email']; ?>" />
+                                <input data-placement="right" type="text" id="email" class="form-control" name="email" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EDIT_USER_EMAIL'); ?>" value="<?php echo $this->user['email']; ?>" />
                             </li>
                             <li>
                                 <label><b><?php echo JText::_('COBALT_MEMBER_ROLE'); ?></b></label>
-                                <select data-placement="right" class="inputbox" name="role_type" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_ROLE'); ?>" onchange="updateRole(this.value)" >
+                                <select data-placement="right" class="form-control" name="role_type" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_ROLE'); ?>" onchange="updateRole(this.value)" >
                                     <?php echo JHtml::_('select.options', $this->member_roles, 'value', 'text', $this->user['role_type'], true);?>
                                 </select>
                                 <div id="team_name" <?php if ($this->user['role_type'] != "manager") { ?> style="display:none;" <?php } ?> >
                                     <label><b><?php echo JText::_('COBALT_TEAM_NAME'); ?></b></label>
-                                    <input type="text" class="inputbox" name="team_name" value="<?php if ( isset($this->user) ) echo $this->user['team_name']; ?>" />
+                                    <input type="text" class="form-control" name="team_name" value="<?php if ( isset($this->user) ) echo $this->user['team_name']; ?>" />
                                 </div>
                             </li>
                             <?php if ($this->user['role_type'] == 'basic') {  ?>
@@ -57,7 +57,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                             <li style="display:none;" id="team_assignment">
                             <?php } ?>
                                 <label><b><?php echo JText::_('COBALT_USERS_HEADER_TEAM'); ?></b></label>
-                                <select class="inputbox" id="team_id" name="team_id" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_TEAM'); ?>"  >
+                                <select class="form-control" id="team_id" name="team_id" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_TEAM'); ?>"  >
                                         <option value="0"><?php echo JText::_("COBALT_NONE"); ?></option>
                                         <?php echo JHtml::_('select.options', $this->teams, 'value', 'text', $this->user['team_id'], true);?>
                                 </select>
@@ -65,7 +65,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                             <?php if ($this->user['role_type'] == 'manager') { ?>
                             <li style="display:none;" id="manager_assignment">
                                 <label><b><?php echo JText::_('COBALT_ASSIGN_NEW_MANAGER'); ?><span class="required">*</span></b></label>
-                                <select class="inputbox" id="manager_id" name="manager_assignment" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_MANAGER'); ?>"  >
+                                <select class="form-control" id="manager_id" name="manager_assignment" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_ASSIGN_MANAGER'); ?>"  >
                                         <option value=""><?php echo JText::_('COBALT_NEW_MANAGER'); ?></option>
                                         <?php echo JHtml::_('select.options', $this->managers, 'value', 'text', '', true);?>
                                 </select>

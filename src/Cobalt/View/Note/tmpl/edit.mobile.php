@@ -27,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_CONTENT'); ?></div>
             <div class="cobaltValue">
-                <textarea class="inputbox" name="note"></textarea>
+                <textarea class="form-control" name="note"></textarea>
             </div>
         </div>
         <input data-theme="c" type="button" name="submit" onclick="addNoteEntry('note_edit');"  value="<?php echo TextHelper::_('COBALT_SUBMIT'); ?>" />

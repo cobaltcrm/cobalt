@@ -18,7 +18,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <legend><b><?php echo ucwords(TextHelper::_('COBALT_GOAL_STEP_ONE')); ?></b></legend>
                     <?php
                         //generate user dropdown
-                        $user_html = '<select class="inputbox" id="assigned_id">';
+                        $user_html = '<select class="form-control" id="assigned_id">';
                             //if an executive is creating a goal
                             if ($this->member_role == 'exec') {
                                 $user_html .= "<option value='company_0' selected='selected'>".ucwords(TextHelper::_('COBALT_THE_COMPANY'))."</option>";
@@ -53,7 +53,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         $user_html .= "</select>";
 
                         //generate date html
-                        $date_html = "<select class='inputbox' id='date_picker'>";
+                        $date_html = "<select class='form-control' id='date_picker'>";
                         $dates = DateHelper::getGoalDates();
                         $date_html .= JHtml::_('select.options', $dates, 'value', 'text', '', true);
                         $date_html .= "</select>";
@@ -63,7 +63,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo TextHelper::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
                                     <?php echo TextHelper::_('COBALT_TO_SELL'); ?>
-                                    <input class="required inputbox" type="text" value="" placeholder="0" name="amount" />
+                                    <input class="required form-control" type="text" value="" placeholder="0" name="amount" />
                                     <?php echo TextHelper::_('COBALT_OF_NEW_BUSINESS'); ?>
                                    <?php echo $date_html; ?>
                                 <?php
@@ -72,7 +72,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo TextHelper::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
                                     <?php echo TextHelper::_('COBALT_TO_WIN'); ?>
-                                    <input class="inputbox required" type="text" value="" placeholder="0" name="amount" />
+                                    <input class="form-control required" type="text" value="" placeholder="0" name="amount" />
                                     <?php echo TextHelper::_('COBALT_NEW_DEALS'); ?>
                                     <?php echo $date_html; ?>
                                 <?php
@@ -81,9 +81,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo TextHelper::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
                                     <?php echo TextHelper::_('COBALT_TO_MOVE'); ?>
-                                    <input class="inputbox required" type="text" placeholder="0" value="" name="amount" />
+                                    <input class="form-control required" type="text" placeholder="0" value="" name="amount" />
                                     <?php echo TextHelper::_('COBALT_DEALS_FORWARD_TO_THE'); ?>
-                                    <select class="inputbox" name="stage_id">
+                                    <select class="form-control" name="stage_id">
                                         <?php
                                             $stages = DealHelper::getGoalStages();
                                             echo JHtml::_('select.options', $stages, 'value', 'text', '', true);
@@ -97,9 +97,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                  <?php echo TextHelper::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
                                     <?php echo TextHelper::_('COBALT_TO_COMPLETE'); ?>
-                                    <input class="inputbox required" type="text" value="" placeholder="0" name="amount" />
+                                    <input class="form-control required" type="text" value="" placeholder="0" name="amount" />
                                     <?php echo TextHelper::_('COBALT_TASKS_OF_TYPE'); ?>
-                                    <select class="inputbox" name="category_id">
+                                    <select class="form-control" name="category_id">
                                         <option value="">Any</option>
                                         <?php
                                             $categories = EventHelper::getCategories();
@@ -113,9 +113,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                              <?php echo TextHelper::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
                                     <?php echo TextHelper::_('COBALT_TO_WRITE'); ?>
-                                    <input class="inputbox required" type="text" value="" placeholder="0" name="amount" />
+                                    <input class="form-control required" type="text" value="" placeholder="0" name="amount" />
                                     <?php echo TextHelper::_('COBALT_NEW_NOTES_OF_TYPE'); ?>
-                                    <select class="inputbox" name="category_id">
+                                    <select class="form-control" name="category_id">
                                         <option value="">Any</option>
                                         <?php
                                             $categories = NoteHelper::getCategories();
@@ -129,7 +129,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                              <?php echo TextHelper::_('COBALT_I_WANT'); ?>
                                     <?php echo $user_html; ?>
                                     <?php echo TextHelper::_('COBALT_TO_CREATE'); ?>
-                                    <input class="inputbox required" type="text" value="" placeholder="0" name="amount" />
+                                    <input class="form-control required" type="text" value="" placeholder="0" name="amount" />
                                     <?php echo TextHelper::_('COBALT_DEALS'); ?>
                                     <?php echo $date_html; ?>
                             <?php
@@ -143,7 +143,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <li>
                             <label><?php echo TextHelper::_('COBALT_START_DATE'); ?></label>
                             <span class="input-group">
-                                <input class="date_input inputbox required" type="text" name="start_date_hidden" id="start_date">
+                                <input class="date_input form-control required" type="text" name="start_date_hidden" id="start_date">
                                 <input type="hidden" id="start_date_hidden" value="" name="start_date"/>
                                 <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#start_date").datepicker().focus();'><i class="icon-calendar"></i></a>
                             </span>
@@ -151,7 +151,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <li>
                             <label><?php echo TextHelper::_('COBALT_END_DATE'); ?></label>
                             <span class="input-group">
-                                <input class="date_input inputbox required" type="text" id="end_date" name="end_date_hidden">
+                                <input class="date_input form-control required" type="text" id="end_date" name="end_date_hidden">
                                 <input type="hidden" id="end_date_hidden" value="" name="end_date"/>
                                 <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#end_date").datepicker().focus();'><i class="icon-calendar"></i></a>
                             </span>
@@ -161,7 +161,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <legend><b><?php echo ucwords(TextHelper::_('COBALT_GOAL_STEP_TWO')); ?></b></legend>
-                <input type="text" name="name" class="inputbox required" value="" />
+                <input type="text" name="name" class="form-control required" value="" />
             </li>
             <li>
                 <legend><b><?php echo ucwords(TextHelper::_('COBALT_GOAL_STEP_THREE')); ?></b></legend>

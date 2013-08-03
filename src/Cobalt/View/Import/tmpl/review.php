@@ -55,12 +55,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <?php } elseif ( array_key_exists('value',$value)) { ?>
                             <div class="cobaltValue wide">
                                     <input type="hidden" name="import_id[<?php echo $key; ?>][<?php echo $field; ?>]" value="<?php echo $value['value']; ?>" >
-                                    <input class="inputbox" name="import_id[<?php echo $key; ?>][<?php echo str_replace('id','name',$field); ?>]" value="<?php echo $value['label']; ?>" /></div>
+                                    <input class="form-control" name="import_id[<?php echo $key; ?>][<?php echo str_replace('id','name',$field); ?>]" value="<?php echo $value['label']; ?>" /></div>
                         <?php } else { ?>
                             <div class="cobaltValue wide"><?php echo TextHelper::_('COBALT_NO_RESULTS_FOUND'); ?></div>
                         <?php } ?>
                     <?php } else { ?>
-                        <div class="cobaltValue wide"><input class="inputbox" type="text" name="import_id[<?php echo $key; ?>][<?php echo $field; ?>]" value="<?php echo $value; ?>" /></div>
+                        <div class="cobaltValue wide"><input class="form-control" type="text" name="import_id[<?php echo $key; ?>][<?php echo $field; ?>]" value="<?php echo $value; ?>" /></div>
                     <?php } ?>
                     </div>
                     <?php } ?>

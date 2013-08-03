@@ -5,7 +5,7 @@ unset($this->_styleSheets);
 $this->_style = array();
 $this
     // Add stylesheets
-    ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/bootstrap.min.css')
+    ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/bootstrap.css')
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/bootstrap-icons.css')
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/cobalt.css')
 

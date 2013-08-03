@@ -57,7 +57,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input type="text" class="inputbox" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
+        <input type="text" class="form-control" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
     </li>
     <li>
         <div class="ajax_loader"></div>

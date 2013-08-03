@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <div class="row">
                             <legend><h3><?php echo TextHelper::_('COBALT_EDITING_CATEGORY'); ?></h3></legend>
                             <label><b><?php echo TextHelper::_('COBALT_NAME'); ?></b></label>
-                            <input type="text" class="inputbox" name="name" value="<?php echo $this->category['name']; ?>" />
+                            <input type="text" class="form-control" name="name" value="<?php echo $this->category['name']; ?>" />
                             <div>
                                 <?php if ($this->category['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->category['id']; ?>" />

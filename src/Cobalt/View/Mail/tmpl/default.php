@@ -22,14 +22,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="email_association_message"><?php echo TextHelper::_('COBALT_EMAIL_ASSOCIATION_MESSAGE'); ?></div>
                     <div class="message_header"><?php echo ucwords(TextHelper::_('COBALT_PERSON_FIRST_OR_LAST')); ?></div>
                     <div>
-                        <input type="text" id="person_name_<?php echo $email['overview']->msgno; ?>" onkeyup="checkPersonName(<?php echo $email['overview']->msgno; ?>)" name="person_name" class="inputbox" />
+                        <input type="text" id="person_name_<?php echo $email['overview']->msgno; ?>" onkeyup="checkPersonName(<?php echo $email['overview']->msgno; ?>)" name="person_name" class="form-control" />
                         <input type="hidden" id="person_id_<?php echo $email['overview']->msgno; ?>" name="person_id" value="" />
                         <span class="person_message" id="person_message_<?php echo $email['overview']->msgno; ?>" >
                         </span>
                     </div>
                     <div class="message_header"><?php echo ucwords(TextHelper::_('COBALT_DEAL_NAME_EMAIL')); ?></div>
                     <div>
-                        <input type="text" id="deal_name_<?php echo $email['overview']->msgno; ?>"onkeyup="checkDealName(<?php echo $email['overview']->msgno; ?>)" name="deal_name" class="inputbox" />
+                        <input type="text" id="deal_name_<?php echo $email['overview']->msgno; ?>"onkeyup="checkDealName(<?php echo $email['overview']->msgno; ?>)" name="deal_name" class="form-control" />
                         <input type="hidden" id="deal_id_<?php echo $email['overview']->msgno; ?>"name="deal_id" value="" />
                         <span class="deal_message" id="deal_message<?php echo $email['overview']->msgno; ?>">
                         </span>

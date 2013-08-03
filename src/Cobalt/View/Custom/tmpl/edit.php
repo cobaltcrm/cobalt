@@ -20,26 +20,26 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 //determine type of input
                 switch ($value['type']) {
                     case "text": ?>
-                    <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
+                    <input class="form-control" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     <?php break;
                     case "picklist": ?>
-                            <select id="custom_<?php echo $value['id']; ?>" class="inputbox" name="custom_<?php echo $value['id']; ?>">
+                            <select id="custom_<?php echo $value['id']; ?>" class="form-control" name="custom_<?php echo $value['id']; ?>">
                                 <?php echo JHtml::_('select.options', $value['values'], 'value', 'text', $custom_field_filter, true); ?>
                             </select>
                     <?php break;
                     case "number": ?>
-                    <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
+                    <input class="form-control" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     <?php break;
                     case "currency": ?>
                     <div class="">
                         <span class="input-group-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
-                        <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
+                        <input class="form-control" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     </div>
                     <?php break;
                     case "date": ?>
                     <!-- make this a custom date picker -->
                     <div class="input-group">
-                        <input id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_input" class="inputbox filter_input date_input" type="text" value="<?php echo DateHelper::formatDate($custom_field_filter); ?>"  />
+                        <input id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_input" class="form-control filter_input date_input" type="text" value="<?php echo DateHelper::formatDate($custom_field_filter); ?>"  />
                         <input id="custom_<?php echo $value['id']; ?>_hidden" name="custom_<?php echo $value['id']; ?>" type="hidden" value="<?php echo $custom_field_filter; ?>" />
                         <span class="input-group-addon"><i class="icon-calendar"></i></span>
                     </div>

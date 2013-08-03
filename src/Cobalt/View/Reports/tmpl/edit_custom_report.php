@@ -43,7 +43,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
 </div>
 <form action="index.php?controller=editReport" onsubmit="return validateCustomForm(this);" method="post">
     <div class="custom_report_inputs">
-        <p><?php echo TextHelper::_('COBALT_NAME_REPORT'); ?>:</p><input class="inputbox required" type="text" name="name" value="<?php if ( array_key_exists('report',$this) ) echo $this->report[0]['name']; ?>">
+        <p><?php echo TextHelper::_('COBALT_NAME_REPORT'); ?>:</p><input class="form-control required" type="text" name="name" value="<?php if ( array_key_exists('report',$this) ) echo $this->report[0]['name']; ?>">
         <p><input class="btn btn-success" type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>"> - <?php echo TextHelper::_('COBALT_OR'); ?> - <a href="javascript:void(0);" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a></p>
     </div>
     <div id="post">

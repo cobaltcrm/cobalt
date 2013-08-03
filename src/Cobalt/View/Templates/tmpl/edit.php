@@ -25,7 +25,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <ul class="list-unstyled adminformlist cobaltadminlist">
                                     <li>
                                         <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
-                                        <input type="text" class="inputbox" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template['name']; ?>" />
+                                        <input type="text" class="form-control" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template['name']; ?>" />
                                     </li>
                                     <li>
                                         <span class="cobaltfaux-label"><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></span>
@@ -74,12 +74,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                         <tr>
                                                             <input type="hidden" name="items[]" value ="<?php echo $data['id']; ?>]" />
                                                             <td><b><?php echo JText::_('COBALT_NAME'); ?></b></td>
-                                                            <td><input class="inputbox" type="text" name="names[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_NAME_TOOLTIP'); ?>" value="<?php echo $data['name']; ?>" /></td>
+                                                            <td><input class="form-control" type="text" name="names[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_NAME_TOOLTIP'); ?>" value="<?php echo $data['name']; ?>" /></td>
                                                             <td><b><?php echo JText::_("COBALT_DAY"); ?></b></td>
-                                                            <td><input class="inputbox" type="text" name="days[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_DAY_TOOLTIP'); ?>" value="<?php echo $data['day']; ?>" /></td>
+                                                            <td><input class="form-control" type="text" name="days[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_DAY_TOOLTIP'); ?>" value="<?php echo $data['day']; ?>" /></td>
                                                             <td><b><?php echo JText::_("COBALT_HEADER_SOURCE_TYPE"); ?></b></td>
                                                             <td>
-                                                                <select class="inputbox" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_TYPE_TOOLTIP'); ?>" name="types[]">
+                                                                <select class="form-control" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_TYPE_TOOLTIP'); ?>" name="types[]">
                                                                     <option value=""><?php echo JText::_('COBALT_SELECT_EVENT_TYPE'); ?></option>
                                                                       <?php echo JHtml::_('select.options', $this->template_types, 'value', 'text', $data['type'], true);?>
                                                                 </select>
@@ -96,12 +96,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                             <tr>
                                                                 <input type="hidden" name="items[]" value ="" />
                                                                 <td><b><?php echo JText::_('COBALT_NAME'); ?></b></td>
-                                                                <td><input class="inputbox" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_NAME'); ?>" type="text" name="names[]" value="" /></td>
+                                                                <td><input class="form-control" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_NAME'); ?>" type="text" name="names[]" value="" /></td>
                                                                 <td><b><?php echo JText::_('COBALT_DAY'); ?></b></td>
-                                                                <td><input class="inputbox" type="text" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_DAY'); ?>" name="days[]" value="" /></td>
+                                                                <td><input class="form-control" type="text" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_DAY'); ?>" name="days[]" value="" /></td>
                                                                 <td><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></td>
                                                                 <td>
-                                                                    <select class="inputbox" name="types[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_TYPE'); ?>" >
+                                                                    <select class="form-control" name="types[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_TYPE'); ?>" >
                                                                         <option value=""><?php echo JText::_('COBALT_SELECT_EVENT_TYPE'); ?></option>
                                                                           <?php echo JHtml::_('select.options', $this->template_types, 'value', 'text', '', true);?>
                                                                     </select>
@@ -136,12 +136,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <tr>
                                         <input type="hidden" name="items[]" value ="" />
                                         <td><b><?php echo JText::_('COBALT_NAME'); ?></b></td>
-                                        <td><input class="inputbox" type="text" name="names[]" value="" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_NAME'); ?>"  /></td>
+                                        <td><input class="form-control" type="text" name="names[]" value="" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_NAME'); ?>"  /></td>
                                         <td><b><?php echo JText::_('COBALT_DAY'); ?></b></td>
-                                        <td><input class="inputbox" type="text" name="days[]" value="" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_DAY'); ?>"  /></td>
+                                        <td><input class="form-control" type="text" name="days[]" value="" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_DAY'); ?>"  /></td>
                                         <td><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></td>
                                         <td>
-                                            <select class="inputbox" name="types[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_TYPE'); ?>" >
+                                            <select class="form-control" name="types[]" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_EVENT_TYPE'); ?>" >
                                                 <option value=""><?php echo JText::_('COBALT_SELECT_EVENT_TYPE'); ?></option>
                                                   <?php echo JHtml::_('select.options', $this->template_types, 'value', 'text', '', true);?>
                                             </select>

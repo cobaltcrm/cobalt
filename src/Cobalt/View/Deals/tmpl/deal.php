@@ -94,11 +94,15 @@ $deal = $this->dealList[0];
                         <div class="inline" id="editable_amount">
                             <h2>
                                 <?php echo ConfigHelper::getCurrency(); ?>
-                                <a href="#" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<div class="input-group"><form class="inline-form" id="amount_form">
+                                <a href="#" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<form id="amount_form">
+                                <div class="input-group">
                                     <span class="input-group-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
-                                        <input type="text" class="inputbox input-small" name="amount" value="<?php echo $deal['amount']; ?>" />
-                                        <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
-                                    </form></div>' ><span id="amount_<?php echo $deal['id']; ?>"><?php echo $deal['amount']; ?></span></a>
+                                    <input type="text" class="form-control" name="amount" value="<?php echo $deal['amount']; ?>" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                    </span>
+                                </div>
+                                </form>'><span id="amount_<?php echo $deal['id']; ?>"><?php echo $deal['amount']; ?></span></a>
                             </h2>
                         </div>
                     </span>
@@ -131,11 +135,16 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_probability_container">
                     <div class="inline" id="editable_probability">
                         <h2>
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>" data-html='true' data-content='<div class="input-group"><form class="inline-form" id="probability_form">
-                                    <input type="text" class="inputbox input-small" name="probability" value="<?php echo $deal['probability']; ?>" />
+                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>" data-html='true' data-content='
+                            <form id="probability_form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="probability" value="<?php echo $deal['probability']; ?>" />
                                     <span class="input-group-addon">%</span>
-                                    <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
-                                </form></div>' ><span id="probability_<?php echo $deal['id']; ?>"><?php echo $deal['probability']; ?></span>%</a>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                    </span>
+                                </div>
+                            </form>'><span id="probability_<?php echo $deal['id']; ?>"><?php echo $deal['probability']; ?></span>%</a>
                         </h2>
                     </div>
                     </span>
@@ -160,8 +169,8 @@ $deal = $this->dealList[0];
                     <div id="actual_close_container"<?php if (!$actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_ACTUAL_CLOSE'); ?>
                         <h2>
-                            <form class="inline-form" name="actual_close_form">
-                                <input type="text" class="input-invisible input-small inputbox-hidden date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>" />
+                            <form class="form-inline" name="actual_close_form">
+                                <input type="text" class="input-invisible input-small form-control-hidden date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>" />
                                 <input type="hidden" name="actual_close" id="actual_close_hidden" value="<?php echo $deal['actual_close']; ?>" />
                             </form>
                         </h2>
@@ -169,8 +178,8 @@ $deal = $this->dealList[0];
                     <div id="expected_close_container"<?php if ($actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
-                            <form class="inline-form" name="expected_close_form">
-                                <input type="text" class="input-invisible input-small inputbox-hidden date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>" />
+                            <form class="form-inline" name="expected_close_form">
+                                <input type="text" class="input-invisible input-small form-control-hidden date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>" />
                                 <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal['expected_close']; ?>" />
                             </form>
                         </h2>
@@ -209,7 +218,7 @@ $deal = $this->dealList[0];
                 <div class="inline"><span id="editable_summary"><?php echo nl2br($summary); ?></span></div>
                 <div id="editable_summary_area" style="display:none;">
                     <form id="summary_form">
-                        <textarea class="inputbox" name="summary"><?php echo $summary; ?></textarea>
+                        <textarea class="form-control" name="summary"><?php echo $summary; ?></textarea>
                     </form>
                     <a class="btn" href="javscript:void(0);" onclick="saveEditableModal('summary_form');" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                 </div>

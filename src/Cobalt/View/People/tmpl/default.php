@@ -99,7 +99,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input class="inputbox filter_input" name="name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->people_filter; ?>">
+        <input class="form-control filter_input" name="name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->people_filter; ?>">
     </li>
     <li class="filter_sentence">
         <div class="ajax_loader"></div>

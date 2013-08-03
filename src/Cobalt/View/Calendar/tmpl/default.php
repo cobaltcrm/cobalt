@@ -39,7 +39,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div id="calendar"></div>
 
 <div id="team_members" class="padding">
-    <form class="inline-form">
+    <form class="form-inline">
         <?php if (count($this->team_members)>0) {
             echo '<ul id="team_member_calendar_filter">';
             foreach ($this->team_members as $team_member) {

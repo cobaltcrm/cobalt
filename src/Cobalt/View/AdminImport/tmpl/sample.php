@@ -23,7 +23,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <div class="sample_text">
                             <h1><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h1>
                             <p><div class="alert alert-info"><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_DESC'); ?></div></p>
-                            <form action="index.php?view=import" method="post" name="adminForm" id="adminForm" class="inline-form"  >
+                            <form action="index.php?view=import" method="post" name="adminForm" id="adminForm" class="form-inline"  >
                                 <input type="submit" value="<?php echo JText::_('COBALT_INSTALL_SAMPLE_BUTTON'); ?>" class="btn btn-primary btn-large" />
                                 <input type="hidden" name="id" value="1" />
                                 <input type="hidden" name="task" value="installSampleData" />
@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <input type="hidden" name="layout" value="sample" />
                                 <?php echo JHtml::_('form.token'); ?>
                             </form>
-                            <form action="index.php?view=import" method="post" name="adminForm" id="adminForm" class="inline-form"  >
+                            <form action="index.php?view=import" method="post" name="adminForm" id="adminForm" class="form-inline"  >
                                 <input type="submit" value="<?php echo JText::_('COBALT_REMOVE_SAMPLE_BUTTON'); ?>" class="btn btn-danger btn-large" />
                                 <input type="hidden" name="id" value="1" />
                                 <input type="hidden" name="task" value="removeSampleData" />
