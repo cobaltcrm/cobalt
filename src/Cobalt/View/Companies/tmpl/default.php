@@ -38,9 +38,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
 <div class="page-header">
     <div class="btn-group pull-right">
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_COMPANY'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#companyModal" data-toggle="modal"><i class="icon-plus icon-white"></i></a>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_COMPANIES'); ?>" data-placement="bottom"  class="btn" href="<?php echo JRoute::_('index.php?view=import&import_type=companies'); ?>"><i class="icon-circle-arrow-up"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_COMPANIES'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo JRoute::_('index.php?view=import&import_type=companies'); ?>"><i class="icon-circle-arrow-up"></i></a>
         <?php if ( UsersHelper::canExport() ) { ?>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_COMPANIES'); ?>" data-placement="bottom" class="btn"href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_COMPANIES'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i></a>
         <?php } ?>
     </div>
 
