@@ -3,6 +3,7 @@
     "logout": "\\Cobalt\\Controller\\Logout",
 
     ":view": "Cobalt\\Controller\\DefaultController",
+    ":view/edit": "Cobalt\\Controller\\Edit",
     ":view/:id": "Cobalt\\Controller\\DefaultController",
     ":view/:id/:layout": "Cobalt\\Controller\\DefaultController",
     ":view/:id/:layout/:type": "Cobalt\\Controller\\DefaultController"
