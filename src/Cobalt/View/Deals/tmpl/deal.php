@@ -94,8 +94,8 @@ $deal = $this->dealList[0];
                         <div class="inline" id="editable_amount">
                             <h2>
                                 <?php echo ConfigHelper::getCurrency(); ?>
-                                <a href="#" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<div class="input-prepend input-append"><form class="inline-form" id="amount_form">
-                                    <span class="add-on"><?php echo ConfigHelper::getCurrency(); ?></span>
+                                <a href="#" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<div class="input-group"><form class="inline-form" id="amount_form">
+                                    <span class="input-group-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
                                         <input type="text" class="inputbox input-small" name="amount" value="<?php echo $deal['amount']; ?>" />
                                         <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                                     </form></div>' ><span id="amount_<?php echo $deal['id']; ?>"><?php echo $deal['amount']; ?></span></a>
@@ -131,9 +131,9 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_probability_container">
                     <div class="inline" id="editable_probability">
                         <h2>
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>" data-html='true' data-content='<div class="input-append"><form class="inline-form" id="probability_form">
+                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>" data-html='true' data-content='<div class="input-group"><form class="inline-form" id="probability_form">
                                     <input type="text" class="inputbox input-small" name="probability" value="<?php echo $deal['probability']; ?>" />
-                                    <span class="add-on">%</span>
+                                    <span class="input-group-addon">%</span>
                                     <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                                 </form></div>' ><span id="probability_<?php echo $deal['id']; ?>"><?php echo $deal['probability']; ?></span>%</a>
                         </h2>

@@ -68,8 +68,8 @@ $app = JFactory::getApplication();
                 <div class="control-group">
                     <label class="control-label" for="amount"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></label>
                     <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
+                        <div class="">
+                            <span class="input-group-addon"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
                             <input class="inputbox required" type="text" name="amount" value="<?php echo $deal['amount']; ?>" />
                         </div>
                     </div>
@@ -89,9 +89,9 @@ $app = JFactory::getApplication();
                 <div class="control-group">
                     <label class="control-label" for="probability"><?php echo TextHelper::_('COBALT_DEAL_PROBABILITY'); ?></label>
                     <div class="controls">
-                        <div class="input-append">
+                        <div class="input-group">
                             <input type="text" class="inputbox" name="probability" value="<?php if ( array_key_exists('probability',$deal) ) echo $deal['probability']; ?>" />
-                            <span class="add-on">%</span>
+                            <span class="input-group-addon">%</span>
                         </div>
                     </div>
                 </div>

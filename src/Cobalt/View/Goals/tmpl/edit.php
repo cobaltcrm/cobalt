@@ -142,7 +142,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <ul class="list-unstyled">
                         <li>
                             <label><?php echo TextHelper::_('COBALT_START_DATE'); ?></label>
-                            <span class="input-append">
+                            <span class="input-group">
                                 <input class="date_input inputbox required" type="text" name="start_date_hidden" id="start_date">
                                 <input type="hidden" id="start_date_hidden" value="" name="start_date"/>
                                 <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#start_date").datepicker().focus();'><i class="icon-calendar"></i></a>
@@ -150,7 +150,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </li>
                         <li>
                             <label><?php echo TextHelper::_('COBALT_END_DATE'); ?></label>
-                            <span class="input-append">
+                            <span class="input-group">
                                 <input class="date_input inputbox required" type="text" id="end_date" name="end_date_hidden">
                                 <input type="hidden" id="end_date_hidden" value="" name="end_date"/>
                                 <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#end_date").datepicker().focus();'><i class="icon-calendar"></i></a>

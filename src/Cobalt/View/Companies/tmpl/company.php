@@ -205,7 +205,7 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('facebook_url',$company) && $company['facebook_url'] != "") { ?>
                     <a href="<?php echo $company['facebook_url']; ?>" target="_blank"><div class="facebook_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="facebook_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-group"><form id="facebook_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="facebook_url" value="<?php if ( array_key_exists('facebook',$company) )  echo $company['facebook_url']; ?>" />
@@ -217,7 +217,7 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('twitter_user',$company) && $company['twitter_user'] != "") { ?>
                     <a href="http://www.twitter.com/#!/<?php echo $company['twitter_user']; ?>" target="_blank"><div class="twitter_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="twitter_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-group"><form id="twitter_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="twitter_user" value="<?php if ( array_key_exists('twitter_user',$company) )  echo $company['twitter_user']; ?>" />
@@ -229,7 +229,7 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('youtube_url',$company) && $company['youtube_url'] != "" ) { ?>
                     <a href="<?php echo $company['youtube_url']; ?>" target="_blank"><div class="youtube_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="youtube_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-group"><form id="youtube_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="youtube_url" value="<?php if ( array_key_exists('youtube_url',$company) )  echo $company['youtube_url']; ?>" />
@@ -241,7 +241,7 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('flickr_url',$company) && $company['flickr_url'] != "" ) { ?>
                     <a href="<?php echo $company['flickr_url']; ?>" target="_blank"><div class="flickr_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="flickr_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-group"><form id="flickr_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="flickr_url" value="<?php if ( array_key_exists('flickr_url',$company) )  echo $company['flickr_url']; ?>" />
@@ -288,7 +288,7 @@ $company = $this->companies[0];?>
 <div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_person_dialog'>
     <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_PERSON'); ?></h3></div>
     <div class="modal-body text-center">
-        <div class="input-append">
+        <div class="input-group">
             <input name="person_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_USER'); ?>" />
             <input type="hidden" name="shared_user_id" id="shared_user_id" />';
             <a class="btn btn-success" href="javascript:void(0);" onclick="addPersonToCompany();"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_ADD'); ?></a>
@@ -301,7 +301,7 @@ $company = $this->companies[0];?>
     <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_DEAL'); ?></h3></div>
     <div class="modal-body text-center">
         <form id="deal">
-            <div class="input-append">
+            <div class="input-group">
                 <input name="deal_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
                 <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
                 <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>

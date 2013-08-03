@@ -31,17 +31,17 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     <?php break;
                     case "currency": ?>
-                    <div class="input-prepend">
-                        <span class="add-on"><?php echo ConfigHelper::getCurrency(); ?></span>
+                    <div class="">
+                        <span class="input-group-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
                         <input class="inputbox" type="text" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" />
                     </div>
                     <?php break;
                     case "date": ?>
                     <!-- make this a custom date picker -->
-                    <div class="input-append">
+                    <div class="input-group">
                         <input id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_input" class="inputbox filter_input date_input" type="text" value="<?php echo DateHelper::formatDate($custom_field_filter); ?>"  />
                         <input id="custom_<?php echo $value['id']; ?>_hidden" name="custom_<?php echo $value['id']; ?>" type="hidden" value="<?php echo $custom_field_filter; ?>" />
-                        <span class="add-on"><i class="icon-calendar"></i></span>
+                        <span class="input-group-addon"><i class="icon-calendar"></i></span>
                     </div>
                     <?php break; ?>
                 <?php }
