@@ -164,7 +164,7 @@ class TemplateHelper
     </button>';
         $list_html .= "<div class='navbar-brand' style='padding:0'>";
         $list_html .= "<img id='site-logo-img' src='".StylesHelper::getSiteLogo()."' />";
-        $list_html .= '<a id="site-name-link" class="brand" href="index.php">'.StylesHelper::getSiteName().'</a>';
+        $list_html .= '<a id="site-name-link" class="brand" href="'.JUri::base().'">'.StylesHelper::getSiteName().'</a>';
         $list_html .= '</div>';
         $list_html .= '<div class="nav-collapse collapse navbar-responsive-collapse"><ul class="nav navbar-nav">';
         foreach ($list->menu_items as $name) {

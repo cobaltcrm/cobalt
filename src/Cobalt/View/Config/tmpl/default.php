@@ -28,7 +28,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="locale">
-                                 <ul class="unstyled adminlist cobaltadminlist">
+                                 <ul class="list-unstyled adminlist cobaltadminlist">
                                     <li>
                                         <label><b><?php echo JText::_('COBALT_LANGUAGE'); ?></b></label>
                                         <select class="inputbox" name="site_language" rel="tooltip" data-original-title='<?php echo JText::_('COBALT_SELECT_SITE_LANGUAGE'); ?>' >
@@ -50,7 +50,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </ul>
                             </div>
                             <div class="tab-pane" id="currency">
-                                 <ul class="unstyled adminlist cobaltadminlist">
+                                 <ul class="list-unstyled adminlist cobaltadminlist">
                                     <li>
                                         <label><b><?php echo JText::_('COBALT_CURRENCY'); ?></b></label>
                                         <input type="text" class="inputbox" name="currency" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_CURRENCY_TOOLTIP'); ?>" value="<?php if ( array_key_exists('currency',$this->config ) ) echo $this->config->currency; ?>" />
@@ -68,7 +68,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <?php echo JText::_("COBALT_WARNING_IMAP_NOT_ENABLED"); ?>
                                     </div>
                                  <?php } ?>
-                                <ul class="unstyled adminlist cobaltadminlist">
+                                <ul class="list-unstyled adminlist cobaltadminlist">
                                     <li>
                                         <label><b><?php echo JText::_('COBALT_IMAP_HOST'); ?></b></label>
                                         <input type="text" class="inputbox" name="imap_host" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_INPUT_IMAP_HOST'); ?>" value="<?php if ( array_key_exists('imap_host',$this->config ) ) echo $this->config->imap_host; ?>" />
@@ -84,7 +84,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </ul>
                             </div>
                             <div class="tab-pane" id="language">
-                                <ul class="unstyled adminlist cobaltadminlist">
+                                <ul class="list-unstyled adminlist cobaltadminlist">
                                     <li>
                                         <label><b><?php echo JText::_('COBALT_WELCOME_MESSAGE'); ?></b></label>
                                         <input type="text" class="inputbox" name="welcome_message" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_WELCOME_MESSAGE_TOOLTIP'); ?>" value="<?php if ( array_key_exists('welcome_message',$this->config ) ) echo $this->config->welcome_message; ?>" />
@@ -124,7 +124,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </ul>
                             </div>
                             <div class="tab-pane" id="help">
-                                <ul class="unstyled adminlist cobaltadminlist">
+                                <ul class="list-unstyled adminlist cobaltadminlist">
                                      <li>
                                         <label class="checkbox">
                                             <input type="checkbox" class="inputbox" name="show_help" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_SHOW_HELP_TOOLTIP'); ?>" value="1" <?php if ( array_key_exists('show_help',$this->config ) && $this->config->show_help == 1 )  echo "checked='checked'"; ?> />

@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <form action="index.php?view=formwizard" method="post" name="adminForm" id="adminForm" class="form-validate" >
                         <div class="row">
                             <legend><h2><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FORM'); ?></h2></legend>
-                            <ul class="unstyled adminformlist cobaltadminlist">
+                            <ul class="list-unstyled adminformlist cobaltadminlist">
                                 <li>
                                     <label><b><?php echo JText::_('COBALT_FORM_TYPE'); ?></b></label>
                                     <?php echo $this->form_types; ?>
@@ -73,7 +73,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     foreach ($this->fields as $type => $fields) { ?>
                                     <div id="<?php echo $type; ?>_fields" class="field_checkbox_container">
                                         <div class="col-lg-5">
-                                        <ul class="unstyled">
+                                        <ul class="list-unstyled">
                                                 <?php
                                                 $i=0;
                                                 foreach ($fields as $key => $field) { ?>
@@ -82,7 +82,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                 </ul>
                                                 </div>
                                                 <div class="col-lg-5">
-                                                <ul class="unstyled">
+                                                <ul class="list-unstyled">
                                                 <?php } ?>
                                                 <?php $checked = isset($this->form) && is_array($this->form['fields']) && in_array($field['name'],$this->form['fields']) ? "checked='checked'" : ""; ?>
                                                 <li><label class="checkbox"><input <?php echo $checked; ?> id="<?php echo $type.'_field_'.$key; ?>" type="checkbox" onclick="updateFields()" name="fields[]" value="<?php echo $field['name']; ?>" /><?php echo $field['display']; ?></label></li>

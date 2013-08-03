@@ -20,7 +20,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                 <div class="col-lg-9">
                     <form action="index.php?view=users" method="post" name="adminForm" id="adminForm" class="form-validate" >
                         <legend><h2><?php echo TextHelper::_("COBALT_MANAGING_USER"); ?></h2></legend>
-                        <ul class="unstyled adminformlist cobaltadminlist">
+                        <ul class="list-unstyled adminformlist cobaltadminlist">
                             <li>
                                 <label><b><?php echo JText::_('COBALT_SELECT_USER_TO_ADD'); ?></b></label>
                                 <input data-placement="right" type="text" id="uid_name" name="username" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_START_TYPING_JOOMLA_NAME'); ?>" value="<?php if ( isset($this->user) ) echo $this->user['username']; ?>">
