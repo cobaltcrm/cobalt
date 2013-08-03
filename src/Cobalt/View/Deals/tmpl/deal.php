@@ -23,23 +23,27 @@ $deal = $this->dealList[0];
     var association_type = 'deal';
 </script>
 
-<div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component&id=<?php echo $deal['id']; ?>" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEAL')); ?></h3>
-        </div>
-        <div class="modal-body">
-            <p></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-            <button onclick="saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+<div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component&id=<?php echo $deal['id']; ?>" class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEAL')); ?></h3>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
+                <button onclick="saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+            </div>
         </div>
     </div>
+</div>
 
 <iframe id="hidden" name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
 
-<div class="row-fluid">
+<div class="row">
 
     <div class="span8">
 
