@@ -114,6 +114,10 @@ class CobaltRouter extends Router
             $array[] = $query['import_type'];
         }
 
+        if (empty($array)) {
+            return $url;
+        }
+
         return '/' . implode('/', $array);
     }
 }
