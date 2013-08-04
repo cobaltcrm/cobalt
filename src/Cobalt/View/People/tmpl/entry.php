@@ -32,7 +32,7 @@
                     $me = array(array('label'=>TextHelper::_('COBALT_ME'),'value'=>UsersHelper::getLoggedInUser()->id));
                     $users = UsersHelper::getUsers(null,TRUE);
                     $users = array_merge($me,$users); ?>
-                    <ul class="dropdown-menu" aria-labelledby="deal_stage_<?php echo $deal['id']; ?>" role="menu">
+                    <ul class="dropdown-menu" aria-labelledby="deal_stage_<?php echo $person['id']; ?>" role="menu">
                 <?php
                     if (count($users)) { foreach ($users as $id => $user) { ?>
                     <li><a href="javascript:void(0)" class="owner_select dropdown_item" data-field="owner_id" data-item="people" data-item-id="<?php echo $person['id']; ?>" data-value="<?php echo $user['value']; ?>">
@@ -96,7 +96,7 @@
                 </ul>
             </div>
         </td>
-        <td class="notes"><a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(<?php echo $person['id']; ?>,'people');"><i class="icon-file"></i></a>
+        <td class="notes"><a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(<?php echo $person['id']; ?>, 'people');"><i class="icon-file"></i></a>
         <?php
         echo '<td class="address">'.$person['work_city'].'<br>'.$person['work_state'].'<br>'.$person['work_zip'].'<br>'.$person['work_country'].'</td>';
         echo '<td class="added">'.DateHelper::formatDate($person['created']).'</td>';

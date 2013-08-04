@@ -136,11 +136,17 @@ if (JDEBUG) {
 
     $handler = new Whoops\Handler\PrettyPageHandler;
 
-    $handler->setEditor(
-        function ($file, $line) {
-            return "pstorm://$file:$line";
-        }
-    );
+    $config = $container->resolve('config');
+
+    $editor = $config->debugEditor;
+
+    if ($editor == 'pstorm') {
+        $handler->setEditor(function ($file, $line) {
+                return "pstorm://$file:$line";
+            });
+    } else {
+        $handler->setEditor($editor);
+    }
 
     $debugger->pushHandler($handler);
 
