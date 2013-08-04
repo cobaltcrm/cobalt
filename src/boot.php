@@ -131,6 +131,39 @@ switch ($config->error_reporting) {
 
 define('JDEBUG', $config->debug);
 
+if (JDEBUG) {
+    $debugger = new Whoops\Run;
+
+    $handler = new Whoops\Handler\PrettyPageHandler;
+
+    $handler->setEditor(
+        function ($file, $line) {
+            return "pstorm://$file:$line";
+        }
+    );
+
+    $debugger->pushHandler($handler);
+
+    // Example: tag all frames inside a function with their function name
+    $debugger->pushHandler(function($exception, $inspector, $debugger) {
+
+            $inspector->getFrames()->map(function($frame) {
+
+                    if($function = $frame->getFunction()) {
+                        $frame->addComment("This frame is within function '$function'", 'cpt-obvious');
+                    }
+
+                    return $frame;
+                });
+        });
+
+    $container->bind('debugger', function() use ($debugger) {
+            return $debugger;
+        });
+
+    $container->resolve('debugger')->register();
+}
+
 // Alias the helper classes, so we don't have to add the use statement to every layout.
 $helpers = glob(JPATH_ROOT . '/src/Cobalt/Helper/*.php');
 

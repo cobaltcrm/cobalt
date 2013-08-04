@@ -14,13 +14,5 @@ const _CEXEC = 1;
 
 require_once __DIR__ . '/src/boot.php';
 
-try {
-    // $container is setup in the previous require.
-    $container->resolve('app')->execute();
-
-} catch (Exception $e) {
-
-	echo '<pre>';
-    print_r($e);
-    exit();
-}
+// $container is setup in the previous require.
+$container->resolve('app')->execute();

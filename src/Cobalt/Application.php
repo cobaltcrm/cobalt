@@ -368,49 +368,41 @@ final class Application extends AbstractWebApplication
 
     public function doExecute()
     {
-        try {
-            // Instantiate the router
-            $router = new CobaltRouter($this->input, $this);
-            $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
+        // Instantiate the router
+        $router = new CobaltRouter($this->input, $this);
+        $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
 
-            if (!$maps) {
-                throw new \RuntimeException('Invalid router file.', 500);
-            }
-
-            $router->addMaps($maps, true);
-            $router->setDefaultController('Cobalt\\Controller\\DefaultController');
-
-            $this->loadDocument();
-
-            // Register the document object with JFactory
-            JFactory::$document = $this->document;
-
-            // Register the template to the config
-            $template = $this->getTemplate(true);
-            $this->set('theme', $template->template);
-            $this->set('themeFile', $this->input->get('tmpl', 'index') . '.php');
-
-            // Set metadata
-            $this->document->setTitle('Cobalt');
-
-            ob_start();
-            require_once __DIR__.'/cobalt.php';
-            $contents = ob_get_clean();
-
-            $this->document->setBuffer($contents, 'cobalt');
-
-            // Trigger the onAfterDispatch event.
-            JPluginHelper::importPlugin('system');
-            $this->triggerEvent('onAfterDispatch');
-
-            $this->setBody($this->document->render(false, (array) $template));
+        if (!$maps) {
+            throw new \RuntimeException('Invalid router file.');
         }
 
-        // Mop up any uncaught exceptions.
-        catch (\Exception $e) {
-            echo $e->getMessage();
-            $this->close($e->getCode());
-        }
+        $router->addMaps($maps, true);
+        $router->setDefaultController('Cobalt\\Controller\\DefaultController');
+
+        $this->loadDocument();
+
+        // Register the document object with JFactory
+        JFactory::$document = $this->document;
+
+        // Register the template to the config
+        $template = $this->getTemplate(true);
+        $this->set('theme', $template->template);
+        $this->set('themeFile', $this->input->get('tmpl', 'index') . '.php');
+
+        // Set metadata
+        $this->document->setTitle('Cobalt');
+
+        ob_start();
+        require_once __DIR__.'/cobalt.php';
+        $contents = ob_get_clean();
+
+        $this->document->setBuffer($contents, 'cobalt');
+
+        // Trigger the onAfterDispatch event.
+        JPluginHelper::importPlugin('system');
+        $this->triggerEvent('onAfterDispatch');
+
+        $this->setBody($this->document->render(false, (array) $template));
     }
 
     public function loadDocument()
