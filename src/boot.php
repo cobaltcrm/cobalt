@@ -40,135 +40,23 @@ JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
 
 $container = Cobalt\Container::getInstance();
 
-$container->bind('app', function() {
+$container
+    ->registerServiceProvider(new Cobalt\Provider\ConfigServiceProvider)
+    ->registerServiceProvider(new Cobalt\Provider\DatabaseServiceProvider)
+    ->registerServiceProvider(new Cobalt\Provider\WhoopsServiceProvider);
+
+$container->bind('app', function($c) {
         static $app;
 
         if (is_null($app)) {
+            /** @var $c \Cobalt\Container */
+            $c->registerProviders();
+
             $app = new Cobalt\Application;
         }
 
         return $app;
     });
-
-$container->bind('config', function () {
-        static $config;
-
-        if (is_null($config)) {
-            $config = new JConfig;
-        }
-
-        return $config;
-    });
-
-$container->bind('db', function($c) {
-        static $db;
-
-        if (is_null($db)) {
-            /* @var $c Cobalt\Container */
-            $config = $c->resolve('config');
-            $debug = $config->debug;
-
-            $options = array(
-                'driver' => $config->dbtype,
-                'host' => $config->host,
-                'user' => $config->user,
-                'password' => $config->password,
-                'database' => $config->db,
-                'prefix' => $config->dbprefix
-            );;
-
-            try {
-                $db = Joomla\Database\DatabaseDriver::getInstance($options);
-            } catch (\Exception $e) {
-                if (!headers_sent()) {
-                    header('HTTP/1.1 500 Internal Server Error');
-                }
-
-                exit('Database Error: ' . $e->getMessage());
-            }
-
-            $db->setDebug($debug);
-        }
-
-        return $db;
-    });
-
-JFactory::$database = $container->resolve('db');
-
-$config = $container->resolve('config');
-
-// Set the error_reporting
-switch ($config->error_reporting) {
-    case 'default':
-    case '-1':
-        break;
-
-    case 'none':
-    case '0':
-        error_reporting(0);
-        break;
-
-    case 'simple':
-        error_reporting(E_ERROR | E_WARNING | E_PARSE);
-        ini_set('display_errors', 1);
-        break;
-
-    case 'maximum':
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        break;
-
-    case 'development':
-        error_reporting(-1);
-        ini_set('display_errors', 1);
-        break;
-
-    default:
-        error_reporting($config->error_reporting);
-        ini_set('display_errors', 1);
-        break;
-}
-
-define('JDEBUG', $config->debug);
-
-if (JDEBUG) {
-    $debugger = new Whoops\Run;
-
-    $handler = new Whoops\Handler\PrettyPageHandler;
-
-    $config = $container->resolve('config');
-
-    $editor = $config->debugEditor;
-
-    if ($editor == 'pstorm') {
-        $handler->setEditor(function ($file, $line) {
-                return "pstorm://$file:$line";
-            });
-    } else {
-        $handler->setEditor($editor);
-    }
-
-    $debugger->pushHandler($handler);
-
-    // Example: tag all frames inside a function with their function name
-    $debugger->pushHandler(function($exception, $inspector, $debugger) {
-
-            $inspector->getFrames()->map(function($frame) {
-
-                    if($function = $frame->getFunction()) {
-                        $frame->addComment("This frame is within function '$function'", 'cpt-obvious');
-                    }
-
-                    return $frame;
-                });
-        });
-
-    $container->bind('debugger', function() use ($debugger) {
-            return $debugger;
-        });
-
-    $container->resolve('debugger')->register();
-}
 
 // Alias the helper classes, so we don't have to add the use statement to every layout.
 $helpers = glob(JPATH_ROOT . '/src/Cobalt/Helper/*.php');
