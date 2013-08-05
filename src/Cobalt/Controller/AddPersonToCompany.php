@@ -20,9 +20,6 @@ class AddPersonToCompany extends DefaultController
 {
     public function execute()
     {
-        //app
-        $app = JFactory::getApplication();
-
         //parameters
         $person_id = $app->input->get("person_id");
         $company_id = $app->input->get('company_id');

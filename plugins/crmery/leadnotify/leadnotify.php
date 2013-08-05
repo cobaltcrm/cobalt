@@ -44,7 +44,7 @@ class plgCobaltLeadNotify extends JPlugin
             $db->setQuery($query);
             $to = $db->loadResult();
 
-            $from		= array($app->getCfg('mailfrom'), $app->getCfg('fromname'));
+            $from		= array($app->get('mailfrom'), $app->get('fromname'));
             $subject 	= $this->params->get('subject');
             $body 		= $this->params->get('pretext');
 

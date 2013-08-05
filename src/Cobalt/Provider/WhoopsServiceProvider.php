@@ -9,6 +9,7 @@
 namespace Cobalt\Provider;
 
 use Cobalt\Container;
+use Joomla\Registry\Registry;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
@@ -16,14 +17,14 @@ class WhoopsServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        /** @var $config \JConfig */
+        /** @var $config Registry */
         $config = $container->resolve('config');
 
-        if ($config->debug) {
+        if ($config->get('debug', false)) {
             $whoops = new Run;
             $handler = new PrettyPageHandler;
 
-            $editor = $config->debugEditor;
+            $editor = $config->get('debugEditor');
 
             if ($editor == 'pstorm') {
                 $handler->setEditor(function ($file, $line) {

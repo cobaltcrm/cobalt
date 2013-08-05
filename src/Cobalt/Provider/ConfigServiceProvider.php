@@ -9,16 +9,18 @@
 namespace Cobalt\Provider;
 
 use JConfig;
+use JFactory;
 use Cobalt\Container;
+use Joomla\Registry\Registry;
 
 class ConfigServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $config = new JConfig;
+        $config = new Registry(new JConfig);
 
         // Set the error_reporting
-        switch ($config->error_reporting) {
+        switch ($config->get('error_reporting')) {
             case 'default':
             case '-1':
                 break;
@@ -44,12 +46,14 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 break;
 
             default:
-                error_reporting($config->error_reporting);
+                error_reporting($config->get('error_reporting'));
                 ini_set('display_errors', 1);
                 break;
         }
 
-        define('JDEBUG', $config->debug);
+        JFactory::$config = $config;
+
+        define('JDEBUG', $config->get('debug', false));
 
         $container->bind('config', function () use ($config) {
                 return $config;

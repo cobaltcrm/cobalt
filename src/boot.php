@@ -53,6 +53,9 @@ $container->bind('app', function($c) {
             $c->registerProviders();
 
             $app = new Cobalt\Application;
+
+            // @TODO: Remove JFactory
+            JFactory::$application = $app;
         }
 
         return $app;

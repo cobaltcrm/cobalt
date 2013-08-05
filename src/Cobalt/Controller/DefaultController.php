@@ -13,27 +13,57 @@ namespace Cobalt\Controller;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+use Cobalt\Container;
+use Joomla\Input\Input;
+use Joomla\Application\AbstractApplication;
 use Joomla\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
+    /**
+     * @var \Cobalt\Container
+     */
+    protected $container;
+
+    /**
+     * @var \Cobalt\Application
+     */
+    protected $app;
+
+    /**
+     * @var \Joomla\Input\Input
+     */
+    protected $input;
+
+    /**
+     * Override the parent so that we can get at the application and input objects properties.
+     *
+     * @param Input               $input
+     * @param AbstractApplication $app
+     */
+    public function __construct(Input $input = null, AbstractApplication $app = null)
+    {
+        $this->container = Container::getInstance();
+        $this->input = $input;
+        $this->app = $app;
+
+        parent::__construct($input, $app);
+    }
+
     public function execute()
     {
-        // Get the application
-        $app = $this->getApplication();
-
         // Get the document object.
-        $document   = $app->getDocument();
-        $viewName   = $app->input->getWord('view', 'dashboard');
+        $document   = $this->app->getDocument();
         $viewFormat = $document->getType();
-        $layoutName = $app->input->getWord('layout', 'default');
+        $viewName   = $this->input->getWord('view', 'dashboard');
+        $layoutName = $this->input->getWord('layout', 'default');
 
-        $app->input->set('view', $viewName);
+        $this->input->set('view', $viewName);
 
         // Register the layout paths for the view
         $paths = new \SplPriorityQueue;
 
-        $themeOverride = JPATH_THEMES . '/' . $app->get('theme') . '/html/' . strtolower($viewName);
+        $themeOverride = JPATH_THEMES . '/' . $this->app->get('theme') . '/html/' . strtolower($viewName);
         if (is_dir($themeOverride)) {
             $paths->insert($themeOverride, 'normal');
         }

@@ -20,18 +20,21 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class CheckEmailName extends DefaultController
 {
     public function execute()
-      {
-              $app = JFactory::getApplication();
-            $emailExists = CobaltHelper::checkEmailName($app->input->get('email'));
-            if ($emailExists) {
-                $success = true;
-                $msg = TextHelper::_('COBALT_EMAIL_EXISTS');
-            } else {
-                $success = true;
-                $msg = TextHelper::_('COBALT_EMAIL_IS_AVAILABLE');
-            }
-            $return = array('success'=>$success,'message'=>$msg,'email_exists'=>$emailExists);
-            echo json_encode($return);
-       }
+    {
+        $emailExists = CobaltHelper::checkEmailName($this->input->get('email'));
 
+        if ($emailExists) {
+            $success = true;
+            $msg = TextHelper::_('COBALT_EMAIL_EXISTS');
+        } else {
+            $success = true;
+            $msg = TextHelper::_('COBALT_EMAIL_IS_AVAILABLE');
+        }
+
+        echo json_encode(array(
+            'success' => $success,
+            'message' => $msg,
+            'email_exists' => $emailExists
+        ));
+    }
 }

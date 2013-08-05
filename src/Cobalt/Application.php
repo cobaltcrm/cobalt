@@ -23,8 +23,6 @@ use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Application\AbstractWebApplication;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
 /**
  * Cobalt Application class
  *
@@ -66,15 +64,6 @@ final class Application extends AbstractWebApplication
     public $router = null;
 
     /**
-     * A session object.
-     *
-     * @var    Session
-     * @since  1.0
-     * @note   This has been created to avoid a conflict with the $session member var from the parent class.
-     */
-    private $newSession = null;
-
-    /**
      * JDocument
      *
      * @var  JDocument
@@ -109,37 +98,12 @@ final class Application extends AbstractWebApplication
 
     public function __construct()
     {
-        // Run the parent constructor
         parent::__construct();
 
-        // Load the configuration object.
-        $this->loadConfiguration();
-
-        // Register the event dispatcher
-        $this->loadDispatcher();
-
-        // Enable sessions by default.
-        if (is_null($this->config->get('session'))) {
-            $this->config->set('session', true);
-        }
-
-        // Set the session default name.
-        if (is_null($this->config->get('session_name'))) {
-            $this->config->set('session_name', $this->_name);
-        }
-
-        // Create the session if a session name is passed.
-        if ($this->config->get('session') !== false) {
-            $this->getSession();
-
-            // Register the session with JFactory
-            JFactory::$session = $this->getSession();
-        }
-
-        // Register the application to Factory
-        // @todo Decouple from Factory
-        JFactory::$application = $this;
-        JFactory::$config = $this->config;
+        // Load the configuration object and event dispatcher.
+        $this
+            ->loadConfiguration()
+            ->loadDispatcher();
 
         // Load the library language file
         $this->getLanguage()->load('lib_joomla', JPATH_BASE);
@@ -161,7 +125,7 @@ final class Application extends AbstractWebApplication
             throw new \RuntimeException(sprintf('Unable to parse the configuration file %s.', $file));
         }
 
-        $this->config->loadObject($config);
+        $this->config = $config;
 
         return $this;
     }
@@ -216,27 +180,19 @@ final class Application extends AbstractWebApplication
      */
     public static function getHash($seed)
     {
-        return md5(JFactory::getConfig()->get('secret') . $seed);
+        return md5(Container::get('config')->get('secret') . $seed);
     }
 
     /**
      * Get a session object.
      *
-     * @return Session
+     * @return \Symfony\Component\HttpFoundation\Session\Session
      *
      * @since   1.0
      */
     public function getSession()
     {
-        if (is_null($this->newSession)) {
-            $this->newSession = new Session;
-            $this->newSession->start();
-
-            // @todo Decouple from Factory
-            JFactory::$session = $this->newSession;
-        }
-
-        return $this->newSession;
+        return Container::get('session');
     }
 
     /**
@@ -251,8 +207,8 @@ final class Application extends AbstractWebApplication
      */
     public function checkSession()
     {
-        $db = JFactory::getDBO();
-        $session = JFactory::getSession();
+        $db = Container::get('database');
+        $session = $this->getSession();
         $user = JFactory::getUser();
 
         $query = $db->getQuery(true);
@@ -308,9 +264,8 @@ final class Application extends AbstractWebApplication
      */
     public function getUserStateFromRequest($key, $request, $default = null, $type = 'none')
     {
-        $app = JFactory::getApplication();
         $cur_state = $this->getUserState($key, $default);
-        $new_state = $app->input->get($request, null, 'default', $type);
+        $new_state = $this->input->get($request, null, 'default', $type);
 
         // Save the new value only if it was set in this request.
         if ($new_state !== null) {
@@ -356,8 +311,7 @@ final class Application extends AbstractWebApplication
      */
     public function setUserState($key, $value)
     {
-        $session = JFactory::getSession();
-        $registry = $session->get('registry');
+        $registry = $this->getSession()->get('registry');
 
         if (!is_null($registry)) {
             return $registry->set($key, $value);
@@ -369,7 +323,8 @@ final class Application extends AbstractWebApplication
     public function doExecute()
     {
         // Instantiate the router
-        $router = new CobaltRouter($this->input, $this);
+        $router = $this->getRouter();
+
         $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
 
         if (!$maps) {
@@ -412,6 +367,9 @@ final class Application extends AbstractWebApplication
         }
     }
 
+    /**
+     * @return JDocument
+     */
     public function getDocument()
     {
         return $this->document;
@@ -465,25 +423,6 @@ final class Application extends AbstractWebApplication
     }
 
     /**
-     * Gets a configuration value.
-     *
-     * An example is in application/japplication-getcfg.php Getting a configuration
-     *
-     * @param string $varname The name of the value to get.
-     * @param string $default Default value to return
-     *
-     * @return mixed The user state.
-     *
-     * @since   11.1
-     */
-    public function getCfg($varname, $default = null)
-    {
-        $config = JFactory::getConfig();
-
-        return $config->get('' . $varname, $default);
-    }
-
-    /**
      * Get the application parameters
      *
      * @param	string	The component option
@@ -511,14 +450,14 @@ final class Application extends AbstractWebApplication
             // $languages = JLanguageHelper::getLanguages('lang_code');
             $languages = array('en-GB');
 
-            $title = $this->getCfg('sitename');
+            $title = $this->get('sitename');
             if (isset($languages[$lang_code]) && $languages[$lang_code]->metadesc) {
                 $description = $languages[$lang_code]->metadesc;
             } else {
-                $description = $this->getCfg('MetaDesc');
+                $description = $this->get('MetaDesc');
             }
-            $rights = $this->getCfg('MetaRights');
-            $robots = $this->getCfg('robots');
+            $rights = $this->get('MetaRights');
+            $robots = $this->get('robots');
 
             $title = '';
             $params[$hash]->def('page_title', $title);
@@ -590,13 +529,12 @@ final class Application extends AbstractWebApplication
      * @param string $name    The name of the application.
      * @param array  $options An optional associative array of configuration settings.
      *
-     * @return JRouter
+     * @return CobaltRouter
      * @since	1.5
      */
-    public static function getRouter($name = null, array $options = array())
+    public function getRouter($name = null, array $options = array())
     {
-        $app = Container::get('app');
-        $options['mode'] = $app->getCfg('sef');
+        $options['mode'] = $this->get('sef');
 
         return $app->loadRouter(null, $options);
     }
@@ -604,13 +542,13 @@ final class Application extends AbstractWebApplication
     /**
      * Allows the application to load a custom or default router.
      *
-     * @param WebServiceApplicationWebRouter $router An optional router object. If omitted, the standard router is created.
+     * @param \Joomla\Router\Router $router An optional router object. If omitted, the standard router is created.
      *
-     * @return JApplicationWeb This method is chainable.
+     * @return CobaltRouter
      *
      * @since   1.0
      */
-    public function loadRouter($router = null,$options = null)
+    public function loadRouter($router = null, $options = null)
     {
         $this->router = ($router === null) ? new CobaltRouter($this->input, $this) : $router;
 
@@ -807,8 +745,6 @@ final class Application extends AbstractWebApplication
             $this->user = new JUser;
 
             $this->getSession()->set('user', $this->user);
-
-            // @todo cleanup more ?
         } else {
             // Login
             $user->isAdmin = true; // in_array($user->username, $this->get('acl.admin_users'));

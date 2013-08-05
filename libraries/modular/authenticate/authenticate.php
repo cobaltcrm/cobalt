@@ -90,8 +90,8 @@ class ModularAuthenticate
                     $lifetime = time() + 365 * 24 * 60 * 60;
 
                     // Use domain and path set in config for cookie if it exists.
-                    $cookie_domain = $this->getCfg('cookie_domain', '');
-                    $cookie_path = $this->getCfg('cookie_path', '/');
+                    $cookie_domain = $this->get('cookie_domain', '');
+                    $cookie_path = $this->get('cookie_path', '/');
                     setcookie(self::getHash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain);
                 }
 
@@ -160,8 +160,8 @@ class ModularAuthenticate
 
         if (!in_array(false, $results, true)) {
             // Use domain and path set in config for cookie if it exists.
-            $cookie_domain = $app->getCfg('cookie_domain', '');
-            $cookie_path = $app->getCfg('cookie_path', '/');
+            $cookie_domain = $app->get('cookie_domain', '');
+            $cookie_path = $app->get('cookie_path', '/');
             setcookie(self::getHash('JLOGIN_REMEMBER'), false, time() - 86400, $cookie_path, $cookie_domain);
 
             $app->setUser(null);

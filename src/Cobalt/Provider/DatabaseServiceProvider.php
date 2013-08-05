@@ -16,24 +16,23 @@ class DatabaseServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container->bind('db', function($c) {
+        $container->bind('db', function() {
                 static $db;
 
                 if (is_null($db)) {
-                    /** @var Container $c */
-                    $config = $c->resolve('config');
+                    $config = Container::get('config');
 
                     $options = array(
-                        'driver' => $config->dbtype,
-                        'host' => $config->host,
-                        'user' => $config->user,
-                        'password' => $config->password,
-                        'database' => $config->db,
-                        'prefix' => $config->dbprefix
+                        'driver' => $config->get('dbtype'),
+                        'host' => $config->get('host'),
+                        'user' => $config->get('user'),
+                        'password' => $config->get('password'),
+                        'database' => $config->get('db'),
+                        'prefix' => $config->get('dbprefix')
                     );
 
                     $db = DatabaseDriver::getInstance($options);
-                    $db->setDebug($config->debug);
+                    $db->setDebug($config->get('debug', false));
                 }
 
                 return $db;
