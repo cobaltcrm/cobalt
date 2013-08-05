@@ -104,7 +104,6 @@ final class Application extends AbstractWebApplication
         $this->loadConfiguration();
         $this->loadDispatcher();
         $this->loadDocument();
-        $this->loadRouter();
 
         // Load the library language file
         $this->getLanguage()->load('lib_joomla', JPATH_BASE);
@@ -209,7 +208,7 @@ final class Application extends AbstractWebApplication
     public function checkSession()
     {
         $db = Container::get('database');
-        $session = $this->getSession();
+        $session = Container::get('session');
         $user = JFactory::getUser();
 
         $query = $db->getQuery(true);
@@ -509,42 +508,26 @@ final class Application extends AbstractWebApplication
     }
 
     /**
-     * Return a reference to the JRouter object.
-     *
-     * @param string $name    The name of the application.
-     * @param array  $options An optional associative array of configuration settings.
-     *
-     * @return CobaltRouter
-     * @since	1.5
-     */
-    public function getRouter($name = null, array $options = array())
-    {
-        $options['mode'] = $this->get('sef');
-
-        return $this->loadRouter(null, $options);
-    }
-
-    /**
      * Allows the application to load a custom or default router.
-     *
-     * @param \Joomla\Router\Router $router An optional router object. If omitted, the standard router is created.
      *
      * @return CobaltRouter
      *
      * @since   1.0
      */
-    public function loadRouter($router = null, $options = null)
+    public function getRouter()
     {
-        $this->router = ($router === null) ? new CobaltRouter($this->input, $this) : $router;
+        if (is_null($this->router)) {
+            $this->router = new CobaltRouter($this->input, $this);
 
-        $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
+            $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
 
-        if (!$maps) {
-            throw new \RuntimeException('Invalid router file.');
+            if (!$maps) {
+                throw new \RuntimeException('Invalid router file.');
+            }
+
+            $this->router->addMaps($maps, true);
+            $this->router->setDefaultController('Cobalt\\Controller\\DefaultController');
         }
-
-        $this->router->addMaps($maps, true);
-        $this->router->setDefaultController('Cobalt\\Controller\\DefaultController');
 
         return $this->router;
     }
