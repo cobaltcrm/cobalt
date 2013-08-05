@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Graphs as GraphsModel;
 
 // no direct access
@@ -20,17 +19,14 @@ class Graph extends DefaultController
 {
     public function execute()
     {
-        //application
-        $app = JFactory::getApplication();
-
         //get graph data from model
         $model = new GraphsModel;
 
-        $type = $app->input->get('filter');
+        $type = $this->input->get('filter');
         if ($type == 'company') {
             $graph_data = $model->getGraphData('company');
         } else {
-            $graph_data = $model->getGraphData($type,$app->input->get('id'));
+            $graph_data = $model->getGraphData($type,$this->input->get('id'));
         }
 
         //return data

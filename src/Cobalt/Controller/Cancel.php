@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-use JText;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,10 +19,9 @@ class Cancel extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $view = $app->input->get('view');
+        $view = $this->input->get('view');
 
-        $msg = JText::_('Entry cancelled!');
-        $app->redirect('index.php?view='.$view,$msg);
+        $msg = TextHelper::_('Entry cancelled!');
+        $this->app->redirect('index.php?view='.$view,$msg);
     }
 }

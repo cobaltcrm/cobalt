@@ -12,14 +12,13 @@ namespace Cobalt\Controller;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-use JFactory;
 use Cobalt\Helper\MailHelper;
 
 class BrewCoffee extends DefaultController
 {
     public function execute()
     {
-        $db = JFactory::getDBO();
+        $db = $this->container->resolve('db');
         $query = $db->getQuery(true);
         $query->select('u.id, u.first_name, u.last_name, user.email');
         $query->from('#__users AS u');

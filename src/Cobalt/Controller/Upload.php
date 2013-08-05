@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-use JFile;
+use Joomla\Filesystem\File;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\Documents as DocumentsModel;
@@ -23,8 +22,6 @@ class Upload extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-
         $fieldName = 'document';
 
         //any errors the server registered on uploading
@@ -97,37 +94,37 @@ class Upload extends DefaultController
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_SITE.'/uploads/'.$hash;
 
-        if (!JFile::upload($fileTemp, $uploadPath)) {
+        if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-            $app->redirect('index.php?view=documents',$msg);
+            $this->app->redirect('index.php?view=documents',$msg);
         } else {
            //update the database
            //date generation
            $date = date('Y-m-d H:i:s');
            $data = array (
-                        'name'              =>  $fileName,
-                        'filename'          =>  $hash,
-                        'filetype'          =>  $uploadedFileExtension,
-                        'size'              =>  $fileSize/1024,
-                        'created'           =>  $date,
-                        'shared'            =>  1,
-                        'is_image'          =>  is_array(getimagesize($uploadPath)) ? true : false,
-                        'association_id'    =>  $app->input->get('association_id'),
-                        'association_type'  =>  $app->input->get('association_type'),
-                        'owner_id'          =>  UsersHelper::getUserId()
-                        );
+                'name'              =>  $fileName,
+                'filename'          =>  $hash,
+                'filetype'          =>  $uploadedFileExtension,
+                'size'              =>  $fileSize/1024,
+                'created'           =>  $date,
+                'shared'            =>  1,
+                'is_image'          =>  is_array(getimagesize($uploadPath)) ? true : false,
+                'association_id'    =>  $this->input->get('association_id'),
+                'association_type'  =>  $this->input->get('association_type'),
+                'owner_id'          =>  UsersHelper::getUserId()
+           );
 
            $model = new DocumentsModel;
-           $session = JFactory::getSession();
+           //$session = $this->container->resolve('session');
 
            if ($id=$model->store($data)) {
             echo '<script type="text/javascript">window.top.window.uploadSuccess('.$id.');</script>';
                // $msg = JText::_('COBALT_DOC_UPLOAD_SUCCESS');
-               // $app->redirect('index.php?view=documents&layout=upload&tmpl=component',$msg);
+               // $this->app->redirect('index.php?view=documents&layout=upload&tmpl=component',$msg);
                // $session->set("upload_success", true);
            } else {
                // $msg = JText::_('COBALT_DOC_UPLOAD_FAIL');
-               // $app->redirect('index.php?view=documents&layout=upload&tmpl=component',$msg);
+               // $this->app->redirect('index.php?view=documents&layout=upload&tmpl=component',$msg);
                // $session->set("upload_success", false);
            }
         }

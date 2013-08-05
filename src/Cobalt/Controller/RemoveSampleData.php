@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\ConfigHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Config as ConfigModel;
@@ -23,11 +22,9 @@ class RemoveSampleData extends DefaultController
 
     public function removeSampleData()
     {
-        $app = JFactory::getApplication();
-
         $sampleIds = unserialize(ConfigHelper::getConfigValue('import_sample'));
 
-        $db = JFactory::getDbo();
+        $db = $this->container->resolve('db');
         $query = $db->getQuery(true);
 
         foreach ($sampleIds as $table => $ids) {
@@ -44,7 +41,7 @@ class RemoveSampleData extends DefaultController
         $configModel->store($data);
 
         $msg = TextHelper::_('COBALT_SAMPLE_DATA_REMOVED');
-        $app->redirect('index.php?view=import',$msg);
+        $this->app->redirect('index.php?view=import', $msg);
 
     }
 

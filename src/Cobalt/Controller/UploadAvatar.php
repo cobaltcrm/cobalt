@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Avatar as AvatarModel;
 
@@ -19,12 +18,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class UploadAvatar extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-         $model = new AvatarModel;
-        $item_id = $app->input->get('item_id');
+        $model = new AvatarModel;
+        $item_id = $this->input->get('item_id');
+
         if ( $avatar = $model->saveAvatar() ) {
 
             echo '<script type="text/javascript">

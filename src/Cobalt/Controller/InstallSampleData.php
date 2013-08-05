@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Model\Config as ConfigModel;
 use Cobalt\Helper\TextHelper;
@@ -22,7 +21,6 @@ class InstallSampleData extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
         $sampleIds = array();
 
         $importModel = new ImportModel;
@@ -57,7 +55,7 @@ class InstallSampleData extends DefaultController
         $configModel->store($data);
 
         $msg = TextHelper::_('COBALT_SAMPLE_DATA_INSTALLED');
-        $app->redirect('index.php?view=import', $msg);
+        $this->app->redirect('index.php?view=import', $msg);
     }
 
 }

@@ -10,27 +10,22 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class SaveAjax extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
+        $item_id = $this->input->get('item_id');
+        $item_type = $this->input->get('item_type');
+        $field = $this->input->get('field');
+        $value = $this->input->get('value');
 
-        $item_id = $app->input->get('item_id');
-        $item_type = $app->input->get('item_type');
-        $field = $app->input->get('field');
-        $value = $app->input->get('value');
-
-        $db = JFactory::getDBO();
+        $db = $this->container->resolve('db');
 
         $data = array('id'=>$item_id,$field=>$db->escape($value));
-        $post_data = $app->input->getRequest('post');
+        $post_data = $this->input->getRequest('post');
 
         $data = array_merge($data,$post_data);
 
@@ -38,7 +33,7 @@ class SaveAjax extends DefaultController
 
         $model = new $modelClass();
 
-        $returnRow = TRUE;
+        $returnRow = true;
         $return = $model->store($data,$returnRow);
 
         echo json_encode($return);

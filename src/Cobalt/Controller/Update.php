@@ -10,8 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -19,8 +17,7 @@ class Update extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $modelName = 'Cobalt\\Model\\'.ucwords($app->input->get('model'));
+        $modelName = 'Cobalt\\Model\\'.ucwords($this->input->get('model'));
 
         $model = new $modelName();
 
@@ -29,6 +26,5 @@ class Update extends DefaultController
 
         //return json list of tasks
         echo json_encode($items);
-
     }
 }

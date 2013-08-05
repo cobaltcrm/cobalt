@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\People as PeopleModel;
 
 // no direct access
@@ -21,11 +20,11 @@ class AddPersonToCompany extends DefaultController
     public function execute()
     {
         //parameters
-        $person_id = $app->input->get("person_id");
-        $company_id = $app->input->get('company_id');
+        $person_id = $this->input->get("person_id");
+        $company_id = $this->input->get('company_id');
 
         //construct data
-        $data = array('id'=>$person_id,'company_id'=>$company_id);
+        $data = array('id' => $person_id, 'company_id' => $company_id);
 
         //load model and save
         $model = new PeopleModel;
@@ -36,7 +35,7 @@ class AddPersonToCompany extends DefaultController
         }
 
         //return json
-        echo json_encode(array('success'=>$success));
+        echo json_encode(array('success' => $success));
     }
 
 }

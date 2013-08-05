@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\Deal as DealModel;
@@ -20,11 +19,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class SaveWizardForm extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $type = $app->input->get('save_type');
+        $type = $this->input->get('save_type');
         switch ($type) {
             case "lead":
             case "contact":
@@ -38,7 +35,8 @@ class SaveWizardForm extends DefaultController
             break;
         }
         $model->store();
-        header('Location: '.base64_decode($app->input->get('return')));
+
+        header('Location: '.base64_decode($this->input->get('return')));
    }
 
 }

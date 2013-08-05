@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\People as PeopleModel;
@@ -23,12 +22,11 @@ class SaveCf extends DefaultController
     public function execute()
     {
         $return = array();
-        $app = JFactory::getApplication();
 
         //get post data
-        $data = $app->input->getRequest('post');
+        $data = $this->input->getRequest('post');
         //get db Object
-        $db = JFactory::getDBO();
+        $db = $this->container->resolve('db');
         $query = $db->getQuery(true);
         $table = $data['table'];
         $loc = $data['loc'];
@@ -63,9 +61,8 @@ class SaveCf extends DefaultController
                     $query->set($key . " = '" . $value . "'");
                 }
             }
-            //execute query
-            $db->setQuery($query);
-            $db->query();
+
+            $db->setQuery($query)->execute();
 
             //if return data requested
             if ($table == 'people') {
@@ -92,7 +89,6 @@ class SaveCf extends DefaultController
 
         //return json data
         echo json_encode($return);
-
     }
 
 }

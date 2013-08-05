@@ -11,7 +11,6 @@
 namespace Cobalt\Controller;
 
 use JRoute;
-use JFactory;
 use Cobalt\Helper\TextHelper;
 
 // no direct access
@@ -19,16 +18,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Trash extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-
-        $item_id = $app->input->get('item_id',null,'array');
-        $item_type = $app->input->get('item_type');
+        $item_id = $this->input->get('item_id',null,'array');
+        $item_type = $this->input->get('item_type');
 
         //ADD TO MODELS * trash model *
-        $db = JFactory::getDBO();
+        $db = $this->container->resolve('db');
         $query = $db->getQuery(true);
         $query->update("#__".$item_type)->set("published=-1");
             if ( is_array($item_id) ) {
@@ -44,10 +40,10 @@ class Trash extends DefaultController
             $data['error_msg'] = $db->getErrorMsg();
         }
 
-        $redirect = $app->input->get('page_redirect');
+        $redirect = $this->input->get('page_redirect');
         if ($redirect) {
             $msg = ( $data['success'] ) ? TextHelper::_('COBALT_SUCCESSULLY_REMOVED_ITEM') : TextHelper::_('COBALT_ERROR_REMOVING_ITEM');
-            $app->redirect(JRoute::_('index.php?view='.$redirect),$msg);
+            $this->app->redirect(JRoute::_('index.php?view='.$redirect),$msg);
         } else {
             echo json_encode($data);
         }

@@ -10,29 +10,24 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class RemovePersonFromDeal extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
+        $person_id = $this->input->get('person_id');
+        $deal_id = $this->input->get('deal_id');
 
-        $person_id = $app->input->get('person_id');
-        $deal_id = $app->input->get('deal_id');
-
-        $db = JFactory::getDBO();
+        $db = $this->container->resolve('db');
         $query = $db->getQuery(true);
 
         $query->select("COUNT(*)")
                 ->from("#__people")
                 ->where("id=".$person_id);
-        $db->setQuery($query);
-        $count = $db->loadResult();
+
+        $count = $db->setQuery($query)->loadResult();
 
         if ($count) {
             $query->clear()
@@ -41,7 +36,7 @@ class RemovePersonFromDeal extends DefaultController
                 ->where("association_type='deal'")
                 ->where("person_id=".$person_id);
             $db->setQuery($query);
-            if ( $db->query() ) {
+            if ( $db->execute() ) {
                 $success = true;
             } else {
                 $success = false;
@@ -50,8 +45,7 @@ class RemovePersonFromDeal extends DefaultController
             $success = false;
         }
 
-        $data = array('success'=>$success);
-        echo json_encode($data);
+        echo json_encode(array('success' => $success));
    }
 
 }

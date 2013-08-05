@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\CobaltHelper;
 

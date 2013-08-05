@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Helper\TextHelper;
 
@@ -19,11 +18,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CheckCompanyName extends DefaultController
 {
-
     public function execute()
-      {
-          $app = JFactory::getApplication();
-        $company_name = $app->input->get('company_name');
+    {
+        $company_name = $this->input->get('company_name');
         $companyModel = new CompanyModel;
         $existingCompany = $companyModel->checkCompanyName($company_name);
 

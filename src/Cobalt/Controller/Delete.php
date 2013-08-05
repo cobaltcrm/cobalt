@@ -10,24 +10,19 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Delete extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $view = $app->input->get("view");
-        $modelName = "CobaltModel".ucwords($app->input->get("model"));
+        $view = $this->input->get("view");
+        $modelName = "Cobalt\\Model\\".ucwords($this->input->get("model"));
         $model = new $modelName();
 
-        $model->delete($app->input->get("cid",null,'array'));
-        $app->redirect("index.php?view=".$view);
-
+        $model->delete($this->input->get("cid", null, 'array'));
+        $this->app->redirect("index.php?view=".$view);
     }
 
 }

@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\User as UserModel;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -19,13 +18,11 @@ class UpdateColumns extends DefaultController
 {
    public function execute()
    {
-       $app = JFactory::getApplication();
-
        //get the location of the page
-       $loc = $app->input->get('loc');
+       $loc = $this->input->get('loc');
 
        //get new data to insert into user tables
-       $column = $app->input->get('column');
+       $column = $this->input->get('column');
 
        //get model
        $model = new UserModel;

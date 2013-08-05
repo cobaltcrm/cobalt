@@ -11,7 +11,6 @@
 namespace Cobalt\Controller;
 
 use JRoute;
-use JFactory;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
 
@@ -22,11 +21,9 @@ class Import extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-
         $success = false;
 
-        $data = $app->input->getRequest('post');
+        $data = $this->input->getRequest('post');
 
         if ( is_array($data) && count($data) > 0 ) {
 
@@ -56,12 +53,12 @@ class Import extends DefaultController
         if ($success) {
 
             $msg = TextHelper::_('COBALT_IMPORT_WAS_SUCCESSFUL');
-            $app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
+            $this->app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
 
         } else {
 
             $msg = TextHelper::_('COBALT_ERROR_IMPORTING');
-            $app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
+            $this->app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
 
         }
     }

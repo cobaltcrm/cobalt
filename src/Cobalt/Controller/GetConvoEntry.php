@@ -10,26 +10,23 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Conversation as ConversationModel;
+use Cobalt\Helper\ViewHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class GetConvoEntry extends DefaultController
 {
-     function execute()
-     {
-         $app = JFactory::getApplication();
-
-        $convo_id = $app->input->get('convo_id');
+    public function execute()
+    {
+        $convo_id = $this->input->get('convo_id');
 
         $model = new ConversationModel;
         $convo = $model->getConversation($convo_id);
 
         $convo_view = ViewHelper::getView('deals','conversation_entry','phtml',array('conversation'=>$convo[0]));
         echo $convo_view->render();
-
-   }
+    }
 
 }

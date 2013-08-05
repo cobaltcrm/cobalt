@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Helper\TextHelper;
 
@@ -19,11 +18,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CheckDealName extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $deal_name = $app->input->get('deal_name');
+        $deal_name = $this->input->get('deal_name');
         $dealModel = new DealModel;
         $existingDeal = $dealModel->checkDealName($deal_name);
 

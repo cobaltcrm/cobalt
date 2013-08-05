@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\MailinglistsHelper;
 
 // no direct access
@@ -20,20 +19,20 @@ class ToggleMailingList extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $data = $app->input->getRequest('post');
+        $data = $this->input->getRequest('post');
         $subscribe = $data['subscribe'];
-        $success = FALSE;
+        $success = false;
+
         if (!$subscribe) {
             if ( MailinglistsHelper::addMailingList($data) ) {
-                $success = TRUE;
+                $success = true;
             }
         } else {
             if ( MailinglistsHelper::removeMailingList($data) ) {
-                $success = TRUE;
+                $success = true;
             }
         }
-        $return = array('success'=>$success);
-        echo json_encode($return);
+
+        echo json_encode(array('success' => $success));
     }
 }

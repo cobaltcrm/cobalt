@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Note as NoteModel;
 use Cobalt\Helper\ViewHelper;
 
@@ -19,17 +18,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class GetNoteEntry extends DefaultController
 {
-   public function execute()
-   {
-           $app = JFactory::getApplication();
-
-        $note_id = $app->input->get('note_id');
+    public function execute()
+    {
+        $note_id = $this->input->get('note_id');
 
         $model = new NoteModel;
         $note = $model->getNote($note_id);
 
         $note_view = ViewHelper::getView('note','entry','phtml',array('note'=>$note[0]));
         echo $note_view->render();
-
-   }
+    }
 }

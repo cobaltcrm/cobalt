@@ -10,22 +10,17 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DeleteGoalEntry extends DefaultController
 {
-
     public function execute()
     {
-        //get id to delete
-        $app = JFactory::getApplication();
-        $goal_id = $app->input->get('goal_id');
+        $goal_id = $this->input->get('goal_id');
 
         //get db
-        $db = JFactory::getDBO();
+        $db = $this->container->resolve('db');
         $query = $db->getQuery(true);
 
         //form query

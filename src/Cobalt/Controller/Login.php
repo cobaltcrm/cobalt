@@ -10,8 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -19,12 +17,15 @@ class Login extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $credentials = array('username'=>$app->input->get('username'),'password'=>$app->input->get('password',null,'HTML'));
-        if ($app->login($credentials)) {
-            $app->redirect(base64_decode($app->input->get('return')));
+        $credentials = array(
+            'username' => $this->input->get('username'),
+            'password' => $this->input->get('password', null, 'HTML')
+        );
+
+        if ($this->app->login($credentials)) {
+            $this->app->redirect(base64_decode($this->input->get('return')));
         } else {
-            $app->redirect('/');
+            $this->app->redirect('/');
         }
     }
 

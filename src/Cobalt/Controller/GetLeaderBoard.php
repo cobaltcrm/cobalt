@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\ViewHelper;
 
@@ -19,23 +18,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class GetLeaderBoard extends DefaultController
 {
-    //get a leaderboard
     public function execute()
     {
-        $app = JFactory::getApplication();
-
         //get model
         $model = new GoalModel;
 
         //get data
-        $leaderboard = $model->getLeaderBoards($app->input->get('id'));
+        $leaderboard = $model->getLeaderBoards($this->input->get('id'));
 
         //pass data to view
         $view = ViewHelper::getView('goals','leaderboard', 'raw', array('leaderboard'=>$leaderboard ));
 
         //display view
         echo $view->render();
-
     }
 
 }

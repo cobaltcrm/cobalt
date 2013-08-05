@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\ViewHelper;
 
@@ -19,16 +18,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class GetTeamGoals extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-
         //get model
         $model = new GoalModel;;
 
         //get data
-        $goals = $model->getTeamGoals($app->input->get('id'));
+        $goals = $model->getTeamGoals($this->input->get('id'));
 
         //pass data to view
         $view = ViewHelper::getView('goals','filters', 'phtml', array('goals'=>$goals ));

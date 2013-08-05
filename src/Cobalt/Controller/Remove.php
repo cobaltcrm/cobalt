@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\TextHelper;
 
 // no direct access
@@ -20,15 +19,14 @@ class Remove extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $modelName = 'Cobalt\\Model\\'.ucwords($app->input->get('model'));
-        $controllerName = $app->input->get('controller');
+        $modelName = 'Cobalt\\Model\\'.ucwords($this->input->get('model'));
+        $controllerName = $this->input->get('controller');
 
-        $objectName = $app->input->get('model');
+        $objectName = $this->input->get('model');
 
         $model = new $modelName();
 
-        $ids = $app->input->get('id');
+        $ids = $this->input->get('id');
 
         if ( is_array($ids) ) {
             foreach ($ids as $id) {
@@ -39,6 +37,6 @@ class Remove extends DefaultController
         }
 
         $msg = TextHelper::_('COBALT_'.strtoupper($objectName).'_REMOVED');
-        $app->redirect('index.php?view='.$controllerName,$msg);
+        $this->app->redirect('index.php?view='.$controllerName,$msg);
     }
 }

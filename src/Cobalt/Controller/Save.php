@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use JRoute;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\Deal as DealModel;
@@ -27,13 +26,12 @@ class Save extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-        $modelName = "Cobalt\\Model\\".ucwords($app->input->get('model'));
+        $modelName = "Cobalt\\Model\\".ucwords($this->input->get('model'));
         $model = new $modelName();
 
         //if we are requesting a return redirect set up redirect link
-        if ( $app->input->get('view') ) {
-            $link = JRoute::_('index.php?view='.$app->input->get('view'));
+        if ( $this->input->get('view') ) {
+            $link = JRoute::_('index.php?view='.$this->input->get('view'));
         }
 
         if ( $db_id = $model->store() ) {
@@ -41,16 +39,16 @@ class Save extends DefaultController
             $msg = TextHelper::_('COBALT_SUCCESSFULLY_SAVED');
 
             //redirect if set else return json
-            if ( $app->input->get('view') ) {
+            if ( $this->input->get('view') ) {
 
-                $app->redirect($link, $msg);
+                $this->app->redirect($link, $msg);
 
             } else {
 
                 //companies
-                if ( $app->input->get('model') == "company") {
+                if ( $this->input->get('model') == "company") {
                     $model = new CompanyModel;
-                    $id = $app->input->get('id') ? $app->input->get('id') : null;
+                    $id = $this->input->get('id') ? $this->input->get('id') : null;
                     if ($id) {
                         $return = $model->getCompany($id);
                     } else {
@@ -60,43 +58,40 @@ class Save extends DefaultController
                 }
 
                 //if deal information is being edited
-                if ( $app->input->get('model') == 'deal' ) {
+                if ( $this->input->get('model') == 'deal' ) {
                     $model = new DealModel;
-                    $id = $app->input->get('id') ? $app->input->get('id') : $db_id;
+                    $id = $this->input->get('id') ? $this->input->get('id') : $db_id;
                     $deal = $model->getDeals($id);
                     $return = $deal[0];
                 }
 
                 //if people information is being edited
-                if ( $app->input->get('model') == 'people' ) {
+                if ( $this->input->get('model') == 'people' ) {
                     $model = new PeopleModel;
-                    $id = $app->input->get('id') ? $app->input->get('id') : $db_id;
+                    $id = $this->input->get('id') ? $this->input->get('id') : $db_id;
                     $person = $model->getPerson($id);
                     $return = $person;
                 }
 
                 //if conversation information is being edited
-                if ( $app->input->get('model') == 'conversation') {
+                if ( $this->input->get('model') == 'conversation') {
                     $model = new ConversationModel;
-                    $db = JFactory::getDBO();
                     $conversation = $model->getConversation($db_id);
                     $return = $conversation[0];
                 }
 
                 //if note information is being edited
-                if ( $app->input->get('model') == 'note' ) {
+                if ( $this->input->get('model') == 'note' ) {
                     $model = new NoteModel;
-                    $db = JFactory::getDBO();
                     $note = $model->getNote($db_id);
                     $return = $note[0];
                 }
 
                 //if event information is being edited
-                if ( $app->input->get('model') == 'event' ) {
+                if ( $this->input->get('model') == 'event' ) {
 
                     //get model
                     $model = new EventModel;
-                    $db = JFactory::getDBO();
 
                     //determine whether we are inserting a new entry or editing an entry
                     $event_id = $db_id;
@@ -117,13 +112,13 @@ class Save extends DefaultController
               $msg = TextHelper::_('COBALT_ERROR_SAVING');
 
             //redirect if set else return json info
-            if ( $app->input->get('return') ) {
+            if ( $this->input->get('return') ) {
 
-                $app->redirect($link, $msg);
+                $this->app->redirect($link, $msg);
 
             } else {
 
-                $return = $app->input->getRequest('post');
+                $return = $this->input->getRequest('post');
                 echo json_encode($return);
 
             }

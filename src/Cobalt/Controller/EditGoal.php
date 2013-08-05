@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use JRoute;
 use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\TextHelper;
@@ -23,9 +22,6 @@ class EditGoal extends DefaultController
 
     public function execute()
     {
-        //application
-        //
-        $app = JFactory::getApplication();
         //get model
         $model = new GoalModel;
 
@@ -33,10 +29,10 @@ class EditGoal extends DefaultController
         $link = JRoute::_('index.php?view=goals');
         if ( $model->store() ) {
             $msg = TextHelper::_('COBALT_SUCCESS');
-            $app->redirect($link, $msg);
+            $this->app->redirect($link, $msg);
         } else {
             $msg = TextHelper::_('COBALT_FAILURE');
-            $app->redirect($link, $msg);
+            $this->app->redirect($link, $msg);
         }
 
     }

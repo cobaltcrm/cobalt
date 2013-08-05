@@ -18,23 +18,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class EditReport extends DefaultController
 {
-
-     function execute()
-     {
-        //get model
+    public function execute()
+    {
         $model = new ReportModel;
-        $app = JFactory::getApplication();
 
         //store data
         $link = 'index.php?view=reports&layout=custom_reports';
         if ( $model->store() ) {
             $msg = TextHelper::_('COBALT_CUSTOM_REPORT_SUCCESSFULLY_ADDED');
-            $app->redirect($link, $msg);
+            $this->app->redirect($link, $msg);
         } else {
             $msg = TextHelper::_('COBALT_PROBLEM_CREATING_CUSTOM_REPORT');
-            $app->redirect($link, $msg);
+            $this->app->redirect($link, $msg);
         }
-
     }
 
 }

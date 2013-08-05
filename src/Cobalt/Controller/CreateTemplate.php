@@ -17,9 +17,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CreateTemplate extends DefaultController
 {
-
-   public function execute()
-   {
+    public function execute()
+    {
         $return = array();
         $return['success'] = FALSE;
 
@@ -30,7 +29,6 @@ class CreateTemplate extends DefaultController
         }
 
         echo json_encode($return);
-
-   }
+    }
 
 }

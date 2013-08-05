@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Helper\TextHelper;
 
@@ -19,11 +18,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CheckPersonName extends DefaultController
 {
-
     public function execute()
-  {
-          $app = JFactory::getApplication();
-        $person_name = $app->input->get('person_name');
+    {
+        $person_name = $this->input->get('person_name');
         $personModel = new PeopleModel;
         $existingPerson = $personModel->checkPersonName($person_name);
 
@@ -32,6 +29,5 @@ class CheckPersonName extends DefaultController
         } else {
             echo json_encode(array('success' => true, 'message' => ucwords(TextHelper::_('COBALT_PERSON_WILL_BE_CREATED'))));
         }
-   }
-
+    }
 }

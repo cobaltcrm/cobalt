@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Helper\ViewHelper;
 
@@ -19,19 +18,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class FilterCompanies extends DefaultController
 {
-
     public function execute()
     {
-        $app = JFactory::getApplication();
-
          //set view
         $view = ViewHelper::getView('companies','raw','html');
         $view->setLayout('list');
 
         //get filters
-        $type = $app->input->get('type');
-        $user = $app->input->get('user');
-        $team = $app->input->get('team_id');
+        $type = $this->input->get('type');
+        $user = $this->input->get('user');
+        $team = $this->input->get('team_id');
 
         //get deals
         $model = new CompanyModel;

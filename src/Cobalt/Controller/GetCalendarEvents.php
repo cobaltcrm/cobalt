@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Model\Event as EventModel;
 
@@ -21,11 +20,8 @@ class GetCalendarEvents extends DefaultController
 {
     public function execute()
     {
-        //application
-        $app = JFactory::getApplication();
-
         //post data
-        $data = $app->input->getRequest('get');
+        $data = $this->input->getRequest('get');
 
         //set date parameters
         $start_date = DateHelper::formatDBDate(date("Y-m-d 00:00:00",$data['start']));

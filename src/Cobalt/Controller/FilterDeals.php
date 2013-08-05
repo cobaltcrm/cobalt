@@ -10,7 +10,6 @@
 
 namespace Cobalt\Controller;
 
-use JFactory;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Helper\ViewHelper;
 
@@ -21,18 +20,16 @@ class FilterDeals extends DefaultController
 {
     public function execute()
     {
-        $app = JFactory::getApplication();
-
         //set view
         $view = ViewHelper::getView('deals','raw');
         $view->setLayout('list');
 
         //get filters
-        $type = $app->input->get('type');
-        $stage = $app->input->get('stage');
-        $user = $app->input->get('user');
-        $close = $app->input->get('close');
-        $team = $app->input->get('team_id');
+        $type = $this->input->get('type');
+        $stage = $this->input->get('stage');
+        $user = $this->input->get('user');
+        $close = $this->input->get('close');
+        $team = $this->input->get('team_id');
 
         //get deals
         $model = new DealModel;
