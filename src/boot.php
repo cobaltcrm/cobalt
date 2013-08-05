@@ -42,6 +42,7 @@ $container = Cobalt\Container::getInstance();
 
 $container
     ->registerServiceProvider(new Cobalt\Provider\ConfigServiceProvider)
+    ->registerServiceProvider(new Cobalt\Provider\SessionServiceProvider)
     ->registerServiceProvider(new Cobalt\Provider\DatabaseServiceProvider)
     ->registerServiceProvider(new Cobalt\Provider\WhoopsServiceProvider);
 

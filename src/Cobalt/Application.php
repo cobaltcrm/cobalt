@@ -100,10 +100,11 @@ final class Application extends AbstractWebApplication
     {
         parent::__construct();
 
-        // Load the configuration object and event dispatcher.
-        $this
-            ->loadConfiguration()
-            ->loadDispatcher();
+        // Setup the application pieces.
+        $this->loadConfiguration();
+        $this->loadDispatcher();
+        $this->loadDocument();
+        $this->loadRouter();
 
         // Load the library language file
         $this->getLanguage()->load('lib_joomla', JPATH_BASE);
@@ -125,7 +126,7 @@ final class Application extends AbstractWebApplication
             throw new \RuntimeException(sprintf('Unable to parse the configuration file %s.', $file));
         }
 
-        $this->config = $config;
+        $this->config->merge($config);
 
         return $this;
     }
@@ -322,23 +323,6 @@ final class Application extends AbstractWebApplication
 
     public function doExecute()
     {
-        // Instantiate the router
-        $router = $this->getRouter();
-
-        $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
-
-        if (!$maps) {
-            throw new \RuntimeException('Invalid router file.');
-        }
-
-        $router->addMaps($maps, true);
-        $router->setDefaultController('Cobalt\\Controller\\DefaultController');
-
-        $this->loadDocument();
-
-        // Register the document object with JFactory
-        JFactory::$document = $this->document;
-
         // Register the template to the config
         $template = $this->getTemplate(true);
         $this->set('theme', $template->template);
@@ -364,6 +348,7 @@ final class Application extends AbstractWebApplication
     {
         if (empty($this->document)) {
             $this->document = JDocument::getInstance();
+            JFactory::$document = $this->document;
         }
     }
 
@@ -536,7 +521,7 @@ final class Application extends AbstractWebApplication
     {
         $options['mode'] = $this->get('sef');
 
-        return $app->loadRouter(null, $options);
+        return $this->loadRouter(null, $options);
     }
 
     /**
@@ -551,6 +536,15 @@ final class Application extends AbstractWebApplication
     public function loadRouter($router = null, $options = null)
     {
         $this->router = ($router === null) ? new CobaltRouter($this->input, $this) : $router;
+
+        $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
+
+        if (!$maps) {
+            throw new \RuntimeException('Invalid router file.');
+        }
+
+        $this->router->addMaps($maps, true);
+        $this->router->setDefaultController('Cobalt\\Controller\\DefaultController');
 
         return $this->router;
     }

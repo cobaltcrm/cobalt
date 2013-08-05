@@ -29,7 +29,7 @@ JPluginHelper::importPlugin('cobalt');
 $app = Cobalt\Container::get('app');
 
 // Fetch the controller
-$classname = $router->getController($this->get('uri.route'));
+$classname = $app->getRouter()->getController($app->get('uri.route'));
 
 // Require specific controller if requested
 $controller = $app->input->get('controller', 'default');
