@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
  {
         public static function getSiteName()
         {
-            $db = JFactory::getDBO();
+            $db = \Cobalt\Container::get('db');
             $query = $db->getQuery(true);
 
             $query->select("site_name")->from("#__branding")->where("assigned=1");
@@ -36,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         public static function getSiteLogo()
         {
-            $db = JFactory::getDBO();
+            $db = \Cobalt\Container::get('db');
             $query = $db->getQuery(true);
 
             $query->select("site_logo")->from("#__branding")->where("assigned=1");
@@ -58,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getDynamicStyle()
         {
             //database
-            $db = JFactory::getDBO();
+            $db = \Cobalt\Container::get('db');
             $query = $db->getQuery(true);
 
             //query
@@ -91,7 +91,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         //load all styles
         public static function loadStyleSheets()
         {
-            $app = JFactory::getApplication();
+            $app = \Cobalt\Container::get('app');
             $document = JFactory::getDocument();
 
             $view = $app->input->get('view');

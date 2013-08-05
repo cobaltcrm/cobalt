@@ -12,7 +12,7 @@ class ViewHelper
     public static function getView($viewName, $layoutName='default', $viewFormat='html', $vars=null)
     {
         // Get the application
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $app->input->set('view', $viewName);
 

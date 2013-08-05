@@ -23,7 +23,7 @@ class Template extends DefaultModel
      */
     public function createTemplate()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $template_id = $app->input->get('template_id');
         $association_id = $app->input->get('association_id');

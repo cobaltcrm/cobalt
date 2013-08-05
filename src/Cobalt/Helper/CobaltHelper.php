@@ -45,7 +45,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      */
     public static function getTaskTemplates($type,$id=null)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
         $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
         $db->setQuery($query);
@@ -77,7 +77,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function storeCustomCf($id,$cf_data,$type)
     {
         //Get DBO
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //date generation
@@ -124,7 +124,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function checkEmailName($email)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(TRUE);
 
         $query->select("email")
@@ -179,13 +179,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function shareItem($itemId=null,$itemType=null,$userId=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $itemId = $itemId ? $itemId : $app->input->get('item_id');
         $itemType = $itemType ? $itemType : $app->input->get('item_type');
         $userId = $userId ? $userId : $app->input->get('user_id');
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->insert("#__shared")
@@ -200,13 +200,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function unshareItem($itemId=null,$itemType=null,$userId=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $itemId = $itemId ? $itemId : $app->input->get('item_id');
         $itemType = $itemType ? $itemType : $app->input->get('item_type');
         $userId = $userId ? $userId : $app->input->get('user_id');
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->delete("#__shared")
@@ -222,7 +222,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function showShareDialog()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $document = JFactory::getDocument();
         $document->addScriptDeclaration('var users='.json_encode(UsersHelper::getAllSharedUsers()).';');
@@ -258,11 +258,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getAssociationName($associationType=null,$associationId=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $associationType = $associationType ? $associationType : $app->input->get('association_type');
         $associationId = $associationId ? $associationId : $app->input->get('association_id');
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         switch ($associationType) {

@@ -25,7 +25,7 @@ class MailinglistsHelper
 
     public function __construct()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $this->listId = $app->input->get('list_id');
         $this->peopleIds = $app->input->get('people_ids');
         $this->subscriber = $this->getSubscriberId();
@@ -33,13 +33,13 @@ class MailinglistsHelper
 
     public static function getSubscriberId()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $person_id = $app->input->get('person_id') ? $app->input->get('person_id') : $app->input->get('id');
         $personModel = new PeopleModel;
         $email = $personModel->getEmail($person_id);
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("subid")
@@ -62,7 +62,7 @@ class MailinglistsHelper
     public static function getMailingLists($all=FALSE)
     {
         $subid = self::getSubscriberId();
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("DISTINCT list.listid,list.name,list.description,list.color")
@@ -105,7 +105,7 @@ class MailinglistsHelper
         $listId = $listId ? $listId : $this->listId;
         $subId = self::getSubscriberId();
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("mail.mailid,mail.subject,mail.published,mail.senddate,user.open,user.opendate")
@@ -132,7 +132,7 @@ class MailinglistsHelper
         $person_id = $data['person_id'];
         $listid = $data['listid'];
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $peopleModel = new PeopleModel;
@@ -192,7 +192,7 @@ class MailinglistsHelper
         $person_id = $data['person_id'];
         $listid = $data['listid'];
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $time = time();
@@ -209,14 +209,14 @@ class MailinglistsHelper
 
     public static function getLinks()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $data = $app->input->getRequest('post');
         $person_id = array_key_exists('person_id',$data) ? $data['person_id'] : $data['id'];
         $mailid = $data['mailid'];
         $subid = self::getSubscriberId();
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("click.click,url.name,url.url")

@@ -23,7 +23,7 @@ class Templates extends DefaultModel
 
     public function store()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new TemplatesTable;
@@ -178,7 +178,7 @@ class Templates extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $filter_order = $app->getUserStateFromRequest('Templates.filter_order','filter_order','t.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Templates.filter_order_Dir','filter_order_Dir','asc');
 

@@ -25,7 +25,7 @@ class Documents extends DefaultModel
 
     public function store($data=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new DocumentsTable;
@@ -110,7 +110,7 @@ class Documents extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $filter_order = $app->getUserStateFromRequest('Documents.filter_order','filter_order','d.filename');
         $filter_order_Dir = $app->getUserStateFromRequest('Documents.filter_order_Dir','filter_order_Dir','asc');
 
@@ -209,7 +209,7 @@ class Documents extends DefaultModel
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_SITE.'/uploads/'.$hash;
 
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');

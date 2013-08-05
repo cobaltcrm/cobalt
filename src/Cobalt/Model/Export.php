@@ -23,7 +23,7 @@ class Export extends DefaultModel
      */
     public function getCsv()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Determine request type
         $download_type = $app->input->get('list_type');
@@ -43,7 +43,7 @@ class Export extends DefaultModel
      */
     public function getCsvData($data_type)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $data = array();
 
@@ -123,7 +123,7 @@ class Export extends DefaultModel
      */
     public function getVcard()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $person_id = $app->input->get('person_id');
 

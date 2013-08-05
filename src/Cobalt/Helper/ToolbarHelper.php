@@ -55,7 +55,7 @@ abstract class ToolbarHelper
 
         $html = '<div class="pagetitle ' . htmlspecialchars(implode(' ', $icons)) . '"><h2>' . $title . '</h2></div>';
 
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $app->JComponentTitle = $html;
     }
 

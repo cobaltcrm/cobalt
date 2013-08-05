@@ -22,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTotalDocuments()
     {
         //db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //select

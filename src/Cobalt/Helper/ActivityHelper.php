@@ -21,7 +21,7 @@ class ActivityHelper
 
     public static function saveActivity($old_info, $new_info, $model, $action_type)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
         $user_id = UsersHelper::getUserId();
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -49,7 +49,7 @@ class ActivityHelper
 
     public static function saveUserLoginHistory()
     {
-        $db = JFactory::getDbo();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $user_id = UsersHelper::getUserId();
@@ -75,7 +75,7 @@ class ActivityHelper
 
     public static function getActivity()
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select('h.*, CONCAT(u.first_name," ", u.last_name) AS owner_name, c.name as company_name, CONCAT(p.first_name," ", p.last_name) AS person_name,

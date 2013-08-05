@@ -33,7 +33,7 @@ class Avatar extends AbstractModel
      */
     public function saveAvatar()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //this is the name of the field in the html form, filedata is the default name for swfupload
         //so we will leave it as that

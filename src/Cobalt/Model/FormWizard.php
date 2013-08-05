@@ -24,7 +24,7 @@ class FormWizard extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $filter_order = $app->getUserStateFromRequest('Formwizard.filter_order','filter_order','f.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Formwizard.filter_order_Dir','filter_order_Dir','asc');
 
@@ -39,7 +39,7 @@ class FormWizard extends DefaultModel
 
     public function store()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new FormWizardTable;

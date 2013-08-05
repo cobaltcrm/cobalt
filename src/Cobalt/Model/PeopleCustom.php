@@ -23,7 +23,7 @@ class PeopleCustom extends DefaultModel
 
     public function store()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new PeopleCustomTable;
@@ -145,7 +145,7 @@ class PeopleCustom extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $filter_order = $app->getUserStateFromRequest('Peoplecustom.filter_order','filter_order','c.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Peoplecustom.filter_order_Dir','filter_order_Dir','asc');
 

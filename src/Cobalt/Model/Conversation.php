@@ -33,7 +33,7 @@ class Conversation extends DefaultModel
     public function store()
     {
 
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new ConversationTable;

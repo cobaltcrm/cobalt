@@ -21,7 +21,7 @@ class ConfigHelper
 {
      public static function getImapConfig()
      {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
         $query->select("imap_host,imap_pass,imap_user")->from("#__config")->where("id=1");
         $db->setQuery($query);
@@ -69,7 +69,7 @@ class ConfigHelper
 
     public static function getNamingConventions()
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
         $query->select("lang_deal,lang_person,lang_company,lang_contact,lang_lead,lang_task,lang_event,lang_goal")
                 ->from("#__config")

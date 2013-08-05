@@ -22,7 +22,7 @@ class Menu extends AbstractModel
 {
     public function store()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new MenuTable;

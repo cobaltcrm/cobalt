@@ -88,7 +88,7 @@ class Tags extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $filter_order = $app->getUserStateFromRequest('Tags.filter_order','filter_order','t.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Tags.filter_order_Dir','filter_order_Dir','asc');
 

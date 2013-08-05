@@ -516,7 +516,7 @@ class Mail extends DefaultModel
     {
         if ( $this->_connect() ) {
             if (!$message_id) {
-                $app = JFactory::getApplication();
+                $app = \Cobalt\Container::get('app');
                 $message_id = $app->input->get('id');
             }
             if ($message_id != null || $message_id != 0) {
@@ -528,7 +528,7 @@ class Mail extends DefaultModel
 
     public function saveEmail($email_id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         if (!$email_id) {
             $email_id = $app->input->get('id');

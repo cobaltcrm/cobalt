@@ -183,7 +183,7 @@ class Document extends DefaultModel
             return false;
         }
 
-       $app = JFactory::getApplication();
+       $app = \Cobalt\Container::get('app');
        $app->triggerEvent('onBeforeDocumentSave', array(&$row));
 
         // Make sure the record is valid
@@ -215,7 +215,7 @@ class Document extends DefaultModel
      */
     public function getDocuments($id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //get DBO
         $db = JFactory::getDBO();
@@ -394,7 +394,7 @@ class Document extends DefaultModel
 
     public function getDocument($id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -458,7 +458,7 @@ class Document extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         if ( $app->input->get('view') == "documents" ) {
 

@@ -22,7 +22,7 @@ class Config extends DefaultModel
     public function store($data=null)
     {
 
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new ConfigTable;

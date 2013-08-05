@@ -311,7 +311,7 @@ public static function getHelpMenuLinks()
     {
         $modules = array();
 
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         /** Side menu links **/
         $menu_links = MenuHelper::getMenuLinks();

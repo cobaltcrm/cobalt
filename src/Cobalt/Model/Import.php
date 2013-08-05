@@ -47,7 +47,7 @@ class Import extends DefaultModel
      */
     public function readCSVFile($file, $table = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         ini_set("auto_detect_line_endings", "1");
         $data = array();
         $line = 1;

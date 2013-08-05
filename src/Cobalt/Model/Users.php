@@ -23,7 +23,7 @@ class Users extends DefaultModel
 {
     public function store()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new UsersTable;
@@ -185,7 +185,7 @@ class Users extends DefaultModel
 
     public function getUser($id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $id = $id ? $id : $app->input->get("id");
 
         if ($id > 0) {
@@ -210,7 +210,7 @@ class Users extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $filter_order = $app->getUserStateFromRequest('Users.filter_order','filter_order','u.last_name');
         $filter_order_Dir = $app->getUserStateFromRequest('Users.filter_order_Dir','filter_order_Dir','asc');
 
@@ -321,7 +321,7 @@ class Users extends DefaultModel
 
     public function delete($ids)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);

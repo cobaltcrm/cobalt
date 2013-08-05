@@ -38,7 +38,7 @@ class Company extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $this->_view = $app->input->get('view');
         $this->_layout = str_replace('_filter','',$app->input->get('layout'));
     }
@@ -50,7 +50,7 @@ class Company extends DefaultModel
      */
     public function store($data=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $db = JFactory::getDBO();
 
         //Load Tables
@@ -128,7 +128,7 @@ class Company extends DefaultModel
      */
     public function _buildQuery()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         /** Large SQL Selections **/
         $db = JFactory::getDBO();
@@ -293,7 +293,7 @@ class Company extends DefaultModel
      */
     public function getCompanies($id=null,$type=null,$user=null,$team=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $this->_id = $id;
         $this->_type = $type;
         $this->_user = $user;
@@ -389,7 +389,7 @@ class Company extends DefaultModel
 
     public function getCompany($id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $id = $id ? $id : $app->input->get('id');
 
         if ($id > 0) {
@@ -483,7 +483,7 @@ class Company extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //determine view so we set correct states
         $view = $app->input->get('view');

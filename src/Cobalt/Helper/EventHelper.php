@@ -22,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getCategories($appendLanguage=FALSE)
     {
         //grab db
-        $db = JFactory::getDbo();
+        $db = \Cobalt\Container::get('db');
 
         //generate query
         $query = $db->getQuery(true);

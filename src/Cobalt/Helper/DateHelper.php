@@ -186,7 +186,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getSiteTimezone()
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
         $query->select("timezone")->from("#__config")->where("id=1");
         $db->setQuery($query);

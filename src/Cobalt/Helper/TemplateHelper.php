@@ -82,7 +82,7 @@ class TemplateHelper
 
     public static function endCompWrap()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         if (self::isMobile()) {
 
@@ -143,7 +143,7 @@ class TemplateHelper
 
     public static function loadToolbar()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //load menu
         $menu_model = new MenuModel;
@@ -223,7 +223,7 @@ class TemplateHelper
 
     public static function loadReportMenu()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $activeLayout = $app->input->get('layout');
 
         $layouts = array('dashboard','sales_pipeline','source_report','roi_report','deal_milestones','notes','custom_reports');
@@ -273,7 +273,7 @@ class TemplateHelper
     public static function isMobile()
     {
         return false;
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $mobile_detect = new MobileHelper();
         $mobile_auto = $mobile_detect->isMobile();
         $mobile_manual = $app->input->get('mobile');

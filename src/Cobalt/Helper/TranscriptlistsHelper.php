@@ -19,7 +19,7 @@ class TranscriptlistsHelper
 {
     public static function getRooms($associationId=null,$associationType=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $autoId = $app->input->get('id') ? $app->input->get('id') : $app->input->get('association_id');
         $autoType = $app->input->get('layout') ? $app->input->get('layout') : $app->input->get('association_type');
@@ -27,7 +27,7 @@ class TranscriptlistsHelper
         $associationId = $associationId ? $associationId : $autoId;
         $associationType = $associationType ? $associationType : $autoType;
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("id,name")
@@ -45,11 +45,11 @@ class TranscriptlistsHelper
 
     public static function getTranscripts($roomId=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         $roomId = $roomId ? $roomId : $app->input->get('room_id');
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("t.*,r.name AS room_name")

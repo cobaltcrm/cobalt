@@ -27,7 +27,7 @@ class Branding extends AbstractModel
     public function store()
     {
         //Load Tables
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $row = new BrandingTable;
         $data = $app->input->getRequest( 'post' );
 

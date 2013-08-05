@@ -30,7 +30,7 @@ class Report extends DefaultModel
      */
     public function store()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //Load Tables
         $row = new ReportTable;
@@ -89,7 +89,7 @@ class Report extends DefaultModel
      */
     public function getCustomReports($id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //load database
         $db = JFactory::getDBO();
@@ -147,7 +147,7 @@ class Report extends DefaultModel
         //get db
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //get the custom report so we know what data to filter and select
         $custom_report = $this->getCustomReports($id);
@@ -567,7 +567,7 @@ class Report extends DefaultModel
         function populateState()
         {
             //get states
-            $app = JFactory::getApplication();
+            $app = \Cobalt\Container::get('app');
 
             //determine view so we set correct states
             $view = $app->input->get('view');

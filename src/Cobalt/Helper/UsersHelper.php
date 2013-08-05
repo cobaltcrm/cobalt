@@ -30,7 +30,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         if ($user_role != 'basic') {
 
             //get db
-            $db = JFactory::getDBO();
+            $db = \Cobalt\Container::get('db');
             $query = $db->getQuery(true);
 
             $select = ( $idsOnly ) ? "id AS value,CONCAT(first_name,' ',last_name) AS label" : "*";
@@ -74,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     {
         $id = $id ? $id : self::getLoggedInUser()->id;
 
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
         $query->clear()->select("first_name")->from("#__users")->where("id=".$id);
         $db->setQuery($query);
@@ -92,7 +92,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $results = array();
 
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //get users
@@ -126,7 +126,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         }
 
         //get dbo
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //query
@@ -154,7 +154,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getUserId()
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -176,7 +176,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getRole($user_id=null)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -199,7 +199,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTeamId($user_id=null)
     {
        //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $user_id = $user_id ? $user_id : UsersHelper::getUserId();
@@ -221,7 +221,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTeams($id=null)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //query
@@ -255,7 +255,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTeamUsers($id=null,$idsOnly=FALSE)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         if ($idsOnly) {
@@ -283,7 +283,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getAllSharedUsers()
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("id AS value,CONCAT(first_name,' ',last_name) AS label")
@@ -307,7 +307,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getItemSharedUsers($itemId,$itemType)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("s.user_id AS value,CONCAT(u.first_name,' ',u.last_name) AS label")
@@ -334,7 +334,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getDealCount($id,$team,$role)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //query
@@ -368,7 +368,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getPeopleCount($id=null,$team=null,$role=null)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         if (!$id) {
@@ -413,7 +413,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getPeopleEmails($id=null)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         if (!$id) {
@@ -450,7 +450,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getCompanyCount($id,$team,$role)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //query
@@ -485,7 +485,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getCommissionRate($id=null)
     {
        //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -517,7 +517,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getDateFormat($php=TRUE)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -546,7 +546,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTimeFormat($id=null)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -572,7 +572,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTimezone($id=null)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -601,7 +601,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $user_id = $baseUser->get('id');
 
         if ($user_id > 0) {
-            $db = JFactory::getDBO();
+            $db = \Cobalt\Container::get('db');
 
             $query = $db->getQuery(true);
             $query->select('c.*,u.email');
@@ -622,7 +622,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getUser($user_id,$array=FALSE)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
 
         $query = $db->getQuery(true);
         $query->select('c.*');
@@ -642,7 +642,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     /** Determine if logged in user ( or specified user ) is an administrator **/
     public static function isAdmin($user_id=null)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $user_id = $user_id ? $user_id : UsersHelper::getUserId();
@@ -665,7 +665,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     /** Determine if logged in user ( or specified user ) can delete items **/
     public static function canDelete($user_id=null)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
 
         $user_id = $user_id ? $user_id : UsersHelper::getUserId();
 
@@ -683,7 +683,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      /** Determine if logged in user ( or specified user ) can export items **/
     public static function canExport($user_id=null)
     {
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
 
         $user_id = $user_id ? $user_id : UsersHelper::getUserId();
 
@@ -701,7 +701,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function authenticateAdmin()
     {
         if (!self::isAdmin()) {
-            $app = JFactory::getApplication();
+            $app = \Cobalt\Container::get('app');
             $app->redirect('index.php');
         }
     }
@@ -713,7 +713,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         if ($userId > 0) {
 
-            $db = JFactory::getDBO();
+            $db = \Cobalt\Container::get('db');
             $query = $db->getQuery(true);
 
             $query->select("language")->from("#__users")->where('id='.$userId);

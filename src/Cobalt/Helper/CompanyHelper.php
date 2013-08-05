@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getCompany($id)
     {
         //get db object
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         //generate query
@@ -68,7 +68,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getSelectedColumnFilters()
     {
         //get the user session data
-        $db = JFactory::getDBO();
+        $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
         $query->select("companies_columns");

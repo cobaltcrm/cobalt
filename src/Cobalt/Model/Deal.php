@@ -55,7 +55,7 @@ class Deal extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $this->_view = $app->input->get('view');
         $this->_layout = str_replace('_filter','',$app->input->get('layout'));
     }
@@ -67,7 +67,7 @@ class Deal extends DefaultModel
      */
     public function store($data=null,$returnRow=FALSE)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $db  = JFactory::getDBO();
 
         //Load Tables
@@ -236,7 +236,7 @@ class Deal extends DefaultModel
     public function _buildQuery()
     {
         /** Large SQL Selections **/
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $db->setQuery("SET SQL_BIG_SELECTS=1");
@@ -785,7 +785,7 @@ class Deal extends DefaultModel
      */
     public function getDeals($id=null,$type=null,$user=null,$stage=null,$close=null,$team=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //set defaults
         $this->_id = ( $this->_id ) ? $this->_id : $id;
@@ -921,7 +921,7 @@ class Deal extends DefaultModel
 
     public function getDeal($id=null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         $id = $id ? $id : $app->input->get('id');
 
         if ($id > 0) {
@@ -969,7 +969,7 @@ class Deal extends DefaultModel
 
     public function getDealList()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //db object
         $db = JFactory::getDBO();
@@ -1187,7 +1187,7 @@ class Deal extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         //determine view so we set correct states
         $view = $app->input->get('view');
