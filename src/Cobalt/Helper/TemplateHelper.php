@@ -27,17 +27,13 @@ class TemplateHelper
         <div class="container">
             <div id="com_cobalt">
                 <div id="message" style="display:none;"></div>
-                    <div id="CobaltModalMessage" class="modal hide fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div id="CobaltModalMessage" class="modal fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-header small">
                             <h3 id="CobaltModalMessageHeader"></h3>
                         </div>
                         <div id="CobaltModalMessageBody" class="modal-body">
                         <p></p>
                         </div>
-                    </div>
-                    <div id="alertMessage" class="page-alert alert alert-success">
-                        <div id="alertMessageHeader"></div>
-                        <div id="alertMessageBody"></div>
                     </div>
                     <div id="google-map" style="display:none;"></div>
                     <div id="edit_note_entry" style="display:none;"></div>

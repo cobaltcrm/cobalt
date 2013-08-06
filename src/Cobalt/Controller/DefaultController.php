@@ -82,6 +82,7 @@ class DefaultController extends AbstractController
         /** @var $view \Joomla\View\AbstractHtmlView **/
         $view = new $viewClass($model, $paths);
         $view->setLayout($layoutName);
+        $view->document = $document;
 
         // Render our view.
         echo $view->render();

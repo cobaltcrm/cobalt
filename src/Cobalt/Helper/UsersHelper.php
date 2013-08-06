@@ -572,11 +572,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query->from("#__users");
         $query->where('id='.$user_id);
 
-        //return id
-        $db->setQuery($query);
-
-        return $db->loadResult();
-
+        return $db->setQuery($query)->loadResult();
     }
 
     public static function getLoggedInUser()

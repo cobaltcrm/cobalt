@@ -28,6 +28,9 @@ JPluginHelper::importPlugin('cobalt');
 /** @var \Cobalt\Application $app */
 $app = Cobalt\Container::get('app');
 
+//get user object
+$user = UsersHelper::getLoggedInUser();
+
 // Fetch the controller
 $controllerObj = $app->getRouter()->getController($app->get('uri.route'));
 
@@ -36,9 +39,11 @@ $controller = $app->input->get('controller', 'default');
 
 //load user toolbar
 $format = $app->input->get('format');
-$overrides = array('ajax','mail','login');
+$overrides = array('ajax', 'mail', 'login');
 
-if ($format != "raw" && !in_array($controller, $overrides)) {
+if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) {
+
+    ActivityHelper::saveUserLoginHistory();
 
     // Set a default view if none exists
     if (! $app->input->get('view')) {
@@ -87,15 +92,8 @@ if ($format != "raw" && !in_array($controller, $overrides)) {
     //load styles
     StylesHelper::loadStyleSheets();
 
-    //get user object
-    $user = UsersHelper::getLoggedInUser();
-
-    //if the user is logged in continue else redirect to joomla login
-    if ($user) {
-        ActivityHelper::saveUserLoginHistory();
-    } elseif (!($controllerObj instanceof Cobalt\Controller\Login)) {
-        $app->redirect(JRoute::_('index.php?view=login'));
-    }
+} elseif (!($controllerObj instanceof Cobalt\Controller\Login)) {
+    $app->redirect(JRoute::_('index.php?view=login'));
 }
 
 //load javascript language
@@ -110,6 +108,6 @@ if (UsersHelper::isFullscreen()) {
 $controllerObj->execute();
 
 //end componenet wrapper
-if ($format !== 'raw') {
+if ($user !== false && $format !== 'raw') {
     TemplateHelper::endCompWrap();
 }

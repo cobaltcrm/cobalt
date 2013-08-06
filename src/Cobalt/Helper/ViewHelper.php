@@ -14,6 +14,7 @@ class ViewHelper
         // Get the application
         $app = \Cobalt\Container::get('app');
 
+        $document = $app->getDocument();
         $app->input->set('view', $viewName);
 
         // Register the layout paths for the view
@@ -38,6 +39,7 @@ class ViewHelper
         /** @var $view \Joomla\View\AbstractHtmlView **/
         $view = new $viewClass($model, $paths);
         $view->setLayout($layoutName);
+        $view->document = $document;
 
         if (isset($vars)) {
 
