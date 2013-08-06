@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
-<form action="index.php?controller=login" method="post" class="form-horizontal">
+<form action="<?php echo JRoute::_('index.php?view=login'); ?>" method="post" class="form-horizontal">
     <fieldset class="well">
         <div class="control-group">
             <div class="control-label">

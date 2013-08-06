@@ -23,7 +23,7 @@ class ModularAuthenticate
      */
     public function login($credentials, $options = array())
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
 
         // Get the global JAuthentication object.
         jimport('joomla.user.authentication');
@@ -78,22 +78,6 @@ class ModularAuthenticate
              */
 
             if ($response->status == 1) {
-                // Set the remember me cookie if enabled.
-                if (isset($options['remember']) && $options['remember']) {
-                    jimport('joomla.utilities.simplecrypt');
-
-                    // Create the encryption key, apply extra hardening using the user agent string.
-                    $key = self::getHash(@$_SERVER['HTTP_USER_AGENT']);
-
-                    $crypt = new JSimpleCrypt($key);
-                    $rcookie = $crypt->encrypt(serialize($credentials));
-                    $lifetime = time() + 365 * 24 * 60 * 60;
-
-                    // Use domain and path set in config for cookie if it exists.
-                    $cookie_domain = $this->get('cookie_domain', '');
-                    $cookie_path = $this->get('cookie_path', '/');
-                    setcookie(self::getHash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain);
-                }
 
                 $app->setUser(new JUser($response->user_id));
 
@@ -154,11 +138,11 @@ class ModularAuthenticate
         JPluginHelper::importPlugin('user');
 
         // OK, the credentials are built. Lets fire the onLogout event.
-        $results = $app->triggerEvent('onUserLogout', array($parameters, $options));
+        $event = $app->triggerEvent('onUserLogout', array($parameters, $options));
 
         // Check if any of the plugins failed. If none did, success.
 
-        if (!in_array(false, $results, true)) {
+        if ($event->isStopped() === false) {
             // Use domain and path set in config for cookie if it exists.
             $cookie_domain = $app->get('cookie_domain', '');
             $cookie_path = $app->get('cookie_path', '/');

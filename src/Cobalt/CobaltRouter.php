@@ -86,6 +86,11 @@ class CobaltRouter extends Router
     public function getRouteFor($url)
     {
         $parts = parse_url($url);
+
+        if (empty($parts['query'])) {
+            return $url;
+        }
+
         parse_str($parts['query'], $query);
 
         $array = array();

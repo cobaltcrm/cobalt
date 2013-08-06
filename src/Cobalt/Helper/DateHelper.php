@@ -198,6 +198,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function formatDBDate($date, $time=true)
     {
         $userTz = UsersHelper::getTimezone();
+        if ($userTz === null) {
+            $userTz = 'UTC';
+        }
         $dateTime = new \DateTime($date, new \DateTimeZone($userTz));
 
         $utc = "UTC";

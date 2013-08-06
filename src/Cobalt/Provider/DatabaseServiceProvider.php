@@ -16,7 +16,7 @@ class DatabaseServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container->bind('db', function() {
+        $container->bind('Joomla\\Database\\DatabaseDriver', function() {
                 static $db;
 
                 if (is_null($db)) {
@@ -37,6 +37,9 @@ class DatabaseServiceProvider implements ServiceProviderInterface
 
                 return $db;
             });
+
+        // Alias the database
+        $container->alias('db', 'Joomla\\Database\\DatabaseDriver');
 
         JFactory::$database = $container->resolve('db');
     }

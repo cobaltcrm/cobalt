@@ -35,6 +35,8 @@ require_once JPATH_LIBRARIES.'/import.php';
 require_once JPATH_VENDOR.'/autoload.php';
 require_once JPATH_CONFIGURATION.'/configuration.php';
 
+JLoader::register('JUser', JPATH_ROOT . '/src/compat/JUser.php');
+JLoader::register('JTableUser', JPATH_ROOT . '/src/compat/JTableUser.php');
 JLoader::register('JRoute', JPATH_ROOT . '/src/compat/JRoute.php');
 JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
 

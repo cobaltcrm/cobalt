@@ -17,12 +17,7 @@ class Logout extends DefaultController
 {
     public function execute()
     {
-        if ($this->app->logout()) {
-            $this->app->redirect(base64_decode($this->input->get('return')));
-        } else {
-            $this->app->redirect(base64_decode($this->input->get('return')));
-        }
-
+        $this->app->logout();
     }
 
 }

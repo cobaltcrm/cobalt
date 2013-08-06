@@ -153,23 +153,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     //return current logged in Cobalt user ID based on Joomla Id
     public static function getUserId()
     {
-        //get db
-        $db = \Cobalt\Container::get('db');
-        $query = $db->getQuery(true);
-
-        //logged in user
-        $user = JFactory::getUser();
-
-        //get id
-        $query->select("id");
-        $query->from("#__users");
-        $query->where('id='.$user->id);
-
-        //return id
-        $db->setQuery($query);
-
-        return $db->loadResult();
-
+        return JFactory::getUser()->id;
     }
 
     //return user role
@@ -198,11 +182,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     //return user team id
     public static function getTeamId($user_id=null)
     {
-       //get db
+        //get db
         $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
-        $user_id = $user_id ? $user_id : UsersHelper::getUserId();
+        $user_id = $user_id ?: UsersHelper::getUserId();
 
         //get id
         $query->select("team_id");

@@ -10,8 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Joomla\Model\AbstractModel;
-
 use JUri;
 use JFactory;
 use Joomla\Filesystem\File;
@@ -22,7 +20,7 @@ use Cobalt\Helper\TextHelper;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Avatar extends AbstractModel
+class Avatar extends DefaultModel
 {
     public $image;
     public $image_type;
@@ -44,24 +42,21 @@ class Avatar extends AbstractModel
         if ($fileError > 0) {
             switch ($fileError) {
                 case 1:
-                echo TextHelper::_( 'FILE TO LARGE THAN PHP INI ALLOWS' );
+                    echo TextHelper::_( 'FILE TO LARGE THAN PHP INI ALLOWS' );
 
-                return;
-
+                    return false;
                 case 2:
-                echo TextHelper::_( 'FILE TO LARGE THAN HTML FORM ALLOWS' );
+                    echo TextHelper::_( 'FILE TO LARGE THAN HTML FORM ALLOWS' );
 
-                return;
-
+                    return false;
                 case 3:
-                echo TextHelper::_( 'ERROR PARTIAL UPLOAD' );
+                    echo TextHelper::_( 'ERROR PARTIAL UPLOAD' );
 
-                return;
-
+                    return false;
                 case 4:
-                echo TextHelper::_( 'ERROR NO FILE' );
+                    echo TextHelper::_( 'ERROR NO FILE' );
 
-                return;
+                    return false;
             }
         }
 
@@ -86,9 +81,9 @@ class Avatar extends AbstractModel
         }
 
         if ($extOk == false) {
-            echo TextHelper::_( 'INVALID EXTENSION' );
+            echo TextHelper::_('INVALID EXTENSION');
 
-                return;
+            return false;
         }
 
         //data generation
@@ -99,23 +94,23 @@ class Avatar extends AbstractModel
         $fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_SITE.'//media/avatars/'.$hashFilename;
+        $uploadPath = JPATH_SITE.'/src/Cobalt/media/avatars/'.$hashFilename;
 
-        if (!File::upload($fileTemp,$uploadPath)) {
-            echo TextHelper::_( 'ERROR MOVING FILE' );
+        if (!File::upload($fileTemp, $uploadPath)) {
+            echo TextHelper::_('ERROR MOVING FILE');
 
-            return;
+            return false;
         }
 
         $image = new Image;
         $image->loadFile($uploadPath);
-        $image->resize(50,50,FALSE);
+        $image->resize(50, 50, false);
         $image->toFile($uploadPath);
 
         $item_type = $app->input->get('item_type');
         $item_id = $app->input->get('item_id');
 
-        $data = array('id'=>$item_id,'avatar'=>$hashFilename);
+        $data = array('id' => $item_id, 'avatar' => $hashFilename);
 
         $this->deleteOldAvatar($item_id,$item_type);
 
@@ -129,10 +124,10 @@ class Avatar extends AbstractModel
         }
 
         $modelClass = "Cobalt\\Model\\".ucwords($model_name);
-        $model = new $modelClass();
+        $model = new $modelClass($this->db);
         $model->store($data);
 
-        return JUri::base().'libraries/crm/media/avatars/'.$hashFilename;
+        return JUri::base().'src/Cobalt/media/avatars/'.$hashFilename;
 
     }
 
@@ -140,22 +135,19 @@ class Avatar extends AbstractModel
     {
         $avatar = $this->getAvatar($item_id,$item_type);
         if ($avatar) {
-            echo JPATH_SITE.'//media/avatars/'.$avatar;
-            File::delete(JPATH_SITE.'//media/avatars/'.$avatar);
+            echo JPATH_SITE.'/src/Cobalt/media/avatars/'.$avatar;
+            File::delete(JPATH_SITE.'/src/Cobalt/media/avatars/'.$avatar);
         }
 
     }
 
-    public function getAvatar($item_id,$item_type)
+    public function getAvatar($item_id, $item_type)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->clear();
+        $query = $this->db->getQuery(true);
+
         $query->select("avatar")->from("#__".$item_type)->where("id=".$item_id);
 
-        $db->setQuery($query);
-
-        return $db->loadResult();
+        return $db->setQuery($query)->loadResult();
 
     }
  }

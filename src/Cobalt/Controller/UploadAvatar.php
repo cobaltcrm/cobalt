@@ -11,7 +11,6 @@
 namespace Cobalt\Controller;
 
 use Cobalt\Helper\TextHelper;
-use Cobalt\Model\Avatar as AvatarModel;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,7 +19,17 @@ class UploadAvatar extends DefaultController
 {
     public function execute()
     {
-        $model = new AvatarModel;
+        $model = $this->getModel('Avatar');
+        $hashedFilename = $model->saveAvatar();
+
+        if (empty($hashedFilename)) {
+            echo '<script type="text/javascript">
+                    window.top.window.modalMessage("'.TextHelper::_('COBALT_ERROR').'","'.TextHelper::_('COBALT_AVATAR_UPLOAD_ERROR').'");
+                  </script>';
+        } else {
+            $state = $model->getState();
+        }
+
         $item_id = $this->input->get('item_id');
 
         if ( $avatar = $model->saveAvatar() ) {
@@ -30,9 +39,7 @@ class UploadAvatar extends DefaultController
                     window.top.window.updateAvatar('.$item_id.',"'.$avatar.'");
                     </script>';
         } else {
-            echo '<script type="text/javascript">
-                        window.top.window.modalMessage("'.TextHelper::_('COBALT_ERROR').'","'.TextHelper::_('COBALT_AVATAR_UPLOAD_ERROR').'");
-                        </script>';
+
         }
     }
 

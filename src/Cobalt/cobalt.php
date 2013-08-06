@@ -25,11 +25,11 @@ $tz = DateHelper::getSiteTimezone();
 //Load plugins
 JPluginHelper::importPlugin('cobalt');
 
-//application
+/** @var \Cobalt\Application $app */
 $app = Cobalt\Container::get('app');
 
 // Fetch the controller
-$classname = $app->getRouter()->getController($app->get('uri.route'));
+$controllerObj = $app->getRouter()->getController($app->get('uri.route'));
 
 // Require specific controller if requested
 $controller = $app->input->get('controller', 'default');
@@ -63,26 +63,26 @@ if ($format != "raw" && !in_array($controller, $overrides)) {
     }
     TemplateHelper::startCompWrap();
 
-        //mobile detection
-        if (TemplateHelper::isMobile()) {
-             $app->input->set('tmpl','component');
-             $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
-             $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' );
-             $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' );
-             $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.js' );
-             $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.extensions.js' );
-             $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.services.js' );
-             $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.mobile.js');
-             $document->setMetaData('viewport','width=device-width, initial-scale=1');
-        } else {
-            //load task events javascript which will be used throughout page redirects
-            $document->addScript( JURI::base().'libraries/crm/media/js/timepicker.js');
-            $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.js' );
-            $document->addScript( JURI::base().'libraries/crm/media/js/filters.js');
-            $document->addScript( JURI::base().'libraries/crm/media/js/autogrow.js');
-            $document->addScript( JURI::base().'libraries/crm/media/js/jquery.cluetip.min.js');
+    //mobile detection
+    if (TemplateHelper::isMobile()) {
+         $app->input->set('tmpl','component');
+         $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' );
+         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' );
+         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.js' );
+         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.extensions.js' );
+         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.services.js' );
+         $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.mobile.js');
+         $document->setMetaData('viewport','width=device-width, initial-scale=1');
+    } else {
+        //load task events javascript which will be used throughout page redirects
+        $document->addScript( JURI::base().'libraries/crm/media/js/timepicker.js');
+        $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.js' );
+        $document->addScript( JURI::base().'libraries/crm/media/js/filters.js');
+        $document->addScript( JURI::base().'libraries/crm/media/js/autogrow.js');
+        $document->addScript( JURI::base().'libraries/crm/media/js/jquery.cluetip.min.js');
 
-        }
+    }
 
     //load styles
     StylesHelper::loadStyleSheets();
@@ -93,16 +93,13 @@ if ($format != "raw" && !in_array($controller, $overrides)) {
     //if the user is logged in continue else redirect to joomla login
     if ($user) {
         ActivityHelper::saveUserLoginHistory();
-    } elseif ($app->input->getWord('view')!='login' && $app->input->getWord('controller')!='login') {
-        $app->redirect('index.php?view=login');
+    } elseif (!($controllerObj instanceof Cobalt\Controller\Login)) {
+        $app->redirect(JRoute::_('index.php?view=login'));
     }
-
 }
 
 //load javascript language
 TemplateHelper::loadJavascriptLanguage();
-
-$controller = new $classname($app->input, $app);
 
 //fullscreen detection
 if (UsersHelper::isFullscreen()) {
@@ -110,9 +107,9 @@ if (UsersHelper::isFullscreen()) {
 }
 
 // Perform the Request task
-$controller->execute();
+$controllerObj->execute();
 
 //end componenet wrapper
-if ($format != "raw" && $controller != "ajax") {
+if ($format !== 'raw') {
     TemplateHelper::endCompWrap();
 }

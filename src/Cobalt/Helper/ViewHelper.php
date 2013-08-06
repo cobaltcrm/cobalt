@@ -27,13 +27,16 @@ class ViewHelper
         $paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
 
         $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
-        $modelClass = 'Cobalt\\Model\\' . ucfirst($viewName);
+        $modelClass = ucfirst($viewName);
 
-        if (false == class_exists($modelClass)) {
-            $modelClass = 'Cobalt\\Model\\DefaultModel';
+        if (class_exists('Cobalt\\Model\\'.$modelClass) === false) {
+            $modelClass = 'DefaultModel';
         }
 
-        $view = new $viewClass(new $modelClass, $paths);
+        $model = self::getModel($modelClass);
+
+        /** @var $view \Joomla\View\AbstractHtmlView **/
+        $view = new $viewClass($model, $paths);
         $view->setLayout($layoutName);
 
         if (isset($vars)) {
@@ -47,5 +50,12 @@ class ViewHelper
         }
 
         return $view;
+    }
+
+    public static function getModel($modelName)
+    {
+        $fqcn = 'Cobalt\\Model\\' . $modelName;
+
+        return \Cobalt\Container::getInstance()->build($fqcn);
     }
 }

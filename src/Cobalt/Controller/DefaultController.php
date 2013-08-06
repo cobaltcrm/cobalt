@@ -71,19 +71,28 @@ class DefaultController extends AbstractController
         $paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
 
         $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
-        $modelClass = 'Cobalt\\Model\\' . ucfirst($viewName);
+        $modelClass = ucfirst($viewName);
 
-        if (false === class_exists($modelClass)) {
-            $modelClass = 'Cobalt\\Model\\DefaultModel';
+        if (class_exists('Cobalt\\Model\\'.$modelClass) === false) {
+            $modelClass = 'DefaultModel';
         }
 
+        $model = $this->getModel($modelClass);
+
         /** @var $view \Joomla\View\AbstractHtmlView **/
-        $view = new $viewClass(new $modelClass, $paths);
+        $view = new $viewClass($model, $paths);
         $view->setLayout($layoutName);
 
         // Render our view.
         echo $view->render();
 
         return true;
+    }
+
+    public function getModel($modelName)
+    {
+        $fqcn = 'Cobalt\\Model\\' . $modelName;
+
+        return $this->container->build($fqcn);
     }
 }

@@ -10,7 +10,16 @@ class Container extends LeagueContainer
 {
     protected static $instance;
 
+    protected $aliases = array();
+
     protected $providers = array();
+
+    public function alias($alias, $binding)
+    {
+        $this->aliases[$alias] = $binding;
+
+        return $this;
+    }
 
     /**
      * @return Container
@@ -42,5 +51,14 @@ class Container extends LeagueContainer
             /** @var \Cobalt\Provider\ServiceProviderInterface $provider */
             $provider->register($this);
         }
+    }
+
+    public function resolve($binding)
+    {
+        if (isset($this->aliases[$binding])) {
+            $binding = $this->aliases[$binding];
+        }
+
+        return parent::resolve($binding);
     }
 }

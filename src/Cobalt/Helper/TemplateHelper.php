@@ -65,7 +65,7 @@ class TemplateHelper
                                 </div>
                                 <div class="modal-body">
                                     <p><?php echo TextHelper::_('COBALT_LOGOUT_MESSAGE'); ?></p>
-                                    <form id="logout-form" class="inline-form block-btn" action="index.php?controller=logout" method="post">
+                                    <form id="logout-form" class="inline-form block-btn" action="<?php echo JRoute::_('index.php?view=logout'); ?>" method="post">
                                         <input type="hidden" name="return" value="<?php echo base64_encode('/'); ?>" />
                                         <?php // echo JHtml::_('form.token'); ?>
                                     </form>

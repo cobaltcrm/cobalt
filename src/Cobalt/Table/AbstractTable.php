@@ -137,7 +137,7 @@ class AbstractTable implements \IteratorAggregate
      */
     public function __get($key)
     {
-        if (isset($this->tableFields->$key) || is_null($this->tableFields->$key)) {
+        if (property_exists($this->tableFields, $key)) {
             return $this->tableFields->$key;
         }
 

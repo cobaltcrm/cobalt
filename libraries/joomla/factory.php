@@ -148,7 +148,7 @@ abstract class JFactory
     {
 
         if (!self::$session) {
-            self::$session = self::createSession($options);
+            self::getApplication()->getSession();
         }
 
         return self::$session;

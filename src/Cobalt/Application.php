@@ -369,7 +369,6 @@ final class Application extends AbstractWebApplication
      */
     public function login($credentials, $options = array())
     {
-
         // Set the application login entry point
         if (!array_key_exists('entry_url', $options)) {
             $options['entry_url'] = Uri::base().'index.php?view=login';
@@ -380,7 +379,9 @@ final class Application extends AbstractWebApplication
 
         $authenticate = new \ModularAuthenticate();
 
-        $authenticate->login($credentials, $options);
+        if ($authenticate->login($credentials, $options)) {
+            $this->redirect(JRoute::_('index.php?view=dashboard'));
+        }
     }
 
     public function logout()
@@ -393,7 +394,8 @@ final class Application extends AbstractWebApplication
         // Check if the log out succeeded.
         if (!($error instanceof \Exception)) {
             // Get the return url from the request and validate that it is internal.
-            $return = base64_decode($this->input->get('return'));
+            // Lw== is / encoded
+            $return = base64_decode($this->input->get('return', 'Lw=='));
             if (!Uri::isInternal($return)) {
                 $return = '';
             }
@@ -722,6 +724,7 @@ final class Application extends AbstractWebApplication
             $this->user = new JUser;
 
             $this->getSession()->set('user', $this->user);
+
         } else {
             // Login
             $user->isAdmin = true; // in_array($user->username, $this->get('acl.admin_users'));

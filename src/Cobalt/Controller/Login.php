@@ -17,16 +17,18 @@ class Login extends DefaultController
 {
     public function execute()
     {
+        $this->input->set('view', 'login');
+
         $credentials = array(
             'username' => $this->input->get('username'),
             'password' => $this->input->get('password', null, 'HTML')
         );
 
-        if ($this->app->login($credentials)) {
-            $this->app->redirect(base64_decode($this->input->get('return')));
-        } else {
-            $this->app->redirect('/');
+        if (isset($credentials['username'])) {
+            $this->app->login($credentials);
         }
+
+        parent::execute();
     }
 
 }

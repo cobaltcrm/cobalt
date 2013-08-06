@@ -13,27 +13,31 @@ namespace Cobalt\Model;
 use JRoute;
 use Cobalt\Container;
 use Cobalt\Pagination;
-use Joomla\Model\AbstractModel;
+use Joomla\Input\Input;
+use Joomla\Model\AbstractDatabaseModel;
+use Joomla\Database\DatabaseDriver;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class DefaultModel extends AbstractModel
+class DefaultModel extends AbstractDatabaseModel
 {
     protected $__state_set;
     protected $_total;
     protected $_pagination;
-    protected $db;
     protected $id;
 
-    public function __construct()
+    public function __construct(DatabaseDriver $db = null)
     {
-        parent::__construct();
+        if (is_null($db)) {
+            $db = \Cobalt\Container::get('db');
+        }
 
-        $this->db = Container::get('db');
+        parent::__construct($db);
 
         $app = Container::get('app');
-        $ids = $app->input->get("cids",null,'array');
+
+        $ids = $app->input->get("cids", null, 'array');
 
         $id = $app->input->get("id");
         if ($id && $id > 0) {
@@ -144,6 +148,11 @@ class DefaultModel extends AbstractModel
       }
 
       return $this->_pagination;
+    }
+
+    public function setInput(Input $input)
+    {
+        $this->input = $input;
     }
 
 }

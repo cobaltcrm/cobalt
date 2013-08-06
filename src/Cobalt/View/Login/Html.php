@@ -11,7 +11,6 @@
 namespace Cobalt\View\Login;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,10 +19,6 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
-        $app->input->set('view','login');
-        $app->input->set('layout',$app->input->get('layout','default'));
-
         return parent::render();
     }
 
