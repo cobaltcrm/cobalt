@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container">
     <div class="well">
         <h1 class="text-center">Cobalt</h1>
-        <form action="<?php echo JRoute::_('index.php?view=login'); ?>" method="post" class="form-horizontal">
+        <form action="<?php echo JRoute::_('index.php?view=login'); ?>" method="post">
             <fieldset>
                 <div class="form-group">
                     <label id="username-lbl" for="username" class="control-label"><?php echo TextHelper::_('COBALT_USER_NAME'); ?></label>
