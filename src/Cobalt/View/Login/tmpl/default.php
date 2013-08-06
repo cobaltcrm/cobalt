@@ -12,11 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <style type="text/css">
     body {
         padding-top: 0;
-        background-color: #142849;
-        background-image: -webkit-gradient(radial,center center,0,center center,460,from(#165387),to(#142849));
-        background-image: -webkit-radial-gradient(circle,#165387,#142849);
-        background-image: -moz-radial-gradient(circle,#165387,#142849);
-        background-image: -o-radial-gradient(circle,#165387,#142849);
+        background-color: #357ebd;
         height:100%;
     }
     .container {
@@ -29,9 +25,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     }
     .well {
         padding-bottom: 0;
-        -webkit-box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.9) inset;
-        -moz-box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.9) inset;
-        box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.9) inset;
     }
     h1 {
         margin-top:0;
