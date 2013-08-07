@@ -55,7 +55,7 @@ $company = $this->companies[0];?>
                 <ul class="dropdown-menu">
                     <li><a role="button" href="#companyModal" data-toggle="modal"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a></li>
                     <?php if ( UsersHelper::isAdmin() ) { ?>
-                        <li><a href="index.php?controller=trash&item_id=<?php echo $company['id']; ?>&item_type=companies&page_redirect=companies" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a></li>
+                        <li><a href="index.php?task=trash&item_id=<?php echo $company['id']; ?>&item_type=companies&page_redirect=companies" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a></li>
                     <?php } ?>
                     <li>
                         <a href="index.php?view=print&item_id=<?php echo $company['id']; ?>&layout=company&model=company" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
@@ -111,7 +111,7 @@ $company = $this->companies[0];?>
 
         <!-- DOCUMENT UPLOAD BUTTON -->
         <span class="pull-right">
-            <form id="upload_form" target="hidden" action="index.php?controller=upload" method="post" enctype="multipart/form-data">
+            <form id="upload_form" target="hidden" action="index.php?task=upload" method="post" enctype="multipart/form-data">
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                      <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
                 </div>

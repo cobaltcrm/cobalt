@@ -46,7 +46,7 @@ function checkEmail(ele){
 	if ( jQuery(ele).val() != "" ){
 		var dataString = "email="+jQuery(ele).val();
 		jQuery.ajax({
-			url: base_url+'index.php?controller=ajax&task=checkEmailName&tmpl=component&format=raw',
+			url: base_url+'index.php?task=ajax&task=checkEmailName&tmpl=component&format=raw',
 			type:'POST',
 			data:dataString,
 			dataType:'JSON',
@@ -118,7 +118,7 @@ function saveForm(ele){
 	jQuery.ajax({
 		
 		type	:	'post',
-		url		:	'index.php?controller=saveProfile&format=raw&tmpl=component',
+		url		:	'index.php?task=saveProfile&format=raw&tmpl=component',
 		data	:	dataString,
 		dataType:	'JSON',
 		success	:	function(data){

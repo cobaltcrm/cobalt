@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $note = $this->notes[0];
 ?>
-<form id="note_edit" method="post" action="<?php echo 'index.php?controller=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >
+<form id="note_edit" method="post" action="<?php echo 'index.php?task=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >
     <input type="hidden" name="id" value="<?php echo $note['id']; ?>" />
     <div id="editForm">
         <?php if ( array_key_exists('person_id', $note) && $note['person_id'] != 0 ) { ?>

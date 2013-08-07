@@ -14,7 +14,7 @@ $deal = $this->deal;
 $app = JFactory::getApplication();
 ?>
 <h1><?php echo ucwords($deal['header']); ?></h1>
-<form id="deal_form" method="post" name="new_deal" action="<?php echo JRoute::_('index.php?controller=save&model=deal&return=deals'); ?>" target="hidden" onsubmit="save()">
+<form id="deal_form" method="post" name="new_deal" action="<?php echo JRoute::_('index.php?task=save&model=deal&return=deals'); ?>" target="hidden" onsubmit="save()">
     <div id="editForm">
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_DEAL_NAME'); ?></div>

@@ -21,7 +21,7 @@ $app = JFactory::getApplication();
 
 <div data-role="content">
 
-    <form id="edit_form" method="post" action="<?php echo 'index.php?controller=save&model=people&return=people'; ?>" onsubmit="return save(this)" >
+    <form id="edit_form" method="post" action="<?php echo 'index.php?task=save&model=people&return=people'; ?>" onsubmit="return save(this)" >
             <div id="editForm">
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?><span class="required">*</span></div>

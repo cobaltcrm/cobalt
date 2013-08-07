@@ -128,7 +128,7 @@ function addTaskEntry(){
   //make ajax call
   $.ajax({
     type  : "POST",
-    url   : 'index.php?controller=save&model=event&format=raw&tmpl=component',
+    url   : 'index.php?task=save&model=event&format=raw&tmpl=component',
     data  : dataString,
     dataType: 'json',
     success : function(data){
@@ -190,7 +190,7 @@ function addNoteEntry(ele){
   //make ajax call
   $.ajax({
     type  : "POST",
-    url   : 'index.php?controller=save&model=note&format=raw&tmpl=component',
+    url   : 'index.php?task=save&model=note&format=raw&tmpl=component',
     data  : dataString,
     dataType: 'json',
     success : function(data){
@@ -227,7 +227,7 @@ function markEventComplete(event_id){
   var dataString = "event_id="+event_id+"&completed="+completed_value;
 
   $.ajax({
-      url:'index.php?controller=markEventComplete&format=raw&tmpl=component',
+      url:'index.php?task=markEventComplete&format=raw&tmpl=component',
       type:'post',
       data:dataString,
       dataType:'json',

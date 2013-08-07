@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $company = $this->company;
 ?>
-<form id="edit_form" method="post" action="<?php echo 'index.php?view=companies&controller=save'; ?>" onsubmit="return save(this)" >
+<form id="edit_form" method="post" action="<?php echo 'index.php?view=companies&task=save'; ?>" onsubmit="return save(this)" >
 
     <ul class="nav nav-tabs" id="myTab">
       <li class="active"><a href="#Company" data-toggle="tab" >Company</a></li>

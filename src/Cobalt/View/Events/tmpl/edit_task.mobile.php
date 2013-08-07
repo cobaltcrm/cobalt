@@ -21,7 +21,7 @@ if (!isset($this->association_id)) { ?>
     <div data-role="content">
 <?php } ?>
 
-        <form id="task_edit" method="post" action="<?php echo JRoute::_('index.php?controller=save&model=event&return=events'); ?>" >
+        <form id="task_edit" method="post" action="<?php echo JRoute::_('index.php?task=save&model=event&return=events'); ?>" >
         <div id="editForm">
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_NAME'); ?></div>

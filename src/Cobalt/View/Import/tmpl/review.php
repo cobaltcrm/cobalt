@@ -27,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <a href="javascript:void(0)" onclick="seekImport(1);"><?php echo TextHelper::_('COBALT_NEXT'); ?></a>
     </div>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?controller=import'); ?>" method="post">
+<form action="<?php echo JRoute::_('index.php?task=import'); ?>" method="post">
         <div id="editForm">
         <?php if ( isset($this->import_data) && count($this->import_data) > 0 ) { try { foreach ($this->import_data as $key => $data) { ?>
         <?php if ($key > 0) { $style = "style='display:none;'"; } else { $style = ""; } ?>

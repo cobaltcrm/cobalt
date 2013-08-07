@@ -128,7 +128,7 @@ function deleteReport(e){
 		jQuery.ajax({
 			
 			type	:	'post',
-			url		:	'index.php?controller=deleteReport&format=raw&tmpl=component',
+			url		:	'index.php?task=deleteReport&format=raw&tmpl=component',
 			data	:	'id='+id,
 			dataType:	'json',
 			success	:	function(data){

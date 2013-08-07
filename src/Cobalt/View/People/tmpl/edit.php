@@ -19,7 +19,7 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
     <h1><?php echo $person['header']; ?></h1>
 <?php } ?>
 
-<form id="edit_form" method="post" action="<?php echo 'index.php?controller=people&task=save'; ?>" onsubmit="return save(this)" >
+<form id="edit_form" method="post" action="<?php echo 'index.php?task=people&task=save'; ?>" onsubmit="return save(this)" >
 
 <ul class="nav nav-tabs" id="myTab">
   <li class="active"><a href="#Person" data-toggle="tab" >Person</a></li>

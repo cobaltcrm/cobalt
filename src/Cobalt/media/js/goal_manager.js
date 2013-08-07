@@ -200,7 +200,7 @@ function changeIndividual(id){
 	//make ajax call
 	jQuery.ajax({
 		type		:'post',
-		url			:'index.php?controller=getIndividualGoals&format=raw&tmpl=component',
+		url			:'index.php?task=getIndividualGoals&format=raw&tmpl=component',
 		data		:'id='+id,
 		dataType	:'html',
 		success		:function(data){
@@ -217,7 +217,7 @@ function changeTeam(id){
 	//make ajax call
 	jQuery.ajax({
 		type		:'post',
-		url			:'index.php?controller=getTeamGoals&format=raw&tmpl=component',
+		url			:'index.php?task=getTeamGoals&format=raw&tmpl=component',
 		data		:'id='+id,
 		dataType	:'html',
 		success		:function(data){
@@ -234,7 +234,7 @@ function changeLeaderBoard(id){
 	//make ajax call
 	jQuery.ajax({
 		type		:'post',
-		url			:'index.php?controller=getLeaderBoard&format=raw&tmpl=component',
+		url			:'index.php?task=getLeaderBoard&format=raw&tmpl=component',
 		data		:'id='+id,
 		dataType	:'html',
 		success		:function(data){
@@ -281,7 +281,7 @@ function deleteGoalEntry(area){
 		var goal_id = jQuery(goal).attr('id');
 		//make ajax call
 		jQuery.ajax({
-			url		: 'index.php?controller=deleteGoalEntry&format=raw&tmpl=component',
+			url		: 'index.php?task=deleteGoalEntry&format=raw&tmpl=component',
 			type	: 'post',
 			data	: 'goal_id='+goal_id,
 			dataType: 'json',

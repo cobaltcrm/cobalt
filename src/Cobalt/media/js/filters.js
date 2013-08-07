@@ -62,7 +62,7 @@ function ajaxSaveModal(ele){
 	dataString = "item_id="+item_id+"&item_type="+item_type+"&field="+value_type+"&value="+new_value;
 
 	jQuery.ajax({
-		url:'index.php?controller=saveajax&format=raw&tmpl=component',
+		url:'index.php?task=saveajax&format=raw&tmpl=component',
 		type:'POST',
 		data:dataString,
 		dataType:'JSON',
@@ -251,7 +251,7 @@ function column(area){
 	//make ajax call to update our database information and session information
 	var dataString = "loc="+loc+"&column="+show_area;
 	jQuery.ajax({
-		url		:	'index.php?controller=updateColumns&format=raw&tmpl=component',
+		url		:	'index.php?task=updateColumns&format=raw&tmpl=component',
 		type	:	'post',
 		data	:	dataString,
 		success	:	function(data){
@@ -277,7 +277,7 @@ function dealStage(stage){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDeals&view=deals&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDeals&view=deals&format=raw&tmpl=component',
 		data	:	'stage='+stage,
 		dataType:	'html',
 		success	:	function(data){
@@ -306,7 +306,7 @@ function dealType(type){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDeals&view=deals&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDeals&view=deals&format=raw&tmpl=component',
 		data	:	'type='+type,
 		dataType:	'html',
 		success	:	function(data){
@@ -341,7 +341,7 @@ function dealUser(user,team){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDeals&view=deals&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDeals&view=deals&format=raw&tmpl=component',
 		data	:	dataString,
 		dataType:	'html',
 		success	:	function(data){
@@ -377,7 +377,7 @@ function dealClose(time){
 		//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDeals&view=deals&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDeals&view=deals&format=raw&tmpl=component',
 		data	:	'close='+time,
 		dataType:	'html',
 		success	:	function(data){
@@ -410,7 +410,7 @@ function companyType(type){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterCompanies&view=companies&format=raw&tmpl=component',
+		url		:	'index.php?task=filterCompanies&view=companies&format=raw&tmpl=component',
 		data	:	'type='+type,
 		dataType:	'html',
 		success	:	function(data){
@@ -445,7 +445,7 @@ function companyUser(user,team){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterCompanies&view=companies&format=raw&tmpl=component',
+		url		:	'index.php?task=filterCompanies&view=companies&format=raw&tmpl=component',
 		data	:	dataString,
 		dataType:	'html',
 		success	:	function(data){
@@ -515,7 +515,7 @@ function peopleType(type){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterPeople&view=people&format=raw&tmpl=component',
+		url		:	'index.php?task=filterPeople&view=people&format=raw&tmpl=component',
 		data	:	'type='+type,
 		dataType:	'html',
 		success	:	function(data){
@@ -545,7 +545,7 @@ function peopleUser(user,team){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterPeople&view=people&format=raw&tmpl=component',
+		url		:	'index.php?task=filterPeople&view=people&format=raw&tmpl=component',
 		data	:	dataString,
 		dataType:	'html',
 		success	:	function(data){
@@ -576,7 +576,7 @@ function peopleUpdated(stage){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterPeople&view=people&format=raw&tmpl=component',
+		url		:	'index.php?task=filterPeople&view=people&format=raw&tmpl=component',
 		data	:	'stage='+stage,
 		dataType:	'html',
 		success	:	function(data){
@@ -603,7 +603,7 @@ function peopleTag(tag){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterPeople&view=people&format=raw&tmpl=component',
+		url		:	'index.php?task=filterPeople&view=people&format=raw&tmpl=component',
 		data	:	'tag='+tag,
 		dataType:	'html',
 		success	:	function(data){
@@ -630,7 +630,7 @@ function peopleStatus(status){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterPeople&view=people&format=raw&tmpl=component',
+		url		:	'index.php?task=filterPeople&view=people&format=raw&tmpl=component',
 		data	:	'status='+status,
 		dataType:	'html',
 		success	:	function(data){
@@ -657,7 +657,7 @@ function documentAssoc(assoc){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDocuments&view=documents&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDocuments&view=documents&format=raw&tmpl=component',
 		data	:	'assoc='+assoc,
 		dataType:	'html',
 		success	:	function(data){
@@ -689,7 +689,7 @@ function documentUser(user,team){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDocuments&view=documents&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDocuments&view=documents&format=raw&tmpl=component',
 		data	:	dataString,
 		dataType:	'html',
 		success	:	function(data){
@@ -721,7 +721,7 @@ function documentType(type){
 	//make ajax call
 	jQuery.ajax({
 		type	:	'post',
-		url		:	'index.php?controller=filterDocuments&view=documents&format=raw&tmpl=component',
+		url		:	'index.php?task=filterDocuments&view=documents&format=raw&tmpl=component',
 		data	:	'type='+type,
 		dataType:	'html',
 		success	:	function(data){
@@ -759,7 +759,7 @@ function salesDashboardFilter(member,team){
 	}
 	jQuery.ajax({
 			type	:	'post',
-			url		:	'index.php?controller=graph&format=raw&tmpl=component',
+			url		:	'index.php?task=graph&format=raw&tmpl=component',
 			data	:	data,
 			dataType:	'json',
 			success	:	function(data){

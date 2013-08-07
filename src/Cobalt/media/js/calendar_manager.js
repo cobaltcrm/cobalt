@@ -15,7 +15,7 @@ jQuery(document).ready(function(){
 		
 		events:function(start, end, callback) {
 	        jQuery.ajax({
-	            url: base_url+'index.php?controller=getCalendarEvents&format=raw&tmpl=component',
+	            url: base_url+'index.php?task=getCalendarEvents&format=raw&tmpl=component',
 	            dataType: 'JSON',
 	            data: {
 	                start: Math.round(start.getTime() / 1000),
@@ -886,7 +886,7 @@ jQuery(document).ready(function(){
 				jQuery.ajax({
 					
 					type	:	"POST",
-					url		:	'index.php?controller=save&model=event&format=raw&tmpl=component',
+					url		:	'index.php?task=save&model=event&format=raw&tmpl=component',
 					data	:	dataString,
 					dataType:	'json',
 					success	:	function(data){
@@ -924,7 +924,7 @@ jQuery(document).ready(function(){
 		        	//make ajax call
 					jQuery.ajax({
 						type	:	"POST",
-						url		:	'index.php?controller=save&model=event&format=raw&tmpl=component',
+						url		:	'index.php?task=save&model=event&format=raw&tmpl=component',
 						data	:	dataString,
 						dataType:	'json',
 						success	:	function(data){
@@ -1064,7 +1064,7 @@ jQuery(document).ready(function(){
 
 				var dataString = "event_id="+calEvent.id+"&parent_id="+calEvent.parent_id+"&date="+date+"&event_type="+calEvent.type+"&repeats="+calEvent.repeats+"&end_time="+end_date+"&start_time="+date+"&due_date="+date;
 				jQuery.ajax({
-						url:'index.php?controller=markEventComplete&format=raw&tmpl=component',
+						url:'index.php?task=markEventComplete&format=raw&tmpl=component',
 						type:'post',
 						data:dataString,
 						dataType:'json',
@@ -1131,7 +1131,7 @@ function removeCalendarEvent(calEvent,type,date){
 
 	var dataString = "event_id="+calEvent.id+"&parent_id="+calEvent.parent_id+"&type="+type+"&date="+dateString+"&repeats="+calEvent.repeats+"&event_type="+calEvent.type+"&start_time="+dateString+"&end_time="+end_date+"&due_date="+due_date;
 	jQuery.ajax({
-		url: "index.php?controller=removeEvent&tmpl=component&format=raw",
+		url: "index.php?task=removeEvent&tmpl=component&format=raw",
 		type:"post",
 		data:dataString,
 		dataType:'json',

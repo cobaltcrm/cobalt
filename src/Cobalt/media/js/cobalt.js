@@ -260,7 +260,7 @@ function addConvoEntry(form_id){
 	jQuery.ajax({
 		
 		type	:	"POST",
-		url		:	'index.php?controller=save&model=conversation&format=raw&tmpl=component',
+		url		:	'index.php?task=save&model=conversation&format=raw&tmpl=component',
 		data	:	data,
 		dataType:	'JSON',
 		success	:	function(data){
@@ -537,7 +537,7 @@ function saveAjax(loc,model,value){
 		//make ajax call
 		jQuery.ajax({
 			type	:	"POST",
-			url		:	'index.php?controller=save&model='+model+'&format=raw&tmpl=component',
+			url		:	'index.php?task=save&model='+model+'&format=raw&tmpl=component',
 			data	:	dataString,
 			dataType:	'json',
 			success	:	function(data){
@@ -702,7 +702,7 @@ function updateContacts(){
 
 function addPersonToCompany(){
 	jQuery.ajax({
-		url:'index.php?controller=addPersonToCompany&format=raw&tmpl=component',
+		url:'index.php?task=addPersonToCompany&format=raw&tmpl=component',
 		type:'POST',
 		data:"company_id="+company_id+"&person_id="+person_id,
 		dataType:'JSON',
@@ -734,7 +734,7 @@ function saveCf(table){
 		//make ajax call
 		jQuery.ajax({
 			type	:	"POST",
-			url		:	'index.php?controller=saveCf&format=raw&tmpl=component',
+			url		:	'index.php?task=saveCf&format=raw&tmpl=component',
 			data	:	dataString,
 			dataType:	'json',
 			success	:	function(data){
@@ -791,7 +791,7 @@ function addPerson(urlString){
 	
 	jQuery.ajax({
 		type	:	'POST',
-		url		:	'index.php?controller=getPeople&format=raw&tmpl=component',
+		url		:	'index.php?task=getPeople&format=raw&tmpl=component',
 		dataType:	'json',
 		success	:	function(data){
 				
@@ -835,7 +835,7 @@ function addDeal(urlString){
 	
 	jQuery.ajax({
 		type	:	'POST',
-		url		:	'index.php?controller=getDeals&format=raw&tmpl=component',
+		url		:	'index.php?task=getDeals&format=raw&tmpl=component',
 		dataType:	'json',
 		success	:	function(data){
 			
@@ -888,7 +888,7 @@ function showNoteArea(associationType,associationId){
 		jQuery.ajax({
 			
 				type	:	'POST',
-				url		:	'index.php?controller=getNoteDropdowns&format=raw&tmpl=component',
+				url		:	'index.php?task=getNoteDropdowns&format=raw&tmpl=component',
 				data 	: 	dataString,
 				dataType:	'JSON',
 				success	:	function(data){
@@ -1050,7 +1050,7 @@ function addNoteEntry(ele){
 	//make ajax call
 	jQuery.ajax({
 		type	:	"POST",
-		url		:	'index.php?controller=save&model=note&format=raw&tmpl=component',
+		url		:	'index.php?task=save&model=note&format=raw&tmpl=component',
 		data	:	data,
 		dataType:	'json',
 		success	:	function(data){
@@ -1088,7 +1088,7 @@ function addNoteEntry(ele){
 
 function getNewNoteEntry(note_id){
 	jQuery.ajax({
-			url:'index.php?controller=getNoteEntry&format=raw&tmpl=component',
+			url:'index.php?task=getNoteEntry&format=raw&tmpl=component',
 			data:'note_id='+note_id,
 			dataType:'HTML',
 			success:function(data){
@@ -1105,7 +1105,7 @@ function getNewNoteEntry(note_id){
 
 function getNewConvoEntry(convo_id){
 	jQuery.ajax({
-			url:'index.php?controller=getConvoEntry&format=raw&tmpl=component',
+			url:'index.php?task=getConvoEntry&format=raw&tmpl=component',
 			data:'convo_id='+convo_id,
 			dataType:'HTML',
 			success:function(data){
@@ -1122,7 +1122,7 @@ function getNewConvoEntry(convo_id){
 
 function trashNoteEntry(note_id){
 	jQuery.ajax({
-		url:'index.php?controller=trash&tmpl=component&format=raw',
+		url:'index.php?task=trash&tmpl=component&format=raw',
 		type:'POST',
 		data:'item_type=notes&item_id='+note_id,
 		dataType:'json',
@@ -1337,7 +1337,7 @@ function editEvent(id,type,event){
 			//assign autocomplete and ajax search functionalities to input fields
 		 			jQuery.ajax({
 						type	:	'POST',
-						url		:	'index.php?controller=getTaskAssociations&format=raw&tmpl=component',
+						url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
 						dataType:	'json',
 						success	:	function(data){
 								
@@ -1508,7 +1508,7 @@ function openNoteModal(id,type){
 		 			//assign autocomplete and ajax search functionalities to input fields
 		 			jQuery.ajax({
 						type	:	'POST',
-						url		:	'index.php?controller=getTaskAssociations&format=raw&tmpl=component',
+						url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
 						dataType:	'json',
 						success	:	function(data){
 								
@@ -1641,7 +1641,7 @@ function markEventComplete(element){
 	});
 
 	jQuery.ajax({
-			url:'index.php?controller=markEventComplete&format=raw&tmpl=component',
+			url:'index.php?task=markEventComplete&format=raw&tmpl=component',
 			type:'post',
 			data:dataString,
 			dataType:'JSON',
@@ -1665,7 +1665,7 @@ function markEventIncomplete(element){
 	});
 
 	jQuery.ajax({
-			url:'index.php?controller=markEventIncomplete&format=raw&tmpl=component',
+			url:'index.php?task=markEventIncomplete&format=raw&tmpl=component',
 			type:'post',
 			data:dataString,
 			dataType:'json',
@@ -1693,7 +1693,7 @@ function postponeEvent(element,days){
 	dataString += "&days="+days;
 
 	jQuery.ajax({
-			url:'index.php?controller=postponeEvent&format=raw&tmpl=component',
+			url:'index.php?task=postponeEvent&format=raw&tmpl=component',
 			type:'post',
 			data:dataString,
 			dataType:'json',
@@ -1724,7 +1724,7 @@ function deleteEvent(element){
 	});
 
 	jQuery.ajax({
-		url: base_url+"index.php?controller=removeEvent&tmpl=component&format=raw",
+		url: base_url+"index.php?task=removeEvent&tmpl=component&format=raw",
 		type:"post",
 		data:dataString,
 		dataType:'json',
@@ -1801,7 +1801,7 @@ function addTaskEvent(type){
 		 			//assign autocomplete and ajax search functionalities to input fields
 		 			jQuery.ajax({
 						type	:	'POST',
-						url		:	'index.php?controller=getTaskAssociations&format=raw&tmpl=component',
+						url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
 						dataType:	'json',
 						success	:	function(data){
 								
@@ -1986,7 +1986,7 @@ function documentPreview(){
 	var ind = jQuery(e).attr('id').indexOf(search);
 	var id = jQuery(e).attr('id').substr(ind+1);
 	jQuery("#CobaltAjaxModalPreviewHeader").html(jQuery(e).parentsUntil('div.dropdown').parent("div.dropdown").children('a').text());
-	jQuery("#CobaltAjaxModalPreviewBody").html("<img style='max-width:400px;' src ='index.php?controller=previewDocument&format=raw&tmpl=component&document="+jQuery("#document_"+id+"_hash").val()+"' />");
+	jQuery("#CobaltAjaxModalPreviewBody").html("<img style='max-width:400px;' src ='index.php?task=previewDocument&format=raw&tmpl=component&document="+jQuery("#document_"+id+"_hash").val()+"' />");
 	jQuery("#CobaltAjaxModalPreview").modal('show');
 }
 
@@ -1999,7 +1999,7 @@ function documentDelete(){
 	jQuery.ajax({
 		
 		type	:	'post',
-		url		:	'index.php?controller=trash&format=raw&tmpl=component',
+		url		:	'index.php?task=trash&format=raw&tmpl=component',
 		data	:	'item_type=documents&item_id='+id,
 		dataType:	'json',
 		success	:	function(data){
@@ -2044,7 +2044,7 @@ function createTemplate(template_id){
 			var dataString = "template_id="+template_id+"&association_id="+association_id+"&association_type="+association_type;
 
 			jQuery.ajax({
-				url:'index.php?controller=createTemplate&tmpl=component&format=raw',
+				url:'index.php?task=createTemplate&tmpl=component&format=raw',
 				type:'post',
 				data:dataString,
 				dataType:'JSON',
@@ -2071,7 +2071,7 @@ function exportCsv(){
 	var old_action = jQuery("#list_form").attr('action');
 	var old_layout = jQuery("#list_form_layout").val();
 
-	jQuery("#list_form").attr('action','index.php?controller=downloadCsv&tmpl=component&format=raw');
+	jQuery("#list_form").attr('action','index.php?task=downloadCsv&tmpl=component&format=raw');
 	jQuery("#list_form_layout").val('custom_report');
 	jQuery("#list_form").append('<input type="hidden" id="export_flag" name="export" value="1" />');
 	jQuery("#list_form").submit();
@@ -2089,7 +2089,7 @@ function exportVcard(){
 
 	var old_action = jQuery("#list_form").attr('action');
 
-	jQuery("#vcard_form").attr('action','index.php?controller=downloadVcard&tmpl=component&format=raw');
+	jQuery("#vcard_form").attr('action','index.php?task=downloadVcard&tmpl=component&format=raw');
 	jQuery("#vcard_form").submit();
 	jQuery("#vcard_form").attr('action',old_action);
 
@@ -2099,7 +2099,7 @@ function downloadImportTemplate(){
 
 	var old_action = jQuery("#download_import_template").attr('action');
 
-	jQuery("#download_import_template").attr('action','index.php?controller=downloadImportTemplate&tmpl=component&format=raw');
+	jQuery("#download_import_template").attr('action','index.php?task=downloadImportTemplate&tmpl=component&format=raw');
 	jQuery("#download_import_template").submit();
 	jQuery("#download_import_template").attr('action',old_action);
 
@@ -2175,7 +2175,7 @@ function saveListItem(list_id){
 	//make ajax call
 	jQuery.ajax({
 		type	:	"POST",
-		url		:	'index.php?controller=save&model='+model+'&format=raw&tmpl=component',
+		url		:	'index.php?task=save&model='+model+'&format=raw&tmpl=component',
 		data	:	dataString,
 		dataType:	'json',
 		success	:	function(data){
@@ -2253,7 +2253,7 @@ function uploadAvatar(ele){
 		var item_id = jQuery("#avatar_upload_form").attr('data-item-id');
 		var item_type = jQuery("#avatar_upload_form").attr('data-item-type');
 
-		var avatar_url = 'index.php?controller=uploadAvatar&format=raw&tmpl=component';
+		var avatar_url = 'index.php?task=uploadAvatar&format=raw&tmpl=component';
 
 		var options = "&item_id="+item_id+'&item_type='+item_type;
 
@@ -2322,7 +2322,7 @@ function saveEditableModal(form_id){
 	}
 
 	jQuery.ajax({
-		url:'index.php?controller=saveAjax&format=raw&tmpl=component',
+		url:'index.php?task=saveAjax&format=raw&tmpl=component',
 		type:'POST',
 		data:dataString,
 		dataType:'JSON',
@@ -2379,7 +2379,7 @@ function closeEditableModal(){
 function fullscreenToggle()
 {
 	jQuery.ajax({
-		url:'index.php?controller=saveProfile&format=raw&tmpl=component',
+		url:'index.php?task=saveProfile&format=raw&tmpl=component',
 		type:'POST',
 		data:'fullscreen=1&url='+window.location,
 		dataType:'JSON',
@@ -2488,7 +2488,7 @@ function editConvoEntry(convo_id){
 
 function trashConvoEntry(convo_id){
 	jQuery.ajax({
-		url:'index.php?controller=trash&tmpl=component&format=raw',
+		url:'index.php?task=trash&tmpl=component&format=raw',
 		type:'POST',
 		data:'item_type=conversations&item_id='+convo_id,
 		dataType:'json',
@@ -2511,7 +2511,7 @@ function removePersonFromDeal(person_id){
 
 	if ( confirm(Joomla.JText._('COBALT_DELETE_PERSON_FROM_DEAL_CONFIRM')) ){
 		jQuery.ajax({
-			url:'index.php?controller=removePersonFromDeal&format=raw&tmpl=component',
+			url:'index.php?task=removePersonFromDeal&format=raw&tmpl=component',
 			type:'POST',
 			data:'person_id='+person_id+"&deal_id="+deal_id,
 			dataType:'JSON',
@@ -2581,7 +2581,7 @@ function performCheckCompanyName(){
 	}
 	dataString = '&company_name='+company_name;
 	jQuery.ajax({
-		url: base_url+'index.php?controller=checkCompanyName&tmpl=component&format=raw',
+		url: base_url+'index.php?task=checkCompanyName&tmpl=component&format=raw',
 		type:'POST',
 		data:dataString,
 		dataType:'JSON',
@@ -2628,7 +2628,7 @@ function performPersonNameCheck(email_id){
 	}
 
 	jQuery.ajax({
-		url: base_url+'index.php?controller=checkPersonName&tmpl=component&format=raw',
+		url: base_url+'index.php?task=checkPersonName&tmpl=component&format=raw',
 		type:'POST',
 		data:dataString,
 		dataType:'JSON',
@@ -2663,7 +2663,7 @@ function checkDealName(email_id)
 
 		dataString = '&deal_name='+deal_name;
 		jQuery.ajax({
-			url: base_url+'index.php?controller=checkDealName&tmpl=component&format=raw',
+			url: base_url+'index.php?task=checkDealName&tmpl=component&format=raw',
 			type:'POST',
 			data:dataString,
 			dataType:'JSON',
@@ -2742,7 +2742,7 @@ function readEmail(email_id){
 function deleteEmail(email_id){
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=removeEmail&format=raw&tmpl=component',
+		url:'index.php?task=removeEmail&format=raw&tmpl=component',
 		data:"id="+email_id,
 		dataType:'JSON',
 		success:function(data){
@@ -2765,7 +2765,7 @@ function saveEmail(email_id){
 	
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=saveEmail&format=raw&tmpl=component',
+		url:'index.php?task=saveEmail&format=raw&tmpl=component',
 		data:dataString,
 		dataType:'JSON',
 		success:function(data){
@@ -2791,7 +2791,7 @@ function showSiteSearch(){
 	//assign autocomplete to element
 	jQuery.ajax({
 		type	:	'POST',
-		url		:	'index.php?controller=getTaskAssociations&format=raw&tmpl=component',
+		url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
 		dataType:	'json',
 		success	:	function(data){
 				
@@ -2862,7 +2862,7 @@ function deleteListItems(){
 	showAjaxLoader();
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=trash&tmpl=component&format=raw',
+		url:'index.php?task=trash&tmpl=component&format=raw',
 		data: { item_id : itemIds, item_type : loc },
 		dataType:'JSON',
 		success:function(data){
@@ -2883,7 +2883,7 @@ function assignDealPrimaryContact(person_id,deal_id){
 	}
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=save&format=raw&tmpl=component',
+		url:'index.php?task=save&format=raw&tmpl=component',
 		data:'model=deal&id='+deal_id+'&primary_contact_id='+person_id,
 		dataType:'JSON',
 		success:function(data){
@@ -2920,7 +2920,7 @@ function unassignDealPrimaryContact(person_id,deal_id){
 	}
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=save&format=raw&tmpl=component',
+		url:'index.php?task=save&format=raw&tmpl=component',
 		data:'model=deal&id='+deal_id+'&primary_contact_id=0',
 		dataType:'JSON',
 		success:function(data){
@@ -2969,7 +2969,7 @@ function toggleMailingList(listId,subscribeValue){
 
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=toggleMailingList&format=raw&tmpl=component',
+		url:'index.php?task=toggleMailingList&format=raw&tmpl=component',
 		data:dataString,
 		dataType:'JSON',
 		success:function(data){
@@ -3078,7 +3078,7 @@ function shareItem(){
 
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=shareItem&format=raw&tmpl=component',
+		url:'index.php?task=shareItem&format=raw&tmpl=component',
 		data:'item_id='+id+"&item_type="+loc+"&user_id="+jQuery("#shared_user_id").val(),
 		dataType:'JSON',
 		success:function(data){
@@ -3105,7 +3105,7 @@ function unshareItem(user_id){
 
 	jQuery.ajax({
 		type:'POST',
-		url:'index.php?controller=unshareItem&format=raw&tmpl=component',
+		url:'index.php?task=unshareItem&format=raw&tmpl=component',
 		data:'item_id='+id+"&item_type="+loc+"&user_id="+user_id,
 		dataType:'JSON',
 		success:function(data){
@@ -3167,7 +3167,7 @@ function saveItem(formId){
 
 		jQuery.ajax({
 			type:'post',
-			url:base_url+'index.php?controller=save&format=raw',
+			url:base_url+'index.php?task=save&format=raw',
 			data:dataObj,
 			dataType:'json',
 			success:function(data){
@@ -3223,7 +3223,7 @@ function saveProfileItem(formId){
 
 		jQuery.ajax({
 			type:'post',
-			url:base_url+'index.php?controller=save&format=raw',
+			url:base_url+'index.php?task=save&format=raw',
 			data:dataObj,
 			dataType:'json',
 			success:function(data){

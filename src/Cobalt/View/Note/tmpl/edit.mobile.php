@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 ?>
-<form id="note_edit" method="post" action="<?php echo 'index.php?controller=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >
+<form id="note_edit" method="post" action="<?php echo 'index.php?task=save&model=company&return=companies'; ?>" onsubmit="return save(this)" >
     <div id="editForm">
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_CATEGORY'); ?></div>

@@ -51,7 +51,7 @@ function company_update(loc){
 	//make ajax call
 	jQuery.ajax({
 		type	:	"POST",
-		url		:	'index.php?controller=save&model=company&format=raw&tmpl=component',
+		url		:	'index.php?task=save&model=company&format=raw&tmpl=component',
 		data	:	'id='+id+'&'+dataString,
 		dataType:	'json',
 		success	:	function(data){

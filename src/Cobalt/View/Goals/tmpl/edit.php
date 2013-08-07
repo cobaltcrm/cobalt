@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <h1><?php echo ucwords($this->header); ?></h1>
-<form id="edit-form" action="<?php echo JRoute::_('index.php?controller=editGoal'); ?>" method="post" onsubmit="return save(this);">
+<form id="edit-form" action="<?php echo JRoute::_('index.php?task=editGoal'); ?>" method="post" onsubmit="return save(this);">
     <div id="goal_edit">
         <ul class="list-unstyled">
              <li>

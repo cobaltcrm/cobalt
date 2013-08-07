@@ -83,7 +83,7 @@ jQuery(document).ready(function(){
 		jQuery.ajax({
 			
 			type	:	"POST",
-			url		:	'index.php?controller=save&model=deal&format=raw&tmpl=component',
+			url		:	'index.php?task=save&model=deal&format=raw&tmpl=component',
 			data	:	dataString,
 			dataType:	'json',
 			success	:	function(data){
@@ -119,7 +119,7 @@ function deal_update(loc){
 		//make ajax call
 		jQuery.ajax({
 			type	:	"POST",
-			url		:	'index.php?controller=save&model=deal&format=raw&tmpl=component',
+			url		:	'index.php?task=save&model=deal&format=raw&tmpl=component',
 			data	:	'id='+id+'&'+dataString,
 			dataType:	'json',
 			success	:	function(data){

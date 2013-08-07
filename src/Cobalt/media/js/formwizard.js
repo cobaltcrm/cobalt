@@ -50,7 +50,7 @@ function showFieldCheckboxes(){
 }
 
 function updateFields(){
-	var html = "<form action='"+base_url+"index.php?controller=saveWizardForm&format=raw&tmpl=component' method='POST'>\n";
+	var html = "<form action='"+base_url+"index.php?task=saveWizardForm&format=raw&tmpl=component' method='POST'>\n";
 	var type = $("#type").val();
 	$.each(fields[type],function(fieldIndex,field){
 		if ( $("#"+type+"_field_"+fieldIndex).is(":checked") ){

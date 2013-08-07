@@ -100,7 +100,7 @@ function updateConfig(config_type,config_value){
 		$("#"+config_type.replace('.','\\.')).find('span.uncompleted-inner').addClass('completed-inner').removeClass('uncompleted-inner');
 		$.ajax({
 			type:'POST',
-			url:'index.php?controller=config&task=updateConfig&format=raw&tmpl=component',
+			url:'index.php?task=config&task=updateConfig&format=raw&tmpl=component',
 			data:'show_help=1&'+config_type+"="+config_value,
 			dataType:'JSON',
 			success:function(data){
@@ -114,7 +114,7 @@ function updateConfig(config_type,config_value){
 function disableHelp(){
 	$.ajax({
 			type:'POST',
-			url:'index.php?controller=config&task=updateConfig&format=raw&tmpl=component',
+			url:'index.php?task=config&task=updateConfig&format=raw&tmpl=component',
 			data:'show_help=0',
 			dataType:'JSON',
 			success:function(data){
@@ -129,7 +129,7 @@ function downloadImportTemplate(ele){
 	var form = $(ele).parent('form');
 	var old_action = jQuery(form).attr('action');
 
-	jQuery(form).attr('action','index.php?controller=downloadImportTemplate&tmpl=component&format=raw');
+	jQuery(form).attr('action','index.php?task=downloadImportTemplate&tmpl=component&format=raw');
 	jQuery(form).submit();
 	jQuery(form).attr('action',old_action);
 

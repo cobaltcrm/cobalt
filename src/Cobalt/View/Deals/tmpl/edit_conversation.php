@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $conversation = $this->conversation;
 ?>
-<form id="convo_edit" method="post" action="<?php echo 'index.php?controller=save&model=conversations'; ?>" onsubmit="return save(this)" >
+<form id="convo_edit" method="post" action="<?php echo 'index.php?task=save&model=conversations'; ?>" onsubmit="return save(this)" >
     <input type="hidden" name="id" value="<?php echo $conversation['id']; ?>" />
     <div id="editForm">
         <div class="cobaltRow">

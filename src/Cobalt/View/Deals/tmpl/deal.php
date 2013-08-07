@@ -61,7 +61,7 @@ $deal = $this->dealList[0];
                     <?php } ?>
                     <li>
                         <?php if ( UsersHelper::canDelete() || $deal['owner_id'] == UsersHelper::getUserId() ) { ?>
-                            <a href="<?php echo JRoute::_('index.php?controller=trash&item_id='.$deal['id'].'&item_type=deals&page_redirect=deals'); ?>" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a>
+                            <a href="<?php echo JRoute::_('index.php?task=trash&item_id='.$deal['id'].'&item_type=deals&page_redirect=deals'); ?>" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a>
                         <?php } ?>
                     </li>
                     <li>
@@ -233,7 +233,7 @@ $deal = $this->dealList[0];
                 </div>
 
         <span class="pull-right">
-            <form id="upload_form" target="hidden" action="index.php?controller=upload" method="post" enctype="multipart/form-data">
+            <form id="upload_form" target="hidden" action="index.php?task=upload" method="post" enctype="multipart/form-data">
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                      <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
                 </div>

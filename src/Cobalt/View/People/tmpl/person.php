@@ -62,7 +62,7 @@ $person = $this->people[0];
                     <?php } ?>
                     <li>
                         <?php if ( UsersHelper::canDelete() || $person['owner_id'] == UsersHelper::getUserId() ) { ?>
-                            <a href="index.php?controller=trash&item_id=<?php echo $person['id']; ?>&item_type=people&page_redirect=people" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE_CONTACT'); ?></a>
+                            <a href="index.php?task=trash&item_id=<?php echo $person['id']; ?>&item_type=people&page_redirect=people" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE_CONTACT'); ?></a>
                         <?php } ?>
                     </li>
                     <li>
@@ -238,7 +238,7 @@ $person = $this->people[0];
 
         <!-- DOCUMENT UPLOAD BUTTON -->
         <span class="pull-right">
-            <form id="upload_form" target="hidden" action="index.php?controller=upload" method="post" enctype="multipart/form-data">
+            <form id="upload_form" target="hidden" action="index.php?task=upload" method="post" enctype="multipart/form-data">
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                      <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
                 </div>
