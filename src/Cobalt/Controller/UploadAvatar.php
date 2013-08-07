@@ -20,26 +20,25 @@ class UploadAvatar extends DefaultController
     public function execute()
     {
         $model = $this->getModel('Avatar');
-        $hashedFilename = $model->saveAvatar();
 
-        if (empty($hashedFilename)) {
+        /** @var \Joomla\Registry\Registry $state */
+        $state = $model->getState();
+        $state->set('item_type', $app->input->get('item_type'));
+        $state->set('item_id', $app->input->get('item_id'));
+
+        $model->setState($state);
+
+        $avatar = $model->saveAvatar();
+
+        if (empty($avatar)) {
             echo '<script type="text/javascript">
                     window.top.window.modalMessage("'.TextHelper::_('COBALT_ERROR').'","'.TextHelper::_('COBALT_AVATAR_UPLOAD_ERROR').'");
                   </script>';
         } else {
-            $state = $model->getState();
-        }
-
-        $item_id = $this->input->get('item_id');
-
-        if ( $avatar = $model->saveAvatar() ) {
-
             echo '<script type="text/javascript">
                     window.top.window.modalMessage("'.TextHelper::_('COBALT_SUCCESS_MESSAGE').'","'.TextHelper::_('COBALT_AVATAR_UPLOAD_SUCCESS').'");
-                    window.top.window.updateAvatar('.$item_id.',"'.$avatar.'");
-                    </script>';
-        } else {
-
+                    window.top.window.updateAvatar('.$state->get('item_id').',"'.$avatar.'");
+                  </script>';
         }
     }
 

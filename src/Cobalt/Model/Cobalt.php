@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Joomla\Registry\Registry;
 use Joomla\Model\AbstractModel;
 use Cobalt\Pagination;
@@ -21,7 +20,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Cobalt extends AbstractModel
 {
-
     public $view = null;
     public $_model = null;
 
@@ -37,7 +35,6 @@ class Cobalt extends AbstractModel
         parent::__construct();
         $this->getListLimits();
         $this->view = $app->input->get('view');
-
     }
 
     /**
@@ -201,9 +198,11 @@ class Cobalt extends AbstractModel
 
         $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';
 
-        if (!class_exists()) {
+        if (!class_exists($tableClass)) {
             return false;
         }
+
+        /** @var \Cobalt\Table\AbstractTable $table */
         $table = new $tableClass;
         $pks = (array) $pks;
         $result = true;
@@ -215,7 +214,6 @@ class Cobalt extends AbstractModel
 
             if ($table->load($pk)) {
 
-                $where = array();
                 $where = $this->getReorderConditions($table);
 
                 if (!$table->move($delta, $where)) {

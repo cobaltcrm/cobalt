@@ -10,9 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Joomla\Model\AbstractModel;
-
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Table\BrandingTable;
@@ -21,15 +18,14 @@ use Joomla\Filesystem\File;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Branding extends AbstractModel
+class Branding extends DefaultModel
 {
-
     public function store()
     {
         //Load Tables
         $app = \Cobalt\Container::get('app');
         $row = new BrandingTable;
-        $data = $app->input->getRequest( 'post' );
+        $data = $app->input->getRequest('post');
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -75,7 +71,7 @@ class Branding extends AbstractModel
             $hashFilename = md5($fileName.$date).".".$uploadedFileExtension;
 
             //lose any special characters in the filename
-            $fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
+            //$fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
             //always use constants when making file paths, to avoid the possibilty of remote file inclusion
             $uploadPath = JPATH_SITE.'/libraries/crm/media/logos/'.$hashFilename;
@@ -90,7 +86,6 @@ class Branding extends AbstractModel
 
             $this->updateSiteLogo($hashFilename);
             unset($data['site_logo']);
-
         }
 
         // Bind the form fields to the table
@@ -119,11 +114,11 @@ class Branding extends AbstractModel
 
     public function updateSiteLogo($logo)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->update("#__branding")->set("site_logo=".$db->Quote($logo));
-        $db->setQuery($query);
-        $db->query();
+        $query = $this->db->getQuery(true)
+            ->update("#__branding")
+            ->set("site_logo=".$this->db->quote($logo));
+
+        $this->db->setQuery($query)->execute();
     }
 
     /**
@@ -133,19 +128,11 @@ class Branding extends AbstractModel
      */
     public function getThemes($id=null)
     {
-        //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->select("b.*")
+            ->from("#__branding AS b");
 
-        //query
-        $query->select("b.*");
-        $query->from("#__branding AS b");
-
-        //return results
-        $db->setQuery($query);
-
-        return $db->loadAssocList();
-
+        return $this->db->setQuery($query)->loadAssocList();
     }
 
     /**
@@ -155,20 +142,12 @@ class Branding extends AbstractModel
      */
     public function getDefaultTheme()
     {
-        //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->select("b.*")
+            ->from("#__branding AS b")
+            ->where("assigned=1");
 
-        //query
-        $query->select("b.*");
-        $query->from("#__branding AS b");
-        $query->where("assigned=1");
-
-        //return results
-        $db->setQuery($query);
-
-        return $db->loadAssocList();
-
+        return $this->db->setQuery($query)->loadAssocList();
     }
 
     /**
@@ -178,18 +157,21 @@ class Branding extends AbstractModel
      */
     public function changeDefault($id)
     {
-        //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->update('#__branding')
+            ->set('assigned=0')
+            ->where('id <> '.(int) $id);
 
-        //unassign default
-        $queryString = "UPDATE #__branding SET assigned=0 WHERE id <> $id";
-        $db->setQuery($queryString)->execute();
+        // Clear Previous
+        $this->db->setQuery($query)->execute();
 
-        //assign default
-        $queryString = "UPDATE #__branding SET assigned=1 WHERE id=$id";
-        $db->setQuery($queryString)->execute();
+        // Set Default
+        $query->clear()
+            ->update('#__branding')
+            ->set('assigned=0')
+            ->where('id = '.(int) $id);
 
+        $this->db->setQuery($query)->execute();
     }
 
 }

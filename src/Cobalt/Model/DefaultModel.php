@@ -13,7 +13,6 @@ namespace Cobalt\Model;
 use JRoute;
 use Cobalt\Container;
 use Cobalt\Pagination;
-use Joomla\Input\Input;
 use Joomla\Model\AbstractDatabaseModel;
 use Joomla\Database\DatabaseDriver;
 
@@ -39,10 +38,10 @@ class DefaultModel extends AbstractDatabaseModel
 
         $ids = $app->input->get("cids", null, 'array');
 
-        $id = $app->input->get("id");
+        $id = $app->input->getInt("id");
         if ($id && $id > 0) {
             $this->id = $id;
-        } elseif ( count($ids) == 1 ) {
+        } elseif (count($ids) == 1) {
             $this->id = $ids[0];
         } else {
             $this->id = $ids;
@@ -148,11 +147,6 @@ class DefaultModel extends AbstractDatabaseModel
       }
 
       return $this->_pagination;
-    }
-
-    public function setInput(Input $input)
-    {
-        $this->input = $input;
     }
 
 }

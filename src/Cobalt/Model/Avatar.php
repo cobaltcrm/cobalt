@@ -11,7 +11,6 @@
 namespace Cobalt\Model;
 
 use JUri;
-use JFactory;
 use Joomla\Filesystem\File;
 use Joomla\Image\Image;
 use Cobalt\Helper\DateHelper;
@@ -31,8 +30,6 @@ class Avatar extends DefaultModel
      */
     public function saveAvatar()
     {
-        $app = \Cobalt\Container::get('app');
-
         //this is the name of the field in the html form, filedata is the default name for swfupload
         //so we will leave it as that
         $fieldName = 'avatar';
@@ -91,7 +88,7 @@ class Avatar extends DefaultModel
         $hashFilename = md5($fileName.$date).".".$uploadedFileExtension;
 
         //lose any special characters in the filename
-        $fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
+        //$fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_SITE.'/src/Cobalt/media/avatars/'.$hashFilename;
@@ -107,12 +104,14 @@ class Avatar extends DefaultModel
         $image->resize(50, 50, false);
         $image->toFile($uploadPath);
 
-        $item_type = $app->input->get('item_type');
-        $item_id = $app->input->get('item_id');
+        $data = array(
+            'id' => $this->state->get('item_id'),
+            'avatar' => $hashFilename
+        );
 
-        $data = array('id' => $item_id, 'avatar' => $hashFilename);
+        $item_type = $this->state->get('item_type');
 
-        $this->deleteOldAvatar($item_id,$item_type);
+        $this->deleteOldAvatar($data['id'], $item_type);
 
         switch ($item_type) {
             case "people":
@@ -147,7 +146,7 @@ class Avatar extends DefaultModel
 
         $query->select("avatar")->from("#__".$item_type)->where("id=".$item_id);
 
-        return $db->setQuery($query)->loadResult();
+        return $this->db->setQuery($query)->loadResult();
 
     }
  }

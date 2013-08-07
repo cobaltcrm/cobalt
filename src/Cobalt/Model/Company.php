@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Table\CompanyTable;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CobaltHelper;
@@ -51,7 +50,6 @@ class Company extends DefaultModel
     public function store($data=null)
     {
         $app = \Cobalt\Container::get('app');
-        $db = JFactory::getDBO();
 
         //Load Tables
         $row = new CompanyTable;
@@ -88,7 +86,7 @@ class Company extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($data)) {
-            $this->setError($db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -97,24 +95,24 @@ class Company extends DefaultModel
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        $id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $db->insertId();
+        $id = !empty($data['id']) ? $data['id'] : $db->insertId();
 
-        ActivityHelper::saveActivity($oldRow, $row,'company', $status);
+        ActivityHelper::saveActivity($oldRow, $row, 'company', $status);
 
         //if we receive no custom post data do not modify the custom fields
-        if ( count($customArray) > 0 ) {
+        if (count($customArray) > 0) {
             CobaltHelper::storeCustomCf($id,$customArray,'company');
         }
 
@@ -130,11 +128,7 @@ class Company extends DefaultModel
     {
         $app = \Cobalt\Container::get('app');
 
-        /** Large SQL Selections **/
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $db->setQuery("SET SQL_BIG_SELECTS=1");
-        $db->query();
+        $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
 
         $user = $this->_user;
         $team = $this->_team;
@@ -144,14 +138,14 @@ class Company extends DefaultModel
 
         if (!$id) {
 
-            $session = JFactory::getSession();
+            $session = $app->getSession();
 
             //determine whether we are searching for a team or user
             if ($user) {
-                $session->set('company_team_filter',null);
+                $session->set('company_team_filter', null);
             }
             if ($team) {
-                $session->set('company_user_filter',null);
+                $session->set('company_user_filter', null);
             }
 
             //set user session data
@@ -176,10 +170,8 @@ class Company extends DefaultModel
 
         }
 
-        $db = JFactory::getDBO();
-
         //generate query for base companies
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
         $export = $app->input->get('export');
 
         if ($export) {
@@ -187,13 +179,15 @@ class Company extends DefaultModel
             $select_string  = 'c.name,c.description,c.address_1,c.address_2,c.address_city,';
             $select_string .= 'c.address_state,c.address_zip,c.address_country,c.website,c.created,c.modified';
 
-            $query->select($select_string);
-            $query->from("#__companies as c");
-            $query->leftJoin("#__users AS u on u.id = c.owner_id");
+            $query
+                ->select($select_string)
+                ->from("#__companies as c")
+                ->leftJoin("#__users AS u on u.id = c.owner_id");
         } else {
-            $query->select('c.*');
-            $query->from("#__companies as c");
-            $query->leftJoin("#__users AS u on u.id = c.owner_id");
+            $query
+                ->select('c.*')
+                ->from("#__companies as c")
+                ->leftJoin("#__users AS u on u.id = c.owner_id");
         }
 
         if (!$id) {
@@ -254,7 +248,7 @@ class Company extends DefaultModel
         //search for specific companies
         if ($id != null) {
             if ( is_array($id) ) {
-                $query->where("c.id IN (".implode(',',$id).")");
+                $query->where("c.id IN (".implode(',', $id).")");
             } else {
                 $query->where("c.id=$id");
             }
@@ -266,24 +260,22 @@ class Company extends DefaultModel
         $team_id = UsersHelper::getTeamId();
 
         //filter based on specified user
-        if ($user AND $user != 'all') {
+        if ($user && $user != 'all') {
             $query->where("c.owner_id = ".$user);
         }
 
         //filter based on team
         if ($team) {
-            $team_members = UsersHelper::getTeamUsers($team,TRUE);
-            $query->where("c.owner_id IN (".implode(',',$team_members).")");
+            $team_members = UsersHelper::getTeamUsers($team, true);
+            $query->where("c.owner_id IN (".implode(',', $team_members).")");
         }
 
         //set user state requests
-        $query->order($this->getState('Company.filter_order') . ' ' . $this->getState('Company.filter_order_Dir'));
+        $query
+            ->order($this->getState('Company.filter_order').' '.$this->getState('Company.filter_order_Dir'))
+            ->where("c.published=".$this->published);
 
-        $query->where("c.published=".$this->published);
-
-        //return query object
         return $query;
-
     }
 
     /*
@@ -291,17 +283,13 @@ class Company extends DefaultModel
      *
      * @return mixed
      */
-    public function getCompanies($id=null,$type=null,$user=null,$team=null)
+    public function getCompanies($id = null, $type = null, $user = null, $team = null)
     {
         $app = \Cobalt\Container::get('app');
         $this->_id = $id;
         $this->_type = $type;
         $this->_user = $user;
         $this->_team = $team;
-
-        //get session data
-        $session = JFactory::getSession();
-        $db = JFactory::getDBO();
 
         //get query string
         $query = $this->_buildQuery();
@@ -326,8 +314,7 @@ class Company extends DefaultModel
         }
 
         //run query and grab results of companies
-        $db->setQuery($query);
-        $companies = $db->loadAssocList();
+        $companies = $db->setQuery($query)->loadAssocList();
 
         //generate query to join people
         if ( count($companies) ) {
@@ -383,11 +370,10 @@ class Company extends DefaultModel
 
         $app->triggerEvent('onCompanyLoad',array(&$companies));
 
-        //return results
         return $companies;
     }
 
-    public function getCompany($id=null)
+    public function getCompany($id = null)
     {
         $app = \Cobalt\Container::get('app');
         $id = $id ? $id : $app->input->get('id');
@@ -397,24 +383,21 @@ class Company extends DefaultModel
             if ( is_array($company) && count($company) >= 1 ) {
                 return $company[0];
             } else {
-                return (array) JTable::getInstance('Company','Table');
+                return (array) new CompanyTable;
             }
         } else {
-            return (array) JTable::getInstance('Company','Table');
+            return (array) new CompanyTable;
         }
     }
 
     /**
      * method to get list of companies
      */
-
-    public function getCompanyList($company_name=null)
+    public function getCompanyList($company_name = null)
     {
-        //db object
-        $db = JFactory::getDBO();
         //gen query
-        $query = $db->getQuery(true);
-        $query->select("name,id FROM #__companies");
+        $query = $this->db->getQuery(true)
+            ->select("name,id FROM #__companies");
 
         if ($company_name) {
             $company_name = ucwords($company_name);
@@ -423,14 +406,7 @@ class Company extends DefaultModel
 
         $query->where("published=".$this->published);
 
-        //set query
-        $db->setQuery($query);
-        //load list
-        $row = $db->loadAssocList();
-
-        //return results
-        return $row;
-
+        return $this->db->setQuery($query)->loadAssocList();
     }
 
     public function getCompanyNames($json=FALSE)
@@ -453,28 +429,22 @@ class Company extends DefaultModel
      */
     public function checkCompanyName($name)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->select('c.id');
-        $query->from('#__companies AS c');
-        $query->where('LOWER(c.name) = "'.strtolower($name).'"');
-        $db->setQuery($query);
-        $existingCompany = $db->loadResult();
+        $query = $this->db->getQuery(true)
+            ->select('c.id')
+            ->from('#__companies AS c')
+            ->where('LOWER(c.name) = "'.strtolower($name).'"');
 
-        return $existingCompany;
+        return $this->db->setQuery($query)->loadResult();
     }
 
     public function getCompanyName($idOrName)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->select('c.name');
-        $query->from('#__companies AS c');
-        $query->where("c.id='".$idOrName."' OR c.name='".$idOrName."'");
-        $db->setQuery($query);
-        $company_name = $db->loadResult();
+        $query = $this->db->getQuery(true)
+            ->select('c.name')
+            ->from('#__companies AS c')
+            ->where("c.id='".$idOrName."' OR c.name='".$idOrName."'");
 
-        return $company_name;
+        return $this->db->setQuery($query)->loadResult();
     }
 
     /**
@@ -487,7 +457,6 @@ class Company extends DefaultModel
 
         //determine view so we set correct states
         $view = $app->input->get('view');
-        $layout = str_replace("_filter","", $app->input->get('layout'));
 
         // Get pagination request variables
         $limit = $app->getUserStateFromRequest($view.'_limit','limit',10);
@@ -505,10 +474,9 @@ class Company extends DefaultModel
         $company_filter         = $app->getUserStateFromRequest('Company.'.$view.'_name','company_name',null);
 
         //set states for reports
-        $this->state->set('Company.filter_order',$filter_order);
-        $this->state->set('Company.filter_order_Dir',$filter_order_Dir);
-        $this->state->set('Company.'.$view.'_name',$company_filter);
-
+        $this->state->set('Company.filter_order', $filter_order);
+        $this->state->set('Company.filter_order_Dir', $filter_order_Dir);
+        $this->state->set('Company.'.$view.'_name', $company_filter);
     }
 
 }

@@ -9,7 +9,6 @@
 -------------------------------------------------------------------------*/
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Table\ConfigTable;
 use Cobalt\Helper\ConfigHelper;
 
@@ -18,10 +17,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Config extends DefaultModel
 {
-
-    public function store($data=null)
+    public function store($data = null)
     {
-
         $app = \Cobalt\Container::get('app');
 
         //Load Tables
@@ -76,31 +73,25 @@ class Config extends DefaultModel
 
     public function _buildQuery()
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
-        $query->select("*")->from("#__config")->where("id=1");
-        $db->setQuery($query);
-
-        return $query;
-
+        return $this->db->getQuery(true)
+            ->select("*")
+            ->from("#__config")
+            ->where("id=1");
     }
 
-    public function getConfig($array=FALSE)
+    public function getConfig($array = false)
     {
-        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         if ($array) {
-            $config = $db->loadAssoc();
+            $config = $this->db->setQuery($query)->loadAssoc();
             $config['imap_pass'] = base64_decode($config['imap_pass']);
         } else {
-            $config = $db->loadObject();
+            $config = $this->db->setQuery($query)->loadObject();
             $config->imap_pass = base64_decode($config->imap_pass);
         }
 
         return $config;
-
     }
 
     /**

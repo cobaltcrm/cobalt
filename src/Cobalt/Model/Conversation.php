@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\ActivityHelper;
@@ -32,7 +31,6 @@ class Conversation extends DefaultModel
      */
     public function store()
     {
-
         $app = \Cobalt\Container::get('app');
 
         //Load Tables
@@ -78,25 +76,23 @@ class Conversation extends DefaultModel
 
         $id = array_key_exists('id',$data) ? $data['id'] : $this->db->insertId();
 
-        ActivityHelper::saveActivity($oldRow, $row,'conversation', $status);
+        ActivityHelper::saveActivity($oldRow, $row, 'conversation', $status);
 
         return $id;
     }
 
     public function getConversations()
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name, author.email");
-        $query->from("#__conversations AS c");
-        $query->leftJoin("#__users as u on u.id = c.author");
-        $query->leftJoin("#__users AS author ON author.id = u.id");
-        $query->where("c.deal_id=".$this->deal_id);
-        $query->where("c.published>0");
-        $query->order("c.modified DESC");
-        //grab results
-        $db->setQuery($query);
-        $conversations = $db->loadAssocList();
+        $query = $this->db->getQuery(true)
+            ->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name, author.email")
+            ->from("#__conversations AS c")
+            ->leftJoin("#__users as u on u.id = c.author")
+            ->leftJoin("#__users AS author ON author.id = u.id")
+            ->where("c.deal_id=".$this->deal_id)
+            ->where("c.published>0")
+            ->order("c.modified DESC");
+
+        $conversations = $this->db->setQuery($query)->loadAssocList();
 
         for ($i=0;$i<count($conversations);$i++) {
             $conversations[$i]['owner_avatar'] = CobaltHelper::getGravatar($conversations[$i]['email']);
@@ -112,23 +108,16 @@ class Conversation extends DefaultModel
      */
     public function getConversation($id)
     {
-        //grab db
-        $db = JFactory::getDBO();
-
         //initialize query
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name,author.email")
+            ->from("#__conversations as c")
+            ->where("c.id=".(int) $id)
+            ->where("c.published=".$this->published)
+            ->leftJoin("#__users AS u ON u.id = c.author")
+            ->leftJoin("#__users AS author on author.id=u.id");
 
-        //gen query string
-        $query->select("c.*, u.first_name as owner_first_name, u.last_name as owner_last_name,author.email");
-        $query->from("#__conversations as c");
-        $query->where("c.id=".$id);
-        $query->where("c.published=".$this->published);
-        $query->leftJoin("#__users AS u ON u.id = c.author");
-        $query->leftJoin("#__users AS author on author.id=u.id");
-
-        //load results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $results = $db->setQuery($query)->loadAssocList();
 
         //clean results
         if ( count($results) > 0 ) {
@@ -138,7 +127,6 @@ class Conversation extends DefaultModel
             }
         }
 
-        //return results
         return $results;
     }
 

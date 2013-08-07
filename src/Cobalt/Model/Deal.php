@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Joomla\Registry\Registry;
 use Cobalt\Table\DealTable;
 use Cobalt\Helper\DealHelper;
@@ -68,7 +67,6 @@ class Deal extends DefaultModel
     public function store($data=null,$returnRow=FALSE)
     {
         $app = \Cobalt\Container::get('app');
-        $db  = JFactory::getDBO();
 
         //Load Tables
         $row = new DealTable;
@@ -182,7 +180,7 @@ class Deal extends DefaultModel
 
         // Bind the form fields to the table
         if (!$row->bind($data)) {
-            $this->setError($db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -191,14 +189,14 @@ class Deal extends DefaultModel
 
         // Make sure the record is valid
         if (!$row->check()) {
-            $this->setError($db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
         if (!$row->store()) {
-            $this->setError($db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
 
             return false;
         }
@@ -237,10 +235,7 @@ class Deal extends DefaultModel
     {
         /** Large SQL Selections **/
         $app = \Cobalt\Container::get('app');
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $db->setQuery("SET SQL_BIG_SELECTS=1");
-        $db->query();
+        $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
 
         //set defaults
         $id = $this->_id;
@@ -255,7 +250,7 @@ class Deal extends DefaultModel
         $created = $this->_created;
         $session = $this->_session;
         $user_id = $this->_user_id;
-        $session = JFactory::getSession();
+        $session = $app->getSession();
 
         //determine which layout is requesting the information
         $view = $this->_view;
@@ -306,13 +301,7 @@ class Deal extends DefaultModel
             }
         }
 
-        /** ------------------
-         * Construct the Database Object
-         */
-
-        //db object
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //construct query string
 
@@ -331,16 +320,14 @@ class Deal extends DefaultModel
             $queryString .= "p.email,p.phone";
             $queryString .= ' FROM #__deals AS d';
 
-            //select
-            $query->select($queryString);
-
-            //left join
-            $query->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0');
-            $query->leftJoin('#__deal_status AS stat ON stat.id = d.status_id');
-            $query->leftJoin('#__sources AS source ON source.id = d.source_id');
-            $query->leftJoin('#__stages AS stage on stage.id = d.stage_id');
-            $query->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0");
-            $query->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
+            $query
+                ->select($queryString)
+                ->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0')
+                ->leftJoin('#__deal_status AS stat ON stat.id = d.status_id')
+                ->leftJoin('#__sources AS source ON source.id = d.source_id')
+                ->leftJoin('#__stages AS stage on stage.id = d.stage_id')
+                ->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0")
+                ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
 
         } else {
 
@@ -357,22 +344,19 @@ class Deal extends DefaultModel
             $queryString .= "p.email,p.phone";
             $queryString .= ' FROM #__deals AS d';
 
-            //select
-            $query->select($queryString);
-
-            //left join
-            $query->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0');
-            $query->leftJoin('#__deal_status AS stat ON stat.id = d.status_id');
-            $query->leftJoin('#__sources AS source ON source.id = d.source_id');
-            $query->leftJoin('#__stages AS stage on stage.id = d.stage_id');
-            $query->leftJoin("#__events_cf AS event_cf ON event_cf.association_id = d.id AND event_cf.association_type ='deal' ");
-            $query->leftJoin("#__events AS event ON event.id = event_cf.event_id AND event.due_date IS NULL or event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
+            $query
+                ->select($queryString)
+                ->leftJoin('#__companies AS c ON c.id = d.company_id AND c.published>0')
+                ->leftJoin('#__deal_status AS stat ON stat.id = d.status_id')
+                ->leftJoin('#__sources AS source ON source.id = d.source_id')
+                ->leftJoin('#__stages AS stage on stage.id = d.stage_id')
+                ->leftJoin("#__events_cf AS event_cf ON event_cf.association_id = d.id AND event_cf.association_type ='deal' ")
+                ->leftJoin("#__events AS event ON event.id = event_cf.event_id AND event.due_date IS NULL or event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
                              "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
-                             "WHERE e2cf.association_id=d.id AND e2cf.association_type='deal') AND event.published>0");
-            $query->leftJoin('#__users AS user ON user.id = d.owner_id');
-            $query->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0");
-            $query->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
-
+                             "WHERE e2cf.association_id=d.id AND e2cf.association_type='deal') AND event.published>0")
+                ->leftJoin('#__users AS user ON user.id = d.owner_id')
+                ->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0")
+                ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
         }
 
         if (!$id) {
@@ -783,7 +767,7 @@ class Deal extends DefaultModel
      * @param $team to filter by
      * @return $results
      */
-    public function getDeals($id=null,$type=null,$user=null,$stage=null,$close=null,$team=null)
+    public function getDeals($id = null, $type = null, $user = null, $stage = null, $close = null, $team = null)
     {
         $app = \Cobalt\Container::get('app');
 
@@ -800,11 +784,9 @@ class Deal extends DefaultModel
         $this->_created = null;
 
         //get session data
-        $this->_session = JFactory::getSession();
+        $this->_session = $app->getSession();
         $this->_user_id = UsersHelper::getUserId();
 
-        //build our db query
-        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         /** ------------------------------------------
@@ -826,12 +808,12 @@ class Deal extends DefaultModel
             // Todo: should not be string
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
-        $db->setQuery($query);
-        $deals = $db->loadAssocList();
+
+        $deals = $this->db->setQuery($query)->loadAssocList();
+
         /**------------------------------------------
          * Generate queries to join essential data
          */
-
         if ( count($deals) > 0 ) {
 
             $export = $app->input->get('export');
@@ -851,25 +833,24 @@ class Deal extends DefaultModel
 
                     if ($this->_id) {
                         $now = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
-                        $query = $db->getQuery(true);
-                        $query->set("last_viewed=".$db->Quote($now));
-                        $query->update("#__deals");
-                        $query->where("id=".$deal['id']);
-                        $db->setQuery($query);
-                        $db->query();
+                        $query = $this->db->getQuery(true)
+                            ->update("#__deals")
+                            ->set("last_viewed=".$db->quote($now))
+                            ->where("id=".$deal['id']);
+
+                        $this->db->setQuery($query)->execute();
                     }
                 }
 
             }
         }
+
         /** ------------------------------------------
          *  Return results
          */
-
         $app->triggerEvent('onDealLoad', array(&$deals));
 
         return $deals;
-
     }
 
     public function getDealDetails(&$deal)
@@ -926,11 +907,9 @@ class Deal extends DefaultModel
 
         if ($id > 0) {
 
-            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
-            $db->setQuery($query);
-            $deal = $db->loadAssoc();
+            $deal = $db->setQuery($query)->loadAssoc();
 
             self::getDealDetails($deal);
 
@@ -938,11 +917,9 @@ class Deal extends DefaultModel
 
             //TODO update things to OBJECTS
             $deal = (array) new DealTable;
-
         }
 
         return $deal;
-
     }
 
     /**
@@ -953,7 +930,7 @@ class Deal extends DefaultModel
     public function getReportDeals()
     {
         //get filter
-        $session = JFactory::getSession();
+        $session = \Cobalt\Container::get('session');
         $filter = $session->get('deal_stage_filter');
         //get deals
         $deals = $this->getDeals(null,null,null,'active');
@@ -971,14 +948,12 @@ class Deal extends DefaultModel
     {
         $app = \Cobalt\Container::get('app');
 
-        //db object
-        $db = JFactory::getDBO();
         //gen query
-        $query = $db->getQuery(true);
-        $query->select("DISTINCT(d.id),d.name,d.id");
-        $query->from("#__deals AS d");
-        $query->leftJoin('#__users AS user ON user.id = d.owner_id');
-        $query->leftJoin("#__people_cf AS pcf ON pcf.association_id = d.id AND pcf.association_type='deal'");
+        $query = $this->db->getQuery(true)
+            ->select("DISTINCT(d.id),d.name,d.id")
+            ->from("#__deals AS d")
+            ->leftJoin('#__users AS user ON user.id = d.owner_id')
+            ->leftJoin("#__people_cf AS pcf ON pcf.association_id = d.id AND pcf.association_type='deal'");
 
         /** ---------------------------------------------------------------
          * Filter data using member role permissions
@@ -1009,20 +984,16 @@ class Deal extends DefaultModel
             $query->where("pcf.person_id=".$associationId);
         }
 
-        //set query
-        $db->setQuery($query);
-        //load list
-        $row = $db->loadAssocList();
+        $row = $this->db->setQuery($query)->loadAssocList();
 
         if ( count($row) == 0 ) {
             $row = array();
         }
 
-        $blank = array(array('name'=>TextHelper::_('COBALT_NONE'),'id'=>0));
-        $return = array_merge($blank,$row);
-        //return results
-        return $return;
+        $blank = array(array('name' => TextHelper::_('COBALT_NONE'), 'id'=>0));
+        $return = array_merge($blank, $row);
 
+        return $return;
     }
 
     /**
@@ -1031,21 +1002,22 @@ class Deal extends DefaultModel
      * @param $access_type to search by 'company','team','member'
      * @param $access_id the id of the $member_type to search by
      */
-    public function getGraphDeals($type=null,$access_type=null,$access_id=null)
+    public function getGraphDeals($type = null, $access_type = null, $access_id = null)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //search by type
         if ($type == 'stage') {
-            $query->select("d.stage_id,count(*) AS y, stage.name AS name");
-            $query->from("#__deals AS d");
-            $query->leftJoin("#__stages AS stage ON stage.id=d.stage_id");
+            $query
+                ->select("d.stage_id,count(*) AS y, stage.name AS name")
+                ->from("#__deals AS d")
+                ->leftJoin("#__stages AS stage ON stage.id=d.stage_id");
         }
         if ($type == 'status') {
-            $query->select("d.status_id,count(*) AS y,status.name AS name");
-            $query->from("#__deals AS d");
-            $query->leftJoin("#__deal_status AS status ON status.id=d.status_id");
+            $query
+                ->select("d.status_id,count(*) AS y,status.name AS name")
+                ->from("#__deals AS d")
+                ->leftJoin("#__deal_status AS status ON status.id=d.status_id");
         }
 
         //if user is not an executive then there are limitations
@@ -1086,9 +1058,7 @@ class Deal extends DefaultModel
 
         $query->where("d.published=".$this->published);
 
-        //set query and load results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $results = $this->db->setQuery($query)->loadAssocList();
 
         //clean results and force datatypes for graph rendering
         if ( count($results) > 0 ) {
@@ -1098,9 +1068,7 @@ class Deal extends DefaultModel
             }
         }
 
-        //return results
         return $results;
-
     }
 
     /**
@@ -1114,9 +1082,7 @@ class Deal extends DefaultModel
         //get won stage id so we know what stage to filter by for the deals
         $won_stage_ids = DealHelper::getWonStages();
 
-        //get database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //gen query
         $query->select("s.name,SUM(d.amount) as y");
@@ -1164,11 +1130,7 @@ class Deal extends DefaultModel
         //group by source ids
         $query .= " GROUP BY s.id";
 
-        //get results
-        $db->setQuery($query);
-
-        //return results
-        $results = $db->loadAssocList();
+        $results = $this->db->setQuery($query)->loadAssocList();
 
         if (count($results) > 0) {
             foreach ($results as $key=>$source) {
@@ -1178,7 +1140,6 @@ class Deal extends DefaultModel
         }
 
         return $results;
-
     }
 
     /**
@@ -1262,21 +1223,16 @@ class Deal extends DefaultModel
      * @param  [type] $contact_id [description]
      * @return [type] [description]
      */
-    public function storeContact($deal_id,$contact_id)
+    public function storeContact($deal_id, $contact_id)
     {
-        if (is_array($contact_id))
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->select("COUNT(*)")
+            ->from("#__people_cf")
+            ->where("association_id=".$deal_id)
+            ->where("association_type='deal'")
+            ->where("person_id=".$contact_id);
 
-        $query->select("COUNT(*)")
-                ->from("#__people_cf")
-                ->where("association_id=".$deal_id)
-                ->where("association_type='deal'")
-                ->where("person_id=".$contact_id);
-
-        $db->setQuery($query);
-
-        $contacts = $db->loadResult();
+        $contacts = $this->db->setQuery($query)->loadResult();
 
         if ($contacts == 0) {
 
@@ -1284,11 +1240,13 @@ class Deal extends DefaultModel
 
             $data = array($deal_id.",'deal',".$contact_id.",'".$created."'");
 
-            $query->clear();
-            $query->insert('#__people_cf')->columns('association_id, association_type, person_id, created')->values($data);
-            $db->setQuery($query);
-            $db->query();
+            $query
+                ->clear()
+                ->insert('#__people_cf')
+                ->columns('association_id, association_type, person_id, created')
+                ->values($data);
 
+            $this->db->setQuery($query)->execute();
         }
 
     }
@@ -1300,28 +1258,22 @@ class Deal extends DefaultModel
      */
     public function checkDealName($name)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->select('d.id');
-        $query->from('#__deals AS d');
-        $query->where('LOWER(d.name) = "'.strtolower($name).'"');
-        $db->setQuery($query);
-        $existingDeal = $db->loadResult();
+        $query = $this->db->getQuery(true)
+            ->select('d.id')
+            ->from('#__deals AS d')
+            ->where('LOWER(d.name) = "'.strtolower($name).'"');
 
-        return $existingDeal;
+        return $this->db->setQuery($query)->loadResult();
     }
 
     public function getClosedStages()
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->select('s.id');
-        $query->from('#__stages AS s');
-        $query->where("s.percent=100");
-        $db->setQuery($query);
-        $stages = $db->loadColumn();
+        $query = $this->db->getQuery(true)
+            ->select('s.id')
+            ->from('#__stages AS s')
+            ->where("s.percent=100");
 
-        return $stages;
+        return $this->db->setQuery($query)->loadColumn();
     }
 
     public function getDealNames($json=FALSE)
@@ -1335,7 +1287,6 @@ class Deal extends DefaultModel
         }
 
         return $json ? json_encode($return) : $return;
-
     }
 
 }

@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Joomla\Registry\Registry;
 use Cobalt\Table\CategoriesTable;;
 
@@ -19,27 +18,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Categories extends DefaultModel
 {
-
     public $_view = "categories";
-
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
 
     public function store()
     {
         //Load Tables
         $app = \Cobalt\Container::get('app');
         $row = new CategoriesTable;
-        $data = $app->input->getRequest( 'post' );
+        $data = $app->input->getRequest('post');
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -76,15 +62,9 @@ class Categories extends DefaultModel
 
     public function _buildQuery()
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
-        //query
-        $query->select("c.*");
-        $query->from("#__notes_categories AS c");
-
-        return $query;
-
+        return $this->db->getQuery(true)
+            ->select("c.*")
+            ->from("#__notes_categories AS c");
     }
 
     /**
@@ -94,17 +74,10 @@ class Categories extends DefaultModel
      */
     public function getCategories($id=null)
     {
-        //database
-        $db = JFactory::getDBO();
-        $query = $this->_buildQuery();
+        $query = $this->_buildQuery()
+            ->order($this->getState('Categories.filter_order') . ' ' . $this->getState('Categories.filter_order_Dir'));
 
-        //sort
-        $query->order($this->getState('Categories.filter_order') . ' ' . $this->getState('Categories.filter_order_Dir'));
-
-        //return results
-        $db->setQuery($query);
-
-        return $db->loadAssocList();
+        return $this->db->setQuery($query)->loadAssocList();
 
     }
 
@@ -114,23 +87,17 @@ class Categories extends DefaultModel
 
         if ($id > 0) {
 
-            //database
-            $db = JFactory::getDBO();
-            $query = $this->_buildQuery();
+            $query = $this->_buildQuery()
+                ->order($this->getState('Categories.filter_order') . ' ' . $this->getState('Categories.filter_order_Dir'));
 
-            //sort
-            $query->order($this->getState('Categories.filter_order') . ' ' . $this->getState('Categories.filter_order_Dir'));
             if ($id) {
                 $query->where("c.id=$id");
             }
 
-            //return results
-            $db->setQuery($query);
-
-            return $db->loadAssoc();
+            return $db->setQuery($query)->loadAssoc();
 
         } else {
-            return (array) JTable::getInstance('categories','Table');
+            return (array) new CategoriesTable;
 
         }
 
@@ -147,21 +114,18 @@ class Categories extends DefaultModel
 
         //set states
         $state->set('Categories.filter_order', $filter_order);
-        $state->set('Categories.filter_order_Dir',$filter_order_Dir);
+        $state->set('Categories.filter_order_Dir', $filter_order_Dir);
 
         $this->setState($state);
     }
 
     public function remove($id)
     {
-        //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->delete('#__notes_categories')
+            ->where('id = '.(int) $id);
 
-        //delete id
-        $query->delete('#__notes_categories')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query)->execute();
     }
 
 }

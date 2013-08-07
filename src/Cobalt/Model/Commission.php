@@ -10,9 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
-use Joomla\Model\AbstractModel;
-
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\DealHelper;
@@ -20,7 +17,7 @@ use Cobalt\Helper\DealHelper;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Commission extends AbstractModel
+class Commission extends DefaultModel
 {
     /**
      * Get Monthly Commission
@@ -43,7 +40,7 @@ class Commission extends AbstractModel
             if ($access_type == 'team') {
                 //get team members
                 $team_members = UsersHelper::getTeamUsers($access_id);
-                foreach ($team_members as $key=>$member) {
+                foreach ($team_members as $key => $member) {
                     $members[] = $this->getMonthlyCommissionData($member['id']);
                 }
             }
@@ -52,14 +49,14 @@ class Commission extends AbstractModel
             if ($access_type == 'company') {
                 //get company users
                 $company_members = UsersHelper::getCompanyUsers();
-                foreach ($company_members as $key=>$member) {
+                foreach ($company_members as $key => $member) {
                     $members[] = $this->getMonthlyCommissionData($member['id']);
                 }
             }
 
             //combine data
             foreach ($members as $key=>$member) {
-                foreach ($member as $date_key=>$data) {
+                foreach ($member as $date_key => $data) {
                     if ( array_key_exists($date_key,$results) ) {
                         $results[$date_key]['y'] += $data['y'];
                     } else {
@@ -69,7 +66,6 @@ class Commission extends AbstractModel
             }
 
             return $results;
-
         }
     }
 
@@ -119,9 +115,7 @@ class Commission extends AbstractModel
                 }
             }
 
-            //return data
             return $results;
-
         }
 
     }
@@ -133,10 +127,6 @@ class Commission extends AbstractModel
      */
     public function getMonthlyCommissionData($id)
     {
-        //get db
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
         //get current month
         $current_month = DateHelper::formatDBDate(date('Y-m-01 00:00:00'));
 
@@ -153,36 +143,26 @@ class Commission extends AbstractModel
             $end_date = $week['end_date'];
 
             //flush query
-            $query = $db->getQuery(true);
+            $query = $this->db->getQuery(true)
+                ->select("d.owner_id, SUM(d.amount) AS y")
+                ->from("#__deals AS d")
+                ->where("d.stage_id IN (".implode(',',$won_stage_ids).")")
+                ->where("d.modified >= '$start_date'")
+                ->where("d.modified < '$end_date'")
+                ->where("d.modified IS NOT NULL")
+                ->where("d.owner_id=$id")
+                ->group("d.owner_id")
+                ->where("d.published>0");
 
-            //gen query string
-            $query->select("d.owner_id, SUM(d.amount) AS y");
-            $query->from("#__deals AS d");
-            $query->where("d.stage_id IN (".implode(',',$won_stage_ids).")");
-            $query->where("d.modified >= '$start_date'");
-            $query->where("d.modified < '$end_date'");
-            $query->where("d.modified IS NOT NULL");
-            $query->where("d.owner_id=$id");
-
-            //group results
-            $query->group("d.owner_id");
-
-            //sort by published deals
-            $query->where("d.published>0");
-
-            //return results
-            $db->setQuery($query);
-            $results[] = $db->loadAssoc();
-
+            $results[] = $this->db->setQuery($query)->loadAssoc();
         }
 
         //clean data for commission rate
-        foreach ($results as $key=>$result) {
+        foreach ($results as $key => $result) {
             $commission_rate = UsersHelper::getCommissionRate($result['owner_id']);
             $results[$key]['y'] = (int) $result['y']*($commission_rate/100);
         }
 
-        //return results
         return $results;
     }
 
@@ -193,10 +173,6 @@ class Commission extends AbstractModel
      */
     public function getYearlyCommissionData($id)
     {
-        //get db
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
         //get current year and months to loop through
         $current_year = DateHelper::formatDBDate(date('Y-01-01 00:00:00'));
         $month_names = DateHelper::getMonthNames();
@@ -212,27 +188,18 @@ class Commission extends AbstractModel
             $end_date = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime("$start_date + 1 months")));
 
             //flush the query
-            $query = $db->getQuery(true);
+            $query = $this->db->getQuery(true)
+                ->select("d.owner_id,d.modified,SUM(d.amount) AS y")
+                ->from("#__deals AS d")
+                ->where("d.stage_id IN (".implode(',',$won_stage_ids).")")
+                ->where("d.modified >= '$start_date'")
+                ->where("d.modified < '$end_date'")
+                ->where("d.modified IS NOT NULL")
+                ->where("d.owner_id=$id")
+                ->group("d.owner_id")
+                ->where("d.published>0");
 
-            //generate query string
-            $query->select("d.owner_id,d.modified,SUM(d.amount) AS y");
-            $query->from("#__deals AS d");
-            $query->where("d.stage_id IN (".implode(',',$won_stage_ids).")");
-            $query->where("d.modified >= '$start_date'");
-            $query->where("d.modified < '$end_date'");
-            $query->where("d.modified IS NOT NULL");
-            $query->where("d.owner_id=$id");
-
-            //group results
-            $query->group("d.owner_id");
-
-            //sort by published deals
-            $query->where("d.published>0");
-
-            //get results and assign to month
-            $db->setQuery($query);
-            $results[] = $db->loadAssoc();
-
+            $results[] = $this->db->setQuery($query)->loadAssoc();
         }
 
         //clean data for commission rate
@@ -241,7 +208,6 @@ class Commission extends AbstractModel
             $results[$key]['y'] = (int) $result['y']*($commission_rate/100);
         }
 
-        //return
         return $results;
     }
 
