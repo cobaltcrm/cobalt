@@ -1,8 +1,5 @@
 <?php
 defined('_CEXEC') or die;
-unset($this->_scripts);
-unset($this->_styleSheets);
-$this->_style = array();
 ?>
 <!DOCTYPE html>
 <html>

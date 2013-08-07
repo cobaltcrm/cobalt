@@ -479,8 +479,9 @@ final class Application extends AbstractWebApplication
             $template->template = '';
         }
 
-        $template->file = 'index.php';
+        $template->file = $this->input->get('tmpl', 'index').'.php';
         $template->directory = 'themes';
+
 
         $this->template = $template;
         if ($params) {

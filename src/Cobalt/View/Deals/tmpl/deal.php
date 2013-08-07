@@ -48,8 +48,8 @@ $deal = $this->dealList[0];
     <div class="col-lg-8">
 
         <div class="page-header">
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+            <div class="btn-group pull-right dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <?php echo TextHelper::_('COBALT_ACTION_BUTTON'); ?>
                     <span class="caret"></span>
                 </button>
