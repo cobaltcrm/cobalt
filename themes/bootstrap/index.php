@@ -10,7 +10,7 @@ $this
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/cobalt.css')
 
     // Add Scripts
-    ->addScript('//code.jquery.com/jquery.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 

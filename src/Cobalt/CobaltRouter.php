@@ -95,32 +95,28 @@ class CobaltRouter extends Router
 
         $array = array();
 
-        if ( array_key_exists('view',$query) ) {
-            $array[] = $query['view'];
+        if (isset($query['view'])) {
+            $view = $query['view'];
+            $array[] = $view;
+            unset($query['view']);
         }
 
-        if ( array_key_exists('layout',$query)) {
+        if (isset($query['layout'])) {
             $array[] = $query['layout'];
-
-            if ($query['view'] == "goals" && array_key_exists('type', $query)) {
-                $array[] = $query['type'];
-            }
+            unset($query['layout']);
         }
 
-        if ( array_key_exists('id',$query) ) {
+        if (isset($query['id'])) {
             $array[] = $query['id'];
-        }
-
-        if ( array_key_exists('company_id',$query) ) {
-            $array[] = $query['company_id'];
-        }
-
-        if ( array_key_exists('import_type',$query) ) {
-            $array[] = $query['import_type'];
+            unset($query['id']);
         }
 
         if (empty($array)) {
             return $url;
+        }
+
+        if (!empty($query)) {
+            return '/' . implode('/', $array) . '?' . http_build_query($query);
         }
 
         return '/' . implode('/', $array);

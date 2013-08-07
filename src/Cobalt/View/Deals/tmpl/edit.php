@@ -12,14 +12,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $deal = $this->deal;
 $app = JFactory::getApplication();
-?>
-<?php $raw = $app->input->get('format'); ?>
-<form id="edit_form" class="form-horizontal" method="post" name="new_deal" action="<?php echo 'index.php?controller=save'; ?>" onsubmit="return save(this)">
+$raw = $app->input->get('format'); ?>
+<form id="edit_form" method="post" name="new_deal" action="<?php echo JRoute::_('index.php?task=save'); ?>" onsubmit="return save(this)">
     <?php if (!$raw) { ?>
     <div class="page-header">
         <div class="btn-group pull-right">
-            <a class="btn btn-success" href="javascript:void(0);" onclick="jQuery('#edit_form').submit();"><?php echo TextHelper::_('COBALT_SAVE_BUTTON'); ?></a>
-            <a class="btn" href="javascript:void(0);" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a>
+            <button type="button" class="btn btn-success" onclick="jQuery('#edit_form').submit();"><?php echo TextHelper::_('COBALT_SAVE_BUTTON'); ?></a>
+            <button type="button" class="btn btn-default" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a>
         </div>
         <h1><?php echo ucwords($deal['header']); ?></h1>
     </div>
@@ -34,7 +33,7 @@ $app = JFactory::getApplication();
             <div class="tab-pane active" id="basic">
                 <div class="control-group">
                     <label class="control-label" for="name"><?php echo TextHelper::_('COBALT_DEAL_NAME'); ?><span class="required">*</span></label>
-                    <div class="controls"><input type="text" name="name" placeholder="<?php echo TextHelper::_('COBALT_DEAL_NAME_NULL'); ?>" value="<?php echo $deal['name']; ?>" /></div>
+                    <div class="controls"><input type="text" class="form-control" name="name" placeholder="<?php echo TextHelper::_('COBALT_DEAL_NAME_NULL'); ?>" value="<?php echo $deal['name']; ?>" /></div>
                 </div>
 
                     <div class="control-group">
@@ -68,7 +67,7 @@ $app = JFactory::getApplication();
                 <div class="control-group">
                     <label class="control-label" for="amount"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></label>
                     <div class="controls">
-                        <div class="">
+                        <div class="input-group">
                             <span class="input-group-addon"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
                             <input class="form-control required" type="text" name="amount" value="<?php echo $deal['amount']; ?>" />
                         </div>
@@ -123,7 +122,6 @@ $app = JFactory::getApplication();
             </div>
         </div>
     </div>
-
     <?php
         if ( array_key_exists('id',$deal) ) {
             echo '<input class="form-control" type="hidden" name="id" value="'.$deal['id'].'" />';
@@ -135,6 +133,5 @@ $app = JFactory::getApplication();
             echo '<input class="form-control" type="hidden" name="company_id" value="'.$deal['company_id'].'" />';
         }
     ?>
-    </div>
     <input type="hidden" name="model" value="deal" />
 </form>

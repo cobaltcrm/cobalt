@@ -23,7 +23,7 @@ $deal = $this->dealList[0];
     var association_type = 'deal';
 </script>
 
-<div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component&id=<?php echo $deal['id']; ?>" class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="<?php echo JRoute::_('index.php?view=deals&layout=edit&format=raw&tmpl=component&id='.$deal['id']); ?>" class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

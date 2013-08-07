@@ -5,6 +5,5 @@
     ":view": "Cobalt\\Controller\\DefaultController",
     ":view/edit": "Cobalt\\Controller\\Edit",
     ":view/:layout": "Cobalt\\Controller\\DefaultController",
-    ":view/:layout/:id": "Cobalt\\Controller\\DefaultController",
-    ":view/:layout/:id/:type": "Cobalt\\Controller\\DefaultController"
+    ":view/:layout/:id": "Cobalt\\Controller\\DefaultController"
 }

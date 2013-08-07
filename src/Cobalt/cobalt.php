@@ -39,6 +39,7 @@ $controller = $app->input->get('controller', 'default');
 
 //load user toolbar
 $format = $app->input->get('format');
+
 $overrides = array('ajax', 'mail', 'login');
 
 if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) {
@@ -92,12 +93,13 @@ if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) 
     //load styles
     StylesHelper::loadStyleSheets();
 
-} elseif (!($controllerObj instanceof Cobalt\Controller\Login)) {
-    $app->redirect(JRoute::_('index.php?view=login'));
+    //load javascript language
+    TemplateHelper::loadJavascriptLanguage();
 }
 
-//load javascript language
-TemplateHelper::loadJavascriptLanguage();
+if ($user === false && !($controllerObj instanceof Cobalt\Controller\Login)) {
+    $app->redirect(JRoute::_('index.php?view=login'));
+}
 
 //fullscreen detection
 if (UsersHelper::isFullscreen()) {
