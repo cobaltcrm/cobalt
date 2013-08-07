@@ -17,8 +17,8 @@ $raw = $app->input->get('format'); ?>
     <?php if (!$raw) { ?>
     <div class="page-header">
         <div class="btn-group pull-right">
-            <button type="button" class="btn btn-success" onclick="jQuery('#edit_form').submit();"><?php echo TextHelper::_('COBALT_SAVE_BUTTON'); ?></a>
-            <button type="button" class="btn btn-default" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a>
+            <button type="button" class="btn btn-success" onclick="jQuery('#edit_form').submit();"><?php echo TextHelper::_('COBALT_SAVE_BUTTON'); ?></button>
+            <button type="button" class="btn btn-default" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></button>
         </div>
         <h1><?php echo ucwords($deal['header']); ?></h1>
     </div>

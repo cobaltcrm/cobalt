@@ -92,7 +92,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             case "company":
                 $name = $name ? $name : "name=company_id";
                 $html = '
-                    <select class="inputbox" '.$name.' id="company_id">';
+                    <select class="inputbox form-control" '.$name.' id="company_id">';
                         $html .= "<option value='0' ".$selected.">Select company";
                         foreach ($row as $company => $info) {
                             $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
@@ -103,7 +103,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             case "stage":
                 $name = $name ? $name : "name=stage_id";
                 $html = '
-                     <select class="inputbox" '.$name.' id="stage_id">';
+                     <select class="inputbox form-control" '.$name.' id="stage_id">';
                         $html .= "<option value='0' ".$selected.">Select stage";
                         foreach ($row as $stage => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
@@ -114,7 +114,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 break;
             case "source":
                 $name = $name ? $name : "name=source_id";
-                $html = '<select class="inputbox" '.$name.' id="source_id">';
+                $html = '<select class="inputbox form-control" '.$name.' id="source_id">';
                         $html .= "<option value='0' ".$selected.">Select source";
                         if (count($row) > 0) {
                             foreach ($row as $source => $info) {
@@ -127,7 +127,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             case "probability":
                 $name = $name ? $name : "name=probability";
                 $html = '
-                    <select class="inputbox" '.$name.' id="probability_id">';
+                    <select class="inputbox form-control" '.$name.' id="probability_id">';
                         $html .= "<option value='0' ".$selected.">Select probability";
                         for ($i=5; $i<=95; $i+=5) {
                                 $selected = ( $i == $selection ) ? "selected='selected'" : '';
@@ -138,7 +138,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             case "deal_status":
                 $name = $name ? $name : "name=status_id";
                 $html = '
-                    <select class="inputbox" '.$name.' id="status_id">';
+                    <select class="inputbox form-control" '.$name.' id="status_id">';
                     $html .= "<option value='0' ".$selected.">Select status...";
                         foreach ($row as $status => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
@@ -150,7 +150,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             case "people_status":
                 $name = $name ? $name : "name=status_id";
                 $html = '
-                    <select class="inputbox" '.$name.' id="status_id">';
+                    <select class="inputbox form-control" '.$name.' id="status_id">';
                     $html .= "<option value='0' ".$selected.">Select status...";
                         foreach ($row as $status => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
@@ -162,7 +162,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             case "deal":
                 $name = $name ? $name : "name=deal_id";
                 $html = '
-                    <select class="inputbox" '.$name.' id="deal_id">';
+                    <select class="inputbox form-control" '.$name.' id="deal_id">';
                     $html .= "<option value='0' ".$selected.">Select deal...";
                         foreach ($row as $deal => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
@@ -653,7 +653,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
              return $data;
          }
 
-         public static function generateDealStatuses($selected=null,$name="status_id",$class="class='inputbox'")
+         public static function generateDealStatuses($selected=null, $name="status_id", $class="class='inputbox form-control'")
          {
             $db = \Cobalt\Container::get('db');
             $query = $db->getQuery(true);
