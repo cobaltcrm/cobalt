@@ -24,7 +24,7 @@ $person = $this->people[0];
 </script>
 
 <!-- PERSON EDIT MODAL -->
-<div data-remote="index.php?view=people&layout=edit&format=raw&tmpl=component&id=<?php echo $person['id']; ?>" class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="<?php echo JRoute::_('index.php?view=people&layout=edit&format=raw&tmpl=component&id='.$person['id']); ?>" class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -49,8 +49,8 @@ $person = $this->people[0];
 
         <div class="page-header">
             <!-- ACTIONS -->
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+            <div class="btn-group pull-right dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <?php echo TextHelper::_('COBALT_ACTION_BUTTON'); ?>
                     <span class="caret"></span>
                 </button>
@@ -242,7 +242,7 @@ $person = $this->people[0];
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                      <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
                 </div>
-                <input type="hidden" name="association_id" value="<?php echo $deal['id']; ?>" />
+                <input type="hidden" name="association_id" value="<?php echo $person['id']; ?>" />
                 <input type="hidden" name="association_type" value='deal' />
             </form>
         </span>
@@ -452,8 +452,8 @@ $person = $this->people[0];
                 <form id="deal">
                     <div class="input-group">
                         <input name="deal_name" class="form-control" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
-                        <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
-                        <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                        <input type="hidden" name="company_id" value="<?php echo ''; //$company['id'];  ?>" />
+                        <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal', 'deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </div>
                 </form>
             </div>
