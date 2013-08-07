@@ -57,15 +57,15 @@ $deal = $this->dealList[0];
                     <li><a role="button" href="#dealModal" data-toggle="modal"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a></li>
                     <li><a href="javascript:void(0);" id="archive" ><?php if($deal['archived']==0) echo TextHelper::_('COBALT_ARCHIVE'); if($deal['archived']==1) echo TextHelper::_('COBALT_UNARCHIVE'); ?></a></li>
                     <?php if ( $deal['owner_id'] == UsersHelper::getUserId() ) { ?>
-                        <li><a href="javascript:void(0);" onclick="shareItemDialog();" ><?php echo TextHelper::_('COBALT_SHARE'); ?></a></li>
+                        <li><a href="javascript:void(0);" onclick="Cobalt.shareItemDialog();" ><?php echo TextHelper::_('COBALT_SHARE'); ?></a></li>
                     <?php } ?>
                     <li>
                         <?php if ( UsersHelper::canDelete() || $deal['owner_id'] == UsersHelper::getUserId() ) { ?>
-                            <a href="index.php?controller=trash&item_id=<?php echo $deal['id']; ?>&item_type=deals&page_redirect=deals" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a>
+                            <a href="<?php echo JRoute::_('index.php?controller=trash&item_id='.$deal['id'].'&item_type=deals&page_redirect=deals'); ?>" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a>
                         <?php } ?>
                     </li>
                     <li>
-                        <a href="index.php?view=print&item_id=<?php echo $deal['id']; ?>&layout=deal&model=deal" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+                        <a href="<?php echo JRoute::_('index.php?view=printFriendly&item_id='.$deal['id'].'&layout=deal&model=deal'); ?>" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
                     </li>
                 </ul>
             </div>

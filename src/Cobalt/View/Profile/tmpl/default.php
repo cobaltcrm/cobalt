@@ -232,7 +232,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <label>
                                 <?php echo TextHelper::_('COBALT_COMMISSION_RATE'); ?>
                             </label>
-                            <input class="form-control" type="text" name="commission_rate" value="<?php echo $this->user->commission_rate; ?>">%
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="commission_rate" value="<?php echo $this->user->commission_rate; ?>">
+                                <span class="input-group-addon">%</span>
+                            </div>
                         </li>
                     </ul>
                 </fieldset>

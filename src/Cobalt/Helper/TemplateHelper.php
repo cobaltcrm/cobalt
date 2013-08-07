@@ -176,7 +176,7 @@ class TemplateHelper
         $list_html .= '<li><a href="'.JRoute::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ENTER_FULLSCREEN').'" data-placement="bottom" class="block-btn" href="javascript:void(0);" onclick="toggleFullScreen();" ><i class="icon-fullscreen icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ENTER_FULLSCREEN').'" data-placement="bottom" class="block-btn" href="javascript:void(0);" onclick="Cobalt.toggleFullScreen();" ><i class="icon-fullscreen icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a></li>';
 

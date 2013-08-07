@@ -724,16 +724,14 @@ final class Application extends AbstractWebApplication
             // Logout
             $this->user = new JUser;
 
-            $this->getSession()->set('user', $this->user);
-
         } else {
             // Login
             $user->isAdmin = true; // in_array($user->username, $this->get('acl.admin_users'));
 
             $this->user = $user;
-
-            $this->getSession()->set('user', $user);
         }
+
+        $this->getSession()->set('user', $user);
 
         return $this;
     }
