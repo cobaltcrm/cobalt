@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Table\DealCustomTable;
 use Joomla\Registry\Registry;
 
@@ -19,7 +18,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DealCustom extends DefaultModel
 {
-
     public $_view = "dealcustom";
 
     public function store()
@@ -83,19 +81,10 @@ class DealCustom extends DefaultModel
 
     public function _buildQuery()
     {
-         //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
-        //query
-        $query->select("c.*");
-        $query->from("#__deal_custom AS c");
-
-        //sort
-        $query->order($this->getState('Dealcustom.filter_order') . ' ' . $this->getState('Dealcustom.filter_order_Dir'));
-
-        return $query;
-
+        return $this->db->getQuery(true)
+            ->select("c.*")
+            ->from("#__deal_custom AS c")
+            ->order($this->getState('Dealcustom.filter_order') . ' ' . $this->getState('Dealcustom.filter_order_Dir'));
     }
 
     /**
@@ -105,13 +94,9 @@ class DealCustom extends DefaultModel
      */
     public function getCustom()
     {
-        //database
-        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
-        //return results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $results = $this->db->setQuery($query)->loadAssocList();
 
         if ( count ( $results ) > 0 ) {
             foreach ($results as $key => $result) {
@@ -128,15 +113,11 @@ class DealCustom extends DefaultModel
 
         if ($id > 0) {
 
-            //database
-            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             $query->where("c.id=".$id);
 
-            //return results
-            $db->setQuery($query);
-            $result = $db->loadAssoc();
+            $result = $this->db->setQuery($query)->loadAssoc();
 
             $result['values'] = json_decode($result['values']);
 
@@ -144,7 +125,6 @@ class DealCustom extends DefaultModel
 
         } else {
             return (array) new DealCustomTable;
-
         }
 
     }
@@ -167,14 +147,11 @@ class DealCustom extends DefaultModel
 
     public function remove($id)
     {
-        //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true)
+            ->delete('#__deal_custom')
+            ->where('id = '.(int) $id);
 
-        //delete id
-        $query->delete('#__deal_custom')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query)->execute();
     }
 
 }

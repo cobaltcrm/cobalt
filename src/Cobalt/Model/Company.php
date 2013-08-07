@@ -107,7 +107,7 @@ class Company extends DefaultModel
             return false;
         }
 
-        $id = !empty($data['id']) ? $data['id'] : $db->insertId();
+        $id = !empty($data['id']) ? $data['id'] : $this->db->insertId();
 
         ActivityHelper::saveActivity($oldRow, $row, 'company', $status);
 
@@ -314,7 +314,7 @@ class Company extends DefaultModel
         }
 
         //run query and grab results of companies
-        $companies = $db->setQuery($query)->loadAssocList();
+        $companies = $this->db->setQuery($query)->loadAssocList();
 
         //generate query to join people
         if ( count($companies) ) {

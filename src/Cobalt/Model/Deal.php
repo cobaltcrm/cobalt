@@ -668,7 +668,7 @@ class Deal extends DefaultModel
 
             if ($this->recent) {
                 $past = DateHelper::formatDBDate(date('Y-m-d H:i:s')." - 30 days");
-                $query->where('d.last_viewed > '.$db->Quote($past));
+                $query->where('d.last_viewed > '.$this->db->Quote($past));
             }
 
             /**---------------------
@@ -835,7 +835,7 @@ class Deal extends DefaultModel
                         $now = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
                         $query = $this->db->getQuery(true)
                             ->update("#__deals")
-                            ->set("last_viewed=".$db->quote($now))
+                            ->set("last_viewed=".$this->db->quote($now))
                             ->where("id=".$deal['id']);
 
                         $this->db->setQuery($query)->execute();
