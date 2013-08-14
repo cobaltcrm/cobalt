@@ -513,14 +513,14 @@ final class Application extends AbstractWebApplication
     /**
      * Allows the application to load a custom or default router.
      *
-     * @return CobaltRouter
+     * @return Router
      *
      * @since   1.0
      */
     public function getRouter()
     {
         if (is_null($this->router)) {
-            $this->router = new CobaltRouter($this->input, $this);
+            $this->router = new Router($this->input, $this);
 
             $maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
 

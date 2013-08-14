@@ -4,6 +4,6 @@ class JRoute
 {
     public static function _($url)
     {
-        return Cobalt\CobaltRouter::to($url);
+        return Cobalt\Router::to($url);
     }
 }
