@@ -83,6 +83,11 @@ class CobaltRouter extends Router
         return new $class($this->input, $this->app);
     }
 
+    public static function to($url)
+    {
+        return \Cobalt\Container::get('app')->getRouter()->getRouteFor($url);
+    }
+
     public function getRouteFor($url)
     {
         $parts = parse_url($url);
