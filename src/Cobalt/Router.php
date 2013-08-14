@@ -11,14 +11,14 @@ namespace Cobalt;
 use Joomla\Application\AbstractApplication;
 use Joomla\Controller\ControllerInterface;
 use Joomla\Input\Input;
-use Joomla\Router\Router;
+use Joomla\Router\Router as JoomlaRouter;
 
 /**
  * Joomla! Tracker Router
  *
  * @since  1.0
  */
-class CobaltRouter extends Router
+class Router extends JoomlaRouter
 {
     /**
      * Application object to inject into controllers
