@@ -64,8 +64,9 @@ class Deal extends DefaultModel
      *
      * @return boolean True on success
      */
-    public function store($data=null,$returnRow=FALSE)
+    public function store($data = null,$returnRow = false)
     {
+        /** @var \Cobalt\Application $app */
         $app = \Cobalt\Container::get('app');
 
         //Load Tables
@@ -73,7 +74,7 @@ class Deal extends DefaultModel
         $oldRow = new DealTable;
 
         if ($data == null) {
-            $data = $app->input->getRequest('post');
+            $data = $app->input->post->getArray();
         }
 
         //date generation
@@ -203,7 +204,7 @@ class Deal extends DefaultModel
 
         $deal_id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $row->id;
 
-        ActivityHelper::saveActivity($oldRow, $row,'deal', $status);
+        ActivityHelper::saveActivity($oldRow, $row, 'deal', $status);
 
         //if we receive no custom post data do not modify the custom fields
         if ( count($customArray) > 0 ) {
@@ -909,7 +910,7 @@ class Deal extends DefaultModel
 
             $query = $this->_buildQuery();
 
-            $deal = $db->setQuery($query)->loadAssoc();
+            $deal = $this->db->setQuery($query)->loadAssoc();
 
             self::getDealDetails($deal);
 

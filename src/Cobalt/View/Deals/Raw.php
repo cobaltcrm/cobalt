@@ -17,7 +17,6 @@ use Cobalt\Helper\ViewHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Conversation as ConversationModel;
-use Cobalt\Model\Deal as DealModel;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -35,11 +34,11 @@ class Raw extends AbstractHtmlView
         $model = new DealModel;
 
         if ($company_id) {
-                $model->set('company_id',$company_id);
+            $model->set('company_id',$company_id);
         } elseif ($person_id) {
-                $model->set('person_id',$person_id);
+            $model->set('person_id',$person_id);
         } elseif ($id) {
-                $model->set('_id',$id);
+            $model->set('_id',$id);
         }
 
         $layout = $this->getLayout();
@@ -53,10 +52,10 @@ class Raw extends AbstractHtmlView
         //assign references
         switch ($layout) {
             case "entry":
-                $this->stages = DealHelper::getStages(null,TRUE,FALSE);
-                $this->statuses = DealHelper::getStatuses(null,true);
+                $this->stages = DealHelper::getStages(null, true, false);
+                $this->statuses = DealHelper::getStatuses(null, true);
                 $this->sources = DealHelper::getSources(null);
-                $this->users = UsersHelper::getUsers(null,TRUE);
+                $this->users = UsersHelper::getUsers(null, true);
                 $this->k = 0;
                 $this->deal = $model->getDeal();
             break;

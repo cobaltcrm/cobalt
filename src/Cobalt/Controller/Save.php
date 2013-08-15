@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JRoute;
+use Cobalt\Router;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\People as PeopleModel;
@@ -31,7 +31,7 @@ class Save extends DefaultController
 
         //if we are requesting a return redirect set up redirect link
         if ( $this->input->get('view') ) {
-            $link = JRoute::_('index.php?view='.$this->input->get('view'));
+            $link = Router::to('index.php?view='.$this->input->get('view'));
         }
 
         if ( $db_id = $model->store() ) {
@@ -50,7 +50,7 @@ class Save extends DefaultController
                     $model = new CompanyModel;
                     $id = $this->input->get('id') ? $this->input->get('id') : null;
                     if ($id) {
-                        $return = $model->getCompany($id);
+                        $company = $model->getCompany($id);
                     } else {
                         $company = $db_id;
                     }

@@ -12,6 +12,7 @@ $this
     // Add Scripts
     ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap.min.js')
+    ->addScript($this->baseurl.'/src/Cobalt/media/js/bootstrap-datepicker.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 
     // Add Meta tags

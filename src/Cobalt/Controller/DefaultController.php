@@ -54,7 +54,7 @@ class DefaultController extends AbstractController
     {
         // Get the document object.
         $document   = $this->app->getDocument();
-        $viewFormat = $document->getType();
+        $viewFormat = $this->input->getWord('format', 'html');
         $viewName   = $this->input->getWord('view', 'dashboard');
         $layoutName = $this->input->getWord('layout', 'default');
 

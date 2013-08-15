@@ -24,7 +24,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-                    <button onclick="saveItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+                    <button onclick="Cobalt.saveItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
                 </div>
             </div>
         </div>

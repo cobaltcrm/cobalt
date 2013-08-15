@@ -33,18 +33,18 @@ $raw = $app->input->get('format'); ?>
             <div class="tab-pane active" id="basic">
                 <div class="control-group">
                     <label class="control-label" for="name"><?php echo TextHelper::_('COBALT_DEAL_NAME'); ?><span class="required">*</span></label>
-                    <div class="controls"><input type="text" class="form-control" name="name" placeholder="<?php echo TextHelper::_('COBALT_DEAL_NAME_NULL'); ?>" value="<?php echo $deal['name']; ?>" /></div>
+                    <div class="controls"><input type="text" class="form-control" name="name" placeholder="<?php echo TextHelper::_('COBALT_DEAL_NAME_NULL'); ?>" value="<?php echo isset($deal['name']) ? $deal['name'] : ''; ?>" /></div>
                 </div>
 
                     <div class="control-group">
                         <label class="control-label" for="summary"><?php echo TextHelper::_('COBALT_DEAL_SUMMARY'); ?></label>
-                        <div class="controls"><textarea class="form-control" name="summary" cols="50" placeholder="<?php echo TextHelper::_('COBALT_DEAL_SUMMARY_NULL'); ?>" rows="5"><?php echo $deal['summary']; ?></textarea></div>
+                        <div class="controls"><textarea class="form-control" name="summary" cols="50" placeholder="<?php echo TextHelper::_('COBALT_DEAL_SUMMARY_NULL'); ?>" rows="5"><?php echo isset($deal['summary']) ? $deal['summary'] : ''; ?></textarea></div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="company"><?php echo ucwords(TextHelper::_('COBALT_DEAL_COMPANY')); ?></label>
                         <div class="controls">
                                 <input type="text" onkeyup="checkCompanyName(this);" class="form-control" name="company" id="company_name" value="<?php if ( array_key_exists('company_name',$deal) ) echo $deal['company_name']; ?>" />
-                                <input type="hidden" name="company_id" id="company_id" value="<?php echo $deal['company_id']; ?>" />
+                                <input type="hidden" name="company_id" id="company_id" value="<?php echo isset($deal['company_id']) ? $deal['company_id'] : ''; ?>" />
                                 <div class="alert" style="display: none;" id="company_message"></div>
                         </div>
                     </div>
@@ -69,27 +69,27 @@ $raw = $app->input->get('format'); ?>
                     <div class="controls">
                         <div class="input-group">
                             <span class="input-group-addon"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
-                            <input class="form-control required" type="text" name="amount" value="<?php echo $deal['amount']; ?>" />
+                            <input class="form-control required" type="text" name="amount" value="<?php echo isset($deal['amount']) ? $deal['amount'] : ''; ?>" />
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="stage"><?php echo TextHelper::_('COBALT_DEAL_STAGE'); ?></label>
                     <div class="controls">
-                        <?php echo DropdownHelper::generateDropdown('stage',$deal['stage_id']); ?>
+                        <?php echo DropdownHelper::generateDropdown('stage', isset($deal['stage_id']) ? $deal['stage_id'] : ''); ?>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="source"><?php echo TextHelper::_('COBALT_DEAL_SOURCE'); ?></label>
                     <div class="controls">
-                        <?php echo DropdownHelper::generateDropdown('source',$deal['source_id']); ?>
+                        <?php echo DropdownHelper::generateDropdown('source', isset($deal['source_id']) ? $deal['source_id'] : ''); ?>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="probability"><?php echo TextHelper::_('COBALT_DEAL_PROBABILITY'); ?></label>
                     <div class="controls">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="probability" value="<?php if ( array_key_exists('probability',$deal) ) echo $deal['probability']; ?>" />
+                            <input type="text" class="form-control" name="probability" value="<?php if ( array_key_exists('probability', $deal) ) echo $deal['probability']; ?>" />
                             <span class="input-group-addon">%</span>
                         </div>
                     </div>
@@ -97,13 +97,13 @@ $raw = $app->input->get('format'); ?>
                 <div class="control-group">
                     <label class="control-label" for="status"><?php echo TextHelper::_('COBALT_DEAL_STATUS'); ?></label>
                     <div class="controls">
-                        <?php echo DropdownHelper::generateDealStatuses($deal['status_id']); ?>
+                        <?php echo DropdownHelper::generateDealStatuses(isset($deal['status_id']) ? $deal['status_id'] : ''); ?>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="expected_close"><?php echo TextHelper::_('COBALT_DEAL_CLOSE'); ?></label>
                     <div class="controls">
-                        <input class="form-control date_input" type="text" id="expected_close" name="expected_close_input" value="<?php echo DateHelper::formatDate($deal['expected_close']); ?>">
+                        <input class="form-control date_input" type="text" id="expected_close" name="expected_close_input" value="<?php echo DateHelper::formatDate(isset($deal['expected_close']) ? $deal['expected_close'] : ''); ?>">
                         <input type="hidden" id="expected_close_hidden" name="expected_close" value="<?php if ( array_key_exists('expected_close',$deal) && !is_null($deal['expected_close']) && $deal['expected_close'] != "" && $deal['expected_close'] != "0000-00-00"   ) { echo $deal['expected_close']; } else { echo date("Y-m-d"); } ?>" />
                     </div>
                 </div>
@@ -111,8 +111,8 @@ $raw = $app->input->get('format'); ?>
                 <div class="control-group">
                     <label class="control-label" for="actual_close"><?php echo TextHelper::_('COBALT_DEAL_ACTUAL_CLOSE'); ?></label>
                     <div class="controls">
-                        <input class="form-control date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo DateHelper::formatDate($deal['actual_close']); ?>">
-                        <input type="hidden" id="actual_close_hidden" name="actual_close" value="<?php echo $deal['actual_close']; ?>" />
+                        <input class="form-control date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo DateHelper::formatDate(isset($deal['actual_close']) ? $deal['actual_close'] : ''); ?>">
+                        <input type="hidden" id="actual_close_hidden" name="actual_close" value="<?php echo isset($deal['actual_close']) ? $deal['actual_close'] : ''; ?>" />
                     </div>
                 </div>
                 <?php } ?>

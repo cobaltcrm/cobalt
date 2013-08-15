@@ -334,13 +334,16 @@ final class Application extends AbstractWebApplication
         require_once __DIR__.'/cobalt.php';
         $contents = ob_get_clean();
 
-        $this->document->setBuffer($contents, 'cobalt');
-
         // Trigger the onAfterDispatch event.
         JPluginHelper::importPlugin('system');
         $this->triggerEvent('onAfterDispatch');
 
-        $this->setBody($this->document->render(false, (array) $template));
+        if ($this->input->get('format', 'html') === 'raw') {
+            $this->setBody($contents);
+        } else {
+            $this->document->setBuffer($contents, 'cobalt');
+            $this->setBody($this->document->render(false, (array) $template));
+        }
     }
 
     public function loadDocument()
@@ -756,5 +759,10 @@ final class Application extends AbstractWebApplication
         }
 
         return $this->user;
+    }
+
+    protected function detectRequestUri()
+    {
+        return str_replace('index.php', '', parent::detectRequestUri());
     }
 }
