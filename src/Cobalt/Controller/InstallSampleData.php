@@ -32,7 +32,7 @@ class InstallSampleData extends DefaultController
                 // 'sample-goal'       => "goals",
             );
         foreach ($sampleCsvFiles as $file => $table) {
-            $importData = $importModel->readCSVFile(JPATH_COBALT.'/sample/'.$file.'.csv', $table, false);
+            $importData = $importModel->readCSVFile(JPATH_COBALT.'/Sample/'.$file.'.csv', $table, false);
             switch ($table) {
                 case "companies":
                     $model = "company";

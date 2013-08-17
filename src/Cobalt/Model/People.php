@@ -626,13 +626,12 @@ class People extends DefaultModel
         } else {
 
              //TODO update things to OBJECTS
-            $person = (array) JTable::getInstance('People','Table');
+            $person = (array) new PeopleTable;
             $this->person = $person;
 
         }
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onPersonLoad', array(&$person));
+        $app->triggerEvent('onPersonLoad', array(&$person));
 
         return $person;
     }
