@@ -11,16 +11,16 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['help_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <h3><?php echo $this->header; ?></h3>
                 <form action="index.php?view=documents" method="post" name="adminForm" id="adminForm" class="form-validate" >
                     <table>
                         <tr>
                             <td><b><?php echo JText::_('COBALT_NAME'); ?></b></td>
-                            <td><input type="text" class="form-control" name="filename" value="<?php echo $this->document['filename']; ?>" /></td>
+                            <td><input type="text" class="inputbox" name="filename" value="<?php echo $this->document['filename']; ?>" /></td>
                         </tr>
                     </table>
                     <div>

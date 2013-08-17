@@ -49,8 +49,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     case "currency": ?>
                     <span class="editable parent" id="editable_custom_<?php echo $value['id']; ?>_container">
                         <div class="inline" id="editable_custom_<?php echo $value['id']; ?>">
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.$value['name']; ?>" data-html='true' data-content='<div class="clearfix input-group"><form id="<?php echo $value['id']; ?>_form">
-                            <input placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>" type="text" class="form-control input-small" name="custom_<?php echo $value['id']; ?>" value="<?php echo $value['selected']; ?>" />
+                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.$value['name']; ?>" data-html='true' data-content='<div class="clearfix input-append"><form id="<?php echo $value['id']; ?>_form">
+                            <input placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>" type="text" class="inputbox input-small" name="custom_<?php echo $value['id']; ?>" value="<?php echo $value['selected']; ?>" />
                             <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                         </form></div>' ><?php echo $custom_field_filter; ?></a>
                         </div>
@@ -83,10 +83,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     case "date": ?>
                     <!-- make this a custom date picker -->
                         <form name="custom_<?php echo $value['id'];?>_form" id="custom_<?php echo $value['id']; ?>_form">
-                            <div class="input-group">
-                                <input class="input-small form-control-hidden date_input editable-modal-datepicker" id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_hidden" type="text" placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>"  value="<?php echo $custom_field_filter; ?>"  />
+                            <div class="input-append">
+                                <input class="input-small inputbox-hidden date_input editable-modal-datepicker" id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_hidden" type="text" placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>"  value="<?php echo $custom_field_filter; ?>"  />
                                 <input type="hidden" id="custom_<?php echo $value['id']; ?>_hidden" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>"  />
-                                <span class="input-group-addon"><i class="icon-calendar"></i></span>
+                                <span class="input-append-addon"><i class="icon-calendar"></i></span>
                             </div>
                         </form>
                     <?php break; ?>

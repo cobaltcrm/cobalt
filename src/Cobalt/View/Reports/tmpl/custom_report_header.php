@@ -64,7 +64,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "owner_id": ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="owner_id" id="owner_id">
+                            <select class="span1 filter_input" name="owner_id" id="owner_id">
                                 <?php $user_filter = $this->state->get('Report.'.$report['id'].'_custom_report_owner_id'); ?>
                                 <?php if ( UsersHelper::getRole() != 'basic' ) { ?>
                                     <?php   $all = array();
@@ -92,7 +92,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "amount" : ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="deal_amount">
+                            <select class="span1 filter_input" name="deal_amount">
                                 <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                                 <?php $amount_filter = $this->state->get('Report.'.$report['id'].'_custom_report_amount'); ?>
                                 <?php echo JHtml::_('select.options', $this->deal_amounts, 'value', 'text', $amount_filter, true); ?>
@@ -101,7 +101,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "source_id" : ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="source_id">
+                            <select class="span1 filter_input" name="source_id">
                                 <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                                 <?php $source_filter = $this->state->get('Report.'.$report['id'].'_custom_report_source_id'); ?>
                                 <?php echo JHtml::_('select.options', $this->deal_sources, 'value', 'text', $source_filter, true); ?>
@@ -110,7 +110,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "stage_id" : ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="stage_id">
+                            <select class="span1 filter_input" name="stage_id">
                                 <?php $stage_filter = $this->state->get('Report.'.$report['id'].'_custom_report_stage_id'); ?>
                                 <?php echo JHtml::_('select.options', $this->deal_stages, 'value', 'text', $stage_filter, true); ?>
                             </select>
@@ -118,7 +118,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "status_id" : ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="status_id">
+                            <select class="span1 filter_input" name="status_id">
                                 <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                                 <?php $status_filter = $this->state->get('Report.'.$report['id'].'_custom_report_status_id'); ?>
                                 <?php echo JHtml::_('select.options', $this->deal_statuses, 'value', 'text', $status_filter, true); ?>
@@ -127,7 +127,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "created" : ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="created">
+                            <select class="span1 filter_input" name="created">
                                 <?php $created_filter = $this->state->get('Report.'.$report['id'].'_custom_report_created'); ?>
                                 <option value="all"><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                                 <?php echo JHtml::_('select.options', $this->created_dates, 'value', 'text', $created_filter, true); ?>
@@ -136,7 +136,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "modified" : ?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="modified">
+                            <select class="span1 filter_input" name="modified">
                                 <?php $modified_filter = $this->state->get('Report.'.$report['id'].'_custom_report_modified'); ?>
                                 <?php echo JHtml::_('select.options', $this->modified_dates, 'value', 'text', $modified_filter, true); ?>
                             </select>
@@ -147,7 +147,7 @@ $report = $this->report[0]; ?>
                         <?php break; ?>
                         <?php case "expected_close" :?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="expected_close">
+                            <select class="span1 filter_input" name="expected_close">
                                  <?php $expected_close_filter = $this->state->get('Report.'.$report['id'].'_custom_report_expected_close'); ?>
                                 <?php echo JHtml::_('select.options', $this->deal_close_dates, 'value', 'text', $expected_close_filter, true); ?>
                             </select>
@@ -155,7 +155,7 @@ $report = $this->report[0]; ?>
                         <?php break;
                         case "actual_close" :?>
                         <th>
-                            <select class="col-lg-1 filter_input" name="actual_close">
+                            <select class="span1 filter_input" name="actual_close">
                                  <?php $actual_close_filter = $this->state->get('Report.'.$report['id'].'_custom_report_actual_close'); ?>
                                 <?php echo JHtml::_('select.options', $this->deal_close_dates, 'value', 'text', $actual_close_filter, true); ?>
                             </select>
@@ -211,7 +211,7 @@ $report = $this->report[0]; ?>
                             <?php break;
                             case "picklist": ?>
                             <th>
-                                <select class="col-lg-1 filter_input" name="custom_<?php echo $info['id']; ?>">
+                                <select class="span1 filter_input" name="custom_<?php echo $info['id']; ?>">
                                     <?php $all = array('all'=>JHTML::_('select.option','all',TextHelper::_('COBALT_ALL'))); ?>
                                     <?php echo JHtml::_('select.options', $all+json_decode($info['values']), 'value', 'text', $custom_field_filter, true); ?>
                                 </select>
@@ -230,7 +230,7 @@ $report = $this->report[0]; ?>
                             <!-- make this a custom date picker -->
                             <?php $custom_dates = DealHelper::getDealFilters(); ?>
                             <th>
-                                <select class="col-lg-1 filter_input" name="custom_<?php echo $info['id']; ?>">
+                                <select class="span1 filter_input" name="custom_<?php echo $info['id']; ?>">
                                     <?php echo JHtml::_('select.options', $custom_dates, 'value', 'text', $custom_field_filter, true); ?>
                                 </select>
                             </th>

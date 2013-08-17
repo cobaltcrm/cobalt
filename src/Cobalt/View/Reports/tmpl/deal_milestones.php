@@ -28,9 +28,9 @@ $app = JFactory::getApplication();
     <tbody>
         <tr>
             <?php $deal_filter = $this->state->get('Deal.'.str_replace('_filter','',$app->input->get('layout')).'_name'); ?>
-            <td><input class="form-control filter_input" name="deal_name" type="text" value="<?php echo $deal_filter; ?>"></td>
+            <td><input class="inputbox filter_input" name="deal_name" type="text" value="<?php echo $deal_filter; ?>"></td>
             <td>
-                <select class="form-control filter_input" name="owner_id">
+                <select class="inputbox filter_input" name="owner_id">
                     <?php if ( UsersHelper::getRole() != "basic" ) { ?>
                         <option value=""><?php echo TextHelper::_('COBALT_ALL'); ?></option>
                     <?php } ?>

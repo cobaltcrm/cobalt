@@ -46,7 +46,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </div>
         <?php } ?>
     </div>
-    <div class="modal fade in" id="disable_help_hidden">
+    <div class="modal hide fade in" id="disable_help_hidden">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">×</button>
             <h3><?php echo JText::_('COBALT_DISABLE_HELP_TITLE'); ?></h3>

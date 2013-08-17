@@ -18,7 +18,7 @@ $conversation = $this->conversation;
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_SENTENCE'); ?></div>
             <div class="cobaltValue">
-                <textarea class="form-control" name="conversation"><?php echo $conversation['conversation']; ?></textarea>
+                <textarea class="inputbox" name="conversation"><?php echo $conversation['conversation']; ?></textarea>
             </div>
         </div>
         <div class="actions">

@@ -12,16 +12,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="col-lg-9">
+                <div class="span9">
                     <form action="index.php?view=formwizard" method="post" name="adminForm" id="adminForm" class="form-validate" >
-                        <div class="row">
+                        <div class="row-fluid">
                             <legend><h2><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FORM'); ?></h2></legend>
-                            <ul class="list-unstyled adminformlist cobaltadminlist">
+                            <ul class="unstyled adminformlist cobaltadminlist">
                                 <li>
                                     <label><b><?php echo JText::_('COBALT_FORM_TYPE'); ?></b></label>
                                     <?php echo $this->form_types; ?>
@@ -63,7 +63,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo JHtml::_('form.token'); ?>
                             </div>
                         </div>
-                        <div class="modal fade in" id="show_fields_button_modal">
+                        <div class="modal hide fade in" id="show_fields_button_modal">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">×</button>
                                 <h3><?php echo JText::_('COBALT_SELECT_FIELDS'); ?></h3>
@@ -72,8 +72,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php if ( isset($this->fields) && count($this->fields) > 0 ) {
                                     foreach ($this->fields as $type => $fields) { ?>
                                     <div id="<?php echo $type; ?>_fields" class="field_checkbox_container">
-                                        <div class="col-lg-5">
-                                        <ul class="list-unstyled">
+                                        <div class="span5">
+                                        <ul class="unstyled">
                                                 <?php
                                                 $i=0;
                                                 foreach ($fields as $key => $field) { ?>
@@ -81,8 +81,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                 <?php if ($row == 0 && $i != 0) { ?>
                                                 </ul>
                                                 </div>
-                                                <div class="col-lg-5">
-                                                <ul class="list-unstyled">
+                                                <div class="span5">
+                                                <ul class="unstyled">
                                                 <?php } ?>
                                                 <?php $checked = isset($this->form) && is_array($this->form['fields']) && in_array($field['name'],$this->form['fields']) ? "checked='checked'" : ""; ?>
                                                 <li><label class="checkbox"><input <?php echo $checked; ?> id="<?php echo $type.'_field_'.$key; ?>" type="checkbox" onclick="updateFields()" name="fields[]" value="<?php echo $field['name']; ?>" /><?php echo $field['display']; ?></label></li>

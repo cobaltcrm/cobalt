@@ -12,12 +12,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="col-lg-9">
+                <div class="span9">
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="active"><a data-toggle="tab" href="#import_begin"><?php echo JText::_('COBALT_IMPORT_BEGIN'); ?></a></li>
                         <li><a data-toggle="tab" href="#import_review"><?php echo JText::_('COBALT_IMPORT_REVIEW'); ?></a></li>
@@ -44,19 +44,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <li><?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED'); ?></li>
                                         <li><?php echo JText::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED_INSTRUCTIONS'); ?></li>
                                         <li>
-                                            <form class="form-inline" method="post">
+                                            <form class="inline-form" method="post">
                                                 <input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_COMPANIES_TEMPLATE'); ?>" />
                                                 <input type="hidden" name="template_type" value="companies" />
                                             </form>
                                         </li>
                                         <li>
-                                            <form class="form-inline" method="post">
+                                            <form class="inline-form" method="post">
                                                 <input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_DEALS_TEMPLATE'); ?>" />
                                                 <input type="hidden" name="template_type" value="deals" />
                                             </form>
                                         </li>
                                         <li>
-                                            <form class="form-inline" method="post">
+                                            <form class="inline-form" method="post">
                                                 <input class="btn" onclick="downloadImportTemplate(this)" type="button" value="<?php echo JText::_('COBALT_DOWNLOAD_PEOPLE_TEMPLATE'); ?>" />
                                                 <input type="hidden" name="template_type" value="people" />
                                             </form>
@@ -124,12 +124,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                     <?php } elseif ( array_key_exists('value',$value)) { ?>
                                                         <div class="cobaltValue wide">
                                                                 <input type="hidden" name="import_id[<?php echo $key; ?>][<?php echo $field; ?>]" value="<?php echo $value['value']; ?>" >
-                                                                <input type="text" class="form-control" name="import_id[<?php echo $key; ?>][<?php echo str_replace('id','name',$field); ?>]" value="<?php echo $value['label']; ?>" /></div>
+                                                                <input type="text" class="inputbox" name="import_id[<?php echo $key; ?>][<?php echo str_replace('id','name',$field); ?>]" value="<?php echo $value['label']; ?>" /></div>
                                                     <?php } else { ?>
                                                         <div class="cobaltValue wide"><?php echo JText::_('COBALT_NO_RESULTS_FOUND'); ?></div>
                                                     <?php } ?>
                                                 <?php } else { ?>
-                                                    <div class="cobaltValue wide"><input class="form-control" type="text" name="import_id[<?php echo $key; ?>][<?php echo $field; ?>]" value="<?php echo $value; ?>" /></div>
+                                                    <div class="cobaltValue wide"><input class="inputbox" type="text" name="import_id[<?php echo $key; ?>][<?php echo $field; ?>]" value="<?php echo $value; ?>" /></div>
                                                 <?php } ?>
                                                 </div>
                                         <?php } ?>
@@ -151,7 +151,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <div class="sample_text">
                                 <h1><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h1>
                                 <p><div class="alert alert-info"><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_DESC'); ?></div></p>
-                                <form action="<?php echo JRoute::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline"  >
+                                <form action="<?php echo JRoute::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                     <input type="submit" value="<?php echo JText::_('COBALT_INSTALL_SAMPLE_BUTTON'); ?>" class="btn btn-primary" />
                                     <input type="hidden" name="id" value="1" />
                                     <input type="hidden" name="task" value="installSampleData" />
@@ -160,7 +160,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <input type="hidden" name="view" value="import" />
                                     <?php echo JHtml::_('form.token'); ?>
                                 </form>
-                                <form action="<?php echo JRoute::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline"  >
+                                <form action="<?php echo JRoute::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                     <input type="submit" value="<?php echo JText::_('COBALT_REMOVE_SAMPLE_BUTTON'); ?>" class="btn btn-danger" />
                                     <input type="hidden" name="id" value="1" />
                                     <input type="hidden" name="task" value="removeSampleData" />

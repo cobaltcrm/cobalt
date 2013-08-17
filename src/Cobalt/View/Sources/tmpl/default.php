@@ -12,12 +12,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="col-lg-9">
+                <div class="span9">
                     <legend><h3><?php echo JText::_('COBALT_SOURCES'); ?></h3></legend>
                     <div class="alert alert-info">
                         <?php echo JText::_('COBALT_SOURCES_DESC_1'); ?><br />

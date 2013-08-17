@@ -10,8 +10,8 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row-fluid">
+        <div class="span12">
             <?php if (!$this->launch_default) { ?>
                 <div class="alert">
                 <?php echo JText::_('COBALT_YOUR_SETUP_IS').$this->setup_percent.'% '.JText::_('COBALT_COMPLETED'); ?>
@@ -22,18 +22,18 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <?php  } ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row-fluid">
+        <div class="span12">
             <?php echo $this->menu['help_menu']->render(); ?>
         </div>
     </div>
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="col-lg-9">
+                <div class="span9">
                     <?php if (!$this->php_version_check) { ?>
                         <div class="alert alert-error">
                             <?php echo JText::sprintf("COBALT_WARNING_PHP_VERSION_INVALID",$this->php_version); ?>
@@ -42,8 +42,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="well">
                         <div class="module-title"><h6><?php echo JText::_('COBALT_VERSION_STATUS'); ?></h6></div>
                         <div class="row-striped">
-                            <div class="row">
-                                <div class="col-lg-12">
+                            <div class="row-fluid">
+                                <div class="span12">
                                     <h5>
                                         <?php if ($this->latestVersion == 'no_curl') { ?>
                                             <span class="btn btn-danger btn-mini">
@@ -70,8 +70,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="well">
                         <div class="module-title"><h6><?php echo JText::_('COBALT_LATEST_NEWS'); ?></h6></div>
                         <div class="row-striped">
-                            <div class="row">
-                                <div class="col-lg-12">
+                            <div class="row-fluid">
+                                <div class="span12">
                                     <div class="alert"><?php echo JText::_('COBALT_NO_MATCHING_RESULTS'); ?></div>
                                 </div>
                             </div>

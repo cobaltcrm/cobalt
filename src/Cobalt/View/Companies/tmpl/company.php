@@ -21,7 +21,7 @@ $company = $this->companies[0];?>
 </script>
 
 <!-- COMPANY EDIT MODAL -->
-<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company['id']; ?>" class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company['id']; ?>" class="modal hide fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,10 +41,10 @@ $company = $this->companies[0];?>
 
 <iframe id="hidden" name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
 
-<div class="row">
+<div class="row-fluid">
 
     <!-- LEFT MODULE -->
-    <div class="col-lg-8">
+    <div class="span8">
         <div class="page-header">
             <!-- ACTIONS -->
             <div class="btn-group pull-right">
@@ -67,17 +67,17 @@ $company = $this->companies[0];?>
             <h1><?php echo $company['name']; ?></h1>
         </div>
 
-        <div class="row">
-            <div class="col-lg-4 well well-small">
+        <div class="row-fluid">
+            <div class="span4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_TOTAL_PIPELINE')); ?>:
                     <span class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
             </div>
-            <div class="col-lg-4 well well-small">
+            <div class="span4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_DEALS')); ?>:
                     <span class="text-success"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
             </div>
 
-            <div class="col-lg-4 well well-small">
+            <div class="span4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_CONTACTED')); ?>:
                     <?php echo DateHelper::formatDate($company['modified']); ?>
             </div>
@@ -139,7 +139,7 @@ $company = $this->companies[0];?>
     </div>
 
     <!-- RIGHT MODULE -->
-    <div class="col-lg-4">
+    <div class="span4">
         <div class="widget" id="details">
 
             <!-- COMPANY DETAILS -->
@@ -209,10 +209,10 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('facebook_url',$company) && $company['facebook_url'] != "") { ?>
                     <a href="<?php echo $company['facebook_url']; ?>" target="_blank"><div class="facebook_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-group"><form id="facebook_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-append"><form id="facebook_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="facebook_url" value="<?php if ( array_key_exists('facebook',$company) )  echo $company['facebook_url']; ?>" />
+                    <input type="text" class="inputbox input-small" name="facebook_url" value="<?php if ( array_key_exists('facebook',$company) )  echo $company['facebook_url']; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_FACEBOOK_URL'); ?>" href="javascript:void(0);"><div class="facebook_dark"></div></a>
                 <?php } ?>
@@ -221,10 +221,10 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('twitter_user',$company) && $company['twitter_user'] != "") { ?>
                     <a href="http://www.twitter.com/#!/<?php echo $company['twitter_user']; ?>" target="_blank"><div class="twitter_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-group"><form id="twitter_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-append"><form id="twitter_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="twitter_user" value="<?php if ( array_key_exists('twitter_user',$company) )  echo $company['twitter_user']; ?>" />
+                    <input type="text" class="inputbox input-small" name="twitter_user" value="<?php if ( array_key_exists('twitter_user',$company) )  echo $company['twitter_user']; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_TWITTER_USER'); ?>" href="javascript:void(0);"><div class="twitter_dark"></div></a>
                 <?php } ?>
@@ -233,10 +233,10 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('youtube_url',$company) && $company['youtube_url'] != "" ) { ?>
                     <a href="<?php echo $company['youtube_url']; ?>" target="_blank"><div class="youtube_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-group"><form id="youtube_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-append"><form id="youtube_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="youtube_url" value="<?php if ( array_key_exists('youtube_url',$company) )  echo $company['youtube_url']; ?>" />
+                    <input type="text" class="inputbox input-small" name="youtube_url" value="<?php if ( array_key_exists('youtube_url',$company) )  echo $company['youtube_url']; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_YOUTUBE_URL'); ?>" href="javascript:void(0);"><div class="youtube_dark"></div></a>
                 <?php } ?>
@@ -245,10 +245,10 @@ $company = $this->companies[0];?>
                 <?php if (array_key_exists('flickr_url',$company) && $company['flickr_url'] != "" ) { ?>
                     <a href="<?php echo $company['flickr_url']; ?>" target="_blank"><div class="flickr_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-group"><form id="flickr_form_<?php echo $company['id']; ?>">
+                    <a data-html="true" data-content='<div class="input-append"><form id="flickr_form_<?php echo $company['id']; ?>">
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="flickr_url" value="<?php if ( array_key_exists('flickr_url',$company) )  echo $company['flickr_url']; ?>" />
+                    <input type="text" class="inputbox input-small" name="flickr_url" value="<?php if ( array_key_exists('flickr_url',$company) )  echo $company['flickr_url']; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_FLICKR_URL'); ?>" href="javascript:void(0);"><div class="flickr_dark"></div></a>
                 <?php } ?>
@@ -289,11 +289,11 @@ $company = $this->companies[0];?>
 <div id="message" style="display:none;"><?php echo TextHelper::_('COBALT_SUCCESS_MESSAGE'); ?></div>
 
 <!-- PERSON ASSOCIATION -->
-<div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_person_dialog'>
+<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_person_dialog'>
     <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_PERSON'); ?></h3></div>
     <div class="modal-body text-center">
-        <div class="input-group">
-            <input name="person_name" class="form-control" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_USER'); ?>" />
+        <div class="input-append">
+            <input name="person_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_USER'); ?>" />
             <input type="hidden" name="shared_user_id" id="shared_user_id" />';
             <a class="btn btn-success" href="javascript:void(0);" onclick="addPersonToCompany();"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_ADD'); ?></a>
         </div>
@@ -301,12 +301,12 @@ $company = $this->companies[0];?>
 </div>
 
 <!--- DEAL ASSOCIATION -->
-<div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
+<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
     <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_DEAL'); ?></h3></div>
     <div class="modal-body text-center">
         <form id="deal">
-            <div class="input-group">
-                <input name="deal_name" class="form-control" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
+            <div class="input-append">
+                <input name="deal_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
                 <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
                 <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
             </div>

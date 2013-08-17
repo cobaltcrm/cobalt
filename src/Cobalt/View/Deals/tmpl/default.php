@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
 
-    <div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component" class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></h3>
@@ -36,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_DEALS_HEADER')); ?></h1>
 </div>
-    <ul class="list-inline">
+    <ul class="inline">
         <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
         <li class="dropdown">
             <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" ><span class="dropdown-label"><?php echo $this->deal_type_name; ?><span></a>

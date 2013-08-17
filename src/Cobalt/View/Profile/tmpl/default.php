@@ -26,8 +26,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
         <form>
             <fieldset>
-                <ul class="list-unstyled">
-                    <select class="form-control" name="language">
+                <ul class="unstyled">
+                    <select class="inputbox" name="language">
                           <?php
                               $lngs = ConfigHelper::getLanguages();
                               echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
@@ -50,9 +50,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
         <form>
             <fieldset>
-                <ul class="list-unstyled">
-                    <li><label><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?></label><input class="form-control" type="text" name="first_name" value="<?php echo $this->user->first_name; ?>"></li>
-                    <li><label><?php echo TextHelper::_('COBALT_PERSON_LAST'); ?></label><input class="form-control" type="text" name="last_name" value="<?php echo $this->user->last_name; ?>"></li>
+                <ul class="unstyled">
+                    <li><label><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?></label><input class="inputbox" type="text" name="first_name" value="<?php echo $this->user->first_name; ?>"></li>
+                    <li><label><?php echo TextHelper::_('COBALT_PERSON_LAST'); ?></label><input class="inputbox" type="text" name="last_name" value="<?php echo $this->user->last_name; ?>"></li>
                 </ul>
             </fieldset>
         </form>
@@ -70,9 +70,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="list-unstyled">
+                    <ul class="unstyled">
                         <li><label><?php echo TextHelper::_('COBALT_TIMEZONE'); ?></label>
-                            <select class="form-control" name="time_zone">
+                            <select class="inputbox" name="time_zone">
                                 <?php
                                     $timezone_abbreviations = DateHelper::getTimezones();
                                     echo JHtml::_('select.options', $timezone_abbreviations, 'value', 'text', $this->user->time_zone, true);
@@ -82,7 +82,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <li>
                         </li>
                         <li><label><?php echo TextHelper::_('COBALT_DATE_FORMAT'); ?></label>
-                            <select class="form-control" name="date_format">
+                            <select class="inputbox" name="date_format">
                                 <?php
                                     $date_formats = DateHelper::getDateFormats();
                                     echo JHtml::_('select.options', $date_formats, 'value', 'text', $this->user->date_format, true);
@@ -90,7 +90,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </select>
                         </li>
                         <li><label><?php echo TextHelper::_('COBALT_TIME_FORMAT'); ?></label>
-                            <select class="form-control" name="time_format">
+                            <select class="inputbox" name="time_format">
                                 <?php
                                     $time_formats = DateHelper::getTimeFormats();
                                     echo JHtml::_('select.options', $time_formats, 'value', 'text', $this->user->time_format, true);
@@ -114,21 +114,21 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="list-unstyled" id="email_input_boxes">
+                    <ul class="unstyled" id="email_input_boxes">
                         <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_1'); ?></li>
                         <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_2'); ?></li>
-                        <li><label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label><input class="form-control" disabled="disabled" value="<?php echo $this->user->email; ?>" /></li>
+                        <li><label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label><input class="inputbox" disabled="disabled" value="<?php echo $this->user->email; ?>" /></li>
                         <?php if ( count($this->user->emails) ) {
                             foreach ($this->user->emails as $key=>$email) {  if ($email['email'] != $this->user->email) { ?>
-                                 <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value="<?php echo $email['email']; ?>"><span class="message"></span></li>
+                                 <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value="<?php echo $email['email']; ?>"><span class="message"></span></li>
                              <?php } }
                                 $remaining = 2 - count($this->user->emails);
                                 for ($i=0; $i<$remaining; $i++) { ?>
-                                     <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value=""><span class="message"></span></li>
+                                     <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value=""><span class="message"></span></li>
                                 <?php }
                                 } else { ?>
-                                    <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value=""><span class="message"></span></li>
-                                    <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value=""><span class="message"></span></li>
+                                    <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value=""><span class="message"></span></li>
+                                    <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="inputbox" type="text" name="email[]" value=""><span class="message"></span></li>
                         <?php } ?>
                     </ul>
                     <a class="add_email_link" onclick="addEmailBox();"><?php echo TextHelper::_('COBALT_ADD_ANOTHER_EMAIL'); ?></a>
@@ -148,7 +148,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="list-unstyled" >
+                    <ul class="unstyled" >
                         <?php /**
                         <li>
                             <label class="small"><input type="checkbox" name="daily_agenda" <?php if ( $this->user['daily_agenda'] ) echo 'checked'; ?> ></label>
@@ -197,11 +197,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="list-unstyled">
+                    <ul class="unstyled">
                         <li><?php echo TextHelper::_('COBALT_SET_HOME_CHART_DESC'); ?></li>
                         <li>
                             <label>
-                                <select class="form-control" name="home_page_chart">
+                                <select class="inputbox" name="home_page_chart">
                                     <?php
                                         $charts = ChartsHelper::getDashboardCharts();
                                         echo JHtml::_('select.options', $charts, 'value', 'text', $this->user->home_page_chart, true);
@@ -226,15 +226,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="list-unstyled" >
+                    <ul class="unstyled" >
                         <li><?php echo TextHelper::_('COBALT_SET_COMMISSION_RATE_DESC'); ?></li>
                         <li>
                             <label>
                                 <?php echo TextHelper::_('COBALT_COMMISSION_RATE'); ?>
                             </label>
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="commission_rate" value="<?php echo $this->user->commission_rate; ?>">
-                                <span class="input-group-addon">%</span>
+                            <div class="input-append">
+                                <input class="inputbox" type="text" name="commission_rate" value="<?php echo $this->user->commission_rate; ?>">
+                                <span class="input-append-addon">%</span>
                             </div>
                         </li>
                     </ul>

@@ -13,14 +13,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->side_menu['help_menu']->render(); ?>
     <?php echo $this->side_menu['quick_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <?php echo $this->side_menu['menu']->render(); ?>
-                <div class="col-lg-9">
+                <div class="span9">
                     <form action="index.php?view=cobalt" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-                        <div class="row">
+                        <div class="row-fluid">
                             <div class="rocket"></div>
                             <div class="launch_text">
                                 <h1><?php echo JText::_('COBALT_CONGRATULATIONS'); ?></h1>

@@ -26,7 +26,7 @@ if (!isset($this->association_id)) { ?>
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_NAME'); ?></div>
                 <div class="cobaltValue">
-                    <input type="text" class="form-control" name="name" value="" />
+                    <input type="text" class="inputbox" name="name" value="" />
                 </div>
             </div>
             <div class="cobaltRow">
@@ -44,7 +44,7 @@ if (!isset($this->association_id)) { ?>
                 <div class="cobaltField"></div>
                 <div class="cobaltValue">
                     <label for="due_date"><?php echo TextHelper::_('COBALT_DUE_DATE'); ?>:</label>
-                    <input type="date" name="due_date_hidden" class="form-control" id="due_date" value="" />
+                    <input type="date" name="due_date_hidden" class="inputbox" id="due_date" value="" />
                     <input type="hidden" name="due_date" id="due_date_hidden" value="" />
                 </div>
             </div>

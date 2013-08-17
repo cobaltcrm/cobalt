@@ -27,7 +27,7 @@ class TemplateHelper
         <div class="container">
             <div id="com_cobalt">
                 <div id="message" style="display:none;"></div>
-                    <div id="CobaltModalMessage" class="modal fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div id="CobaltModalMessage" class="modal hide fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-header small">
                             <h3 id="CobaltModalMessageHeader"></h3>
                         </div>
@@ -52,7 +52,7 @@ class TemplateHelper
                     if (self::isMobile()) : ?>
                     <div class='page' data-role='page' data-theme='b' id=''>
                     <?php endif; ?>
-                    <div id="logoutModal" class="modal fade">
+                    <div id="logoutModal" class="modal hide fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -88,7 +88,7 @@ class TemplateHelper
             }
         }
         ?>
-                    <div class="modal fade" role="dialog" id="CobaltAjaxModal">
+                    <div class="modal hide fade" role="dialog" id="CobaltAjaxModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -104,7 +104,7 @@ class TemplateHelper
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" role="dialog" id="CobaltAjaxModalPreview">
+                    <div class="modal hide fade" role="dialog" id="CobaltAjaxModalPreview">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -128,7 +128,7 @@ class TemplateHelper
     public static function displayLogout()
     {
         $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
-        $string  = '<form class="inline-form" action="index.php?controller=logout" method="post">';
+        $string  = '<form class="inline-form" action="'.JRoute::_("index.php?task=logout").'" method="post">';
         $string .= '<input type="hidden" name="return" value="'.$returnURL.'" />';
         $string .= '<input type="submit" class="button" value="'.TextHelper::_('COBALT_LOGOUT').'" />';
         $string .= JHtml::_('form.token');
@@ -152,23 +152,18 @@ class TemplateHelper
 
         //generate html
         $list_html  = '<div class="navbar navbar-fixed-top">';
-        $list_html .= '<div class="container">';
-        $list_html .= '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>';
-        $list_html .= "<div class='navbar-brand' style='padding:0'>";
-        $list_html .= "<img id='site-logo-img' src='".StylesHelper::getSiteLogo()."' />";
+        $list_html .= '<div class="navbar-inner"><div class="container">';
+//        $list_html .= "<div class='site-logo pull-left' style='padding:0'>";
+//        $list_html .= "<img id='site-logo-img' src='".StylesHelper::getSiteLogo()."' />";
+//        $list_html .= '</div>';
         $list_html .= '<a id="site-name-link" class="brand" href="'.JUri::base().'">'.StylesHelper::getSiteName().'</a>';
-        $list_html .= '</div>';
-        $list_html .= '<div class="nav-collapse collapse navbar-responsive-collapse"><ul class="nav navbar-nav">';
+        $list_html .= '<ul class="nav">';
         foreach ($list->menu_items as $name) {
             $class = $name == $controller || $name == $view ? "active" : "";
-            $list_html .= '<li class="'.$class.'"><a href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
+            $list_html .= '<li><a class="'.$class.'" href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
         $list_html .= '</ul>';
-        $list_html .= "<ul class='nav navbar-nav pull-right'>";
+        $list_html .= "<ul class='nav pull-right'>";
         $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="icon-plus icon-white"></i></a><ul class="dropdown-menu">';
         $list_html .= '<li><a href="'.JRoute::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
         $list_html .= '<li><a href="'.JRoute::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
@@ -176,7 +171,6 @@ class TemplateHelper
         $list_html .= '<li><a href="'.JRoute::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ENTER_FULLSCREEN').'" data-placement="bottom" class="block-btn" href="javascript:void(0);" onclick="Cobalt.toggleFullScreen();" ><i class="icon-fullscreen icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a></li>';
 
@@ -188,13 +182,12 @@ class TemplateHelper
             $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
             $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
         }
-        $list_html .= '</ul></div>';
+        $list_html .= '</ul>';
 
-        $list_html .= '</div>';
         $list_html .= '</div>';
         $list_html .= '<div style="display:none;" class="pull-right" id="site_search">';
         $list_html .= '<input class="inputbox site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
-        $list_html .= '</div></div>';
+        $list_html .= '</div></div></div>';
 
         //return html
         echo $list_html;
@@ -414,7 +407,7 @@ class TemplateHelper
         $list_html  = "";
 
         $list_html .= "<div id='list_edit_actions'>";
-        $list_html .= '<ul class="list-inline">';
+        $list_html .= '<ul class="inline">';
         $list_html .= '<li>'.TextHelper::_('COBALT_PERFORM').'</li>';
         $list_html .= '<li class="dropdown">';
         $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >'.TextHelper::_('COBALT_ACTIONS').'</a>';

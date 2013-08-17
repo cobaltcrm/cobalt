@@ -37,16 +37,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <fieldset>
                 <div class="form-group">
                     <label id="username-lbl" for="username" class="control-label"><?php echo TextHelper::_('COBALT_USER_NAME'); ?></label>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="icon icon-user"></i></span>
-                        <input type="text" name="username" id="username" value="" class="form-control validate-username" size="25">
+                    <div class="input-append">
+                        <span class="input-append-addon"><i class="icon icon-user"></i></span>
+                        <input type="text" name="username" id="username" value="" class="inputbox validate-username" size="25">
                     </div>
                 </div>
                 <div class="form-group">
                     <label id="password-lbl" for="password" class="control-label"><?php echo TextHelper::_('COBALT_PASSWORD'); ?></label>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="icon icon-lock"></i></span>
-                        <input type="password" name="password" id="password" value="" class="form-control validate-password" size="25">
+                    <div class="input-append">
+                        <span class="input-append-addon"><i class="icon icon-lock"></i></span>
+                        <input type="password" name="password" id="password" value="" class="inputbox validate-password" size="25">
                     </div>
                 </div>
                 <div class="form-group">

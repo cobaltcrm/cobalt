@@ -14,9 +14,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h1>
 </div>
 
-<div class="row">
-    <div class="col-lg-6">
-    <ul class="goal_float_list list-unstyled" id="goal_floats_left">
+<div class="row-fluid">
+    <div class="span6">
+    <ul class="goal_float_list unstyled" id="goal_floats_left">
         <li class="widget clearfix">
             <h3><?php echo ucwords(TextHelper::_('COBALT_LEADERBOARD')); ?></h3>
             <div class="goal_filter_container alert">
@@ -24,7 +24,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <?php echo TextHelper::_("COBALT_SHOWING_LEADERBOARD"); ?> -
                     <span class="dropdown">
                         <a class="dropdown-toggle update-toggle-text" data-toggle="dropdown" href="#" role="button" id="leaderboard_filter_link" ><span class="dropdown-label"><?php $keys = array_keys($this->leaderboard_list); echo $this->leaderboard_list[$keys[0]]; ?></span><span class="caret"></span></a>
-                        <ul id="leaderboard_filter" class="list-unstyled dropdown-menu" role="menu">
+                        <ul id="leaderboard_filter" class="unstyled dropdown-menu" role="menu">
                             <?php foreach ($this->leaderboard_list as $key=>$name) {
                                  echo "<li><a href='javascript:void(0);' class='filter_".$key." dropdown_item' onclick=\"changeLeaderBoard('".$key."')\">".$name."</a></li>";
                             }?>
@@ -105,8 +105,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </ul>
 </div>
 
-<div class="col-lg-6">
-    <ul class="goal_float_list list-unstyled" id="goal_floats_right">
+<div class="span6">
+    <ul class="goal_float_list unstyled" id="goal_floats_right">
         <li class="widget clearfix">
                 <h3><?php echo TextHelper::_('COBALT_INDIVIDUAL_GOALS'); ?></h3>
                 <div class="goal_filter_container alert">
@@ -115,7 +115,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <?php echo TextHelper::_('COBALT_GOALS_FOR'); ?> -
                         <span class="dropdown">
                             <a class="dropdown-toggle update-toggle-text" data-toggle="dropdown" href="#" role="button" id="user_goal_select_link" ><span class="dropdown-label"><?php echo TextHelper::_('COBALT_ME'); ?></span><span class="caret"></span></a>
-                            <ul class="list-unstyled dropdown-menu" role="menu">
+                            <ul class="unstyled dropdown-menu" role="menu">
                                 <li><a href="javascript:void(0);" class='filter_<?php echo $this->user_id; ?> dropdown_item'  onclick="changeIndividual(<?php echo $this->user_id; ?>);"><?php echo TextHelper::_('COBALT_ME'); ?></a></li>
                                 <?php foreach ($this->users as $user) { ?>
                                      <li><a href="javascript:void(0);" class='filter_<?php echo $user['id']; ?> dropdown_item' onclick="changeIndividual(<?php echo $user['id']; ?>);"><?php echo $user['first_name']." ".$user['last_name']; ?></a></li>
@@ -186,7 +186,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                    <?php echo TextHelper::_('COBALT_GOALS_FOR'); ?> -
                    <span class="dropdown">
                        <a href="javascript:void(0);" class="dropdown-toggle update-toggle-text" data-toggle="dropdown" role="button" id="team_goal_select_link" ><span class="dropdown-label"><?php echo TextHelper::_("COBALT_MY_TEAM"); ?></span><span class="caret"></span></a>
-                        <ul class="list-unstyled dropdown-menu" role="menu" id="team_goal_select">
+                        <ul class="unstyled dropdown-menu" role="menu" id="team_goal_select">
                             <li><a href="javascript:void(0);" class='filter_<?php echo $this->team_id; ?> dropdown_item'  onclick="changeTeam(<?php echo $this->team_id; ?>)"><?php echo TextHelper::_("COBALT_MY_TEAM"); ?></a></li>
                             <?php foreach ($this->teams as $team) { ?>
                                 <li><a href="javascript:void(0);" class='filter_<?php echo $team['team_id']; ?> dropdown_item'  onclick="changeTeam(<?php echo $team['team_id']; ?>)"><?php echo $team['team_name'].TextHelper::_('COBALT_TEAM_APPEND'); ?></a></li>

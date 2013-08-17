@@ -17,7 +17,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     order_col = "<?php echo $this->state->get('People.filter_order'); ?>";
 </script>
 
- <div data-remote="index.php?view=people&layout=edit&format=raw&tmpl=component" class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div data-remote="index.php?view=people&layout=edit&format=raw&tmpl=component" class="modal hide fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></h3>
@@ -42,7 +42,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_HEADER')); ?></h1>
 </div>
-<ul class="list-inline">
+<ul class="inline">
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" data-toggle="dropdown" role="button" id="people_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo $this->people_type_name; ?><span></a>
@@ -99,7 +99,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input class="form-control filter_input" name="name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->people_filter; ?>">
+        <input class="inputbox filter_input" name="name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->people_filter; ?>">
     </li>
     <li class="filter_sentence">
         <div class="ajax_loader"></div>

@@ -33,17 +33,17 @@ $raw = $app->input->get('format'); ?>
             <div class="tab-pane active" id="basic">
                 <div class="control-group">
                     <label class="control-label" for="name"><?php echo TextHelper::_('COBALT_DEAL_NAME'); ?><span class="required">*</span></label>
-                    <div class="controls"><input type="text" class="form-control" name="name" placeholder="<?php echo TextHelper::_('COBALT_DEAL_NAME_NULL'); ?>" value="<?php echo isset($deal['name']) ? $deal['name'] : ''; ?>" /></div>
+                    <div class="controls"><input type="text" class="inputbox" name="name" placeholder="<?php echo TextHelper::_('COBALT_DEAL_NAME_NULL'); ?>" value="<?php echo isset($deal['name']) ? $deal['name'] : ''; ?>" /></div>
                 </div>
 
                     <div class="control-group">
                         <label class="control-label" for="summary"><?php echo TextHelper::_('COBALT_DEAL_SUMMARY'); ?></label>
-                        <div class="controls"><textarea class="form-control" name="summary" cols="50" placeholder="<?php echo TextHelper::_('COBALT_DEAL_SUMMARY_NULL'); ?>" rows="5"><?php echo isset($deal['summary']) ? $deal['summary'] : ''; ?></textarea></div>
+                        <div class="controls"><textarea class="inputbox" name="summary" cols="50" placeholder="<?php echo TextHelper::_('COBALT_DEAL_SUMMARY_NULL'); ?>" rows="5"><?php echo isset($deal['summary']) ? $deal['summary'] : ''; ?></textarea></div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="company"><?php echo ucwords(TextHelper::_('COBALT_DEAL_COMPANY')); ?></label>
                         <div class="controls">
-                                <input type="text" onkeyup="checkCompanyName(this);" class="form-control" name="company" id="company_name" value="<?php if ( array_key_exists('company_name',$deal) ) echo $deal['company_name']; ?>" />
+                                <input type="text" onkeyup="checkCompanyName(this);" class="inputbox" name="company" id="company_name" value="<?php if ( array_key_exists('company_name',$deal) ) echo $deal['company_name']; ?>" />
                                 <input type="hidden" name="company_id" id="company_id" value="<?php echo isset($deal['company_id']) ? $deal['company_id'] : ''; ?>" />
                                 <div class="alert" style="display: none;" id="company_message"></div>
                         </div>
@@ -51,7 +51,7 @@ $raw = $app->input->get('format'); ?>
                     <div class="control-group">
                         <label class="control-label" for="primary_contact_name"><?php echo ucwords(TextHelper::_('COBALT_PRIMARY_CONTACT')); ?></label>
                         <div class="controls">
-                                <input type="text" onkeyup="checkPersonName(this);" class="form-control" name="primary_contact_name" id="primary_contact_name" value="<?php if ( array_key_exists('primary_contact_id',$deal) && $deal['primary_contact_id'] > 0 ) echo $deal['primary_contact_first_name'].' '.$deal['primary_contact_last_name']; ?>" />
+                                <input type="text" onkeyup="checkPersonName(this);" class="inputbox" name="primary_contact_name" id="primary_contact_name" value="<?php if ( array_key_exists('primary_contact_id',$deal) && $deal['primary_contact_id'] > 0 ) echo $deal['primary_contact_first_name'].' '.$deal['primary_contact_last_name']; ?>" />
                                 <input type="hidden" name="primary_contact_id" id="primary_contact_id" value="<?php if ( array_key_exists('primary_contact_id',$deal) ) echo $deal['primary_contact_id']; ?>" />
                                 <div id="person_message"></div>
                         </div>
@@ -67,9 +67,9 @@ $raw = $app->input->get('format'); ?>
                 <div class="control-group">
                     <label class="control-label" for="amount"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></label>
                     <div class="controls">
-                        <div class="input-group">
-                            <span class="input-group-addon"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
-                            <input class="form-control required" type="text" name="amount" value="<?php echo isset($deal['amount']) ? $deal['amount'] : ''; ?>" />
+                        <div class="input-append">
+                            <span class="input-append-addon"><?php echo ConfigHelper::getConfigValue('currency'); ?></span>
+                            <input class="inputbox required" type="text" name="amount" value="<?php echo isset($deal['amount']) ? $deal['amount'] : ''; ?>" />
                         </div>
                     </div>
                 </div>
@@ -88,9 +88,9 @@ $raw = $app->input->get('format'); ?>
                 <div class="control-group">
                     <label class="control-label" for="probability"><?php echo TextHelper::_('COBALT_DEAL_PROBABILITY'); ?></label>
                     <div class="controls">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="probability" value="<?php if ( array_key_exists('probability', $deal) ) echo $deal['probability']; ?>" />
-                            <span class="input-group-addon">%</span>
+                        <div class="input-append">
+                            <input type="text" class="inputbox" name="probability" value="<?php if ( array_key_exists('probability', $deal) ) echo $deal['probability']; ?>" />
+                            <span class="input-append-addon">%</span>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ $raw = $app->input->get('format'); ?>
                 <div class="control-group">
                     <label class="control-label" for="expected_close"><?php echo TextHelper::_('COBALT_DEAL_CLOSE'); ?></label>
                     <div class="controls">
-                        <input class="form-control date_input" type="text" id="expected_close" name="expected_close_input" value="<?php echo DateHelper::formatDate(isset($deal['expected_close']) ? $deal['expected_close'] : ''); ?>">
+                        <input class="inputbox date_input" type="text" id="expected_close" name="expected_close_input" value="<?php echo DateHelper::formatDate(isset($deal['expected_close']) ? $deal['expected_close'] : ''); ?>">
                         <input type="hidden" id="expected_close_hidden" name="expected_close" value="<?php if ( array_key_exists('expected_close',$deal) && !is_null($deal['expected_close']) && $deal['expected_close'] != "" && $deal['expected_close'] != "0000-00-00"   ) { echo $deal['expected_close']; } else { echo date("Y-m-d"); } ?>" />
                     </div>
                 </div>
@@ -111,7 +111,7 @@ $raw = $app->input->get('format'); ?>
                 <div class="control-group">
                     <label class="control-label" for="actual_close"><?php echo TextHelper::_('COBALT_DEAL_ACTUAL_CLOSE'); ?></label>
                     <div class="controls">
-                        <input class="form-control date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo DateHelper::formatDate(isset($deal['actual_close']) ? $deal['actual_close'] : ''); ?>">
+                        <input class="inputbox date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo DateHelper::formatDate(isset($deal['actual_close']) ? $deal['actual_close'] : ''); ?>">
                         <input type="hidden" id="actual_close_hidden" name="actual_close" value="<?php echo isset($deal['actual_close']) ? $deal['actual_close'] : ''; ?>" />
                     </div>
                 </div>
@@ -124,13 +124,13 @@ $raw = $app->input->get('format'); ?>
     </div>
     <?php
         if ( array_key_exists('id',$deal) ) {
-            echo '<input class="form-control" type="hidden" name="id" value="'.$deal['id'].'" />';
+            echo '<input class="inputbox" type="hidden" name="id" value="'.$deal['id'].'" />';
         }
         if ( array_key_exists('person_id',$deal) AND $app->input->get('person_id') ) {
-            echo '<input class="form-control" type="hidden" name="person_id" value="'.$deal['person_id'].'" />';
+            echo '<input class="inputbox" type="hidden" name="person_id" value="'.$deal['person_id'].'" />';
         }
         if ( array_key_exists('company_id',$deal) AND $app->input->get('company_id') ) {
-            echo '<input class="form-control" type="hidden" name="company_id" value="'.$deal['company_id'].'" />';
+            echo '<input class="inputbox" type="hidden" name="company_id" value="'.$deal['company_id'].'" />';
         }
     ?>
     <input type="hidden" name="model" value="deal" />

@@ -8,3 +8,8 @@ body {
 #com_cobalt .popover {
     min-width:200px;
 }
+/* Top Nav */
+.navbar-inner {background-color: #0047ab; background-image: linear-gradient(to bottom, #0047ab, #00409b); background-image: -webkit-linear-gradient(top,#0047ab,#00409b); background-image: -o-linear-gradient(top,#0047ab,#00409b); background-image: linear-gradient(to bottom,#0047ab,#00409b);background-repeat: repeat-x;}
+.navbar .nav > li > a, .navbar .brand {color: #f1f1f1; text-shadow: 0 0 1px #00409b;}
+.navbar .nav > li > a:hover, .navbar .nav > li a.active {background: #00409b; color: #FFFFFF;}
+.navbar-inner form {margin: 0;}

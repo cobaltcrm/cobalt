@@ -18,20 +18,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
 
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row">
-    <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+    <div class="span12" id="content">
     <div id="system-message-container"></div>
-        <div class="row">
+        <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-        <div class="col-lg-9">
+        <div class="span9">
 
 <form action="index.php?view=companycustom" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-    <div class="row">
+    <div class="row-fluid">
             <legend><h3><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FIELD'); ?></h3></legend>
                     <label><b>Name</b></label>
-                    <input type="text" class="form-control required" name="name" value="<?php echo $this->custom['name']; ?>" />
+                    <input type="text" class="inputbox required" name="name" value="<?php echo $this->custom['name']; ?>" />
                     <label><b>Type</b></label>
-                    <select class="form-control required" id="select-custom-type" name="type">
+                    <select class="inputbox required" id="select-custom-type" name="type">
                         <option value="">- Select Custom Field Type -</option>
                         <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom['type'], true);?>
                     </select>
@@ -55,7 +55,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </ul>
         <table>
             <tr>
-                <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                <td><input class="inputbox" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
                 <td>Make this field a required entry.</td>
             </tr>
         </table>
@@ -66,7 +66,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </ul>
         <table>
             <tr>
-                <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                <td><input class="inputbox" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
                 <td>Make this field a required entry.</td>
             </tr>
         </table>
@@ -77,7 +77,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </ul>
         <table>
             <tr>
-                <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                <td><input class="inputbox" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
                 <td>Make this field a required entry.</td>
             </tr>
         </table>
@@ -95,7 +95,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <table>
                             <tr>
                                 <td>Enter Choice</td>
-                                <td><input class="form-control required" type="text" name="values[]" value="<?php echo $value; ?>" /></td>
+                                <td><input class="inputbox required" type="text" name="values[]" value="<?php echo $value; ?>" /></td>
                                 <td><a class="btn btn-danger remove_values">Remove</a></td>
                             </tr>
                         </table>
@@ -106,7 +106,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <table>
                         <tr>
                             <td>Enter Choice</td>
-                            <td><input class="form-control required" type="text" name="values[]" value="" /></td>
+                            <td><input class="inputbox required" type="text" name="values[]" value="" /></td>
                             <td><a class="btn btn-danger remove_values">Remove</a></td>
                         </tr>
                     </table>
@@ -134,7 +134,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <table>
                 <tr>
                     <td>Enter Choice</td>
-                    <td><input class="form-control required" type="text" name="values[]" value="" /></td>
+                    <td><input class="inputbox required" type="text" name="values[]" value="" /></td>
                     <td><a class="btn btn-danger remove_values">Remove</a></td>
                 </tr>
             </table>

@@ -17,7 +17,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
     order_col = "<?php echo $this->state->get('Company.filter_order'); ?>";
 </script>
 
-<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component" class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component" class="modal hide fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,7 +46,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_COMPANIES')); ?></h1>
 </div>
-<ul class="list-inline">
+<ul class="inline">
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="company_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo $this->company_type; ?></span></a>
@@ -58,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input class="form-control filter_input" name="company_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->company_filter; ?>">
+        <input class="inputbox filter_input" name="company_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->company_filter; ?>">
     </li>
     <li>
         <div class="ajax_loader"></div>

@@ -12,8 +12,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS_HEADER')); ?></h1>
 <div class="goals_columns row">
-    <div class="goals_left_column col-lg-6">
-        <ul class="list-unstyled">
+    <div class="goals_left_column span6">
+        <ul class="unstyled">
             <li class="alert alert-success">
                 <div class="goal_container media">
                     <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/win_more_cash.png" /></div>
@@ -43,8 +43,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
         </ul>
     </div>
-    <div class="goals_right_column col-lg-6">
-        <ul class="list-unstyled">
+    <div class="goals_right_column span6">
+        <ul class="unstyled">
             <li class="alert">
                 <div class="goal_container media">
                     <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/complete_more_tasks.png" /></div>

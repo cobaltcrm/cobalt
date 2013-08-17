@@ -11,15 +11,15 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row">
-        <div class="col-lg-12" id="content">
+    <div class="row-fluid">
+        <div class="span12" id="content">
             <div id="system-message-container"></div>
-            <div class="row">
+            <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="col-lg-9">
+                <div class="span9">
                     <legend><h3><?php echo JText::_('COBALT_SHARED_DOCUMENTS'); ?></h3></legend>
                     <div class="alert alert-info"><?php echo JText::_('COBALT_SHARED_DOCS_DESC'); ?></div>
-                    <form action="index.php?view=documents" method="post" name="adminForm" id="adminForm">
+                    <form action="<?php echo JRoute::_('index.php?view=documents'); ?>" method="post" name="adminForm" id="adminForm">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -41,13 +41,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ( count($this->documents) ) { foreach ($this->documents as $key=>$document) { ?>
+                                <?php if (count($this->documents)) { foreach ($this->documents as $key => $document) { ?>
                                     <tr class="">
                                         <td class="center"><?php echo JHtml::_('grid.id', $key, $document['id']); ?></td>
                                         <td class="order"><?php echo '<img width="30px" height="30px" src="'.JURI::base().'src/Cobalt/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>'; ?></td>
-                                        <td class="order"><?php echo JHtml::_('link','index.php?view=documents&layout=download&document='.$document['filename'],$document['name'],array('target'=>'_blank')); ?></td>
+                                        <td class="order"><?php echo JHtml::_('link', 'index.php?view=documents&layout=download&document='.$document['filename'], $document['name'], array('target'=>'_blank')); ?></td>
                                         <td class="order"><?php echo $document['size']; ?>kb</td>
-                                        <td class="order"><?php echo date("F j, Y",strtotime($document['created'])); ?></td>
+                                        <td class="order"><?php echo date("F j, Y", strtotime($document['created'])); ?></td>
                                     </tr>
                                 <?php }} ?>
                             </tbody>
