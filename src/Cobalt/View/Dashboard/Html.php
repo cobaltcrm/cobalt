@@ -42,6 +42,8 @@ class Html extends AbstractHtmlView
         $eventDock = ViewHelper::getView('events','dashboard_event_dock','phtml', array('events'=>$events));
 
         $dealModel = new DealModel;
+		$dealModel->set('_view', 'dashboard');
+
         $dealModel->set('recent',true);
         $dealModel->set('archived',0);
         $recentDeals = $dealModel->getDeals();
@@ -102,6 +104,7 @@ class Html extends AbstractHtmlView
          /** get latest activities **/
         $this->latest_activities = ViewHelper::getView('dashboard','latest_activities','phtml');
         $this->latest_activities->activity = $activity;
+
         $activityHelper = new ActivityHelper;
         $activity = $activityHelper->getActivity();
 
