@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <style type="text/css">
     body {
         padding-top: 0;
-        background-color: #357ebd;
+        background-color: #0047ab;
         height:100%;
     }
     .container {
