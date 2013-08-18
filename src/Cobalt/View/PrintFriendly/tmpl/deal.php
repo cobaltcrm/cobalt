@@ -32,7 +32,7 @@ $deal = $this->info[0];
 
 <div class="leftColumn">
 
-<h1><?php echo $deal['name']; ?></h1>
+<h1><?php echo $deal->name; ?></h1>
 
 <div class="container">
     <div class="columncontainer">
@@ -41,17 +41,17 @@ $deal = $this->info[0];
                 <?php echo TextHelper::_('COBALT_EDIT_AMOUNT'); ?>:
                 <span class="amount">
                     <?php echo ConfigHelper::getCurrency(); ?>
-                    <div class="inline" id="editable_amount"><?php echo $deal['amount']; ?></div>
+                    <div class="inline" id="editable_amount"><?php echo $deal->amount; ?></div>
                 </span>
             </div>
             <div class="cobaltRow top">
                 <div class="cobaltField"><?php echo ucwords(TextHelper::_('COBALT_EDIT_COMPANY')); ?></div>
-                <div class="cobaltValue"><?php echo $deal['company_name']; ?></div>
+                <div class="cobaltValue"><?php echo $deal->company_name; ?></div>
             </div>
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_OWNER'); ?></div>
                 <div class="cobaltValue">
-                    <?php echo $deal['owner_first_name']." ".$deal['owner_last_name']; ?>
+                    <?php echo $deal->owner_first_name." ".$deal->owner_last_name; ?>
                 </div>
             </div>
         </div>
@@ -59,21 +59,21 @@ $deal = $this->info[0];
             <div class="small_info middle">
                 <?php echo TextHelper::_('COBALT_EDIT_AGE'); ?>:
                     <?php
-                        echo DateHelper::getElapsedTime($deal['created']);
+                        echo DateHelper::getElapsedTime($deal->created);
                     ?>
             </div>
             <div class="cobaltRow top">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_STAGE'); ?></div>
                 <div class="cobaltValue">
-                    <?php echo $deal['stage_name']; ?>
+                    <?php echo $deal->stage_name; ?>
                 </div>
             </div>
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_PROBABILITY'); ?></div>
                 <div class="cobaltValue">
                     <div class="inline">
-                        <?php if ( array_key_exists('probability',$deal) && $deal['probability'] != 0 ) {
-                                echo $deal['probability'].'%';
+                        <?php if ( array_key_exists('probability',$deal) && $deal->probability != 0 ) {
+                                echo $deal->probability.'%';
                             } else {
                                 echo TextHelper::_('COBALT_NOT_SET');
                             } ?>
@@ -84,13 +84,13 @@ $deal = $this->info[0];
         <div class="threecolumn">
             <div class="small_info last">
                 <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>:
-                    <?php echo DateHelper::formatDate($deal['expected_close']); ?>
+                    <?php echo DateHelper::formatDate($deal->expected_close); ?>
             </div>
             <div class="cobaltRow top">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_STATUS'); ?></div>
                 <div class="cobaltValue">
-                    <?php if ( array_key_exists('status_id',$deal) && $deal['status_id'] != 0 ) {
-                            echo "<div class='deal-status-".strtolower($deal['status_name'])."'></div>";
+                    <?php if ( array_key_exists('status_id',$deal) && $deal->status_id != 0 ) {
+                            echo "<div class='deal-status-".strtolower($deal->status_name)."'></div>";
                         } else {
                             echo TextHelper::_('COBALT_NOT_SET');
                         } ?>
@@ -99,8 +99,8 @@ $deal = $this->info[0];
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_SOURCE'); ?></div>
                 <div class="cobaltValue">
-                    <?php if ( array_key_exists('source_id',$deal) && $deal['source_id'] != 0 ) {
-                            echo $deal['source_name'];
+                    <?php if ( array_key_exists('source_id',$deal) && $deal->source_id != 0 ) {
+                            echo $deal->source_name;
                         } else {
                             echo TextHelper::_('COBALT_NOT_SET');
                         } ?>
@@ -111,15 +111,15 @@ $deal = $this->info[0];
     <h2><?php echo TextHelper::_('COBALT_EDIT_SUMMARY'); ?></h2>
 
     <div class="large_info">
-            <?php if ( !array_key_exists('summary',$deal) || $deal['summary'] == "" || is_null($deal['summary']) ) {
+            <?php if ( !array_key_exists('summary',$deal) || $deal->summary == "" || is_null($deal->summary) ) {
                     echo TextHelper::_('COBALT_NOT_SET');
                  } else {
-                    echo $deal['summary'];
+                    echo $deal->summary;
                 } ?>
     </div>
 
     <h2><?php echo TextHelper::_('COBALT_EDIT_NOTES'); ?></h2>
-    <?php echo $deal['notes']->render(); ?>
+    <?php echo $deal->notes->render(); ?>
 
     <?php echo $this->custom_fields->render(); ?>
 
@@ -135,10 +135,10 @@ $deal = $this->info[0];
             <th><?php echo TextHelper::_('COBALT_PEOPLE_TYPE'); ?></th>
             <th><?php echo TextHelper::_('COBALT_PEOPLE_CONTACT'); ?></th>
             <?php
-                $c = count($deal['people']);
+                $c = count($deal->people);
                 for ($i=0; $i<$c; $i++) {
 
-                    $person = $deal['people'][$i];
+                    $person = $deal->people[$i];
                     $k=$i%2;
                     echo '<tr class="cobalt_row_'.$k.'">';
                         if ( array_key_exists('avatar',$person) && $person['avatar'] != "" ) {
@@ -163,11 +163,11 @@ $deal = $this->info[0];
     <div id="conversation_entries">
     <?php
 
-        $c = count($deal['conversations']);
+        $c = count($deal->conversations);
 
             for ($i=0; $i<$c; $i++) {
 
-                $convo = $deal['conversations'][$i];
+                $convo = $deal->conversations[$i];
                 echo '<div class="conversation">';
 
                     echo '<div class="header"><b>'.DateHelper::formatDate($convo['created']).'</b></div>';

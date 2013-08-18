@@ -144,9 +144,9 @@ $person = $this->info[0];
                     $deal = $person['deals'][$i];
                     $k = $i%2;
                     echo '<tr class="cobalt_row_'.$k.'">';
-                        echo '<td><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal['id']).'">'.$deal['name'].'</a></td>';
-                        echo '<td>'.$deal['owner_first_name'].' '.$deal['owner_last_name'].'</td>';
-                        echo '<td><span class="amount">$'.$deal['amount'].'</span></td>';
+                        echo '<td><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id).'">'.$deal->name.'</a></td>';
+                        echo '<td>'.$deal->owner_first_name.' '.$deal->owner_last_name.'</td>';
+                        echo '<td><span class="amount">$'.$deal->amount.'</span></td>';
                     echo '</tr>';
                 }
             ?>

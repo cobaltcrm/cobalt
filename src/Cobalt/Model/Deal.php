@@ -838,7 +838,7 @@ class Deal extends DefaultModel
                         $query = $this->db->getQuery(true)
                             ->update("#__deals")
                             ->set("last_viewed=".$this->db->quote($now))
-                            ->where("id=".$deal['id']);
+                            ->where("id=".$deal->id);
 
                         $this->db->setQuery($query)->execute();
                     }
@@ -1286,7 +1286,7 @@ class Deal extends DefaultModel
         $return = array();
         if ( count($names) > 0 ) {
             foreach ($names as $key => $deal) {
-                $return[] = array('label'=>$deal['name'],'value'=>$deal['id']);
+                $return[] = array('label'=>$deal->name,'value'=>$deal->id);
             }
         }
 
