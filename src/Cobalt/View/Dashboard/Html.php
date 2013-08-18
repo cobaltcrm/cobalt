@@ -28,8 +28,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Html extends AbstractHtmlView
 {
-	protected $dashboard_limit = 10;
-
     public function render($tpl = null)
     {
 

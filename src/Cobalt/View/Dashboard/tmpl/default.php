@@ -40,19 +40,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <th><?php echo TextHelper::_('COBALT_DEAL_STATUS'); ?></th>
                                 <th class="right"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></th>
                             </tr>
-							<?php $i = 0; ?>
+                            <?php $i = 0; ?>
                             <?php foreach ($this->recentDeals as $deal) : ?>
-								<?php $k = $i%2; ?>
-								<tr class="cobalt_row_'<?php echo $k; ?>">
-									<td>
-										<a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id=' . $deal->id); ?>">
-											<?php echo $deal->name; ?>
-										</a>
-									</td>
-									<td><div class="deal-status-'<?php echo strtolower($deal->status_name); ?>"></div></td>
-									<td><span class="amount"><?php echo ConfigHelper::getConfigValue('currency').$deal->amount; ?></span></td>
-								</tr>
-								<?php $i++; ?>
+                                <?php $k = $i%2; ?>
+                                <tr class="cobalt_row_'<?php echo $k; ?>">
+                                    <td>
+                                        <a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id=' . $deal->id); ?>">
+                                            <?php echo $deal->name; ?>
+                                        </a>
+                                    </td>
+                                    <td><div class="deal-status-'<?php echo strtolower($deal->status_name); ?>"></div></td>
+                                    <td><span class="amount"><?php echo ConfigHelper::getConfigValue('currency').$deal->amount; ?></span></td>
+                                </tr>
+                                <?php $i++; ?>
                             <?php endforeach; ?>
                         </table>
                     </div>

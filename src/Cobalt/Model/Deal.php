@@ -860,7 +860,7 @@ class Deal extends DefaultModel
     {
         $closed_stages = DealHelper::getClosedStages();
         $deal->closed = in_array($deal->stage_id,$closed_stages) ? TRUE : FALSE;
-		$deal_id = $deal->id;
+        $deal_id = $deal->id;
 
         /** ------------------------------------------
          *  Join contacts
