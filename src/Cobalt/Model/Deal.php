@@ -852,7 +852,7 @@ class Deal extends DefaultModel
          */
         $app->triggerEvent('onDealLoad', array(&$deals));
 
-		// cast to array so it never returns null to view
+        // cast to array so it never returns null to view
         return (array) $deals;
     }
 

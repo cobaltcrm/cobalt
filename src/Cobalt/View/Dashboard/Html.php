@@ -48,7 +48,7 @@ class Html extends AbstractHtmlView
 
         $dealModel->set('recent',true);
         $dealModel->set('archived',0);
-		$recentDeals = $dealModel->getDeals();
+        $recentDeals = $dealModel->getDeals();
 
         // load java libs
         $doc = JFactory::getDocument();
