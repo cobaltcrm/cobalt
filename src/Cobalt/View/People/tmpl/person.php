@@ -25,14 +25,14 @@ $person = $this->people[0];
     <div data-remote="index.php?view=people&layout=edit&id=<?php echo $person['id']; ?>&format=raw&tmpl=component" class="modal hide fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COM_COBALT_ADD_PERSON')); ?></h3>
+            <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></h3>
         </div>
         <div class="modal-body">
             <p></p>
         </div>
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COM_COBALT_CANCEL')); ?></button>
-            <button onclick="saveProfileItem('edit_form');" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COM_COBALT_SAVE')); ?></button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
+            <button onclick="saveProfileItem('edit_form');" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
         </div>
     </div>
 
@@ -48,17 +48,17 @@ $person = $this->people[0];
 
         <div class="well" id="details">
             <div class="row-fluid">
-                <strong><?php echo TextHelper::_('COM_COBALT_MOBILE_PHONE'); ?></strong>
+                <strong><?php echo TextHelper::_('COBALT_PERSON_MOBILE_PHONE'); ?></strong>
                 <span class="pull-right"><?php echo $person['mobile_phone']; ?></span>
             </div>
 
             <div class="row-fluid">
-                <strong><?php echo TextHelper::_('COM_COBALT_PERSON_HOME_PHONE'); ?></strong>
+                <strong><?php echo TextHelper::_('COBALT_PERSON_HOME_PHONE'); ?></strong>
                 <span class="pull-right"><?php echo $person['home_phone']; ?></span>
             </div>
 
             <div class="row-fluid">
-                <strong><?php echo TextHelper::_('COM_COBALT_EMAIL_SHORT'); ?></strong>
+                <strong><?php echo TextHelper::_('COBALT_EMAIL_SHORT'); ?></strong>
                 <?php if (array_key_exists('email', $person))
                 { ?>
                     <span class="pull-right"><a target='_blank' href="mailto:<?php echo $person['email']; ?>?bcc=<?php echo ConfigHelper::getConfigValue('imap_user'); ?>"><?php echo $person['email']; ?></a></span>
@@ -69,14 +69,14 @@ $person = $this->people[0];
             <?php if (array_key_exists('work_address_1', $person) && $person['work_address_1'] != "")
             { ?>
 
-                <div class='label label-info'><?php echo TextHelper::_('COM_COBALT_WORK_ADDRESS'); ?></div>
+                <div class='label label-info'><?php echo TextHelper::_('COBALT_WORK_ADDRESS'); ?></div>
                 <div class="row-fluid">
                     <?php $urlString = "http://maps.googleapis.com/maps/api/staticmap?&zoom=13&zoom=2&size=600x400&sensor=false&center=" . str_replace(" ", "+", $person['work_address_1'] . ' ' . $person['work_address_2'] . ' ' . $person['work_city'] . ' ' . $person['work_state'] . ' ' . $person['work_zip'] . ' ' . $person['work_country']); ?>
                     <a href="#work_address_modal" data-toggle="modal" class="btn btn-mini pull-right"><i class="icon icon-map-marker"></i></a>
                     <div id="work_address_modal" class="modal hide fade">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h3><?php echo TextHelper::_('COM_COBALT_WORK_ADDRESS'); ?></h3>
+                            <h3><?php echo TextHelper::_('COBALT_WORK_ADDRESS'); ?></h3>
                         </div>
                         <div class="modal-body">
                             <img class="google-image-modal" style="background-image:url(<?php echo $urlString; ?>);"/>
@@ -94,14 +94,14 @@ $person = $this->people[0];
 
             <?php if (array_key_exists('home_address_1', $person) && $person['home_address_1'] != "")
             { ?>
-                <div class='label label-info'><?php echo TextHelper::_('COM_COBALT_HOME_ADDRESS'); ?></div>
+                <div class='label label-info'><?php echo TextHelper::_('COBALT_HOME_ADDRESS'); ?></div>
                 <div class="row-fluid">
                     <?php $urlString = "http://maps.googleapis.com/maps/api/staticmap?&zoom=13&zoom=2&size=600x400&sensor=false&center=" . str_replace(" ", "+", $person['home_address_1'] . ' ' . $person['home_address_2'] . ' ' . $person['home_city'] . ' ' . $person['home_state'] . ' ' . $person['home_zip'] . ' ' . $person['home_country']); ?>
                     <a href="#home_address_modal" data-toggle="modal" class="btn btn-mini pull-right"><i class="icon icon-map-marker"></i></a>
                     <div id="home_address_modal" class="modal hide fade">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h3><?php echo TextHelper::_('COM_COBALT_HOME_ADDRESS'); ?></h3>
+                            <h3><?php echo TextHelper::_('COBALT_HOME_ADDRESS'); ?></h3>
                         </div>
                         <div class="modal-body">
                             <img class="google-image-modal" style="background-image:url(<?php echo $urlString; ?>);"/>
@@ -130,11 +130,11 @@ $person = $this->people[0];
                     else
                     {
                         ?>
-                        <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COM_COBALT_PERSON_FACEBOOK_URL'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="facebook_form_<?php echo $person['id']; ?>">
+                        <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_PERSON_FACEBOOK_URL'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="facebook_form_<?php echo $person['id']; ?>">
 							<input type="text" class="input-small" name="facebook_url" value="<?php if (array_key_exists('facebook_url', $person)){ echo $person['facebook_url'];} ?>" />
 							<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 							<input type="hidden" name="item_type" value="people"/>
-							<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COM_COBALT_SAVE'); ?></a>
+							<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 						</form></div>'><span id="editable_facebook_container_<?php echo $person['id']; ?>"><div class="facebook_dark"></div></span></a>
                     <?php } ?>
 
@@ -148,11 +148,11 @@ $person = $this->people[0];
                     else
                     {
                         ?>
-                        <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COM_COBALT_PERSON_TWITTER_USER'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="twitter_form_<?php echo $person['id']; ?>">
+                        <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_PERSON_TWITTER_USER'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="twitter_form_<?php echo $person['id']; ?>">
 								<input type="text" class="input-small" name="twitter_user" value="<?php if (array_key_exists('twitter_user', $person)){ echo $person['twitter_user'];} ?>" />
 								<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 								<input type="hidden" name="item_type" value="people"/>
-								<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COM_COBALT_SAVE'); ?></a>
+								<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 							</form></div>'><span id="editable_twitter_container_<?php echo $person['id']; ?>"><div class="twitter_dark"></div></span></a>
 
                     <?php } ?>
@@ -167,21 +167,21 @@ $person = $this->people[0];
                     else
                     {
                         ?>
-                        <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COM_COBALT_PERSON_LINKEDIN_URL'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="linkedin_form_<?php echo $person['id']; ?>">
+                        <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_PERSON_LINKEDIN_URL'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="linkedin_form_<?php echo $person['id']; ?>">
 						<input type="text" class="input-small" name="linkedin_url" value="<?php if (array_key_exists('linkedin_url', $person)){ echo $person['linkedin_url'];} ?>" />
 						<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 						<input type="hidden" name="item_type" value="people"/>
-						<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COM_COBALT_SAVE'); ?></a>
+						<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 					</form></div>'><span id="editable_linkedin_container_<?php echo $person['id']; ?>"><div class="linkedin_dark"></div></span></a>
 
                     <?php } ?>
 
                     <?php $style = (array_key_exists('aim', $person) && $person['aim'] != '') ? 'light' : 'dark'; ?>
-                    <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COM_COBALT_PERSON_AIM_USER'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="aim_form_<?php echo $person['id']; ?>">
+                    <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_PERSON_AIM_USER'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="aim_form_<?php echo $person['id']; ?>">
 					<input type="text" class="input-small" name="aim" value="<?php if (array_key_exists('aim', $person)){ echo $person['aim'];} ?>" />
 					<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 					<input type="hidden" name="item_type" value="people"/>
-					<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COM_COBALT_SAVE'); ?></a>
+					<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 				</form></div>'><span id="editable_aim_container_<?php echo $person['id']; ?>"><div id="aim_button_<?php echo $person['id']; ?>" class="aim_<?php echo $style; ?>"></div></span></a>
 
                 </div>
@@ -191,7 +191,7 @@ $person = $this->people[0];
         <?php if ($person['twitter_user'])
         { ?>
             <div class="widget">
-                <h3><?php echo TextHelper::_('COM_COBALT_LATEST_TWEETS'); ?></h3>
+                <h3><?php echo TextHelper::_('COBALT_LATEST_TWEETS'); ?></h3>
                 <?php if (array_key_exists('tweets', $person))
                 {
                     for ($i = 0; $i < count($person['tweets']); $i++)
@@ -213,21 +213,21 @@ $person = $this->people[0];
     </div>
 
     <div class="span9">
-    <div class="btn-group actions_container">
-        <a class="btn" role="button" href="#personModal" data-toggle="modal"><?php echo ucwords(TextHelper::_("COM_COBALT_EDIT_BUTTON")); ?></a>
+    <div class="btn-group actions_container pull-right">
+        <a class="btn" role="button" href="#personModal" data-toggle="modal"><?php echo ucwords(TextHelper::_("COBALT_EDIT_BUTTON")); ?></a>
         <button class="btn dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
             <li>
-                <a onclick="addDeal('person_id=<?php echo $person['id']; ?>')"><?php echo TextHelper::_('COM_COBALT_ASSOCIATE_TO_DEAL'); ?></a>
+                <a onclick="addDeal('person_id=<?php echo $person['id']; ?>')"><?php echo TextHelper::_('COBALT_ASSOCIATE_TO_DEAL'); ?></a>
             </li>
             <?php if ($person['owner_id'] == UsersHelper::getUserId()) : ?>
-                <li><a onclick="shareItemDialog();"><?php echo TextHelper::_('COM_COBALT_SHARE'); ?></a></li>
+                <li><a onclick="shareItemDialog();"><?php echo TextHelper::_('COBALT_SHARE'); ?></a></li>
             <?php endif; ?>
             <?php if (UsersHelper::canDelete() || $person['owner_id'] == UsersHelper::getUserId()) : ?>
                 <li>
-                    <a onclick="deleteItem(this)"><?php echo TextHelper::_('COM_COBALT_DELETE_CONTACT'); ?></a>
+                    <a onclick="deleteItem(this)"><?php echo TextHelper::_('COBALT_DELETE_CONTACT'); ?></a>
                     <form id="delete_form" method="POST" action="<?php echo JRoute::_('index.php?task=main.trash'); ?>">
                         <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                         <input type="hidden" name="item_type" value="people"/>
@@ -236,7 +236,7 @@ $person = $this->people[0];
                 </li>
             <?php endif; ?>
             <li>
-                <a onclick="printItems(this,'people')"><?php echo TextHelper::_('COM_COBALT_PRINT'); ?></a>
+                <a onclick="printItems(this,'people')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
                 <form class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                     <input type="hidden" name="layout" value="person"/>
@@ -247,7 +247,7 @@ $person = $this->people[0];
                 <form id="vcard_form" action="" method="POST">
                     <input type="hidden" name="person_id" value="<?php echo $person['id']; ?>"/>
                     <a onclick="exportVcard()">
-                        <?php echo TextHelper::_('COM_COBALT_VCARD'); ?>
+                        <?php echo TextHelper::_('COBALT_VCARD'); ?>
                     </a>
                 </form>
             </li>
@@ -261,11 +261,11 @@ $person = $this->people[0];
     <div class="row-fluid">
         <div class="span4">
             <div class="well well-small text-center">
-                <?php echo TextHelper::_('COM_COBALT_PERSON_TOTAL'); ?>
+                <?php echo TextHelper::_('COBALT_PERSON_TOTAL'); ?>
                 <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo (float) $person['total_pipeline']; ?></h2>
             </div>
             <div class="crmeryRow top">
-                <div class="crmeryField"><?php echo ucwords(TextHelper::_('COM_COBALT_COMPANY')); ?>:</div>
+                <div class="crmeryField"><?php echo ucwords(TextHelper::_('COBALT_COMPANY')); ?>:</div>
                 <div class="crmeryValue">
                     <?php if (array_key_exists('company_id', $person) && $person['company_id'] > 0)
                     { ?>
@@ -274,19 +274,19 @@ $person = $this->people[0];
                     }
                     else
                     {
-                        echo ucwords(TextHelper::_('COM_COBALT_NO_COMPANY'));
+                        echo ucwords(TextHelper::_('COBALT_NO_COMPANY'));
                     } ?>
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="crmeryRow">
-                <div class="crmeryField"><?php echo ucwords(TextHelper::_('COM_COBALT_EDIT_OWNER')); ?>:</div>
+                <div class="crmeryField"><?php echo ucwords(TextHelper::_('COBALT_EDIT_OWNER')); ?>:</div>
                 <div class="crmeryValue">
                     <div class='dropdown' id="person_owner" data-item="deal" data-field="owner_id" data-item-id="<?php echo $person['id']; ?>">
                         <a href="#" class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='person_owner_link'><span id="owner_first_name_<?php echo $person['id']; ?>"><?php echo $person['owner_first_name']." ".$person['owner_last_name']; ?></span></a>
                         <ul class="dropdown-menu pull-right" role="menu">
                             <?php
-                            $me = array(array('label'=>TextHelper::_('COM_COBALT_ME'),'value'=>UsersHelper::getLoggedInUser()->id));
+                            $me = array(array('label'=>TextHelper::_('COBALT_ME'),'value'=>UsersHelper::getLoggedInUser()->id));
                             $users = UsersHelper::getUsers(null,TRUE);
                             $users = array_merge($me,$users);
                             if ( count($users) ){ foreach ( $users as $key => $user ){ ?>
@@ -305,18 +305,18 @@ $person = $this->people[0];
 
         <div class="span4">
             <div class="well well-small text-center">
-                <?php echo ucwords(TextHelper::_('COM_COBALT_PERSON_DEALS')); ?>
+                <?php echo ucwords(TextHelper::_('COBALT_PERSON_DEALS')); ?>
                 <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo (float) $person['won_deal_amount']; ?></h2>
             </div>
             <div class="crmeryRow top">
-                <div class="crmeryField"><?php echo TextHelper::_('COM_COBALT_TITLE'); ?>:</div>
+                <div class="crmeryField"><?php echo TextHelper::_('COBALT_TITLE'); ?>:</div>
                 <div class="crmeryValue">
 					<span class="editable parent" id="editable_position_container">
 						<div class="inline" id="editable_position">
-                            <?php $data_title = (array_key_exists('position', $person) && $person['position'] != "") ? $person['position'] : ucwords(TextHelper::_('COM_COBALT_CLICK_TO_EDIT')); ?>
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COM_COBALT_POSITION'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="position_form">
+                            <?php $data_title = (array_key_exists('position', $person) && $person['position'] != "") ? $person['position'] : ucwords(TextHelper::_('COBALT_CLICK_TO_EDIT')); ?>
+                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_POSITION'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="position_form">
 								<input type="text" class="input-small" name="position" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" />
-								<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COM_COBALT_SAVE'); ?></a>
+								<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 							</form></div>' ><span id="position_<?php echo $person['id']; ?>"><?php echo $data_title; ?></span></a>
 
                         </div>
@@ -325,9 +325,9 @@ $person = $this->people[0];
                 <div class="clear"></div>
             </div>
             <div class="crmeryRow">
-                <div class="crmeryField"><?php echo TextHelper::_('COM_COBALT_TYPE'); ?>:</div>
+                <div class="crmeryField"><?php echo TextHelper::_('COBALT_TYPE'); ?>:</div>
                 <div class="crmeryValue">
-                    <?php $person_type = (array_key_exists('type', $person) && $person['type'] != "") ? $person['type'] : TextHelper::_('COM_COBALT_NOT_SET'); ?>
+                    <?php $person_type = (array_key_exists('type', $person) && $person['type'] != "") ? $person['type'] : TextHelper::_('COBALT_NOT_SET'); ?>
                     <div class="dropdown" data-item="people" data-field="type" data-item-id="<?php echo $person['id']; ?>" id="person_type">
                         <a href="#" class='dropdown-toggle' data-toggle="dropdown" id="person_type_link"><?php echo ucwords($person_type); ?></a>
                         <ul class="dropdown-menu pull-right">
@@ -350,15 +350,15 @@ $person = $this->people[0];
 
         <div class="span4">
             <div class="well well-small text-center">
-                <?php echo TextHelper::_('COM_COBALT_PERSON_CONTACTED'); ?>
+                <?php echo TextHelper::_('COBALT_PERSON_CONTACTED'); ?>
                 <?php
                 echo "<h2>" . DateHelper::formatDate($person['modified']) . "</h2>";
                 ?>
             </div>
             <div class="crmeryRow top">
-                <div class="crmeryField"><?php echo TextHelper::_('COM_COBALT_STATUS'); ?>:</div>
+                <div class="crmeryField"><?php echo TextHelper::_('COBALT_STATUS'); ?>:</div>
                 <div class="crmeryValue">
-                    <?php $person['status_name'] = ($person['status_name'] == '') ? TextHelper::_('COM_COBALT_NO_STATUS') : $person['status_name']; ?>
+                    <?php $person['status_name'] = ($person['status_name'] == '') ? TextHelper::_('COBALT_NO_STATUS') : $person['status_name']; ?>
                     <div class="dropdown" data-item="people" data-field="status_id" data-item-id="<?php echo $person['id']; ?>" id="person_status_<?php echo $person['id']; ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="person_status_<?php echo $person['id']; ?>_link"><span class="status-dot person-status-color" style="background-color:#<?php echo $person['status_color']; ?>"></span><?php echo $person['status_name']; ?></a>
                         <ul class="dropdown-menu pull-right">
@@ -381,9 +381,9 @@ $person = $this->people[0];
                 <div class="clear"></div>
             </div>
             <div class="crmeryRow">
-                <div class="crmeryField"><?php echo TextHelper::_('COM_COBALT_SOURCE'); ?>:</div>
+                <div class="crmeryField"><?php echo TextHelper::_('COBALT_SOURCE'); ?>:</div>
                 <div class="crmeryValue">
-                    <?php $person['source_name'] = ($person['source_name'] == '') ? TextHelper::_('COM_COBALT_NO_SOURCE') : $person['source_name']; ?>
+                    <?php $person['source_name'] = ($person['source_name'] == '') ? TextHelper::_('COBALT_NO_SOURCE') : $person['source_name']; ?>
                     <div class="dropdown" data-item="people" data-field="source_id" data-item-id="<?php echo $person['id']; ?>" id="person_source_<?php echo $person['id']; ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="person_source_<?php echo $person['id']; ?>_link"><?php echo $person['source_name']; ?></a>
                         <ul class="dropdown-menu pull-right">
@@ -406,10 +406,10 @@ $person = $this->people[0];
     <?php $this->custom_fields_view->render(); ?>
 
 
-    <h2 class="dotted"><?php echo TextHelper::_('COM_COBALT_EDIT_NOTES'); ?></h2>
+    <h2 class="dotted"><?php echo TextHelper::_('COBALT_EDIT_NOTES'); ?></h2>
     <?php echo $person['notes']->render(); ?>
 
-    <h2 class="dotted"><?php echo ucwords(TextHelper::_('COM_COBALT_EDIT_DEALS')); ?></h2>
+    <h2 class="dotted"><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEALS')); ?></h2>
     <div class="large_info">
         <?php $this->deal_dock->render(); ?>
     </div>
@@ -417,21 +417,21 @@ $person = $this->people[0];
 	<span class="actions pull-right">
 		<form id="upload_form" target="hidden" action="<?php echo JRoute::_('index.php?task=documents.uploadDocument&format=raw&tmpl=component'); ?>" method="POST" enctype="multipart/form-data">
             <div class="input_upload_button fltrt">
-                <a href="javascript:void(0);" class="button" id="upload_button"><?php echo TextHelper::_("COM_COBALT_UPLOAD_FILE"); ?></a>
+                <a href="javascript:void(0);" class="button" id="upload_button"><?php echo TextHelper::_("COBALT_UPLOAD_FILE"); ?></a>
                 <input type="file" id="upload_input_invisible" name="document"/>
             </div>
         </form>
 	</span>
-    <h2 class="dotted"><?php echo TextHelper::_('COM_COBALT_EDIT_DOCUMENTS'); ?></h2>
+    <h2 class="dotted"><?php echo TextHelper::_('COBALT_EDIT_DOCUMENTS'); ?></h2>
     <div class="large_info">
         <table id="documents_table" class="com_crmery_table">
             <thead>
             <tr>
-                <th><?php echo TextHelper::_('COM_COBALT_TYPE'); ?></th>
-                <th><?php echo TextHelper::_('COM_COBALT_FILE_NAME'); ?></th>
-                <th><?php echo TextHelper::_('COM_COBALT_OWNER'); ?></th>
-                <th><?php echo TextHelper::_('COM_COBALT_SIZE'); ?></th>
-                <th><?php echo TextHelper::_('COM_COBALT_UPLOADED'); ?></th>
+                <th><?php echo TextHelper::_('COBALT_TYPE'); ?></th>
+                <th><?php echo TextHelper::_('COBALT_FILE_NAME'); ?></th>
+                <th><?php echo TextHelper::_('COBALT_OWNER'); ?></th>
+                <th><?php echo TextHelper::_('COBALT_SIZE'); ?></th>
+                <th><?php echo TextHelper::_('COBALT_UPLOADED'); ?></th>
             </tr>
             </thead>
             <tbody id="documents">
@@ -442,13 +442,13 @@ $person = $this->people[0];
 
     <!--- DEAL ASSOCIATION -->
     <div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
-        <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_("COM_COBALT_ASSOCIATE_TO_DEAL"); ?></h3></div>
+        <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_("COBALT_ASSOCIATE_TO_DEAL"); ?></h3></div>
         <div class="modal-body text-center">
             <form id="deal">
                 <div class="input-append">
-                    <input name="deal_name" type="text" placeholder="<?php echo TextHelper::_('COM_COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
+                    <input name="deal_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
                     <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
-                    <a class="btn btn-success" href="" onclick="saveCf('people');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COM_COBALT_SAVE'); ?></a>
+                    <a class="btn btn-success" href="" onclick="saveCf('people');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                 </div>
             </form>
         </div>
