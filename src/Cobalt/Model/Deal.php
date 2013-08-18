@@ -811,8 +811,7 @@ class Deal extends DefaultModel
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-        //$deals = $this->db->setQuery($query)->loadAssocList();
-		$deals = $this->db->setQuery($query)->loadObjectList();
+        $deals = $this->db->setQuery($query)->loadObjectList();
 
         /**------------------------------------------
          * Generate queries to join essential data
