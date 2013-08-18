@@ -40,18 +40,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <th><?php echo TextHelper::_('COBALT_DEAL_STATUS'); ?></th>
                                 <th class="right"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></th>
                             </tr>
-                            <?php
-                                $n = count($this->recentDeals);
-                                for ($i=0; $i<$n && $i<10; $i++) {
-                                    $deal = $this->recentDeals[$i];
-                                    $k = $i%2;
-                                    echo '<tr class="cobalt_row_'.$k.'">';
-                                        echo '<td><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal['id']).'">'.$deal['name'].'</a></td>';
-                                        echo '<td><div class="deal-status-'.strtolower($deal['status_name']).'"></div></td>';
-                                        echo '<td><span class="amount">'.ConfigHelper::getConfigValue('currency').$deal['amount'].'</span></td>';
-                                    echo '</tr>';
-                                }
-                            ?>
+							<?php $i = 0; ?>
+                            <?php foreach ($this->recentDeals as $deal) : ?>
+								<?php $k = $i%2; ?>
+								<tr class="cobalt_row_'<?php echo $k; ?>">
+									<td>
+										<a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id=' . $deal->id); ?>">
+											<?php echo $deal->name; ?>
+										</a>
+									</td>
+									<td><div class="deal-status-'<?php echo strtolower($deal->status_name); ?>"></div></td>
+									<td><span class="amount"><?php echo ConfigHelper::getConfigValue('currency').$deal->amount; ?></span></td>
+								</tr>
+								<?php $i++; ?>
+                            <?php endforeach; ?>
                         </table>
                     </div>
                 </div>
