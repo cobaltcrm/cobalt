@@ -1284,10 +1284,8 @@ class Deal extends DefaultModel
     {
         $names = $this->getDealList();
         $return = array();
-        if ( count($names) > 0 ) {
-            foreach ($names as $key => $deal) {
-                $return[] = array('label'=>$deal->name,'value'=>$deal->id);
-            }
+        foreach ($names as $key => $deal) {
+            $return[] = array('label'=>$deal['name'],'value'=>$deal['id']);
         }
 
         return $json ? json_encode($return) : $return;
