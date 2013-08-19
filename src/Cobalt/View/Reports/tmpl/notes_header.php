@@ -19,12 +19,12 @@ $layout = $app->input->get('layout');
                 <?php if ($view != "print") { ?>
                 <th class="checkbox_column"><input type="checkbox" onclick="selectAll(this);" /></th>
                 <?php } ?>
-                <th><div class="sort_order"><a class="comp.name" onclick="sortTable('comp.name',this)"><?php echo TextHelper::_('COBALT_COMPANY_REPORT_NAME'); ?></a></div></th>
-                <th><div class="sort_order"><a class="deal.name" onclick="sortTable('deal.name',this)"><?php echo TextHelper::_('COBALT_DEAL_REPORT_NAME'); ?></a></div></th>
-                <th><div class="sort_order"><a class="person.last_name" onclick="sortTable('person.last_name',this)"><?php echo TextHelper::_('COBALT_PERSON_NAME'); ?></a></div></th>
-                <th><div class="sort_order"><a class="user.last_name" onclick="sortTable('user.last_name',this)"><?php echo TextHelper::_('COBALT_OWNER'); ?></a></div></th>
-                <th><div class="sort_order"><a class="n.created" onclick="sortTable('n.created',this)"><?php echo TextHelper::_('COBALT_WRITTEN_ON'); ?></a></div></th>
-                <th><div class="sort_order"><a class="cat.name" onclick="sortTable('cat.name',this)"><?php echo TextHelper::_('COBALT_CATEGORY'); ?></a></div></th>
+                <th><div class="sort_order"><a class="comp.name" onclick="sortTable('comp.name',this)"><?php echo ucwords(TextHelper::_('COBALT_COMPANY_REPORT_NAME')); ?></a></div></th>
+                <th><div class="sort_order"><a class="deal.name" onclick="sortTable('deal.name',this)"><?php echo ucwords(TextHelper::_('COBALT_DEAL_REPORT_NAME')); ?></a></div></th>
+                <th><div class="sort_order"><a class="person.last_name" onclick="sortTable('person.last_name',this)"><?php echo ucwords(TextHelper::_('COBALT_PERSON_NAME')); ?></a></div></th>
+                <th><div class="sort_order"><a class="user.last_name" onclick="sortTable('user.last_name',this)"><?php echo ucwords(TextHelper::_('COBALT_OWNER')); ?></a></div></th>
+                <th><div class="sort_order"><a class="n.created" onclick="sortTable('n.created',this)"><?php echo ucwords(TextHelper::_('COBALT_WRITTEN_ON')); ?></a></div></th>
+                <th><div class="sort_order"><a class="cat.name" onclick="sortTable('cat.name',this)"><?php echo ucwords(TextHelper::_('COBALT_CATEGORY')); ?></a></div></th>
                 <th><?php echo TextHelper::_('COBALT_DESCRIPTION'); ?></th>
             </tr>
             <?php if ($view != "print") { ?>

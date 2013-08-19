@@ -102,7 +102,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <li class="widget">
                 <div class="dash_float" id="latest_container">
                     <div class="dash_float_header">
-                       <a class="minify"></a><h2><?php echo TextHelper::_('COBALT_LATEST_HEADER'); ?></h2>
+                       <a class="minify"></a><h3><?php echo TextHelper::_('COBALT_LATEST_HEADER'); ?></h3>
                     </div>
                     <div id="latest">
                         <table class="table table-striped table-hover table-bordered" id="latest_activity">
