@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-    $custom = DropdownHelper::generateCustom($this->type,$this->item['id']);
+    $custom = DropdownHelper::generateCustom($this->type,$this->item->id);
     $count = 0;
     echo '<div class="custom-fields">';
     echo '<table class="table table-striped table-hover table-bordered">';

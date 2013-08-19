@@ -54,7 +54,7 @@ class Html extends AbstractHtmlView
         if ( $app->input->get('id') ) {
             $model->set('_id',$app->input->get('id'));
             $dealList = $model->getDeals();
-            if ( is_null($dealList[0]['id']) ) {
+            if ( is_null($dealList[0]->id) ) {
                 $app->redirect(JRoute::_('index.php?view=deals'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
         } else {
@@ -172,8 +172,8 @@ class Html extends AbstractHtmlView
             $events = $model->getEvents("deal",null,$app->input->get('id'));
             $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
 
-            $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]['id']);
-            $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]['people'],'primary_contact_id'=>$primary_contact_id));
+            $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]->id);
+            $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]->people,'primary_contact_id'=>$primary_contact_id));
 
             $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal->documents));
             $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
