@@ -3,6 +3,7 @@ var Cobalt = {
     init: function() {
         this.bindPopovers();
         this.bindTooltips();
+        this.bindDropdownItems();
     },
 
     bindPopovers: function() {
@@ -259,6 +260,66 @@ var Cobalt = {
 
     closeEditableModal: function () {
         jQuery("#"+current_area).find('a').popover('hide');
+    },
+
+    bindDropdownItems: function () {
+
+        jQuery('.dropdown_item').live('click', function() {
+            var base = jQuery(this)
+                id = base.parentsUntil('div.filters').parent('div.filters').attr('id')+"_link";
+
+            jQuery("#"+id).html(base.html());
+
+            if ( typeof base.attr('data-value') !== 'undefined' ){
+                Cobalt.ajaxSaveModal(base);
+            }
+        });
+    },
+
+    ajaxSaveModal: function (ele){
+        var item_id = jQuery(ele).attr('data-item-id');
+        var item_type = jQuery(ele).attr('data-item');
+        var value_type = jQuery(ele).attr('data-field');
+        var new_value = jQuery(ele).attr('data-value');
+
+        dataString = "item_id="+item_id+"&item_type="+item_type+"&field="+value_type+"&value="+new_value;
+
+        jQuery.ajax({
+            url:'index.php?task=saveajax&format=raw&tmpl=component',
+            type:'POST',
+            data:dataString,
+            dataType:'JSON',
+            success:function(data){
+                modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
+                if ( item_type == "deal" && value_type == "stage_id" ){
+                    if ( data.closed == true ){
+                        actual_close = data.actual_close;
+                        actual_close_formatted = data.actual_close_formatted;
+                        jQuery("#actual_close").val(actual_close_formatted);
+                        jQuery("#actual_close_hidden").val(actual_close);
+                        jQuery("#expected_close_container").hide();
+                        jQuery("#actual_close_container").show();
+                    } else {
+                        expeced_close = data.expeced_close;
+                        expeced_close_formatted = data.expected_close_formatted;
+                        jQuery("#expeced_close").val(expeced_close_formatted);
+                        jQuery("#expected_close_hidden").val(expeced_close);
+                        jQuery("#actual_close_container").hide();
+                        jQuery("#expected_close_container").show();
+                    }
+                }
+                if ( loc == "deals" ){
+                    expected_close = data.expected_close_formatted;
+                    actual_close = data.actual_close_formatted;
+                    if ( data.closed == true ){
+                        jQuery("#expected_close_"+data.id).html(expected_close);
+                        jQuery("#actual_close"+data.id).html(actual_close);
+                    }else{
+                        jQuery("#actual_close"+data.id).html(Joomla.JText._('COBALT_ACTIVE_DEAL'));
+                    }
+                }
+            }
+        });
     }
 };
 

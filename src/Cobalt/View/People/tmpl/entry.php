@@ -1,4 +1,4 @@
-<?php
+o9<?php
     $person = $this->person;
     $k = isset($this->k) ? $this->k : 0;
     //assign null data
