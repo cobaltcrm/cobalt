@@ -50,8 +50,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     //get column filters
     public static function getColumnFilters()
     {
-        return array(   'avatar'        =>  ucwords(TextHelper::_('COBALT_AVATAR')),
-                        'description'   =>  ucwords(TextHelper::_('COBALT_EDIT_TASK_DESCRIPTION')),
+        return array(   'description'   =>  ucwords(TextHelper::_('COBALT_EDIT_TASK_DESCRIPTION')),
                         'phone'         =>  ucwords(TextHelper::_('COBALT_PEOPLE_PHONE')),
                         'fax'           =>  ucwords(TextHelper::_('COBALT_COMPANY_FAX')),
                         'email'         =>  ucwords(TextHelper::_('COBALT_COMPANY_EMAIL')),

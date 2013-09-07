@@ -116,7 +116,7 @@ $app = JFactory::getApplication();
                     <?php if ( count($this->reports) > 0 ) {
                         $total = 0;
                         foreach ($this->reports as $key=>$report) {
-                            $total += $report['amount'];
+                            $total += $report->amount;
                         }
                        echo $total;
                     }?>
@@ -142,7 +142,7 @@ $app = JFactory::getApplication();
                     <?php if ( count($this->reports) > 0 ) {
                         $total = 0;
                         foreach ($this->reports as $key=>$report) {
-                            $total += $report['amount'];
+                            $total += $report->amount;
                         }
                        echo $total;
                     }?>

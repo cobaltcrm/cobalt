@@ -29,10 +29,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 for ($i=0;$i<$n;$i++) {
                     $deal = $this->dealList[$i];
                     $k = $i%2;
-                    if ($i==0 || substr_compare($deal['name'],$this->dealList[$i-1]['name'],0,1)) {
-                        echo "<li data-role='list-divider'>".ucfirst(substr($deal['name'],0,1))."</li>";
+                    if ($i==0 || substr_compare($deal->name,$this->dealList[$i-1]['name'],0,1)) {
+                        echo "<li data-role='list-divider'>".ucfirst(substr($deal->name,0,1))."</li>";
                     }
-                    echo '<li data-filtertext="'.$deal['name'].'" ><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal['id']).'">'.$deal['name'].'</a></li>';
+                    echo '<li data-filtertext="'.$deal->name.'" ><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id).'">'.$deal->name.'</a></li>';
 
                 }
         ?>

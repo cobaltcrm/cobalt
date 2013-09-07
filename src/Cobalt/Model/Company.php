@@ -342,9 +342,9 @@ class Company extends DefaultModel
                     $companies[$key]['won_deals'] = 0;
                     for ($i=0;$i<count($deals);$i++) {
                         $deal = $deals[$i];
-                        $companies[$key]['pipeline'] += $deal['amount'];
-                        if ($deal['percent']==100) {
-                            $companies[$key]['won_deals'] += $deal['amount'];
+                        $companies[$key]['pipeline'] += $deal->amount;
+                        if ($deal->percent==100) {
+                            $companies[$key]['won_deals'] += $deal->amount;
                         }
                     }
                     $companies[$key]['deals'] = $deals;

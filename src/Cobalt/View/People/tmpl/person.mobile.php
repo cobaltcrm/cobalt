@@ -77,9 +77,9 @@ $person = $this->people[0];
                     $deal = $person['deals'][$i];
                     $k = $i%2;
 
-                    echo '<li><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal['id']).'">';
-                    echo '<span class="ui-li-count">'.$deal['amount'].'</span>';
-                    echo $deal['name'];
+                    echo '<li><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id).'">';
+                    echo '<span class="ui-li-count">'.$deal->amount.'</span>';
+                    echo $deal->name;
                     echo '</a></li>';
                 }
                 ?>

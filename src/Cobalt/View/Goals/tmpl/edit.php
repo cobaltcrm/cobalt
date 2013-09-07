@@ -10,7 +10,9 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
-<h1><?php echo ucwords($this->header); ?></h1>
+<div class="page-header">
+    <h1><?php echo ucwords($this->header); ?></h1>
+</div>
 <form id="edit-form" action="<?php echo JRoute::_('index.php?task=editGoal'); ?>" method="post" onsubmit="return save(this);">
     <div id="goal_edit">
         <ul class="unstyled">
@@ -171,9 +173,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     </ul>
             </li>
             <li>
-                <div class="alert text-center">
-                    <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="icon-plus icon-white"></i><?php echo TextHelper::_('COBALT_ADD'); ?></a>
-                     - <?php echo TextHelper::_('COBALT_OR'); ?> -
+                <div class="well text-center">
+                    <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="icon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_ADD'); ?></a>
                     <a href="javascript:void(0);" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a>
                 </div>
             </li>

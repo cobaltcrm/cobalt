@@ -790,6 +790,7 @@ class Deal extends DefaultModel
 
         $query = $this->_buildQuery();
 
+
         /** ------------------------------------------
          * Set query limits and load results
          */
@@ -810,7 +811,7 @@ class Deal extends DefaultModel
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-        $deals = $this->db->setQuery($query)->loadAssocList();
+        $deals = $this->db->setQuery($query)->loadObjectList();
 
         /**------------------------------------------
          * Generate queries to join essential data
@@ -837,7 +838,7 @@ class Deal extends DefaultModel
                         $query = $this->db->getQuery(true)
                             ->update("#__deals")
                             ->set("last_viewed=".$this->db->quote($now))
-                            ->where("id=".$deal['id']);
+                            ->where("id=".$deal->id);
 
                         $this->db->setQuery($query)->execute();
                     }
@@ -851,53 +852,55 @@ class Deal extends DefaultModel
          */
         $app->triggerEvent('onDealLoad', array(&$deals));
 
-        return $deals;
+        // cast to array so it never returns null to view
+        return (array) $deals;
     }
 
     public function getDealDetails(&$deal)
     {
         $closed_stages = DealHelper::getClosedStages();
-        $deal['closed'] = in_array($deal['stage_id'],$closed_stages) ? TRUE : FALSE;
+        $deal->closed = in_array($deal->stage_id,$closed_stages) ? TRUE : FALSE;
+        $deal_id = $deal->id;
 
         /** ------------------------------------------
          *  Join contacts
          */
 
             $peopleModel = new People;
-            $peopleModel->set('deal_id',$deal['id']);
+            $peopleModel->set('deal_id',$deal_id);
             $people = $peopleModel->getContacts();
             //assign results to company
-            $deal['people'] = $people;
+            $deal->people = $people;
 
         /** ------------------------------------------
          *  Join conversations
          */
             $convoModel = new Conversation;
-            $convoModel->set('deal_id',$deal['id']);
+            $convoModel->set('deal_id',$deal_id);
             $conversations = $convoModel->getConversations();
-            $deal['conversations'] = $conversations;
+            $deal->conversations = $conversations;
 
         /** ------------------------------------------
          *  Join notes
          */
 
            $notesModel = new Note;
-           $deal['notes'] = $notesModel->getNotes($deal['id'], 'deal');
+           $deal->notes = $notesModel->getNotes($deal_id, 'deal');
 
          /** ------------------------------------------
          *  Join documents
          */
             $docModel = new Document;
-            $docModel->set('deal_id',$deal['id']);
-            $deal['documents'] = $docModel->getDocuments();
+            $docModel->set('deal_id',$deal_id);
+            $deal->documents = $docModel->getDocuments();
 
         /** ------------------------------------------
          *  Join tasks & events
          */
             $eventModel = new Event;
-            $eventModel->set('deal_id',$deal['id']);
+            $eventModel->set('deal_id',$deal_id);
             $events = $eventModel->getEvents();
-            $deal['events'] = $events;
+            $deal->events = $events;
 
     }
 
@@ -910,14 +913,14 @@ class Deal extends DefaultModel
 
             $query = $this->_buildQuery();
 
-            $deal = $this->db->setQuery($query)->loadAssoc();
+            $deal = $this->db->setQuery($query)->loadObjectList();
 
             self::getDealDetails($deal);
 
         } else {
 
             //TODO update things to OBJECTS
-            $deal = (array) new DealTable;
+            $deal = new DealTable;
         }
 
         return $deal;
@@ -1281,10 +1284,8 @@ class Deal extends DefaultModel
     {
         $names = $this->getDealList();
         $return = array();
-        if ( count($names) > 0 ) {
-            foreach ($names as $key => $deal) {
-                $return[] = array('label'=>$deal['name'],'value'=>$deal['id']);
-            }
+        foreach ($names as $key => $deal) {
+            $return[] = array('label'=>$deal['name'],'value'=>$deal['id']);
         }
 
         return $json ? json_encode($return) : $return;

@@ -9,32 +9,32 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = JFactory::getApplication();
+$app = JFactory::getApplication(); 
 
   for ( $i=0; $i<count($this->reports); $i++ ) {
       $report = $this->reports[$i];
       $k = $i%2; ?>
      <tr class="cobalt_row_<?php echo $k; ?>">
         <?php if ( $app->input->get('view') != "print" ) { ?>
-            <td><input type="checkbox" name="ids[]" value="<?php echo $report['id']; ?>" /></td>
+            <td><input type="checkbox" name="ids[]" value="<?php echo $report->id; ?>" /></td>
         <?php } ?>
-         <td><a href="<?php echo JRoute::_("index.php?view=deals&layout=deal&id=".$report['id']); ?>"><?php echo $report['name']; ?></a></td>
-         <td><?php echo $report['owner_first_name']." ".$report['owner_last_name']; ?></td>
-         <td><?php echo $report['summary']; ?></td>
-         <td><?php echo ConfigHelper::getCurrency().$report['amount']; ?></td>
-         <td><?php echo $report['stage_name']; ?></td>
-         <td><?php echo $report['percent']; ?>%</td>
-         <td><div class="deal-status-<?php echo strtolower($report['status_name']); ?>"></div></td>
-         <td><?php echo DateHelper::formatDate($report['expected_close']); ?></td>
-         <td><?php echo DateHelper::formatDate($report['modified']); ?></td>
-         <td><?php echo DateHelper::formatDate($report['created']); ?></td>
+         <td><a href="<?php echo JRoute::_("index.php?view=deals&layout=deal&id=".$report->id); ?>"><?php echo $report->name; ?></a></td>
+         <td><?php echo $report->owner_first_name." ".$report->owner_last_name; ?></td>
+         <td><?php echo $report->summary; ?></td>
+         <td><?php echo ConfigHelper::getCurrency().$report->amount; ?></td>
+         <td><?php echo $report->stage_name; ?></td>
+         <td><?php echo $report->percent; ?>%</td>
+         <td><div class="deal-status-<?php echo strtolower($report->status_name); ?>"></div></td>
+         <td><?php echo DateHelper::formatDate($report->expected_close); ?></td>
+         <td><?php echo DateHelper::formatDate($report->modified); ?></td>
+         <td><?php echo DateHelper::formatDate($report->created); ?></td>
      </tr>
   <?php }  ?>
 <?php
     $filtered_amount = 0;
     if ( count($this->reports) > 0 ) {
     foreach ($this->reports as $key=>$report) {
-        $filtered_amount += $report['amount'];
+        $filtered_amount += $report->amount;
     }
 }?>
 <script type="text/javascript">

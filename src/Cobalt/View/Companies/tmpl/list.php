@@ -14,7 +14,6 @@ $app = JFactory::getApplication();
 ?>
 <thead>
     <th class="checkbox_column"><input type="checkbox" onclick="selectAll(this);" /></th>
-    <th class="avatar" >&nbsp;</th>
     <th class="name"><div class="sort_order"><a href="javascript:void(0);" class="c.name" onclick="sortTable('c.name',this)"><?php echo TextHelper::_('COBALT_COMPANIES_NAME'); ?></a></div></th>
     <th class="contact"><?php echo ucwords(TextHelper::_('COBALT_CONTACT_DETAILS')); ?></th>
     <th class="added" ><div class="sort_order"><a href="javascript:void(0);" class="c.created" onclick="sortTable('c.created',this)"><?php echo TextHelper::_('COBALT_COMPANIES_ADDED'); ?></a></div></th>
