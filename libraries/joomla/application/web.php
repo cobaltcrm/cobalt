@@ -461,10 +461,6 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function redirect($url, $moved = false)
 	{
-
-		// Import library dependencies.
-		jimport('phputf8.utils.ascii');
-
 		// Check for relative internal links.
 		if (preg_match('#^index\.php#', $url))
 		{
@@ -511,7 +507,7 @@ class JApplicationWeb extends JApplicationBase
 		else
 		{
 			// We have to use a JavaScript redirect here because MSIE doesn't play nice with utf-8 URLs.
-			if (($this->client->engine == JApplicationWebClient::TRIDENT) && !utf8_is_ascii($url))
+			if (($this->client->engine == JApplicationWebClient::TRIDENT) && !JString::is_ascii($url))
 			{
 				$html = '<html><head>';
 				$html .= '<meta http-equiv="content-type" content="text/html; charset=' . $this->charSet . '" />';

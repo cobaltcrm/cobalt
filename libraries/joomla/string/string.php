@@ -89,6 +89,34 @@ abstract class JString
 	}
 
 	/**
+	 * Tests whether a string contains only 7bit ASCII bytes.
+	 * You might use this to conditionally check whether a string
+	 * needs handling as UTF-8 or not, potentially offering performance
+	 * benefits by using the native PHP equivalent if it's just ASCII e.g.;
+	 *
+	 * <code>
+	 * if (String::is_ascii($someString))
+	 	* {
+	 *     // It's just ASCII - use the native PHP version
+	 *     $someString = strtolower($someString);
+	 * }
+	 * else
+	 	* {
+	 *     $someString = String::strtolower($someString);
+	 * }
+	 * </code>
+	 *
+	 * @param   string  $string  The string to test.
+	 *
+	 * @return  boolean True if the string is all ASCII
+	 */
+	public static function is_ascii($str)
+	{
+		// Search for any bytes which are outside the ASCII range...
+		return (preg_match('/(?:[^\x00-\x7F])/', $str) !== 1);
+	}
+
+	/**
 	 * Increments a trailing number in a string.
 	 *
 	 * Used to easily create distinct labels when copying objects. The method has the following styles:
