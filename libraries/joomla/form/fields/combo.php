@@ -21,53 +21,52 @@ JFormHelper::loadFieldClass('list');
  */
 class JFormFieldCombo extends JFormFieldList
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = 'Combo';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    public $type = 'Combo';
 
-	/**
-	 * Method to get the field input markup for a combo box field.
-	 *
-	 * @return  string   The field input markup.
-	 *
-	 * @since   11.1
-	 */
-	protected function getInput()
-	{
-		$html = array();
-		$attr = '';
+    /**
+     * Method to get the field input markup for a combo box field.
+     *
+     * @return string The field input markup.
+     *
+     * @since   11.1
+     */
+    protected function getInput()
+    {
+        $html = array();
+        $attr = '';
 
-		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="combobox ' . (string) $this->element['class'] . '"' : ' class="combobox"';
-		$attr .= ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
-		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        // Initialize some field attributes.
+        $attr .= $this->element['class'] ? ' class="combobox ' . (string) $this->element['class'] . '"' : ' class="combobox"';
+        $attr .= ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
+        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 
-		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        // Initialize JavaScript field attributes.
+        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
-		// Get the field options.
-		$options = $this->getOptions();
+        // Get the field options.
+        $options = $this->getOptions();
 
-		// Load the combobox behavior.
-		JHtml::_('behavior.combobox');
+        // Load the combobox behavior.
+        JHtml::_('behavior.combobox');
 
-		// Build the input for the combo box.
-		$html[] = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . '/>';
+        // Build the input for the combo box.
+        $html[] = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+            . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . '/>';
 
-		// Build the list for the combo box.
-		$html[] = '<ul id="combobox-' . $this->id . '" style="display:none;">';
-		foreach ($options as $option)
-		{
-			$html[] = '<li>' . $option->text . '</li>';
-		}
-		$html[] = '</ul>';
+        // Build the list for the combo box.
+        $html[] = '<ul id="combobox-' . $this->id . '" style="display:none;">';
+        foreach ($options as $option) {
+            $html[] = '<li>' . $option->text . '</li>';
+        }
+        $html[] = '</ul>';
 
-		return implode($html);
-	}
+        return implode($html);
+    }
 }

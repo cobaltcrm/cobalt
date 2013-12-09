@@ -22,34 +22,33 @@ JFormHelper::loadFieldClass('list');
 class JFormFieldSessionHandler extends JFormFieldList
 {
 
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	protected $type = 'SessionHandler';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    protected $type = 'SessionHandler';
 
-	/**
-	 * Method to get the session handler field options.
-	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @since   11.1
-	 */
-	protected function getOptions()
-	{
-		$options = array();
+    /**
+     * Method to get the session handler field options.
+     *
+     * @return array The field option objects.
+     *
+     * @since   11.1
+     */
+    protected function getOptions()
+    {
+        $options = array();
 
-		// Get the options from JSession.
-		foreach (JSession::getStores() as $store)
-		{
-			$options[] = JHtml::_('select.option', $store, JText::_('JLIB_FORM_VALUE_SESSION_' . $store), 'value', 'text');
-		}
+        // Get the options from JSession.
+        foreach (JSession::getStores() as $store) {
+            $options[] = JHtml::_('select.option', $store, JText::_('JLIB_FORM_VALUE_SESSION_' . $store), 'value', 'text');
+        }
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
+        // Merge any additional options in the XML definition.
+        $options = array_merge(parent::getOptions(), $options);
 
-		return $options;
-	}
+        return $options;
+    }
 }

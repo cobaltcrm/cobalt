@@ -24,11 +24,11 @@ JFormHelper::loadFieldClass('text');
  */
 class JFormFieldTel extends JFormFieldText
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	protected $type = 'Tel';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  11.1
+     */
+    protected $type = 'Tel';
 }

@@ -16,14 +16,14 @@ defined('JPATH_PLATFORM') or die;
  * @link     http://www.php.net/manual/en/jsonserializable.jsonserialize.php
  * @since    12.2
  */
-interface JsonSerializable
+interface jsonserializable
 {
-	/**
-	 * Return data which should be serialized by json_encode().
-	 *
-	 * @return  mixed
-	 *
-	 * @since   12.2
-	 */
-	public function jsonSerialize();
+    /**
+     * Return data which should be serialized by json_encode().
+     *
+     * @return mixed
+     *
+     * @since   12.2
+     */
+    public function jsonSerialize();
 }

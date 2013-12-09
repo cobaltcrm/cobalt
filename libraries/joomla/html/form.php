@@ -18,18 +18,20 @@ defined('JPATH_PLATFORM') or die;
  */
 abstract class JHtmlForm
 {
-	/**
-	 * Displays a hidden token field to reduce the risk of CSRF exploits
-	 *
-	 * Use in conjunction with JSession::checkToken
-	 *
-	 * @return  string  A hidden input field with a token
-	 *
-	 * @see     JSession::checkToken
-	 * @since   11.1
-	 */
-	public static function token()
-	{
-		return '<input type="hidden" name="' . JSession::getFormToken() . '" value="1" />';
-	}
+    /**
+     * Displays a hidden token field to reduce the risk of CSRF exploits
+     *
+     * Use in conjunction with JSession::checkToken
+     *
+     * @return string A hidden input field with a token
+     *
+     * @see     JSession::checkToken
+     * @since   11.1
+     */
+    public static function token()
+    {
+        return false;
+
+        return '<input type="hidden" name="' . JSession::getFormToken() . '" value="1" />';
+    }
 }

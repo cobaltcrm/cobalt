@@ -18,39 +18,39 @@ defined('JPATH_PLATFORM') or die;
  */
 abstract class JViewBase implements JView
 {
-	/**
-	 * The model object.
-	 *
-	 * @var    JModel
-	 * @since  12.1
-	 */
-	protected $model;
+    /**
+     * The model object.
+     *
+     * @var    JModel
+     * @since  12.1
+     */
+    protected $model;
 
-	/**
-	 * Method to instantiate the view.
-	 *
-	 * @param   JModel  $model  The model object.
-	 *
-	 * @since  12.1
-	 */
-	public function __construct(JModel $model)
-	{
-		// Setup dependencies.
-		$this->model = $model;
-	}
+    /**
+     * Method to instantiate the view.
+     *
+     * @param JModel $model The model object.
+     *
+     * @since  12.1
+     */
+    public function __construct(JModel $model)
+    {
+        // Setup dependencies.
+        $this->model = $model;
+    }
 
-	/**
-	 * Method to escape output.
-	 *
-	 * @param   string  $output  The output to escape.
-	 *
-	 * @return  string  The escaped output.
-	 *
-	 * @see     JView::escape()
-	 * @since   12.1
-	 */
-	public function escape($output)
-	{
-		return $output;
-	}
+    /**
+     * Method to escape output.
+     *
+     * @param string $output The output to escape.
+     *
+     * @return string The escaped output.
+     *
+     * @see     JView::escape()
+     * @since   12.1
+     */
+    public function escape($output)
+    {
+        return $output;
+    }
 }

@@ -33,421 +33,386 @@ defined('JPATH_PLATFORM') or die;
  */
 class JInput implements Serializable, Countable
 {
-	/**
-	 * Options array for the JInput instance.
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	protected $options = array();
+    /**
+     * Options array for the JInput instance.
+     *
+     * @var    array
+     * @since  11.1
+     */
+    protected $options = array();
 
-	/**
-	 * Filter object to use.
-	 *
-	 * @var    JFilterInput
-	 * @since  11.1
-	 */
-	protected $filter = null;
+    /**
+     * Filter object to use.
+     *
+     * @var    JFilterInput
+     * @since  11.1
+     */
+    protected $filter = null;
 
-	/**
-	 * Input data.
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	protected $data = array();
+    /**
+     * Input data.
+     *
+     * @var    array
+     * @since  11.1
+     */
+    protected $data = array();
 
-	/**
-	 * Input objects
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	protected $inputs = array();
+    /**
+     * Input objects
+     *
+     * @var    array
+     * @since  11.1
+     */
+    protected $inputs = array();
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  $source   Source data (Optional, default is $_REQUEST)
-	 * @param   array  $options  Array of configuration parameters (Optional)
-	 *
-	 * @since   11.1
-	 */
-	public function __construct($source = null, array $options = array())
-	{
-		if (isset($options['filter']))
-		{
-			$this->filter = $options['filter'];
-		}
-		else
-		{
-			$this->filter = JFilterInput::getInstance();
-		}
+    /**
+     * Constructor.
+     *
+     * @param array $source  Source data (Optional, default is $_REQUEST)
+     * @param array $options Array of configuration parameters (Optional)
+     *
+     * @since   11.1
+     */
+    public function __construct($source = null, array $options = array())
+    {
+        if (isset($options['filter'])) {
+            $this->filter = $options['filter'];
+        } else {
+            $this->filter = JFilterInput::getInstance();
+        }
 
-		if (is_null($source))
-		{
-			$this->data = &$_REQUEST;
-		}
-		else
-		{
-			$this->data = $source;
-		}
+        if (is_null($source)) {
+            $this->data = &$_REQUEST;
+        } else {
+            $this->data = $source;
+        }
 
-		// Set the options for the class.
-		$this->options = $options;
-	}
+        // Set the options for the class.
+        $this->options = $options;
+    }
 
-	/**
-	 * Magic method to get an input object
-	 *
-	 * @param   mixed  $name  Name of the input object to retrieve.
-	 *
-	 * @return  JInput  The request input object
-	 *
-	 * @since   11.1
-	 */
-	public function __get($name)
-	{
-		if (isset($this->inputs[$name]))
-		{
-			return $this->inputs[$name];
-		}
+    /**
+     * Magic method to get an input object
+     *
+     * @param mixed $name Name of the input object to retrieve.
+     *
+     * @return JInput The request input object
+     *
+     * @since   11.1
+     */
+    public function __get($name)
+    {
+        if (isset($this->inputs[$name])) {
+            return $this->inputs[$name];
+        }
 
-		$className = 'JInput' . ucfirst($name);
-		if (class_exists($className))
-		{
-			$this->inputs[$name] = new $className(null, $this->options);
-			return $this->inputs[$name];
-		}
+        $className = 'JInput' . ucfirst($name);
+        if (class_exists($className)) {
+            $this->inputs[$name] = new $className(null, $this->options);
 
-		$superGlobal = '_' . strtoupper($name);
-		if (isset($GLOBALS[$superGlobal]))
-		{
-			$this->inputs[$name] = new JInput($GLOBALS[$superGlobal], $this->options);
-			return $this->inputs[$name];
-		}
+            return $this->inputs[$name];
+        }
 
-		// TODO throw an exception
-	}
+        $superGlobal = '_' . strtoupper($name);
+        if (isset($GLOBALS[$superGlobal])) {
+            $this->inputs[$name] = new JInput($GLOBALS[$superGlobal], $this->options);
 
-	/**
-	 * Get the number of variables.
-	 *
-	 * @return  integer  The number of variables in the input.
-	 *
-	 * @since   12.2
-	 * @see     Countable::count()
-	 */
-	public function count()
-	{
-		return count($this->data);
-	}
+            return $this->inputs[$name];
+        }
 
-	/**
-	 * Gets a value from the input data.
-	 *
-	 * @param   string  $name     Name of the value to get.
-	 * @param   mixed   $default  Default value to return if variable does not exist.
-	 * @param   string  $filter   Filter to apply to the value.
-	 *
-	 * @return  mixed  The filtered input value.
-	 *
-	 * @since   11.1
-	 */
-	public function get($name, $default = null, $filter = 'cmd')
-	{
-		if (isset($this->data[$name]))
-		{
-			return $this->filter->clean($this->data[$name], $filter);
-		}
+        // TODO throw an exception
+    }
 
-		return $default;
-	}
+    /**
+     * Get the number of variables.
+     *
+     * @return integer The number of variables in the input.
+     *
+     * @since   12.2
+     * @see     Countable::count()
+     */
+    public function count()
+    {
+        return count($this->data);
+    }
 
-	/**
-	 * Gets an array of values from the request.
-	 *
-	 * @param   array  $vars        Associative array of keys and filter types to apply.
-	 * @param   mixed  $datasource  Array to retrieve data from, or null
-	 *
-	 * @return  mixed  The filtered input data.
-	 *
-	 * @since   11.1
-	 */
-	public function getArray(array $vars, $datasource = null)
-	{
-		$results = array();
+    /**
+     * Gets a value from the input data.
+     *
+     * @param string $name    Name of the value to get.
+     * @param mixed  $default Default value to return if variable does not exist.
+     * @param string $filter  Filter to apply to the value.
+     *
+     * @return mixed The filtered input value.
+     *
+     * @since   11.1
+     */
+    public function get($name, $default = null, $filter = 'cmd')
+    {
+        if (isset($this->data[$name])) {
+            return $this->filter->clean($this->data[$name], $filter);
+        }
 
-		foreach ($vars as $k => $v)
-		{
-			if (is_array($v))
-			{
-				if (is_null($datasource))
-				{
-					$results[$k] = $this->getArray($v, $this->get($k, null, 'array'));
-				}
-				else
-				{
-					$results[$k] = $this->getArray($v, $datasource[$k]);
-				}
-			}
-			else
-			{
-				if (is_null($datasource))
-				{
-					$results[$k] = $this->get($k, null, $v);
-				}
-				elseif (isset($datasource[$k]))
-				{
-					$results[$k] = $this->filter->clean($datasource[$k], $v);
-				}
-				else
-				{
-					$results[$k] = $this->filter->clean(null, $v);
-				}
-			}
-		}
+        return $default;
+    }
 
-		return $results;
-	}
+    /**
+     * Gets an array of values from the request.
+     *
+     * @param array $vars       Associative array of keys and filter types to apply.
+     * @param mixed $datasource Array to retrieve data from, or null
+     *
+     * @return mixed The filtered input data.
+     *
+     * @since   11.1
+     */
+    public function getArray(array $vars, $datasource = null)
+    {
+        $results = array();
 
-	/**
-	 * Sets a value
-	 *
-	 * @param   string  $name   Name of the value to set.
-	 * @param   mixed   $value  Value to assign to the input.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 */
-	public function set($name, $value)
-	{
-		$this->data[$name] = $value;
-	}
+        foreach ($vars as $k => $v) {
+            if (is_array($v)) {
+                if (is_null($datasource)) {
+                    $results[$k] = $this->getArray($v, $this->get($k, null, 'array'));
+                } else {
+                    $results[$k] = $this->getArray($v, $datasource[$k]);
+                }
+            } else {
+                if (is_null($datasource)) {
+                    $results[$k] = $this->get($k, null, $v);
+                } elseif (isset($datasource[$k])) {
+                    $results[$k] = $this->filter->clean($datasource[$k], $v);
+                } else {
+                    $results[$k] = $this->filter->clean(null, $v);
+                }
+            }
+        }
 
-	/**
-	 * Define a value. The value will only be set if there's no value for the name or if it is null.
-	 *
-	 * @param   string  $name   Name of the value to define.
-	 * @param   mixed   $value  Value to assign to the input.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.1
-	 */
-	public function def($name, $value)
-	{
-		if (isset($this->data[$name]))
-		{
-			return;
-		}
+        return $results;
+    }
 
-		$this->data[$name] = $value;
-	}
+    /**
+     * Sets a value
+     *
+     * @param string $name  Name of the value to set.
+     * @param mixed  $value Value to assign to the input.
+     *
+     * @return void
+     *
+     * @since   11.1
+     */
+    public function set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
 
-	/**
-	 * Magic method to get filtered input data.
-	 *
-	 * @param   string  $name       Name of the filter type prefixed with 'get'.
-	 * @param   array   $arguments  [0] The name of the variable [1] The default value.
-	 *
-	 * @return  mixed   The filtered input value.
-	 *
-	 * @since   11.1
-	 */
-	public function __call($name, $arguments)
-	{
-		if (substr($name, 0, 3) == 'get')
-		{
+    /**
+     * Define a value. The value will only be set if there's no value for the name or if it is null.
+     *
+     * @param string $name  Name of the value to define.
+     * @param mixed  $value Value to assign to the input.
+     *
+     * @return void
+     *
+     * @since   12.1
+     */
+    public function def($name, $value)
+    {
+        if (isset($this->data[$name])) {
+            return;
+        }
 
-			$filter = substr($name, 3);
+        $this->data[$name] = $value;
+    }
 
-			$default = null;
-			if (isset($arguments[1]))
-			{
-				$default = $arguments[1];
-			}
+    /**
+     * Magic method to get filtered input data.
+     *
+     * @param string $name      Name of the filter type prefixed with 'get'.
+     * @param array  $arguments [0] The name of the variable [1] The default value.
+     *
+     * @return mixed The filtered input value.
+     *
+     * @since   11.1
+     */
+    public function __call($name, $arguments)
+    {
+        if (substr($name, 0, 3) == 'get') {
 
-			return $this->get($arguments[0], $default, $filter);
-		}
-	}
+            $filter = substr($name, 3);
 
-	/**
-	 * Gets the request method.
-	 *
-	 * @return  string   The request method.
-	 *
-	 * @since   11.1
-	 */
-	public function getMethod()
-	{
-		$method = strtoupper($_SERVER['REQUEST_METHOD']);
-		return $method;
-	}
+            $default = null;
+            if (isset($arguments[1])) {
+                $default = $arguments[1];
+            }
 
-	/**
-	 * Method to serialize the input.
-	 *
-	 * @return  string  The serialized input.
-	 *
-	 * @since   12.1
-	 */
-	public function serialize()
-	{
-		// Load all of the inputs.
-		$this->loadAllInputs();
+            return $this->get($arguments[0], $default, $filter);
+        }
+    }
 
-		// Remove $_ENV and $_SERVER from the inputs.
-		$inputs = $this->inputs;
-		unset($inputs['env']);
-		unset($inputs['server']);
+    /**
+     * Gets the request method.
+     *
+     * @return string The request method.
+     *
+     * @since   11.1
+     */
+    public function getMethod()
+    {
+        $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
-		// Serialize the options, data, and inputs.
-		return serialize(array($this->options, $this->data, $inputs));
-	}
+        return $method;
+    }
 
-	/**
-	 * Method to unserialize the input.
-	 *
-	 * @param   string  $input  The serialized input.
-	 *
-	 * @return  JInput  The input object.
-	 *
-	 * @since   12.1
-	 */
-	public function unserialize($input)
-	{
-		// Unserialize the options, data, and inputs.
-		list($this->options, $this->data, $this->inputs) = unserialize($input);
+    /**
+     * Method to serialize the input.
+     *
+     * @return string The serialized input.
+     *
+     * @since   12.1
+     */
+    public function serialize()
+    {
+        // Load all of the inputs.
+        $this->loadAllInputs();
 
-		// Load the filter.
-		if (isset($this->options['filter']))
-		{
-			$this->filter = $this->options['filter'];
-		}
-		else
-		{
-			$this->filter = JFilterInput::getInstance();
-		}
-	}
+        // Remove $_ENV and $_SERVER from the inputs.
+        $inputs = $this->inputs;
+        unset($inputs['env']);
+        unset($inputs['server']);
 
-	/**
-	 * Method to load all of the global inputs.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.1
-	 */
-	protected function loadAllInputs()
-	{
-		static $loaded = false;
+        // Serialize the options, data, and inputs.
+        return serialize(array($this->options, $this->data, $inputs));
+    }
 
-		if (!$loaded)
-		{
-			// Load up all the globals.
-			foreach ($GLOBALS as $global => $data)
-			{
-				// Check if the global starts with an underscore.
-				if (strpos($global, '_') === 0)
-				{
-					// Convert global name to input name.
-					$global = strtolower($global);
-					$global = substr($global, 1);
+    /**
+     * Method to unserialize the input.
+     *
+     * @param string $input The serialized input.
+     *
+     * @return JInput The input object.
+     *
+     * @since   12.1
+     */
+    public function unserialize($input)
+    {
+        // Unserialize the options, data, and inputs.
+        list($this->options, $this->data, $this->inputs) = unserialize($input);
 
-					// Get the input.
-					$this->$global;
-				}
-			}
+        // Load the filter.
+        if (isset($this->options['filter'])) {
+            $this->filter = $this->options['filter'];
+        } else {
+            $this->filter = JFilterInput::getInstance();
+        }
+    }
 
-			$loaded = true;
-		}
-	}
+    /**
+     * Method to load all of the global inputs.
+     *
+     * @return void
+     *
+     * @since   12.1
+     */
+    protected function loadAllInputs()
+    {
+        static $loaded = false;
 
-	public static function getRequest($hash = 'default', $mask = 0)
-	{
-		$hash = strtoupper($hash);
+        if (!$loaded) {
+            // Load up all the globals.
+            foreach ($GLOBALS as $global => $data) {
+                // Check if the global starts with an underscore.
+                if (strpos($global, '_') === 0) {
+                    // Convert global name to input name.
+                    $global = strtolower($global);
+                    $global = substr($global, 1);
 
-		if ($hash === 'METHOD')
-		{
-			$hash = strtoupper($_SERVER['REQUEST_METHOD']);
-		}
+                    // Get the input.
+                    $this->$global;
+                }
+            }
 
-		switch ($hash)
-		{
-			case 'GET':
-				$input = $_GET;
-				break;
+            $loaded = true;
+        }
+    }
 
-			case 'POST':
-				$input = $_POST;
-				break;
+    public static function getRequest($hash = 'default', $mask = 0)
+    {
+        $hash = strtoupper($hash);
 
-			case 'FILES':
-				$input = $_FILES;
-				break;
+        if ($hash === 'METHOD') {
+            $hash = strtoupper($_SERVER['REQUEST_METHOD']);
+        }
 
-			case 'COOKIE':
-				$input = $_COOKIE;
-				break;
+        switch ($hash) {
+            case 'GET':
+                $input = $_GET;
+                break;
 
-			case 'ENV':
-				$input = &$_ENV;
-				break;
+            case 'POST':
+                $input = $_POST;
+                break;
 
-			case 'SERVER':
-				$input = &$_SERVER;
-				break;
+            case 'FILES':
+                $input = $_FILES;
+                break;
 
-			default:
-				$input = $_REQUEST;
-				break;
-		}
+            case 'COOKIE':
+                $input = $_COOKIE;
+                break;
 
-		$result = self::_cleanVar($input, $mask);
+            case 'ENV':
+                $input = &$_ENV;
+                break;
 
-		// Handle magic quotes compatibility
-		if (get_magic_quotes_gpc() && ($hash != 'FILES'))
-		{
-			$result = self::_stripSlashesRecursive($result);
-		}
+            case 'SERVER':
+                $input = &$_SERVER;
+                break;
 
-		return $result;
-	}
+            default:
+                $input = $_REQUEST;
+                break;
+        }
 
-	static function _cleanVar($var, $mask = 0, $type = null)
-	{
-		// If the no trim flag is not set, trim the variable
-		if (!($mask & 1) && is_string($var))
-		{
-			$var = trim($var);
-		}
+        $result = self::_cleanVar($input, $mask);
 
-		// Now we handle input filtering
-		if ($mask & 2)
-		{
-			// If the allow raw flag is set, do not modify the variable
-			$var = $var;
-		}
-		elseif ($mask & 4)
-		{
-			// If the allow HTML flag is set, apply a safe HTML filter to the variable
-			$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
-			$var = $safeHtmlFilter->clean($var, $type);
-		}
-		else
-		{
-			// Since no allow flags were set, we will apply the most strict filter to the variable
-			// $tags, $attr, $tag_method, $attr_method, $xss_auto use defaults.
-			$noHtmlFilter = JFilterInput::getInstance();
-			$var = $noHtmlFilter->clean($var, $type);
-		}
-		return $var;
-	}
+        // Handle magic quotes compatibility
+        if (get_magic_quotes_gpc() && ($hash != 'FILES')) {
+            $result = self::_stripSlashesRecursive($result);
+        }
 
-	protected static function _stripSlashesRecursive($value)
-	{
-		$value = is_array($value) ? array_map(array('JRequest', '_stripSlashesRecursive'), $value) : stripslashes($value);
-		return $value;
-	}
+        return $result;
+    }
+
+    public static function _cleanVar($var, $mask = 0, $type = null)
+    {
+        // If the no trim flag is not set, trim the variable
+        if (!($mask & 1) && is_string($var)) {
+            $var = trim($var);
+        }
+
+        // Now we handle input filtering
+        if ($mask & 2) {
+            // If the allow raw flag is set, do not modify the variable
+            $var = $var;
+        } elseif ($mask & 4) {
+            // If the allow HTML flag is set, apply a safe HTML filter to the variable
+            $safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+            $var = $safeHtmlFilter->clean($var, $type);
+        } else {
+            // Since no allow flags were set, we will apply the most strict filter to the variable
+            // $tags, $attr, $tag_method, $attr_method, $xss_auto use defaults.
+            $noHtmlFilter = JFilterInput::getInstance();
+            $var = $noHtmlFilter->clean($var, $type);
+        }
+
+        return $var;
+    }
+
+    protected static function _stripSlashesRecursive($value)
+    {
+        $value = is_array($value) ? array_map(array('JRequest', '_stripSlashesRecursive'), $value) : stripslashes($value);
+
+        return $value;
+    }
 }
