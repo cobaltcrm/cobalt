@@ -1,4 +1,4 @@
 Cobalt App
 =========
 
-Prototype Standalone CRM on Joomla! Platform
+Prototype Standalone CRM on Joomla! Framework
