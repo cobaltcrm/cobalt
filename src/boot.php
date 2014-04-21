@@ -14,6 +14,17 @@ if (!defined('_JDEFINES')) {
 
 @ini_set('magic_quotes_runtime', 0);
 
+// composer libraries check
+if (!file_exists(JPATH_VENDOR.'/autoload.php'))
+{
+    echo 'Run composer first. Read installation istructions.';
+    exit();
+}
+
+// System includes.
+require_once JPATH_LIBRARIES.'/import.php';
+require_once JPATH_VENDOR.'/autoload.php';
+
 //
 // Installation check, and check on removal of the install directory.
 //
@@ -33,16 +44,6 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
     }
 }
 
-// composer libraries check
-if (!file_exists(JPATH_VENDOR.'/autoload.php'))
-{
-    echo 'Run composer first. Read installation istructions.';
-    exit();
-}
-
-// System includes.
-require_once JPATH_LIBRARIES.'/import.php';
-require_once JPATH_VENDOR.'/autoload.php';
 require_once JPATH_CONFIGURATION.'/configuration.php';
 
 JLoader::register('JUser', JPATH_ROOT . '/src/compat/JUser.php');

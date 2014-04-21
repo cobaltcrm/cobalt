@@ -5,6 +5,7 @@
 	"require": {
 		"php": ">=5.3.10",
 		"joomla/framework": "dev-master",
+		"joomla/database": "dev-master",
 		"symfony/http-foundation": "2.3.*@stable",
 		"league/di": "1.*",
 		"filp/whoops": "1.*"

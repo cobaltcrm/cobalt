@@ -1,12 +1,25 @@
 <?php
+/**
+ * @package    Cobalt.CRM
+ *
+ * @copyright  Copyright (C) 2012 Cobalt. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_CEXEC') or die;
+
+use Joomla\Application\AbstractApplication;
+use Joomla\Database;
+use Joomla\Crypt\PasswordInterface;
+use Joomla\Crypt\Password;
 
 class crmInstallModel
 {
-    public $config = null;
-    public $error = null;
-    public $options = null;
-    public $db = null;
-    public $admin = null;
+    protected $config = null;
+    protected $error = null;
+    protected $options = null;
+    protected $db = null;
+    protected $admin = null;
 
     public function install()
     {
@@ -36,7 +49,7 @@ class crmInstallModel
         $this->config->set("offset","UTC");
         $this->config->set("error_reporting",'maximum');
         $this->config->set("debug","1");
-        $this->config->set("secret",JUserHelper::genRandomPassword(16));
+        $this->config->set("secret",$this->genRandomPassword(16));
         $this->config->set("sef","1");
         $this->config->set("sef_rewrite","1");
         $this->config->set("sef_suffix","1");
@@ -47,21 +60,21 @@ class crmInstallModel
         //TODO: needs to check if writable
         $file = JPATH_BASE."/configuration.php";
         if ( !@file_put_contents($file, $this->config->toString()) ) {
-            $this->setError(JText::_('There was an error creating the configuration.php file. Please check your permissions for directory '.JPATH_BASE));
+            $this->setError('There was an error creating the configuration.php file. Please check your permissions for directory '.JPATH_BASE);
 
             return false;
         }
 
         //populate database
         if ( !$this->createDb() ) {
-            $this->setError(JText::_('There was an error creating the required database. Please review your '));
+            $this->setError('There was an error creating the required database. Please review your ');
 
             return false;
         }
 
         //populate crm
         if ( !$this->createCrm() ) {
-            $this->setError(JText::_('There was a problem creating the CRM database. Please review your database settings.'));
+            $this->setError('There was a problem creating the CRM database. Please review your database settings.');
 
             return false;
         }
@@ -75,7 +88,7 @@ class crmInstallModel
             'last_name'		=>$_POST['last_name']
         );
         if ( !$this->createAdmin($admin) ) {
-            $this->setError(JText::_('There was a problem creating the CRM administrator user. Please review your database settings.'));
+            $this->setError('There was a problem creating the CRM administrator user. Please review your database settings.');
 
             return false;
         }
@@ -83,7 +96,7 @@ class crmInstallModel
         //rename-move installation folder
         //TODO: needs to check if writable
         if ( !rename(JPATH_BASE."/install",JPATH_BASE."/_install") ) {
-            $this->setError(JText::_('There was a problem removing the CRM installation folder. Please remove the folder named "install" or optionally rename it.'));
+            $this->setError('There was a problem removing the CRM installation folder. Please remove the folder named "install" or optionally rename it.');
 
             return false;
         }
@@ -94,14 +107,22 @@ class crmInstallModel
 
     public function createDb()
     {
-        $this->options = array(	'driver' => $this->config->dbtype,
-                            'host' => $this->config->host,
-                            'user' => $this->config->user,
-                            'password' => $this->config->password,
-                            'database' => $this->config->db,
-                            'prefix' => $this->config->dbprefix
-                        );
-        $this->db = JDatabaseDriver::getInstance($this->options);
+        $this->options = array(
+            'host' => $this->config->host,
+            'user' => $this->config->user,
+            'password' => $this->config->password,
+            'database' => $this->config->db,
+            'port' => $this->config->port,
+            'socket' => $this->config->socket,
+            'prefix' => $this->config->dbprefix
+        );
+
+        $dbFactory = new Database\DatabaseFactory;
+
+        $this->db = $dbFactory->getDriver(
+            $this->config->dbtype,
+            $this->options
+        );
 
         $schema = JPATH_BASE."/install/sql/".$this->config->dbtype."/joomla.sql";
 
@@ -177,17 +198,21 @@ class crmInstallModel
 
         $userId = rand(0,500);
 
+        if(!ini_get('date.timezone'))
+        {
+            date_default_timezone_set('GMT');
+        }
+
         // Create random salt/password for the admin user
-        $salt = JUserHelper::genRandomPassword(32);
-        $crypt = JUserHelper::getCryptedPassword($admin['password'], $salt);
-        $cryptpass = $crypt . ':' . $salt;
+        $passwordHelper = new Password\Simple;
+        $cryptpass = $passwordHelper->create($admin['password'], PasswordInterface::MD5);
 
         $query = $this->db->getQuery(true);
         $columns = array($this->db->quoteName('id'), $this->db->quoteName('admin'), $this->db->quoteName('name'), $this->db->quoteName('first_name'), $this->db->quoteName('last_name'), $this->db->quoteName('username'),
-                        $this->db->quoteName('email'), $this->db->quoteName('password'),
-                        $this->db->quoteName('block'),
-                        $this->db->quoteName('sendEmail'), $this->db->quoteName('registerDate'),
-                        $this->db->quoteName('lastvisitDate'), $this->db->quoteName('activation'), $this->db->quoteName('params'));
+            $this->db->quoteName('email'), $this->db->quoteName('password'),
+            $this->db->quoteName('block'),
+            $this->db->quoteName('sendEmail'), $this->db->quoteName('registerDate'),
+            $this->db->quoteName('lastvisitDate'), $this->db->quoteName('activation'), $this->db->quoteName('params'));
         $query->insert('#__users', true);
         $query->columns($columns);
 
@@ -326,6 +351,32 @@ class crmInstallModel
     public function getError()
     {
         return $this->error;
+    }
+
+    /**
+     * Generate a random password
+     *
+     * @static
+     * @param   int     $length Length of the password to generate
+     * @return  string          Random Password
+     * @since   11.1
+     */
+    public static function genRandomPassword($length = 8)
+    {
+        $salt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $len = strlen($salt);
+        $makepass = '';
+
+        $stat = @stat(__FILE__);
+        if (empty($stat) || !is_array($stat)) $stat = array(php_uname());
+
+        mt_srand(crc32(microtime() . implode('|', $stat)));
+
+        for ($i = 0; $i < $length; $i ++) {
+            $makepass .= $salt[mt_rand(0, $len -1)];
+        }
+
+        return $makepass;
     }
 
 }

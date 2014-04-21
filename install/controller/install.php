@@ -41,26 +41,30 @@ class crmInstallController
     /** Install application **/
     public function install()
     {
+
         //load our installation model
         include_once(JPATH_BASE."/install/model/install.php");
+        include_once('helpers/uri.php');
+        
         $model = new crmInstallModel();
-        if ( !$model->install() ) {
+        if ( !$model->install() )
+        {
             session_start();
             $_SESSION['error'] = $model->getError();
             header('Location: '.CURI::base());
         }
 
-        require_once JPATH_BASE . '/src/boot.php';
+        // require_once JPATH_BASE . '/src/boot.php';
 
-        $app = JApplicationWeb::getInstance('cobalt',$model->getRegistry());
-        JFactory::$application = $app;
-        JFactory::$database = $model->getDb();
-        // Initialise the application.
-        $app->initialise();
-        $app->login($model->getAdmin());
+        // TODO login automatically
+        // $app = JApplicationWeb::getInstance('cobalt',$model->getRegistry());
+        // JFactory::$application = $app;
+        // JFactory::$database = $model->getDb();
+        // // Initialise the application.
+        // $app->initialise();
+        // $app->login($model->getAdmin());
 
-        //redirect
-        //LOG USER IN AND REDIRECT TO ADMIN PAGE
+        //EDIRECT TO ADMIN PAGE
         header('Location: '.CURI::base()."?view=cobalt");
 
     }
