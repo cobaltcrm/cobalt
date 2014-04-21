@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-      <link rel="stylesheet" href="<?php echo $this->baseurl ?>libraries/crm/media/css/bootstrap.min.css" type="text/css" />
+      <link rel="stylesheet" href="<?php echo $this->baseurl ?>libraries/css/bootstrap.min.css" type="text/css" />
       <link rel="stylesheet" href="<?php echo $this->baseurl ?>assets/css/install.css" type="text/css" />
-      <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/jquery.js" type="text/javascript"></script>
-      <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/jquery-ui.js" type="text/javascript"></script>
-      <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/jquery.tools.min.js" type="text/javascript"></script>
-      <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/bootstrap.min.js" type="text/javascript"></script>
+      <script src="<?php echo $this->baseurl ?>libraries/js/jquery.js" type="text/javascript"></script>
+      <script src="<?php echo $this->baseurl ?>libraries/js/jquery-ui.js" type="text/javascript"></script>
+      <!-- <script src="<?php echo $this->baseurl ?>libraries/js/jquery.tools.min.js" type="text/javascript"></script> -->
+      <script src="<?php echo $this->baseurl ?>libraries/js/bootstrap.min.js" type="text/javascript"></script>
       <script src="<?php echo $this->baseurl ?>assets/js/install.js" type="text/javascript"></script>
 </head>
     <body class="contentpane">
