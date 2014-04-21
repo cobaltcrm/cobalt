@@ -3,7 +3,7 @@ class CURI
 {
     public static function base()
     {
-        return substr(JURI::base(),0, strrpos(JURI::base(),"install/"));
+        return $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'install/';
     }
 
 }

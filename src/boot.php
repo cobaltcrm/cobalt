@@ -17,18 +17,22 @@ if (!defined('_JDEFINES')) {
 //
 // Installation check, and check on removal of the install directory.
 //
-//if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) || file_exists(JPATH_INSTALLATION.'/index.php')) {
-//
-//    if (file_exists(JPATH_INSTALLATION.'/index.php')) {
-//
-//        header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'install/index.php')).'install/index.php');
-//        exit();
-//
-//    } else {
-//        echo 'No configuration file found and no installation code available. Exiting...';
-//        exit();
-//    }
-//}
+// echo "<pre>";var_dump($_SERVER);die("</pre>");
+if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') 
+    || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) 
+    || file_exists(JPATH_INSTALLATION.'/index.php')) {
+
+    $installUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'install/index.php';
+    
+    if (file_exists(JPATH_INSTALLATION.'/index.php')) {
+        header('Location: '.$installUri);
+        exit();
+
+    } else {
+        echo 'No configuration file found and no installation code available. Exiting...';
+        exit();
+    }
+}
 
 // composer libraries check
 if (!file_exists(JPATH_VENDOR.'/autoload.php'))

@@ -3,7 +3,9 @@
 //joomla includes
 const _CEXEC = 1;
 
-include dirname(__DIR__) . '/src/boot.php';
+if (!defined('_JDEFINES')) {
+    require_once dirname(dirname(__FILE__)) . '/src/defines.php';
+}
 
 //handle ajax requests
 if (array_key_exists('c', $_REQUEST)) {
