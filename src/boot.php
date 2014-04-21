@@ -17,7 +17,6 @@ if (!defined('_JDEFINES')) {
 //
 // Installation check, and check on removal of the install directory.
 //
-// echo "<pre>";var_dump($_SERVER);die("</pre>");
 if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') 
     || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) 
     || file_exists(JPATH_INSTALLATION.'/index.php')) {

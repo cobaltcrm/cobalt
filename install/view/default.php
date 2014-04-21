@@ -2,16 +2,16 @@
 <html>
 <head>
       <link rel="stylesheet" href="<?php echo $this->baseurl ?>libraries/crm/media/css/bootstrap.min.css" type="text/css" />
-      <link rel="stylesheet" href="<?php echo $this->baseurl ?>install/assets/css/install.css" type="text/css" />
+      <link rel="stylesheet" href="<?php echo $this->baseurl ?>assets/css/install.css" type="text/css" />
       <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/jquery.js" type="text/javascript"></script>
       <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/jquery-ui.js" type="text/javascript"></script>
       <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/jquery.tools.min.js" type="text/javascript"></script>
       <script src="<?php echo $this->baseurl ?>libraries/crm/media/js/bootstrap.min.js" type="text/javascript"></script>
-      <script src="<?php echo $this->baseurl ?>install/assets/js/install.js" type="text/javascript"></script>
+      <script src="<?php echo $this->baseurl ?>assets/js/install.js" type="text/javascript"></script>
 </head>
     <body class="contentpane">
       <div id="wrapper">
-        <div id="cobalt-3d-container"><img id="cobalt-3d" src="<?php echo $this->baseurl; ?>/install/assets/images/cobalt-3d.png" /></div>
+        <div id="cobalt-3d-container"><img id="cobalt-3d" src="<?php echo $this->baseurl; ?>assets/images/cobalt-3d.png" /></div>
         <div id="tab-container">
           <?php if ( isset($this->error) && $this->error != null ) { ?>
             <?php if ( is_array($this->error) ){foreach ($this->error as $error) { ?>
@@ -23,7 +23,7 @@
                   <?php echo $this->error; ?>
               </div>
           <?php } }?>
-          <form id="install-form" enctype="multipart/form-data" method="post" action="<?php echo $this->baseurl; ?>/install/index.php?c=install&m=install" class="form-line">
+          <form id="install-form" enctype="multipart/form-data" method="post" action="<?php echo $this->baseurl; ?>index.php?c=install&m=install" class="form-line">
             <!-- Tab buttons -->
           <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#site" data-toggle="tab"><i class="icon-home"></i> Site</a></li>
@@ -41,7 +41,7 @@
               </div>
               <label class="control-label" for="inputEmail">Site Logo</label>
               <div class="fileupload fileupload-new" data-provides="fileupload">
-                <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;"><img src="<?php echo $this->baseurl; ?>/install/assets/images/no-image.gif" /></div>
+                <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;"><img src="<?php echo $this->baseurl; ?>assets/images/no-image.gif" /></div>
                 <div id="site-logo-preview" class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                 <div>
                   <label></label>

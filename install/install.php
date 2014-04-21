@@ -11,7 +11,7 @@
 class crmInstall
 {
 
-    public $baseurl = null;
+    public $baseFurl = null;
 
     public function __construct()
     {
