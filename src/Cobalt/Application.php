@@ -373,8 +373,9 @@ final class Application extends AbstractWebApplication
     public function login($credentials, $options = array())
     {
         // Set the application login entry point
-        if (!array_key_exists('entry_url', $options)) {
-            $options['entry_url'] = Uri::base().'index.php?view=login';
+        if (!array_key_exists('entry_url', $options))
+        {
+            $options['entry_url'] = \RouteHelper::_('index.php?view=login');
         }
 
         // Set the access control action to check.
@@ -382,8 +383,9 @@ final class Application extends AbstractWebApplication
 
         $authenticate = new \ModularAuthenticate();
 
-        if ($authenticate->login($credentials, $options)) {
-            $this->redirect(JRoute::_('index.php?view=dashboard'));
+        if ($authenticate->login($credentials, $options))
+        {
+            $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
         }
     }
 

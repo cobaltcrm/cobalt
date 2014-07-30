@@ -98,7 +98,7 @@ if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) 
 }
 
 if ($user === false && !($controllerObj instanceof Cobalt\Controller\Login)) {
-    $app->redirect(JRoute::_('index.php?view=login'));
+    $app->redirect(RouteHelper::_('index.php?view=login'));
 }
 
 //fullscreen detection
