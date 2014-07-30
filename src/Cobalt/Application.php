@@ -22,6 +22,8 @@ use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Application\AbstractWebApplication;
+use Cobalt\Model\User;
+use RouteHelper;
 
 /**
  * Cobalt Application class
@@ -381,11 +383,15 @@ final class Application extends AbstractWebApplication
         // Set the access control action to check.
         $options['action'] = 'core.login.site';
 
-        $authenticate = new \ModularAuthenticate();
+        $user = new User;
 
-        if ($authenticate->login($credentials, $options))
+        if ($user->login($credentials, $options))
         {
             $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
+        }
+        else
+        {
+            $this->redirect(\RouteHelper::_('index.php?view=login'));
         }
     }
 

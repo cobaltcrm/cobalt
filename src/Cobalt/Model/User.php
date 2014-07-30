@@ -10,6 +10,8 @@
 
 namespace Cobalt\Model;
 
+use JUser;
+
 use Cobalt\Table\UserTable;
 use JFactory;
 use Cobalt\Helper\DateHelper;
@@ -17,6 +19,8 @@ use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\UsersHelper;
+
+use Joomla\Crypt\Password\Simple;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -174,6 +178,98 @@ class User extends DefaultModel
         $db->setQuery($query);
         $db->query();
 
+    }
+
+    public function login($credentials, $options)
+    {
+        $result = $credentials;
+        $result['status'] = 0;
+        $result['messages'] = array();
+
+        $this->app->triggerEvent('onBeforeUserLogin', array($result, $options));
+
+        if (!isset($credentials['username']) || !$credentials['username'])
+        {
+            $result['messages'][] = 'COBALT_MSG_MISSING_USERNAME';
+        }
+        elseif (!isset($credentials['password']) || !$credentials['password'])
+        {
+            $result['messages'][] = 'COBALT_MSG_MISSING_PASSWORD';
+        }
+        else
+        {
+            $userInfo = $this->getUserBy(array('username' => $credentials['username']), array('id', 'password', 'block'));
+
+            if (!$userInfo->password)
+            {
+                $result['messages'][] = 'COBALT_MSG_USER_NOT_FOUND';
+            }
+            else
+            {
+                if ($userInfo->block == 1)
+                {
+                    $result['messages'][] = 'COBALT_MSG_USER_IS_BLOCKED';
+                    $this->app->triggerEvent('onUserAuthorisationFailure', array($result));
+                }
+                else
+                {
+                    $authenticate = new Simple;
+
+                    if (!$authenticate->verify($credentials['password'], $userInfo->password))
+                    {
+                        $result['messages'][] = 'COBALT_MSG_WRONG_PASSWORD';
+                    }
+
+                    $result['status'] = 1;
+                }
+            }
+        }
+        
+
+        // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
+        $this->app->triggerEvent('onUserLogin', array($result, $options));
+
+        // Enqueue messages if any
+        if (isset($result['messages']) && $result['messages'])
+        {
+            foreach ($result['messages'] as $msg)
+            {
+                $this->app->enqueueMessage(Text::_($msg));
+            }
+        }
+
+        /*
+         * If any of the user plugins did not successfully complete the login routine
+         * then the whole method fails.
+         *
+         * Any errors raised should be done in the plugin as this provides the ability
+         * to provide much more information about why the routine may have failed.
+         */
+        if ($result['status'] == 1)
+        {
+            $this->app->setUser(new JUser($userInfo->id));
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Select a user by conditions.
+     *
+     * @param array $where    an associative array of WHERE contitions
+     * @param array $where    an associative array of SELECT contitions
+     * @return object object of founded info about user
+     */
+    public function getUserBy(array $where, array $select = array('*'))
+    {
+        $query = $this->db->getQuery(true);
+        $query->select(implode(',', $select))
+            ->from('#__users')
+            ->where(implode(',', $where));
+
+        return $this->db->setQuery($query)->loadObject();
     }
 
 }

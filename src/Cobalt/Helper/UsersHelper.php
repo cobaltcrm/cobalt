@@ -118,10 +118,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      * @param  int   $id user id to get emails for
      * @return mixed $results db results
      */
-    public static function getEmails($id=null)
+    public static function getEmails($id = null)
     {
         //Cobalt User ID
-        if (!$id) {
+        if (!$id)
+        {
             $id = UsersHelper::getUserId();
         }
 
@@ -130,21 +131,25 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query = $db->getQuery(true);
 
         //query
-        $query->select("*")->from("#__users_email_cf")->where("member_id=".$id);
+        $query->select("*")->from("#__users_email_cf")->where("member_id=" . (int) $id);
 
         //load and return results
         $db->setQuery($query);
-        $email_cf = $db->loadAssocList();
+        $email_cf = $db->loadAssoc();
 
         $query->clear()
                 ->select("j.email,u.id AS member_id")
                 ->from("#__users AS u")
                 ->leftJoin("#__users AS j ON j.id=u.id")
-                ->where("u.id=".$id);
+                ->where("u.id=" . (int) $id);
 
-        $primary = $db->loadAssocList();
+        $db->setQuery($query);
+        $emails = $db->loadAssoc();
 
-        $emails = array_merge($email_cf,$primary);
+        if (is_array($email_cf))
+        {
+            $emails = array_merge($email_cf, $emails);
+        }
 
         return $emails;
 
@@ -580,20 +585,23 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $baseUser = JFactory::getUser();
         $user_id = $baseUser->get('id');
 
-        if ($user_id > 0) {
+        if ($user_id > 0)
+        {
             $db = \Cobalt\Container::get('db');
 
             $query = $db->getQuery(true);
             $query->select('c.*,u.email');
             $query->from('#__users AS c');
-            $query->where('c.id = '.$db->Quote($user_id));
+            $query->where('c.id = ' . (int) $user_id);
             $query->leftJoin("#__users AS u ON u.id=c.id");
             $db->setQuery($query);
 
             $user = $db->loadObject();
 
             $user->emails = UsersHelper::getEmails($user->id);
-        } else {
+        }
+        else
+        {
            return false;
         }
 

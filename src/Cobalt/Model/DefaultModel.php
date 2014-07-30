@@ -25,25 +25,36 @@ class DefaultModel extends AbstractDatabaseModel
     protected $_total;
     protected $_pagination;
     protected $id;
+    protected $db;
+    protected $app;
 
     public function __construct(DatabaseDriver $db = null)
     {
-        if (is_null($db)) {
-            $db = \Cobalt\Container::get('db');
+        if (is_null($db))
+        {
+            $db = Container::get('db');
         }
+
+        $this->db = $db;
+
+        $this->app = Container::get('app');
 
         parent::__construct($db);
 
-        $app = Container::get('app');
+        $ids = $this->app->input->get("cids", null, 'array');
 
-        $ids = $app->input->get("cids", null, 'array');
+        $id = $this->app->input->getInt("id");
 
-        $id = $app->input->getInt("id");
-        if ($id && $id > 0) {
+        if ($id && $id > 0)
+        {
             $this->id = $id;
-        } elseif (count($ids) == 1) {
+        }
+        elseif (count($ids) == 1)
+        {
             $this->id = $ids[0];
-        } else {
+        }
+        else
+        {
             $this->id = $ids;
         }
 
