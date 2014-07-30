@@ -18,9 +18,41 @@ $(document).ready(function(){
 	/** Hide past shown tooltips **/
 	$("[data-toggle='tab']").on('click',function(){
 		$("[rel=tooltip]").tooltip('hide');
-	})
-	
+	});
+
+	/** Install button action **/
+	$('#install-cobalt').click(function(e) {
+		e.preventDefault();
+		install();
+	});
+
+	$('a[data-toggle="tab"]').click(function(e) {
+		e.preventDefault();
+		var tab = $(this).attr('data-showtab');
+		showTab(tab);
+	});
+
+	/** Comment for production! **/
+	// prefill();
 });
+
+/*
+* Prefills fields for faster testing
+*/
+function prefill() {
+	var $ = jQuery;
+	$('input#siteName').val('Cobalt');
+	$('input#dbHost').val('localhost');
+	$('input#dbUser').val('root');
+	$('input#dbPass').val('root');
+	$('input#dbName').val('cobalt2');
+	$('input#dbPrefix').val('cob_');
+	$('input#adminFirstname').val('John');
+	$('input#adminLastname').val('Doe');
+	$('input#adminEmail').val('admin@escope.cz');
+	$('input#adminUsername').val('admin');
+	$('input#adminPassword').val('admin');
+}
 
 function validateSite(){
 
@@ -144,7 +176,8 @@ function ucwords (str) {
     });
 }
 
-function install(){
+function install() {
+	
 	if ( !site ){
 		validateSite();
 	}else if ( !db ){
@@ -152,6 +185,7 @@ function install(){
 	}else{
 		validateAdmin();
 	}
+
 	if ( admin ){
 		$("#install-form").submit();
 	}

@@ -50,7 +50,7 @@
                 </div>
               </div>
               <div class="pull-right clearfix">
-                <a href="javascript:void(0);" onclick="showTab('database');" data-toggle="tab" class="btn btn-success">Next <i class="icon-arrow-right icon-white"></i></a>
+                <a href="#database" data-toggle="tab" data-showtab="database" class="btn btn-success">Next <i class="icon-arrow-right icon-white"></i></a>
               </div>
             </div>
             <!-- Database Tab -->
@@ -62,70 +62,69 @@
                   </div>
 
                   <div class="clearfix padding">
-                    <label class="control-label" for="database_name">Host</label>
+                    <label class="control-label" for="dbHost">Host</label>
                     <input data-placement="right" rel="tooltip" title="Enter database host name" type="text" id="dbHost" name="database_host" placeholder="e.g localhost,127.0.0.1">
 
-                    <label class="control-label" for="inputPassword">User</label>
+                    <label class="control-label" for="dbUser">User</label>
                     <input data-placement="right" rel="tooltip" title="Enter database username" type="text" id="dbUser" name="database_user" placeholder="Username for database">
 
-                    <label class="control-label" for="inputPassword">Password</label>
+                    <label class="control-label" for="dbPass">Password</label>
                     <input data-placement="right" rel="tooltip" title="Enter database user password" type="password" id="dbPass" name="database_password" placeholder="Password for database user">
 
-                    <label class="control-label" for="inputPassword">Name</label>
+                    <label class="control-label" for="dbName">Name</label>
                     <input data-placement="right" rel="tooltip" title="Enter database name" type="text" id="dbName" name="database_name" placeholder="Name of database">
 
-                    <label class="control-label" for="inputPassword">Prefix</label>
-                    <input data-placement="right" rel="tooltip" title="Enter database prefix" type="text" id="dbName" name="database_prefix" placeholder="Prefix for database">
+                    <label class="control-label" for="dbPrefix">Prefix</label>
+                    <input data-placement="right" rel="tooltip" title="Enter database prefix" type="text" id="dbPrefix" name="database_prefix" placeholder="Prefix for database" value="cob_">
                   </div>
 
                   <div class="pull-left clearfix">
-                    <a href="javascript:void(0);" onclick="showTab('site');" data-toggle="tab" class="btn"><i class="icon-arrow-left"></i> Previous</a>
+                    <a href="#site" data-toggle="tab" data-showtab="site" class="btn"><i class="icon-arrow-left"></i> Previous</a>
                   </div>
 
                   <div class="pull-right clearfix">
-                    <a href="javascript:void(0);" onclick="showTab('admin');" data-toggle="tab" class="btn btn-success">Next <i class="icon-arrow-right icon-white"></i></a>
+                    <a href="#admin" data-toggle="tab" data-showtab="admin" class="btn btn-success">Next <i class="icon-arrow-right icon-white"></i></a>
                   </div>
-
             </div>
             <!-- Admin Tab -->
             <div class="tab-pane fade" id="admin">
               <div class="control-group">
-                <label class="control-label" for="inputPassword">First Name</label>
+                <label class="control-label" for="adminFirstname">First Name</label>
                 <div class="controls">
                   <input data-placement="right" rel="tooltip" title="Enter administrator first name"  type="text" id="adminFirstname" name="first_name" placeholder="Enter first name">
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label" for="inputPassword">Last Name</label>
+                <label class="control-label" for="adminLastname">Last Name</label>
                 <div class="controls">
                   <input data-placement="right" rel="tooltip" title="Enter administrator last name" type="text" id="adminLastname" name="last_name" placeholder="Enter last name">
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label" for="inputPassword">Email</label>
+                <label class="control-label" for="adminEmail">Email</label>
                 <div class="controls">
                   <input data-placement="right" rel="tooltip" title="Enter administrator email" type="text" id="adminEmail" name="email" placeholder="Enter email address">
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label" for="inputPassword">Username</label>
+                <label class="control-label" for="adminUsername">Username</label>
                 <div class="controls">
                   <input data-placement="right" rel="tooltip" title="Enter administrator username" type="text" id="adminUsername" name="username" placeholder="Enter administrator username">
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label" for="inputPassword">Password</label>
+                <label class="control-label" for="adminPassword">Password</label>
                 <div class="controls">
                   <input data-placement="right" rel="tooltip" title="Enter administrator password" type="password" id="adminPassword" name="password" placeholder="Password for administrator">
                 </div>
               </div>
 
               <div class="pull-left clearfix">
-                  <a href="javascript:void(0);" onclick="showTab('database');" data-toggle="tab" class="btn"><i class="icon-arrow-left"></i> Previous</a>
+                  <a href="#database" data-toggle="tab" data-showtab="database" class="btn"><i class="icon-arrow-left"></i> Previous</a>
               </div>
 
               <div class="pull-right clearfix">
-                  <a href="javascript:void(0);" data-toggle="tab" class="btn btn-success" onclick="install();" >Install <i class="icon-check icon-white"></i></a>
+                  <a href="#" class="btn btn-success" id="install-cobalt" >Install <i class="icon-check icon-white"></i></a>
                 </div>
 
             </div>
