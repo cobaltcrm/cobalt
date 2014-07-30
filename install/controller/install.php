@@ -47,6 +47,7 @@ class crmInstallController
         include_once('helpers/uri.php');
         
         $model = new crmInstallModel();
+        
         if ( !$model->install() )
         {
             session_start();
@@ -64,7 +65,7 @@ class crmInstallController
         // $app->initialise();
         // $app->login($model->getAdmin());
 
-        //EDIRECT TO ADMIN PAGE
+        //REDIRECT TO ADMIN PAGE
         header('Location: '.CURI::base()."?view=cobalt");
 
     }

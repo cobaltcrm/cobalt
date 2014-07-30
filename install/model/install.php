@@ -59,21 +59,24 @@ class crmInstallModel
         //write configuration
         //TODO: needs to check if writable
         $file = JPATH_BASE."/configuration.php";
-        if ( !@file_put_contents($file, $this->config->toString()) ) {
+        if ( !@file_put_contents($file, $this->config->toString()) )
+        {
             $this->setError('There was an error creating the configuration.php file. Please check your permissions for directory '.JPATH_BASE);
 
             return false;
         }
 
         //populate database
-        if ( !$this->createDb() ) {
+        if ( !$this->createDb() )
+        {
             $this->setError('There was an error creating the required database. Please review your ');
 
             return false;
         }
 
         //populate crm
-        if ( !$this->createCrm() ) {
+        if ( !$this->createCrm() )
+        {
             $this->setError('There was a problem creating the CRM database. Please review your database settings.');
 
             return false;
@@ -87,7 +90,9 @@ class crmInstallModel
             'first_name'	=>$_POST['first_name'],
             'last_name'		=>$_POST['last_name']
         );
-        if ( !$this->createAdmin($admin) ) {
+
+        if ( !$this->createAdmin($admin) )
+        {
             $this->setError('There was a problem creating the CRM administrator user. Please review your database settings.');
 
             return false;
@@ -95,7 +100,8 @@ class crmInstallModel
 
         //rename-move installation folder
         //TODO: needs to check if writable
-        if ( !rename(JPATH_BASE."/install",JPATH_BASE."/_install") ) {
+        if ( !rename(JPATH_BASE."/install",JPATH_BASE."/_install") )
+        {
             $this->setError('There was a problem removing the CRM installation folder. Please remove the folder named "install" or optionally rename it.');
 
             return false;
@@ -112,8 +118,8 @@ class crmInstallModel
             'user' => $this->config->user,
             'password' => $this->config->password,
             'database' => $this->config->db,
-            'port' => $this->config->port,
-            'socket' => $this->config->socket,
+            // 'port' => $this->config->port,
+            // 'socket' => $this->config->socket,
             'prefix' => $this->config->dbprefix
         );
 
@@ -127,7 +133,8 @@ class crmInstallModel
         $schema = JPATH_BASE."/install/sql/".$this->config->dbtype."/joomla.sql";
 
         // Get the contents of the schema file.
-        if (!($buffer = file_get_contents($schema))) {
+        if (!($buffer = file_get_contents($schema)))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
@@ -135,18 +142,24 @@ class crmInstallModel
 
         // Get an array of queries from the schema and process them.
         $queries = $this->_splitQueries($buffer);
-        foreach ($queries as $query) {
+
+        foreach ($queries as $query)
+        {
             // Trim any whitespace.
             $query = trim($query);
 
             // If the query isn't empty and is not a MySQL or PostgreSQL comment, execute it.
-            if (!empty($query) && ($query{0} != '#') && ($query{0} != '-')) {
+            if (!empty($query) && ($query{0} != '#') && ($query{0} != '-'))
+            {
                 // Execute the query.
                 $this->db->setQuery($query);
 
-                try {
+                try
+                {
                     $this->db->execute();
-                } catch (RuntimeException $e) {
+                }
+                catch (RuntimeException $e)
+                {
                     $this->setError($e->getMessage());
                     $return = false;
                 }
@@ -223,14 +236,14 @@ class crmInstallModel
             $this->db->quote('0') . ', ' . $this->db->quote(''));
 
         $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->execute();
 
         $columns = array($this->db->quoteName('user_id'),$this->db->quoteName('group_id'));
         $values = $this->db->quote($userId).', '.$this->db->quote("2");
         $query->clear();
         $query->insert("#__user_usergroup_map")->columns($columns)->values($values);
         $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->execute();
 
         $this->admin = $admin;
 
@@ -336,15 +349,25 @@ class crmInstallModel
 
     public function setError($error)
     {
-        if ( is_array($this->error) ) {
+        if ( is_array($this->error) )
+        {
             $this->error[] = $error;
-        } elseif ($this->error != null) {
+        }
+        elseif ($this->error != null)
+        {
             $this->error = array($this->error);
             $this->error[] = $error;
-        } else {
+        }
+        else
+        {
             $this->error = $error;
         }
-        session_start();
+
+        if (session_status() == PHP_SESSION_NONE)
+        {
+            session_start();
+        }
+
         $_SESSION['error'] = $this->error;
     }
 
