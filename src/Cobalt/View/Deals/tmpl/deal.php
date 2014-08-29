@@ -99,7 +99,7 @@ $deal = $this->dealList[0];
                                     <span class="input-append-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
                                     <input type="text" class="inputbox" name="amount" value="<?php echo $deal->amount; ?>" />
                                     <span class="input-append-btn">
-                                        <button type="button" class="btn btn-default" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                        <button type="button" class="btn btn-default" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
                                     </span>
                                 </div>
                                 </form>'><span id="amount_<?php echo $deal->id; ?>"><?php echo $deal->amount; ?></span></a>
@@ -141,7 +141,7 @@ $deal = $this->dealList[0];
                                     <input type="text" class="inputbox" name="probability" value="<?php echo $deal->probability; ?>" />
                                     <span class="input-append-addon">%</span>
                                     <span class="input-append-btn">
-                                        <button type="button" class="btn btn-default" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                        <button type="button" class="btn btn-default" onclick="Cobalt.Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
                                     </span>
                                 </div>
                             </form>'><span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
@@ -220,7 +220,7 @@ $deal = $this->dealList[0];
                     <form id="summary_form">
                         <textarea class="inputbox" name="summary"><?php echo $summary; ?></textarea>
                     </form>
-                    <a class="btn" href="javscript:void(0);" onclick="saveEditableModal('summary_form');" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    <a class="btn" href="javscript:void(0);" onclick="Cobalt.saveEditableModal('summary_form');" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                 </div>
             </div>
         </div>

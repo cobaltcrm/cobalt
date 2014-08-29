@@ -224,7 +224,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     {
         $app = \Cobalt\Container::get('app');
 
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
         $document->addScriptDeclaration('var users='.json_encode(UsersHelper::getAllSharedUsers()).';');
 
         $html = "<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='share_item_dialog'>";

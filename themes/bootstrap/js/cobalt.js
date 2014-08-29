@@ -153,16 +153,22 @@ var Cobalt = {
 
     },
 
-    saveEditableModal: function (form_id) {
-        var formExists = jQuery("#"+form_id).length > 0,
-            form = formExists ? jQuery("#"+form_id+" :input") : jQuery(form_id).parent('form').find(":input"),
+    saveEditableModal: function (clickedButton) {
+
+        var button = jQuery(clickedButton),
+            form = jQuery(button.closest('form')),
+            fields = form.find('input'),
             dataString = "",
             item_id = id,
             model = "";
 
-        jQuery(form).each(function(){
-            if ( this.type != "button" ){
-                var val = ( this.type == 'checkbox' || this.type == 'radio' ) ? ( ( jQuery(this).is(':checked') ) ? 1 : 0 ) : jQuery(this).val();
+        jQuery(fields).each(function() {
+            if ( this.type != "button" ) {
+                if (this.type == 'checkbox' || this.type == 'radio') {
+                    var val = jQuery(this).is(':checked');
+                } else {
+                    var val = jQuery(this).val();
+                }
                 dataString += "&"+this.name+"="+val;
                 if ( this.name == "item_id" ){
                     item_id = jQuery(this).val();
@@ -173,8 +179,8 @@ var Cobalt = {
             }
         });
 
-        if ( model == "" ){
-            switch ( loc ){
+        if ( model == "" ) {
+            switch ( loc ) {
                 case "person":
                     model = "people";
                     break;
@@ -194,16 +200,25 @@ var Cobalt = {
             type:'POST',
             data:dataString,
             dataType:'JSON',
-            success:function(data){
-                jQuery(form).each(function(){
-                    if ( this.type != "button" ){
-                        var val = ( this.type == 'checkbox' || this.type == 'radio' ) ? ( ( jQuery(this).is(':checked') ) ? 1 : 0 ) : jQuery(this).val();
+            success:function(data) {
+                jQuery(fields).each(function() {
+                    if ( this.type != "button" ) {
+                        if (this.type == 'checkbox' || this.type == 'radio') {
+                            var val = jQuery(this).is(':checked');
+                        } else {
+                            var val = jQuery(this).val();
+                        }
                         val = ( val.replace(/ /g,"").length > 0 ) ? val : Joomla.JText._('COBALT_CLICK_TO_EDIT');
-                        val = nl2br(val);
+                        // val = nl2br(val); // @TODO: define nl2br function
                         jQuery("#editable_"+this.name).children('a').text(val);
                         jQuery("#editable_"+this.name).show();
                         jQuery("#editable_"+this.name+"_area").hide();
-                        if ( this.name == "twitter_user" || this.name == "facebook_url" || this.name == "linkedin_url" || this.name == "aim" || this.name == "flickr_url" || this.name == "youtube_url" ){
+                        if ( this.name == "twitter_user" || 
+                            this.name == "facebook_url" || 
+                            this.name == "linkedin_url" || 
+                            this.name == "aim" || 
+                            this.name == "flickr_url" || 
+                            this.name == "youtube_url" ) {
 
                             var url = "";
                             switch ( this.name ){
@@ -224,21 +239,21 @@ var Cobalt = {
                                     break;
                             }
 
-                            if ( url != "" ){
+                            if ( url != "" ) {
                                 var name = this.name.replace('_url','').replace('_user','');
                                 jQuery("#editable_"+name+"_container_"+item_id).html("<a href='"+url+"'><div class='"+name+"_light'></div></a>");
                             }
                         }
                     }
                 });
-                Cobalt.modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
+                // Cobalt.modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
                 Cobalt.closeEditableModal();
             }
         });
     },
 
     closeEditableModal: function () {
-        jQuery("#"+current_area).find('a').popover('hide');
+        jQuery("body").find('a').popover('hide');
     },
 
     bindDropdownItems: function () {

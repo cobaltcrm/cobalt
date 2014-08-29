@@ -27,8 +27,8 @@ class Html extends AbstractHtmlView
     {
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
-
-        $document = JFactory::getDocument();
+        $app = \Cobalt\Container::get('app');
+        $document = $app->getDocument();
         $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         /** Menu Links **/

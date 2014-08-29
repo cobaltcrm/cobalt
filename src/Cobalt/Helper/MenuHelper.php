@@ -360,7 +360,7 @@ public static function getHelpMenuLinks()
         /** Auto show input tooltips **/
         $input_fields = explode(',',$app->input->get('show_fields'));
         if ( count ( $input_fields ) > 0 ) {
-            $document = JFactory::getDocument();
+            $document = $app->getDocument();
             foreach ($input_fields as $input_field) {
                 $document->addScriptDeclaration(
                         "$(document).ready(function(){showTooltip('".$input_field."');});"

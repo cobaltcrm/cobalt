@@ -52,7 +52,7 @@ if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) 
     }
 
     //Grab document instance
-    $document = JFactory::getDocument();
+    $document = $app->getDocument();
 
     //load scripts
     $document->addScript( JURI::base().'libraries/crm/media/js/jquery.js' );

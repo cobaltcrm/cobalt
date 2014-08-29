@@ -294,17 +294,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     }
 
-    public static function getItemSharedUsers($itemId,$itemType)
+    public static function getItemSharedUsers($itemId, $itemType)
     {
         $db = \Cobalt\Container::get('db');
         $query = $db->getQuery(true);
 
-        $query->select("s.user_id AS value,CONCAT(u.first_name,' ',u.last_name) AS label")
+        $query->select("s.user_id AS value, CONCAT(u.first_name, ' ', u.last_name) AS label")
             ->from("#__shared AS s")
-            ->leftJoin("#__users AS u ON u.id = s.user_id");
-
-        $query->where("s.item_id=".$itemId);
-        $query->where("s.item_type=".$db->Quote($itemType));
+            ->leftJoin("#__users AS u ON u.id = s.user_id")
+            ->where("s.item_id=" . (int) $itemId)
+            ->where("s.item_type=" . $db->q($itemType));
 
         $db->setQuery($query);
         $users = $db->loadObjectList();
