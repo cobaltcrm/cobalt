@@ -14,7 +14,6 @@ use JFactory;
 use JPluginHelper;
 use JDocument;
 use JUser;
-use JRoute;
 
 use JUri as Uri;
 use Joomla\String\String;

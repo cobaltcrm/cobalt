@@ -9,7 +9,7 @@
 
 namespace Cobalt;
 
-use JRoute;
+use RouteHelper;
 use JFactory;
 use JHtml;
 use Cobalt\Helper\TextHelper;

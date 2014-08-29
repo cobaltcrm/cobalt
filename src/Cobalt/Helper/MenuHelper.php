@@ -11,7 +11,7 @@
 namespace Cobalt\Helper;
 
 use JFactory;
-use JRoute;
+use RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

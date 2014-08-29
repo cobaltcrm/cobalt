@@ -12,7 +12,7 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\PeopleTable;
 use JUri;
-use JRoute;
+use RouteHelper;
 use JFactory;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\ActivityHelper;

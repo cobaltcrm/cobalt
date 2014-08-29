@@ -11,7 +11,7 @@
 namespace Cobalt\View\Companies;
 
 use JUri;
-use JRoute;
+use RouteHelper;
 use JFactory;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;

@@ -10,7 +10,7 @@
 
 namespace Cobalt\Model;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Container;
 use Cobalt\Pagination;
 use Joomla\Model\AbstractDatabaseModel;

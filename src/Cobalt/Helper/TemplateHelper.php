@@ -11,7 +11,7 @@
 namespace Cobalt\Helper;
 
 use JFactory;
-use JRoute;
+use RouteHelper;
 use JUri;
 
 use Cobalt\Model\Menu as MenuModel;

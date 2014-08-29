@@ -10,7 +10,7 @@
 
 namespace Cobalt\Helper;
 
-use JRoute;
+use RouteHelper;
 use JUri;
 use JHtml;
 

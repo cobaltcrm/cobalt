@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Helper\TextHelper;
 
 // no direct access

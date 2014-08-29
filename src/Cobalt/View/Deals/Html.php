@@ -12,7 +12,7 @@ namespace Cobalt\View\Deals;
 
 use JUri;
 use JFactory;
-use JRoute;
+use RouteHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;

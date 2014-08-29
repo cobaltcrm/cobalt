@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\TextHelper;
 
