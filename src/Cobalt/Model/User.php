@@ -21,6 +21,7 @@ use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\UsersHelper;
 
 use Joomla\Crypt\Password\Simple;
+use Joomla\Language\Text;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

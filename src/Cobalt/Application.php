@@ -21,6 +21,7 @@ use Joomla\String\String;
 use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
 use Joomla\Language\Language;
+use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
 use Cobalt\Model\User;
 use RouteHelper;
@@ -166,6 +167,9 @@ final class Application extends AbstractWebApplication
                 $this->get('language'),
                 $this->get('debug_lang')
             );
+
+            // Configure Text to use language instance
+            Text::setLanguage($this->language);
         }
 
         return $this->language;
