@@ -134,7 +134,7 @@ $person = $this->people[0];
 							<input type="text" class="input-small" name="facebook_url" value="<?php if (array_key_exists('facebook_url', $person)){ echo $person['facebook_url'];} ?>" />
 							<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 							<input type="hidden" name="item_type" value="people"/>
-							<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+							<a href="#" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 						</form></div>'><span id="editable_facebook_container_<?php echo $person['id']; ?>"><div class="facebook_dark"></div></span></a>
                     <?php } ?>
 
@@ -152,7 +152,7 @@ $person = $this->people[0];
 								<input type="text" class="input-small" name="twitter_user" value="<?php if (array_key_exists('twitter_user', $person)){ echo $person['twitter_user'];} ?>" />
 								<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 								<input type="hidden" name="item_type" value="people"/>
-								<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+								<a href="#" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 							</form></div>'><span id="editable_twitter_container_<?php echo $person['id']; ?>"><div class="twitter_dark"></div></span></a>
 
                     <?php } ?>
@@ -171,7 +171,7 @@ $person = $this->people[0];
 						<input type="text" class="input-small" name="linkedin_url" value="<?php if (array_key_exists('linkedin_url', $person)){ echo $person['linkedin_url'];} ?>" />
 						<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 						<input type="hidden" name="item_type" value="people"/>
-						<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+						<a href="#" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 					</form></div>'><span id="editable_linkedin_container_<?php echo $person['id']; ?>"><div class="linkedin_dark"></div></span></a>
 
                     <?php } ?>
@@ -181,7 +181,7 @@ $person = $this->people[0];
 					<input type="text" class="input-small" name="aim" value="<?php if (array_key_exists('aim', $person)){ echo $person['aim'];} ?>" />
 					<input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
 					<input type="hidden" name="item_type" value="people"/>
-					<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+					<a href="#" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 				</form></div>'><span id="editable_aim_container_<?php echo $person['id']; ?>"><div id="aim_button_<?php echo $person['id']; ?>" class="aim_<?php echo $style; ?>"></div></span></a>
 
                 </div>
@@ -228,7 +228,7 @@ $person = $this->people[0];
             <?php if (UsersHelper::canDelete() || $person['owner_id'] == UsersHelper::getUserId()) : ?>
                 <li>
                     <a onclick="deleteItem(this)"><?php echo TextHelper::_('COBALT_DELETE_CONTACT'); ?></a>
-                    <form id="delete_form" method="POST" action="<?php echo JRoute::_('index.php?task=main.trash'); ?>">
+                    <form id="delete_form" method="POST" action="<?php echo RouteHelper::_('index.php?task=main.trash'); ?>">
                         <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                         <input type="hidden" name="item_type" value="people"/>
                         <input type="hidden" name="page_redirect" value="people"/>
@@ -237,7 +237,7 @@ $person = $this->people[0];
             <?php endif; ?>
             <li>
                 <a onclick="printItems(this,'people')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
-                <form class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+                <form class="print_form" method="POST" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                     <input type="hidden" name="layout" value="person"/>
                     <input type="hidden" name="model" value="people"/>
@@ -269,7 +269,7 @@ $person = $this->people[0];
                 <div class="crmeryValue">
                     <?php if (array_key_exists('company_id', $person) && $person['company_id'] > 0)
                     { ?>
-                        <a href="<?php echo JRoute::_("index.php?view=companies&layout=company&company_id=" . $person['company_id']); ?>"><?php echo $person['company_name']; ?></a>
+                        <a href="<?php echo RouteHelper::_("index.php?view=companies&layout=company&company_id=" . $person['company_id']); ?>"><?php echo $person['company_name']; ?></a>
                     <?php
                     }
                     else
@@ -316,7 +316,7 @@ $person = $this->people[0];
                             <?php $data_title = (array_key_exists('position', $person) && $person['position'] != "") ? $person['position'] : ucwords(TextHelper::_('COBALT_CLICK_TO_EDIT')); ?>
                             <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_POSITION'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="position_form">
 								<input type="text" class="input-small" name="position" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" />
-								<a href="#" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+								<a href="#" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
 							</form></div>' ><span id="position_<?php echo $person['id']; ?>"><?php echo $data_title; ?></span></a>
 
                         </div>
@@ -415,7 +415,7 @@ $person = $this->people[0];
     </div>
 
 	<span class="actions pull-right">
-		<form id="upload_form" target="hidden" action="<?php echo JRoute::_('index.php?task=documents.uploadDocument&format=raw&tmpl=component'); ?>" method="POST" enctype="multipart/form-data">
+		<form id="upload_form" target="hidden" action="<?php echo RouteHelper::_('index.php?task=documents.uploadDocument&format=raw&tmpl=component'); ?>" method="POST" enctype="multipart/form-data">
             <div class="input_upload_button fltrt">
                 <a href="javascript:void(0);" class="button" id="upload_button"><?php echo TextHelper::_("COBALT_UPLOAD_FILE"); ?></a>
                 <input type="file" id="upload_input_invisible" name="document"/>

@@ -213,7 +213,7 @@ $company = $this->companies[0];?>
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="facebook_url" value="<?php if ( array_key_exists('facebook',$company) )  echo $company['facebook_url']; ?>" />
-                    <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_FACEBOOK_URL'); ?>" href="javascript:void(0);"><div class="facebook_dark"></div></a>
                 <?php } ?>
 
@@ -225,7 +225,7 @@ $company = $this->companies[0];?>
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="twitter_user" value="<?php if ( array_key_exists('twitter_user',$company) )  echo $company['twitter_user']; ?>" />
-                    <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_TWITTER_USER'); ?>" href="javascript:void(0);"><div class="twitter_dark"></div></a>
                 <?php } ?>
 
@@ -237,7 +237,7 @@ $company = $this->companies[0];?>
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="youtube_url" value="<?php if ( array_key_exists('youtube_url',$company) )  echo $company['youtube_url']; ?>" />
-                    <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_YOUTUBE_URL'); ?>" href="javascript:void(0);"><div class="youtube_dark"></div></a>
                 <?php } ?>
 
@@ -249,7 +249,7 @@ $company = $this->companies[0];?>
                     <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
                     <input type="hidden" name="item_type" value="people" />
                     <input type="text" class="inputbox input-small" name="flickr_url" value="<?php if ( array_key_exists('flickr_url',$company) )  echo $company['flickr_url']; ?>" />
-                    <a href="javascript:void(0);" class="btn button" onclick="saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_FLICKR_URL'); ?>" href="javascript:void(0);"><div class="flickr_dark"></div></a>
                 <?php } ?>
 

@@ -109,7 +109,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         </span>
                                     </div>
                                 <?php } ?>
-                                <form action="<?php echo JRoute::_('index.php?task=import'); ?>" method="post">
+                                <form action="<?php echo RouteHelper::_('index.php?task=import'); ?>" method="post">
                                         <div id="editForm">
                                         <?php if ( isset($this->import_data) && count($this->import_data) > 0 ) { foreach ($this->import_data as $key => $data) { ?>
                                         <?php if ($key > 0) { $style = "style='display:none;'"; } else { $style = ""; } ?>
@@ -151,7 +151,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <div class="sample_text">
                                 <h1><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h1>
                                 <p><div class="alert alert-info"><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_DESC'); ?></div></p>
-                                <form action="<?php echo JRoute::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
+                                <form action="<?php echo RouteHelper::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                     <input type="submit" value="<?php echo JText::_('COBALT_INSTALL_SAMPLE_BUTTON'); ?>" class="btn btn-primary" />
                                     <input type="hidden" name="id" value="1" />
                                     <input type="hidden" name="task" value="installSampleData" />
@@ -160,7 +160,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <input type="hidden" name="view" value="import" />
                                     <?php echo JHtml::_('form.token'); ?>
                                 </form>
-                                <form action="<?php echo JRoute::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
+                                <form action="<?php echo RouteHelper::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                     <input type="submit" value="<?php echo JText::_('COBALT_REMOVE_SAMPLE_BUTTON'); ?>" class="btn btn-danger" />
                                     <input type="hidden" name="id" value="1" />
                                     <input type="hidden" name="task" value="removeSampleData" />

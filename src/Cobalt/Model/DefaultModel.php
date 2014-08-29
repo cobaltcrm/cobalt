@@ -10,7 +10,7 @@
 
 namespace Cobalt\Model;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Container;
 use Cobalt\Pagination;
 use Joomla\Model\AbstractDatabaseModel;
@@ -25,25 +25,36 @@ class DefaultModel extends AbstractDatabaseModel
     protected $_total;
     protected $_pagination;
     protected $id;
+    protected $db;
+    protected $app;
 
     public function __construct(DatabaseDriver $db = null)
     {
-        if (is_null($db)) {
-            $db = \Cobalt\Container::get('db');
+        if (is_null($db))
+        {
+            $db = Container::get('db');
         }
+
+        $this->db = $db;
+
+        $this->app = Container::get('app');
 
         parent::__construct($db);
 
-        $app = Container::get('app');
+        $ids = $this->app->input->get("cids", null, 'array');
 
-        $ids = $app->input->get("cids", null, 'array');
+        $id = $this->app->input->getInt("id");
 
-        $id = $app->input->getInt("id");
-        if ($id && $id > 0) {
+        if ($id && $id > 0)
+        {
             $this->id = $id;
-        } elseif (count($ids) == 1) {
+        }
+        elseif (count($ids) == 1)
+        {
             $this->id = $ids[0];
-        } else {
+        }
+        else
+        {
             $this->id = $ids;
         }
 
@@ -143,7 +154,7 @@ class DefaultModel extends AbstractDatabaseModel
     {
       // Lets load the content if it doesn't already exist
       if (empty($this->_pagination)) {
-         $this->_pagination = new Pagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
+         $this->_pagination = new Pagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,RouteHelper::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
       }
 
       return $this->_pagination;

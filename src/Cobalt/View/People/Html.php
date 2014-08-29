@@ -11,7 +11,7 @@
 namespace Cobalt\View\People;
 
 use JUri;
-use JRoute;
+use RouteHelper;
 use JFactory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Event as EventModel;
@@ -69,7 +69,7 @@ class Html extends AbstractHtmlView
             //grab deal object
             $person = $people[0];
             if (is_null($person['id'])) {
-                $app->redirect(JRoute::_('index.php?view=people'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
+                $app->redirect(RouteHelper::_('index.php?view=people'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
             $person['header'] = TextHelper::_('COBALT_EDIT').' '.$person['first_name'] . ' ' . $person['last_name'];
         } else {

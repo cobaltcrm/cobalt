@@ -9,7 +9,7 @@
 
 namespace Cobalt;
 
-use JRoute;
+use RouteHelper;
 use JFactory;
 use JHtml;
 use Cobalt\Helper\TextHelper;
@@ -580,7 +580,7 @@ class Pagination extends \JPagination
         $data->all = new CobaltPaginationObject(TextHelper::_('JLIB_HTML_VIEW_ALL'), $this->prefix, $this->base, $this->link);
         if (!$this->_viewall) {
             $data->all->base = '0';
-            $data->all->link = JRoute::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=');
+            $data->all->link = RouteHelper::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=');
         }
 
         // Set the start and previous data objects.
@@ -594,9 +594,9 @@ class Pagination extends \JPagination
             //$page = $page == 0 ? '' : $page;
 
             $data->start->base = '0';
-            $data->start->link = JRoute::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=0');
+            $data->start->link = RouteHelper::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=0');
             $data->previous->base = $page;
-            $data->previous->link = JRoute::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $page);
+            $data->previous->link = RouteHelper::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $page);
         }
 
         // Set the next and end data objects.
@@ -608,9 +608,9 @@ class Pagination extends \JPagination
             $end = ($this->get('pages.total') - 1) * $this->limit;
 
             $data->next->base = $next;
-            $data->next->link = JRoute::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $next);
+            $data->next->link = RouteHelper::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $next);
             $data->end->base = $end;
-            $data->end->link = JRoute::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $end);
+            $data->end->link = RouteHelper::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $end);
         }
 
         $data->pages = array();
@@ -623,7 +623,7 @@ class Pagination extends \JPagination
             $data->pages[$i] = new CobaltPaginationObject($i, $this->prefix, $this->base, $this->link);
             if ($i != $this->get('pages.current') || $this->_viewall) {
                 $data->pages[$i]->base = $offset;
-                $data->pages[$i]->link = JRoute::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $offset);
+                $data->pages[$i]->link = RouteHelper::_($this->link . '?' . $params . '&' . $this->prefix . 'limitstart=' . $offset);
             }
         }
 

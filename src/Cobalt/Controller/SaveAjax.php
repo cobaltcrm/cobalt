@@ -24,17 +24,17 @@ class SaveAjax extends DefaultController
 
         $db = $this->container->resolve('db');
 
-        $data = array('id'=>$item_id,$field=>$db->escape($value));
-        $post_data = $this->input->getRequest('post');
+        $data = array('id' => $item_id, $field => $db->escape($value));
+        $post_data = $_POST;
 
-        $data = array_merge($data,$post_data);
+        $data = array_merge($data, $post_data);
 
         $modelClass = 'Cobalt\\Model\\' . ucfirst($item_type);
 
         $model = new $modelClass();
 
         $returnRow = true;
-        $return = $model->store($data,$returnRow);
+        $return = $model->store($data, $returnRow);
 
         echo json_encode($return);
     }

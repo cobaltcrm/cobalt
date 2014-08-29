@@ -11,7 +11,7 @@
 namespace Cobalt\Helper;
 
 use JFactory;
-use JRoute;
+use RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -36,7 +36,7 @@ class MenuHelper
     {
         return array(
             array(
-                'link'   => JRoute::_('index.php?view=cobalt'),
+                'link'   => RouteHelper::_('index.php?view=cobalt'),
                 'class' => 'icon-home',
                 'text' => TextHelper::_('Cobalt Dashboard'),
                 'access' => array( ),
@@ -45,7 +45,7 @@ class MenuHelper
                 'view'      => "cobalt"
             ),
             array(
-                'link' => JRoute::_('index.php?view=users'),
+                'link' => RouteHelper::_('index.php?view=users'),
                 'class' => 'icon-user',
                 'text' => TextHelper::_('Users'),
                 'access' => array( ),
@@ -54,7 +54,7 @@ class MenuHelper
                 'view'      => "users"
             ),
             array(
-                'link' => JRoute::_('index.php?view=branding'),
+                'link' => RouteHelper::_('index.php?view=branding'),
                 'class' => 'icon-tint',
                 'text' => TextHelper::_('Colors and Branding'),
                 'access' => array( ),
@@ -63,7 +63,7 @@ class MenuHelper
                 'view'      => "branding"
             ),
             array(
-                'link' => JRoute::_('index.php?view=stages'),
+                'link' => RouteHelper::_('index.php?view=stages'),
                 'class' => 'icon-tasks',
                 'text' => TextHelper::_('Deal Stages'),
                 'access' => array( ),
@@ -72,7 +72,7 @@ class MenuHelper
                 'view'      => "stages"
             ),
             array(
-                'link' => JRoute::_('index.php?view=categories'),
+                'link' => RouteHelper::_('index.php?view=categories'),
                 'class' => 'icon-th-list',
                 'text' => TextHelper::_('Note Categories'),
                 'access' => array( ),
@@ -81,7 +81,7 @@ class MenuHelper
                 'view'      => "categories"
             ),
             array(
-                'link' => JRoute::_('index.php?view=sources'),
+                'link' => RouteHelper::_('index.php?view=sources'),
                 'class' => 'icon-random',
                 'text' => TextHelper::_('Sources'),
                 'access' => array( ),
@@ -90,7 +90,7 @@ class MenuHelper
                 'view'      => "sources"
             ),
             array(
-                'link' => JRoute::_('index.php?view=companycustom'),
+                'link' => RouteHelper::_('index.php?view=companycustom'),
                 'class' => 'icon-edit',
                 'text' => TextHelper::_('Company Custom Fields'),
                 'access' => array( ),
@@ -99,7 +99,7 @@ class MenuHelper
                 'view'      => "companycustom"
             ),
             array(
-                'link' => JRoute::_('index.php?view=peoplecustom'),
+                'link' => RouteHelper::_('index.php?view=peoplecustom'),
                 'class' => 'icon-edit',
                 'text' => TextHelper::_('People Custom Fields'),
                 'access' => array( ),
@@ -108,7 +108,7 @@ class MenuHelper
                 'view'      => "peoplecustom"
             ),
             array(
-                'link' => JRoute::_('index.php?view=dealcustom'),
+                'link' => RouteHelper::_('index.php?view=dealcustom'),
                 'class' => 'icon-edit',
                 'text' => TextHelper::_('Deal Custom Fields'),
                 'access' => array( ),
@@ -117,7 +117,7 @@ class MenuHelper
                 'view'      => "dealcustom"
             ),
             array(
-                'link' => JRoute::_('index.php?view=statuses'),
+                'link' => RouteHelper::_('index.php?view=statuses'),
                 'class' => 'icon-thumbs-up',
                 'text' => TextHelper::_('People Statuses'),
                 'access' => array( ),
@@ -126,7 +126,7 @@ class MenuHelper
                 'view'      => "statuses"
             ),
             array(
-                'link' => JRoute::_('index.php?view=templates'),
+                'link' => RouteHelper::_('index.php?view=templates'),
                 'class' => 'icon-filter',
                 'text' => TextHelper::_('Workflow'),
                 'access' => array( ),
@@ -135,7 +135,7 @@ class MenuHelper
                 'view'      => "templates"
             ),
             array(
-                'link' => JRoute::_('index.php?view=admindocuments'),
+                'link' => RouteHelper::_('index.php?view=admindocuments'),
                 'class' => 'icon-folder-open',
                 'text' => TextHelper::_('Shared Documents'),
                 'access' => array( ),
@@ -144,7 +144,7 @@ class MenuHelper
                 'view'      => "admindocuments"
             ),
             array(
-                'link' => JRoute::_('index.php?view=menu'),
+                'link' => RouteHelper::_('index.php?view=menu'),
                 'class' => 'icon-align-justify',
                 'text' => TextHelper::_('Menu'),
                 'access' => array( ),
@@ -153,7 +153,7 @@ class MenuHelper
                 'view'      => "menu"
             ),
              array(
-                'link' => JRoute::_('index.php?view=adminimport'),
+                'link' => RouteHelper::_('index.php?view=adminimport'),
                 'class' => 'icon-upload',
                 'text' => TextHelper::_('Import'),
                 'access' => array( ),
@@ -162,7 +162,7 @@ class MenuHelper
                 'view'      => "adminimport"
             ),
              array(
-                'link' => JRoute::_('index.php?view=formwizard'),
+                'link' => RouteHelper::_('index.php?view=formwizard'),
                 'class' => 'icon-star-empty',
                 'text' => TextHelper::_('Form Wizard'),
                 'access' => array( ),
@@ -171,7 +171,7 @@ class MenuHelper
                 'view'      => "formwizard"
             ),
             array(
-                'link' => JRoute::_('index.php?view=config'),
+                'link' => RouteHelper::_('index.php?view=config'),
                 'class' => 'icon-cog',
                 'text' => TextHelper::_('Settings'),
                 'access' => array( ),
@@ -186,55 +186,55 @@ class MenuHelper
     {
         return array(
             array(
-                'link' => JRoute::_('index.php?controller=users&task=add'),
+                'link' => RouteHelper::_('index.php?controller=users&task=add'),
                 'class' => 'icon-user',
                 'text' => TextHelper::_('COBALT_ADD_NEW_USER'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=stages&task=add'),
+                'link' => RouteHelper::_('index.php?controller=stages&task=add'),
                 'class' => 'icon-tasks',
                 'text' => TextHelper::_('COBALT_ADD_NEW_DEAL_STAGE'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=categories&task=add'),
+                'link' => RouteHelper::_('index.php?controller=categories&task=add'),
                 'class' => 'icon-th-list',
                 'text' => TextHelper::_('COBALT_ADD_NEW_NOTE_CATEGORY'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=sources&task=add'),
+                'link' => RouteHelper::_('index.php?controller=sources&task=add'),
                 'class' => 'icon-random',
                 'text' => TextHelper::_('COBALT_ADD_NEW_SOURCE'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=companycustom&task=add'),
+                'link' => RouteHelper::_('index.php?controller=companycustom&task=add'),
                 'class' => 'icon-edit',
                 'text' => TextHelper::_('COBALT_ADD_NEW_COMPANY_CUSTOM_FIELD'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=peoplecustom&task=add'),
+                'link' => RouteHelper::_('index.php?controller=peoplecustom&task=add'),
                 'class' => 'icon-edit',
                 'text' => TextHelper::_('COBALT_ADD_NEW_PEOPLE_CUSTOM_FIELD'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=dealcustom&task=add'),
+                'link' => RouteHelper::_('index.php?controller=dealcustom&task=add'),
                 'class' => 'icon-edit',
                 'text' => TextHelper::_('COBALT_ADD_NEW_DEAL_CUSTOM_FIELD'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=statuses&task=add'),
+                'link' => RouteHelper::_('index.php?controller=statuses&task=add'),
                 'class' => 'icon-thumbs-up',
                 'text' => TextHelper::_('COBALT_ADD_NEW_PERSON_STATUS'),
                 'access' => array( )
             ),
             array(
-                'link' => JRoute::_('index.php?controller=templates&task=add'),
+                'link' => RouteHelper::_('index.php?controller=templates&task=add'),
                 'class' => 'icon-filter',
                 'text' => TextHelper::_('COBALT_CREATE_NEW_WORKFLOW'),
                 'access' => array( )
@@ -360,7 +360,7 @@ public static function getHelpMenuLinks()
         /** Auto show input tooltips **/
         $input_fields = explode(',',$app->input->get('show_fields'));
         if ( count ( $input_fields ) > 0 ) {
-            $document = JFactory::getDocument();
+            $document = $app->getDocument();
             foreach ($input_fields as $input_field) {
                 $document->addScriptDeclaration(
                         "$(document).ready(function(){showTooltip('".$input_field."');});"

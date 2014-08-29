@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-    $custom = DropdownHelper::generateCustom($this->type, isset($this->item['id']) ? $this->item['id'] : '');
+    $custom = DropdownHelper::generateCustom($this->type, isset($this->item->id) ? $this->item->id : '');
     foreach ($custom as $field => $value) {
         if ($value['type'] != 'forecast') {
             $custom_field_filter = array_key_exists('selected',$value) ? $value['selected'] : "";

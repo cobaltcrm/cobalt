@@ -25,7 +25,7 @@ $person = $this->people[0];
 
 <div data-role='header' data-theme='b'>
     <h1><?php echo $person['first_name'].' '.$person['last_name']; ?></h1>
-        <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+        <a href="<?php echo RouteHelper::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
         <?php echo TextHelper::_('COBALT_BACK'); ?>
     </a>
 </div>
@@ -47,7 +47,7 @@ $person = $this->people[0];
         <?php } ?>
         <?php if ( array_key_exists('address_1',$person) && $person['address_1']!="") { ?>
         <li>
-            <a href="<?php echo JRoute::_('index.php?view=people&layout=directions&id='.$person['id']); ?>">
+            <a href="<?php echo RouteHelper::_('index.php?view=people&layout=directions&id='.$person['id']); ?>">
                 <?php if ( array_key_exists('home_address_1',$person) ) echo $person['home_address_1'].' '.$person['home_city'].', '.$person['home_state'].' '.$person['home_zip']; ?>
             </a>
         </li>
@@ -77,7 +77,7 @@ $person = $this->people[0];
                     $deal = $person['deals'][$i];
                     $k = $i%2;
 
-                    echo '<li><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id).'">';
+                    echo '<li><a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id).'">';
                     echo '<span class="ui-li-count">'.$deal->amount.'</span>';
                     echo $deal->name;
                     echo '</a></li>';

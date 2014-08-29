@@ -16,7 +16,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <div data-role='header' data-theme='b'>
         <h1><?php echo ucwords(TextHelper::_('COBALT_DEALS_HEADER')); ?></h1>
-            <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+            <a href="<?php echo RouteHelper::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
             <?php echo TextHelper::_('COBALT_BACK'); ?>
         </a>
     </div>
@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     if ($i==0 || substr_compare($deal->name,$this->dealList[$i-1]['name'],0,1)) {
                         echo "<li data-role='list-divider'>".ucfirst(substr($deal->name,0,1))."</li>";
                     }
-                    echo '<li data-filtertext="'.$deal->name.'" ><a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id).'">'.$deal->name.'</a></li>';
+                    echo '<li data-filtertext="'.$deal->name.'" ><a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id).'">'.$deal->name.'</a></li>';
 
                 }
         ?>

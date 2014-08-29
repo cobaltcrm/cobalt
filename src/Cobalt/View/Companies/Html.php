@@ -11,7 +11,7 @@
 namespace Cobalt\View\Companies;
 
 use JUri;
-use JRoute;
+use RouteHelper;
 use JFactory;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;
@@ -57,7 +57,7 @@ class Html extends AbstractHtmlView
             $companies = $model->getCompanies($app->input->get('id'));
             if ( is_null($companies[0]['id']) ) {
                 $app = JFactory::getApplication();
-                $app->redirect(JRoute::_('index.php?view=companies'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
+                $app->redirect(RouteHelper::_('index.php?view=companies'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
         } else {
             //else load all companies

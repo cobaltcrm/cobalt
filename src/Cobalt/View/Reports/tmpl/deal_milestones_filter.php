@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 for ($i=0;$i<count($this->deals);$i++) {
     $deal = $this->deals[$i]; ?>
     <div class="widget">
-        <h2><a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id); ?>"><?php echo $deal->name; ?></a></h2>
+        <h2><a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id); ?>"><?php echo $deal->name; ?></a></h2>
         <div class="details">
             <div class="row-fluid">
                 <span class="well well-small span4"><?php echo TextHelper::_('COBALT_AMOUNT').": ".ConfigHelper::getCurrency().$deal->amount; ?></span>

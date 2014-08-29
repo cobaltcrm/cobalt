@@ -92,7 +92,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function loadStyleSheets()
         {
             $app = \Cobalt\Container::get('app');
-            $document = JFactory::getDocument();
+            $document = $app->getDocument();
 
             $view = $app->input->get('view');
             if ($view == "print") {

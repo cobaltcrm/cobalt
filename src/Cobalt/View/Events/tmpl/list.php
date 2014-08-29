@@ -42,9 +42,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             echo '</a></td>';
             echo '<td class="due_date_column">'.$due_date.' '.DateHelper::formatTime($time,"(".UsersHelper::getTimeFormat().")").'</td>';
             echo '<td>';
-                if ($event['deal_name']) { echo '<a href='.JRoute::_('index.php?view=deals&layout=deal&id='.$event['deal_id']).'>'.$event['deal_name'].'</a><br />';}
-                if ($event['company_name']) { echo '<a href='.JRoute::_('index.php?view=companies&layout=company&id='.$event['company_id']).'>'.$event['company_name'].'</a>';}
-                if ($event['person_id']) { echo '<a href='.JRoute::_('index.php?view=people&layout=person&id='.$event['person_id']).'>'.$event['person_first_name'].' '.$event['person_last_name'].'</a>';}
+                if ($event['deal_name']) { echo '<a href='.RouteHelper::_('index.php?view=deals&layout=deal&id='.$event['deal_id']).'>'.$event['deal_name'].'</a><br />';}
+                if ($event['company_name']) { echo '<a href='.RouteHelper::_('index.php?view=companies&layout=company&id='.$event['company_id']).'>'.$event['company_name'].'</a>';}
+                if ($event['person_id']) { echo '<a href='.RouteHelper::_('index.php?view=people&layout=person&id='.$event['person_id']).'>'.$event['person_first_name'].' '.$event['person_last_name'].'</a>';}
             echo '</td>';
             echo '<td>'.$event['owner_first_name'].' '.$event['owner_last_name'].'</td>';
             echo '<td>'.$event['assignee_first_name'].' '.$event['assignee_last_name'].'</td>';

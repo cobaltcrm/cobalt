@@ -20,10 +20,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     <div data-role='header' data-theme='b'>
         <h1><?php echo TextHelper::_('COBALT_LEADS_HEADER'); ?></h1>
-            <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+            <a href="<?php echo RouteHelper::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
                 <?php echo TextHelper::_('COBALT_BACK'); ?>
             </a>
-            <a href="<?php echo JRoute::_('index.php?view=people&layout=edit&'.$lead); ?>" data-icon="plus" class="ui-btn-right">
+            <a href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&'.$lead); ?>" data-icon="plus" class="ui-btn-right">
                 <?php echo TextHelper::_('COBALT_NEW'); ?>
             </a>
     </div>
@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     }
             ?>
                 <li data-filtertext="<?php echo $person['first_name'].' '.$person['last_name']; ?>">
-                    <a href="<?php echo JRoute::_('index.php?view=people&layout=person&id='.$person['id']); ?>">
+                    <a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']); ?>">
                         <h3 class="ui-li-heading"><?php echo $person['first_name'].' '.$person['last_name']; ?></h3>
                         <p class="ui-li-desc"><?php echo JText::sprintf('COBALT_MOBILE_PERSON_DESC',$person['position'],$person['company_name']); ?></p>
                     </a>

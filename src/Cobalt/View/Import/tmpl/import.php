@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <div class="text">
         <h2><?php echo TextHelper::_('COBALT_UPLOAD_YOUR_FILE'); ?></h2>
         <p><?php echo TextHelper::_('COBALT_SELECT_YOUR_CSV'); ?>
-            <form id="upload_form" action="<?php echo JRoute::_('index.php?view=import&layout=review'); ?>" method="post" enctype="multipart/form-data">
+            <form id="upload_form" action="<?php echo RouteHelper::_('index.php?view=import&layout=review'); ?>" method="post" enctype="multipart/form-data">
             <div class="input_upload_button" >
                 <input type="hidden" name="type" value="people" />
                 <input class="button" type="button" id="upload_button" value="<?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?>" />

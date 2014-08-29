@@ -11,7 +11,7 @@
 namespace Cobalt\View\Import;
 
 use JUri;
-use JRoute;
+use RouteHelper;
 use JFactory;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
@@ -63,7 +63,7 @@ class Html extends AbstractHtmlView
                     }
                 $app = JFactory::getApplication();
                 $msg = TextHelper::_('COBALT_'.$success.'_IMPORTED_ITEMS');
-                $app->redirect(JRoute::_('index.php?view='.$view),$msg);
+                $app->redirect(RouteHelper::_('index.php?view='.$view),$msg);
             }
 
             $doc = JFactory::getDocument();

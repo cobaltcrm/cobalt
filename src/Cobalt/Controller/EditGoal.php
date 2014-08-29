@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\TextHelper;
 
@@ -26,7 +26,7 @@ class EditGoal extends DefaultController
         $model = new GoalModel;
 
         //store data
-        $link = JRoute::_('index.php?view=goals');
+        $link = RouteHelper::_('index.php?view=goals');
         if ( $model->store() ) {
             $msg = TextHelper::_('COBALT_SUCCESS');
             $this->app->redirect($link, $msg);

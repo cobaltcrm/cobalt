@@ -53,7 +53,7 @@ $app = JFactory::getApplication();
 <div class="results">
     <?php echo $this->deal_milestone_list->render(); ?>
 </div>
-<form method="post" action="<?php echo JRoute::_('index.php?view=reports&layout=deal_milestones'); ?>">
+<form method="post" action="<?php echo RouteHelper::_('index.php?view=reports&layout=deal_milestones'); ?>">
     <table class="com_cobalt_table">
         <tfoot>
         <tr>

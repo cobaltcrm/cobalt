@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\User as UserModel;
 
@@ -37,7 +37,7 @@ class SaveProfile extends DefaultController
 
         if ( array_key_exists('fullscreen',$data) ) {
             $append = UsersHelper::isFullscreen() ? "/?&tmpl=component" : "" ;
-            $results['url'] = JRoute::_($data['url'].$append);
+            $results['url'] = RouteHelper::_($data['url'].$append);
         }
 
         echo json_encode($results);

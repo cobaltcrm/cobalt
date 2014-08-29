@@ -6,7 +6,7 @@
     <td><input type="checkbox" name="ids[]" value="<?php echo $company['id']; ?>" /></td>
     <td class="list_edit_button" id="list_<?php echo $company['id']; ?>" >
         <div class="title_holder">
-            <a href="<?php echo JRoute::_('index.php?view=companies&layout=company&company_id='.$company['id']); ?>"><?php echo $company['name']; ?></a>
+            <a href="<?php echo RouteHelper::_('index.php?view=companies&layout=company&company_id='.$company['id']); ?>"><?php echo $company['name']; ?></a>
         </div>
         <address><?php echo $company['address_formatted']; ?></address>
         <div class="hidden"><small><?php echo $company['description']; ?></small></div>

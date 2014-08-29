@@ -59,7 +59,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 break;
             }
 
-            $link = "<a href=".JRoute::_('index.php?'.$view.'&id='.$activity->type_id).">";
+            $link = "<a href=".RouteHelper::_('index.php?'.$view.'&id='.$activity->type_id).">";
         }
 
         if ($name) {

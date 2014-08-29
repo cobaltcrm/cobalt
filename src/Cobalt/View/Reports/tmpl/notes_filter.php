@@ -21,21 +21,21 @@ $app = JFactory::getApplication();
          <td>
              <?php
                 if ($note['company_id'] != null AND $note['company_id'] != 0) {
-                    echo '<a href="'.JRoute::_('index.php?view=companies&layout=company&id='.$note['company_id']).'">'.$note['company_name'].'</a>';
+                    echo '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$note['company_id']).'">'.$note['company_name'].'</a>';
                 }
              ?>
          </td>
          <td>
              <?php
                 if ($note['deal_id'] != null AND $note['deal_id'] != 0) {
-                    echo '<a href="'.JRoute::_('index.php?view=deals&layout=deal&id='.$note['deal_id']).'">'.$note['deal_name'].'</a>';
+                    echo '<a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$note['deal_id']).'">'.$note['deal_name'].'</a>';
                 }
              ?>
          </td>
          <td>
              <?php
                 if ($note['person_id'] != null AND $note['person_id'] != 0) {
-                    echo '<a href="'.JRoute::_('index.php?view=people&layout=person&id='.$note['person_id']).'">'.$note['person_first_name'].' '.$note['person_last_name'].'</a>';
+                    echo '<a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$note['person_id']).'">'.$note['person_first_name'].' '.$note['person_last_name'].'</a>';
                 }
              ?>
          </td>

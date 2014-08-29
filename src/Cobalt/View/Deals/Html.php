@@ -12,7 +12,7 @@ namespace Cobalt\View\Deals;
 
 use JUri;
 use JFactory;
-use JRoute;
+use RouteHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;
@@ -55,7 +55,7 @@ class Html extends AbstractHtmlView
             $model->set('_id',$app->input->get('id'));
             $dealList = $model->getDeals();
             if ( is_null($dealList[0]->id) ) {
-                $app->redirect(JRoute::_('index.php?view=deals'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
+                $app->redirect(RouteHelper::_('index.php?view=deals'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
         } else {
         //else load all deals

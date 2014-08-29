@@ -29,7 +29,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //app
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::get('app');
         if ($app->input->get('layout')=='sample') {
             $this->_displaySample($tpl);
 
@@ -41,7 +41,7 @@ class Html extends AbstractHtmlView
         $this->menu = $menu;
 
         //javascripts
-        $doc = JFactory::getDocument();
+        $doc = $app->getDocument();
         $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
         $doc->addScript(JURI::base()."/src/Cobalt/media/js/document_manager.js");
 
@@ -81,7 +81,7 @@ class Html extends AbstractHtmlView
                 }
 
                 $view = "import";
-                $app = JFactory::getApplication();
+
                 $msg = TextHelper::_('COBALT_'.$success.'_IMPORTED_ITEMS');
                 $app->redirect('index.php?view='.$view,$msg);
 
@@ -107,8 +107,8 @@ class Html extends AbstractHtmlView
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
-
-        $doc = JFactory::getDocument();
+        $app = \Cobalt\Container::get('app');
+        $doc = $app->getDocument();
         $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
 
         return parent::render();

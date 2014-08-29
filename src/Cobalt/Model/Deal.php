@@ -64,7 +64,7 @@ class Deal extends DefaultModel
      *
      * @return boolean True on success
      */
-    public function store($data = null,$returnRow = false)
+    public function store($data = null, $returnRow = false)
     {
         /** @var \Cobalt\Application $app */
         $app = \Cobalt\Container::get('app');
@@ -73,7 +73,8 @@ class Deal extends DefaultModel
         $row = new DealTable;
         $oldRow = new DealTable;
 
-        if ($data == null) {
+        if ($data == null)
+        {
             $data = $app->input->post->getArray();
         }
 
@@ -81,12 +82,15 @@ class Deal extends DefaultModel
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
         //assign the creation date
-        if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) ) {
+        if ( !array_key_exists('id',$data) || ( array_key_exists('id',$data) && $data['id'] <= 0 ) )
+        {
             $data['created'] = $date;
             $status = "created";
             //assign the owner id
             $data['owner_id'] = array_key_exists('owner_id',$data) ? $data['owner_id'] : UsersHelper::getUserId();
-        } else {
+        }
+        else
+        {
             $row->load($data['id']);
             $oldRow->load($data['id']);
             $status = "updated";
@@ -97,8 +101,10 @@ class Deal extends DefaultModel
 
         //generate custom field string
         $customArray = array();
-        foreach ($data as $name => $value) {
-            if ( strstr($name,'custom_') && !strstr($name,'_input') && !strstr($name,"_hidden") ) {
+        foreach ($data as $name => $value)
+        {
+            if ( strstr($name,'custom_') && !strstr($name,'_input') && !strstr($name,"_hidden") )
+            {
                 $id = str_replace('custom_','',$name);
                 $customArray[] = array('custom_field_id'=>$id,'custom_field_value'=>$value);
                 unset($data[$name]);
@@ -907,18 +913,21 @@ class Deal extends DefaultModel
     public function getDeal($id=null)
     {
         $app = \Cobalt\Container::get('app');
-        $id = $id ? $id : $app->input->get('id');
+        $id = $id ? $id : $app->input->get('item_id');
 
-        if ($id > 0) {
+
+        if ($id > 0)
+        {
+            $this->set('id', $id);
 
             $query = $this->_buildQuery();
 
-            $deal = $this->db->setQuery($query)->loadObjectList();
+            $deal = $this->db->setQuery($query)->loadObject();
 
             self::getDealDetails($deal);
-
-        } else {
-
+        }
+        else
+        {
             //TODO update things to OBJECTS
             $deal = new DealTable;
         }

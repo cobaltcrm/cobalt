@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use JRoute;
+use RouteHelper;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
 
@@ -53,12 +53,12 @@ class Import extends DefaultController
         if ($success) {
 
             $msg = TextHelper::_('COBALT_IMPORT_WAS_SUCCESSFUL');
-            $this->app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
+            $this->app->redirect(RouteHelper::_('index.php?view='.$import_type),$msg);
 
         } else {
 
             $msg = TextHelper::_('COBALT_ERROR_IMPORTING');
-            $this->app->redirect(JRoute::_('index.php?view='.$import_type),$msg);
+            $this->app->redirect(RouteHelper::_('index.php?view='.$import_type),$msg);
 
         }
     }

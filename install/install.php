@@ -1,17 +1,17 @@
 <?php
-/*------------------------------------------------------------------------
-# Cobalt
-# ------------------------------------------------------------------------
-# @author Cobalt
-# @copyright Copyright (C) 2012 cobaltcrm.org All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Website: http://www.cobaltcrm.org
--------------------------------------------------------------------------*/
+/**
+ * @package    Cobalt.CRM
+ *
+ * @copyright  Copyright (C) 2012 Cobalt. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_CEXEC') or die;
 
 class crmInstall
 {
 
-    public $baseurl = null;
+    public $baseFurl = null;
 
     public function __construct()
     {

@@ -14,14 +14,16 @@ use JFactory;
 use JPluginHelper;
 use JDocument;
 use JUser;
-use JRoute;
 
 use JUri as Uri;
 use Joomla\String\String;
 use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
 use Joomla\Language\Language;
+use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
+use Cobalt\Model\User;
+use RouteHelper;
 
 /**
  * Cobalt Application class
@@ -164,6 +166,9 @@ final class Application extends AbstractWebApplication
                 $this->get('language'),
                 $this->get('debug_lang')
             );
+
+            // Configure Text to use language instance
+            Text::setLanguage($this->language);
         }
 
         return $this->language;
@@ -373,17 +378,23 @@ final class Application extends AbstractWebApplication
     public function login($credentials, $options = array())
     {
         // Set the application login entry point
-        if (!array_key_exists('entry_url', $options)) {
-            $options['entry_url'] = Uri::base().'index.php?view=login';
+        if (!array_key_exists('entry_url', $options))
+        {
+            $options['entry_url'] = \RouteHelper::_('index.php?view=login');
         }
 
         // Set the access control action to check.
         $options['action'] = 'core.login.site';
 
-        $authenticate = new \ModularAuthenticate();
+        $user = new User;
 
-        if ($authenticate->login($credentials, $options)) {
-            $this->redirect(JRoute::_('index.php?view=dashboard'));
+        if ($user->login($credentials, $options))
+        {
+            $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
+        }
+        else
+        {
+            $this->redirect(\RouteHelper::_('index.php?view=login'));
         }
     }
 
@@ -404,9 +415,9 @@ final class Application extends AbstractWebApplication
             }
 
             // Redirect the user.
-            $this->redirect(JRoute::_($return, false));
+            $this->redirect(RouteHelper::_($return, false));
         } else {
-            $this->redirect(JRoute::_('index.php', false));
+            $this->redirect(RouteHelper::_('index.php', false));
         }
 
     }

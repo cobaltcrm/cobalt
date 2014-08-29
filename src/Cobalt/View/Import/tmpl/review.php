@@ -27,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <a href="javascript:void(0)" onclick="seekImport(1);"><?php echo TextHelper::_('COBALT_NEXT'); ?></a>
     </div>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?task=import'); ?>" method="post">
+<form action="<?php echo RouteHelper::_('index.php?task=import'); ?>" method="post">
         <div id="editForm">
         <?php if ( isset($this->import_data) && count($this->import_data) > 0 ) { try { foreach ($this->import_data as $key => $data) { ?>
         <?php if ($key > 0) { $style = "style='display:none;'"; } else { $style = ""; } ?>
@@ -74,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <?php } ?>
         </div>
     <div class="import_buttons">
-        <input class="button" type="submit" value="<?php echo TextHelper::_('COBALT_SUBMIT'); ?>" /><a onclick="window.location.href='<?php echo JRoute::_('index.php?view='.$this->import_type); ?>'"><?php echo TextHelper::_('COBALT_CANCEL'); ?></a>
+        <input class="button" type="submit" value="<?php echo TextHelper::_('COBALT_SUBMIT'); ?>" /><a onclick="window.location.href='<?php echo RouteHelper::_('index.php?view='.$this->import_type); ?>'"><?php echo TextHelper::_('COBALT_CANCEL'); ?></a>
     </div>
     <input type="hidden" name="import_type" value="<?php echo $this->import_type; ?>" />
 </form>

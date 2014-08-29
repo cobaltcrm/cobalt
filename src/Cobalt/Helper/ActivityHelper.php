@@ -24,24 +24,42 @@ class ActivityHelper
         $user_id = UsersHelper::getUserId();
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
-        if ($action_type=='created') {
-            $query->clear();
-            $query->insert('#__history');
-            $query->set('type='.$db->Quote($model).', type_id='.$db->Quote($new_info->id).', user_id='.$db->Quote($user_id).', date='.$db->Quote($date).',new_value='.$db->Quote($new_info->id).', action_type='.$db->Quote($action_type).', field="id"');
+        if ($action_type == 'created')
+        {
+            $query->clear()
+                ->insert('#__history')
+                ->set('type='.$db->q($model))
+                ->set('type_id='.$db->q($new_info->id))
+                ->set('user_id='.$db->q($user_id))
+                ->set('date='.$db->q($date))
+                ->set('new_value='.$db->q($new_info->id))
+                ->set('action_type='.$db->q($action_type))
+                ->set('field="id"');
             $db->setQuery($query);
             $db->query();
-        } else {
-            $differences = self::recursive_array_diff((array) $old_info,(array) $new_info);
+        }
+        else
+        {
+            // @TODO: comparing arrays does not work. Fix this in future. Now there are more important bugs
+            // $differences = self::recursive_array_diff((array) $old_info,(array) $new_info);
 
-            if (count($differences) > 0) {
-                foreach ($differences as $key => $old_value) {
-                $query->clear();
-                $query->insert('#__history');
-                $query->set('type='.$db->Quote($model).', type_id='.$db->Quote($new_info->id).', user_id='.$db->Quote($user_id).', date='.$db->Quote($date).', old_value='.$db->Quote($old_value).', new_value='.$db->Quote($new_info->$key).', action_type='.$db->Quote($action_type).', field='.$db->Quote($key));
-                $db->setQuery($query);
-                $db->query();
-                }
-            }
+            // if (count($differences) > 0)
+            // {
+            //     foreach ($differences as $key => $old_value)
+            //     {
+            //         $insertObject = new \stdClass;
+            //         $insertObject->type = $model;
+            //         $insertObject->type_id = $new_info->id;
+            //         $insertObject->user_id = $user_id;
+            //         $insertObject->date = $date;
+            //         $insertObject->old_value = $old_value;
+            //         $insertObject->new_value = $new_info->$key;
+            //         $insertObject->action_type = $action_type;
+            //         $insertObject->field = $key;
+
+            //         // $db->insertObject('#__history', $insertObject);
+            //     }
+            // }
         }
     }
 

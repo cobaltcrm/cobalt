@@ -24,7 +24,8 @@ class Login extends DefaultController
             'password' => $this->input->get('password', null, 'HTML')
         );
 
-        if (isset($credentials['username'])) {
+        if (isset($credentials['username']))
+        {
             $this->app->login($credentials);
         }
 

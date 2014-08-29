@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
 
 <script type="text/javascript">
-    var order_url = "<?php echo JRoute::_('index.php?view=reports&layout=custom_reports_filter&tmpl=component&format=raw'); ?>";
+    var order_url = "<?php echo RouteHelper::_('index.php?view=reports&layout=custom_reports_filter&tmpl=component&format=raw'); ?>";
 </script>
 <h1><?php echo TextHelper::_('COBALT_CUSTOM_REPORTS'); ?></h1>
 <?php echo $this->menu; ?>

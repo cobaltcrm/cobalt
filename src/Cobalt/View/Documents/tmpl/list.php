@@ -46,7 +46,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     break;
             }
             if (array_key_exists('association_name',$document) AND $document['association_name'] != null) {
-                $association_link = '<a href="'.JRoute::_('index.php?view='.$view.'&layout='.$association_type.'&id='.$document['association_id']).'" >'.$document['association_name'];
+                $association_link = '<a href="'.RouteHelper::_('index.php?view='.$view.'&layout='.$association_type.'&id='.$document['association_id']).'" >'.$document['association_name'];
             } else {
                 $association_link = "";
             }

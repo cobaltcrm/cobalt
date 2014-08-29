@@ -15,7 +15,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     var loc = 'calendar';
 </script>
 
-<form class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
     <div class="pull-right text-right">
     <span class="calendar_actions">
         <input type="hidden" name="layout" value="calendar" />
@@ -28,7 +28,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <li><a class="dropdown_item" href="javascript:void(0);" onclick="showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
             </ul>
         </div>
-        <a href="<?php echo JRoute::_('index.php?view=events'); ?>" ><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></a>
+        <a href="<?php echo RouteHelper::_('index.php?view=events'); ?>" ><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></a>
         <?php /** FUTURE <a href="javascript:void(0);" onclick="printItems(this);"><?php echo TextHelper::_('COBALT_PRINT'); ?></a> **/ ?>
     </span>
     </div>

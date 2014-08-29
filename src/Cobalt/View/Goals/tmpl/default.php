@@ -173,7 +173,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     ?>
             </div>
             <div class="pull-right">
-                    <a class="btn btn-success" href="<?php echo JRoute::_('index.php?view=goals&layout=add'); ?>"><i class="icon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
+                    <a class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=goals&layout=add'); ?>"><i class="icon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
                     <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_member"><i class="icon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
             </div>
         </li>
@@ -245,7 +245,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </div>
             <?php if ($this->member_role != 'basic') { ?>
             <div class="pull-right">
-                    <a class="btn btn-success" href="<?php echo JRoute::_('index.php?view=goals&layout=add'); ?>"><i class="icon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
+                    <a class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=goals&layout=add'); ?>"><i class="icon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
                     <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_team"><i class="icon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
             </div>
             <?php } ?>
@@ -296,7 +296,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
                 <?php if ($this->member_role == 'exec') { ?>
                 <div class="pull-right">
-                    <a class="btn btn-success" href="<?php echo JRoute::_('index.php?view=goals&layout=add'); ?>"><i class="icon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
+                    <a class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=goals&layout=add'); ?>"><i class="icon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
                     <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_company"><i class="icon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
                 </div>
                 <?php } ?>

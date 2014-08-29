@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $deal = $this->deal;
 $app = JFactory::getApplication();
 $raw = $app->input->get('format'); ?>
-<form id="edit_form" method="post" name="new_deal" action="<?php echo JRoute::_('index.php?task=save'); ?>" onsubmit="return save(this)">
+<form id="edit_form" method="post" name="new_deal" action="<?php echo RouteHelper::_('index.php?task=save'); ?>" onsubmit="return save(this)">
     <?php if (!$raw) { ?>
     <div class="page-header">
         <div class="btn-group pull-right">

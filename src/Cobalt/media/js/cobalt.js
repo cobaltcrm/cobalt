@@ -2282,7 +2282,7 @@ function showEditableField(ele){
 
 }
 
-function saveEditableModal(form_id){
+function saveEditableModal(form_id) {
 
 	var formExists = jQuery("#"+form_id).length > 0;
 	var form = formExists ? jQuery("#"+form_id+" :input") : jQuery(form_id).parent('form').find(":input");

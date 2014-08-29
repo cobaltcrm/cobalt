@@ -11,14 +11,14 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
-    order_url = "<?php echo JRoute::_('index.php?view=reports&layout=custom_reports_filter&tmpl=component&format=raw'); ?>";
+    order_url = "<?php echo RouteHelper::_('index.php?view=reports&layout=custom_reports_filter&tmpl=component&format=raw'); ?>";
     order_dir = "<?php echo $this->state->get('Report.filter_order_Dir'); ?>";
     order_col = "<?php echo $this->state->get('Report.filter_order'); ?>";
 </script>
 
 <div class="page-header">
     <div class="btn-group pull-right">
-        <a class="btn" href="<?php echo JRoute::_('index.php?view=reports&layout=edit_custom_report'); ?>"><i class="icon-plus-sign"></i> <?php echo TextHelper::_('COBALT_NEW_CUSTOM_REPORT'); ?></a>
+        <a class="btn" href="<?php echo RouteHelper::_('index.php?view=reports&layout=edit_custom_report'); ?>"><i class="icon-plus-sign"></i> <?php echo TextHelper::_('COBALT_NEW_CUSTOM_REPORT'); ?></a>
     </div>
     <h1><?php echo TextHelper::_('COBALT_CUSTOM_REPORTS'); ?></h1>
 </div>

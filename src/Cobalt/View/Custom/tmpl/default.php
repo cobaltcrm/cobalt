@@ -51,7 +51,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                         <div class="inline" id="editable_custom_<?php echo $value['id']; ?>">
                             <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.$value['name']; ?>" data-html='true' data-content='<div class="clearfix input-append"><form id="<?php echo $value['id']; ?>_form">
                             <input placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>" type="text" class="inputbox input-small" name="custom_<?php echo $value['id']; ?>" value="<?php echo $value['selected']; ?>" />
-                            <a href="javascript:void(0);" class="btn" onclick="saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                            <a href="javascript:void(0);" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                         </form></div>' ><?php echo $custom_field_filter; ?></a>
                         </div>
                     </span>
