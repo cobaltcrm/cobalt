@@ -27,7 +27,7 @@ class Raw extends AbstractHtmlView
     {
         $app = JFactory::getApplication();
 
-        $id = $app->input->get('id') ? $app->input->get('id') : null;
+        $id = $app->input->get('id', null);
         $company_id = $app->input->get('company_id');
         $person_id = $app->input->get('person_id');
 
@@ -37,9 +37,9 @@ class Raw extends AbstractHtmlView
         if ($company_id) {
             $model->set('company_id',$company_id);
         } elseif ($person_id) {
-            $model->set('person_id',$person_id);
+            $model->set('person_id',  $person_id);
         } elseif ($id) {
-            $model->set('_id',$id);
+            $model->set('_id', $id);
         }
 
         $layout = $this->getLayout();
@@ -77,7 +77,7 @@ class Raw extends AbstractHtmlView
             break;
             case "add":
             case "edit":
-                    $this->deal = $model->getDeal();
+                    $this->deal = $model->getDeal($id);
                     $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'deal','item'=>$this->deal));
             break;
             case "edit_conversation":
