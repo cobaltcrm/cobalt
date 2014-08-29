@@ -17,7 +17,7 @@ echo '<tr class="cobalt_row_'.$this->k.'">';
         } else {
             echo '<td><img src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
         }
-        echo '<td><a href="'.JRoute::_('index.php?view=people&layout=person&id='.$person['id']).'">'.$person['first_name'] . ' ' . $person['last_name'] . '</a></td>';
+        echo '<td><a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']).'">'.$person['first_name'] . ' ' . $person['last_name'] . '</a></td>';
         echo '<td>'.$person['phone'].'</td>';
         echo '<td>'.$person['owner_first_name'].' '.$person['owner_last_name'].'</td>';
         echo '<td>'.ucwords($person['type']).'</td>';

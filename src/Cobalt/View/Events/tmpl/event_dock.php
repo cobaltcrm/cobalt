@@ -83,7 +83,7 @@ $app = JFactory::getApplication();
 </div>
 <?php if ($app->input->get('view')!="print") { ?>
 <div class="text-center" id="controls_area_bottom">
-    <a class="btn" href="<?php echo JRoute::_('index.php?view=events'); ?>"><?php echo ucwords(TextHelper::_('COBALT_SEE_ALL_TASKS')); ?></a>
+    <a class="btn" href="<?php echo RouteHelper::_('index.php?view=events'); ?>"><?php echo ucwords(TextHelper::_('COBALT_SEE_ALL_TASKS')); ?></a>
 </div>
 <?php } ?>
 </form>

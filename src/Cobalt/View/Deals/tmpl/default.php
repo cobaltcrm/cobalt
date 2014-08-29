@@ -28,7 +28,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <div class="pull-right btn-group">
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#dealModal" data-toggle="modal"><i class="icon-plus icon-white"></i></a>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo JRoute::_('index.php?view=import&import_type=deals'); ?>"><i class="icon-circle-arrow-up"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>"><i class="icon-circle-arrow-up"></i></a>
         <?php if ( UsersHelper::canExport() ) { ?>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_DEALS'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i></a>
         <?php } ?>
@@ -101,7 +101,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <span id="deals_matched"></span> <?php echo TextHelper::_('COBALT_DEALS_MATCHED'); ?> <?php echo TextHelper::_("COBALT_THERE_ARE"); ?> <?php echo $this->totalDeals; ?> <?php echo TextHelper::_("COBALT_DEALS_IN_ACCOUNT"); ?>
     </small>
 <?php echo TemplateHelper::getListEditActions(); ?>
-<form method="post" id="list_form" action="<?php echo JRoute::_('index.php?view=deals'); ?>">
+<form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=deals'); ?>">
 <table class="table table-hover table-striped" id="deals">
     <?php echo $this->deal_list->render(); ?>
 </table>

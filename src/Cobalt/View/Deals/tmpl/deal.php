@@ -23,7 +23,7 @@ $deal = $this->dealList[0];
     var association_type = 'deal';
 </script>
 
-<div data-remote="<?php echo JRoute::_('index.php?view=deals&layout=edit&format=raw&tmpl=component&id='.$deal->id); ?>" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="<?php echo RouteHelper::_('index.php?view=deals&layout=edit&format=raw&tmpl=component&id='.$deal->id); ?>" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -61,17 +61,17 @@ $deal = $this->dealList[0];
                     <?php } ?>
                     <li>
                         <?php if ( UsersHelper::canDelete() || $deal->owner_id == UsersHelper::getUserId() ) { ?>
-                            <a href="<?php echo JRoute::_('index.php?task=trash&item_id='.$deal->id.'&item_type=deals&page_redirect=deals'); ?>" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a>
+                            <a href="<?php echo RouteHelper::_('index.php?task=trash&item_id='.$deal->id.'&item_type=deals&page_redirect=deals'); ?>" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a>
                         <?php } ?>
                     </li>
                     <li>
-                        <a href="<?php echo JRoute::_('index.php?view=printFriendly&item_id='.$deal->id.'&layout=deal&model=deal'); ?>" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+                        <a href="<?php echo RouteHelper::_('index.php?view=printFriendly&item_id='.$deal->id.'&layout=deal&model=deal'); ?>" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
                     </li>
                 </ul>
             </div>
             <h1><span id="name_<?php echo $deal->id; ?>"><?php echo $deal->name; ?></span><div id="status_name_<?php echo $deal->id; ?>" class='deal-status-<?php echo strtolower($deal->status_name); ?>'></div></h1>
             <p class="muted">
-                <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.JRoute::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?>
+                <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?>
             </p>
         </div>
 

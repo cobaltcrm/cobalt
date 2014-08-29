@@ -61,7 +61,7 @@ class TemplateHelper
                                 </div>
                                 <div class="modal-body">
                                     <p><?php echo TextHelper::_('COBALT_LOGOUT_MESSAGE'); ?></p>
-                                    <form id="logout-form" class="inline-form block-btn" action="<?php echo JRoute::_('index.php?view=logout'); ?>" method="post">
+                                    <form id="logout-form" class="inline-form block-btn" action="<?php echo RouteHelper::_('index.php?view=logout'); ?>" method="post">
                                         <input type="hidden" name="return" value="<?php echo base64_encode('/'); ?>" />
                                         <?php // echo JHtml::_('form.token'); ?>
                                     </form>
@@ -127,8 +127,8 @@ class TemplateHelper
 
     public static function displayLogout()
     {
-        $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
-        $string  = '<form class="inline-form" action="'.JRoute::_("index.php?task=logout").'" method="post">';
+        $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
+        $string  = '<form class="inline-form" action="'.RouteHelper::_("index.php?task=logout").'" method="post">';
         $string .= '<input type="hidden" name="return" value="'.$returnURL.'" />';
         $string .= '<input type="submit" class="button" value="'.TextHelper::_('COBALT_LOGOUT').'" />';
         $string .= JHtml::_('form.token');
@@ -160,26 +160,26 @@ class TemplateHelper
         $list_html .= '<ul class="nav">';
         foreach ($list->menu_items as $name) {
             $class = $name == $controller || $name == $view ? "active" : "";
-            $list_html .= '<li><a class="'.$class.'" href="'.JRoute::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
+            $list_html .= '<li><a class="'.$class.'" href="'.RouteHelper::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
         $list_html .= '</ul>';
         $list_html .= "<ul class='nav pull-right'>";
         $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="icon-plus icon-white"></i></a><ul class="dropdown-menu">';
-        $list_html .= '<li><a href="'.JRoute::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
-        $list_html .= '<li><a href="'.JRoute::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
-        $list_html .= '<li><a href="'.JRoute::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
-        $list_html .= '<li><a href="'.JRoute::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a></li>';
         $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a></li>';
 
         if ( UsersHelper::isAdmin() ) {
-            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.JRoute::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a></li>';
+            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a></li>';
         }
 
         if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
-            $returnURL = base64_encode(JRoute::_('index.php?view=dashboard'));
+            $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
             $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
         }
         $list_html .= '</ul>';
@@ -198,11 +198,11 @@ class TemplateHelper
         $str = '<div data-role="footer" data-position="fixed" data-id="cobaltFooter">
                     <div data-role="navbar" data-iconpos="top">
                         <ul>
-                            <li><a data-icon="agenda" data-iconpos="top" id="agendaButton" href="'.JRoute::_('index.php?view=events').'">'.ucwords(TextHelper::_('COBALT_AGENDA')).'</a></li>
-                            <li><a data-icon="deals" data-iconpos="top" id="dealsButton" href="'.JRoute::_('index.php?view=deals').'">'.ucwords(TextHelper::_('COBALT_DEALS_HEADER')).'</a></li>
-                            <li><a data-icon="leads" data-iconpos="top" id="leadsButton" href="'.JRoute::_('index.php?view=people&type=leads').'">'.ucwords(TextHelper::_('COBALT_LEADS')).'</a></li>
-                            <li><a data-icon="contacts" data-iconpos="top" id="contactsButton" href="'.JRoute::_('index.php?view=people&type=not_leads').'">'.ucwords(TextHelper::_('COBALT_CONTACTS')).'</a></li>
-                            <li><a data-icon="companies" data-iconpos="top" id="CompaniesButton" href="'.JRoute::_('index.php?view=companies').'">'.ucwords(TextHelper::_('COBALT_COMPANIES')).'</a></li>
+                            <li><a data-icon="agenda" data-iconpos="top" id="agendaButton" href="'.RouteHelper::_('index.php?view=events').'">'.ucwords(TextHelper::_('COBALT_AGENDA')).'</a></li>
+                            <li><a data-icon="deals" data-iconpos="top" id="dealsButton" href="'.RouteHelper::_('index.php?view=deals').'">'.ucwords(TextHelper::_('COBALT_DEALS_HEADER')).'</a></li>
+                            <li><a data-icon="leads" data-iconpos="top" id="leadsButton" href="'.RouteHelper::_('index.php?view=people&type=leads').'">'.ucwords(TextHelper::_('COBALT_LEADS')).'</a></li>
+                            <li><a data-icon="contacts" data-iconpos="top" id="contactsButton" href="'.RouteHelper::_('index.php?view=people&type=not_leads').'">'.ucwords(TextHelper::_('COBALT_CONTACTS')).'</a></li>
+                            <li><a data-icon="companies" data-iconpos="top" id="CompaniesButton" href="'.RouteHelper::_('index.php?view=companies').'">'.ucwords(TextHelper::_('COBALT_COMPANIES')).'</a></li>
                         </ul>
                     </div>
                 </div>';
@@ -222,7 +222,7 @@ class TemplateHelper
             $languageString = strtoupper('COBALT_'.$layout);
             if ($layout == 'dashboard' ) $layout = 'default';
             $class = $activeLayout == $layout ? 'class=active' : '';
-            $str .= '<li '.$class.'><a href="'.JRoute::_('index.php?view=reports&layout='.$layout).'" >'.ucwords(TextHelper::_($languageString)).'</a></li>';
+            $str .= '<li '.$class.'><a href="'.RouteHelper::_('index.php?view=reports&layout='.$layout).'" >'.ucwords(TextHelper::_($languageString)).'</a></li>';
         }
 
         $str .= "</ul>";

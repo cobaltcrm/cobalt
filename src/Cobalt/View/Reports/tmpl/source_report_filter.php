@@ -18,7 +18,7 @@ $app = JFactory::getApplication();
         <?php if ( $app->input->get('view') != "print" ) { ?>
          <td><input type="checkbox" name="ids[]" value="<?php echo $report['id']; ?>" /></td>
          <?php } ?>
-         <td><a href="<?php echo JRoute::_("index.php?view=deals&layout=deal&id=".$report['id']); ?>"><?php echo $report['name']; ?></a></td>
+         <td><a href="<?php echo RouteHelper::_("index.php?view=deals&layout=deal&id=".$report['id']); ?>"><?php echo $report['name']; ?></a></td>
          <td><?php echo $report['owner_first_name']." ".$report['owner_last_name']; ?></td>
          <td><?php echo ConfigHelper::getCurrency().$report['amount']; ?></td>
          <td><?php echo $report['source_name']; ?></td>

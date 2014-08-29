@@ -118,9 +118,9 @@ $contacts = $this->contacts;
                             </span>
                         </div>
                     </span>
-                    <strong><a href="<?php echo JRoute::_('index.php?view=people&layout=person&id='.$person['id']);?>"><?php echo $person['first_name'] . ' ' . $person['last_name']; ?></a></strong><br>
+                    <strong><a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']);?>"><?php echo $person['first_name'] . ' ' . $person['last_name']; ?></a></strong><br>
                         <?php if (array_key_exists('company_id',$person)) { ?>
-                            <a href="<?php echo JRoute::_("index.php?view=companies&layout=company&company_id=".$person['company_id']); ?>"><?php echo $person['company_name']; ?></a><br>
+                            <a href="<?php echo RouteHelper::_("index.php?view=companies&layout=company&company_id=".$person['company_id']); ?>"><?php echo $person['company_name']; ?></a><br>
                         <?php } ?>
                         <?php if (array_key_exists('phone',$person)) { ?>
                             <?php echo $person['phone']; ?>

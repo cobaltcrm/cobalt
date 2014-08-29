@@ -34,7 +34,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="page-header">
     <div class="btn-group pull-right">
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#personModal" data-toggle="modal"><i class="icon-plus icon-white"></i></a>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_PEOPLE'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo JRoute::_('index.php?view=import&import_type=companies'); ?>"><i class="icon-circle-arrow-up"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_PEOPLE'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=companies'); ?>"><i class="icon-circle-arrow-up"></i></a>
         <?php if ( UsersHelper::canExport() ) { ?>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_PEOPLE'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i></a>
         <?php } ?>
@@ -108,7 +108,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <small><span id="people_matched"></span> <?php echo TextHelper::_('COBALT_PEOPLE_MATCHED'); ?> <?php echo TextHelper::_('COBALT_THERE_ARE'); ?> <?php echo $this->totalPeople; ?> <?php echo TextHelper::_('COBALT_PEOPLE_IN_ACCOUNT'); ?></small>
 
 <?php echo TemplateHelper::getListEditActions(); ?>
-<form method="post" id="list_form" action="<?php echo JRoute::_('index.php?view=people'); ?>">
+<form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=people'); ?>">
 <table class="table table-striped table-hover" id="people">
           <?php echo $this->people_list->render(); ?>
 </table>

@@ -16,10 +16,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <div data-role='header' data-theme='b'>
         <h1><?php echo TextHelper::_('COBALT_ACTIVITY_HEADER'); ?></h1>
-            <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+            <a href="<?php echo RouteHelper::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
                 <?php echo TextHelper::_('COBALT_BACK'); ?>
             </a>
-            <a href="<?php echo JRoute::_('index.php?view=events&layout=edit_task'); ?>" data-icon="plus" class="ui-btn-right">
+            <a href="<?php echo RouteHelper::_('index.php?view=events&layout=edit_task'); ?>" data-icon="plus" class="ui-btn-right">
                 <?php echo ucwords(TextHelper::_('COBALT_ADD_TASK')); ?>
             </a>
     </div>
@@ -38,7 +38,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     }
                 ?>
                     <li data-filtertext="<?php echo $event['name']; ?>">
-                        <a href="<?php echo JRoute::_('index.php?view=events&layout=event&id='.$event['id']); ?>">
+                        <a href="<?php echo RouteHelper::_('index.php?view=events&layout=event&id='.$event['id']); ?>">
                             <h3 class="ui-li-heading"><?php echo $event['name']; ?></h3>
                             <p class="ui-li-desc"><?php echo ucwords($event['type']); ?></p>
                         </a>

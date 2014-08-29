@@ -228,7 +228,7 @@ $person = $this->people[0];
             <?php if (UsersHelper::canDelete() || $person['owner_id'] == UsersHelper::getUserId()) : ?>
                 <li>
                     <a onclick="deleteItem(this)"><?php echo TextHelper::_('COBALT_DELETE_CONTACT'); ?></a>
-                    <form id="delete_form" method="POST" action="<?php echo JRoute::_('index.php?task=main.trash'); ?>">
+                    <form id="delete_form" method="POST" action="<?php echo RouteHelper::_('index.php?task=main.trash'); ?>">
                         <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                         <input type="hidden" name="item_type" value="people"/>
                         <input type="hidden" name="page_redirect" value="people"/>
@@ -237,7 +237,7 @@ $person = $this->people[0];
             <?php endif; ?>
             <li>
                 <a onclick="printItems(this,'people')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
-                <form class="print_form" method="POST" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+                <form class="print_form" method="POST" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                     <input type="hidden" name="layout" value="person"/>
                     <input type="hidden" name="model" value="people"/>
@@ -269,7 +269,7 @@ $person = $this->people[0];
                 <div class="crmeryValue">
                     <?php if (array_key_exists('company_id', $person) && $person['company_id'] > 0)
                     { ?>
-                        <a href="<?php echo JRoute::_("index.php?view=companies&layout=company&company_id=" . $person['company_id']); ?>"><?php echo $person['company_name']; ?></a>
+                        <a href="<?php echo RouteHelper::_("index.php?view=companies&layout=company&company_id=" . $person['company_id']); ?>"><?php echo $person['company_name']; ?></a>
                     <?php
                     }
                     else
@@ -415,7 +415,7 @@ $person = $this->people[0];
     </div>
 
 	<span class="actions pull-right">
-		<form id="upload_form" target="hidden" action="<?php echo JRoute::_('index.php?task=documents.uploadDocument&format=raw&tmpl=component'); ?>" method="POST" enctype="multipart/form-data">
+		<form id="upload_form" target="hidden" action="<?php echo RouteHelper::_('index.php?task=documents.uploadDocument&format=raw&tmpl=component'); ?>" method="POST" enctype="multipart/form-data">
             <div class="input_upload_button fltrt">
                 <a href="javascript:void(0);" class="button" id="upload_button"><?php echo TextHelper::_("COBALT_UPLOAD_FILE"); ?></a>
                 <input type="file" id="upload_input_invisible" name="document"/>

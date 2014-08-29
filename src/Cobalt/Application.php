@@ -416,9 +416,9 @@ final class Application extends AbstractWebApplication
             }
 
             // Redirect the user.
-            $this->redirect(JRoute::_($return, false));
+            $this->redirect(RouteHelper::_($return, false));
         } else {
-            $this->redirect(JRoute::_('index.php', false));
+            $this->redirect(RouteHelper::_('index.php', false));
         }
 
     }

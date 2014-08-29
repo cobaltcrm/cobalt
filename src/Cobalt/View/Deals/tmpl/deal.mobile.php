@@ -24,7 +24,7 @@ $deal = $this->dealList[0];?>
 
     <div data-role='header' data-theme='b'>
         <h1><?php echo $deal->name; ?></h1>
-            <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+            <a href="<?php echo RouteHelper::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
             <?php echo TextHelper::_('COBALT_BACK'); ?>
         </a>
     </div>
@@ -39,7 +39,7 @@ $deal = $this->dealList[0];?>
             <div class="ui-block-b">$<?php echo $deal->amount; ?></div>
 
             <div class="ui-block-a"><?php echo TextHelper::_('COBALT_EDIT_COMPANY'); ?></div>
-            <div class="ui-block-b"><a href="<?php echo JRoute::_('index.php?view=companies&layout=company&id='.$deal->company_id); ?>"><?php echo ucwords($deal->company_name); ?></a></div>
+            <div class="ui-block-b"><a href="<?php echo RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id); ?>"><?php echo ucwords($deal->company_name); ?></a></div>
 
             <div class="ui-block-a"><?php echo TextHelper::_('COBALT_EDIT_OWNER'); ?></div>
             <div class="ui-block-b"><?php echo $deal->owner_first_name.' '.$deal->owner_last_name; ?></div>
@@ -72,7 +72,7 @@ $deal = $this->dealList[0];?>
         <ul data-inset='true' data-role='listview' data-theme="c">
             <?php if ( array_key_exists('people',$deal) && count($deal->people) > 0 ){ foreach ($deal->people as $person) { ?>
                 <li>
-                    <a href="<?php echo JRoute::_('index.php?view=person&id='.$person['id']); ?>">
+                    <a href="<?php echo RouteHelper::_('index.php?view=person&id='.$person['id']); ?>">
                         <img src="<?php echo JURI::base().'src/Cobalt/media/images/person.png'; ?>" class="ui-li-thumb">
                         <h3 class="ui-li-heading"><?php echo $person['first_name'].' '.$person['last_name']; ?></h3>
                         <p class="ui-li-desc"><?php echo ucwords(JText::sprintf('COBALT_MOBILE_PERSON_DESC',$person['position'],$person['company_name'])); ?></p>

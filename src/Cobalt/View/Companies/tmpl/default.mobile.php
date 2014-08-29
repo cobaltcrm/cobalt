@@ -16,7 +16,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <div data-role='header' data-theme='b'>
         <h1><?php echo ucwords(TextHelper::_('COBALT_COMPANY_HEADER')); ?></h1>
-            <a href="<?php echo JRoute::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
+            <a href="<?php echo RouteHelper::_('index.php?view=dashboard'); ?>" data-icon="back" class="ui-btn-left">
             <?php echo TextHelper::_('COBALT_BACK'); ?>
         </a>
     </div>
@@ -33,7 +33,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     }
             ?>
                 <li data-filtertext="<?php echo $company['name']; ?>">
-                    <a href="<?php echo JRoute::_('index.php?view=companies&layout=company&id='.$company['id']); ?>">
+                    <a href="<?php echo RouteHelper::_('index.php?view=companies&layout=company&id='.$company['id']); ?>">
                         <h3 class="ui-li-heading"><?php echo $company['name']; ?></h3>
                         <p class="ui-li-desc">
                             <?php echo '<br />'.$company['phone']; ?></p>

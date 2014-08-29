@@ -69,7 +69,7 @@ class Html extends AbstractHtmlView
             //grab deal object
             $person = $people[0];
             if (is_null($person['id'])) {
-                $app->redirect(JRoute::_('index.php?view=people'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
+                $app->redirect(RouteHelper::_('index.php?view=people'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
             $person['header'] = TextHelper::_('COBALT_EDIT').' '.$person['first_name'] . ' ' . $person['last_name'];
         } else {

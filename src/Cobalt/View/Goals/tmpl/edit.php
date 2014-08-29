@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="page-header">
     <h1><?php echo ucwords($this->header); ?></h1>
 </div>
-<form id="edit-form" action="<?php echo JRoute::_('index.php?task=editGoal'); ?>" method="post" onsubmit="return save(this);">
+<form id="edit-form" action="<?php echo RouteHelper::_('index.php?task=editGoal'); ?>" method="post" onsubmit="return save(this);">
     <div id="goal_edit">
         <ul class="unstyled">
              <li>

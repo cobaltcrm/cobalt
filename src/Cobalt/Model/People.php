@@ -714,7 +714,7 @@ class People extends DefaultModel
          jimport('joomla.html.pagination');
          $total = $this->getTotal();
          $total = $total ? $total : 0;
-         $this->_pagination = new Pagination( $total, $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view=people'));
+         $this->_pagination = new Pagination( $total, $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,RouteHelper::_('index.php?view=people'));
       }
 
       return $this->_pagination;

@@ -24,7 +24,7 @@ $company = $this->companies[0];
 
 <div data-role='header' data-theme='b'>
     <h1><?php echo $company['name']; ?></h1>
-        <a href="<?php echo JRoute::_('index.php?view=companies'); ?>" data-icon="back" class="ui-btn-left">
+        <a href="<?php echo RouteHelper::_('index.php?view=companies'); ?>" data-icon="back" class="ui-btn-left">
         <?php echo TextHelper::_('COBALT_BACK'); ?>
     </a>
 </div>
@@ -39,7 +39,7 @@ $company = $this->companies[0];
 
         <?php if ($company['address_1']!="") { ?>
         <li>
-            <a href="<?php echo JRoute::_('index.php?view=companies&layout=directions&id='.$company['id']); ?>"><?php echo $company['address_1'].' '.$company['address_city'].' '.$company['address_state'].' '.$company['address_zip']; ?></a>
+            <a href="<?php echo RouteHelper::_('index.php?view=companies&layout=directions&id='.$company['id']); ?>"><?php echo $company['address_1'].' '.$company['address_city'].' '.$company['address_state'].' '.$company['address_zip']; ?></a>
         </li>
         <?php } ?>
 

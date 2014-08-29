@@ -154,7 +154,7 @@ class DefaultModel extends AbstractDatabaseModel
     {
       // Lets load the content if it doesn't already exist
       if (empty($this->_pagination)) {
-         $this->_pagination = new Pagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,JRoute::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
+         $this->_pagination = new Pagination( $this->getTotal(), $this->getState($this->_view.'_limitstart'), $this->getState($this->_view.'_limit'),null,RouteHelper::_('index.php?view='.$this->_view.'&layout='.$this->_layout));
       }
 
       return $this->_pagination;

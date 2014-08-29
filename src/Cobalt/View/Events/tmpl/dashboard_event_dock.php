@@ -14,7 +14,7 @@ $app = JFactory::getApplication();
 
 <script type="text/javascript">
 </script>
-<form class="print_form" method="post" target="_blank" action="<?php echo JRoute::_('index.php?view=print'); ?>">
+<form class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
 <input type="hidden" name="layout" value="events" />
 <input type="hidden" name="model" value="event" />
 
@@ -68,6 +68,6 @@ $app = JFactory::getApplication();
     </div>
     <div id="edit_task" style="display:none;"></div>
     <div id="edit_event" style="display:none;"></div>
-    <div class="controls_area"><a class="btn" href="<?php echo JRoute::_('index.php?view=events'); ?>"><?php echo ucwords(TextHelper::_('COBALT_SEE_ALL_TASKS')); ?></a></div>
+    <div class="controls_area"><a class="btn" href="<?php echo RouteHelper::_('index.php?view=events'); ?>"><?php echo ucwords(TextHelper::_('COBALT_SEE_ALL_TASKS')); ?></a></div>
 </div>
 </form>

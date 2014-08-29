@@ -14,7 +14,7 @@ $app = JFactory::getApplication();
 
 <div data-role='header' data-theme='b'>
     <h1><?php echo TextHelper::_('COBALT_ADD_PERSON'); ?></h1>
-        <a href="<?php echo JRoute::_('index.php?view=people&task=save'); ?>" data-icon="back" class="ui-btn-left">
+        <a href="<?php echo RouteHelper::_('index.php?view=people&task=save'); ?>" data-icon="back" class="ui-btn-left">
             <?php echo TextHelper::_('COBALT_BACK'); ?>
         </a>
 </div>

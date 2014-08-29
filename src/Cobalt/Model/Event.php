@@ -417,7 +417,7 @@ class Event extends DefaultModel
                             $view = "people";
                         break;
                     }
-                    $rows[$key]['association_link'] = $association_link = JRoute::_('index.php?view='.$view."&layout=".$event['association_type']."&id=".$event['association_id']);
+                    $rows[$key]['association_link'] = $association_link = RouteHelper::_('index.php?view='.$view."&layout=".$event['association_type']."&id=".$event['association_id']);
                     $rows[$key]['association_link_lang'] = $association_link_lang = ucwords(TextHelper::_("COBALT_ASSOCIATION_LINK_".strtoupper($event['association_type'])));
                 }
 

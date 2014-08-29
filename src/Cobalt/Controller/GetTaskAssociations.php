@@ -31,7 +31,7 @@ class GetTaskAssociations extends DefaultController
             foreach ($people as $index => $row) {
 
                 $people[$index]['type'] = "person";
-                $people[$index]['association_link'] = JRoute::_('index.php?view=people&layout=person&id='.$row['id']);
+                $people[$index]['association_link'] = RouteHelper::_('index.php?view=people&layout=person&id='.$row['id']);
             }
         }
 
@@ -42,7 +42,7 @@ class GetTaskAssociations extends DefaultController
         if ( count($deals) ) {
             foreach ($deals as $index => $row) {
                 $deals[$index]['type'] = 'deal';
-                $deals[$index]['association_link'] = JRoute::_('index.php?view=deals&layout=deal&id='.$row['id']);
+                $deals[$index]['association_link'] = RouteHelper::_('index.php?view=deals&layout=deal&id='.$row['id']);
             }
         }
 
@@ -53,7 +53,7 @@ class GetTaskAssociations extends DefaultController
         if ( count($companies) ) {
             foreach ($companies as $index => $row) {
                 $companies[$index]['type'] = 'company';
-                $companies[$index]['association_link'] = JRoute::_('index.php?view=companies&layout=company&id='.$row['id']);
+                $companies[$index]['association_link'] = RouteHelper::_('index.php?view=companies&layout=company&id='.$row['id']);
             }
         }
 

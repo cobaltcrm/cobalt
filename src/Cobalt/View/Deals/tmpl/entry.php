@@ -15,18 +15,18 @@ $source_name = ( array_key_exists('source_id',$deal) && $deal->source_id != 0 ) 
 $expected_close = $deal->expected_close != "0000-00-00 00:00:00" ? DateHelper::formatDate($deal->expected_close) : TextHelper::_('COBALT_NOT_SET');
 $actual_close = $deal->actual_close != "0000-00-00 00:00:00" && $deal->closed != 0 ? DateHelper::formatDate($deal->actual_close) : $actual_close = TextHelper::_('COBALT_ACTIVE_DEAL');
 $extras = '<b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>
-            <a href="'.JRoute::_('index.php?view=people&layout=person&id='.$deal->primary_contact_id).'">'.$deal->primary_contact_first_name.'</a><br>
+            <a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$deal->primary_contact_id).'">'.$deal->primary_contact_first_name.'</a><br>
             <b>'.TextHelper::_('COBALT_NEXT_ACTION').'</b><br>';
 ?>
 <tr id="list_row_<?php echo $deal->id; ?>" >
     <td><input type="checkbox" class="export" name="ids[]" value="<?php echo $deal->id; ?>" /></td>
     <td id="list_<?php echo $deal->id; ?>">
         <div class="title_holder">
-            <a href="<?php echo JRoute::_('index.php?view=deals&layout=deal&id='.$deal->id); ?>"><?php echo $deal->name; ?></a>
+            <a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id); ?>"><?php echo $deal->name; ?></a>
         </div>
     </td>
     <td class="company">
-        <a href="<?php echo JRoute::_('index.php?view=companies&layout=company&id='.$deal->company_id); ?>"><?php echo $deal->company_name; ?></a><br>
+        <a href="<?php echo RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id); ?>"><?php echo $deal->company_name; ?></a><br>
     </td>
     <td class="amount"><?php echo ConfigHelper::getCurrency().$deal->amount; ?></td>
     <td class='status' >

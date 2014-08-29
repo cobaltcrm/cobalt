@@ -63,7 +63,7 @@ class Html extends AbstractHtmlView
                     }
                 $app = JFactory::getApplication();
                 $msg = TextHelper::_('COBALT_'.$success.'_IMPORTED_ITEMS');
-                $app->redirect(JRoute::_('index.php?view='.$view),$msg);
+                $app->redirect(RouteHelper::_('index.php?view='.$view),$msg);
             }
 
             $doc = JFactory::getDocument();

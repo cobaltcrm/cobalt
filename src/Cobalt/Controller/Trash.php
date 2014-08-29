@@ -43,7 +43,7 @@ class Trash extends DefaultController
         $redirect = $this->input->get('page_redirect');
         if ($redirect) {
             $msg = ( $data['success'] ) ? TextHelper::_('COBALT_SUCCESSULLY_REMOVED_ITEM') : TextHelper::_('COBALT_ERROR_REMOVING_ITEM');
-            $this->app->redirect(JRoute::_('index.php?view='.$redirect),$msg);
+            $this->app->redirect(RouteHelper::_('index.php?view='.$redirect),$msg);
         } else {
             echo json_encode($data);
         }
