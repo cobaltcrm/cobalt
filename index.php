@@ -14,5 +14,8 @@ const _CEXEC = 1;
 
 require_once __DIR__ . '/src/boot.php';
 
+use Tracy\Debugger;
+Debugger::enable();
+
 // $container is setup in the previous require.
 $container->resolve('app')->execute();
