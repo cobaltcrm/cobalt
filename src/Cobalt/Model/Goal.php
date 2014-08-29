@@ -227,8 +227,8 @@ class Goal extends DefaultModel
        $query = $db->getQuery(true);
 
        //load goals associated with team id
-       $query->select("g.*,u.first_name,u.last_name,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name")->from("#__goals AS g");
-       $db->setQuery($query);
+       $query->select("g.*,u.first_name,u.last_name,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name")
+       ->from("#__goals AS g");
 
        //if we are searching for a specific team
        if ($id) {
@@ -243,6 +243,8 @@ class Goal extends DefaultModel
        $query->leftJoin("#__users AS u on u.id = t.leader_id");
 
        $query->where("g.published=".$this->published);
+
+       $db->setQuery($query);
 
        //load results
        $results = $db->loadAssocList();
