@@ -7,8 +7,6 @@
  */
 defined('_CEXEC') or die;
 
-namespace Cobalt;
-
 use Cobalt\Container;
 use Cobalt\Model\User;
 
