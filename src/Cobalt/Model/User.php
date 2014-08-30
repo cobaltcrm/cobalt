@@ -225,7 +225,7 @@ class User extends DefaultModel
                 }
             }
         }
-        
+
 
         // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
         $this->app->triggerEvent('onUserLogin', array($result, $options));
@@ -268,7 +268,7 @@ class User extends DefaultModel
         $query = $this->db->getQuery(true);
         $query->select(implode(',', $select))
             ->from('#__users')
-            ->where(implode(',', $where));
+            ->where($this->db->quoteName('username') . ' = ' . $this->db->quote(implode(',', $where)));
 
         return $this->db->setQuery($query)->loadObject();
     }
