@@ -314,6 +314,58 @@ var Cobalt = {
                 }
             }
         });
+    },
+
+    saveProfileItem: function(button) {
+
+        var formData = '';
+        button = jQuery(button);
+        var form = button.closest('.modal-content').find('form');
+
+        jQuery.ajax({
+            type: 'post',
+            url: base_url+'index.php?task=save&format=raw',
+            data: form.serialize(),
+            dataType: 'json',
+            success:function(data) {
+                console.log(data);
+                if ( data.id > 0 ) {
+                    Cobalt.updateProfileItem(data);
+                } else {
+                    Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_ERROR_HEADER'))
+                }
+                jQuery(".modal").modal('hide');
+            }
+        });
+    },
+
+    updateProfileItem: function(data) {
+        // @TODO: repair commented lines
+        jQuery.each(data, function(name, value) {
+            if ( jQuery("#"+name+"_"+data.id).text() != value ) {
+                switch ( name ){
+                    case "status_name":
+                        jQuery("#"+name+"_"+data.id).attr('class','deal-status-'+value);
+                    break;
+                    case "stage_name":
+                        // jQuery("#"+name+"_"+data.id).attr('title',Joomla.JText._('COBALT_STAGE')+": "+ucwords(value));
+                    break;
+                    case "percent":
+                        // @TODO: It's better to use user-defined color then to calculate it.
+                        // var color = getColorForPercentage(value/100);
+                        // var colorDark = getColorForPercentage((value-20)/100);
+                        // var style = "background-image: -moz-linear-gradient(top,"+color+","+colorDark+");background-image: -webkit-gradient(linear,0 0,0 100%,from("+color+"),to("+colorDark+"));background-image: -webkit-linear-gradient(top,"+color+","+colorDark+");background-image: -o-linear-gradient(top,"+color+","+colorDark+");background-image: linear-gradient(to bottom,"+color+","+colorDark+");background-color:"+color+" !important; ";
+                        // jQuery("#"+name+"_"+data.id).attr('style',style);
+                        // jQuery("#"+name+"_"+data.id).css('width',value+"%");
+                    break;
+                    default:
+                        jQuery("#"+name+"_"+data.id).html(value);
+                    break;
+                }
+                // jQuery("#"+name+"_"+data.id).effect("highlight",2000);
+            }
+        });
+
     }
 };
 

@@ -35,7 +35,7 @@ $deal = $this->dealList[0];
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-                <button onclick="Cobalt.saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+                <button onclick="Cobalt.saveProfileItem(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
             </div>
         </div>
     </div>

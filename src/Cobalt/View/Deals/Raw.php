@@ -61,7 +61,7 @@ class Raw extends AbstractHtmlView
                 $this->deal = $model->getDeal();
             break;
             case "deal":
-                $this->deal = $model->getDeal();
+                $this->deal = $model->getDeal($id);
                 $this->dealList = $model->getDeals();
                 $primary_contact_id = DealHelper::getPrimaryContact($this->deal->id);
                 $this->closed_stages = DealHelper::getClosedStages();
