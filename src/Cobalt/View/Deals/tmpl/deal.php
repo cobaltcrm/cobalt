@@ -125,7 +125,10 @@ $deal = $this->dealList[0];
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_OWNER'); ?></div>
                     <div class="cobaltValue">
                         <div class='dropdown'>
-                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'><span id="owner_first_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_first_name." ".$deal->owner_last_name; ?></span></a>
+                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'>
+                                <span id="owner_first_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_first_name; ?></span>
+                                <span id="owner_last_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_last_name; ?></span>
+                            </a>
                             <ul class="dropdown-menu" role="menu">
                             <?php
                             $me = array(array('label'=>TextHelper::_('COBALT_ME'),'value'=>UsersHelper::getLoggedInUser()->id));
@@ -235,7 +238,7 @@ $deal = $this->dealList[0];
             <h2><?php echo TextHelper::_('COBALT_EDIT_SUMMARY'); ?></h2>
             <div class="well well-small large_info">
                 <?php $summary = ( array_key_exists('summary',$deal) && strlen(trim($deal->summary)) > 0 ) ? $deal->summary : TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>
-                <div class="inline"><span id="editable_summary"><?php echo nl2br($summary); ?></span></div>
+                <div class="inline"><span id="summary_<?php echo $deal->id; ?>"><?php echo nl2br($summary); ?></span></div>
                 <div id="editable_summary_area" style="display:none;">
                     <form id="summary_form">
                         <textarea class="inputbox" name="summary"><?php echo $summary; ?></textarea>

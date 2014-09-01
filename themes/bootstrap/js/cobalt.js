@@ -8,7 +8,8 @@ var Cobalt = {
     },
 
     bindPopovers: function() {
-        jQuery.each(jQuery('[rel="popover"]'), function(i, popover) {
+        var selector = '[rel="popover"]';
+        jQuery.each(jQuery(selector), function(i, popover) {
             popover = jQuery(popover);
             var options = {
                 html : true,
@@ -22,6 +23,19 @@ var Cobalt = {
             };
             popover.popover(options);
         });
+
+        jQuery(document).click(function (e) {
+            if (jQuery(e.target).parent().find(selector).length > 0) {
+                Cobalt.closePopovers(selector);
+            }
+        });
+    },
+
+    closePopovers: function(selector) {
+        if (!selector) {
+            selector = '[rel="popover"]';
+        }
+        jQuery(selector).popover('hide');
     },
 
     bindTooltips: function() {
@@ -84,6 +98,8 @@ var Cobalt = {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
         }
+
+        this.closePopovers();
     },
 
     sumbitModalForm: function(button) {
@@ -103,12 +119,12 @@ var Cobalt = {
                 value = '';
             }
             var element = jQuery('#'+name+'_'+itemId);
+            var field = jQuery('[name="'+name+'"]');
             if (element.length) {
-                if (element.prop("tagName") === 'SPAN' || element.prop("tagName") === 'DIV') {
-                    element.text(value);
-                } else if (element.prop("tagName") === 'INPUT') {
-                    element.val(value);
-                }
+                element.text(value);
+            }
+            if (field.length) {
+                field.val(value);
             }
         });
     },
