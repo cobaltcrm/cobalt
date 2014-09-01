@@ -149,17 +149,23 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_probability_container">
                     <div class="inline" id="editable_probability">
                         <h2>
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>" data-html='true' data-content='
-                            <form id="probability_form">
+                            <a href="javascript:void(0);" rel="popover" data-conent-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
+                            <span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
+                        </h2>
+                        <div class="probability-form hidden">
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)">
                                 <div class="input-append">
-                                    <input type="text" class="inputbox" name="probability" value="<?php echo $deal->probability; ?>" />
-                                    <span class="input-append-addon">%</span>
+                                    <input type="number" class="span1" name="probability" value="<?php echo $deal->probability; ?>" />
+                                    <span class="add-on">%</span>
                                     <span class="input-append-btn">
                                         <button type="submit" class="btn btn-default"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
                                     </span>
                                 </div>
-                            </form>'><span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
-                        </h2>
+                                <input type="hidden" name="task" value="save" />
+                                <input type="hidden" name="model" value="deal" />
+                                <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
+                            </form>
+                        </div>
                     </div>
                     </span>
                 </div>

@@ -8,13 +8,24 @@ var Cobalt = {
     },
 
     bindPopovers: function() {
-        $('[rel="tooltip"]').tooltip({
-            container: "body"
+        jQuery.each(jQuery('[rel="popover"]'), function(i, popover) {
+            popover = jQuery(popover);
+            var options = {
+                html : true,
+                container: "body",
+                content: function() {
+                    var contentClass = popover.attr('data-conent-class');
+                    if (contentClass) {
+                        return $('.'+contentClass).html();
+                    }
+                }
+            };
+            popover.popover(options);
         });
     },
 
     bindTooltips: function() {
-        $('[rel="popover"]').popover();
+        $('[rel="tooltip"]').tooltip();
     },
 
     bindDatepickers: function() {
@@ -58,19 +69,14 @@ var Cobalt = {
         }
 
         // bind form using 'ajaxForm' 
-        $('form').submit(function() { 
-            // inside event callbacks 'this' is the DOM element so we first 
-            // wrap it in a jQuery object and then invoke ajaxSubmit 
-            $(this).ajaxSubmit(options); 
-     
-            // !!! Important !!! 
-            // always return false to prevent standard browser submit and page navigation 
+        jQuery('form[data-ajax="1"]').submit(function() { 
+            console.log(jQuery(this));
+            jQuery(this).ajaxSubmit(options); 
             return false; 
         }); 
     },
 
     onFormSaveSuccess: function(response) {
-                    console.log(response.alert);
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
@@ -82,6 +88,12 @@ var Cobalt = {
 
     sumbitModalForm: function(button) {
         jQuery(button).closest('.modal').find('form').ajaxSubmit(Cobalt.getFormSubmitOptions());
+    },
+
+    sumbitForm: function(form) {
+        jQuery(form).ajaxSubmit(Cobalt.getFormSubmitOptions());
+        // prevent from submitting form
+        return false;
     },
 
     updateStuff: function(data) {
