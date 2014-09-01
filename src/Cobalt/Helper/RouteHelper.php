@@ -20,7 +20,7 @@ class RouteHelper
         $route = parse_url($route);
         $sef = self::baseUrl();
 
-        if (!isset($route['query']) && $route['query'])
+        if (!isset($route['query']))
         {
             return $sef;
         }
