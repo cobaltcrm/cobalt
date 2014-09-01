@@ -124,6 +124,7 @@ function validateDb(){
 		obj['user'] = $("#dbUser").val();
 		obj['pass'] = $("#dbPass").val();
 		obj['name'] = $("#dbName").val();
+		obj['prefix'] = $("#dbPrefix").val();
 
 		valid = true;
 
