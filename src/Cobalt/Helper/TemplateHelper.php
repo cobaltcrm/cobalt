@@ -235,7 +235,7 @@ class TemplateHelper
         $html  = "";
         $html .= '<div id="new_event_dialog" style="display:none;">';
             $html .= '<div class="new_events">';
-                $html .= '<a href="javasript:void(0);" class="task" onclick="addTaskEvent(\'task\')">'.TextHelper::_('COBALT_ADD_TASK').'</a><a  href="javasript:void(0);" class="event" onclick="addTaskEvent(\'event\')">'.TextHelper::_('COBALT_ADD_EVENT').'</a><a href="javasript:void(0);" class="complete" onclick="jQuery(\'#new_event_dialog\').dialog(\'close\');">'.TextHelper::_('COBALT_DONE').'</a>';
+                $html .= '<a href="javasript:void(0);" class="task" onclick="Cobalt.addTaskEvent(\'task\')">'.TextHelper::_('COBALT_ADD_TASK').'</a><a  href="javasript:void(0);" class="event" onclick="Cobalt.addTaskEvent(\'event\')">'.TextHelper::_('COBALT_ADD_EVENT').'</a><a href="javasript:void(0);" class="complete" onclick="jQuery(\'#new_event_dialog\').dialog(\'close\');">'.TextHelper::_('COBALT_DONE').'</a>';
             $html .= '</div>';
         $html .= '</div>';
 
