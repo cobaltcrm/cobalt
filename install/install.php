@@ -90,7 +90,7 @@ class crmInstall
 
     public function alterTable($table, $fields)
     {
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $table = $db->nameQuote($table);
 
