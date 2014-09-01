@@ -69,13 +69,27 @@ $deal = $this->dealList[0];
                     </li>
                 </ul>
             </div>
-            <h1><span id="name_<?php echo $deal->id; ?>"><?php echo $deal->name; ?></span><div id="status_name_<?php echo $deal->id; ?>" class='deal-status-<?php echo strtolower($deal->status_name); ?>'></div></h1>
+            <h1>
+                <span id="name_<?php echo $deal->id; ?>"><?php echo $deal->name; ?></span>
+            </h1>
             <p class="muted">
-                <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?>
+                <?php if (isset($deal->company_id) && $deal->company_id) { ?>
+                <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?><br />
+                <?php } ?>
+                <?php if (isset($deal->status_name) && $deal->status_name) { ?>
+                <?php echo TextHelper::_('COBALT_DEALS_STATUS'); ?>: <span id="status_name_<?php echo $deal->id; ?>" class='deal-status-<?php echo strtolower($deal->status_name); ?>'>
+                    <?php echo $deal->status_name; ?>
+                </span><br />
+                <?php } ?>
+                <?php if (isset($deal->stage_name) && $deal->stage_name) { ?>
+                <?php echo TextHelper::_('COBALT_DEALS_STAGE'); ?>: <span id="stage_name_<?php echo $deal->id; ?>" class='deal-stage-<?php echo strtolower($deal->stage_name); ?>'>
+                    <?php echo $deal->stage_name; ?>
+                </span>
+                <?php } ?>
             </p>
         </div>
 
-        <div rel="tooltip" id="stage_name_<?php echo $deal->id; ?>" title="<?php echo ucwords(TextHelper::_('COBALT_STAGE')).": ".$deal->stage_name; ?>" class="progress">
+        <div rel="tooltip" title="<?php echo ucwords(TextHelper::_('COBALT_STAGE')).": ".$deal->stage_name; ?>" class="progress">
             <?php $light = "#".CobaltHelper::percent2color($deal->percent); ?>
             <?php $dark = "#".CobaltHelper::percent2color($deal->percent-20); ?>
           <div class="bar" id="percent_<?php echo $deal->id; ?>" style="
@@ -141,7 +155,7 @@ $deal = $this->dealList[0];
                                     <input type="text" class="inputbox" name="probability" value="<?php echo $deal->probability; ?>" />
                                     <span class="input-append-addon">%</span>
                                     <span class="input-append-btn">
-                                        <button type="button" class="btn btn-default" onclick="Cobalt.Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                        <button type="submit" class="btn btn-default"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
                                     </span>
                                 </div>
                             </form>'><span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>

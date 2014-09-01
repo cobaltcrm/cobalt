@@ -70,8 +70,9 @@ var Cobalt = {
     },
 
     onFormSaveSuccess: function(response) {
+                    console.log(response.alert);
         if (typeof response.alert !== 'undefined') {
-            Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.message);
+            Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
         if (typeof response.item !== 'undefined') {
             $('.modal').modal('hide');
@@ -89,18 +90,37 @@ var Cobalt = {
             if (value === null) {
                 value = '';
             }
-            jQuery('#'+name+'_'+itemId).text(value);
+            var element = jQuery('#'+name+'_'+itemId);
+            if (element.length) {
+                if (element.prop("tagName") === 'SPAN' || element.prop("tagName") === 'DIV') {
+                    element.text(value);
+                } else if (element.prop("tagName") === 'INPUT') {
+                    element.val(value);
+                }
+            }
         });
     },
 
-    modalMessage: function (heading, message, autoclose) {
-
-        jQuery("#alertMessageHeader").html(heading);
-        // jQuery("#alertMessageBody").html(message);
-        jQuery("#alertMessage").animate({top:"60px",opacity:1},300);
-        setTimeout(function(){
-            jQuery("#alertMessage").animate({top:"0px",opacity:0},300);
-        },2000);
+    modalMessage: function (heading, message, type, autoclose) {
+        var html = '<div class="alert alert-flying alert-'+type+' alert-dismissible" role="alert">';
+        html += '<button type="button" class="close" data-dismiss="alert">';
+        html += '<span aria-hidden="true">&times;</span>';
+        html += '</button>';
+        if (typeof heading !== 'undefined') {
+            html += '<strong>'+heading+'</strong>';
+        }
+        if (typeof message !== 'undefined') {
+            html += message;
+        }
+        html += '</div>';
+        var alert = jQuery(html);
+        jQuery('body').append(alert);
+        alert.animate({top: "60px", opacity: 1}, 300);
+        if (autoclose !== false) {
+            setTimeout(function() {
+                alert.animate({top: "0px" ,opacity: 0}, 300);
+            }, 2000);
+        }
     },
 
     newListItem: function (data, type) {
