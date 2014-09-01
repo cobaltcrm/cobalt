@@ -3,39 +3,36 @@
 class crmInstallController
 {
     /** Validate database credentials **/
-    public function validateDb()
+	public function validateDb()
     {
         //json
         $r = array();
 
-        //connect
-        $mysql = mysql_connect($_POST['host'], $_POST['user'], $_POST['pass']);
+		include_once(JPATH_BASE."/install/model/install.php");
 
-        //check mysql
-        if (!$mysql) {
+		$model = new crmInstallModel();
 
-            $r['error'] = mysql_error();
-            $r['valid'] = false;
+		try {
+			// Get a database object.
+			$db = $model->getDBO('mysqli',$_POST['host'],$_POST['user'],$_POST['pass'],$_POST['name'],$_POST['prefix'],true);
+		}
+		catch (Exception $e)
+		{
+			$r['error'] = $e->getMessage();
+			$r['valid'] = false;
+		}
 
-        } else {
+		$db->connect();
 
-            //check database
-            $db_selected = mysql_select_db($_POST['name'], $mysql);
-            if (!$db_selected) {
-                $r['valid'] = false;
-                $r['error'] = mysql_error();
-            } else {
-                $r['valid'] = true;
-            }
+		if ( $db->connected() )
+		{
+			$r['valid'] = true;
+		}
 
-        }
-
-        //close
-        mysql_close($mysql);
+		$db->disconnect();
 
         //return
         echo json_encode($r);
-
     }
 
     /** Install application **/
@@ -45,9 +42,9 @@ class crmInstallController
         //load our installation model
         include_once(JPATH_BASE."/install/model/install.php");
         include_once('helpers/uri.php');
-        
+
         $model = new crmInstallModel();
-        
+
         if ( !$model->install() )
         {
             session_start();

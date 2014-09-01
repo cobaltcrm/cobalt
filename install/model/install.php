@@ -21,6 +21,27 @@ class crmInstallModel
     protected $db = null;
     protected $admin = null;
 
+	public static function getDBO($driver, $host, $user, $password, $database, $prefix, $select = true)
+	{
+		static $db;
+		if (!$db)
+		{
+			// Build the connection options array.
+			$options = array(
+					'driver' => $driver,
+					'host' => $host,
+					'user' => $user,
+					'password' => $password,
+					'database' => $database,
+					'prefix' => $prefix,
+					'select' => $select
+			);
+			// Get a database object.
+			$db = Database\DatabaseDriver::getInstance($options);
+		}
+		return $db;
+	}
+
     public function install()
     {
         session_start();
