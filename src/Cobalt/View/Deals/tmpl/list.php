@@ -55,5 +55,4 @@ $app = JFactory::getApplication();
 <script type="text/javascript">
     var total = <?php echo $this->total; ?>;
     jQuery("#deals_matched").html(total);
-    window.top.window.assignFilterOrder();
 </script>
