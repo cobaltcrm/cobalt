@@ -62,7 +62,7 @@ class Event extends DefaultModel
         $row = new EventTable;
         $oldRow = new EventTable;
 
-        $data = ( $data == null ) ? $app->input->getRequest( 'post' ) : $data;
+        $data = ( $data == null ) ? $_POST: $data;
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));

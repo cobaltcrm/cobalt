@@ -4,6 +4,7 @@ var Cobalt = {
         this.bindPopovers();
         this.bindTooltips();
         this.bindDropdownItems();
+        this.initFormSave();
     },
 
     bindPopovers: function() {
@@ -32,6 +33,55 @@ var Cobalt = {
                 Cobalt.saveEditableModal(jQuery(this).attr('id')+"_form");
             }
         });
+    },
+
+    getFormSubmitOptions: function() {
+        return { 
+            beforeSubmit: function(arr, $form, options) {      
+                // add attributes necessary for AJAX call
+                arr.push({'name': 'format', 'value': 'raw'});
+                arr.push({'name': 'tmpl', 'value': 'component'});         
+            },
+            success:   function(response, status, xhr, $form) {
+                Cobalt.onFormSaveSuccess(response, status, xhr, $form);
+            },
+            type:      'post',
+            dataType:  'json',
+            clearForm: true        // clear all form fields after successful submit 
+        }; 
+    },
+
+    initFormSave: function(options) {
+        // initialize jQuery form submit plugin
+     
+        if(!options) {
+            otpions = this.getFormSubmitOptions();
+        }
+
+        // bind form using 'ajaxForm' 
+        $('form').submit(function() { 
+            // inside event callbacks 'this' is the DOM element so we first 
+            // wrap it in a jQuery object and then invoke ajaxSubmit 
+            $(this).ajaxSubmit(options); 
+     
+            // !!! Important !!! 
+            // always return false to prevent standard browser submit and page navigation 
+            return false; 
+        }); 
+    },
+
+    onFormSaveSuccess: function(response) {
+        if (typeof response.alert !== 'undefined') {
+            Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.message);
+        }
+        if (typeof response.item !== 'undefined') {
+            // @TODO: Update stuff
+            $('.modal').modal('hide');
+        }
+    },
+
+    sumbitModalForm: function(button) {
+        jQuery(button).closest('.modal').find('form').ajaxSubmit(Cobalt.getFormSubmitOptions());
     },
 
     saveItem: function (formId) {
@@ -82,9 +132,7 @@ var Cobalt = {
                         jQuery('div.modal').modal('hide');
 
                     } else {
-
-                        Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_ERROR_HEADER'))
-
+                        Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_ERROR_HEADER'));
                     }
                 }
             });
@@ -270,7 +318,7 @@ var Cobalt = {
         });
     },
 
-    ajaxSaveModal: function (ele){
+    ajaxSaveModal: function (ele) {
         var item_id = jQuery(ele).attr('data-item-id');
         var item_type = jQuery(ele).attr('data-item');
         var value_type = jQuery(ele).attr('data-field');
@@ -328,7 +376,6 @@ var Cobalt = {
             data: form.serialize(),
             dataType: 'json',
             success:function(data) {
-                console.log(data);
                 if ( data.id > 0 ) {
                     Cobalt.updateProfileItem(data);
                 } else {
@@ -390,7 +437,7 @@ var Cobalt = {
                 break;
             }
         }
-        
+
         jQuery.ajax({
             type    :   'POST',
             url     :   base_url+'index.php?view=events&layout=edit_'+type+'&tmpl=component&format=raw',
@@ -404,8 +451,7 @@ var Cobalt = {
                 //assign new html
                 jQuery("#CobaltAjaxModalBody").html(data);
                 jQuery("#CobaltAjaxModalHeader").text(ucwords(Joomla.JText._("COBALT_ADDING_"+ucwords(type))));
-                jQuery("#CobaltAjaxModalSaveButton").attr("onclick","saveAjax('edit_"+type+"','event')");
-                jQuery("#CobaltAjaxModalCloseButton").attr("onclick","closeTaskEvent('"+type+"');");
+                // jQuery("#CobaltAjaxModalSaveButton").attr("onclick","saveAjaxvent('"+type+"');");
                 
                 //display areas that could possible faded out from other event entries
                 jQuery("span.associate_to").css("display",'block');

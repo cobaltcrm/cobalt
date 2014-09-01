@@ -26,104 +26,46 @@ class Save extends DefaultController
 {
     public function execute()
     {
-        $modelName = "Cobalt\\Model\\".ucwords($this->input->get('model'));
-        $model = new $modelName();
+        $modelName = ucwords($this->input->get('model'));
+        $modelPath = "Cobalt\\Model\\".$modelName;
+        $model = new $modelPath();
+        $view = $this->input->get('view');
+        $response = new \stdClass;
+        $link = $this->input->get('return', Router::to('index.php?view='.$view));
 
-        //if we are requesting a return redirect set up redirect link
-        if ( $this->input->get('view') ) {
-            $link = Router::to('index.php?view='.$this->input->get('view'));
-        }
-
-        if ( $db_id = $model->store() ) {
-
+        if ($itemId = $model->store())
+        {
             $msg = TextHelper::_('COBALT_SUCCESSFULLY_SAVED');
+            $getItem = 'get' . $modelName;
 
-            //redirect if set else return json
-            if ( $this->input->get('view') ) {
-
-                $this->app->redirect($link, $msg);
-
-            } else {
-
-                //companies
-                if ( $this->input->get('model') == "company") {
-                    $model = new CompanyModel;
-                    $id = $this->input->get('id') ? $this->input->get('id') : null;
-                    if ($id) {
-                        $company = $model->getCompany($id);
-                    } else {
-                        $company = $db_id;
-                    }
-                    $return = $company;
-                }
-
-                //if deal information is being edited
-                if ( $this->input->get('model') == 'deal' ) {
-                    $model = new DealModel;
-                    $id = $this->input->get('id') ? $this->input->get('id') : $db_id;
-                    $deal = $model->getDeals($id);
-                    $return = $deal[0];
-                }
-
-                //if people information is being edited
-                if ( $this->input->get('model') == 'people' ) {
-                    $model = new PeopleModel;
-                    $id = $this->input->get('id') ? $this->input->get('id') : $db_id;
-                    $person = $model->getPerson($id);
-                    $return = $person;
-                }
-
-                //if conversation information is being edited
-                if ( $this->input->get('model') == 'conversation') {
-                    $model = new ConversationModel;
-                    $conversation = $model->getConversation($db_id);
-                    $return = $conversation[0];
-                }
-
-                //if note information is being edited
-                if ( $this->input->get('model') == 'note' ) {
-                    $model = new NoteModel;
-                    $note = $model->getNote($db_id);
-                    $return = $note[0];
-                }
-
-                //if event information is being edited
-                if ( $this->input->get('model') == 'event' ) {
-
-                    //get model
-                    $model = new EventModel;
-
-                    //determine whether we are inserting a new entry or editing an entry
-                    $event_id = $db_id;
-
-                    //get and return event
-                    $return = $model->getEvent($event_id);
-
-                }
-
-                if ( isset($return) ) {
-                    echo json_encode($return);
-                }
-
+            if ($this->isAjaxRequest())
+            {
+                $response->item = $model->$getItem($itemId);
+                $response->alert = new \stdClass;
+                $response->alert->message = $msg;
+                $response->alert->type = 'success';
+                $this->app->close(json_encode($response));
             }
-
-        } else {
-
-              $msg = TextHelper::_('COBALT_ERROR_SAVING');
-
-            //redirect if set else return json info
-            if ( $this->input->get('return') ) {
-
+            else
+            {
                 $this->app->redirect($link, $msg);
-
-            } else {
-
-                $return = $this->input->getRequest('post');
-                echo json_encode($return);
-
             }
-
         }
+        else
+        {
+            $msg = TextHelper::_('COBALT_ERROR_SAVING');
 
+            if ($this->isAjaxRequest())
+            {
+                $this->app->redirect($link, $msg);
+            }
+            else
+            {
+                $response->alert = new \stdClass;
+                $response->alert->message = $msg;
+                $response->alert->type = 'danger';
+                $this->app->close(json_encode($response));
+            }
+        }
     }
 }

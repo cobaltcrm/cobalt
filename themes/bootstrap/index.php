@@ -18,7 +18,7 @@ $this
 
     // Add core scripts
     ->addScript($this->baseurl.'/src/Cobalt/media/js/bootstrap-datepicker.js')
-    // ->addScript($this->baseurl.'/src/Cobalt/media/js/cobalt.js')
+    ->addScript($this->baseurl.'/src/Cobalt/media/js/jquery.form.js')
 
     // Add Meta tags
     ->setMetaData('viewport', 'width=device-width, initial-scale=1.0')
