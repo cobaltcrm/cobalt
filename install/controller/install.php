@@ -1,41 +1,58 @@
 <?php
 
+use Joomla\Input\Input as JInput;
+
 class crmInstallController
 {
     /** Validate database credentials **/
     public function validateDb()
     {
+        //prevent display error in ajax repsonse
+        ini_set('display_errors', 0);
+
         //json
         $r = array();
 
+        //add check for mysqli
+        if (!function_exists('mysqli')) {
+            $r['error'] = 'Please enable mysqli!';
+            $r['valid'] = false;
+        }
+
+        $input = new JInput;
+
         //connect
-        $mysql = mysql_connect($_POST['host'], $_POST['user'], $_POST['pass']);
+        $mysqli = new mysqli($input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'));
+
+        $db_name = $input->getCmd('name');
+
+        if (empty($db_name)) {
+            $r['error'] = 'Please fill database name';
+            $r['valid'] = false;
+        }
 
         //check mysql
-        if (!$mysql) {
-
-            $r['error'] = mysql_error();
+        if ($mysqli->connect_errno) {
+            $r['error'] = $mysqli->connect_error;
             $r['valid'] = false;
-
         } else {
-
-            //check database
-            $db_selected = mysql_select_db($_POST['name'], $mysql);
-            if (!$db_selected) {
+            if ($mysqli->query("CREATE DATABASE IF NOT EXISTS ".$db_name)) {
+                $r['error'] = $mysqli->connect_error;
                 $r['valid'] = false;
-                $r['error'] = mysql_error();
             } else {
-                $r['valid'] = true;
+                if (!$mysqli->select_db($db_name)) {
+                    $r['error'] = $mysqli->connect_error;
+                    $r['valid'] = false;
+                }
             }
-
+            $r['valid'] = true;
         }
 
         //close
-        mysql_close($mysql);
+        $mysqli->close();
 
         //return
         echo json_encode($r);
-
     }
 
     /** Install application **/

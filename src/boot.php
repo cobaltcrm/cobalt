@@ -32,6 +32,11 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
     || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) 
     || file_exists(JPATH_INSTALLATION.'/index.php')) {
 
+    //checking server REQUEST_SCHEME
+    if (!isset($_SERVER['REQUEST_SCHEME'])) {
+        $_SERVER['REQUEST_SCHEME'] = (isset($_SERVER['HTTPS']) || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'off')) ? 'https' : 'http' ;
+    }
+
     $installUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'install/index.php';
     
     if (file_exists(JPATH_INSTALLATION.'/index.php')) {
