@@ -99,7 +99,7 @@ class TemplateHelper
                                 </div>
                                 <div class="modal-footer" id="CobaltAjaxModalFooter">
                                     <button id="CobaltAjaxModalCloseButton" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-                                    <button id="CobaltAjaxModalSaveButton" onclick="saveModal(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+                                    <button id="CobaltAjaxModalSaveButton" onclick="Cobalt.sumbitModalForm(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
                                 </div>
                             </div>
                         </div>
@@ -235,7 +235,7 @@ class TemplateHelper
         $html  = "";
         $html .= '<div id="new_event_dialog" style="display:none;">';
             $html .= '<div class="new_events">';
-                $html .= '<a href="javasript:void(0);" class="task" onclick="addTaskEvent(\'task\')">'.TextHelper::_('COBALT_ADD_TASK').'</a><a  href="javasript:void(0);" class="event" onclick="addTaskEvent(\'event\')">'.TextHelper::_('COBALT_ADD_EVENT').'</a><a href="javasript:void(0);" class="complete" onclick="jQuery(\'#new_event_dialog\').dialog(\'close\');">'.TextHelper::_('COBALT_DONE').'</a>';
+                $html .= '<a href="javasript:void(0);" class="task" onclick="Cobalt.addTaskEvent(\'task\')">'.TextHelper::_('COBALT_ADD_TASK').'</a><a  href="javasript:void(0);" class="event" onclick="Cobalt.addTaskEvent(\'event\')">'.TextHelper::_('COBALT_ADD_EVENT').'</a><a href="javasript:void(0);" class="complete" onclick="jQuery(\'#new_event_dialog\').dialog(\'close\');">'.TextHelper::_('COBALT_DONE').'</a>';
             $html .= '</div>';
         $html .= '</div>';
 

@@ -13,6 +13,8 @@ use Joomla\Controller\ControllerInterface;
 use Joomla\Input\Input;
 use Joomla\Router\Router as JoomlaRouter;
 
+use Cobalt\Helper\RouteHelper;
+
 /**
  * Joomla! Tracker Router
  *
@@ -85,7 +87,7 @@ class Router extends JoomlaRouter
 
     public static function to($url)
     {
-        return \Cobalt\Container::get('app')->getRouter()->getRouteFor($url);
+        return RouteHelper::_(\Cobalt\Container::get('app')->getRouter()->getRouteFor($url));
     }
 
     public function getRouteFor($url)

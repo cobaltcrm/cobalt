@@ -918,7 +918,7 @@ class Deal extends DefaultModel
 
         if ($id > 0)
         {
-            $this->set('id', $id);
+            $this->_id = $id;
 
             $query = $this->_buildQuery();
 

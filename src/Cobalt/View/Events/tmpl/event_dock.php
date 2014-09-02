@@ -15,8 +15,8 @@ $app = JFactory::getApplication();
 <form class="print_form">
 <?php if ($app->input->get('view')!="print") { ?>
 <div class="btn-group pull-right">
-    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="addTaskEvent('task');"><i class="icon-tasks"></i></a>
-    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="addTaskEvent('event');"><i class="icon-calendar"></i></a>
+    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Cobalt.addTaskEvent('task');"><i class="icon-tasks"></i></a>
+    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Cobalt.addTaskEvent('event');"><i class="icon-calendar"></i></a>
     <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)"><i class="icon-print"></i></a>
     <button rel="tooltip" class="btn btn-small btn-default dropdown-toggle" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" id="templates_link"><i class="icon-list"></i></a>
     <ul class="dropdown-menu padding">

@@ -35,7 +35,7 @@ $deal = $this->dealList[0];
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-                <button onclick="Cobalt.saveProfileItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+                <button onclick="Cobalt.sumbitModalForm(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
             </div>
         </div>
     </div>
@@ -69,13 +69,27 @@ $deal = $this->dealList[0];
                     </li>
                 </ul>
             </div>
-            <h1><span id="name_<?php echo $deal->id; ?>"><?php echo $deal->name; ?></span><div id="status_name_<?php echo $deal->id; ?>" class='deal-status-<?php echo strtolower($deal->status_name); ?>'></div></h1>
+            <h1>
+                <span id="name_<?php echo $deal->id; ?>"><?php echo $deal->name; ?></span>
+            </h1>
             <p class="muted">
-                <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?>
+                <?php if (isset($deal->company_id) && $deal->company_id) { ?>
+                <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?><br />
+                <?php } ?>
+                <?php if (isset($deal->status_name) && $deal->status_name) { ?>
+                <?php echo TextHelper::_('COBALT_DEALS_STATUS'); ?>: <span id="status_name_<?php echo $deal->id; ?>" class='deal-status-<?php echo strtolower($deal->status_name); ?>'>
+                    <?php echo $deal->status_name; ?>
+                </span><br />
+                <?php } ?>
+                <?php if (isset($deal->stage_name) && $deal->stage_name) { ?>
+                <?php echo TextHelper::_('COBALT_DEALS_STAGE'); ?>: <span id="stage_name_<?php echo $deal->id; ?>" class='deal-stage-<?php echo strtolower($deal->stage_name); ?>'>
+                    <?php echo $deal->stage_name; ?>
+                </span>
+                <?php } ?>
             </p>
         </div>
 
-        <div rel="tooltip" id="stage_name_<?php echo $deal->id; ?>" title="<?php echo ucwords(TextHelper::_('COBALT_STAGE')).": ".$deal->stage_name; ?>" class="progress">
+        <div rel="tooltip" title="<?php echo ucwords(TextHelper::_('COBALT_STAGE')).": ".$deal->stage_name; ?>" class="progress">
             <?php $light = "#".CobaltHelper::percent2color($deal->percent); ?>
             <?php $dark = "#".CobaltHelper::percent2color($deal->percent-20); ?>
           <div class="bar" id="percent_<?php echo $deal->id; ?>" style="
@@ -111,7 +125,10 @@ $deal = $this->dealList[0];
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_OWNER'); ?></div>
                     <div class="cobaltValue">
                         <div class='dropdown'>
-                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'><span id="owner_first_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_first_name." ".$deal->owner_last_name; ?></span></a>
+                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'>
+                                <span id="owner_first_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_first_name; ?></span>
+                                <span id="owner_last_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_last_name; ?></span>
+                            </a>
                             <ul class="dropdown-menu" role="menu">
                             <?php
                             $me = array(array('label'=>TextHelper::_('COBALT_ME'),'value'=>UsersHelper::getLoggedInUser()->id));
@@ -135,17 +152,23 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_probability_container">
                     <div class="inline" id="editable_probability">
                         <h2>
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>" data-html='true' data-content='
-                            <form id="probability_form">
+                            <a href="javascript:void(0);" rel="popover" data-conent-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
+                            <span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
+                        </h2>
+                        <div class="probability-form hidden">
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)">
                                 <div class="input-append">
-                                    <input type="text" class="inputbox" name="probability" value="<?php echo $deal->probability; ?>" />
-                                    <span class="input-append-addon">%</span>
+                                    <input type="number" class="span1" name="probability" value="<?php echo $deal->probability; ?>" />
+                                    <span class="add-on">%</span>
                                     <span class="input-append-btn">
-                                        <button type="button" class="btn btn-default" onclick="Cobalt.Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                        <button type="submit" class="btn btn-default"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
                                     </span>
                                 </div>
-                            </form>'><span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
-                        </h2>
+                                <input type="hidden" name="task" value="save" />
+                                <input type="hidden" name="model" value="deal" />
+                                <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
+                            </form>
+                        </div>
                     </div>
                     </span>
                 </div>
@@ -215,7 +238,7 @@ $deal = $this->dealList[0];
             <h2><?php echo TextHelper::_('COBALT_EDIT_SUMMARY'); ?></h2>
             <div class="well well-small large_info">
                 <?php $summary = ( array_key_exists('summary',$deal) && strlen(trim($deal->summary)) > 0 ) ? $deal->summary : TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>
-                <div class="inline"><span id="editable_summary"><?php echo nl2br($summary); ?></span></div>
+                <div class="inline"><span id="summary_<?php echo $deal->id; ?>"><?php echo nl2br($summary); ?></span></div>
                 <div id="editable_summary_area" style="display:none;">
                     <form id="summary_form">
                         <textarea class="inputbox" name="summary"><?php echo $summary; ?></textarea>

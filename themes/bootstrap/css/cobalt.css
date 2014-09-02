@@ -17,3 +17,13 @@ body {
 
 /* Filter Sentence */
 ul.inline.filter-sentence > li {padding: 0;}
+
+.alert-flying {
+   right: 30px;
+   overflow: hidden;
+   position: fixed;
+   width: 300px;
+   opacity: 0.9;
+   z-index: 1050;
+   top: 65px;
+}

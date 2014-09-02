@@ -4,16 +4,42 @@ var Cobalt = {
         this.bindPopovers();
         this.bindTooltips();
         this.bindDropdownItems();
+        this.initFormSave();
     },
 
     bindPopovers: function() {
-        $('[rel="tooltip"]').tooltip({
-            container: "body"
+        var selector = '[rel="popover"]';
+        jQuery.each(jQuery(selector), function(i, popover) {
+            popover = jQuery(popover);
+            var options = {
+                html : true,
+                container: "body",
+                content: function() {
+                    var contentClass = popover.attr('data-conent-class');
+                    if (contentClass) {
+                        return $('.'+contentClass).html();
+                    }
+                }
+            };
+            popover.popover(options);
+        });
+
+        jQuery(document).click(function (e) {
+            if (jQuery(e.target).parent().find(selector).length > 0) {
+                Cobalt.closePopovers(selector);
+            }
         });
     },
 
+    closePopovers: function(selector) {
+        if (!selector) {
+            selector = '[rel="popover"]';
+        }
+        jQuery(selector).popover('hide');
+    },
+
     bindTooltips: function() {
-        $('[rel="popover"]').popover();
+        $('[rel="tooltip"]').tooltip();
     },
 
     bindDatepickers: function() {
@@ -34,72 +60,95 @@ var Cobalt = {
         });
     },
 
-    saveItem: function (formId) {
-        var dataObj = {},
-            type = null,
-            ajax = true,
-            form = jQuery('#'+formId),
-            formInputs = form.find(' :input');
-
-        formInputs.each(function() {
-            var thisInput = jQuery(this);
-
-            if (this.name == "jsrefresh" && this.value=="1") {
-                form.submit();
-                form.parentsUntil('div.modal').parent('div.modal').modal('hide');
-                ajax = false;
-                return true;
-            }
-
-            if (this.type != "button") {
-                dataObj[this.name] = (this.type == 'checkbox' || this.type == 'radio') ? ((thisInput.is(':checked')) ? 1 : 0) : thisInput.val();
-            }
-
-            if (this.name == "model") {
-                type = dataObj[this.name];
-            }
-
-            return true;
-        });
-
-        if (ajax) {
-            jQuery.ajax({
-                type:'post',
-                url:base_url+'index.php?task=save&format=raw',
-                data:dataObj,
-                dataType:'json',
-                success:function(data){
-                    if ( data.id > 0 ){
-
-                        if (type != "tasklist") {
-                            Cobalt.newListItem(data, type);
-                        }
-
-                        if ( type == "tasklist" ){
-                            Cobalt.updateTaskLists();
-                        }
-
-                        jQuery('div.modal').modal('hide');
-
-                    } else {
-
-                        Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_ERROR_HEADER'))
-
-                    }
-                }
-            });
-
-        }
+    getFormSubmitOptions: function() {
+        return { 
+            beforeSubmit: function(arr, $form, options) {      
+                // add attributes necessary for AJAX call
+                arr.push({'name': 'format', 'value': 'raw'});
+                arr.push({'name': 'tmpl', 'value': 'component'});         
+            },
+            success:   function(response, status, xhr, $form) {
+                Cobalt.onFormSaveSuccess(response, status, xhr, $form);
+            },
+            type:      'post',
+            dataType:  'json'
+        }; 
     },
 
-    modalMessage: function (heading, message, autoclose) {
+    initFormSave: function(options) {
+        // initialize jQuery form submit plugin
+     
+        if(!options) {
+            otpions = this.getFormSubmitOptions();
+        }
 
-        jQuery("#alertMessageHeader").html(heading);
-        // jQuery("#alertMessageBody").html(message);
-        jQuery("#alertMessage").animate({top:"60px",opacity:1},300);
-        setTimeout(function(){
-            jQuery("#alertMessage").animate({top:"0px",opacity:0},300);
-        },2000);
+        // bind form using 'ajaxForm' 
+        jQuery('form[data-ajax="1"]').submit(function() { 
+            console.log(jQuery(this));
+            jQuery(this).ajaxSubmit(options); 
+            return false; 
+        }); 
+    },
+
+    onFormSaveSuccess: function(response) {
+        if (typeof response.alert !== 'undefined') {
+            Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
+        }
+        if (typeof response.item !== 'undefined') {
+            $('.modal').modal('hide');
+            Cobalt.updateStuff(response.item);
+        }
+
+        this.closePopovers();
+    },
+
+    sumbitModalForm: function(button) {
+        jQuery(button).closest('.modal').find('form').ajaxSubmit(Cobalt.getFormSubmitOptions());
+    },
+
+    sumbitForm: function(form) {
+        jQuery(form).ajaxSubmit(Cobalt.getFormSubmitOptions());
+        // prevent from submitting form
+        return false;
+    },
+
+    updateStuff: function(data) {
+        var itemId = data.id;
+        jQuery.each(data, function(name, value) {
+            if (value === null) {
+                value = '';
+            }
+            var element = jQuery('#'+name+'_'+itemId);
+            var field = jQuery('[name="'+name+'"]');
+            if (element.length) {
+                element.text(value);
+            }
+            if (field.length) {
+                field.val(value);
+            }
+        });
+    },
+
+    modalMessage: function (heading, message, type, autoclose) {
+        var html = '<div class="alert alert-flying alert-'+type+' alert-dismissible" role="alert">';
+        html += '<button type="button" class="close" data-dismiss="alert">';
+        html += '<span aria-hidden="true">&times;</span>';
+        html += '</button>';
+        if (typeof heading !== 'undefined') {
+            html += '<strong>'+heading+'</strong>';
+        }
+        if (typeof message !== 'undefined') {
+            html += message;
+        }
+        html += '</div>';
+        var alert = jQuery(html);
+        jQuery('body').append(alert);
+        alert.animate({top: "60px", opacity: 1}, 300);
+        if (autoclose !== false) {
+            setTimeout(function() {
+                alert.animate({top: "0px" ,opacity: 0}, 300);
+            }, 2000);
+        }
     },
 
     newListItem: function (data, type) {
@@ -149,113 +198,6 @@ var Cobalt = {
         });
     },
 
-    updateTaskLists: function () {
-
-    },
-
-    saveEditableModal: function (clickedButton) {
-
-        var button = jQuery(clickedButton),
-            form = jQuery(button.closest('form')),
-            fields = form.find('input'),
-            dataString = "",
-            item_id = id,
-            model = "";
-
-        jQuery(fields).each(function() {
-            if ( this.type != "button" ) {
-                if (this.type == 'checkbox' || this.type == 'radio') {
-                    var val = jQuery(this).is(':checked');
-                } else {
-                    var val = jQuery(this).val();
-                }
-                dataString += "&"+this.name+"="+val;
-                if ( this.name == "item_id" ){
-                    item_id = jQuery(this).val();
-                }
-                if ( this.name == "item_type" ){
-                    model = jQuery(this).val();
-                }
-            }
-        });
-
-        if ( model == "" ) {
-            switch ( loc ) {
-                case "person":
-                    model = "people";
-                    break;
-                case "deal":
-                    model = "deal";
-                    break;
-                case "company":
-                    model = "company";
-                    break;
-            }
-            dataString += "&item_id="+item_id
-            dataString += "&item_type="+model;
-        }
-
-        jQuery.ajax({
-            url:'index.php?task=saveAjax&format=raw&tmpl=component',
-            type:'POST',
-            data:dataString,
-            dataType:'JSON',
-            success:function(data) {
-                jQuery(fields).each(function() {
-                    if ( this.type != "button" ) {
-                        if (this.type == 'checkbox' || this.type == 'radio') {
-                            var val = jQuery(this).is(':checked');
-                        } else {
-                            var val = jQuery(this).val();
-                        }
-                        val = ( val.replace(/ /g,"").length > 0 ) ? val : Joomla.JText._('COBALT_CLICK_TO_EDIT');
-                        // val = nl2br(val); // @TODO: define nl2br function
-                        jQuery("#editable_"+this.name).children('a').text(val);
-                        jQuery("#editable_"+this.name).show();
-                        jQuery("#editable_"+this.name+"_area").hide();
-                        if ( this.name == "twitter_user" || 
-                            this.name == "facebook_url" || 
-                            this.name == "linkedin_url" || 
-                            this.name == "aim" || 
-                            this.name == "flickr_url" || 
-                            this.name == "youtube_url" ) {
-
-                            var url = "";
-                            switch ( this.name ){
-                                case "twitter_user":
-                                    url = "http://www.twitter.com/#!/"+jQuery(this).val();
-                                    break;
-                                case "facebook_url":
-                                    url = jQuery(this).val();
-                                    break;
-                                case "linkedin_url":
-                                    url = jQuery(this).val();
-                                    break;
-                                case "aim":
-                                    if ( jQuery("#aim_button_"+item_id).hasClass('aim_dark') ){
-                                        jQuery("#aim_button_"+item_id).removeClass('aim_dark');
-                                        jQuery("#aim_button_"+item_id).addClass('aim_light');
-                                    }
-                                    break;
-                            }
-
-                            if ( url != "" ) {
-                                var name = this.name.replace('_url','').replace('_user','');
-                                jQuery("#editable_"+name+"_container_"+item_id).html("<a href='"+url+"'><div class='"+name+"_light'></div></a>");
-                            }
-                        }
-                    }
-                });
-                // Cobalt.modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
-                Cobalt.closeEditableModal();
-            }
-        });
-    },
-
-    closeEditableModal: function () {
-        jQuery("body").find('a').popover('hide');
-    },
-
     bindDropdownItems: function () {
 
         jQuery('.dropdown_item').live('click', function() {
@@ -269,54 +211,34 @@ var Cobalt = {
             }
         });
     },
-
-    ajaxSaveModal: function (ele){
-        var item_id = jQuery(ele).attr('data-item-id');
-        var item_type = jQuery(ele).attr('data-item');
-        var value_type = jQuery(ele).attr('data-field');
-        var new_value = jQuery(ele).attr('data-value');
-
-        dataString = "item_id="+item_id+"&item_type="+item_type+"&field="+value_type+"&value="+new_value;
-
-        jQuery.ajax({
-            url:'index.php?task=saveajax&format=raw&tmpl=component',
-            type:'POST',
-            data:dataString,
-            dataType:'JSON',
-            success:function(data){
-                modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
-                if ( item_type == "deal" && value_type == "stage_id" ){
-                    if ( data.closed == true ){
-                        actual_close = data.actual_close;
-                        actual_close_formatted = data.actual_close_formatted;
-                        jQuery("#actual_close").val(actual_close_formatted);
-                        jQuery("#actual_close_hidden").val(actual_close);
-                        jQuery("#expected_close_container").hide();
-                        jQuery("#actual_close_container").show();
-                    } else {
-                        expeced_close = data.expeced_close;
-                        expeced_close_formatted = data.expected_close_formatted;
-                        jQuery("#expeced_close").val(expeced_close_formatted);
-                        jQuery("#expected_close_hidden").val(expeced_close);
-                        jQuery("#actual_close_container").hide();
-                        jQuery("#expected_close_container").show();
-                    }
-                }
-                if ( loc == "deals" ){
-                    expected_close = data.expected_close_formatted;
-                    actual_close = data.actual_close_formatted;
-                    if ( data.closed == true ){
-                        jQuery("#expected_close_"+data.id).html(expected_close);
-                        jQuery("#actual_close"+data.id).html(actual_close);
-                    }else{
-                        jQuery("#actual_close"+data.id).html(Joomla.JText._('COBALT_ACTIVE_DEAL'));
-                    }
-                }
-            }
-        });
-    }
 };
 
 window.onload = function () {
     Cobalt.init();
+};
+
+/**
+ * Global functions
+ **/
+
+function ucwords(str) {
+  return (str + '')
+    .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
+      return $1.toUpperCase();
+    });
+}
+
+var Joomla = {
+    JText: {
+            strings: {},
+            '_': function(key, def) {
+                return typeof this.strings[key.toUpperCase()] !== 'undefined' ? this.strings[key.toUpperCase()] : def;
+        },
+        load: function(object) {
+            for (var key in object) {
+                this.strings[key.toUpperCase()] = object[key];
+            }
+            return this;
+        }
+    }
 };

@@ -40,5 +40,4 @@ $app = JFactory::getApplication();
 <script type="text/javascript">
     //update company count
     jQuery("#companies_matched").empty().html("<?php echo $this->total; ?>");
-    window.top.window.assignFilterOrder();
 </script>

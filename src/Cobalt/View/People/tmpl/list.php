@@ -55,6 +55,5 @@ $app = JFactory::getApplication();
 <script type="text/javascript">
     //update total people count
     jQuery("#people_matched").empty().html("<?php echo $this->total; ?>");
-    window.top.window.assignFilterOrder();
 </script>
 <?php }

@@ -96,4 +96,9 @@ class DefaultController extends AbstractController
 
         return $this->container->build($fqcn);
     }
+
+    public function isAjaxRequest()
+    {
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+    }
 }
