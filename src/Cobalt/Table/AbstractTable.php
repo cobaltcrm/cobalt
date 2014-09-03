@@ -538,4 +538,16 @@ class AbstractTable implements \IteratorAggregate
     {
         return $this->getIterator();
     }
+
+    /**
+     * Returns an associative array of Table field properties.
+     *
+     * @return  array
+     */
+    public function getProperties()
+    {
+        $vars = $this->tableFields;
+
+        return $vars;
+    }
 }

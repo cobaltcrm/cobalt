@@ -29,7 +29,7 @@ JPluginHelper::importPlugin('cobalt');
 $app = Cobalt\Container::get('app');
 
 //get user object
-$user = UsersHelper::getLoggedInUser();
+$user = $app->getUser();
 
 // Fetch the controller
 $controllerObj = $app->getRouter()->getController($app->get('uri.route'));
@@ -42,7 +42,7 @@ $format = $app->input->get('format');
 
 $overrides = array('ajax', 'mail', 'login');
 
-$loggedIn = (isset($user->id) && $user->id);
+$loggedIn = ($user->guest === 0 && $user->id);
 
 if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
 

@@ -15,8 +15,8 @@ use JFactory;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class UsersHelper
- {
+class UsersHelper
+{
 
     //get users depending on logged in member type
     public static function getUsers($id=null,$idsOnly=FALSE)
@@ -581,7 +581,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getLoggedInUser()
     {
-        $baseUser = JFactory::getUser();
+        $app = \Cobalt\Container::get('app');
+        $baseUser = $app->getUser();
+
         $user_id = $baseUser->get('id');
 
         if ($user_id > 0)
