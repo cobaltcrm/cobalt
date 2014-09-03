@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use RouteHelper;
+use Cobalt\Helper\RouteHelper;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Company as CompanyModel;
