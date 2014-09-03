@@ -13,7 +13,7 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\EventTable;
 use JFactory;
-use RouteHelper;
+use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DateHelper;

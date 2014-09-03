@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use RouteHelper;
+use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\User as UserModel;
 

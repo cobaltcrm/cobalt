@@ -10,7 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use RouteHelper;
+use Cobalt\Helper\RouteHelper;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
 

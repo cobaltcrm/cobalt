@@ -23,7 +23,7 @@ use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
 use Cobalt\Model\User;
 use Cobalt\Container;
-use RouteHelper;
+use Cobalt\Helper\RouteHelper;
 
 /**
  * Cobalt Application class

@@ -11,7 +11,7 @@
 namespace Cobalt\View\People;
 
 use JUri;
-use RouteHelper;
+use Cobalt\Helper\RouteHelper;
 use JFactory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Event as EventModel;
