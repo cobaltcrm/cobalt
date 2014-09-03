@@ -40,7 +40,7 @@ class crmInstallModel
         $this->config->set("password",$_POST['database_password']);
         $this->config->set("db",$_POST['database_name']);
         $this->config->set("dbprefix",$_POST['database_prefix']);
-        $this->config->set("dbtype","mysql");
+        $this->config->set("dbtype","mysqli");
         $this->config->set("mailfrom",$_POST['email']);
         $this->config->set("fromname",$_POST['first_name'].' '.$_POST['last_name']);
         $this->config->set("sendmail","/usr/sbin/sendmail");
@@ -281,7 +281,7 @@ class crmInstallModel
         $config->set("password",$c->get("password"));
         $config->set("db",$c->get("db"));
         $config->set("dbprefix",$c->get("dbprefix"));
-        $config->set("dbtype","mysql");
+        $config->set("dbtype","mysqli");
         $config->set("mailfrom",$c->get("mailfrom"));
         $config->set("fromname",$c->get("fromname"));
         $config->set("sendmail","/usr/sbin/sendmail");
