@@ -24,6 +24,7 @@ var Cobalt = {
             popover.popover(options);
         });
 
+        // close popovers when clicked anywhere else
         jQuery(document).click(function (e) {
             if (jQuery(e.target).parent().find(selector).length > 0) {
                 Cobalt.closePopovers(selector);
