@@ -111,6 +111,39 @@ class crmInstallModel
 
     }
 
+    /**
+     * Return Database Object
+     *
+     * @param $driver
+     * @param $host
+     * @param $user
+     * @param $password
+     * @param $database
+     * @param string $prefix
+     * @param bool $select
+     * @return JDatabaseDriver
+     */
+    public function getDbo($driver, $host, $user, $password, $database, $prefix = '', $select = true)
+    {
+        static $db;
+        if (!$db)
+        {
+            // Build the connection options array.
+            $options = array(
+                'driver' => $driver,
+                'host' => $host,
+                'user' => $user,
+                'password' => $password,
+                'database' => $database,
+                'prefix' => $prefix,
+                'select' => $select
+            );
+            // Get a database object.
+            $db = Database\DatabaseDriver::getInstance($options);
+        }
+        return $db;
+    }
+
     public function createDb()
     {
         $this->options = array(
@@ -124,6 +157,16 @@ class crmInstallModel
         );
 
         $dbFactory = new Database\DatabaseFactory;
+
+        //create database
+        try {
+            $db = $this->getDbo('mysqli',$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
+            $db->setQuery(sprintf('CREATE DATABASE IF NOT EXISTS %s;',$this->options['database']));
+            $db->loadResult();
+        } catch (\Exception $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
 
         $this->db = $dbFactory->getDriver(
             $this->config->dbtype,
