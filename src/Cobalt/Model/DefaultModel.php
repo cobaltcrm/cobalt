@@ -21,10 +21,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class DefaultModel extends AbstractDatabaseModel
 {
+    public $id;
+
     protected $__state_set;
     protected $_total;
     protected $_pagination;
-    protected $id;
     protected $db;
     protected $app;
 
@@ -60,7 +61,7 @@ class DefaultModel extends AbstractDatabaseModel
 
     }
 
-     /**
+    /**
      * Modifies a property of the object, creating it if it does not already exist.
      *
      * @param string $property The name of the property.
@@ -76,6 +77,24 @@ class DefaultModel extends AbstractDatabaseModel
         $this->$property = $value;
 
         return $previous;
+    }
+
+    /**
+     * returns a property of the object, even if it's protected.
+     *
+     * @param string $property The name of the property.
+     * @param mixed  $default  Default value if the property doesn't exist.
+     *
+     * @return mixed The value of the property.
+     */
+    public function get($property, $default = null)
+    {
+        if (isset($this->$property))
+        {
+            return $this->$property;
+        }
+
+        return $default;
     }
 
     /**
@@ -158,6 +177,28 @@ class DefaultModel extends AbstractDatabaseModel
       }
 
       return $this->_pagination;
+    }
+
+    /**
+     * Set the object properties based on a named array/hash.
+     *
+     * @param   mixed  $properties  Either an associative array or another object.
+     *
+     * @return  boolean
+     */
+    public function setProperties($properties)
+    {
+        if (is_array($properties) || is_object($properties))
+        {
+            foreach ((array) $properties as $k => $v)
+            {
+                // Use the set function which might be overridden.
+                $this->set($k, $v);
+            }
+            return true;
+        }
+
+        return false;
     }
 
 }

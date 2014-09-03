@@ -29,7 +29,7 @@ JPluginHelper::importPlugin('cobalt');
 $app = Cobalt\Container::get('app');
 
 //get user object
-$user = UsersHelper::getLoggedInUser();
+$user = $app->getUser();
 
 // Fetch the controller
 $controllerObj = $app->getRouter()->getController($app->get('uri.route'));
@@ -42,7 +42,9 @@ $format = $app->input->get('format');
 
 $overrides = array('ajax', 'mail', 'login');
 
-if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) {
+$loggedIn = ($user->guest === 0 && $user->id);
+
+if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
 
     ActivityHelper::saveUserLoginHistory();
 
@@ -97,7 +99,7 @@ if ($user !== false && $format !== 'raw' && !in_array($controller, $overrides)) 
     TemplateHelper::loadJavascriptLanguage();
 }
 
-if ($user === false && !($controllerObj instanceof Cobalt\Controller\Login)) {
+if (!$loggedIn && !($controllerObj instanceof Cobalt\Controller\Login)) {
     $app->redirect(RouteHelper::_('index.php?view=login'));
 }
 
