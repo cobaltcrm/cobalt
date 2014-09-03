@@ -32,3 +32,7 @@ New refactored JS is at https://github.com/cobaltcrm/cobalt/blob/master/themes/b
 * .. and so on ..
 
 The idea is to use only [one](https://github.com/cobaltcrm/cobalt/blob/master/themes/bootstrap/js/cobalt.js#L110) so let's try it this easy way from now on. 
+
+## Coding standards
+
+Since we are using Joomla Framework, let's follow it's [Coding Standars](http://joomla.github.io/coding-standards/).
