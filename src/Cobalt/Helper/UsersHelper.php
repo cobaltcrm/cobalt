@@ -655,8 +655,9 @@ class UsersHelper
     public static function canDelete($user_id=null)
     {
         $db = \Cobalt\Container::get('db');
+        $app = $app = \Cobalt\Container::get('app');
 
-        $user_id = $user_id ? $user_id : UsersHelper::getUserId();
+        $user_id = $user_id ? $user_id : $app->getUser()->id;
 
         $query = $db->getQuery(true);
         $query->select('c.admin,c.can_delete');
@@ -673,8 +674,9 @@ class UsersHelper
     public static function canExport($user_id=null)
     {
         $db = \Cobalt\Container::get('db');
+        $app = $app = \Cobalt\Container::get('app');
 
-        $user_id = $user_id ? $user_id : UsersHelper::getUserId();
+        $user_id = $user_id ? $user_id : $app->getUser()->id;
 
         $query = $db->getQuery(true);
         $query->select('c.exports,c.admin');
