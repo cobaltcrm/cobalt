@@ -66,7 +66,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="dash_float" id="sales_container">
                     <div class="dash_float_header">
                         <div class="btn-group pull-right">
-                            <a class="btn" id="chart_select_prev"><i class="icon-chevron-left"></i></a><a class="btn" id="chart_select_next"><i class="icon-chevron-right"></i></a>
+                            <a class="btn" id="chart_select_prev"><i class="glyphicon glyphicon-chevron-left"></i></a><a class="btn" id="chart_select_next"><i class="glyphicon glyphicon-chevron-right"></i></a>
                         </div>
                         <h3><?php echo TextHelper::_('COBALT_SALES_HEADER'); ?></h3>
                     </div>

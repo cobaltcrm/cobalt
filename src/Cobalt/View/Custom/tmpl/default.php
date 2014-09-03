@@ -86,7 +86,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                             <div class="input-append">
                                 <input class="input-small inputbox-hidden date_input editable-modal-datepicker" id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_hidden" type="text" placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>"  value="<?php echo $custom_field_filter; ?>"  />
                                 <input type="hidden" id="custom_<?php echo $value['id']; ?>_hidden" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>"  />
-                                <span class="input-append-addon"><i class="icon-calendar"></i></span>
+                                <span class="input-append-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </form>
                     <?php break; ?>

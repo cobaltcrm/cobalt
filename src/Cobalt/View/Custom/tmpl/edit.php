@@ -41,7 +41,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     <div class="input-append">
                         <input id="custom_<?php echo isset($value['id']) ? $value['id'] : ''; ?>" name="custom_<?php echo isset($value['id']) ? $value['id'] : ''; ?>_input" class="inputbox filter_input date_input" type="text" value="<?php echo DateHelper::formatDate($custom_field_filter); ?>"  />
                         <input id="custom_<?php echo isset($value['id']) ? $value['id'] : ''; ?>_hidden" name="custom_<?php echo isset($value['id']) ? $value['id'] : ''; ?>" type="hidden" value="<?php echo $custom_field_filter; ?>" />
-                        <span class="input-append-addon"><i class="icon-calendar"></i></span>
+                        <span class="input-append-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                     <?php break; ?>
                 <?php }

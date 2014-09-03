@@ -115,7 +115,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         </div>
                                     </li>
                                     <li>
-                                        <label><a href="javascript:void(0);" class="btn btn-success" id="add_item"><i class="icon-white icon-plus-sign"></i> <b>Add More Items</a></b></label>
+                                        <label><a href="javascript:void(0);" class="btn btn-success" id="add_item"><i class="icon-white glyphicon glyphicon-plus-sign"></i> <b>Add More Items</a></b></label>
                                     </li>
                                 </ul>
                             </fieldset>

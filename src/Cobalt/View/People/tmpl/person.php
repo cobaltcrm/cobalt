@@ -72,7 +72,7 @@ $person = $this->people[0];
                 <div class='label label-info'><?php echo TextHelper::_('COBALT_WORK_ADDRESS'); ?></div>
                 <div class="row-fluid">
                     <?php $urlString = "http://maps.googleapis.com/maps/api/staticmap?&zoom=13&zoom=2&size=600x400&sensor=false&center=" . str_replace(" ", "+", $person['work_address_1'] . ' ' . $person['work_address_2'] . ' ' . $person['work_city'] . ' ' . $person['work_state'] . ' ' . $person['work_zip'] . ' ' . $person['work_country']); ?>
-                    <a href="#work_address_modal" data-toggle="modal" class="btn btn-mini pull-right"><i class="icon icon-map-marker"></i></a>
+                    <a href="#work_address_modal" data-toggle="modal" class="btn btn-mini pull-right"><i class="icon glyphicon glyphicon-map-marker"></i></a>
                     <div id="work_address_modal" class="modal hide fade">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -97,7 +97,7 @@ $person = $this->people[0];
                 <div class='label label-info'><?php echo TextHelper::_('COBALT_HOME_ADDRESS'); ?></div>
                 <div class="row-fluid">
                     <?php $urlString = "http://maps.googleapis.com/maps/api/staticmap?&zoom=13&zoom=2&size=600x400&sensor=false&center=" . str_replace(" ", "+", $person['home_address_1'] . ' ' . $person['home_address_2'] . ' ' . $person['home_city'] . ' ' . $person['home_state'] . ' ' . $person['home_zip'] . ' ' . $person['home_country']); ?>
-                    <a href="#home_address_modal" data-toggle="modal" class="btn btn-mini pull-right"><i class="icon icon-map-marker"></i></a>
+                    <a href="#home_address_modal" data-toggle="modal" class="btn btn-mini pull-right"><i class="icon glyphicon glyphicon-map-marker"></i></a>
                     <div id="home_address_modal" class="modal hide fade">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -448,7 +448,7 @@ $person = $this->people[0];
                 <div class="input-append">
                     <input name="deal_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
                     <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
-                    <a class="btn btn-success" href="" onclick="saveCf('people');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                    <a class="btn btn-success" href="" onclick="saveCf('people');"><i class="icon-white glyphicon glyphicon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                 </div>
             </form>
         </div>

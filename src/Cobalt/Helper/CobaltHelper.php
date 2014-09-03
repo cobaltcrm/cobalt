@@ -234,7 +234,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $html .= '<div class="input-append">';
         $html .= '<input id="shared_user_name" class="inputbox" type="text" placeholder="'.TextHelper::_('COBALT_BEGIN_TYPING_USER').'" />';
         $html .= '<input type="hidden" name="shared_user_id" id="shared_user_id" />';
-        $html .= '<a class="btn btn-success" href="javascript:void(0);" onclick="shareItem();"><i class="icon-white icon-plus"></i>'.TextHelper::_('COBALT_ADD').'</a>';
+        $html .= '<a class="btn btn-success" href="javascript:void(0);" onclick="shareItem();"><i class="glyphicon glyphicon-plus icon-white"></i>'.TextHelper::_('COBALT_ADD').'</a>';
         $html .= '</div>';
         $html .= '<div id="shared_user_list">';
 
@@ -244,7 +244,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $users = UsersHelper::getItemSharedUsers($itemId,$itemType);
         if ( count ( $users ) > 0 ) {
             foreach ($users as $user) {
-                $html .= '<div id="shared_user_'.$user->value.'"><i class="icon-user"></i>'.$user->label." - <a class='btn btn-danger btn-mini' href='javascript:void(0);' onclick='unshareItem(".$user->value.");'>".TextHelper::_('COBALT_REMOVE')."</a></div>";
+                $html .= '<div id="shared_user_'.$user->value.'"><i class="glyphicon glyphicon-user"></i>'.$user->label." - <a class='btn btn-danger btn-mini' href='javascript:void(0);' onclick='unshareItem(".$user->value.");'>".TextHelper::_('COBALT_REMOVE')."</a></div>";
             }
         }
 

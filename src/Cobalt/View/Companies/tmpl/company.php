@@ -94,7 +94,7 @@ $company = $this->companies[0];?>
         <hr />
 
         <!-- DEALS -->
-        <span class="pull-right"><a class="btn" onclick="addDeal('company_id=<?php echo $company['id']; ?>')" href="javascript:void(0);"><i class="icon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></a></span>
+        <span class="pull-right"><a class="btn" onclick="addDeal('company_id=<?php echo $company['id']; ?>')" href="javascript:void(0);"><i class="glyphicon glyphicon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></a></span>
         <h3><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEALS')); ?></h3>
         <div class="large_info">
             <?php echo $this->deal_dock->render(); ?>
@@ -102,7 +102,7 @@ $company = $this->companies[0];?>
         <hr />
 
         <!-- PEOPLE -->
-        <span class="pull-right"><a class="btn" href="javascript:void(0);" onclick="addPerson('company_id=<?php echo $company['id']; ?>');"><i class="icon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></a></span>
+        <span class="pull-right"><a class="btn" href="javascript:void(0);" onclick="addPerson('company_id=<?php echo $company['id']; ?>');"><i class="glyphicon glyphicon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></a></span>
         <h3><?php echo ucwords(TextHelper::_('COBALT_EDIT_PEOPLE')); ?></h3>
         <div class="large_info">
             <?php echo $this->people_dock->render(); ?>
@@ -113,7 +113,7 @@ $company = $this->companies[0];?>
         <span class="pull-right">
             <form id="upload_form" target="hidden" action="index.php?task=upload" method="post" enctype="multipart/form-data">
                 <div class="fileupload fileupload-new" data-provides="fileupload">
-                     <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="icon-upload"></i><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
+                     <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><i class="glyphicon glyphicon-upload"></i><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
                 </div>
                 <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
                 <input type="hidden" name="association_type" value="company" />
@@ -295,7 +295,7 @@ $company = $this->companies[0];?>
         <div class="input-append">
             <input name="person_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_USER'); ?>" />
             <input type="hidden" name="shared_user_id" id="shared_user_id" />';
-            <a class="btn btn-success" href="javascript:void(0);" onclick="addPersonToCompany();"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_ADD'); ?></a>
+            <a class="btn btn-success" href="javascript:void(0);" onclick="addPersonToCompany();"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_('COBALT_ADD'); ?></a>
         </div>
     </div>
 </div>
@@ -308,7 +308,7 @@ $company = $this->companies[0];?>
             <div class="input-append">
                 <input name="deal_name" class="inputbox" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
                 <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
-                <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="icon-white icon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+                <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
             </div>
         </form>
     </div>

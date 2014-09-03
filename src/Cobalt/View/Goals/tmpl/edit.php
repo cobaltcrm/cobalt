@@ -147,7 +147,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <span class="input-append">
                                 <input class="date_input inputbox required" type="text" name="start_date_hidden" id="start_date">
                                 <input type="hidden" id="start_date_hidden" value="" name="start_date"/>
-                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#start_date").datepicker().focus();'><i class="icon-calendar"></i></a>
+                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#start_date").datepicker().focus();'><i class="glyphicon glyphicon-calendar"></i></a>
                             </span>
                         </li>
                         <li>
@@ -155,7 +155,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <span class="input-append">
                                 <input class="date_input inputbox required" type="text" id="end_date" name="end_date_hidden">
                                 <input type="hidden" id="end_date_hidden" value="" name="end_date"/>
-                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#end_date").datepicker().focus();'><i class="icon-calendar"></i></a>
+                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#end_date").datepicker().focus();'><i class="glyphicon glyphicon-calendar"></i></a>
                             </span>
                         </li>
                     </ul>
@@ -174,7 +174,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <div class="well text-center">
-                    <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="icon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_ADD'); ?></a>
+                    <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_ADD'); ?></a>
                     <a href="javascript:void(0);" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a>
                 </div>
             </li>

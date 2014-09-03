@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $note = $this->note; ?>
 <div class="media" id="note_entry_<?php echo $note['id']; ?>">
     <?php if ( UsersHelper::getRole() == "exec" || $note['author'] == UsersHelper::getUserId() ) { ?>
-        <div class="btn-group pull-right"><a class="btn" href="javascript:void(0);" onclick="editNoteEntry(<?php echo $note['id']; ?>)"><i class="icon-pencil"></i></a><a class="btn" href="javascript:void(0);" onclick="trashNoteEntry(<?php echo $note['id']; ?>)"><i class="icon-trash"></i></a></div>
+        <div class="btn-group pull-right"><a class="btn" href="javascript:void(0);" onclick="editNoteEntry(<?php echo $note['id']; ?>)"><i class="glyphicon glyphicon-pencil"></i></a><a class="btn" href="javascript:void(0);" onclick="trashNoteEntry(<?php echo $note['id']; ?>)"><i class="glyphicon glyphicon-trash"></i></a></div>
     <?php } ?>
     <div class="pull-left"><img class="media-object widget" src="<?php echo $note['owner_avatar']; ?>" /></div>
     <div class="media-body">

@@ -57,10 +57,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 echo '<ul class="dropdown-menu" role="menu">';
                 echo '<input type="hidden" name="document_'.$document['id'].'_hash" id="document_'.$document['id'].'_hash" value="'.$document['filename'].'" />';
                     if ($document['is_image']) {
-                        echo '<li><a href="javascript:void(0);" class="document_preview" id="preview_'.$document['id'].'"><i class="icon-eye-open"></i> '.TextHelper::_('COBALT_PREVIEW').'</a></li>';
+                        echo '<li><a href="javascript:void(0);" class="document_preview" id="preview_'.$document['id'].'"><i class="glyphicon glyphicon-eye-open"></i> '.TextHelper::_('COBALT_PREVIEW').'</a></li>';
                     }
-                echo '<li><a href="javascript:void(0);" class="document_download" id="download_'.$document['id'].'"> <i class="icon-download"></i> '.TextHelper::_('COBALT_DOWNLOAD').'</a></li>';
-                echo '<li><a href="javascript:void(0);" class="document_delete" id="delete_'.$document['id'].'"><i class="icon-trash"></i> '.TextHelper::_('COBALT_DELETE').'</a></li>';
+                echo '<li><a href="javascript:void(0);" class="document_download" id="download_'.$document['id'].'"> <i class="glyphicon glyphicon-download"></i> '.TextHelper::_('COBALT_DOWNLOAD').'</a></li>';
+                echo '<li><a href="javascript:void(0);" class="document_delete" id="delete_'.$document['id'].'"><i class="glyphicon glyphicon-trash"></i> '.TextHelper::_('COBALT_DELETE').'</a></li>';
                 echo '</ul>';
                 echo '</div></td>';
                 echo '<td>'.$association_link.'</a></td>';

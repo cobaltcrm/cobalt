@@ -15,7 +15,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <?php if ( count ( $this->help_menu_links ) > 0 ){ foreach ($this->help_menu_links as $link) { ?>
                         <li class="<?php echo $link['completed_status']!=0 ? 'completed' : 'uncompleted'; ?>" id="<?php echo $link['config']; ?>">
                             <a href="<?php echo $link['link']; ?>">
-                                <i class="<?php echo $link['completed_status']==1 ? 'icon-ok icon' : $link['class']; ?>"></i>
+                                <i class="<?php echo $link['completed_status']==1 ? 'glyphicon glyphicon-ok icon' : $link['class']; ?>"></i>
                                 <span><?php echo $link['text']; ?></span>
                             </a>
                             <span class="<?php echo $link['completed_status']==1 ? 'completed' : 'uncompleted'; ?>">
@@ -35,8 +35,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </div>
             <?php if (!$this->step_completed && $this->show_update_buttons) { ?>
                 <div id="help_actions" class="help_actions">
-                    <a href="javascript:void(0);" onclick="updateConfig('<?php echo $this->help_type; ?>',1);" class="btn-primary btn-large" ><i class="icon-check icon-white"></i><?php echo JText::_('COBALT_COMPLETE'); ?></a>
-                    <a href="javascript:void(0);" onclick="updateConfig('<?php echo $this->help_type; ?>',0);" class="btn laterButton" ><i class="icon-repeat"></i><?php echo JText::_('COBALT_COMPLETE_LATER'); ?></a>
+                    <a href="javascript:void(0);" onclick="updateConfig('<?php echo $this->help_type; ?>',1);" class="btn-primary btn-large" ><i class="glyphicon glyphicon-check icon-white"></i><?php echo JText::_('COBALT_COMPLETE'); ?></a>
+                    <a href="javascript:void(0);" onclick="updateConfig('<?php echo $this->help_type; ?>',0);" class="btn laterButton" ><i class="glyphicon glyphicon-repeat"></i><?php echo JText::_('COBALT_COMPLETE_LATER'); ?></a>
                 </div>
             <?php } ?>
         </form>
