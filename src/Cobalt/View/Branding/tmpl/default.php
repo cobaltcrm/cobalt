@@ -91,7 +91,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     </form>
                     <div id="themes" style="display:none;">
                         <div id="1">
-                            <ul class="unstyled adminlist cobaltadminlist">
+                            <ul class="list-unstyled adminlist cobaltadminlist">
                                 <li>
                                     <label><b><?php echo JText::_("COBALT_ADMIN_GENERIC_HEADER"); ?></b></label>
                                     <input class="hascolorpicker inputbox branding-input" type="text" name="header" data-css-class=".navbar-inner" data-css-style="background" value="<?php echo $this->themes[0]['header']; ?>"><div class="colorwheel"></div>
@@ -111,7 +111,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                         </div>
                         <div id="2">
-                            <ul class="unstyled adminlist cobaltadminlist">
+                            <ul class="list-unstyled adminlist cobaltadminlist">
                                <li>
                                     <label><b><?php echo JText::_("COBALT_ADMIN_GENERIC_HEADER"); ?></b></label>
                                     <input class="hascolorpicker branding-input inputbox" type="text" name="header" data-css-class=".navbar-inner" data-css-style="background" value="<?php echo $this->themes[1]['header']; ?>"><div class="colorwheel"></div>

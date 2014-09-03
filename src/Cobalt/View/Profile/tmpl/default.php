@@ -26,7 +26,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
         <form>
             <fieldset>
-                <ul class="unstyled">
+                <ul class="list-unstyled">
                     <select class="inputbox" name="language">
                           <?php
                               $lngs = ConfigHelper::getLanguages();
@@ -50,7 +50,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
         <form>
             <fieldset>
-                <ul class="unstyled">
+                <ul class="list-unstyled">
                     <li><label><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?></label><input class="inputbox" type="text" name="first_name" value="<?php echo $this->user->first_name; ?>"></li>
                     <li><label><?php echo TextHelper::_('COBALT_PERSON_LAST'); ?></label><input class="inputbox" type="text" name="last_name" value="<?php echo $this->user->last_name; ?>"></li>
                 </ul>
@@ -70,7 +70,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="unstyled">
+                    <ul class="list-unstyled">
                         <li><label><?php echo TextHelper::_('COBALT_TIMEZONE'); ?></label>
                             <select class="inputbox" name="time_zone">
                                 <?php
@@ -114,7 +114,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="unstyled" id="email_input_boxes">
+                    <ul class="list-unstyled" id="email_input_boxes">
                         <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_1'); ?></li>
                         <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_2'); ?></li>
                         <li><label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label><input class="inputbox" disabled="disabled" value="<?php echo $this->user->email; ?>" /></li>
@@ -148,7 +148,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="unstyled" >
+                    <ul class="list-unstyled" >
                         <?php /**
                         <li>
                             <label class="small"><input type="checkbox" name="daily_agenda" <?php if ( $this->user['daily_agenda'] ) echo 'checked'; ?> ></label>
@@ -197,7 +197,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="unstyled">
+                    <ul class="list-unstyled">
                         <li><?php echo TextHelper::_('COBALT_SET_HOME_CHART_DESC'); ?></li>
                         <li>
                             <label>
@@ -226,7 +226,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
       <div class="accordion-inner">
             <form>
                 <fieldset>
-                    <ul class="unstyled" >
+                    <ul class="list-unstyled" >
                         <li><?php echo TextHelper::_('COBALT_SET_COMMISSION_RATE_DESC'); ?></li>
                         <li>
                             <label>

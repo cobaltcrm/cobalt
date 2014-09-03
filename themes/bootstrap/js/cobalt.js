@@ -201,7 +201,7 @@ var Cobalt = {
 
     bindDropdownItems: function () {
 
-        jQuery('.dropdown_item').live('click', function() {
+        jQuery('.dropdown_item').on('click', function() {
             var base = jQuery(this)
                 id = base.parentsUntil('div.filters').parent('div.filters').attr('id')+"_link";
 

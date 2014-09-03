@@ -79,13 +79,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
                    switch ($event['association_type']) {
                       case "company":
-                           echo "<td><i class='icon-briefcase'></i> <a href='".RouteHelper::_('index.php?view=companies&layout=company&id='.$event['company_id'])."'>".$event['company_name']."</a></td>";
+                           echo "<td><i class='glyphicon glyphicon-briefcase'></i> <a href='".RouteHelper::_('index.php?view=companies&layout=company&id='.$event['company_id'])."'>".$event['company_name']."</a></td>";
                            break;
                       case "deal":
-                           echo "<td><i class='icon-tag'></i> <a href='".RouteHelper::_('index.php?view=deals&layout=deal&id='.$event['deal_id'])."'>".$event['deal_name']."</a></td>";
+                           echo "<td><i class='glyphicon glyphicon-tag'></i> <a href='".RouteHelper::_('index.php?view=deals&layout=deal&id='.$event['deal_id'])."'>".$event['deal_name']."</a></td>";
                            break;
                       case "person":
-                           echo "<td><i class='icon-user'></i> <a href='".RouteHelper::_('index.php?view=people&layout=person&id='.$event['person_id'])."'>".$event['person_first_name']." ".$event['person_last_name']."</a></td>";
+                           echo "<td><i class='glyphicon glyphicon-user'></i> <a href='".RouteHelper::_('index.php?view=people&layout=person&id='.$event['person_id'])."'>".$event['person_first_name']." ".$event['person_last_name']."</a></td>";
                            break;
                       default:
                           echo "<td>&nbsp;</td>";

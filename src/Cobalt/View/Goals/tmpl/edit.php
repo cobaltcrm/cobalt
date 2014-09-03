@@ -15,7 +15,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </div>
 <form id="edit-form" action="<?php echo RouteHelper::_('index.php?task=editGoal'); ?>" method="post" onsubmit="return save(this);">
     <div id="goal_edit">
-        <ul class="unstyled">
+        <ul class="list-unstyled">
              <li>
                     <legend><b><?php echo ucwords(TextHelper::_('COBALT_GOAL_STEP_ONE')); ?></b></legend>
                     <?php
@@ -141,13 +141,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <li id="date_selection_area" style="display:none;">
                 <div id="date_selection_area_template">
                     <legend><b><?php echo TextHelper::_('COBALT_SET_YOUR_DATE'); ?></b></legend>
-                    <ul class="unstyled">
+                    <ul class="list-unstyled">
                         <li>
                             <label><?php echo TextHelper::_('COBALT_START_DATE'); ?></label>
                             <span class="input-append">
                                 <input class="date_input inputbox required" type="text" name="start_date_hidden" id="start_date">
                                 <input type="hidden" id="start_date_hidden" value="" name="start_date"/>
-                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#start_date").datepicker().focus();'><i class="icon-calendar"></i></a>
+                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#start_date").datepicker().focus();'><i class="glyphicon glyphicon-calendar"></i></a>
                             </span>
                         </li>
                         <li>
@@ -155,7 +155,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <span class="input-append">
                                 <input class="date_input inputbox required" type="text" id="end_date" name="end_date_hidden">
                                 <input type="hidden" id="end_date_hidden" value="" name="end_date"/>
-                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#end_date").datepicker().focus();'><i class="icon-calendar"></i></a>
+                                <a class="btn add-on" href="javascript:void(0);" onclick='jQuery("#end_date").datepicker().focus();'><i class="glyphicon glyphicon-calendar"></i></a>
                             </span>
                         </li>
                     </ul>
@@ -167,14 +167,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <legend><b><?php echo ucwords(TextHelper::_('COBALT_GOAL_STEP_THREE')); ?></b></legend>
-                    <ul class="unstyled">
+                    <ul class="list-unstyled">
                         <li><label><?php echo TextHelper::_('COBALT_GOAL_STEP_THREE_DESC'); ?></label></li>
                         <li><label class="small checkbox"><input type="checkbox" name="leaderboard"><?php echo TextHelper::_('COBALT_GOAL_CREATE_LEADERBOARD'); ?></label></li>
                     </ul>
             </li>
             <li>
                 <div class="well text-center">
-                    <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="icon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_ADD'); ?></a>
+                    <a href="javascript:void(0);" onclick="jQuery('#edit-form').submit();" class="btn btn-success"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_ADD'); ?></a>
                     <a href="javascript:void(0);" onclick="window.history.back()"><?php echo TextHelper::_('COBALT_CANCEL_BUTTON'); ?></a>
                 </div>
             </li>

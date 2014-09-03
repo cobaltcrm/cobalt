@@ -30,7 +30,7 @@ $contacts = $this->contacts;
 <div class="clearfix" id="contacts">
     <div class="clearfix">
         <span class="pull-right">
-            <a class="btn" href="javascript:void(0);" onclick="addPerson()" ><i class="icon-plus"></i></a>
+            <a class="btn" href="javascript:void(0);" onclick="addPerson()" ><i class="glyphicon glyphicon-plus"></i></a>
         </span>
     </div>
     <?php if ( is_array($contacts) && count($contacts) > 0 ){ foreach ($contacts as $person) { ?>
@@ -126,7 +126,7 @@ $contacts = $this->contacts;
                             <?php echo $person['phone']; ?>
                         <?php } ?>
                         <?php if (array_key_exists('email',$person) && $person['email']!="") { ?>
-                                <i class="icon-envelope"></i><a href="mailto:<?php echo $person['email']; ?>"><?php echo $person['email']; ?></a>
+                                <i class="glyphicon glyphicon-envelope"></i><a href="mailto:<?php echo $person['email']; ?>"><?php echo $person['email']; ?></a>
                         <?php } ?>
               </div>
             </div>

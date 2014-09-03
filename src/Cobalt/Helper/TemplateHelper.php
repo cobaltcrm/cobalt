@@ -150,43 +150,57 @@ class TemplateHelper
         $class = "";
 
         //generate html
-        $list_html  = '<div class="navbar navbar-fixed-top">';
-        $list_html .= '<div class="navbar-inner"><div class="container">';
-//        $list_html .= "<div class='site-logo pull-left' style='padding:0'>";
-//        $list_html .= "<img id='site-logo-img' src='".StylesHelper::getSiteLogo()."' />";
-//        $list_html .= '</div>';
-        $list_html .= '<a id="site-name-link" class="brand" href="'.JUri::base().'">'.StylesHelper::getSiteName().'</a>';
-        $list_html .= '<ul class="nav">';
-        foreach ($list->menu_items as $name) {
+        $list_html  = '<div class="navbar navbar-default navbar-fixed-top" role="navigation">';
+        $list_html .= '<div class="container">';
+        $list_html .= '<div class="navbar-header">';
+
+        if (StylesHelper::getSiteLogo())
+        {
+            $list_html .= '<div class="site-logo pull-left">';
+            $list_html .= '<img id="site-logo-img" src="'.StylesHelper::getSiteLogo().'" />';
+            $list_html .= '</div>';
+        }
+
+        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.JUri::base().'">';
+        $list_html .= StylesHelper::getSiteName();
+        $list_html .= '</a>';
+        $list_html .= '</div>'; // navbar-header end
+
+        $list_html .= '<ul class="nav navbar-nav">';
+
+        foreach ($list->menu_items as $name)
+        {
             $class = $name == $controller || $name == $view ? "active" : "";
             $list_html .= '<li><a class="'.$class.'" href="'.RouteHelper::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
+
         $list_html .= '</ul>';
-        $list_html .= "<ul class='nav pull-right'>";
-        $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="icon-plus icon-white"></i></a><ul class="dropdown-menu">';
+
+        $list_html .= '<ul class="nav navbar-nav navbar-right">';
+        $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="glyphicon glyphicon-plus-sign icon-white"></i></a><ul class="dropdown-menu">';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" ><i class="glyphicon glyphicon-user icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="glyphicon glyphicon-question-sign icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="glyphicon glyphicon-search icon-white"></i></a></li>';
 
         if ( UsersHelper::isAdmin() ) {
-            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a></li>';
+            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" ><i class="glyphicon glyphicon-cog icon-white"></i></a></li>';
         }
 
         if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
-            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
+            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="glyphicon glyphicon-off icon-white"></i></a></li>';
         }
         $list_html .= '</ul>';
 
         $list_html .= '</div>';
         $list_html .= '<div style="display:none;" class="pull-right" id="site_search">';
         $list_html .= '<input class="inputbox site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
-        $list_html .= '</div></div></div>';
+        $list_html .= '</div></div>';
 
         //return html
         echo $list_html;

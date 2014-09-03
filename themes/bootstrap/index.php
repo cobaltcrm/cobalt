@@ -7,12 +7,10 @@ $this->_style = array();
 $this
     // Add stylesheets
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/bootstrap.css')
-    ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/bootstrap-responsive.css')
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/cobalt.css')
 
     // Add theme Scripts
     ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.js')
-    ->addScript($this->baseurl.'/themes/bootstrap/js/jquery-migrate-1.2.1.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 

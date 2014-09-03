@@ -20,7 +20,7 @@ for ( $i=0; $i<count($this->reports); $i++ ) {
         <td>
             <a href="<?php echo RouteHelper::_('index.php?view=reports&layout=edit_custom_report&id='.$report['id']); ?>"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a>
             |
-            <a href="javascript:void(0);" class="delete delete_custom_report"><i class="icon-trash"></i></a>
+            <a href="javascript:void(0);" class="delete delete_custom_report"><i class="glyphicon glyphicon-trash"></i></a>
         </td>
     </tr>
 <?php }

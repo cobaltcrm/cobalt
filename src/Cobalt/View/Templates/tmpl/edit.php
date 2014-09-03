@@ -22,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <div class="row-fluid">
                             <fieldset class="adminform">
                                 <legend><h3><?php echo TextHelper::_("COBALT_EDITING_WORKFLOW"); ?></h3></legend>
-                                <ul class="unstyled adminformlist cobaltadminlist">
+                                <ul class="list-unstyled adminformlist cobaltadminlist">
                                     <li>
                                         <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
                                         <input type="text" class="inputbox" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template['name']; ?>" />
@@ -64,7 +64,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <div class="row-fluid">
                             <fieldset class="adminform">
                                 <legend><h3><?php echo JText::_("COBALT_ENTER_ITEMS"); ?></h3></legend>
-                                <ul class="unstyled adminformlist cobaltadminlist">
+                                <ul class="list-unstyled adminformlist cobaltadminlist">
                                     <li>
                                         <div id="items">
                                             <?php if ( array_key_exists("data",$this->template) && count($this->template['data']) ){ foreach ($this->template['data'] as $data) { ?>
@@ -115,7 +115,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         </div>
                                     </li>
                                     <li>
-                                        <label><a href="javascript:void(0);" class="btn btn-success" id="add_item"><i class="icon-white icon-plus-sign"></i> <b>Add More Items</a></b></label>
+                                        <label><a href="javascript:void(0);" class="btn btn-success" id="add_item"><i class="icon-white glyphicon glyphicon-plus-sign"></i> <b>Add More Items</a></b></label>
                                     </li>
                                 </ul>
                             </fieldset>

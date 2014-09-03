@@ -43,7 +43,7 @@ class JToolbarButtonHelp extends JToolbarButton
         $doTask = $this->_getCommand($ref, $com, $override, $component);
 
         $html = "<button href=\"#\" onclick=\"$doTask\" rel=\"help\" class=\"btn btn-small\">\n";
-        $html .= "<i class=\"icon-$class\">\n";
+        $html .= "<i class=\"glyphicon glyphicon-$class\">\n";
         $html .= "</i>\n";
         $html .= "$text\n";
         $html .= "</button>\n";

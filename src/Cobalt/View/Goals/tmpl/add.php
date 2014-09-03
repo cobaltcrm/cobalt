@@ -15,7 +15,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </div>
 <div class="goals_columns row">
     <div class="goals_left_column span6">
-        <ul class="unstyled">
+        <ul class="list-unstyled">
             <li>
                 <div class="goal_container media">
                     <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/win_more_cash.png" /></div>
@@ -48,7 +48,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </ul>
     </div>
     <div class="goals_right_column span6">
-        <ul class="unstyled">
+        <ul class="list-unstyled">
             <li>
                 <div class="goal_container media">
                     <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/complete_more_tasks.png" /></div>
