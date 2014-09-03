@@ -11,7 +11,6 @@ $this
 
     // Add theme Scripts
     ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.js')
-    ->addScript($this->baseurl.'/themes/bootstrap/js/jquery-migrate-1.2.1.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 
