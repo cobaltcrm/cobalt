@@ -52,7 +52,9 @@ class crmInstallController
         
         if ( !$model->install() )
         {
-            session_start();
+            if (!isset($_SESSION)) {
+                session_start();
+            }
             $_SESSION['error'] = $model->getError();
             header('Location: '.CURI::base());
         }

@@ -173,7 +173,17 @@ class crmInstallModel
             $this->options
         );
 
-        $schema = JPATH_BASE."/install/sql/".$this->config->dbtype."/joomla.sql";
+        $db_driver = $this->config->dbtype;
+        if ($db_driver == 'mysqli') {
+            $db_driver = 'mysql';
+        }
+
+        $schema = JPATH_BASE."/install/sql/".$db_driver."/joomla.sql";
+
+        if (!file_exists($schema)) {
+            $this->setError(sprintf('SQL file for "%s" not found',$this->config->dbtype));
+            return false;
+        }
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema)))
