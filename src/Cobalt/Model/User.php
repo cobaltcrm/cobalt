@@ -10,8 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JUser;
-
 use Cobalt\Table\UserTable;
 use JFactory;
 use Cobalt\Helper\DateHelper;
@@ -22,6 +20,7 @@ use Cobalt\Helper\UsersHelper;
 
 use Joomla\Crypt\Password\Simple;
 use Joomla\Language\Text;
+use Joomla\Date\Date;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -29,15 +28,66 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class User extends DefaultModel
 {
     /**
+     * Constructor
+     */
+    public function __construct($userId = null)
+    {
+        parent::__construct();
+        $app = \Cobalt\Container::get('app');
+        $this->_view = $app->input->get('view');
+        $this->_layout = str_replace('_filter','',$app->input->get('layout'));
+
+        if ($userId)
+        {
+            $this->load($userId);
+        }
+    }
+
+    /**
+     * Method to load a User object by user id number
+     *
+     * @param   integer  $id  The user id of the user to load
+     *
+     * @return  boolean  True on success
+     */
+    public function load($id)
+    {
+        $table = new UserTable;
+
+        // Load the UserTable object based on the user id or throw a warning.
+        if (!$table->load($id))
+        {
+            // Reset to guest user
+            $this->guest = 1;
+
+            $this->app->enqueueMessage(JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id), 'error');
+
+            return false;
+        }
+
+        $this->setProperties($table->getProperties());
+
+        // The user is no longer a guest
+        if ($this->id != 0)
+        {
+            $this->guest = 0;
+        }
+        else
+        {
+            $this->guest = 1;
+        }
+
+        return true;
+    }
+
+    /**
      * Method to store a record
      *
      * @return boolean True on success
      */
-    public function store($data=null)
+    public function store($data = null)
     {
-        $app = \Cobalt\Container::get('app');
-
-        //Load Tables
+        //Load Table
         $row = new UserTable;
 
         if ($data['id']) {
@@ -45,7 +95,7 @@ class User extends DefaultModel
         }
 
         if (!$data) {
-            $data = $app->input->getRequest( 'post' );
+            $data = $this->app->input->getRequest( 'post' );
         }
 
         if (array_key_exists('fullscreen',$data)) {
@@ -181,6 +231,20 @@ class User extends DefaultModel
 
     }
 
+    public function updateUserSession()
+    {
+        $user = $this->app->getUser();
+        $sessionId = $this->app->getSession()->getId();
+
+        $data = new \stdClass;
+        $data->guest = $user->guest;
+        $data->username = $user->username;
+        $data->userid = (int) $user->id;
+        $data->session_id = $sessionId;
+
+        return $this->db->updateObject('#__session', $data, 'session_id');
+    }
+
     public function login($credentials, $options)
     {
         $result = $credentials;
@@ -226,7 +290,6 @@ class User extends DefaultModel
             }
         }
         
-
         // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
         $this->app->triggerEvent('onUserLogin', array($result, $options));
 
@@ -248,12 +311,64 @@ class User extends DefaultModel
          */
         if ($result['status'] == 1)
         {
-            $this->app->setUser(new JUser($userInfo->id));
+            $this->app->setUser(new User($userInfo->id));
+
+            // Check to see the the session already exists.
+            $this->app->checkSession();
+            
+            $this->updateUserSession();
+
+            // Hit the user last visit field
+            $this->setLastVisit($userInfo->id);
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Logout user function.
+     *
+     * @param integer $userid  The user to load and logout
+     * @param array   $options Array('clientid' => array of client id's)
+     *
+     * @return boolean
+     */
+    public function logout($userid = null, $options = array())
+    {
+        // Get a user object from the Application.
+        $user = $this->app->getUser($userid);
+
+        // Set clientid in the options array if it hasn't been set already.
+        if (!isset($options['clientid']))
+        {
+            $options['clientid'] = $this->app->getClientId();
+        }
+
+        // OK, the credentials are built. Lets fire the onLogout event.
+        $this->app->triggerEvent('onUserLogout', array($user, $options));
+
+        if (isset($user->id) && $user->id)
+        {
+            $this->app->clearSession();
+            $this->app->setUser(null);
+            return true;
+        }
+
+        // Trigger onUserLoginFailure Event.
+        $this->app->triggerEvent('onUserLogoutFailure', array($user));
+
+        return false;
+    }
+
+    public function setLastVisit($id)
+    {
+        if ($id)
+        {
+            $date = new Date();
+            $this->store(array('id' => $id, 'lastvisitDate' => $date->__toString()));
+        }
     }
 
     /**
@@ -266,9 +381,12 @@ class User extends DefaultModel
     public function getUserBy(array $where, array $select = array('*'))
     {
         $query = $this->db->getQuery(true);
-        $query->select(implode(',', $select))
-            ->from('#__users')
-            ->where(implode(',', $where));
+        $query->select(implode(',', $select))->from('#__users');
+
+        foreach ($where as $column => $value)
+        {
+            $query->where($column . '=' . $this->db->q($value));
+        }
 
         return $this->db->setQuery($query)->loadObject();
     }

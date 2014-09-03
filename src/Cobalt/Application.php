@@ -13,7 +13,6 @@ defined('_CEXEC') or die;
 use JFactory;
 use JPluginHelper;
 use JDocument;
-use JUser;
 
 use JUri as Uri;
 use Joomla\String\String;
@@ -23,7 +22,8 @@ use Joomla\Language\Language;
 use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
 use Cobalt\Model\User;
-use RouteHelper;
+use Cobalt\Container;
+use Cobalt\Helper\RouteHelper;
 
 /**
  * Cobalt Application class
@@ -212,46 +212,71 @@ final class Application extends AbstractWebApplication
      */
     public function checkSession()
     {
-        $db = Container::get('database');
-        $session = Container::get('session');
-        $user = JFactory::getUser();
+        $db = Container::get('db');
+        $session = $this->getSession();
+        $user = $this->getUser();
 
-        $query = $db->getQuery(true);
-        $db->setQuery(
-            'SELECT ' . $query->qn('session_id') . ' FROM ' . $query->qn('#__session') . ' WHERE ' . $query->qn('session_id') . ' = ' .
-            $query->q($session->getId()),
-            0, 1
-        );
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('session_id'))
+            ->from($db->quoteName('#__session'))
+            ->where($db->quoteName('session_id') . ' = ' . $db->quote($session->getId()));
+
+        $db->setQuery($query, 0, 1);
         $exists = $db->loadResult();
 
         // If the session record doesn't exist initialise it.
-        if (!$exists) {
-            if ($session->isNew()) {
-                $db->setQuery(
-                    'INSERT INTO ' . $query->qn('#__session') . ' (' . $query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' .
-                    $query->qn('time') . ')' . ' VALUES (' . $query->q($session->getId()) . ', 1, ' .
-                    (int) time() . ')'
-                );
-            } else {
-                $db->setQuery(
-                    'INSERT INTO ' . $query->qn('#__session') . ' (' . $query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' .
-                    $query->qn('guest') . ', ' . $query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') . ')' .
-                    ' VALUES (' . $query->q($session->getId()) . ', 1, ' . (int) $user->get('guest') . ', ' .
-                    (int) $session->get('session.timer.start') . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username')) . ')'
-                );
+        if (!$exists)
+        {
+            $sessionData = new \stdClass;
+            $sessionData->session_id = $session->getId();
+            $sessionData->client_id = (int) $this->getClientId();
+            $sessionData->time = (int) time();
+
+            if ($session->get('session.timer.start'))
+            {
+                $sessionData->guest = (int) $user->get('guest');
+                $sessionData->time = (int) $session->get('session.timer.start');
+                $sessionData->userid = (int) $user->get('id');
+                $sessionData->username = $user->get('username');
             }
 
             // If the insert failed, exit the application.
-            if (!$db->execute()) {
-                jexit($db->getErrorMSG());
+            try
+            {
+                $db->insertObject('#__session', $sessionData, 'session_id');
             }
-
-            // Session doesn't exist yet, so create session variables
-            if ($session->isNew()) {
-                $session->set('registry', new Registry('session'));
-                $session->set('user', new JUser);
+            catch (RuntimeException $e)
+            {
+                die($e->getMessage());
             }
         }
+    }
+
+    /**
+     * Clear session + database session row
+     *
+     * @return boolean
+     *
+     * @since   1.0
+     */
+    public function clearSession()
+    {
+
+        $session = $this->getSession();
+
+        $user = $this->getUser();
+
+        if ($user->id)
+        {
+            $db = $db = Container::get('db');
+            $query = $db->getQuery(true)
+                ->delete($db->quoteName('#__session'))
+                ->where($db->quoteName('userid') . ' = ' . (int) $user->id)
+                ->where($db->quoteName('client_id') . ' = ' . (int) $user->client_id);
+            $db->setQuery($query)->execute();
+        }
+
+        $session->clear();
     }
 
 
@@ -400,10 +425,8 @@ final class Application extends AbstractWebApplication
 
     public function logout()
     {
-        $authenticate = new \ModularAuthenticate();
-
-        // Perform the log in.
-        $error = $authenticate->logout();
+        // Perform the log out.
+        $error = $this->getUser()->logout();
 
         // Check if the log out succeeded.
         if (!($error instanceof \Exception)) {
@@ -726,17 +749,17 @@ final class Application extends AbstractWebApplication
     /**
      * Login or logout a user.
      *
-     * @param JUser $user The user object.
+     * @param User $user The user object.
      *
      * @return  $this  Method allows chaining
      *
      * @since   1.0
      */
-    public function setUser(JUser $user = null)
+    public function setUser(User $user = null)
     {
         if (is_null($user)) {
             // Logout
-            $this->user = new JUser;
+            $this->user = new User;
 
         } else {
             // Login
@@ -761,12 +784,21 @@ final class Application extends AbstractWebApplication
      */
     public function getUser($id = 0)
     {
-        if ($id) {
-            return new JUser($id);
+        if ($id)
+        {
+            return new User($id);
         }
 
-        if (is_null($this->user)) {
-            $this->user = ($this->getSession()->get('user')) ?: new JUser;
+        if (!isset($this->user) || is_null($this->user))
+        {
+            if ($sessionUser = $this->getSession()->get('user'))
+            {
+                $this->user = $sessionUser;
+            }
+            else
+            {
+                $this->user = new User;
+            }
         }
 
         return $this->user;
