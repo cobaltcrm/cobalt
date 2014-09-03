@@ -2,8 +2,6 @@
 
 use Joomla\Input\Input as JInput;
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'install.php';
-
 class crmInstallController
 {
     /** Validate database credentials **/
@@ -15,10 +13,16 @@ class crmInstallController
         //json
         $r = array();
 
+        //add check for mysqli
+        if (!function_exists('mysqli')) {
+            $r['error'] = 'Please enable mysqli!';
+            $r['valid'] = false;
+        }
+
         $input = new JInput;
 
         //connect
-        $model = new crmInstallModel;
+        $mysqli = new mysqli($input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'));
 
         $db_name = $input->getCmd('name');
 
@@ -27,14 +31,25 @@ class crmInstallController
             $r['valid'] = false;
         }
 
-        //Testing connection
-        try {
-            $db = $model->getDbo('mysqli',$input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'), $db_name, '', false);
-            $r['valid'] = true;
-        } catch (Exception $e) {
-            $r['error'] = $e->getMessage();
+        //check mysql
+        if ($mysqli->connect_errno) {
+            $r['error'] = $mysqli->connect_error;
             $r['valid'] = false;
+        } else {
+            if ($mysqli->query("CREATE DATABASE IF NOT EXISTS ".$db_name)) {
+                $r['error'] = $mysqli->connect_error;
+                $r['valid'] = false;
+            } else {
+                if (!$mysqli->select_db($db_name)) {
+                    $r['error'] = $mysqli->connect_error;
+                    $r['valid'] = false;
+                }
+            }
+            $r['valid'] = true;
         }
+
+        //close
+        $mysqli->close();
 
         //return
         echo json_encode($r);
@@ -52,9 +67,7 @@ class crmInstallController
         
         if ( !$model->install() )
         {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
+            session_start();
             $_SESSION['error'] = $model->getError();
             header('Location: '.CURI::base());
         }
