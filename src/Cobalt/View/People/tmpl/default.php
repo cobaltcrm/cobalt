@@ -42,7 +42,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_HEADER')); ?></h1>
 </div>
-<ul class="inline filter-sentence">
+<ul class="list-inline filter-sentence">
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" data-toggle="dropdown" role="button" id="people_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo $this->people_type_name; ?><span></a>

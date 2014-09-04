@@ -101,7 +101,7 @@ $deal = $this->dealList[0];
                 <div class="text-center well well-small">
                     <?php echo TextHelper::_('COBALT_EDIT_AMOUNT'); ?>
                     <span class="editable parent" id="editable_amount_container">
-                        <div class="inline" id="editable_amount">
+                        <div class="list-inline" id="editable_amount">
                             <h2>
                                 <?php echo ConfigHelper::getCurrency(); ?>
                                 <a href="javascript:void(0)" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<form id="amount_form">
@@ -146,7 +146,7 @@ $deal = $this->dealList[0];
                 <div class="text-center well well-small">
                     <?php echo TextHelper::_('COBALT_EDIT_PROBABILITY'); ?>
                     <span class="editable parent" id="editable_probability_container">
-                    <div class="inline" id="editable_probability">
+                    <div class="list-inline" id="editable_probability">
                         <h2>
                             <a href="javascript:void(0);" rel="popover" data-conent-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
                             <span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
@@ -234,7 +234,7 @@ $deal = $this->dealList[0];
             <h2><?php echo TextHelper::_('COBALT_EDIT_SUMMARY'); ?></h2>
             <div class="well well-small large_info">
                 <?php $summary = ( array_key_exists('summary',$deal) && strlen(trim($deal->summary)) > 0 ) ? $deal->summary : TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>
-                <div class="inline"><span id="summary_<?php echo $deal->id; ?>"><?php echo nl2br($summary); ?></span></div>
+                <div class="list-inline"><span id="summary_<?php echo $deal->id; ?>"><?php echo nl2br($summary); ?></span></div>
                 <div id="editable_summary_area" style="display:none;">
                     <form id="summary_form">
                         <textarea class="inputbox" name="summary"><?php echo $summary; ?></textarea>

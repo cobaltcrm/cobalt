@@ -56,7 +56,7 @@ $contacts = $this->contacts;
                                 <a href="http://www.twitter.com/#!/<?php echo $person['twitter_user']; ?>" target="_blank"><div class="twitter_light"></div></a>
                             <?php } else { ?>
                             <span class="editable parent" id="editable_twitter_container_<?php echo $person['id']; ?>">
-                            <div class="inline">
+                            <div class="list-inline">
                                 <a data-html="true" data-content='<div class="input-append"><form id="twitter_form_<?php echo $person['id']; ?>">
                                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>" />
                                     <input type="hidden" name="item_type" value="people" />
@@ -71,7 +71,7 @@ $contacts = $this->contacts;
                                 <a href="<?php echo $person['facebook_url']; ?>" target="_blank"><div class="facebook_light"></div></a>
                             <?php } else { ?>
                             <span class="editable parent" id="editable_facebook_container_<?php echo $person['id']; ?>">
-                            <div class="inline">
+                            <div class="list-inline">
                                 <a data-html="true" data-content='<div class="input-append"><form id="facebook_form_<?php echo $person['id']; ?>">
                                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>" />
                                     <input type="hidden" name="item_type" value="people" />
@@ -86,7 +86,7 @@ $contacts = $this->contacts;
                                 <a rel="popover" href="<?php echo $person['linkedin_url']; ?>" target="_blank"><div class="linkedin_light"></div></a>
                             <?php } else { ?>
                             <span class="editable parent" id="editable_linkedin_container_<?php echo $person['id']; ?>">
-                            <div class="inline">
+                            <div class="list-inline">
                                 <a data-html="true" data-content='<div class="input-append"><form id="linkedin_form_<?php echo $person['id']; ?>">
                                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>" />
                                     <input type="hidden" name="item_type" value="people" />
@@ -98,7 +98,7 @@ $contacts = $this->contacts;
                             <?php } ?>
 
                             <span class="editable parent" id="editable_aim_container_<?php echo $person['id']; ?>">
-                            <div class="inline">
+                            <div class="list-inline">
                                 <?php if (array_key_exists('aim',$person) && $person['aim'] != "" ) { ?>
                                     <a data-html="true" data-content='<div class="input-append"><form id="aim_form_<?php echo $person['id']; ?>">
                                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>" />
