@@ -158,7 +158,8 @@ class UsersHelper
     //return current logged in Cobalt user ID based on Joomla Id
     public static function getUserId()
     {
-        return JFactory::getUser()->id;
+        $app = \Cobalt\Container::get('app');
+        return $app->getUser()->get('id');
     }
 
     //return user role
