@@ -10,6 +10,8 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+use Joomla\Filter\OutputFilter;
+
 //define deal
 $deal = $this->dealList[0];
 ?>
@@ -73,12 +75,12 @@ $deal = $this->dealList[0];
                 <?php echo TextHelper::_('COBALT_ASSOCIATED_WITH').' <a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$deal->company_id).'"><span id="company_name_'.$deal->id.'">'.$deal->company_name.'</span></a>'; ?><br />
                 <?php } ?>
                 <?php if (isset($deal->status_name) && $deal->status_name) { ?>
-                <?php echo TextHelper::_('COBALT_DEALS_STATUS'); ?>: <span id="status_name_<?php echo $deal->id; ?>" class='deal-status-<?php echo strtolower($deal->status_name); ?>'>
+                <?php echo TextHelper::_('COBALT_DEALS_STATUS'); ?>: <span id="status_name_<?php echo $deal->id; ?>" class="deal-status-<?php echo OutputFilter::stringURLUnicodeSlug($deal->status_name); ?>">
                     <?php echo $deal->status_name; ?>
                 </span><br />
                 <?php } ?>
                 <?php if (isset($deal->stage_name) && $deal->stage_name) { ?>
-                <?php echo TextHelper::_('COBALT_DEALS_STAGE'); ?>: <span id="stage_name_<?php echo $deal->id; ?>" class='deal-stage-<?php echo strtolower($deal->stage_name); ?>'>
+                <?php echo TextHelper::_('COBALT_DEALS_STAGE'); ?>: <span id="stage_name_<?php echo $deal->id; ?>" class="deal-stage-<?php echo OutputFilter::stringURLUnicodeSlug($deal->stage_name); ?>">
                     <?php echo $deal->stage_name; ?>
                 </span>
                 <?php } ?>
@@ -88,7 +90,7 @@ $deal = $this->dealList[0];
         <div rel="tooltip" title="<?php echo ucwords(TextHelper::_('COBALT_STAGE')).": ".$deal->stage_name; ?>" class="progress">
             <?php $light = "#".CobaltHelper::percent2color($deal->percent); ?>
             <?php $dark = "#".CobaltHelper::percent2color($deal->percent-20); ?>
-          <div class="bar" id="percent_<?php echo $deal->id; ?>" style="
+          <div class="progress-bar" id="percent_<?php echo $deal->id; ?>" style="
                   background-image: -moz-linear-gradient(top,<?php echo $light; ?>,<?php echo $dark; ?>);
                 background-image: -webkit-gradient(linear,0 0,0 100%,from(<?php echo $light; ?>),to(<?php echo $dark; ?>));
                 background-image: -webkit-linear-gradient(top,<?php echo $light; ?>,<?php echo $dark; ?>);
