@@ -39,7 +39,7 @@ class Trash extends DefaultController
 
         $db->setQuery($query);
 
-        if ($db->query())
+        if ($db->execute())
         {
             $data['success'] = true;
             $msg = TextHelper::_('COBALT_SUCCESSULLY_REMOVED_ITEM');
@@ -55,7 +55,7 @@ class Trash extends DefaultController
 
         if ($redirect)
         {
-            $this->app->redirect(RouteHelper::_('index.php?view='.$redirect),$msg);
+            $this->app->redirect(RouteHelper::_('index.php?view=' . $redirect), $msg);
         }
         else
         {
