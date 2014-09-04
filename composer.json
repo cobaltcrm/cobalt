@@ -4,17 +4,31 @@
 	"license": "GPL-3.0",
 	"require": {
 		"php": ">=5.3.10",
-		"joomla/framework": "dev-master",
-		"joomla/database": "dev-master",
+		"joomla/application": "~1.2",
+		"joomla/controller": "~1.1",
+		"joomla/crypt": "~1.1",
+		"joomla/database": "~1.1",
+		"joomla/date": "~1.1",
+		"joomla/event": "~1.1",
+		"joomla/filesystem": "~1.1",
+		"joomla/filter": "~1.1",
+		"joomla/image": "~1.1",
+		"joomla/input": "~1.1",
+		"joomla/language": "~1.1",
+		"joomla/model": "~1.1",
+		"joomla/registry": "~1.2",
+		"joomla/router": "~1.1",
+		"joomla/string": "~1.2",
+		"joomla/view": "~1.1",
 		"symfony/http-foundation": "2.3.*@stable",
 		"league/di": "1.*",
 		"filp/whoops": "1.*",
 		"tracy/tracy": "2.2.3"
 	},
-    "autoload": {
-        "psr-0": {
-            "Cobalt\\": "src/"
-        }
-    },
+	"autoload": {
+		"psr-0": {
+			"Cobalt\\": "src/"
+		}
+	},
 	"minimum-stability": "dev"
 }
