@@ -20,7 +20,7 @@
 		"joomla/router": "~1.1",
 		"joomla/string": "~1.2",
 		"joomla/view": "~1.1",
-		"symfony/http-foundation": "2.3.*@stable",
+		"symfony/http-foundation": "2.3.*",
 		"league/di": "1.*",
 		"filp/whoops": "1.*",
 		"tracy/tracy": "2.2.3"
@@ -29,6 +29,5 @@
 		"psr-0": {
 			"Cobalt\\": "src/"
 		}
-	},
-	"minimum-stability": "dev"
+	}
 }
