@@ -20,33 +20,46 @@ class Trash extends DefaultController
 {
     public function execute()
     {
-        $item_id = $this->input->get('item_id',null,'array');
-        $item_type = $this->input->get('item_type');
+        $item_id    = $this->input->get('item_id', null, 'array');
+        $item_type  = $this->input->get('item_type');
 
         //ADD TO MODELS * trash model *
-        $db = $this->container->resolve('db');
-        $query = $db->getQuery(true);
+        $db         = $this->container->resolve('db');
+        $query      = $db->getQuery(true);
         $query->update("#__".$item_type)->set("published=-1");
-            if ( is_array($item_id) ) {
-                $query->where("id IN(".implode(',',$item_id).")");
-            } else {
-                $query->where("id=".$item_id);
-            }
+
+        if (is_array($item_id))
+        {
+            $query->where("id IN(" . implode(',',$item_id) . ")");
+        }
+        else
+        {
+            $query->where("id=" . $item_id);
+        }
+
         $db->setQuery($query);
-        if ( $db->query() ) {
+
+        if ($db->query())
+        {
             $data['success'] = true;
-        } else {
+            $msg = TextHelper::_('COBALT_SUCCESSULLY_REMOVED_ITEM');
+        }
+        else
+        {
             $data['success'] = false;
             $data['error_msg'] = $db->getErrorMsg();
+            $msg = TextHelper::_('COBALT_ERROR_REMOVING_ITEM');
         }
 
         $redirect = $this->input->get('page_redirect');
-        if ($redirect) {
-            $msg = ( $data['success'] ) ? TextHelper::_('COBALT_SUCCESSULLY_REMOVED_ITEM') : TextHelper::_('COBALT_ERROR_REMOVING_ITEM');
+
+        if ($redirect)
+        {
             $this->app->redirect(RouteHelper::_('index.php?view='.$redirect),$msg);
-        } else {
+        }
+        else
+        {
             echo json_encode($data);
         }
     }
-
 }
