@@ -4,6 +4,7 @@ var Cobalt = {
         this.bindPopovers();
         this.bindTooltips();
         this.bindDropdownItems();
+        this.bindDatepickers();
         this.initFormSave();
     },
 
@@ -30,6 +31,7 @@ var Cobalt = {
     },
 
     bindDatepickers: function() {
+        console.log('datepicker');
         jQuery('.date_input').datepicker({
             format:userDateFormat,
         });
