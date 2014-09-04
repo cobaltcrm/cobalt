@@ -83,9 +83,14 @@ var Cobalt = {
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
+        // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
+        }
+        // Remove rows from table
+        if (typeof response.remove !== 'undefined') {
+            Cobalt.removeRows(response.remove);
         }
     },
 
@@ -99,6 +104,17 @@ var Cobalt = {
         jQuery(form).ajaxSubmit(Cobalt.getFormSubmitOptions());
         // prevent from submitting form
         return false;
+    },
+
+    save: function(data) {
+        jQuery.post('index.php', data, function(response) {
+            try {
+                response = $.parseJSON(response);
+            } catch (e) {
+                // not json
+            }
+            Cobalt.onSaveSuccess(response);
+        });
     },
 
     updateStuff: function(data) {
@@ -115,6 +131,14 @@ var Cobalt = {
             if (field.length) {
                 field.val(value);
             }
+        });
+    },
+
+    removeRows: function(ids) {
+        jQuery.each(ids, function(i, id) {
+            jQuery('#list_row_'+id).hide('fast', function() {
+                jQuery(this).remove();
+            });
         });
     },
 
@@ -202,15 +226,29 @@ var Cobalt = {
         });
     },
 
-    save: function(data) {
-        jQuery.post('index.php', data, function(response) {
-            try {
-                response = $.parseJSON(response);
-            } catch (e) {
-                // not json
-            }
-            Cobalt.onSaveSuccess(response);
+    deleteListItems: function() {
+        var itemIds = [];
+        jQuery("input[name='ids\\[\\]']:checked").each(function() {
+            itemIds.push(jQuery(this).val());
         });
+        var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
+        Cobalt.save(data);
+        // showAjaxLoader();
+        // jQuery.ajax({
+        //     type:'POST',
+        //     url:'index.php?task=trash&tmpl=component&format=raw',
+        //     data: { item_id : itemIds, item_type : loc },
+        //     dataType:'JSON',
+        //     success:function(data){
+        //         if ( data.success ){
+        //             jQuery.each(itemIds,function(key,value){
+        //                 jQuery("#list_row_"+value).remove();
+        //             });
+        //             modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'));
+        //         }
+        //         hideAjaxLoader();
+        //     }
+        // });
     }
 };
 
