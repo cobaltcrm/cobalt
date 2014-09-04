@@ -23,21 +23,9 @@ $deal = $this->dealList[0];
     var association_type = 'deal';
 </script>
 
-<div data-remote="<?php echo RouteHelper::_('index.php?view=deals&layout=edit&format=raw&tmpl=component&id='.$deal->id); ?>" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="dealModal" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEAL')); ?></h3>
-            </div>
-            <div class="modal-body">
-                <p></p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-                <button onclick="Cobalt.sumbitModalForm(this)" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
-            </div>
-        </div>
+        <div class="modal-content"></div>
     </div>
 </div>
 
@@ -54,8 +42,16 @@ $deal = $this->dealList[0];
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a role="button" href="#dealModal" data-toggle="modal"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a></li>
-                    <li><a href="javascript:void(0);" id="archive" ><?php if($deal->archived==0) echo TextHelper::_('COBALT_ARCHIVE'); if($deal->archived==1) echo TextHelper::_('COBALT_UNARCHIVE'); ?></a></li>
+                    <li>
+                        <a role="button" href="<?php echo RouteHelper::_('index.php?view=deals&layout=edit&format=raw&tmpl=component&id='.$deal->id); ?>" data-target="#dealModal" data-toggle="modal">
+                            <?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" id="archive" >
+                            <?php if($deal->archived==0) echo TextHelper::_('COBALT_ARCHIVE'); if($deal->archived==1) echo TextHelper::_('COBALT_UNARCHIVE'); ?>
+                        </a>
+                    </li>
                     <?php if ( $deal->owner_id == UsersHelper::getUserId() ) { ?>
                         <li><a href="javascript:void(0);" onclick="Cobalt.shareItemDialog();" ><?php echo TextHelper::_('COBALT_SHARE'); ?></a></li>
                     <?php } ?>
