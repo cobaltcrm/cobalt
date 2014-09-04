@@ -9,7 +9,7 @@ if (!defined('_JDEFINES')) {
 
 require_once JPATH_VENDOR.'/autoload.php';
 
-require_once JPATH_LIBRARIES . DIRECTORY_SEPARATOR . 'import.php';
+require_once JPATH_LIBRARIES . '/import.php';
 JLoader::register('crmInstallModel', __DIR__ . '/model/install.php');
 
 //handle ajax requests
