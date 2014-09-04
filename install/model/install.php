@@ -130,7 +130,14 @@ class crmInstallModel
             $this->options
         );
 
-        $schema = JPATH_BASE."/install/sql/".$this->config->dbtype."/joomla.sql";
+	    $dbtype = $this->config->dbtype;
+
+	    if ($dbtype == 'mysqli')
+	    {
+		    $dbtype = 'mysql';
+	    }
+
+        $schema = JPATH_BASE."/install/sql/".$dbtype."/joomla.sql";
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema)))
