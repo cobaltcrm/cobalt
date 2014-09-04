@@ -4,3 +4,6 @@
 /_install
 /vendor
 /composer.lock
+/build/packaging
+/build/packages/*
+!/build/packages/.placeholder
