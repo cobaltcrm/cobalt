@@ -1,0 +1,364 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "04507558e7e991a7ee914d2c82eac606",
+    "packages": [
+        {
+            "name": "filp/whoops",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "6ad204c4280b0f178ab903047cb684ce66c4954b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/6ad204c4280b0f178ab903047cb684ce66c4954b",
+                "reference": "6ad204c4280b0f178ab903047cb684ce66c4954b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Whoops": "src/"
+                },
+                "classmap": [
+                    "src/deprecated"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://github.com/filp/whoops",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "silex-provider",
+                "whoops",
+                "zf2"
+            ],
+            "time": "2014-08-28 17:38:36"
+        },
+        {
+            "name": "joomla/framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla/joomla-framework.git",
+                "reference": "c1be2eb75c38533a25d0106d3d381c8e6b228eb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla/joomla-framework/zipball/c1be2eb75c38533a25d0106d3d381c8e6b228eb6",
+                "reference": "c1be2eb75c38533a25d0106d3d381c8e6b228eb6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10",
+                "psr/log": "~1.0"
+            },
+            "replace": {
+                "joomla/application": "self.version",
+                "joomla/archive": "self.version",
+                "joomla/cache": "self.version",
+                "joomla/compat": "self.version",
+                "joomla/controller": "self.version",
+                "joomla/crypt": "self.version",
+                "joomla/data": "self.version",
+                "joomla/database": "self.version",
+                "joomla/date": "self.version",
+                "joomla/facebook": "self.version",
+                "joomla/filesystem": "self.version",
+                "joomla/filter": "self.version",
+                "joomla/form": "self.version",
+                "joomla/github": "self.version",
+                "joomla/google": "self.version",
+                "joomla/http": "self.version",
+                "joomla/image": "self.version",
+                "joomla/input": "self.version",
+                "joomla/keychain": "self.version",
+                "joomla/language": "self.version",
+                "joomla/linkedin": "self.version",
+                "joomla/log": "self.version",
+                "joomla/model": "self.version",
+                "joomla/oauth1": "self.version",
+                "joomla/oauth2": "self.version",
+                "joomla/profiler": "self.version",
+                "joomla/registry": "self.version",
+                "joomla/router": "self.version",
+                "joomla/session": "self.version",
+                "joomla/string": "self.version",
+                "joomla/test": "self.version",
+                "joomla/twitter": "self.version",
+                "joomla/uri": "self.version",
+                "joomla/utilities": "self.version",
+                "joomla/view": "self.version"
+            },
+            "require-dev": {
+                "symfony/yaml": "~2.0"
+            },
+            "suggest": {
+                "symfony/yaml": "Install symfony/yaml 2.* if you require YAML support."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Joomla": "src/",
+                    "Psr": "vendor/psr/cache"
+                },
+                "classmap": [
+                    "src/Joomla/Compat/JsonSerializable.php"
+                ],
+                "files": [
+                    "src/Joomla/PHP/methods.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "The Joomla Framework is a platform for writing Web and command line applications in PHP.",
+            "homepage": "https://github.com/joomla/joomla-framework",
+            "keywords": [
+                "framework",
+                "joomla"
+            ],
+            "time": "2014-04-26 00:07:56"
+        },
+        {
+            "name": "league/di",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/di.git",
+                "reference": "ad0259589949f12abeae6c1e918a0ff7ef00b00a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/di/zipball/ad0259589949f12abeae6c1e918a0ff7ef00b00a",
+                "reference": "ad0259589949f12abeae6c1e918a0ff7ef00b00a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "league/phpunit-coverage-listener": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "League\\Di\\": [
+                        "src/",
+                        "test/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Don Gilbert",
+                    "email": "don@dongilbert.net",
+                    "homepage": "http://dongilbert.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Fast Dependency Injection Container for PHP 5.3+",
+            "homepage": "https://github.com/php-loep/di",
+            "keywords": [
+                "dependency injection",
+                "dic",
+                "ioc"
+            ],
+            "time": "2013-08-04 22:55:53"
+        },
+        {
+            "name": "psr/log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "a78d6504ff5d4367497785ab2ade91db3a9fbe11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/a78d6504ff5d4367497785ab2ade91db3a9fbe11",
+                "reference": "a78d6504ff5d4367497785ab2ade91db3a9fbe11",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Psr\\Log\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2014-01-18 15:33:09"
+        },
+        {
+            "name": "symfony/http-foundation",
+            "version": "v2.3.19",
+            "target-dir": "Symfony/Component/HttpFoundation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/HttpFoundation.git",
+                "reference": "d0125fed988da9e189864c2e6de967b3ee7f1d98"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/d0125fed988da9e189864c2e6de967b3ee7f1d98",
+                "reference": "d0125fed988da9e189864c2e6de967b3ee7f1d98",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\HttpFoundation\\": ""
+                },
+                "classmap": [
+                    "Symfony/Component/HttpFoundation/Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony HttpFoundation Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-09-03 07:39:11"
+        },
+        {
+            "name": "tracy/tracy",
+            "version": "v2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/tracy.git",
+                "reference": "97889d2b8cfb7607cc370ca0ddb97c6f5b43deb9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/97889d2b8cfb7607cc370ca0ddb97c6f5b43deb9",
+                "reference": "97889d2b8cfb7607cc370ca0ddb97c6f5b43deb9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1"
+            },
+            "require-dev": {
+                "nette/tester": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Tracy"
+                ],
+                "files": [
+                    "src/shortcuts.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "http://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "http://nette.org/contributors"
+                }
+            ],
+            "description": "Tracy: useful PHP debugger",
+            "homepage": "http://tracy.nette.org",
+            "keywords": [
+                "debug",
+                "debugger",
+                "nette"
+            ],
+            "time": "2014-08-24 23:36:30"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "joomla/framework": 20,
+        "joomla/database": 20,
+        "symfony/http-foundation": 0
+    },
+    "prefer-stable": false,
+    "platform": {
+        "php": ">=5.3.10"
+    },
+    "platform-dev": []
+}
