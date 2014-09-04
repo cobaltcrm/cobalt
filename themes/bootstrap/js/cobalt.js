@@ -104,7 +104,9 @@ var Cobalt = {
     },
 
     sumbitModalForm: function(button) {
-        jQuery(button).closest('.modal').find('form').ajaxSubmit(Cobalt.getFormSubmitOptions());
+        var modal = jQuery(button).closest('.modal');
+        this.sumbitForm(modal.find('form'));
+        modal.modal('hide');
     },
 
     sumbitForm: function(form) {
