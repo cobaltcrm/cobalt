@@ -59,6 +59,7 @@ class Trash extends DefaultController
         }
         else
         {
+            $data['remove'] = $item_id;
             echo json_encode($data);
         }
     }
