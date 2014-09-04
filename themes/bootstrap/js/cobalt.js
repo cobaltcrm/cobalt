@@ -31,7 +31,6 @@ var Cobalt = {
     },
 
     bindDatepickers: function() {
-        console.log('datepicker');
         jQuery('.date_input').datepicker({
             format:userDateFormat,
         });
