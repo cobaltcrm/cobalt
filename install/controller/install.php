@@ -2,8 +2,6 @@
 
 use Joomla\Input\Input as JInput;
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'install.php';
-
 class crmInstallController
 {
     /** Validate database credentials **/
