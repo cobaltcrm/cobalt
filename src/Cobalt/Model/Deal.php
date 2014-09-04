@@ -87,7 +87,7 @@ class Deal extends DefaultModel
             $data['created'] = $date;
             $status = "created";
             //assign the owner id
-            $data['owner_id'] = array_key_exists('owner_id',$data) ? $data['owner_id'] : UsersHelper::getUserId();
+            $data['owner_id'] = array_key_exists('owner_id',$data) ? $data['owner_id'] : $this->app->getUser()->get('id');
         }
         else
         {
