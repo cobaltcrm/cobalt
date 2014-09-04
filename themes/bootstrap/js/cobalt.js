@@ -57,7 +57,7 @@ var Cobalt = {
                 arr.push({'name': 'tmpl', 'value': 'component'});         
             },
             success:   function(response, status, xhr, $form) {
-                Cobalt.onFormSaveSuccess(response, status, xhr, $form);
+                Cobalt.onSaveSuccess(response, status, xhr, $form);
             },
             type:      'post',
             dataType:  'json'
@@ -79,7 +79,7 @@ var Cobalt = {
         }); 
     },
 
-    onFormSaveSuccess: function(response) {
+    onSaveSuccess: function(response) {
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
@@ -188,18 +188,30 @@ var Cobalt = {
     },
 
     bindDropdownItems: function () {
+        jQuery('.dropdown_item').click(function() {
+            var link = jQuery(this),
+                data = {
+                    'model': link.attr('data-item'),
+                    'id': link.attr('data-item-id'),
+                    'task': 'save',
+                    'format': 'raw'
+                };
+                data[link.attr('data-field')] = link.attr('data-value');
 
-        jQuery('.dropdown_item').on('click', function() {
-            var base = jQuery(this)
-                id = base.parentsUntil('div.filters').parent('div.filters').attr('id')+"_link";
-
-            jQuery("#"+id).html(base.html());
-
-            if ( typeof base.attr('data-value') !== 'undefined' ){
-                Cobalt.ajaxSaveModal(base);
-            }
+            Cobalt.save(data);
         });
     },
+
+    save: function(data) {
+        jQuery.post('index.php', data, function(response) {
+            try {
+                response = $.parseJSON(response);
+            } catch (e) {
+                // not json
+            }
+            Cobalt.onSaveSuccess(response);
+        });
+    }
 };
 
 window.onload = function () {
