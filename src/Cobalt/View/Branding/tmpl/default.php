@@ -62,7 +62,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </fieldset>
                         <fieldset class="adminform">
                             <legend><h3><?php echo JText::_("COBALT_ADMIN_SITE_NAME"); ?></h3></legend>
-                            <input type="text" class="inputbox" id="site-name" name="site_name" value="<?php echo $this->site_name; ?>" />
+                            <input type="text" class="form-control" id="site-name" name="site_name" value="<?php echo $this->site_name; ?>" />
                         </fieldset>
                         <fieldset class="adminform">
                             <legend><h3><?php echo JText::_("COBALT_ADMIN_CHOOSE_THEME"); ?></h3></legend>

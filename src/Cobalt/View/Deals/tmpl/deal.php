@@ -248,7 +248,7 @@ $deal = $this->dealList[0];
                 <div class="list-inline"><span id="summary_<?php echo $deal->id; ?>"><?php echo nl2br($summary); ?></span></div>
                 <div id="editable_summary_area" style="display:none;">
                     <form id="summary_form">
-                        <textarea class="inputbox" name="summary"><?php echo $summary; ?></textarea>
+                        <textarea class="form-control" name="summary"><?php echo $summary; ?></textarea>
                     </form>
                     <a class="btn" href="javscript:void(0);" onclick="Cobalt.saveEditableModal('summary_form');" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                 </div>

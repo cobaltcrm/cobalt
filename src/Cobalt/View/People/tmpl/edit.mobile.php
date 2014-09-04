@@ -34,21 +34,21 @@ $app = JFactory::getApplication();
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_PERSON_COMPANY'); ?></div>
                 <div class="cobaltValue">
-                    <input class="inputbox" type="text" name="company" value=""/>
+                    <input class="form-control" type="text" name="company" value=""/>
                 </div>
             </div>
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_PERSON_POSITION'); ?></div>
-                <div class="cobaltValue"><input class="inputbox" type="text" name="position" value=""/></div>
+                <div class="cobaltValue"><input class="form-control" type="text" name="position" value=""/></div>
             </div>
 
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_PERSON_PHONE'); ?></div>
-                <div class="cobaltValue"><input class="inputbox ui-input-text ui-body-b ui-corner-all ui-shadow-inset" type="phone" name="phone" value=""/></div>
+                <div class="cobaltValue"><input class="form-control ui-input-text ui-body-b ui-corner-all ui-shadow-inset" type="phone" name="phone" value=""/></div>
             </div>
             <div class="cobaltRow">
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_PERSON_EMAIL'); ?></div>
-                    <div class="cobaltValue"><input class="inputbox" type="email" name="email" value=""/></div>
+                    <div class="cobaltValue"><input class="form-control" type="email" name="email" value=""/></div>
             </div>
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_PERSON_SOURCE'); ?></div>
