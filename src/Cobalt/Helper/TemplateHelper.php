@@ -51,7 +51,7 @@ class TemplateHelper
                     if (self::isMobile()) : ?>
                     <div class='page' data-role='page' data-theme='b' id=''>
                     <?php endif; ?>
-                    <div id="logoutModal" class="modal hide fade">
+                    <div id="logoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="logoutModal" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -420,7 +420,7 @@ class TemplateHelper
         $list_html  = "";
 
         $list_html .= "<div id='list_edit_actions'>";
-        $list_html .= '<ul class="inline">';
+        $list_html .= '<ul class="list-inline">';
         $list_html .= '<li>'.TextHelper::_('COBALT_PERFORM').'</li>';
         $list_html .= '<li class="dropdown">';
         $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >'.TextHelper::_('COBALT_ACTIONS').'</a>';

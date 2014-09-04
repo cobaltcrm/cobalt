@@ -312,7 +312,7 @@ $person = $this->people[0];
                 <div class="crmeryField"><?php echo TextHelper::_('COBALT_TITLE'); ?>:</div>
                 <div class="crmeryValue">
 					<span class="editable parent" id="editable_position_container">
-						<div class="inline" id="editable_position">
+						<div class="list-inline" id="editable_position">
                             <?php $data_title = (array_key_exists('position', $person) && $person['position'] != "") ? $person['position'] : ucwords(TextHelper::_('COBALT_CLICK_TO_EDIT')); ?>
                             <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_POSITION'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="position_form">
 								<input type="text" class="input-small" name="position" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" />

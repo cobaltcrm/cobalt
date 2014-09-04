@@ -28,6 +28,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class User extends DefaultModel
 {
     /**
+     * guest == 1 ... unregistered user
+     * guest == 0 ... registered user
+     * unregistered by default
+     */
+    public $guest = 1;
+
+    /**
      * Constructor
      */
     public function __construct($userId = null)

@@ -41,7 +41,7 @@ $deal = $this->info[0];
                 <?php echo TextHelper::_('COBALT_EDIT_AMOUNT'); ?>:
                 <span class="amount">
                     <?php echo ConfigHelper::getCurrency(); ?>
-                    <div class="inline" id="editable_amount"><?php echo $deal->amount; ?></div>
+                    <div class="list-inline" id="editable_amount"><?php echo $deal->amount; ?></div>
                 </span>
             </div>
             <div class="cobaltRow top">
@@ -71,7 +71,7 @@ $deal = $this->info[0];
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_PROBABILITY'); ?></div>
                 <div class="cobaltValue">
-                    <div class="inline">
+                    <div class="list-inline">
                         <?php if ( array_key_exists('probability',$deal) && $deal->probability != 0 ) {
                                 echo $deal->probability.'%';
                             } else {

@@ -4,11 +4,12 @@ var Cobalt = {
         this.bindPopovers();
         this.bindTooltips();
         this.bindDropdownItems();
+        this.bindDatepickers();
         this.initFormSave();
     },
 
     bindPopovers: function() {
-        var selector = '[rel="popover"]';
+        var selector = '[data-toggle="popover"]';
         jQuery.each(jQuery(selector), function(i, popover) {
             popover = jQuery(popover);
             var options = {
@@ -23,20 +24,6 @@ var Cobalt = {
             };
             popover.popover(options);
         });
-
-        // close popovers when clicked anywhere else
-        jQuery(document).click(function (e) {
-            if (jQuery(e.target).parent().find(selector).length > 0) {
-                Cobalt.closePopovers(selector);
-            }
-        });
-    },
-
-    closePopovers: function(selector) {
-        if (!selector) {
-            selector = '[rel="popover"]';
-        }
-        jQuery(selector).popover('hide');
     },
 
     bindTooltips: function() {
@@ -55,8 +42,9 @@ var Cobalt = {
 
             jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
             jQuery(this).datepicker('hide');
+
             if ( jQuery(this).hasClass('editable-modal-datepicker') ){
-                Cobalt.saveEditableModal(jQuery(this).attr('id')+"_form");
+                Cobalt.sumbitForm(jQuery(this).closest('form'));
             }
         });
     },
@@ -69,7 +57,7 @@ var Cobalt = {
                 arr.push({'name': 'tmpl', 'value': 'component'});         
             },
             success:   function(response, status, xhr, $form) {
-                Cobalt.onFormSaveSuccess(response, status, xhr, $form);
+                Cobalt.onSaveSuccess(response, status, xhr, $form);
             },
             type:      'post',
             dataType:  'json'
@@ -91,7 +79,7 @@ var Cobalt = {
         }); 
     },
 
-    onFormSaveSuccess: function(response) {
+    onSaveSuccess: function(response) {
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
@@ -99,12 +87,12 @@ var Cobalt = {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
         }
-
-        this.closePopovers();
     },
 
     sumbitModalForm: function(button) {
-        jQuery(button).closest('.modal').find('form').ajaxSubmit(Cobalt.getFormSubmitOptions());
+        var modal = jQuery(button).closest('.modal');
+        this.sumbitForm(modal.find('form'));
+        modal.modal('hide');
     },
 
     sumbitForm: function(form) {
@@ -200,18 +188,30 @@ var Cobalt = {
     },
 
     bindDropdownItems: function () {
+        jQuery('.dropdown_item').click(function() {
+            var link = jQuery(this),
+                data = {
+                    'model': link.attr('data-item'),
+                    'id': link.attr('data-item-id'),
+                    'task': 'save',
+                    'format': 'raw'
+                };
+                data[link.attr('data-field')] = link.attr('data-value');
 
-        jQuery('.dropdown_item').on('click', function() {
-            var base = jQuery(this)
-                id = base.parentsUntil('div.filters').parent('div.filters').attr('id')+"_link";
-
-            jQuery("#"+id).html(base.html());
-
-            if ( typeof base.attr('data-value') !== 'undefined' ){
-                Cobalt.ajaxSaveModal(base);
-            }
+            Cobalt.save(data);
         });
     },
+
+    save: function(data) {
+        jQuery.post('index.php', data, function(response) {
+            try {
+                response = $.parseJSON(response);
+            } catch (e) {
+                // not json
+            }
+            Cobalt.onSaveSuccess(response);
+        });
+    }
 };
 
 window.onload = function () {

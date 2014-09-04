@@ -34,20 +34,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container">
     <div class="well">
         <h1 class="text-center">Cobalt</h1>
-        <form action="<?php echo RouteHelper::_('index.php?view=login'); ?>" method="post">
+        <form action="<?php echo RouteHelper::_('index.php?view=login'); ?>" method="post" role="form">
             <fieldset>
                 <div class="form-group">
                     <label id="username-lbl" for="username" class="control-label"><?php echo TextHelper::_('COBALT_USER_NAME'); ?></label>
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon glyphicon glyphicon-user"></i></span>
-                        <input type="text" name="username" id="username" value="" class="inputbox validate-username" size="25">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="username" id="username" value="" class="form-control validate-username" size="25">
                     </div>
                 </div>
                 <div class="form-group">
                     <label id="password-lbl" for="password" class="control-label"><?php echo TextHelper::_('COBALT_PASSWORD'); ?></label>
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon glyphicon glyphicon-lock"></i></span>
-                        <input type="password" name="password" id="password" value="" class="inputbox validate-password" size="25">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon glyphicon glyphicon-lock"></i></span>
+                        <input type="password" name="password" id="password" value="" class="form-control validate-password" size="25">
                     </div>
                 </div>
                 <div class="form-group">

@@ -92,30 +92,30 @@ if ($format != "raw")
         </div>
         <div id="address_info">
             <div class="row-fluid">
-                    <input class="inputbox address_one" type="text" placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_1_NULL'); ?>" name="address_1" value="<?php if (array_key_exists('address_1', $this->company))
+                    <input class="form-control address_one" type="text" placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_1_NULL'); ?>" name="address_1" value="<?php if (array_key_exists('address_1', $this->company))
                     {
                         echo $this->company['address_1'];
                     } ?>"/>
                     <br/>
-                    <input class="inputbox address_two" type="text" placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_2_NULL'); ?>" name="address_2" value="<?php if (array_key_exists('address_2', $this->company))
+                    <input class="form-control address_two" type="text" placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_2_NULL'); ?>" name="address_2" value="<?php if (array_key_exists('address_2', $this->company))
                     {
                         echo $this->company['address_2'];
                     } ?>"/>
                     <br/>
-                    <input class="inputbox address_city" type="text" placeholder="<?php echo TextHelper::_('COBALT_CITY_NULL'); ?>" name="address_city" value="<?php if (array_key_exists('address_city', $this->company))
+                    <input class="form-control address_city" type="text" placeholder="<?php echo TextHelper::_('COBALT_CITY_NULL'); ?>" name="address_city" value="<?php if (array_key_exists('address_city', $this->company))
                     {
                         echo $this->company['address_city'];
                     } ?>"/>
-                    <input class="inputbox address_state" type="text" placeholder="<?php echo TextHelper::_('COBALT_STATE_NULL'); ?>" name="address_state" value="<?php if (array_key_exists('address_state', $this->company))
+                    <input class="form-control address_state" type="text" placeholder="<?php echo TextHelper::_('COBALT_STATE_NULL'); ?>" name="address_state" value="<?php if (array_key_exists('address_state', $this->company))
                     {
                         echo $this->company['address_state'];
                     } ?>"/>
-                    <input class="inputbox address_zip" type="text" placeholder="<?php echo TextHelper::_('COBALT_ZIP_NULL'); ?>" name="address_zip" value="<?php if (array_key_exists('address_zip', $this->company))
+                    <input class="form-control address_zip" type="text" placeholder="<?php echo TextHelper::_('COBALT_ZIP_NULL'); ?>" name="address_zip" value="<?php if (array_key_exists('address_zip', $this->company))
                     {
                         echo $this->company['address_zip'];
                     } ?>"/>
                     <br/>
-                    <input class="inputbox address_country" type="text" placeholder="<?php echo TextHelper::_('COBALT_COUNTRY_NULL'); ?>" name="address_country" value="<?php if (array_key_exists('address_country', $this->company))
+                    <input class="form-control address_country" type="text" placeholder="<?php echo TextHelper::_('COBALT_COUNTRY_NULL'); ?>" name="address_country" value="<?php if (array_key_exists('address_country', $this->company))
                     {
                         echo $this->company['address_country'];
                     } ?>"/>

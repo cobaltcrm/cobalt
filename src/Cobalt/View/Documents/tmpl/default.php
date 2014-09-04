@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="page-header">
     <h1><?php echo TextHelper::_('COBALT_EDIT_DOCUMENTS'); ?></h1>
 </div>
-<ul class="inline filter-sentence">
+<ul class="list-inline filter-sentence">
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="javascript:void(0);" data-toggle="dropdown" role="button" href="javascript:void(0);" id="document_assoc_link"><span class="dropdown-label"><?php echo $this->assoc_name; ?></span></a>
@@ -57,7 +57,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input type="text" class="inputbox" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
+        <input type="text" class="form-control" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
     </li>
     <li>
         <div class="ajax_loader"></div>

@@ -20,7 +20,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <table>
                         <tr>
                             <td><b><?php echo JText::_('COBALT_NAME'); ?></b></td>
-                            <td><input type="text" class="inputbox" name="filename" value="<?php echo $this->document['filename']; ?>" /></td>
+                            <td><input type="text" class="form-control" name="filename" value="<?php echo $this->document['filename']; ?>" /></td>
                         </tr>
                     </table>
                     <div>

@@ -12,22 +12,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
 
-    <div data-remote="index.php?view=deals&layout=edit&format=raw&tmpl=component" class="modal hide fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></h3>
-        </div>
-        <div class="modal-body">
-            <p></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-            <button onclick="Cobalt.saveItem('edit_form')" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
+    <div class="modal fade" id="dealModal" tabindex="-1" role="dialog" aria-labelledby="dealModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>
         </div>
     </div>
 
     <div class="pull-right btn-group">
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#dealModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i></a>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>
         <?php if ( UsersHelper::canExport() ) { ?>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_DEALS'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="glyphicon glyphicon-share"></i></a>
@@ -36,7 +28,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_DEALS_HEADER')); ?></h1>
 </div>
-    <ul class="inline filter-sentence">
+    <ul class="list-inline filter-sentence">
         <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
         <li class="dropdown">
             <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" ><span class="dropdown-label"><?php echo $this->deal_type_name; ?><span></a>
