@@ -8,7 +8,7 @@ var Cobalt = {
     },
 
     bindPopovers: function() {
-        var selector = '[rel="popover"]';
+        var selector = '[data-toggle="popover"]';
         jQuery.each(jQuery(selector), function(i, popover) {
             popover = jQuery(popover);
             var options = {
@@ -23,20 +23,6 @@ var Cobalt = {
             };
             popover.popover(options);
         });
-
-        // close popovers when clicked anywhere else
-        jQuery(document).click(function (e) {
-            if (jQuery(e.target).parent().find(selector).length > 0) {
-                Cobalt.closePopovers(selector);
-            }
-        });
-    },
-
-    closePopovers: function(selector) {
-        if (!selector) {
-            selector = '[rel="popover"]';
-        }
-        jQuery(selector).popover('hide');
     },
 
     bindTooltips: function() {
@@ -99,8 +85,6 @@ var Cobalt = {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
         }
-
-        this.closePopovers();
     },
 
     sumbitModalForm: function(button) {

@@ -104,23 +104,32 @@ $deal = $this->dealList[0];
                         <div class="list-inline" id="editable_amount">
                             <h2>
                                 <?php echo ConfigHelper::getCurrency(); ?>
-                                <a href="javascript:void(0)" rel="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true' data-content='<form id="amount_form">
-                                <div class="input-append">
-                                    <span class="input-append-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
-                                    <input type="text" class="inputbox" name="amount" value="<?php echo $deal->amount; ?>" />
-                                    <span class="input-append-btn">
-                                        <button type="button" class="btn btn-default" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
-                                    </span>
-                                </div>
-                                </form>'><span id="amount_<?php echo $deal->id; ?>"><?php echo $deal->amount; ?></span></a>
+                                <a href="javascript:void(0)" data-toggle="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true'  data-conent-class="amount-form">
+                                <span id="amount_<?php echo $deal->id; ?>"><?php echo $deal->amount; ?></span></a>
                             </h2>
+                            <div class="amount-form hidden">
+                                <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" id="amount_form" onsubmit="return Cobalt.sumbitForm(this)" role="form">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><?php echo ConfigHelper::getCurrency(); ?></span>
+                                        <input type="number" name="amount" value="<?php echo $deal->amount; ?>" class="form-control" />
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-default">
+                                                <?php echo TextHelper::_('COBALT_SAVE'); ?>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <input type="hidden" name="task" value="save" />
+                                    <input type="hidden" name="model" value="deal" />
+                                    <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
+                                </form>
+                            </div>
                         </div>
                     </span>
                 </div>
                 <div class="cobaltRow">
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_OWNER'); ?></div>
                     <div class="cobaltValue">
-                        <div class='dropdown'>
+                        <div class="dropdown">
                             <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'>
                                 <span id="owner_first_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_first_name; ?></span>
                                 <span id="owner_last_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_last_name; ?></span>
@@ -148,16 +157,18 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_probability_container">
                     <div class="list-inline" id="editable_probability">
                         <h2>
-                            <a href="javascript:void(0);" rel="popover" data-conent-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
+                            <a href="#" tabindex="0" data-toggle="popover" data-conent-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
                             <span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
                         </h2>
                         <div class="probability-form hidden">
-                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)">
-                                <div class="input-append">
-                                    <input type="number" class="span1" name="probability" value="<?php echo $deal->probability; ?>" />
-                                    <span class="add-on">%</span>
-                                    <span class="input-append-btn">
-                                        <button type="submit" class="btn btn-default"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                            <form onsubmit="return Cobalt.sumbitForm(this)" role="form">
+                                <div class="input-group">
+                                    <input type="number" name="probability" value="<?php echo $deal->probability; ?>" class="form-control" />
+                                    <span class="input-group-addon">%</span>
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-default">
+                                            <?php echo TextHelper::_('COBALT_SAVE'); ?>
+                                        </button>
                                     </span>
                                 </div>
                                 <input type="hidden" name="task" value="save" />
