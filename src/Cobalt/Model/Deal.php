@@ -55,8 +55,8 @@ class Deal extends DefaultModel
     {
         parent::__construct();
         $app = \Cobalt\Container::get('app');
-        $this->_view = $app->input->get('view');
-        $this->_layout = str_replace('_filter','',$app->input->get('layout'));
+        $this->_view = $this->app->input->get('view');
+        $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
     }
 
     /**
@@ -66,16 +66,13 @@ class Deal extends DefaultModel
      */
     public function store($data = null, $returnRow = false)
     {
-        /** @var \Cobalt\Application $app */
-        $app = \Cobalt\Container::get('app');
-
         //Load Tables
         $row = new DealTable;
         $oldRow = new DealTable;
 
         if ($data == null)
         {
-            $data = $app->input->post->getArray();
+            $data = $this->app->input->post->getArray();
         }
 
         //date generation
@@ -192,7 +189,7 @@ class Deal extends DefaultModel
             return false;
         }
 
-        $app->triggerEvent('onBeforeDealSave', array(&$row));
+        $this->app->triggerEvent('onBeforeDealSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -228,7 +225,7 @@ class Deal extends DefaultModel
         $row->actual_close_formatted = isset($row->actual_close) ? DateHelper::formatDate($row->actual_close) : DateHelper::formatDate(date("Y-m-d"));
         $row->expected_close_formatted = isset($row->expected_close) ? DateHelper::formatDate($row->expected_close) : DateHelper::formatDate(date("Y-m-d"));
 
-        $app->triggerEvent('onAfterDealSave', array(&$row));
+        $this->app->triggerEvent('onAfterDealSave', array(&$row));
 
         //return success
         if ($returnRow) {
@@ -240,8 +237,6 @@ class Deal extends DefaultModel
 
     public function _buildQuery()
     {
-        /** Large SQL Selections **/
-        $app = \Cobalt\Container::get('app');
         $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
 
         //set defaults
@@ -257,7 +252,7 @@ class Deal extends DefaultModel
         $created = $this->_created;
         $session = $this->_session;
         $user_id = $this->_user_id;
-        $session = $app->getSession();
+        $session = $this->app->getSession();
 
         //determine which layout is requesting the information
         $view = $this->_view;
@@ -312,7 +307,7 @@ class Deal extends DefaultModel
 
         //construct query string
 
-        $export = $app->input->get('export');
+        $export = $this->app->input->get('export');
 
         if ($export) {
 
@@ -776,8 +771,6 @@ class Deal extends DefaultModel
      */
     public function getDeals($id = null, $type = null, $user = null, $stage = null, $close = null, $team = null)
     {
-        $app = \Cobalt\Container::get('app');
-
         //set defaults
         $this->_id = ( $this->_id ) ? $this->_id : $id;
         $this->_type = $type;
@@ -791,7 +784,7 @@ class Deal extends DefaultModel
         $this->_created = null;
 
         //get session data
-        $this->_session = $app->getSession();
+        $this->_session = $this->app->getSession();
         $this->_user_id = UsersHelper::getUserId();
 
         $query = $this->_buildQuery();
@@ -824,7 +817,7 @@ class Deal extends DefaultModel
          */
         if ( count($deals) > 0 ) {
 
-            $export = $app->input->get('export');
+            $export = $this->app->input->get('export');
 
             if (!$export) {
 
@@ -856,7 +849,7 @@ class Deal extends DefaultModel
         /** ------------------------------------------
          *  Return results
          */
-        $app->triggerEvent('onDealLoad', array(&$deals));
+        $this->app->triggerEvent('onDealLoad', array(&$deals));
 
         // cast to array so it never returns null to view
         return (array) $deals;
@@ -912,9 +905,7 @@ class Deal extends DefaultModel
 
     public function getDeal($id=null)
     {
-        $app = \Cobalt\Container::get('app');
-        $id = $id ? $id : $app->input->get('item_id');
-
+        $id = $id ? $id : $this->app->input->get('item_id');
 
         if ($id > 0)
         {
@@ -959,8 +950,6 @@ class Deal extends DefaultModel
 
     public function getDealList()
     {
-        $app = \Cobalt\Container::get('app');
-
         //gen query
         $query = $this->db->getQuery(true)
             ->select("DISTINCT(d.id),d.name,d.id")
@@ -986,8 +975,8 @@ class Deal extends DefaultModel
 
         $query->where("d.published=".$this->published);
 
-        $associationType = $app->input->get('association');
-        $associationId = $app->input->get('association_id');
+        $associationType = $this->app->input->get('association');
+        $associationId = $this->app->input->get('association_id');
 
         if ($associationType == "company") {
             $query->where("d.company_id=".$associationId);
@@ -1160,15 +1149,12 @@ class Deal extends DefaultModel
      */
     public function populateState()
     {
-        //get states
-        $app = \Cobalt\Container::get('app');
-
         //determine view so we set correct states
-        $view = $app->input->get('view');
-        $layout = str_replace("_filter","",$app->input->get('layout'));
+        $view = $this->app->input->get('view');
+        $layout = str_replace("_filter","",$this->app->input->get('layout'));
 
-        $limit = $app->getUserStateFromRequest($view.'_limit','limit',10);
-        $limitstart = $app->getUserStateFromRequest($view.'_limitstart','limitstart',0);
+        $limit = $this->app->getUserStateFromRequest($view.'_limit','limit',10);
+        $limitstart = $this->app->getUserStateFromRequest($view.'_limitstart','limitstart',0);
 
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0) ? (floor($limitstart / $limit) * $limit) : 0;
@@ -1183,18 +1169,18 @@ class Deal extends DefaultModel
         switch ($view) {
             case "reports" :
                 //set default filter states for reports
-                $filter_order = $app->getUserStateFromRequest('Deal.'.$layout.'_filter_order','filter_order','d.name');
-                $filter_order_Dir = $app->getUserStateFromRequest('Deal.'.$layout.'_filter_order_Dir','filter_order_Dir','asc');
-                $deal_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_name','deal_name',null);
-                $owner_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_owner_id','owner_id','all');
-                $owner_type_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_owner_type','owner_type',null);
-                $amount_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_amount','deal_amount',null);
-                $source_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_source_id','source_id',null);
-                $stage_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_stage_id','stage_id','active');
-                $status_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_status_id','status_id',null);
-                $expected_close_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_expected_close','expected_close',null);
-                $modified_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_modified','modified',null);
-                $created_filter = $app->getUserStateFromRequest('Deal.'.$layout.'_created','created',null);
+                $filter_order = $this->app->getUserStateFromRequest('Deal.'.$layout.'_filter_order','filter_order','d.name');
+                $filter_order_Dir = $this->app->getUserStateFromRequest('Deal.'.$layout.'_filter_order_Dir','filter_order_Dir','asc');
+                $deal_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_name','deal_name',null);
+                $owner_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_owner_id','owner_id','all');
+                $owner_type_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_owner_type','owner_type',null);
+                $amount_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_amount','deal_amount',null);
+                $source_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_source_id','source_id',null);
+                $stage_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_stage_id','stage_id','active');
+                $status_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_status_id','status_id',null);
+                $expected_close_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_expected_close','expected_close',null);
+                $modified_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_modified','modified',null);
+                $created_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_created','created',null);
 
                 //set states for reports
                 $state->set('Deal.'.$layout.'_filter_order',$filter_order);
@@ -1215,9 +1201,9 @@ class Deal extends DefaultModel
 
             case "deals" :
                 //set defaults
-                $filter_order = $app->getUserStateFromRequest('Deal.filter_order','filter_order','d.name');
-                $filter_order_Dir = $app->getUserStateFromRequest('Deal.filter_order_Dir','filter_order_Dir','asc');
-                $deal_filter = $app->getUserStateFromRequest('Deal.'.$view.'_name','deal_name',null);
+                $filter_order = $this->app->getUserStateFromRequest('Deal.filter_order','filter_order','d.name');
+                $filter_order_Dir = $this->app->getUserStateFromRequest('Deal.filter_order_Dir','filter_order_Dir','asc');
+                $deal_filter = $this->app->getUserStateFromRequest('Deal.'.$view.'_name','deal_name',null);
 
                 //set states
                 $state->set('Deal.filter_order',$filter_order);
