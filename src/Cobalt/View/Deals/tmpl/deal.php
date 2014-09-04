@@ -161,7 +161,7 @@ $deal = $this->dealList[0];
                             <span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
                         </h2>
                         <div class="probability-form hidden">
-                            <form onsubmit="return Cobalt.sumbitForm(this)" role="form">
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)" role="form">
                                 <div class="input-group">
                                     <input type="number" name="probability" value="<?php echo $deal->probability; ?>" class="form-control" />
                                     <span class="input-group-addon">%</span>
@@ -208,9 +208,12 @@ $deal = $this->dealList[0];
                     <div id="expected_close_container"<?php if ($actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
-                            <form class="inline-form" name="expected_close_form">
-                                <input type="text" class="input-invisible input-small form-control date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)" role="form" class="inline-form" name="expected_close_form">
+                                <input type="text" class="input-invisible editable-modal-datepicker form-control date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
                                 <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal->expected_close; ?>" />
+                                <input type="hidden" name="task" value="save" />
+                                <input type="hidden" name="model" value="deal" />
+                                <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
                             </form>
                         </h2>
                     </div>

@@ -42,8 +42,9 @@ var Cobalt = {
 
             jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
             jQuery(this).datepicker('hide');
+
             if ( jQuery(this).hasClass('editable-modal-datepicker') ){
-                Cobalt.saveEditableModal(jQuery(this).attr('id')+"_form");
+                Cobalt.sumbitForm(jQuery(this).closest('form'));
             }
         });
     },
