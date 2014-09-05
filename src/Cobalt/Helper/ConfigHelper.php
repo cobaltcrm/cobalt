@@ -54,17 +54,7 @@ class ConfigHelper
 
     public static function getVersion()
     {
-        $xml = JFactory::getXML( 'simple' );
-
-         if ( file_exists(JPATH_SITE.'/administrator/cobalt.xml')) {
-             $xml->loadFile( JPATH_SITE.'/administrator/cobalt.xml' );
-            $position = $xml->document->getElementByPath(  'version' );
-
-            return $position->data();
-         } else {
-             return 0;
-         }
-
+	    return COBALT_VERSION;
     }
 
     public static function getNamingConventions()
