@@ -94,7 +94,7 @@ class DefaultController extends AbstractController
     {
         $fqcn = 'Cobalt\\Model\\' . $modelName;
 
-        return $this->container->build($fqcn);
+        return $this->container->buildObject($fqcn);
     }
 
     public function isAjaxRequest()

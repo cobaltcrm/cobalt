@@ -25,7 +25,7 @@ class MailinglistsHelper
 
     public function __construct()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $this->listId = $app->input->get('list_id');
         $this->peopleIds = $app->input->get('people_ids');
         $this->subscriber = $this->getSubscriberId();
@@ -33,13 +33,13 @@ class MailinglistsHelper
 
     public static function getSubscriberId()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $person_id = $app->input->get('person_id') ? $app->input->get('person_id') : $app->input->get('id');
         $personModel = new PeopleModel;
         $email = $personModel->getEmail($person_id);
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("subid")
@@ -62,7 +62,7 @@ class MailinglistsHelper
     public static function getMailingLists($all=FALSE)
     {
         $subid = self::getSubscriberId();
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("DISTINCT list.listid,list.name,list.description,list.color")
@@ -102,10 +102,10 @@ class MailinglistsHelper
      */
     public static function getNewsletters($listId=NULL)
     {
-        $listId = $listId ? $listId : $this->listId;
+        $listId = $listId ? $listId : static::$listId;
         $subId = self::getSubscriberId();
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("mail.mailid,mail.subject,mail.published,mail.senddate,user.open,user.opendate")
@@ -132,7 +132,7 @@ class MailinglistsHelper
         $person_id = $data['person_id'];
         $listid = $data['listid'];
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $peopleModel = new PeopleModel;
@@ -192,7 +192,7 @@ class MailinglistsHelper
         $person_id = $data['person_id'];
         $listid = $data['listid'];
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $time = time();
@@ -209,14 +209,14 @@ class MailinglistsHelper
 
     public static function getLinks()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $data = $app->input->getRequest('post');
         $person_id = array_key_exists('person_id',$data) ? $data['person_id'] : $data['id'];
         $mailid = $data['mailid'];
         $subid = self::getSubscriberId();
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("click.click,url.name,url.url")

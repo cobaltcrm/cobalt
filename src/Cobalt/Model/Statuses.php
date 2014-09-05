@@ -24,7 +24,7 @@ class Statuses extends DefaultModel
 
     public function store()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
         $row = new StatusesTable;
@@ -125,7 +125,7 @@ class Statuses extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $filter_order = $app->getUserStateFromRequest('Statuses.filter_order','filter_order','s.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Statuses.filter_order_Dir','filter_order_Dir','asc');
 

@@ -22,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getPerson($id)
     {
         //get db object
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //generate query
@@ -42,7 +42,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getStatusList($idsOnly = FALSE)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //select statuses from db
@@ -61,7 +61,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTagList()
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //select statuses from db
@@ -125,7 +125,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getSelectedColumnFilters()
     {
         //get the user session data
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("people_columns");

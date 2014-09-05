@@ -31,7 +31,7 @@ class Conversation extends DefaultModel
      */
     public function store()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
         $row = new ConversationTable;

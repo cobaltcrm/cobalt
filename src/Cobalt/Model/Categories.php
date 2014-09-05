@@ -23,7 +23,7 @@ class Categories extends DefaultModel
     public function store()
     {
         //Load Tables
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $row = new CategoriesTable;
         $data = $app->input->getRequest('post');
 
@@ -106,7 +106,7 @@ class Categories extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $filter_order = $app->getUserStateFromRequest('Categories.filter_order','filter_order','c.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Categories.filter_order_Dir','filter_order_Dir','asc');
 

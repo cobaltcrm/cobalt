@@ -30,7 +30,7 @@ class UsersHelper
         if ($user_role != 'basic') {
 
             //get db
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
 
             $select = ( $idsOnly ) ? "id AS value,CONCAT(first_name,' ',last_name) AS label" : "*";
@@ -74,7 +74,7 @@ class UsersHelper
     {
         $id = $id ? $id : self::getLoggedInUser()->id;
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
         $query->clear()->select("first_name")->from("#__users")->where("id=".$id);
         $db->setQuery($query);
@@ -92,7 +92,7 @@ class UsersHelper
         $results = array();
 
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //get users
@@ -127,7 +127,7 @@ class UsersHelper
         }
 
         //get dbo
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //query
@@ -158,7 +158,7 @@ class UsersHelper
     //return current logged in Cobalt user ID based on Joomla Id
     public static function getUserId()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         return $app->getUser()->get('id');
     }
 
@@ -166,7 +166,7 @@ class UsersHelper
     public static function getRole($user_id=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -189,7 +189,7 @@ class UsersHelper
     public static function getTeamId($user_id=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $user_id = $user_id ?: UsersHelper::getUserId();
@@ -211,7 +211,7 @@ class UsersHelper
     public static function getTeams($id=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //query
@@ -245,7 +245,7 @@ class UsersHelper
     public static function getTeamUsers($id=null,$idsOnly=FALSE)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         if ($idsOnly) {
@@ -273,7 +273,7 @@ class UsersHelper
 
     public static function getAllSharedUsers()
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("id AS value,CONCAT(first_name,' ',last_name) AS label")
@@ -297,7 +297,7 @@ class UsersHelper
 
     public static function getItemSharedUsers($itemId, $itemType)
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("s.user_id AS value, CONCAT(u.first_name, ' ', u.last_name) AS label")
@@ -323,7 +323,7 @@ class UsersHelper
     public static function getDealCount($id,$team,$role)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //query
@@ -357,7 +357,7 @@ class UsersHelper
     public static function getPeopleCount($id=null,$team=null,$role=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         if (!$id) {
@@ -402,7 +402,7 @@ class UsersHelper
     public static function getPeopleEmails($id=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         if (!$id) {
@@ -439,7 +439,7 @@ class UsersHelper
     public static function getCompanyCount($id,$team,$role)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //query
@@ -474,7 +474,7 @@ class UsersHelper
     public static function getCommissionRate($id=null)
     {
        //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -506,7 +506,7 @@ class UsersHelper
     public static function getDateFormat($php=TRUE)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -535,7 +535,7 @@ class UsersHelper
     public static function getTimeFormat($id=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -561,7 +561,7 @@ class UsersHelper
     public static function getTimezone($id=null)
     {
         //get db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //logged in user
@@ -582,7 +582,7 @@ class UsersHelper
 
     public static function getLoggedInUser()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $user = $app->getUser();
 
         if ($user->get('id'))
@@ -596,7 +596,7 @@ class UsersHelper
 
     public static function getUser($user_id,$array=FALSE)
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
 
         $query = $db->getQuery(true);
         $query->select('c.*');
@@ -616,7 +616,7 @@ class UsersHelper
     /** Determine if logged in user ( or specified user ) is an administrator **/
     public static function isAdmin($user_id=null)
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $user_id = $user_id ? $user_id : UsersHelper::getUserId();
@@ -639,7 +639,7 @@ class UsersHelper
     /** Determine if logged in user ( or specified user ) can delete items **/
     public static function canDelete($user_id=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $user = $app->getUser($user_id);
 
         return ( $user->admin == 1 || $user->can_delete == 1 );
@@ -649,7 +649,7 @@ class UsersHelper
      /** Determine if logged in user ( or specified user ) can export items **/
     public static function canExport($user_id = null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $user = $app->getUser($user_id);
 
         return ( $user->exports == 1 || $user->admin == 1 );
@@ -659,7 +659,7 @@ class UsersHelper
     public static function authenticateAdmin()
     {
         if (!self::isAdmin()) {
-            $app = \Cobalt\Container::get('app');
+            $app = \Cobalt\Container::fetch('app');
             $app->redirect('index.php');
         }
     }
@@ -671,7 +671,7 @@ class UsersHelper
 
         if ($userId > 0) {
 
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
 
             $query->select("language")->from("#__users")->where('id='.$userId);
