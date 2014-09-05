@@ -11,6 +11,7 @@ $this
 
     // Add core stylesheets
     ->addStyleSheet($this->baseurl.'/src/Cobalt/media/css/datepicker.css')
+    ->addStyleSheet($this->baseurl.'/src/Cobalt/media/css/jquery.dataTables.css')
 
     // Add theme Scripts
     ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.js')
@@ -20,6 +21,7 @@ $this
     // Add core scripts
     ->addScript($this->baseurl.'/src/Cobalt/media/js/bootstrap-datepicker.js')
     ->addScript($this->baseurl.'/src/Cobalt/media/js/jquery.form.js')
+    ->addScript($this->baseurl.'/src/Cobalt/media/js/jquery.dataTables.min.js')
 
     // Add Meta tags
     ->setMetaData('viewport', 'width=device-width, initial-scale=1.0')
