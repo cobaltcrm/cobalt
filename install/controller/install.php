@@ -2,7 +2,7 @@
 
 use Joomla\Input\Input as JInput;
 
-class crmInstallController
+class crmControllerInstall
 {
     /** Validate database credentials **/
     public function validateDb()
@@ -15,8 +15,7 @@ class crmInstallController
 
         $input = new JInput;
 
-        //connect
-        $model = new crmInstallModel;
+        $model = new crmModelInstall;
 
         $db_name = $input->getCmd('name');
 
@@ -41,20 +40,12 @@ class crmInstallController
     /** Install application **/
     public function install()
     {
-
-        //load our installation model
-        include_once(JPATH_BASE."/install/model/install.php");
-        include_once('helpers/uri.php');
-        
-        $model = new crmInstallModel();
+        $model = new crmModelInstall();
         
         if ( !$model->install() )
         {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
-            $_SESSION['error'] = $model->getError();
-            header('Location: '.CURI::base());
+            JFactory::getApplication()->getSession()->set('error', $model->getError());
+            header('Location: '.JUri::base());
         }
 
         // require_once JPATH_BASE . '/src/boot.php';
@@ -68,7 +59,10 @@ class crmInstallController
         // $app->login($model->getAdmin());
 
         //REDIRECT TO ADMIN PAGE
-        header('Location: '.CURI::base()."?view=cobalt");
+        
+
+
+        header('Location: '.JUri::root()."?view=cobalt");
 
     }
 
