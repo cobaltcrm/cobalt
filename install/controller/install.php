@@ -26,7 +26,15 @@ class crmControllerInstall
             //Testing connection
             try {
                 $db = $model->getDbo('mysqli',$input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'), $db_name, '', false);
-                $r['valid'] = true;
+                $db->connect();
+                if (!$db->connected()) {
+                    $r['error'] = 'Cant connect with you database';
+                    $r['valid'] = false;
+                } else {
+                    $r['valid'] = true;
+                }
+
+
             } catch (Exception $e) {
                 $r['error'] = $e->getMessage();
                 $r['valid'] = false;
