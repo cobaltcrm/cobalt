@@ -6,7 +6,7 @@ var admin = false;
 $(document).ready(function(){
 
 	/* Initiate tooltips */
-	$("[rel=tooltip]").tooltip();
+	$("[data-toggle=tooltip]").tooltip();
 
 	/** Validate database credentials **/
 	$("#dbHost,#dbUser,#dbPass,#dbName").bind("change",function(){
@@ -34,6 +34,7 @@ $(document).ready(function(){
 
 	/** Comment for production! **/
 	// prefill();
+    $('#myTab a:first').tab('show')
 });
 
 /*
@@ -72,6 +73,10 @@ function validateSite(){
 
 	site = valid;
 
+    if ( !valid && !$('#site').hasClass('active') ) {
+        showTab('site');
+    }
+
 	return valid;
 }
 
@@ -101,6 +106,10 @@ function validateAdmin(){
 
 	admin = valid;
 
+    if ( !valid && !$('#admin').hasClass('active') ) {
+        showTab('admin');
+    }
+
 	return valid;
 
 }
@@ -110,8 +119,6 @@ function validateDb(){
 	var valid = false;
 
 	if ( !$("#database").is(":visible") ) {
-
-		$('#myTab a[href="#database"]').tab('show');
 		setTimeout(function(){validateDb();},500);
 
 		valid = false;
@@ -131,7 +138,6 @@ function validateDb(){
 			if ( key != "pass" && ( value == "" || value == null ) ){
 				valid = false;
 				$("#db"+ucwords(key)).tooltip('show');
-				$('#myTab a[href="#database"]').tab('show')
 			}else{
 				$("#db"+ucwords(key)).tooltip('hide');
 			}
@@ -160,13 +166,17 @@ function validateDb(){
 
 	db = valid;
 
+    if ( !valid && !$('#database').hasClass('active') ) {
+        showTab('database');
+    }
+
 	return valid;
 
 }
 
 function showTab(tab){
 	$("[rel=tooltip]").tooltip('hide');
-	$('#myTab a[href="#'+tab+'"]').tab('show');
+	$('a[href="#'+tab+'"]').tab('show');
 }
 
 function ucwords (str) {
@@ -177,7 +187,18 @@ function ucwords (str) {
 }
 
 function install() {
-	
+    if ( !site ){
+        validateSite();
+    }else if ( !db ){
+        validateDb();
+    } else if ( !admin ) {
+        validateAdmin();
+    } else {
+        $("#install-form").submit();
+    }
+
+    /*
+
 	if ( !site ){
 		validateSite();
 	}else if ( !db ){
@@ -187,6 +208,8 @@ function install() {
 	}
 
 	if ( admin ){
-		$("#install-form").submit();
+        alert('submit');
+		//$("#install-form").submit();
 	}
+	*/
 }

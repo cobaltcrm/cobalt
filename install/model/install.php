@@ -12,8 +12,9 @@ use Joomla\Application\AbstractApplication;
 use Joomla\Database;
 use Joomla\Crypt\PasswordInterface;
 use Joomla\Crypt\Password;
+use Joomla\Filesystem\File as JFile;
 
-class crmInstallModel
+class crmModelInstall
 {
     protected $config = null;
     protected $error = null;
@@ -23,15 +24,12 @@ class crmInstallModel
 
     public function install()
     {
-        session_start();
-        $_SESSION['error'] = null;
+        JFactory::getApplication()->getSession()->set('error', null);
 
         $logPath = JPATH_BASE."/logs";
         $tmpPath = JPATH_BASE."/tmp";
 
-        //config registry
-        require_once(JPATH_BASE."/install/libraries/config.php");
-        $this->config = new crmConfig();
+        $this->config = new JRegistry;
 
         //set configuration settings
         $this->config->set('sitename',$_POST['site_name']);
@@ -56,10 +54,11 @@ class crmInstallModel
         $this->config->set("unicodeslugs","0");
         $this->config->set("language","en-GB");
 
-        //write configuration
         //TODO: needs to check if writable
         $file = JPATH_BASE."/configuration.php";
-        if ( !@file_put_contents($file, $this->config->toString()) )
+
+        $content = $this->config->toString('php',array('class' => 'JConfig'));
+        if ( !JFile::write($file, $content) )
         {
             $this->setError('There was an error creating the configuration.php file. Please check your permissions for directory '.JPATH_BASE);
 
@@ -100,7 +99,7 @@ class crmInstallModel
 
         //rename-move installation folder
         //TODO: needs to check if writable
-        if ( !rename(JPATH_BASE."/install",JPATH_BASE."/_install") )
+        if ( !rename(JPATH_INSTALLATION,JPATH_BASE."/_install") )
         {
             $this->setError('There was a problem removing the CRM installation folder. Please remove the folder named "install" or optionally rename it.');
 
@@ -114,30 +113,36 @@ class crmInstallModel
     public function createDb()
     {
         $this->options = array(
-            'host' => $this->config->host,
-            'user' => $this->config->user,
-            'password' => $this->config->password,
-            'database' => $this->config->db,
-            // 'port' => $this->config->port,
-            // 'socket' => $this->config->socket,
-            'prefix' => $this->config->dbprefix
+            'host' => $this->config->get('host'),
+            'user' => $this->config->get('user'),
+            'password' => $this->config->get('password'),
+            'database' => $this->config->get('db'),
+            'prefix' => $this->config->get('dbprefix')
         );
+
+        //create database
+        try {
+            $db = $this->getDbo('mysqli',$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
+            $db->setQuery(sprintf('CREATE DATABASE IF NOT EXISTS %s;',$this->options['database']));
+            $db->loadResult();
+        } catch (\Exception $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
 
         $dbFactory = new Database\DatabaseFactory;
 
         $this->db = $dbFactory->getDriver(
-            $this->config->dbtype,
+            $this->config->get('dbtype'),
             $this->options
         );
 
-	    $dbtype = $this->config->dbtype;
+        $db_driver = $this->config->get('dbtype');
+        if ($db_driver == 'mysqli') {
+            $db_driver = 'mysql';
+        }
 
-	    if ($dbtype == 'mysqli')
-	    {
-		    $dbtype = 'mysql';
-	    }
-
-        $schema = JPATH_BASE."/install/sql/".$dbtype."/joomla.sql";
+        $schema = JPATH_INSTALLATION."/sql/".$db_driver."/joomla.sql";
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema)))
@@ -179,7 +184,7 @@ class crmInstallModel
 
     public function createCrm()
     {
-        $schema = JPATH_BASE."/install/sql/crm/crm.mysql.sql";
+        $schema = JPATH_INSTALLATION."/sql/crm/crm.mysql.sql";
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema))) {
@@ -375,7 +380,7 @@ class crmInstallModel
             session_start();
         }
 
-        $_SESSION['error'] = $this->error;
+        JFactory::getApplication()->getSession()->set('error', $this->error);
     }
 
     public function getError()
