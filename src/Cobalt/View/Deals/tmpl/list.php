@@ -47,11 +47,6 @@ $app = JFactory::getApplication();
         }
 ?>
 </tbody>
-<tfoot>
-    <tr>
-       <td colspan="20"><?php echo $this->pagination->getListFooter(); ?></td>
-    </tr>
-</tfoot>
 <script type="text/javascript">
     var total = <?php echo $this->total; ?>;
     jQuery("#deals_matched").html(total);

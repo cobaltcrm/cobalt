@@ -66,7 +66,17 @@ var Cobalt = {
     },
 
     initDataTables: function() {
-        jQuery('table.data-table').dataTable();
+        var options = {
+            'processing': true,
+            'serverSide': true,
+            'ajax': 'index.php?format=raw&task=datatable&loc='+loc
+        };
+
+        if (typeof dataTableColumns === 'object') {
+            options.columns = dataTableColumns;
+        }
+
+        jQuery('table.data-table').dataTable(options);
     },
 
     initFormSave: function(options) {
@@ -78,7 +88,6 @@ var Cobalt = {
 
         // bind form using 'ajaxForm' 
         jQuery('form[data-ajax="1"]').submit(function() { 
-            console.log(jQuery(this));
             jQuery(this).ajaxSubmit(options); 
             return false; 
         }); 

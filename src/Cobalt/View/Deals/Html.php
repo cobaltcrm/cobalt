@@ -180,6 +180,7 @@ class Html extends AbstractHtmlView
         }
 
         if ($layout == "default") {
+            $this->dataTableColumns = $model->getDataTableColumns();
             $pagination = $model->getPagination();
             $total = $model->getTotal();
             $this->deal_list = ViewHelper::getView('deals','list','phtml',array('dealList'=>$dealList,'total'=>$total,'pagination'=>$pagination));
@@ -188,7 +189,8 @@ class Html extends AbstractHtmlView
             loc = 'deals';
             order_url = 'index.php?view=deals&layout=list&format=raw&tmpl=component';
             order_dir = '".$state->get('Deal.filter_order_Dir')."';
-            order_col = '".$state->get('Deal.filter_order')."';");
+            order_col = '".$state->get('Deal.filter_order')."';
+            var dataTableColumns = " . json_encode($this->dataTableColumns) . ";");
 
             $deal_name = $state->get('Deal.deals_name');
             $this->deal_filter = $deal_name;

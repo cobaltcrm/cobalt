@@ -1286,4 +1286,49 @@ class Deal extends DefaultModel
         return $json ? json_encode($return) : $return;
     }
 
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id');
+        $columns[] = array('data' => 'name');
+        $columns[] = array('data' => 'company_name');
+        $columns[] = array('data' => 'amount');
+        $columns[] = array('data' => 'status_name');
+        $columns[] = array('data' => 'stage_name');
+        $columns[] = array('data' => 'source_name');
+        $columns[] = array('data' => 'expected_close');
+        $columns[] = array('data' => 'actual_close');
+        $columns[] = array('data' => 'action');
+
+        return $columns;
+    }
+
+    public function getDataTableItems()
+    {
+        $items = $this->getDeals();
+        $tableItems = array();
+        $columns = $this->getDataTableColumns();
+
+        foreach ($items as $item)
+        {
+            $tableItem = new \stdClass;
+
+            foreach ($columns as $column)
+            {
+                if (isset($item->{$column['data']}))
+                {
+                    $tableItem->{$column['data']} = $item->{$column['data']};
+                }
+                else
+                {
+                    $tableItem->{$column['data']} = '';
+                }
+            }
+
+            $tableItems[] = $tableItem;
+        }
+
+        return $tableItems;
+    }
+
 }
