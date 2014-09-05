@@ -13,12 +13,6 @@ class crmControllerInstall
         //json
         $r = array();
 
-        //add check for mysqli
-        if (!function_exists('mysqli')) {
-            $r['error'] = 'Please enable mysqli!';
-            $r['valid'] = false;
-        }
-
         $input = new JInput;
 
         $model = new crmModelInstall;
@@ -28,15 +22,15 @@ class crmControllerInstall
         if (empty($db_name)) {
             $r['error'] = 'Please fill database name';
             $r['valid'] = false;
-        }
-
-        //Testing connection
-        try {
-            $db = $model->getDbo('mysqli',$input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'), $db_name, '', false);
-            $r['valid'] = true;
-        } catch (Exception $e) {
-            $r['error'] = $e->getMessage();
-            $r['valid'] = false;
+        } else {
+            //Testing connection
+            try {
+                $db = $model->getDbo('mysqli',$input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'), $db_name, '', false);
+                $r['valid'] = true;
+            } catch (Exception $e) {
+                $r['error'] = $e->getMessage();
+                $r['valid'] = false;
+            }
         }
 
         //return
