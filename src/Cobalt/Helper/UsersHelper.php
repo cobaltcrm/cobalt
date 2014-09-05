@@ -656,19 +656,10 @@ class UsersHelper
     }
 
      /** Determine if logged in user ( or specified user ) can export items **/
-    public static function canExport($user_id=null)
+    public static function canExport($user_id = null)
     {
-        $db = \Cobalt\Container::get('db');
-        $app = $app = \Cobalt\Container::get('app');
-
-        $user_id = $user_id ? $user_id : $app->getUser()->id;
-
-        $query = $db->getQuery(true);
-        $query->select('c.exports,c.admin');
-        $query->from('#__users AS c');
-        $query->where('c.id = '.$db->Quote($user_id));
-        $db->setQuery($query);
-        $user = $db->loadObject();
+        $app = \Cobalt\Container::get('app');
+        $user = $app->getUser($user_id);
 
         return ( $user->exports == 1 || $user->admin == 1 );
 
