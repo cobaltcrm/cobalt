@@ -24,7 +24,33 @@ class crmModelInstall
 
     public function install()
     {
-        JFactory::getApplication()->getSession()->set('error', null);
+        $app = JFactory::getApplication();
+        $app->getSession()->set('error', null);
+        $input = $app->input;
+
+        $postData = array(
+            'site_name' => $input->getString('site_name'),
+            'database_host' => $input->getCmd('database_host'),
+            'database_user' => $input->getUsername('database_user'),
+            'database_password' => $input->getString('database_password'),
+            'database_name' => $input->getString('database_name'),
+            'database_prefix' => $input->getString('database_prefix'),
+            'first_name' => $input->getString('first_name'),
+            'last_name' => $input->getString('last_name'),
+            'username' => $input->getUsername('username'),
+            'password' => $input->getString('password'),
+            'email' => $input->getString('email')
+        );
+
+        //validation post data
+        $check = array_filter(array_values($postData));
+        if (empty($postData['database_password'])) {
+            $check[] = '';
+        }
+        if (empty($check) || count($check) < count($postData)) {
+            $this->setError('Please check if you have completed the required values!');
+            return false;
+        }
 
         $logPath = JPATH_BASE."/logs";
         $tmpPath = JPATH_BASE."/tmp";
@@ -32,15 +58,15 @@ class crmModelInstall
         $this->config = new JRegistry;
 
         //set configuration settings
-        $this->config->set('sitename',$_POST['site_name']);
-        $this->config->set("host",$_POST['database_host']);
-        $this->config->set("user",$_POST['database_user']);
-        $this->config->set("password",$_POST['database_password']);
-        $this->config->set("db",$_POST['database_name']);
-        $this->config->set("dbprefix",$_POST['database_prefix']);
+        $this->config->set('sitename',$postData['site_name']);
+        $this->config->set("host",$postData['database_host']);
+        $this->config->set("user",$postData['database_user']);
+        $this->config->set("password",$postData['database_password']);
+        $this->config->set("db",$postData['database_name']);
+        $this->config->set("dbprefix",$postData['database_prefix']);
         $this->config->set("dbtype","mysqli");
-        $this->config->set("mailfrom",$_POST['email']);
-        $this->config->set("fromname",$_POST['first_name'].' '.$_POST['last_name']);
+        $this->config->set("mailfrom",$postData['email']);
+        $this->config->set("fromname",$postData['first_name'].' '.$postData['last_name']);
         $this->config->set("sendmail","/usr/sbin/sendmail");
         $this->config->set("log_path",$logPath);
         $this->config->set("tmp_path",$tmpPath);
@@ -83,11 +109,11 @@ class crmModelInstall
 
         //create admin user
         $admin = array(
-            'username'		=>$_POST['username'],
-            'password'		=>$_POST['password'],
-            'email'			=>$_POST['email'],
-            'first_name'	=>$_POST['first_name'],
-            'last_name'		=>$_POST['last_name']
+            'username'		=> $postData['username'],
+            'password'		=> $postData['password'],
+            'email'			=> $postData['email'],
+            'first_name'	=> $postData['first_name'],
+            'last_name'		=> $postData['last_name']
         );
 
         if ( !$this->createAdmin($admin) )
@@ -108,6 +134,39 @@ class crmModelInstall
 
         return true;
 
+    }
+
+    /**
+     * Return Database Object
+     *
+     * @param $driver
+     * @param $host
+     * @param $user
+     * @param $password
+     * @param $database
+     * @param string $prefix
+     * @param bool $select
+     * @return JDatabaseDriver
+     */
+    public function getDbo($driver, $host, $user, $password, $database, $prefix = '', $select = true)
+    {
+        static $db;
+        if (!$db)
+        {
+// Build the connection options array.
+            $options = array(
+                'driver' => $driver,
+                'host' => $host,
+                'user' => $user,
+                'password' => $password,
+                'database' => $database,
+                'prefix' => $prefix,
+                'select' => $select
+            );
+// Get a database object.
+            $db = Database\DatabaseDriver::getInstance($options);
+        }
+        return $db;
     }
 
     public function createDb()

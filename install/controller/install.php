@@ -13,12 +13,6 @@ class crmControllerInstall
         //json
         $r = array();
 
-        //add check for mysqli
-        if (!function_exists('mysqli')) {
-            $r['error'] = 'Please enable mysqli!';
-            $r['valid'] = false;
-        }
-
         $input = new JInput;
 
         $model = new crmModelInstall;
