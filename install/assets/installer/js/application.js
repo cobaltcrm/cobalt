@@ -32,9 +32,11 @@ $(document).ready(function(){
 		showTab(tab);
 	});
 
+
+    $('ul.nav-tabs a:first').tab('show');
+
 	/** Comment for production! **/
 	// prefill();
-    $('#myTab a:first').tab('show')
 });
 
 /*
@@ -98,7 +100,6 @@ function validateAdmin(){
 		if ( value == "" || value == null ){
 			valid = false;
 			$("#admin"+ucwords(key)).tooltip('show');
-			$('#myTab a[href="#admin"]').tab('show')
 		}else{
 			$("#admin"+ucwords(key)).tooltip('hide');
 		}
@@ -191,25 +192,9 @@ function install() {
         validateSite();
     }else if ( !db ){
         validateDb();
-    } else if ( !admin ) {
-        validateAdmin();
     } else {
-        $("#install-form").submit();
+        if (validateAdmin()) {
+            $("#install-form").submit();
+        }
     }
-
-    /*
-
-	if ( !site ){
-		validateSite();
-	}else if ( !db ){
-		validateDb();
-	}else{
-		validateAdmin();
-	}
-
-	if ( admin ){
-        alert('submit');
-		//$("#install-form").submit();
-	}
-	*/
 }
