@@ -40,7 +40,7 @@ class User extends DefaultModel
     public function __construct($userId = null)
     {
         parent::__construct();
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $this->_view = $app->input->get('view');
         $this->_layout = str_replace('_filter','',$app->input->get('layout'));
 
@@ -296,7 +296,7 @@ class User extends DefaultModel
                 }
             }
         }
-        
+
         // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
         $this->app->triggerEvent('onUserLogin', array($result, $options));
 
@@ -322,7 +322,7 @@ class User extends DefaultModel
 
             // Check to see the the session already exists.
             $this->app->checkSession();
-            
+
             $this->updateUserSession();
 
             // Hit the user last visit field

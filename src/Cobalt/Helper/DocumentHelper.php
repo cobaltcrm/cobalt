@@ -22,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTotalDocuments()
     {
         //db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         //select

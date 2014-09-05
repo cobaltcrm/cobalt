@@ -29,7 +29,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //app
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         if ($app->input->get('layout')=='sample') {
             $this->_displaySample($tpl);
 
@@ -107,7 +107,7 @@ class Html extends AbstractHtmlView
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $doc = $app->getDocument();
         $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
 

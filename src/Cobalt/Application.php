@@ -22,8 +22,8 @@ use Joomla\Language\Language;
 use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
 use Cobalt\Model\User;
-use Cobalt\Container;
 use Cobalt\Helper\RouteHelper;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Cobalt Application class
@@ -36,6 +36,14 @@ use Cobalt\Helper\RouteHelper;
  */
 final class Application extends AbstractWebApplication
 {
+	/**
+	 * DI Container
+	 *
+	 * @var    Container
+	 * @since  1.0
+	 */
+	private $container;
+
     /**
      * The Dispatcher object.
      *
@@ -98,8 +106,17 @@ final class Application extends AbstractWebApplication
      */
     private $language;
 
-    public function __construct()
+	/**
+	 * Application constructor
+	 *
+	 * @param   Container  $container  DI Container
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(Container $container)
     {
+	    $this->setContainer($container);
+
         parent::__construct();
 
         // Setup the application pieces.
@@ -121,9 +138,10 @@ final class Application extends AbstractWebApplication
      */
     private function loadConfiguration()
     {
-        $config = Container::get('config');
+        $config = $this->getContainer()->get('config');
 
-        if ($config === null) {
+        if ($config === null)
+        {
             throw new \RuntimeException(sprintf('Unable to parse the configuration file %s.', $file));
         }
 
@@ -151,6 +169,41 @@ final class Application extends AbstractWebApplication
 
         return $this;
     }
+
+	/**
+	 * Get the DI container.
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 *
+	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
+	 */
+	public function getContainer()
+	{
+		if ($this->container)
+		{
+			return $this->container;
+		}
+
+		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
+	}
+
+	/**
+	 * Set the DI container.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  $this  Method allows chaining
+	 *
+	 * @since   1.0
+	 */
+	public function setContainer(Container $container)
+	{
+		$this->container = $container;
+
+		return $this;
+	}
 
     /**
      * Get a language object.
@@ -185,19 +238,20 @@ final class Application extends AbstractWebApplication
      */
     public static function getHash($seed)
     {
-        return md5(Container::get('config')->get('secret') . $seed);
+	    // TODO - Temporarily refactored back to JFactory, needs to pull from $this->getContainer instead
+        return md5(JFactory::getConfig()->get('secret') . $seed);
     }
 
     /**
      * Get a session object.
      *
-     * @return \Symfony\Component\HttpFoundation\Session\Session
+     * @return  Session
      *
      * @since   1.0
      */
     public function getSession()
     {
-        return Container::get('session');
+        return $this->getContainer()->fetch('session');
     }
 
     /**
@@ -212,7 +266,7 @@ final class Application extends AbstractWebApplication
      */
     public function checkSession()
     {
-        $db = Container::get('db');
+        $db = $this->getContainer()->get('db');
         $session = $this->getSession();
         $user = $this->getUser();
 
@@ -268,7 +322,7 @@ final class Application extends AbstractWebApplication
 
         if ($user->id)
         {
-            $db = $db = Container::get('db');
+            $db = $db = $this->getContainer()->get('db');
             $query = $db->getQuery(true)
                 ->delete($db->quoteName('#__session'))
                 ->where($db->quoteName('userid') . ' = ' . (int) $user->id)

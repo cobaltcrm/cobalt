@@ -18,4 +18,4 @@ use Tracy\Debugger;
 Debugger::enable();
 
 // $container is setup in the previous require.
-$container->resolve('app')->execute();
+$container->get('app')->execute();

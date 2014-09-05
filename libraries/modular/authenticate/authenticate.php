@@ -36,7 +36,7 @@ class ModularAuthenticate
      */
     public function login($credentials, $options = array())
     {
-        $app = Container::get('app');
+        $app = Container::fetch('app');
 
         // Get the global JAuthentication object.
         jimport('joomla.user.authentication');

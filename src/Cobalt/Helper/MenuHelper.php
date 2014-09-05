@@ -310,7 +310,7 @@ public static function getHelpMenuLinks()
     {
         $modules = array();
 
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         /** Side menu links **/
         $menu_links = MenuHelper::getMenuLinks();

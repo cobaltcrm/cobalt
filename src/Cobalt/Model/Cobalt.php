@@ -31,7 +31,7 @@ class Cobalt extends AbstractModel
      */
     public function __construct()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         parent::__construct();
         $this->getListLimits();
         $this->view = $app->input->get('view');
@@ -50,7 +50,7 @@ class Cobalt extends AbstractModel
     public function saveorder($pks = null, $order = null)
     {
         // Initialise variables.
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $data = $app->input->getRequest('post');
 
         $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';
@@ -149,7 +149,7 @@ class Cobalt extends AbstractModel
 
     public function getListLimits()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         // Get pagination request variables
         $limit = $app->getUserStateFromRequest($this->view.'_limit','limit',10);
@@ -193,7 +193,7 @@ class Cobalt extends AbstractModel
     public function reorder($pks, $delta = 0)
     {
         // Initialise variables.
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $data = $app->input->getRequest('post');
 
         $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';

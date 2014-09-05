@@ -23,7 +23,7 @@ class CompanyCustom extends DefaultModel
 
     public function store()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
         $row = new CompanyCustomTable;
@@ -132,7 +132,7 @@ class CompanyCustom extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $filter_order = $app->getUserStateFromRequest('Companycustom.filter_order','filter_order','c.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Companycustom.filter_order_Dir','filter_order_Dir','asc');
 

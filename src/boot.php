@@ -28,8 +28,8 @@ require_once JPATH_VENDOR.'/autoload.php';
 //
 // Installation check, and check on removal of the install directory.
 //
-if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') 
-    || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) 
+if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
+    || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10)
     || file_exists(JPATH_INSTALLATION.'/index.php')) {
 
     //checking server REQUEST_SCHEME
@@ -38,7 +38,7 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
     }
 
     $installUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'install/index.php';
-    
+
     if (file_exists(JPATH_INSTALLATION.'/index.php')) {
         header('Location: '.$installUri);
         exit();
@@ -59,26 +59,19 @@ JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
 $container = Cobalt\Container::getInstance();
 
 $container
-    ->registerServiceProvider(new Cobalt\Provider\ConfigServiceProvider)
-    ->registerServiceProvider(new Cobalt\Provider\SessionServiceProvider)
-    ->registerServiceProvider(new Cobalt\Provider\DatabaseServiceProvider);
-//    ->registerServiceProvider(new Cobalt\Provider\WhoopsServiceProvider);
+    ->registerServiceProvider(new \Cobalt\Provider\ConfigServiceProvider)
+    ->registerServiceProvider(new \Cobalt\Provider\DatabaseServiceProvider)
+	->registerServiceProvider(new \Cobalt\Provider\SessionServiceProvider);
 
-$container->bind('app', function($c) {
-        static $app;
+$container->set('app', function($c) {
+	/** @var $c \Joomla\DI\Container */
+	$app = new \Cobalt\Application($c);
 
-        if (is_null($app)) {
-            /** @var $c \Cobalt\Container */
-            $c->registerProviders();
+    // @TODO: Remove JFactory
+    JFactory::$application = $app;
 
-            $app = new Cobalt\Application;
-
-            // @TODO: Remove JFactory
-            JFactory::$application = $app;
-        }
-
-        return $app;
-    });
+    return $app;
+}, true, true);
 
 // Alias the helper classes, so we don't have to add the use statement to every layout.
 $helpers = glob(JPATH_ROOT . '/src/Cobalt/Helper/*.php');

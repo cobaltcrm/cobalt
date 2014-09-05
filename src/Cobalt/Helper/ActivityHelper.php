@@ -19,7 +19,7 @@ class ActivityHelper
 
     public static function saveActivity($old_info, $new_info, $model, $action_type)
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
         $user_id = UsersHelper::getUserId();
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -65,7 +65,7 @@ class ActivityHelper
 
     public static function saveUserLoginHistory()
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $user_id = UsersHelper::getUserId();
@@ -91,7 +91,7 @@ class ActivityHelper
 
     public static function getActivity()
     {
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select('h.*, CONCAT(u.first_name," ", u.last_name) AS owner_name, c.name as company_name, CONCAT(p.first_name," ", p.last_name) AS person_name,
@@ -145,7 +145,7 @@ class ActivityHelper
         $query->order('h.date DESC');
 
         if (self::$limit != null) {
-            $query .= " LIMIT ".$this->limit;
+            $query .= " LIMIT ".self::$limit;
         } else {
             $query .= " LIMIT 10";
         }

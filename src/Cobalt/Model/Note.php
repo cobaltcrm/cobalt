@@ -38,7 +38,7 @@ class Note extends DefaultModel
     public function store($data=null)
     {
 
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
         $row = new NoteTable;
@@ -195,7 +195,7 @@ class Note extends DefaultModel
      */
     public function getNotes($object_id = NULL,$type = NULL, $display = true)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //grab db
         $db = JFactory::getDBO();
@@ -357,7 +357,7 @@ class Note extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $filter_order = $app->getUserStateFromRequest('Note.filter_order','filter_order','comp.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Note.filter_order_Dir','filter_order_Dir','asc');
 

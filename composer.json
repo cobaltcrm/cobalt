@@ -9,6 +9,7 @@
 		"joomla/crypt": "~1.1",
 		"joomla/database": "~1.1",
 		"joomla/date": "~1.1",
+		"joomla/di": "~1.2",
 		"joomla/event": "~1.1",
 		"joomla/filesystem": "~1.1",
 		"joomla/filter": "~1.1",
@@ -21,7 +22,6 @@
 		"joomla/string": "~1.2",
 		"joomla/view": "~1.1",
 		"symfony/http-foundation": "2.3.*",
-		"league/di": "1.*",
 		"filp/whoops": "1.*",
 		"tracy/tracy": "2.2.3"
 	},

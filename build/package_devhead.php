@@ -90,6 +90,15 @@ system('rm vendor/joomla/date/composer.json');
 system('rm vendor/joomla/date/phpunit.*');
 system('rm vendor/joomla/date/README.md');
 
+// joomla/di
+system('rm -rf vendor/joomla/di/.travis');
+system('rm -rf vendor/joomla/di/docs');
+system('rm -rf vendor/joomla/di/Tests');
+system('rm vendor/joomla/di/.travis.yml');
+system('rm vendor/joomla/di/composer.json');
+system('rm vendor/joomla/di/phpunit.*');
+system('rm vendor/joomla/di/README.md');
+
 // joomla/event
 system('rm -rf vendor/joomla/event/.travis');
 system('rm -rf vendor/joomla/event/Tests');
@@ -224,15 +233,6 @@ system('rm vendor/joomla/view/.travis.yml');
 system('rm vendor/joomla/view/composer.json');
 system('rm vendor/joomla/view/phpunit.*');
 system('rm vendor/joomla/view/README.md');
-
-// league/di
-system('rm -rf vendor/league/di/test');
-system('rm vendor/league/di/.gitignore');
-system('rm vendor/league/di/.travis.yml');
-system('rm vendor/league/di/composer.json');
-system('rm vendor/league/di/CONTRIBUTING.md');
-system('rm vendor/league/di/phpunit.xml.dist');
-system('rm vendor/league/di/README.md');
 
 // psr/log
 system('rm -rf vendor/psr/log/Psr/Log/Test');

@@ -19,7 +19,7 @@ class Config extends DefaultModel
 {
     public function store($data = null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
         $row = new ConfigTable;

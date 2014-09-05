@@ -33,12 +33,12 @@ class DefaultModel extends AbstractDatabaseModel
     {
         if (is_null($db))
         {
-            $db = Container::get('db');
+            $db = Container::fetch('db');
         }
 
         $this->db = $db;
 
-        $this->app = Container::get('app');
+        $this->app = Container::fetch('app');
 
         parent::__construct($db);
 

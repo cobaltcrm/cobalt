@@ -49,7 +49,7 @@ class People extends DefaultModel
     {
         parent::__construct();
 
-        $this->app = \Cobalt\Container::get('app');
+        $this->app = \Cobalt\Container::fetch('app');
         $this->_view = $this->app->input->get('view');
         $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
         $this->_id = $this->app->input->get('id');
@@ -135,7 +135,7 @@ class People extends DefaultModel
             return false;
         }
 
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $app->triggerEvent('onBeforePersonSave', array(&$row));
 
         // Make sure the record is valid
@@ -576,7 +576,7 @@ class People extends DefaultModel
      */
     public function getPerson($id=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $id = $id ? $id : $app->input->get('id');
 
         if ($id > 0) {
@@ -727,7 +727,7 @@ class People extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $view = $this->app->input->get('view');
 
         //TODO add these limits to the switch statement to support multiple pages and layouts
