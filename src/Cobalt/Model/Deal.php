@@ -716,7 +716,7 @@ class Deal extends DefaultModel
         /** ---------------------------------------------------------------
          * Filter data using member role permissions
          */
-        $member_id = UsersHelper::getUserId();
+        $member_id = $this->_user_id;
         $member_role = UsersHelper::getRole();
         $team_id = UsersHelper::getTeamId();
         if ( ( isset($user) && $user == "all" ) || ( isset($owner_filter) && $owner_filter == "all" ) ) {
@@ -732,10 +732,10 @@ class Deal extends DefaultModel
         } elseif ($team) {
             $query->where("user.team_id=$team");
         } elseif ($user && $user != "all") {
-            $query->where("(d.owner_id=".$user." OR shared.user_id=".$user.")");
+            $query->where("(d.owner_id=".$this->_user_id." OR shared.user_id=".$this->_user_id.")");
         } else {
             if ( !(isset($owner_filter)) ) {
-                $query->where("( d.owner_id=".UsersHelper::getLoggedInUser()->id." OR shared.user_id=".UsersHelper::getLoggedInUser()->id." )");
+                $query->where("( d.owner_id=" . $this->_user_id . " OR shared.user_id=" . $this->_user_id . " )");
             }
         }
 
@@ -785,7 +785,7 @@ class Deal extends DefaultModel
 
         //get session data
         $this->_session = $this->app->getSession();
-        $this->_user_id = UsersHelper::getUserId();
+        $this->_user_id = $this->app->getUser()->get('id');
 
         $query = $this->_buildQuery();
 
