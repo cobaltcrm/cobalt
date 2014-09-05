@@ -639,17 +639,8 @@ class UsersHelper
     /** Determine if logged in user ( or specified user ) can delete items **/
     public static function canDelete($user_id=null)
     {
-        $db = \Cobalt\Container::get('db');
-        $app = $app = \Cobalt\Container::get('app');
-
-        $user_id = $user_id ? $user_id : $app->getUser()->id;
-
-        $query = $db->getQuery(true);
-        $query->select('c.admin,c.can_delete');
-        $query->from('#__users AS c');
-        $query->where('c.id = '.$db->Quote($user_id));
-        $db->setQuery($query);
-        $user = $db->loadObject();
+        $app = \Cobalt\Container::get('app');
+        $user = $app->getUser($user_id);
 
         return ( $user->admin == 1 || $user->can_delete == 1 );
 
