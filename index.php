@@ -10,7 +10,7 @@ if (version_compare(PHP_VERSION, '5.3.10', '<')) {
 	die('Your host needs to use PHP 5.3.10 or higher to run this version of Cobalt!');
 }
 
-const _CEXEC = 1;
+define('_CEXEC', 1);
 
 require_once __DIR__ . '/src/boot.php';
 
