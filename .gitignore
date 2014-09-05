@@ -6,7 +6,3 @@
 /build/packaging
 /build/packages/*
 !/build/packages/.placeholder
-
-install/controller/install.php
-
-install/model/install.php
