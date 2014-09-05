@@ -6,6 +6,7 @@ var Cobalt = {
         this.bindDropdownItems();
         this.bindDatepickers();
         this.initFormSave();
+        this.initDataTables();
     },
 
     bindPopovers: function() {
@@ -62,6 +63,10 @@ var Cobalt = {
             type:      'post',
             dataType:  'json'
         }; 
+    },
+
+    initDataTables: function() {
+        jQuery('table.data-table').dataTable();
     },
 
     initFormSave: function(options) {
