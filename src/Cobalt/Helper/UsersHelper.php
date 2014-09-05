@@ -583,31 +583,15 @@ class UsersHelper
     public static function getLoggedInUser()
     {
         $app = \Cobalt\Container::get('app');
-        $baseUser = $app->getUser();
+        $user = $app->getUser();
 
-        $user_id = $baseUser->get('id');
-
-        if ($user_id > 0)
+        if ($user->get('id'))
         {
-            $db = \Cobalt\Container::get('db');
-
-            $query = $db->getQuery(true);
-            $query->select('c.*,u.email');
-            $query->from('#__users AS c');
-            $query->where('c.id = ' . (int) $user_id);
-            $query->leftJoin("#__users AS u ON u.id=c.id");
-            $db->setQuery($query);
-
-            $user = $db->loadObject();
-
-            $user->emails = UsersHelper::getEmails($user->id);
-        }
-        else
-        {
-           return false;
+            $user->emails = UsersHelper::getEmails($user->get('id'));
+            return $user;
         }
 
-        return $user;
+        return false;
     }
 
     public static function getUser($user_id,$array=FALSE)
