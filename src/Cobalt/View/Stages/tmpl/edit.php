@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <form action="index.php?view=stages" method="post" name="adminForm" id="adminForm" class="form-validate"  >
                         <legend><h3><?php echo TextHelper::_('COBALT_EDITING_STAGE'); ?></h3></legend>
                             <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
-                            <input type="text" class="inputbox" name="name" value="<?php echo $this->stage['name']; ?>" />
+                            <input type="text" class="form-control" name="name" value="<?php echo $this->stage['name']; ?>" />
                             <label><b><?php echo JText::_('COBALT_HEADER_PERCENT'); ?></b></label>
                             <span class="cobaltfield">
                                 <input type="hidden" name="percent" value="<?php echo $this->stage['percent']; ?>"/>
@@ -29,7 +29,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <div id="percent_value"><?php echo $this->stage['percent']."%"; ?></div>
                             </span>
                             <label><b><?php echo JText::_("COBALT_COLOR"); ?></b></label>
-                            <input class="inputbox hascolorpicker" type="text" name="color" value="<?php echo $this->stage['color']; ?>"><div class="colorwheel"></div>
+                            <input class="form-control hascolorpicker" type="text" name="color" value="<?php echo $this->stage['color']; ?>"><div class="colorwheel"></div>
                             <label><b><?php echo JText::_("COBALT_WON_STAGE"); ?></b></label>
                             <input <?php if ( isset($this->stage) && array_key_exists('won',$this->stage) && $this->stage['won'] == 1 ) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
                             <div>

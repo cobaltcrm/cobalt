@@ -17,7 +17,7 @@ $app = JFactory::getApplication();
 <?php } ?>
 
 <div class="clearfix padding">
-    <span class="pull-right"><a class="btn" id="edit_note_message"><i class="icon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
+    <span class="pull-right"><a class="btn" id="edit_note_message"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
 </div>
 
 <?php if ( $app->input->get('view')!="print" ) { ?>

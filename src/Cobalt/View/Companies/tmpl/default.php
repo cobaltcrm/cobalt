@@ -37,16 +37,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
 
 <div class="page-header">
     <div class="btn-group pull-right">
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_COMPANY'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#companyModal" data-toggle="modal"><i class="icon-plus icon-white"></i></a>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_COMPANIES'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=companies'); ?>"><i class="icon-circle-arrow-up"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_COMPANY'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="#companyModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_COMPANIES'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=companies'); ?>"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>
         <?php if ( UsersHelper::canExport() ) { ?>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_COMPANIES'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="icon-share"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_COMPANIES'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="glyphicon glyphicon-share"></i></a>
         <?php } ?>
     </div>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_COMPANIES')); ?></h1>
 </div>
-<ul class="inline filter-sentence">
+<ul class="list-inline filter-sentence">
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="company_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo $this->company_type; ?></span></a>
@@ -58,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input class="inputbox filter_input" name="company_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->company_filter; ?>">
+        <input class="form-control filter_input" name="company_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->company_filter; ?>">
     </li>
     <li>
         <div class="ajax_loader"></div>

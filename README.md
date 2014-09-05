@@ -8,7 +8,7 @@ Prototype Standalone CRM on Joomla! Framework
 At folder you want to install Cobalt in execute these commands:
 
 ```
-git clone git@github.com:cobaltcrm/cobalt.git
+git clone git@github.com:cobaltcrm/cobalt.git .
 ```
 ```
 composer install

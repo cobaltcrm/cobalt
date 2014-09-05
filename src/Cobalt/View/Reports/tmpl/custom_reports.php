@@ -18,7 +18,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
     <div class="btn-group pull-right">
-        <a class="btn" href="<?php echo RouteHelper::_('index.php?view=reports&layout=edit_custom_report'); ?>"><i class="icon-plus-sign"></i> <?php echo TextHelper::_('COBALT_NEW_CUSTOM_REPORT'); ?></a>
+        <a class="btn" href="<?php echo RouteHelper::_('index.php?view=reports&layout=edit_custom_report'); ?>"><i class="glyphicon glyphicon-plus-sign"></i> <?php echo TextHelper::_('COBALT_NEW_CUSTOM_REPORT'); ?></a>
     </div>
     <h1><?php echo TextHelper::_('COBALT_CUSTOM_REPORTS'); ?></h1>
 </div>

@@ -62,7 +62,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </fieldset>
                         <fieldset class="adminform">
                             <legend><h3><?php echo JText::_("COBALT_ADMIN_SITE_NAME"); ?></h3></legend>
-                            <input type="text" class="inputbox" id="site-name" name="site_name" value="<?php echo $this->site_name; ?>" />
+                            <input type="text" class="form-control" id="site-name" name="site_name" value="<?php echo $this->site_name; ?>" />
                         </fieldset>
                         <fieldset class="adminform">
                             <legend><h3><?php echo JText::_("COBALT_ADMIN_CHOOSE_THEME"); ?></h3></legend>
@@ -91,7 +91,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     </form>
                     <div id="themes" style="display:none;">
                         <div id="1">
-                            <ul class="unstyled adminlist cobaltadminlist">
+                            <ul class="list-unstyled adminlist cobaltadminlist">
                                 <li>
                                     <label><b><?php echo JText::_("COBALT_ADMIN_GENERIC_HEADER"); ?></b></label>
                                     <input class="hascolorpicker inputbox branding-input" type="text" name="header" data-css-class=".navbar-inner" data-css-style="background" value="<?php echo $this->themes[0]['header']; ?>"><div class="colorwheel"></div>
@@ -111,7 +111,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                         </div>
                         <div id="2">
-                            <ul class="unstyled adminlist cobaltadminlist">
+                            <ul class="list-unstyled adminlist cobaltadminlist">
                                <li>
                                     <label><b><?php echo JText::_("COBALT_ADMIN_GENERIC_HEADER"); ?></b></label>
                                     <input class="hascolorpicker branding-input inputbox" type="text" name="header" data-css-class=".navbar-inner" data-css-style="background" value="<?php echo $this->themes[1]['header']; ?>"><div class="colorwheel"></div>

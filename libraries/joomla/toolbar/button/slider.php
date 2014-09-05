@@ -50,7 +50,7 @@ class JToolbarButtonSlider extends JToolbarButton
 
         $html = "<button class=\"btn btn-small\" data-toggle=\"collapse\" data-target=\"#collapse-" . $name . "\" rel=\"{onClose: function() {" . $onClose
             . "}}\" onClick=\"Joomla.setcollapse('$doTask', '$name', '$height');\">\n";
-        $html .= "<i class=\"icon-$class\">\n";
+        $html .= "<i class=\"glyphicon glyphicon-$class\">\n";
         $html .= "</i>\n";
         $html .= "$text\n";
 

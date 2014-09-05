@@ -4,11 +4,12 @@ var Cobalt = {
         this.bindPopovers();
         this.bindTooltips();
         this.bindDropdownItems();
+        this.bindDatepickers();
         this.initFormSave();
     },
 
     bindPopovers: function() {
-        var selector = '[rel="popover"]';
+        var selector = '[data-toggle="popover"]';
         jQuery.each(jQuery(selector), function(i, popover) {
             popover = jQuery(popover);
             var options = {
@@ -23,20 +24,6 @@ var Cobalt = {
             };
             popover.popover(options);
         });
-
-        // close popovers when clicked anywhere else
-        jQuery(document).click(function (e) {
-            if (jQuery(e.target).parent().find(selector).length > 0) {
-                Cobalt.closePopovers(selector);
-            }
-        });
-    },
-
-    closePopovers: function(selector) {
-        if (!selector) {
-            selector = '[rel="popover"]';
-        }
-        jQuery(selector).popover('hide');
     },
 
     bindTooltips: function() {
@@ -55,8 +42,9 @@ var Cobalt = {
 
             jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
             jQuery(this).datepicker('hide');
+
             if ( jQuery(this).hasClass('editable-modal-datepicker') ){
-                Cobalt.saveEditableModal(jQuery(this).attr('id')+"_form");
+                Cobalt.sumbitForm(jQuery(this).closest('form'));
             }
         });
     },
@@ -69,7 +57,7 @@ var Cobalt = {
                 arr.push({'name': 'tmpl', 'value': 'component'});         
             },
             success:   function(response, status, xhr, $form) {
-                Cobalt.onFormSaveSuccess(response, status, xhr, $form);
+                Cobalt.onSaveSuccess(response, status, xhr, $form);
             },
             type:      'post',
             dataType:  'json'
@@ -91,26 +79,42 @@ var Cobalt = {
         }); 
     },
 
-    onFormSaveSuccess: function(response) {
+    onSaveSuccess: function(response) {
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
+        // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
         }
-
-        this.closePopovers();
+        // Remove rows from table
+        if (typeof response.remove !== 'undefined') {
+            Cobalt.removeRows(response.remove);
+        }
     },
 
     sumbitModalForm: function(button) {
-        jQuery(button).closest('.modal').find('form').ajaxSubmit(Cobalt.getFormSubmitOptions());
+        var modal = jQuery(button).closest('.modal');
+        this.sumbitForm(modal.find('form'));
+        modal.modal('hide');
     },
 
     sumbitForm: function(form) {
         jQuery(form).ajaxSubmit(Cobalt.getFormSubmitOptions());
         // prevent from submitting form
         return false;
+    },
+
+    save: function(data) {
+        jQuery.post('index.php', data, function(response) {
+            try {
+                response = $.parseJSON(response);
+            } catch (e) {
+                // not json
+            }
+            Cobalt.onSaveSuccess(response);
+        });
     },
 
     updateStuff: function(data) {
@@ -127,6 +131,14 @@ var Cobalt = {
             if (field.length) {
                 field.val(value);
             }
+        });
+    },
+
+    removeRows: function(ids) {
+        jQuery.each(ids, function(i, id) {
+            jQuery('#list_row_'+id).hide('fast', function() {
+                jQuery(this).remove();
+            });
         });
     },
 
@@ -200,18 +212,44 @@ var Cobalt = {
     },
 
     bindDropdownItems: function () {
+        jQuery('.dropdown_item').click(function() {
+            var link = jQuery(this),
+                data = {
+                    'model': link.attr('data-item'),
+                    'id': link.attr('data-item-id'),
+                    'task': 'save',
+                    'format': 'raw'
+                };
+                data[link.attr('data-field')] = link.attr('data-value');
 
-        jQuery('.dropdown_item').live('click', function() {
-            var base = jQuery(this)
-                id = base.parentsUntil('div.filters').parent('div.filters').attr('id')+"_link";
-
-            jQuery("#"+id).html(base.html());
-
-            if ( typeof base.attr('data-value') !== 'undefined' ){
-                Cobalt.ajaxSaveModal(base);
-            }
+            Cobalt.save(data);
         });
     },
+
+    deleteListItems: function() {
+        var itemIds = [];
+        jQuery("input[name='ids\\[\\]']:checked").each(function() {
+            itemIds.push(jQuery(this).val());
+        });
+        var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
+        Cobalt.save(data);
+        // showAjaxLoader();
+        // jQuery.ajax({
+        //     type:'POST',
+        //     url:'index.php?task=trash&tmpl=component&format=raw',
+        //     data: { item_id : itemIds, item_type : loc },
+        //     dataType:'JSON',
+        //     success:function(data){
+        //         if ( data.success ){
+        //             jQuery.each(itemIds,function(key,value){
+        //                 jQuery("#list_row_"+value).remove();
+        //             });
+        //             modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'));
+        //         }
+        //         hideAjaxLoader();
+        //     }
+        // });
+    }
 };
 
 window.onload = function () {

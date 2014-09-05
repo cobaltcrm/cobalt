@@ -51,7 +51,7 @@ class TemplateHelper
                     if (self::isMobile()) : ?>
                     <div class='page' data-role='page' data-theme='b' id=''>
                     <?php endif; ?>
-                    <div id="logoutModal" class="modal hide fade">
+                    <div id="logoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="logoutModal" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -150,43 +150,57 @@ class TemplateHelper
         $class = "";
 
         //generate html
-        $list_html  = '<div class="navbar navbar-fixed-top">';
-        $list_html .= '<div class="navbar-inner"><div class="container">';
-//        $list_html .= "<div class='site-logo pull-left' style='padding:0'>";
-//        $list_html .= "<img id='site-logo-img' src='".StylesHelper::getSiteLogo()."' />";
-//        $list_html .= '</div>';
-        $list_html .= '<a id="site-name-link" class="brand" href="'.JUri::base().'">'.StylesHelper::getSiteName().'</a>';
-        $list_html .= '<ul class="nav">';
-        foreach ($list->menu_items as $name) {
+        $list_html  = '<div class="navbar navbar-default navbar-fixed-top" role="navigation">';
+        $list_html .= '<div class="container">';
+        $list_html .= '<div class="navbar-header">';
+
+        if (StylesHelper::getSiteLogo())
+        {
+            $list_html .= '<div class="site-logo pull-left">';
+            $list_html .= '<img id="site-logo-img" src="'.StylesHelper::getSiteLogo().'" />';
+            $list_html .= '</div>';
+        }
+
+        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.JUri::base().'">';
+        $list_html .= StylesHelper::getSiteName();
+        $list_html .= '</a>';
+        $list_html .= '</div>'; // navbar-header end
+
+        $list_html .= '<ul class="nav navbar-nav">';
+
+        foreach ($list->menu_items as $name)
+        {
             $class = $name == $controller || $name == $view ? "active" : "";
             $list_html .= '<li><a class="'.$class.'" href="'.RouteHelper::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
         }
+
         $list_html .= '</ul>';
-        $list_html .= "<ul class='nav pull-right'>";
-        $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="icon-plus icon-white"></i></a><ul class="dropdown-menu">';
+
+        $list_html .= '<ul class="nav navbar-nav navbar-right">';
+        $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="glyphicon glyphicon-plus-sign icon-white"></i></a><ul class="dropdown-menu">';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
         $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" ><i class="icon-user icon-white"></i></a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="icon-question-sign icon-white"></i></a></li>';
-        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="icon-search icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" ><i class="glyphicon glyphicon-user icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="glyphicon glyphicon-question-sign icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="glyphicon glyphicon-search icon-white"></i></a></li>';
 
         if ( UsersHelper::isAdmin() ) {
-            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" ><i class="icon-cog icon-white"></i></a></li>';
+            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" ><i class="glyphicon glyphicon-cog icon-white"></i></a></li>';
         }
 
         if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
-            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="icon-off icon-white"></i></a></li>';
+            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="glyphicon glyphicon-off icon-white"></i></a></li>';
         }
         $list_html .= '</ul>';
 
         $list_html .= '</div>';
         $list_html .= '<div style="display:none;" class="pull-right" id="site_search">';
         $list_html .= '<input class="inputbox site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
-        $list_html .= '</div></div></div>';
+        $list_html .= '</div></div>';
 
         //return html
         echo $list_html;
@@ -406,13 +420,13 @@ class TemplateHelper
         $list_html  = "";
 
         $list_html .= "<div id='list_edit_actions'>";
-        $list_html .= '<ul class="inline">';
+        $list_html .= '<ul class="list-inline">';
         $list_html .= '<li>'.TextHelper::_('COBALT_PERFORM').'</li>';
         $list_html .= '<li class="dropdown">';
         $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >'.TextHelper::_('COBALT_ACTIONS').'</a>';
             $list_html .= '<ul class="dropdown-menu" role="menu" aria-labelledby="">';
                 if ( UsersHelper::canDelete() ) {
-                    $list_html .= '<li><a onclick="deleteListItems()">'.TextHelper::_('COBALT_DELETE').'</a></li>';
+                    $list_html .= '<li><a onclick="Cobalt.deleteListItems()">'.TextHelper::_('COBALT_DELETE').'</a></li>';
                 }
             $list_html .= '</ul>';
         $list_html .= '</li>';
@@ -431,7 +445,7 @@ class TemplateHelper
         $list_html .= TextHelper::_('COBALT_PERFORM')."<a class='dropdown' id='list_edit_actions_dropdown_link'>".TextHelper::_('COBALT_ACTIONS')."</a>".TextHelper::_('COBALT_ON_THE')."<span id='items_checked'></span> ".TextHelper::_('COBALT_ITEMS');
         $list_html .= '<div class="filters" id="list_edit_actions_dropdown">';
         $list_html .= '<ul>';
-        $list_html .= '<li><a onclick="deleteListItems()">'.TextHelper::_('COBALT_DELETE').'</a></li>';
+        $list_html .= '<li><a onclick="Cobalt.deleteListItems()">'.TextHelper::_('COBALT_DELETE').'</a></li>';
         $list_html .= '</ul>';
         $list_html .= "</div>";
         $list_html .= "</div>";

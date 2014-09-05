@@ -47,17 +47,17 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <h5>
                                         <?php if ($this->latestVersion == 'no_curl') { ?>
                                             <span class="btn btn-danger btn-mini">
-                                                <i class="icon-remove icon-white tip"></i>
+                                                <i class="glyphicon glyphicon-remove icon-white tip"></i>
                                             </span>
                                             <?php echo JText::_('COBALT_CURL_NOT_INSTALLED'); ?>
                                             <?php } elseif ( VersionHelper::isUpToDate($this->installedVersion, $this->latestVersion) ) { ?>
                                                 <span class="btn btn-success btn-mini">
-                                                    <i class="icon-ok icon-white"></i>
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
                                                 </span>
                                                 <?php echo JText::sprintf('COBALT_UP_TO_DATE', $this->installedVersion); ?>
                                             <?php } else {	?>
                                                 <span class="btn btn-danger btn-mini">
-                                                    <i class="icon-remove icon-white"></i>
+                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
                                                 </span>
                                                 <?php echo JText::sprintf('COBALT_UPDATE', $this->installedVersion, $this->latestVersion); ?>
                                                 <a href="<?php echo $this->updateUrl; ?>" target="_blank"><?php echo JText::_('COBALT_UPDATE_LINK'); ?></a>

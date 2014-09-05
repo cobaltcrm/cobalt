@@ -35,7 +35,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                           <td><?php echo ucwords(TextHelper::_('COBALT_THE_COMPANY')); ?></td>
                       <?php } ?>
                       <td><?php echo date("n/j/y",strtotime($goal['end_date'])); ?></td>
-                      <td><a href="javascript:void(0);" onclick="deleteGoalEntry(this)" class="delete_goal"><i class="icon-trash"></i><?php echo TextHelper::_('COBALT_DELETE'); ?></a></td>
+                      <td><a href="javascript:void(0);" onclick="deleteGoalEntry(this)" class="delete_goal"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_('COBALT_DELETE'); ?></a></td>
                   </tr>
         <?php }
         ?>

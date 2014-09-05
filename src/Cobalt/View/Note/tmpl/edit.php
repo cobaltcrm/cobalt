@@ -19,7 +19,7 @@ $note = $this->notes[0];
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo ucwords(TextHelper::_('COBALT_PERSON')); ?></div>
             <div class="cobaltValue">
-                <select class="inputbox" name="person_id">
+                <select class="form-control" name="person_id">
                 <?php
                     $people = DropdownHelper::getPeopleList();
                     echo JHtml::_('select.options', $people, 'value', 'text', $note['person_id'], true);
@@ -47,7 +47,7 @@ $note = $this->notes[0];
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo ucwords(TextHelper::_('COBALT_CATEGORY')); ?></div>
             <div class="cobaltValue">
-                <select class="inputbox" name="category_id">
+                <select class="form-control" name="category_id">
                     <?php
                         $categories = NoteHelper::getCategories();
                         echo JHtml::_('select.options', $categories, 'value', 'text', $note['category_id'], true);
@@ -64,7 +64,7 @@ $note = $this->notes[0];
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_CONTENT'); ?></div>
             <div class="cobaltValue">
-                <textarea class="inputbox" name="note"><?php echo $note['note']; ?></textarea>
+                <textarea class="form-control" name="note"><?php echo $note['note']; ?></textarea>
             </div>
         </div>
         <?php /**

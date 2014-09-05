@@ -57,7 +57,7 @@ class JToolbarButtonPopup extends JToolbarButton
         $doTask = $this->_getCommand($url);
 
         $html = "<button class=\"btn btn-small\" data-toggle=\"modal\" data-target=\"#modal-" . $name . "\">\n";
-        $html .= "<i class=\"icon-" . $class . "\">\n";
+        $html .= "<i class=\"glyphicon glyphicon-" . $class . "\">\n";
         $html .= "</i>\n";
         $html .= "$text\n";
 

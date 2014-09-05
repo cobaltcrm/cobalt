@@ -44,25 +44,25 @@ use Cobalt\Helper\TextHelper;
 </div>
 <div class="row-fluid" id="sales_dashboard_graphs">
     <div class="span6">
-        <ul class="dash_float_list unstyled" id="dash_floats_right">
+        <ul class="dash_float_list list-unstyled" id="dash_floats_right">
             <li class="graph widget">
                 <div class="btn-group pull-right">
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStagePie');"><i class="icon-adjust"></i></a>
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStageBar');"><i class="icon-align-left"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStagePie');"><i class="glyphicon glyphicon-adjust"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStageBar');"><i class="glyphicon glyphicon-align-left"></i></a>
                 </div>
                 <div id="deal_stage"></div>
             </li>
             <li class="graph widget">
                 <div class="btn-group pull-right">
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStatusPie');"><i class="icon-adjust"></i></a>
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStatusBar');"><i class="icon-align-left"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStatusPie');"><i class="glyphicon glyphicon-adjust"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStatusBar');"><i class="glyphicon glyphicon-align-left"></i></a>
                 </div>
                 <div id="deal_status"></div>
             </li>
         </ul>
     </div>
     <div class="span6">
-        <ul class="dash_float_list unstyled" id="dash_floats_right">
+        <ul class="dash_float_list list-unstyled" id="dash_floats_right">
             <li class="graph widget">
                 <div id="yearly_commissions"></div>
             </li>

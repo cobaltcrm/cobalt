@@ -62,7 +62,7 @@ if ($filter_type == "individual") {
     <h1><?php echo ucwords(TextHelper::_('COBALT_TASKS_HEADER')); ?></h1>
 </div>
 <div>
-    <ul class="inline filter-sentence">
+    <ul class="list-inline filter-sentence">
         <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
         <li class="dropdown">
             <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="event_status_link" ><span class="dropdown-label"><?php echo $this->event_statuses[$this->state->get('Event.'.$view.'_'.$layout.'_status')]; ?></span></a>
