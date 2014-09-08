@@ -172,7 +172,6 @@ function validateDb(){
     }
 
 	return valid;
-
 }
 
 function showTab(tab){
@@ -188,13 +187,13 @@ function ucwords (str) {
 }
 
 function install() {
-    if ( !site ){
-        validateSite();
-    }else if ( !db ){
-        validateDb();
-    } else {
-        if (validateAdmin()) {
-            $("#install-form").submit();
+    if ( validateSite() ){
+        if ( db ) {
+            if ( validateAdmin() ) {
+                $("#install-form").submit();
+            }
+        } else {
+            validateDb();
         }
     }
 }
