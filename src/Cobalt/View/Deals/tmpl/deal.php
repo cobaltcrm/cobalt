@@ -106,7 +106,7 @@ $deal = $this->dealList[0];
                         <div class="list-inline" id="editable_amount">
                             <h2>
                                 <?php echo ConfigHelper::getCurrency(); ?>
-                                <a href="javascript:void(0)" data-toggle="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true'  data-conent-class="amount-form">
+                                <a href="javascript:void(0)" data-toggle="popover" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_AMOUNT')); ?>" data-html='true'  data-content-class="amount-form">
                                 <span id="amount_<?php echo $deal->id; ?>"><?php echo $deal->amount; ?></span></a>
                             </h2>
                             <div class="amount-form hidden">
@@ -159,7 +159,7 @@ $deal = $this->dealList[0];
                     <span class="editable parent" id="editable_probability_container">
                     <div class="list-inline" id="editable_probability">
                         <h2>
-                            <a href="#" tabindex="0" data-toggle="popover" data-conent-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
+                            <a href="#" tabindex="0" data-toggle="popover" data-content-class="probability-form" data-title="<?php echo ucwords(TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_PROBABILITY')); ?>">
                             <span id="probability_<?php echo $deal->id; ?>"><?php echo $deal->probability; ?></span>%</a>
                         </h2>
                         <div class="probability-form hidden">

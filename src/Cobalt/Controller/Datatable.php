@@ -10,6 +10,7 @@
 
 namespace Cobalt\Controller;
 
+use Joomla\Registry\Registry;
 use Cobalt\Router;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\Deal as DealModel;
@@ -29,6 +30,23 @@ class Datatable extends DefaultController
         $loc        = $this->makeSingular($this->input->getString('loc'));
         $modelPath  = "Cobalt\\Model\\".ucwords($loc);
         $model      = new $modelPath();
+        $model->populateState();
+        $layout     = $this->input->getString('layout', '');
+        $orderArray = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
+        $columns    = $model->getDataTableColumns();
+
+        if (isset($columns[$orderArray[0]['column']]['ordering']))
+        {
+            $order  = $columns[$orderArray[0]['column']]['ordering'];
+            $this->input->set('filter_order', $order);
+        }
+        
+        if (isset($orderArray[0]['dir']))
+        {
+            $dir    = $orderArray[0]['dir'];
+            $this->input->set('filter_order_Dir', $dir);
+        }
+
         $response   = new \stdClass;
 
         $response->data = $model->getDataTableItems();
