@@ -10,6 +10,8 @@
 // No direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+/** @type \Cobalt\Application $this */
+
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\DateHelper;
@@ -25,20 +27,17 @@ $tz = DateHelper::getSiteTimezone();
 //Load plugins
 JPluginHelper::importPlugin('cobalt');
 
-/** @var \Cobalt\Application $app */
-$app = Cobalt\Container::get('app');
-
 //get user object
-$user = $app->getUser();
+$user = $this->getUser();
 
 // Fetch the controller
-$controllerObj = $app->getRouter()->getController($app->get('uri.route'));
+$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
 
 // Require specific controller if requested
-$controller = $app->input->get('controller', 'default');
+$controller = $this->input->get('controller', 'default');
 
 //load user toolbar
-$format = $app->input->get('format');
+$format = $this->input->get('format');
 
 $overrides = array('ajax', 'mail', 'login');
 
@@ -49,12 +48,12 @@ if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
     ActivityHelper::saveUserLoginHistory();
 
     // Set a default view if none exists
-    if (! $app->input->get('view')) {
-        $app->input->set('view', 'dashboard' );
+    if (! $this->input->get('view')) {
+        $this->input->set('view', 'dashboard' );
     }
 
     //Grab document instance
-    $document = $app->getDocument();
+    $document = $this->getDocument();
 
     //load scripts
     $document->addScript( JURI::base().'libraries/crm/media/js/jquery.js' );
@@ -66,14 +65,14 @@ if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
     $document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-fileupload.js' );
 
     //start component div wrapper
-    if ( $app->input->get('view') != "print") {
+    if ( $this->input->get('view') != "print") {
         TemplateHelper::loadToolbar();
     }
     TemplateHelper::startCompWrap();
 
     //mobile detection
     if (TemplateHelper::isMobile()) {
-         $app->input->set('tmpl','component');
+         $this->input->set('tmpl','component');
          $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
          $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' );
          $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' );
@@ -100,12 +99,12 @@ if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
 }
 
 if (!$loggedIn && !($controllerObj instanceof Cobalt\Controller\Login)) {
-    $app->redirect(RouteHelper::_('index.php?view=login'));
+    $this->redirect(RouteHelper::_('index.php?view=login'));
 }
 
 //fullscreen detection
 if (UsersHelper::isFullscreen()) {
-    $app->input->set('tmpl', 'component' );
+    $this->input->set('tmpl', 'component' );
 }
 
 // Perform the Request task

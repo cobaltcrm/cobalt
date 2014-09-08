@@ -57,7 +57,7 @@ class Deal extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $this->_view = $this->app->input->get('view');
         $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
     }
@@ -937,7 +937,7 @@ class Deal extends DefaultModel
     public function getReportDeals()
     {
         //get filter
-        $session = \Cobalt\Container::get('session');
+        $session = $this->app->getSession();
         $filter = $session->get('deal_stage_filter');
         //get deals
         $deals = $this->getDeals(null,null,null,'active');

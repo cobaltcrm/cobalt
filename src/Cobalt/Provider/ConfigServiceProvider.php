@@ -10,53 +10,69 @@ namespace Cobalt\Provider;
 
 use JConfig;
 use JFactory;
-use Cobalt\Container;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
 
+/**
+ * Configuration service provider
+ *
+ * @since  1.0
+ */
 class ConfigServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
-    {
-        $config = new Registry(new JConfig);
+	/**
+	 * Registers the service provider with a DI container.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function register(Container $container)
+	{
+		$config = new Registry(new JConfig);
 
-        // Set the error_reporting
-        switch ($config->get('error_reporting')) {
-            case 'default':
-            case '-1':
-                break;
+		// Set the error_reporting
+		switch ($config->get('error_reporting'))
+		{
+			case 'default':
+			case '-1':
+				break;
 
-            case 'none':
-            case '0':
-                error_reporting(0);
-                break;
+			case 'none':
+			case '0':
+				error_reporting(0);
+				break;
 
-            case 'simple':
-                error_reporting(E_ERROR | E_WARNING | E_PARSE);
-                ini_set('display_errors', 1);
-                break;
+			case 'simple':
+				error_reporting(E_ERROR | E_WARNING | E_PARSE);
+				ini_set('display_errors', 1);
+				break;
 
-            case 'maximum':
-                error_reporting(E_ALL);
-                ini_set('display_errors', 1);
-                break;
+			case 'maximum':
+				error_reporting(E_ALL);
+				ini_set('display_errors', 1);
+				break;
 
-            case 'development':
-                error_reporting(-1);
-                ini_set('display_errors', 1);
-                break;
+			case 'development':
+				error_reporting(-1);
+				ini_set('display_errors', 1);
+				break;
 
-            default:
-                error_reporting($config->get('error_reporting'));
-                ini_set('display_errors', 1);
-                break;
-        }
+			default:
+				error_reporting($config->get('error_reporting'));
+				ini_set('display_errors', 1);
+				break;
+		}
 
-        JFactory::$config = $config;
+		JFactory::$config = $config;
 
-        define('JDEBUG', $config->get('debug', false));
+		define('JDEBUG', $config->get('debug', false));
 
-        $container->bind('config', function () use ($config) {
-                return $config;
-            });
-    }
+		$container->protect('config', function () use ($config) {
+			return $config;
+		}, true);
+	}
 }

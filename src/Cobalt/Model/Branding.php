@@ -23,7 +23,7 @@ class Branding extends DefaultModel
     public function store()
     {
         //Load Tables
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $row = new BrandingTable;
         $data = $app->input->getRequest('post');
 

@@ -84,7 +84,7 @@ class Source extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $filter_order = $app->getUserStateFromRequest('Source.filter_order','filter_order','s.name');
         $filter_order_Dir = $app->getUserStateFromRequest('Source.filter_order_Dir','filter_order_Dir','asc');
 

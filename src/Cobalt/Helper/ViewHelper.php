@@ -12,7 +12,7 @@ class ViewHelper
     public static function getView($viewName, $layoutName='default', $viewFormat='html', $vars=null)
     {
         // Get the application
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $document = $app->getDocument();
         $app->input->set('view', $viewName);
@@ -58,6 +58,6 @@ class ViewHelper
     {
         $fqcn = 'Cobalt\\Model\\' . $modelName;
 
-        return \Cobalt\Container::getInstance()->build($fqcn);
+        return \Cobalt\Container::getInstance()->buildObject($fqcn);
     }
 }

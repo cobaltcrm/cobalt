@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f230f9ea17c9774ccd07461968a749b1",
+    "hash": "bf75b30a68aa5b821e758338db181c2f",
     "packages": [
         {
             "name": "filp/whoops",
@@ -306,6 +306,46 @@
                 "joomla"
             ],
             "time": "2014-02-09 01:27:57"
+        },
+        {
+            "name": "joomla/di",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/di.git",
+                "reference": "4866c58e92ce4e851cd87d5d9d31b069b7284267"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/di/zipball/4866c58e92ce4e851cd87d5d9d31b069b7284267",
+                "reference": "4866c58e92ce4e851cd87d5d9d31b069b7284267",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10"
+            },
+            "type": "joomla-package",
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\DI\\": "src/",
+                    "Joomla\\DI\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla DI Package",
+            "homepage": "https://github.com/joomla-framework/di",
+            "keywords": [
+                "container",
+                "dependency injection",
+                "di",
+                "framework",
+                "ioc",
+                "joomla"
+            ],
+            "time": "2014-03-21 13:20:34"
         },
         {
             "name": "joomla/event",
@@ -898,56 +938,6 @@
                 "view"
             ],
             "time": "2014-02-09 07:07:32"
-        },
-        {
-            "name": "league/di",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/di.git",
-                "reference": "ad0259589949f12abeae6c1e918a0ff7ef00b00a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/di/zipball/ad0259589949f12abeae6c1e918a0ff7ef00b00a",
-                "reference": "ad0259589949f12abeae6c1e918a0ff7ef00b00a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "league/phpunit-coverage-listener": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "League\\Di\\": [
-                        "src/",
-                        "test/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Don Gilbert",
-                    "email": "don@dongilbert.net",
-                    "homepage": "http://dongilbert.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Fast Dependency Injection Container for PHP 5.3+",
-            "homepage": "https://github.com/php-loep/di",
-            "keywords": [
-                "dependency injection",
-                "dic",
-                "ioc"
-            ],
-            "time": "2013-08-04 22:55:53"
         },
         {
             "name": "psr/log",

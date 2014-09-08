@@ -26,7 +26,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
          $html = '';
 
         //grab db
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
 
         //generate query based on type
          $query = $db->getQuery(true);
@@ -204,7 +204,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
              $return = array();
 
             //grab db
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
 
             //generate query based on type
              $query = $db->getQuery(true);
@@ -248,7 +248,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getCustomData($id,$type)
         {
             //get dbo
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
 
             //query
@@ -275,7 +275,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
          */
         public static function getCustomValue($customType,$customNameOrId,$customValue,$itemId)
         {
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
 
             $id = str_replace("custom_","",$customNameOrId);
@@ -326,7 +326,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getLeaderBoards()
         {
             //load database
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
 
             //load goals associate with user depending on team//role that have a leaderboard flag in the database
@@ -447,7 +447,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getTeams($team=null)
         {
             //get database
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
             //query string
             //u.id//
@@ -475,7 +475,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         public static function getManagers($remove=null)
         {
             //get database
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
             //query string
             $query->select("u.id,u.first_name,u.last_name,u.team_id");
@@ -655,7 +655,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
          public static function generateDealStatuses($selected=null, $name="status_id", $class="class='inputbox form-control'")
          {
-            $db = \Cobalt\Container::get('db');
+            $db = \Cobalt\Container::fetch('db');
             $query = $db->getQuery(true);
             $query->select("id,name")->from("#__deal_status");
 

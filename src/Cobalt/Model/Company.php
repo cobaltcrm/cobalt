@@ -37,7 +37,7 @@ class Company extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $this->_view = $app->input->get('view');
         $this->_layout = str_replace('_filter','',$app->input->get('layout'));
     }
@@ -49,7 +49,7 @@ class Company extends DefaultModel
      */
     public function store($data=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
         $row = new CompanyTable;
@@ -126,7 +126,7 @@ class Company extends DefaultModel
      */
     public function _buildQuery()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
 
@@ -285,7 +285,7 @@ class Company extends DefaultModel
      */
     public function getCompanies($id = null, $type = null, $user = null, $team = null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $this->_id = $id;
         $this->_type = $type;
         $this->_user = $user;
@@ -375,7 +375,7 @@ class Company extends DefaultModel
 
     public function getCompany($id = null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $id = $id ? $id : $app->input->get('id');
 
         if ($id > 0) {
@@ -453,7 +453,7 @@ class Company extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //determine view so we set correct states
         $view = $app->input->get('view');

@@ -19,7 +19,7 @@ class TranscriptlistsHelper
 {
     public static function getRooms($associationId=null,$associationType=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $autoId = $app->input->get('id') ? $app->input->get('id') : $app->input->get('association_id');
         $autoType = $app->input->get('layout') ? $app->input->get('layout') : $app->input->get('association_type');
@@ -27,7 +27,7 @@ class TranscriptlistsHelper
         $associationId = $associationId ? $associationId : $autoId;
         $associationType = $associationType ? $associationType : $autoType;
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("id,name")
@@ -45,11 +45,11 @@ class TranscriptlistsHelper
 
     public static function getTranscripts($roomId=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $roomId = $roomId ? $roomId : $app->input->get('room_id');
 
-        $db = \Cobalt\Container::get('db');
+        $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $query->select("t.*,r.name AS room_name")

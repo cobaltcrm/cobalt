@@ -41,7 +41,7 @@ class Event extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $this->view = $app->input->get('view');
         $this->layout = $app->input->get('layout','list');
 
@@ -55,7 +55,7 @@ class Event extends DefaultModel
     public function store($data = null)
     {
 
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $db = JFactory::getDBO();
 
         //Load Tables
@@ -192,7 +192,7 @@ class Event extends DefaultModel
      */
     public function getEvents($loc=null,$user=null,$association=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
         $loc = $loc ? $loc : $this->loc;
 
         $db = JFactory::getDBO();
@@ -808,7 +808,7 @@ class Event extends DefaultModel
      */
     public function getEvent($id=null,$formatTime=true)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //db
         $db = JFactory::getDBO();
@@ -1119,7 +1119,7 @@ class Event extends DefaultModel
      */
     public function removeEvent($id=null,$type=null)
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         $type = ( $type == null ) ? $app->input->get('type') : $type;
         $date = $app->input->get('date');
@@ -1287,7 +1287,7 @@ class Event extends DefaultModel
      */
     public function markComplete()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Determine if we are editing a series of events of a single event
         $event_id = $app->input->get('event_id');
@@ -1371,7 +1371,7 @@ class Event extends DefaultModel
      */
     public function markIncomplete()
     {
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //Determine if we are editing a series of events of a single event
         $event_id = $app->input->get('event_id');
@@ -1394,7 +1394,7 @@ class Event extends DefaultModel
      */
     public function postponeEvent($days=null,$event_id=null)
     {
-            $app = \Cobalt\Container::get('app');
+            $app = \Cobalt\Container::fetch('app');
 
             $event_id = ( $event_id == null ) ? $app->input->get('event_id') : $event_id;
             $days = ( $days == null ) ? $app->input->get("days") : $days;
@@ -1441,7 +1441,7 @@ class Event extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::get('app');
+        $app = \Cobalt\Container::fetch('app');
 
         //determine view so we set correct states
         $view = $this->view;

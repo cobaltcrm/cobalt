@@ -77,7 +77,7 @@ class AbstractTable implements \IteratorAggregate
             $this->tableName = $table;
         }
 
-        $this->db          = $db ?: Container::get('db');
+        $this->db          = $db ?: Container::fetch('db');
         $this->tableFields = new \stdClass;
 
         // Set the key to be an array.
