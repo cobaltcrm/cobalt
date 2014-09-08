@@ -60,6 +60,7 @@ class Deal extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
         $this->_view = $this->app->input->get('view');
         $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
+        $this->_user_id = $app->getUser()->get('id');
     }
 
     /**
@@ -688,15 +689,18 @@ class Deal extends DefaultModel
             //
             if ($this->ordering) {
                 $query->order($this->ordering);
-            } elseif ($view == "deals") {
-                $orderString = $this->getState('Deal.filter_order') . " " . (String)$this->getState('Deal.filter_order_Dir');
-                $query->order($orderString);
-            } else
+            }
             //reports view
-            if ($view == "reports") {
-                $query->order($this->getState('Deal.'.$layout.'_filter_order') . ' ' . $this->getState('Deal.'.$layout.'_filter_order_Dir'));
-            } else {
-                $query->order("d.amount DESC");
+            if ($view == "reports")
+            {
+                $order = $this->getState('Deal.'.$layout.'_filter_order');
+                $dir = $this->getState('Deal.'.$layout.'_filter_order_Dir');
+                $query->order($order . ' ' . $dir);
+            }
+            else
+            {
+                $orderString = $this->getState('Deal.filter_order', 'd.name') . " " . $this->getState('Deal.filter_order_Dir', 'asc');
+                $query->order($orderString);
             }
 
         }
@@ -1202,7 +1206,7 @@ class Deal extends DefaultModel
                 break;
             break;
 
-            case "deals" :
+            default :
                 //set defaults
                 $filter_order = $this->app->getUserStateFromRequest('Deal.filter_order','filter_order','d.name');
                 $filter_order_Dir = $this->app->getUserStateFromRequest('Deal.filter_order_Dir','filter_order_Dir','asc');
@@ -1293,14 +1297,14 @@ class Deal extends DefaultModel
     {
         $columns = array();
         $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
-        $columns[] = array('data' => 'name');
-        $columns[] = array('data' => 'company_name');
-        $columns[] = array('data' => 'amount');
-        $columns[] = array('data' => 'status_name');
-        $columns[] = array('data' => 'stage_name');
-        $columns[] = array('data' => 'source_name');
-        $columns[] = array('data' => 'expected_close');
-        $columns[] = array('data' => 'actual_close');
+        $columns[] = array('data' => 'name', 'ordering' => 'd.name');
+        $columns[] = array('data' => 'company_name', 'ordering' => 'c.name');
+        $columns[] = array('data' => 'amount', 'ordering' => 'd.amount');
+        $columns[] = array('data' => 'status_name', 'ordering' => 'd.status_id');
+        $columns[] = array('data' => 'stage_name', 'ordering' => 'd.stage_id');
+        $columns[] = array('data' => 'source_name', 'ordering' => 'd.source_id');
+        $columns[] = array('data' => 'expected_close', 'ordering' => 'd.expected_close');
+        $columns[] = array('data' => 'actual_close', 'ordering' => 'd.actual_close');
         $columns[] = array('data' => 'action', 'orderable' => false);
 
         return $columns;
@@ -1338,7 +1342,7 @@ class Deal extends DefaultModel
             case 'name':
                 $template = '<a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$item->id).'">'.$item->name.'</a>';
                 break;
-            case 'company':
+            case 'company_name':
                 $template = '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$item->company_id).'">'.$item->company_name.'</a>';
                 break;
             case 'amount':
