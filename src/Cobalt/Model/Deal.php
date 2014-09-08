@@ -11,7 +11,10 @@
 namespace Cobalt\Model;
 
 use Joomla\Registry\Registry;
+use Joomla\Filter\OutputFilter;
 use Cobalt\Table\DealTable;
+use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\ConfigHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
@@ -1289,7 +1292,7 @@ class Deal extends DefaultModel
     public function getDataTableColumns()
     {
         $columns = array();
-        $columns[] = array('data' => 'id');
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
         $columns[] = array('data' => 'name');
         $columns[] = array('data' => 'company_name');
         $columns[] = array('data' => 'amount');
@@ -1298,7 +1301,7 @@ class Deal extends DefaultModel
         $columns[] = array('data' => 'source_name');
         $columns[] = array('data' => 'expected_close');
         $columns[] = array('data' => 'actual_close');
-        $columns[] = array('data' => 'action');
+        $columns[] = array('data' => 'action', 'orderable' => false);
 
         return $columns;
     }
@@ -1315,20 +1318,126 @@ class Deal extends DefaultModel
 
             foreach ($columns as $column)
             {
-                if (isset($item->{$column['data']}))
-                {
-                    $tableItem->{$column['data']} = $item->{$column['data']};
-                }
-                else
-                {
-                    $tableItem->{$column['data']} = '';
-                }
+                $tableItem->{$column['data']} = $this->getDataTableFieldTemplate($column['data'], $item);
             }
 
             $tableItems[] = $tableItem;
         }
 
         return $tableItems;
+    }
+
+    public function getDataTableFieldTemplate($column, $item)
+    {
+
+        switch ($column)
+        {
+            case 'id':
+                $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
+                break;
+            case 'name':
+                $template = '<a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$item->id).'">'.$item->name.'</a>';
+                break;
+            case 'company':
+                $template = '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$item->company_id).'">'.$item->company_name.'</a>';
+                break;
+            case 'amount':
+                $template = ConfigHelper::getCurrency().$item->amount;
+                break;
+            case 'status_name':
+                $statuses = DealHelper::getStatuses(null, true);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_status_'.$item->id.'_link">';
+                $template .= '  <span class="deal-status-'.$item->status_name.'">'.$item->status_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_status_'.$item->id.'" role="menu">';
+
+                if (isset($statuses) && count($statuses))
+                {
+                    foreach ($statuses as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="status_select dropdown_item" data-field="status_id" data-item="deal" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="deal-status-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'stage_name':
+                $stages = DealHelper::getStages(null, true);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_stage_'.$item->id.'_link">';
+                $template .= '  <span class="deal-stage-'.$item->stage_name.'">'.$item->stage_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_stage_'.$item->id.'" role="menu">';
+
+                if (isset($stages) && count($stages))
+                {
+                    foreach ($stages as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="stage_select dropdown_item" data-field="stage_id" data-item="deal" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="deal-stage-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'source_name':
+                $sources = DealHelper::getSources(null, true);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_source_'.$item->id.'_link">';
+                $template .= '  <span class="deal-source-'.$item->source_name.'">'.$item->source_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_source_'.$item->id.'" role="menu">';
+
+                if (isset($sources) && count($sources))
+                {
+                    foreach ($sources as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="source_select dropdown_item" data-field="source_id" data-item="deal" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="deal-source-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'action':
+                $template = '<div class="btn-group">';
+                $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="showDealContactsDialogModal('.$item->id.');"><i class="glyphicon glyphicon-user"></i></a>';
+                $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(\'.deal->id.\',\'deal\');"><i class="glyphicon glyphicon-file"></i></a>';
+                $template .= ' <a data-toggle="popover" title="'.TextHelper::_('COBALT_VIEW_DETAILS').'" data-placement="top" data-html="true" data-content-class="extras-'.$item->id.'" class="btn" href="#" tabindex="0"><i class="glyphicon glyphicon-info-sign"></i></a>';
+                $template .= '</div>';
+                $template .= '<div class="extras-'.$item->id.' hide">';
+                $template .= ' <b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>';
+                $template .= ' <a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$item->primary_contact_id).'">'.$item->primary_contact_first_name.'</a><br>';
+                $template .= ' <b>'.TextHelper::_('COBALT_NEXT_ACTION').'</b><br>';
+                $template .= '</div>';
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
     }
 
 }

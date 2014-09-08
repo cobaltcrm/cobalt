@@ -17,7 +17,7 @@ var Cobalt = {
                 html : true,
                 container: "body",
                 content: function() {
-                    var contentClass = popover.attr('data-conent-class');
+                    var contentClass = popover.attr('data-content-class');
                     if (contentClass) {
                         return $('.'+contentClass).html();
                     }
@@ -69,7 +69,10 @@ var Cobalt = {
         var options = {
             'processing': true,
             'serverSide': true,
-            'ajax': 'index.php?format=raw&task=datatable&loc='+loc
+            'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
+            'fnDrawCallback': function(oSettings) {
+                Cobalt.bindPopovers();
+            }
         };
 
         if (typeof dataTableColumns === 'object') {
