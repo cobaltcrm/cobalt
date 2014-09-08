@@ -8,32 +8,32 @@ $(document).ready(function(){
 	/* Initiate tooltips */
 	$("[data-toggle=tooltip]").tooltip();
 
-	/** Validate database credentials **/
-	$("#dbHost,#dbUser,#dbPass,#dbName").bind("change",function(){
-		if ( validateDbTo != null )
-			clearTimeout(validateDbTo);
-		validateDbTo = setTimeout(function(){validateDb();},500);
-	});
+    $('#rootwizard').bootstrapWizard({
+        onTabClick: function(tab, navigation, index) {
+            return false;
+        },
+        onNext: function(tab, navigation, index) {
+            switch (index) {
+                case 2:
+                    return validateSite();
+                    break;
+                case 3:
+                    if (!db) {
+                        validateDb();
+                    }
+                    return db;
+                    break;
+            }
+        },
+        'nextSelector': '.btn-next',
+        'previousSelector': '.btn-danger'
+    });
 
-	/** Hide past shown tooltips **/
-	$("[data-toggle='tab']").on('click',function(){
-		$("[rel=tooltip]").tooltip('hide');
-	});
+    $('#lang').change(function(){
+        var url = window.location.href.split('?')[0] + '?lang=' + $('#lang').val();
+        document.location.href = url;
+    });
 
-	/** Install button action **/
-	$('#install-cobalt').click(function(e) {
-		e.preventDefault();
-		install();
-	});
-
-	$('a[data-toggle="tab"]').click(function(e) {
-		e.preventDefault();
-		var tab = $(this).attr('data-showtab');
-		showTab(tab);
-	});
-
-
-    $('ul.nav-tabs a:first').tab('show');
 
 	/** Comment for production! **/
 	// prefill();
@@ -73,12 +73,6 @@ function validateSite(){
 		valid = false;
 	}
 
-	site = valid;
-
-    if ( !valid && !$('#site').hasClass('active') ) {
-        showTab('site');
-    }
-
 	return valid;
 }
 
@@ -105,10 +99,8 @@ function validateAdmin(){
 		}
 	});
 
-	admin = valid;
-
-    if ( !valid && !$('#admin').hasClass('active') ) {
-        showTab('admin');
+    if (valid) {
+        $('#install-form').submit();
     }
 
 	return valid;
@@ -117,15 +109,7 @@ function validateAdmin(){
 
 function validateDb(){
 
-	var valid = false;
-
-	if ( !$("#database").is(":visible") ) {
-		setTimeout(function(){validateDb();},500);
-
-		valid = false;
-
-	} else {
-
+        var valid = true;
 		var obj = {};
 
 		obj['host'] = $("#dbHost").val();
@@ -133,12 +117,11 @@ function validateDb(){
 		obj['pass'] = $("#dbPass").val();
 		obj['name'] = $("#dbName").val();
 
-		valid = true;
-
 		$.each(obj,function(key,value){
 			if ( key != "pass" && ( value == "" || value == null ) ){
-				valid = false;
 				$("#db"+ucwords(key)).tooltip('show');
+                valid = false;
+                db = false;
 			}else{
 				$("#db"+ucwords(key)).tooltip('hide');
 			}
@@ -156,27 +139,15 @@ function validateDb(){
 					$("#db-ajax").css('visibility','hidden');
 					if ( data.valid ){
 						$("#database-validation-message").empty().append("<div class='alert alert-success'>Everything checks out!</div>");
+                        db = true;
+                        $('a.btn-next').click();
 					}else{
 						$("#database-validation-message").empty().append("<div class='alert alert-danger'>There appears to be a problem! <b>"+data.error+"</b></div>");
+                        db = false;
 					}
 				}
 			})
 		}
-
-	}
-
-	db = valid;
-
-    if ( !valid && !$('#database').hasClass('active') ) {
-        showTab('database');
-    }
-
-	return valid;
-}
-
-function showTab(tab){
-	$("[rel=tooltip]").tooltip('hide');
-	$('a[href="#'+tab+'"]').tab('show');
 }
 
 function ucwords (str) {
@@ -184,16 +155,4 @@ function ucwords (str) {
     return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
         return $1.toUpperCase();
     });
-}
-
-function install() {
-    if ( validateSite() ){
-        if ( db ) {
-            if ( validateAdmin() ) {
-                $("#install-form").submit();
-            }
-        } else {
-            validateDb();
-        }
-    }
 }

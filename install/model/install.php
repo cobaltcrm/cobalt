@@ -21,11 +21,162 @@ class crmModelInstall
     protected $options = null;
     protected $db = null;
     protected $admin = null;
+    /**
+     * List of Drivers according installation SQL
+     *
+     * @var array
+     */
+    protected $pdoDrivers = array('sqlsrv', 'pgsql', 'mysql');
 
+    /**
+     * Gets PHP options.
+     *
+     * @return	array  Array of PHP config options
+     */
+    public function getPhpOptions()
+    {
+        $options = array();
+
+        // Check the PHP Version.
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_PHP_VERSION') . ' >= 5.3.10';
+        $option->state  = version_compare(PHP_VERSION, '5.3.10', '>=');
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for magic quotes gpc.
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_MAGIC_QUOTES_GPC');
+        $option->state  = (ini_get('magic_quotes_gpc') == false);
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for register globals.
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_REGISTER_GLOBALS');
+        $option->state  = (ini_get('register_globals') == false);
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for zlib support.
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_ZLIB_COMPRESSION_SUPPORT');
+        $option->state  = extension_loaded('zlib');
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for XML support.
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_XML_SUPPORT');
+        $option->state  = extension_loaded('xml');
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for database support.
+        // We are satisfied if there is at least one database driver available.
+        $available = array_intersect($this->pdoDrivers, PDO::getAvailableDrivers());
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_DATABASE_SUPPORT');
+        $option->label .= '<br />(' . implode(', ', $available) . ')';
+        $option->state  = count($available);
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for mbstring options.
+        if (extension_loaded('mbstring'))
+        {
+            // Check for default MB language.
+            $option = new stdClass;
+            $option->label  = JText::_('INSTL_MB_LANGUAGE_IS_DEFAULT');
+            $option->state  = (strtolower(ini_get('mbstring.language')) == 'neutral');
+            $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEMBLANGNOTDEFAULT');
+            $options[] = $option;
+
+            // Check for MB function overload.
+            $option = new stdClass;
+            $option->label  = JText::_('INSTL_MB_STRING_OVERLOAD_OFF');
+            $option->state  = (ini_get('mbstring.func_overload') == 0);
+            $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEMBSTRINGOVERLOAD');
+            $options[] = $option;
+        }
+
+        // Check for a missing native parse_ini_file implementation
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_PARSE_INI_FILE_AVAILABLE');
+        $option->state  = $this->getIniParserAvailability();
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for missing native json_encode / json_decode support
+        $option = new stdClass;
+        $option->label  = JText::_('INSTL_JSON_SUPPORT_AVAILABLE');
+        $option->state  = function_exists('json_encode') && function_exists('json_decode');
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for configuration file writable.
+        $writable = (is_writable(JPATH_CONFIGURATION . '/configuration.php')
+            || (!file_exists(JPATH_CONFIGURATION . '/configuration.php') && is_writable(JPATH_ROOT)));
+
+        $option = new stdClass;
+        $option->label  = JText::sprintf('INSTL_WRITABLE', 'configuration.php');
+        $option->state  = $writable;
+        $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEYOUCANSTILLINSTALL');
+        $options[] = $option;
+
+        return $options;
+    }
+
+    public function getIniParserAvailability()
+    {
+        $disabled_functions = ini_get('disable_functions');
+
+        if (!empty($disabled_functions))
+        {
+            // Attempt to detect them in the disable_functions black list
+            $disabled_functions = explode(',', trim($disabled_functions));
+            $number_of_disabled_functions = count($disabled_functions);
+
+            for ($i = 0; $i < $number_of_disabled_functions; $i++)
+            {
+                $disabled_functions[$i] = trim($disabled_functions[$i]);
+            }
+
+            $result = !in_array('parse_ini_string', $disabled_functions);
+        }
+        else
+        {
+            // Attempt to detect their existence; even pure PHP implementation of them will trigger a positive response, though.
+            $result = function_exists('parse_ini_string');
+        }
+
+        return $result;
+    }
+
+    /**
+     * List of PDO Drivers according with available SQL
+     *
+     * @return array
+     */
+    public function dboDrivers()
+    {
+        $drivers = array_intersect($this->pdoDrivers, PDO::getAvailableDrivers());
+        if (empty($drivers)) {
+            $drivers = $this->pdoDrivers;
+        }
+
+        return $drivers;
+    }
+
+    /**
+     * Run Install Process
+     *
+     * @return bool
+     */
     public function install()
     {
         $app = JFactory::getApplication();
-        $app->getSession()->set('error', null);
+        JSession::getInstance('none', array())->set('error', null);
         $input = $app->input;
 
         $postData = array(
@@ -48,7 +199,7 @@ class crmModelInstall
             $check[] = '';
         }
         if (empty($check) || count($check) < count($postData)) {
-            $this->setError('Please check if you have completed the required values!');
+            $this->setError(JText::_('INSTL_CHECK_REQUIRED_FIELDS'));
             return false;
         }
 
@@ -86,7 +237,7 @@ class crmModelInstall
         $content = $this->config->toString('php',array('class' => 'JConfig'));
         if ( !JFile::write($file, $content) )
         {
-            $this->setError('There was an error creating the configuration.php file. Please check your permissions for directory '.JPATH_BASE);
+            $this->setError(JText::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
 
             return false;
         }
@@ -94,7 +245,7 @@ class crmModelInstall
         //populate database
         if ( !$this->createDb() )
         {
-            $this->setError('There was an error creating the required database. Please review your ');
+            $this->setError(JText::_('INSTL_ERROR_IMPORT_DATABASE'));
 
             return false;
         }
@@ -102,7 +253,7 @@ class crmModelInstall
         //populate crm
         if ( !$this->createCrm() )
         {
-            $this->setError('There was a problem creating the CRM database. Please review your database settings.');
+            $this->setError(JText::_('INSTL_ERROR_IMPORT_DATABASE'));
 
             return false;
         }
@@ -118,7 +269,7 @@ class crmModelInstall
 
         if ( !$this->createAdmin($admin) )
         {
-            $this->setError('There was a problem creating the CRM administrator user. Please review your database settings.');
+            $this->setError(JText::_('INSTL_ERROR_CREATE_USER'));
 
             return false;
         }
@@ -127,7 +278,7 @@ class crmModelInstall
         //TODO: needs to check if writable
         if ( !rename(JPATH_INSTALLATION,JPATH_BASE."/_install") )
         {
-            $this->setError('There was a problem removing the CRM installation folder. Please remove the folder named "install" or optionally rename it.');
+            $this->setError(JText::_('INSTL_ERROR_RENAME_FOLDER'));
 
             return false;
         }
@@ -439,7 +590,7 @@ class crmModelInstall
             session_start();
         }
 
-        JFactory::getApplication()->getSession()->set('error', $this->error);
+        JSession::getInstance('none', array())->set('error', $this->error);
     }
 
     public function getError()

@@ -11,6 +11,10 @@ class crmApplication extends JApplicationWeb
 
         $this->error = $this->session->get('error');
 
+        $language = $this->input->getCmd('lang','en-GB');
+        JFactory::getLanguage()->load('cobalt', JPATH_INSTALLATION, $language);
+        JFactory::getLanguage()->setDefault($language);
+
         $controller = $this->input->getCmd('c');
         $method = $this->input->getCmd('m');
 
@@ -22,6 +26,11 @@ class crmApplication extends JApplicationWeb
             }
             $instance->$method();
         } else {
+            $model = new crmModelInstall();
+            $this->getPhpOptions = $model->getPhpOptions();
+            $this->dboDrivers = $model->dboDrivers();
+            $this->availableLanguages = JFactory::getLanguage()->getKnownLanguages(JPATH_INSTALLATION);
+
             include_once JPATH_INSTALLATION.'/view/default.php';
         }
     }
