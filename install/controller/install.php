@@ -18,6 +18,7 @@ class crmControllerInstall
         $model = new crmModelInstall;
 
         $db_name = $input->getCmd('name');
+        $db_driver = $input->getCmd('db_drive');
 
         if (empty($db_name)) {
             $r['error'] = 'Please fill database name';
@@ -52,7 +53,7 @@ class crmControllerInstall
 
         if ( !$model->install() )
         {
-            JFactory::getApplication()->getSession()->set('error', $model->getError());
+            JSession::getInstance('none', array())->set('error', $model->getError());
             header('Location: '.JUri::base());
         }
 
