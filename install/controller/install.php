@@ -49,6 +49,9 @@ class crmControllerInstall
     /** Install application **/
     public function install()
     {
+        //prevent display error for install
+        ini_set('display_errors', 0);
+
         $model = new crmModelInstall();
 
         if ( !$model->install() )
