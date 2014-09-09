@@ -52,6 +52,15 @@ final class Application extends AbstractWebApplication
      */
     protected $dispatcher;
 
+	/**
+	 * A session object.
+	 *
+	 * @var    Session
+	 * @since  1.0
+	 * @note   This has been created to avoid a conflict with the $session member var from the parent class.
+	 */
+	private $cSession = null;
+
     /**
      * Currently active template
      * @var object
@@ -251,7 +260,29 @@ final class Application extends AbstractWebApplication
      */
     public function getSession()
     {
-        return $this->getContainer()->fetch('session');
+	    if (is_null($this->cSession))
+	    {
+		    $config = $this->getContainer()->get('config');
+
+            if ($config->get('session', true) !== false)
+            {
+                $this->cSession = new Session;
+
+                $this->cSession->start();
+
+                $registry = $this->cSession->get('registry');
+
+                if (is_null($registry))
+                {
+                    $this->cSession->set('registry', new Registry('session'));
+                }
+
+                // @TODO Remove JFactory
+                JFactory::$session = $this->cSession;
+            }
+	    }
+
+	    return $this->cSession;
     }
 
     /**
