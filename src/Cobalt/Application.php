@@ -118,23 +118,30 @@ final class Application extends AbstractWebApplication
 	/**
 	 * Application constructor
 	 *
-	 * @param   Container  $container  DI Container
-	 *
 	 * @since   1.0
 	 */
-	public function __construct(Container $container)
+	public function __construct()
     {
-	    $this->setContainer($container);
-
         parent::__construct();
 
+	    $container = Container::getInstance();
+
+	    $container
+	        ->registerServiceProvider(new Provider\ApplicationServiceProvider($this))
+	        ->registerServiceProvider(new Provider\ConfigServiceProvider)
+	        ->registerServiceProvider(new Provider\DatabaseServiceProvider);
+
         // Setup the application pieces.
+	    $this->setContainer($container);
         $this->loadConfiguration();
         $this->loadDispatcher();
         $this->loadDocument();
 
         // Load the library language file
         $this->getLanguage()->load('lib_joomla', JPATH_BASE);
+
+	    // TODO - NO MORE JFACTORY
+	    JFactory::$application = $this;
     }
 
     /**
@@ -286,58 +293,6 @@ final class Application extends AbstractWebApplication
     }
 
     /**
-     * Checks the user session.
-     *
-     * If the session record doesn't exist, initialise it.
-     * If session is new, create session variables
-     *
-     * @return void
-     *
-     * @since   11.1
-     */
-    public function checkSession()
-    {
-        $db = $this->getContainer()->get('db');
-        $session = $this->getSession();
-        $user = $this->getUser();
-
-        $query = $db->getQuery(true)
-            ->select($db->quoteName('session_id'))
-            ->from($db->quoteName('#__session'))
-            ->where($db->quoteName('session_id') . ' = ' . $db->quote($session->getId()));
-
-        $db->setQuery($query, 0, 1);
-        $exists = $db->loadResult();
-
-        // If the session record doesn't exist initialise it.
-        if (!$exists)
-        {
-            $sessionData = new \stdClass;
-            $sessionData->session_id = $session->getId();
-            $sessionData->client_id = (int) $this->getClientId();
-            $sessionData->time = (int) time();
-
-            if ($session->get('session.timer.start'))
-            {
-                $sessionData->guest = (int) $user->get('guest');
-                $sessionData->time = (int) $session->get('session.timer.start');
-                $sessionData->userid = (int) $user->get('id');
-                $sessionData->username = $user->get('username');
-            }
-
-            // If the insert failed, exit the application.
-            try
-            {
-                $db->insertObject('#__session', $sessionData, 'session_id');
-            }
-            catch (RuntimeException $e)
-            {
-                die($e->getMessage());
-            }
-        }
-    }
-
-    /**
      * Clear session + database session row
      *
      * @return boolean
@@ -346,22 +301,7 @@ final class Application extends AbstractWebApplication
      */
     public function clearSession()
     {
-
-        $session = $this->getSession();
-
-        $user = $this->getUser();
-
-        if ($user->id)
-        {
-            $db = $db = $this->getContainer()->get('db');
-            $query = $db->getQuery(true)
-                ->delete($db->quoteName('#__session'))
-                ->where($db->quoteName('userid') . ' = ' . (int) $user->id)
-                ->where($db->quoteName('client_id') . ' = ' . (int) $user->client_id);
-            $db->setQuery($query)->execute();
-        }
-
-        $session->clear();
+        $this->getSession()->clear();
     }
 
 

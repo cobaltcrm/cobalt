@@ -238,20 +238,6 @@ class User extends DefaultModel
 
     }
 
-    public function updateUserSession()
-    {
-        $user = $this->app->getUser();
-        $sessionId = $this->app->getSession()->getId();
-
-        $data = new \stdClass;
-        $data->guest = $user->guest;
-        $data->username = $user->username;
-        $data->userid = (int) $user->id;
-        $data->session_id = $sessionId;
-
-        return $this->db->updateObject('#__session', $data, 'session_id');
-    }
-
     public function login($credentials, $options)
     {
         $result = $credentials;
@@ -319,11 +305,6 @@ class User extends DefaultModel
         if ($result['status'] == 1)
         {
             $this->app->setUser(new User($userInfo->id));
-
-            // Check to see the the session already exists.
-            $this->app->checkSession();
-
-            $this->updateUserSession();
 
             // Hit the user last visit field
             $this->setLastVisit($userInfo->id);
