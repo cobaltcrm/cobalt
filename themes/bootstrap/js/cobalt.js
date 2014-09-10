@@ -116,6 +116,9 @@ var Cobalt = {
         if (typeof response.remove !== 'undefined') {
             Cobalt.removeRows(response.remove);
         }
+        if (typeof response.reload !== 'undefined') {
+            setTimeout("document.location.reload(true);",response.reload);
+        }
     },
 
     sumbitModalForm: function(button) {
