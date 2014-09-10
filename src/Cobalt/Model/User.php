@@ -304,7 +304,8 @@ class User extends DefaultModel
          */
         if ($result['status'] == 1)
         {
-            $this->app->setUser(new User($userInfo->id));
+            $this->load($userInfo->id);
+            // $this->app->setUser($this);
 
             // Hit the user last visit field
             $this->setLastVisit($userInfo->id);

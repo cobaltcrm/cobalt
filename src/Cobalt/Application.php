@@ -107,6 +107,9 @@ final class Application extends AbstractWebApplication
      */
     protected $messageQueue = array();
 
+    protected $users = array();
+    protected $user = null;
+
     /**
      * The Language object
      *
@@ -129,7 +132,8 @@ final class Application extends AbstractWebApplication
 	    $container
 	        ->registerServiceProvider(new Provider\ApplicationServiceProvider($this))
 	        ->registerServiceProvider(new Provider\ConfigServiceProvider)
-	        ->registerServiceProvider(new Provider\DatabaseServiceProvider);
+	        ->registerServiceProvider(new Provider\DatabaseServiceProvider)
+            ->registerServiceProvider(new Provider\SessionServiceProvider);
 
         // Setup the application pieces.
 	    $this->setContainer($container);
@@ -269,27 +273,10 @@ final class Application extends AbstractWebApplication
     {
 	    if (is_null($this->cSession))
 	    {
-		    $config = $this->getContainer()->get('config');
-
-            if ($config->get('session', true) !== false)
-            {
-                $this->cSession = new Session;
-
-                $this->cSession->start();
-
-                $registry = $this->cSession->get('registry');
-
-                if (is_null($registry))
-                {
-                    $this->cSession->set('registry', new Registry('session'));
-                }
-
-                // @TODO Remove JFactory
-                JFactory::$session = $this->cSession;
-            }
+    		$this->cSession = $this->getContainer()->fetch('session');
 	    }
-
-	    return $this->cSession;
+        
+        return $this->cSession;
     }
 
     /**
@@ -436,10 +423,18 @@ final class Application extends AbstractWebApplication
         // Set the access control action to check.
         $options['action'] = 'core.login.site';
 
-        $user = new User;
+        $user = $this->getUser();
+
+        if ($user->get('id'))
+        {
+            // user is already logged in
+            $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
+        }
 
         if ($user->login($credentials, $options))
         {
+            $this->setUser($user);
+
             $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
         }
         else
@@ -792,10 +787,11 @@ final class Application extends AbstractWebApplication
 
             $this->user = $user;
         }
+        $session = $this->getContainer($user)->fetch('session');
 
-        $this->getSession()->set('user', $user);
+        $this->user = $session->set('user', $this->user->get('id'));
 
-        return $this;
+        return $this->user;
     }
 
     /**
@@ -809,16 +805,17 @@ final class Application extends AbstractWebApplication
      */
     public function getUser($id = 0)
     {
-        if ($id)
+        if (isset($this->users[$id]))
         {
-            return new User($id);
+            $this->users[$id] = new User($id);
+            return $this->users[$id];
         }
 
-        if (!isset($this->user) || is_null($this->user))
+        if (is_null($this->user))
         {
             if ($sessionUser = $this->getSession()->get('user'))
             {
-                $this->user = $sessionUser;
+                $this->user = new User($sessionUser);
             }
             else
             {
