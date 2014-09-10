@@ -52,7 +52,7 @@ class Datatable extends DefaultController
         {
             $value    = $searchArray['value'];
 
-            $this->input->set('deal_name', $value);
+            $this->input->set(strtolower($loc) . '_name', $value);
         }
 
         $response   = new \stdClass;
