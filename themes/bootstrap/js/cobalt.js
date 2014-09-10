@@ -69,6 +69,8 @@ var Cobalt = {
         var options = {
             'processing': true,
             'serverSide': true,
+            'bFilter': false,
+            'bLengthChange': false,
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
