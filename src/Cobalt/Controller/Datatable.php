@@ -33,6 +33,7 @@ class Datatable extends DefaultController
         $model->populateState();
         $layout     = $this->input->getString('layout', '');
         $orderArray = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
+        $searchArray = $this->input->get('search', array('value' => '', 'regex' => false), 'ARRAY');
         $columns    = $model->getDataTableColumns();
 
         if (isset($columns[$orderArray[0]['column']]['ordering']))
@@ -45,6 +46,13 @@ class Datatable extends DefaultController
         {
             $dir    = $orderArray[0]['dir'];
             $this->input->set('filter_order_Dir', $dir);
+        }
+
+        if (isset($searchArray['value']))
+        {
+            $value    = $searchArray['value'];
+
+            $this->input->set(strtolower($loc) . '_name', $value);
         }
 
         $response   = new \stdClass;
