@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <meta charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="<?php echo $this->config->get('uri.base.path'); ?>assets/bootstrap/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="<?php echo $this->config->get('uri.base.path'); ?>assets/jasny/css/jasny-bootstrap.min.css"/>
     <link rel="stylesheet" href="<?php echo $this->config->get('uri.base.path'); ?>assets/installer/css/install.css" type="text/css"/>
@@ -39,7 +39,7 @@
 } ?>
 <div id="rootwizard" class="tabbable tabs-left">
     <form id="install-form" enctype="multipart/form-data" method="post" action="<?php echo $this->config->get('uri.base.path'); ?>index.php?c=install&m=install" class="form-horizontal" role="form">
-        <ul class="nav nav-tabs nav-justified">
+        <ul class="nav nav-tabs">
             <li><a href="#installer" data-toggle="tab"><i class="icon-wrench"></i> <?php echo JText::_('INSTL_TAB_SETTINGS'); ?></a></li>
             <li><a href="#site" data-toggle="tab" class="active"><i class="icon-home"></i> <?php echo JText::_('INSTL_TAB_SITE'); ?></a></li>
             <li><a href="#database" data-toggle="tab" ><i class="icon-hdd"></i> <?php echo JText::_('INSTL_TAB_DATABASE'); ?></a></li>
@@ -60,14 +60,14 @@
                 </div>
                 <h2><?php echo JText::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_TITLE'); ?></h2>
                 <table class="table table-striped">
-                    <?php foreach ($this->getPhpOptions as $phpOption): ?>
+                    <?php $canInstall = true; foreach ($this->getPhpOptions as $phpOption): ?>
                         <tr>
                             <td><?php echo $phpOption->label; ?></td>
                             <td>
                                 <?php if ($phpOption->state): ?>
-                                    <span class="label label-success"><?php echo JText::_('INSTL_YES'); ?></span>
-                                <?php else: ?>
-                                    <span class="label label-danger"><?php echo JText::_('INSTL_NO'); ?></span>
+                                    <span <?php if (!empty($phpOption->notice)): ?> data-placement="right" data-toggle="tooltip" title="<?php echo $phpOption->notice; ?>" <?php endif; ?> class="label label-success"><?php echo JText::_('INSTL_YES'); ?></span>
+                                <?php else: $canInstall = false; ?>
+                                    <span <?php if (!empty($phpOption->notice)): ?> data-placement="right" data-toggle="tooltip" title="<?php echo $phpOption->notice; ?>" <?php endif; ?> class="label label-danger"><?php echo JText::_('INSTL_NO'); ?></span>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -75,7 +75,11 @@
                 </table>
                 <br />
                 <div class="pull-right">
-                    <a href="#site" data-toggle="tab" data-showtab="site" class="btn btn-success btn-next"><?php echo JText::_('INSTL_NEXT'); ?> <i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <?php if ($canInstall): ?>
+                        <a href="#site" data-toggle="tab" data-showtab="site" class="btn btn-success btn-next"><?php echo JText::_('INSTL_NEXT'); ?> <i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <?php else: ?>
+                        <a href="" class="btn btn-primary"><?php echo JText::_('INSTL_BTN_CHECK_SETTINGS'); ?> <i class="glyphicon glyphicon-refresh"></i></a>
+                    <?php endif; ?>
                 </div>
                 <div class="clearfix"></div>
             </div>

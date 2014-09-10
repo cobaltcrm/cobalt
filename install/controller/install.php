@@ -26,7 +26,7 @@ class crmControllerInstall
         } else {
             //Testing connection
             try {
-                $db = $model->getDbo('mysqli',$input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'), $db_name, '', false);
+                $db = $model->getDbo($db_driver,$input->getCmd('host'), $input->getUsername('user'), $input->getString('pass'), $db_name, '', false);
                 $db->connect();
                 if (!$db->connected()) {
                     $r['error'] = 'Cant connect with you database';
@@ -49,6 +49,9 @@ class crmControllerInstall
     /** Install application **/
     public function install()
     {
+        //prevent display error for install
+        ini_set('display_errors', 0);
+
         $model = new crmModelInstall();
 
         if ( !$model->install() )

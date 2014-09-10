@@ -121,7 +121,7 @@ class crmModelInstall
         $option = new stdClass;
         $option->label  = JText::sprintf('INSTL_WRITABLE', 'configuration.php');
         $option->state  = $writable;
-        $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEYOUCANSTILLINSTALL');
+        $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEYOUCANTINSTALL');
         $options[] = $option;
 
         return $options;
@@ -180,6 +180,7 @@ class crmModelInstall
         $input = $app->input;
 
         $postData = array(
+            'db_driver' => $input->getCmd('db_driver','mysql'),
             'site_name' => $input->getString('site_name'),
             'database_host' => $input->getCmd('database_host'),
             'database_user' => $input->getUsername('database_user'),
@@ -203,6 +204,10 @@ class crmModelInstall
             return false;
         }
 
+        //uploading image
+        //JFile::upload($_FILES['logo'],);
+
+
         $logPath = JPATH_BASE."/logs";
         $tmpPath = JPATH_BASE."/tmp";
 
@@ -215,7 +220,7 @@ class crmModelInstall
         $this->config->set("password",$postData['database_password']);
         $this->config->set("db",$postData['database_name']);
         $this->config->set("dbprefix",$postData['database_prefix']);
-        $this->config->set("dbtype","mysqli");
+        $this->config->set("dbtype", $postData['db_driver']);
         $this->config->set("mailfrom",$postData['email']);
         $this->config->set("fromname",$postData['first_name'].' '.$postData['last_name']);
         $this->config->set("sendmail","/usr/sbin/sendmail");
@@ -332,7 +337,7 @@ class crmModelInstall
 
         //create database
         try {
-            $db = $this->getDbo('mysqli',$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
+            $db = $this->getDbo($this->config->get('dbtype'),$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
             $db->setQuery(sprintf('CREATE DATABASE IF NOT EXISTS %s;',$this->options['database']));
             $db->loadResult();
         } catch (\Exception $e) {
@@ -490,31 +495,6 @@ class crmModelInstall
     public function getOptions()
     {
         return $this->options;
-    }
-
-    public function getRegistry()
-    {
-        $c = $this->getConfig();
-        $config = new JRegistry();
-        //set configuration settings
-        $config->set('sitename',$c->get("sitename"));
-        $config->set("host",$c->get("host"));
-        $config->set("user",$c->get("user"));
-        $config->set("password",$c->get("password"));
-        $config->set("db",$c->get("db"));
-        $config->set("dbprefix",$c->get("dbprefix"));
-        $config->set("dbtype","mysqli");
-        $config->set("mailfrom",$c->get("mailfrom"));
-        $config->set("fromname",$c->get("fromname"));
-        $config->set("sendmail","/usr/sbin/sendmail");
-        $config->set("log_path",$c->get("log_path"));
-        $config->set("tmp_path",$c->get("tmp_path"));
-        $config->set("offset","UTC");
-        $config->set("error_reporting",'maximum');
-        $config->set("debug","1");
-        $config->set("secret",$c->get("secret"));
-
-        return $config;
     }
 
     protected function _splitQueries($sql)
