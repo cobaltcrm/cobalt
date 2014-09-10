@@ -87,7 +87,8 @@ class UsersHelper
     public static function getCompanyUsers($id=null)
     {
         //filter based on current logged in user
-        $user = JFactory::getUser();
+        $app = \Cobalt\Container::fetch('app');
+        $user = $app->getUser();
         $user_role = UsersHelper::getRole();
         $results = array();
 
@@ -170,8 +171,10 @@ class UsersHelper
         $query = $db->getQuery(true);
 
         //logged in user
+        $app = \Cobalt\Container::fetch('app');
+        $user = $app->getUser();
         if (!$user_id) {
-            $user_id = JFactory::getUser()->id;
+            $user_id = $user->get('id');
         }
 
         //get id
@@ -479,8 +482,9 @@ class UsersHelper
 
         //logged in user
         if ($id == null) {
-            $user = JFactory::getUser();
-            $user_id = UsersHelper::getUserId();
+            $app = \Cobalt\Container::fetch('app');
+            $user = $app->getUser();
+            $user_id = $user->get('id');
         } else {
             $user_id = $id;
         }
@@ -510,8 +514,9 @@ class UsersHelper
         $query = $db->getQuery(true);
 
         //logged in user
-        $user = JFactory::getUser();
-        $user_id = UsersHelper::getUserId();
+        $app = \Cobalt\Container::fetch('app');
+        $user = $app->getUser();
+        $user_id = $user->get('id');
 
         //get id
         $query->select("date_format");
@@ -540,8 +545,9 @@ class UsersHelper
 
         //logged in user
         if ($id == null) {
-            $user = JFactory::getUser();
-            $user_id = UsersHelper::getUserId();
+            $app = \Cobalt\Container::fetch('app');
+            $user = $app->getUser();
+            $user_id = $user->get('id');
         } else {
             $user_id = $id;
         }
@@ -566,18 +572,23 @@ class UsersHelper
 
         //logged in user
         if ($id == null) {
-            $user = JFactory::getUser();
-            $user_id = UsersHelper::getUserId();
+            $app = \Cobalt\Container::fetch('app');
+            $user = $app->getUser();
+            $user_id = $user->get('id');
         } else {
             $user_id = $id;
         }
 
-        //get id
-        $query->select("time_zone");
-        $query->from("#__users");
-        $query->where('id='.$user_id);
+        if ($user_id)
+        {
+            $query->select("time_zone");
+            $query->from("#__users");
+            $query->where('id='.$user_id);
 
-        return $db->setQuery($query)->loadResult();
+            return $db->setQuery($query)->loadResult();
+        }
+
+        return null;
     }
 
     public static function getLoggedInUser()

@@ -45,7 +45,9 @@ class FormWizard extends DefaultModel
         $row = new FormWizardTable;
         $data = $app->input->getRequest( 'post' );
 
-        $userId = JFactory::getUser()->id;
+        $app = \Cobalt\Container::fetch('app');
+        $user = $app->getUser();
+        $userId = $user->get('id');
 
         //date generation
         $date = date('Y-m-d H:i:s');
