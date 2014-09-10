@@ -26,7 +26,7 @@ class crmModelInstall
      *
      * @var array
      */
-    protected $pdoDrivers = array('sqlsrv', 'pgsql', 'mysql');
+    protected $dbDrivers = array('mysqli', 'postgreesql', 'sqlsrv');
 
     /**
      * Gets PHP options.
@@ -74,7 +74,7 @@ class crmModelInstall
 
         // Check for database support.
         // We are satisfied if there is at least one database driver available.
-        $available = array_intersect($this->pdoDrivers, PDO::getAvailableDrivers());
+        $available = array_intersect($this->dbDrivers, JDatabaseDriver::getConnectors());
         $option = new stdClass;
         $option->label  = JText::_('INSTL_DATABASE_SUPPORT');
         $option->label .= '<br />(' . implode(', ', $available) . ')';
@@ -160,10 +160,7 @@ class crmModelInstall
      */
     public function dboDrivers()
     {
-        $drivers = array_intersect($this->pdoDrivers, PDO::getAvailableDrivers());
-        if (empty($drivers)) {
-            $drivers = $this->pdoDrivers;
-        }
+        $drivers = array_intersect($this->dbDrivers, JDatabaseDriver::getConnectors());
 
         return $drivers;
     }
@@ -180,7 +177,7 @@ class crmModelInstall
         $input = $app->input;
 
         $postData = array(
-            'db_driver' => $input->getCmd('db_driver','mysql'),
+            'db_drive' => $input->getCmd('db_drive'),
             'site_name' => $input->getString('site_name'),
             'database_host' => $input->getCmd('database_host'),
             'database_user' => $input->getUsername('database_user'),
@@ -199,24 +196,18 @@ class crmModelInstall
         if (empty($postData['database_password'])) {
             $check[] = '';
         }
+
         if (empty($check) || count($check) < count($postData)) {
             $this->setError(JText::_('INSTL_CHECK_REQUIRED_FIELDS'));
             return false;
         }
 
-        //uploading image
-        if (!empty($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
-            $allowedImageTypes = array( "image/pjpeg","image/jpeg","image/jpg","image/png","image/x-png","image/gif");
-            if (!in_array($_FILES['logo']['type'], $allowedImageTypes)) {
-                $this->setError(JText::_('INSTL_ERROR_LOGO_FILE_TYPE'));
+
+        if ($this->canUpload()) {
+            if (!$this->uploadLogo()) {
                 return false;
-            } else {
-                    if (!JFile::upload($_FILES['logo']['tmp_name'],JPATH_ROOT.'/uploads/logo/'.JFile::makeSafe($_FILES['logo']['name']))) {
-                        $this->setError(JText::_('INSTL_ERROR_UPLOAD_LOGO'));
-                    }
             }
         }
-
 
         $logPath = JPATH_BASE."/logs";
         $tmpPath = JPATH_BASE."/tmp";
@@ -230,7 +221,7 @@ class crmModelInstall
         $this->config->set("password",$postData['database_password']);
         $this->config->set("db",$postData['database_name']);
         $this->config->set("dbprefix",$postData['database_prefix']);
-        $this->config->set("dbtype", $postData['db_driver']);
+        $this->config->set("dbtype", $postData['db_drive']);
         $this->config->set("mailfrom",$postData['email']);
         $this->config->set("fromname",$postData['first_name'].' '.$postData['last_name']);
         $this->config->set("sendmail","/usr/sbin/sendmail");
@@ -300,6 +291,34 @@ class crmModelInstall
 
         return true;
 
+    }
+
+    public function canUpload()
+    {
+        if ($_FILES['logo']['error']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function uploadLogo()
+    {
+        if ($_FILES['logo']['error']) {
+            return false;
+        }
+
+        //uploading image
+        $allowedImageTypes = array( "image/pjpeg","image/jpeg","image/jpg","image/png","image/x-png","image/gif");
+        if (!in_array($_FILES['logo']['type'], $allowedImageTypes)) {
+            $this->setError(JText::_('INSTL_ERROR_LOGO_FILE_TYPE'));
+            return false;
+        } else if (!JFile::upload($_FILES['logo']['tmp_name'],JPATH_ROOT.'/uploads/logo/'.JFile::makeSafe($_FILES['logo']['name']))) {
+            $this->setError(JText::_('INSTL_ERROR_UPLOAD_LOGO'));
+            return false;
+        }
+
+        return true;
     }
 
     /**
