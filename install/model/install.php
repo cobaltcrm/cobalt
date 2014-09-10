@@ -205,7 +205,17 @@ class crmModelInstall
         }
 
         //uploading image
-        //JFile::upload($_FILES['logo'],);
+        if (!empty($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
+            $allowedImageTypes = array( "image/pjpeg","image/jpeg","image/jpg","image/png","image/x-png","image/gif");
+            if (!in_array($_FILES['logo']['type'], $allowedImageTypes)) {
+                $this->setError(JText::_('INSTL_ERROR_LOGO_FILE_TYPE'));
+                return false;
+            } else {
+                    if (!JFile::upload($_FILES['logo']['tmp_name'],JPATH_ROOT.'/uploads/logo/'.JFile::makeSafe($_FILES['logo']['name']))) {
+                        $this->setError(JText::_('INSTL_ERROR_UPLOAD_LOGO'));
+                    }
+            }
+        }
 
 
         $logPath = JPATH_BASE."/logs";
