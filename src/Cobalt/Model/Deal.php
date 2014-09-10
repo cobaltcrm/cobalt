@@ -1349,6 +1349,11 @@ class Deal extends DefaultModel
                 $template = ConfigHelper::getCurrency().$item->amount;
                 break;
             case 'status_name':
+                if (!isset($item->status_id) || !$item->status_id)
+                {
+                    $item->status_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
                 $statuses = DealHelper::getStatuses(null, true);
                 $template = '<div class="dropdown">';
                 $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_status_'.$item->id.'_link">';
@@ -1372,6 +1377,11 @@ class Deal extends DefaultModel
                 $template .= ' </div>';
                 break;
             case 'stage_name':
+                if (!isset($item->stage_id) || !$item->stage_id)
+                {
+                    $item->stage_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
                 $stages = DealHelper::getStages(null, true);
                 $template = '<div class="dropdown">';
                 $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_stage_'.$item->id.'_link">';
@@ -1395,6 +1405,11 @@ class Deal extends DefaultModel
                 $template .= ' </div>';
                 break;
             case 'source_name':
+                if (!isset($item->source_id) || !$item->source_id)
+                {
+                    $item->source_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
                 $sources = DealHelper::getSources(null, true);
                 $template = '<div class="dropdown">';
                 $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_source_'.$item->id.'_link">';
