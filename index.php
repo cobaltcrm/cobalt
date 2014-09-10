@@ -18,4 +18,5 @@ use Tracy\Debugger;
 Debugger::enable();
 
 // $container is setup in the previous require.
-$container->get('app')->execute();
+$app = new \Cobalt\Application;
+$app->execute();

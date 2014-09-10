@@ -56,23 +56,6 @@ JLoader::register('JTableUser', JPATH_ROOT . '/src/compat/JTableUser.php');
 JLoader::register('JRoute', JPATH_ROOT . '/src/compat/JRoute.php');
 JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
 
-$container = Cobalt\Container::getInstance();
-
-$container
-    ->registerServiceProvider(new \Cobalt\Provider\ConfigServiceProvider)
-    ->registerServiceProvider(new \Cobalt\Provider\DatabaseServiceProvider)
-	->registerServiceProvider(new \Cobalt\Provider\SessionServiceProvider);
-
-$container->set('app', function($c) {
-	/** @var $c \Joomla\DI\Container */
-	$app = new \Cobalt\Application($c);
-
-    // @TODO: Remove JFactory
-    JFactory::$application = $app;
-
-    return $app;
-}, true, true);
-
 // Alias the helper classes, so we don't have to add the use statement to every layout.
 $helpers = glob(JPATH_ROOT . '/src/Cobalt/Helper/*.php');
 

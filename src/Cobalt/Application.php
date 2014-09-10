@@ -52,6 +52,15 @@ final class Application extends AbstractWebApplication
      */
     protected $dispatcher;
 
+	/**
+	 * A session object.
+	 *
+	 * @var    Session
+	 * @since  1.0
+	 * @note   This has been created to avoid a conflict with the $session member var from the parent class.
+	 */
+	private $cSession = null;
+
     /**
      * Currently active template
      * @var object
@@ -98,6 +107,9 @@ final class Application extends AbstractWebApplication
      */
     protected $messageQueue = array();
 
+    protected $users = array();
+    protected $user = null;
+
     /**
      * The Language object
      *
@@ -109,23 +121,31 @@ final class Application extends AbstractWebApplication
 	/**
 	 * Application constructor
 	 *
-	 * @param   Container  $container  DI Container
-	 *
 	 * @since   1.0
 	 */
-	public function __construct(Container $container)
+	public function __construct()
     {
-	    $this->setContainer($container);
-
         parent::__construct();
 
+	    $container = Container::getInstance();
+
+	    $container
+	        ->registerServiceProvider(new Provider\ApplicationServiceProvider($this))
+	        ->registerServiceProvider(new Provider\ConfigServiceProvider)
+	        ->registerServiceProvider(new Provider\DatabaseServiceProvider)
+            ->registerServiceProvider(new Provider\SessionServiceProvider);
+
         // Setup the application pieces.
+	    $this->setContainer($container);
         $this->loadConfiguration();
         $this->loadDispatcher();
         $this->loadDocument();
 
         // Load the library language file
         $this->getLanguage()->load('lib_joomla', JPATH_BASE);
+
+	    // TODO - NO MORE JFACTORY
+	    JFactory::$application = $this;
     }
 
     /**
@@ -251,59 +271,12 @@ final class Application extends AbstractWebApplication
      */
     public function getSession()
     {
-        return $this->getContainer()->fetch('session');
-    }
-
-    /**
-     * Checks the user session.
-     *
-     * If the session record doesn't exist, initialise it.
-     * If session is new, create session variables
-     *
-     * @return void
-     *
-     * @since   11.1
-     */
-    public function checkSession()
-    {
-        $db = $this->getContainer()->get('db');
-        $session = $this->getSession();
-        $user = $this->getUser();
-
-        $query = $db->getQuery(true)
-            ->select($db->quoteName('session_id'))
-            ->from($db->quoteName('#__session'))
-            ->where($db->quoteName('session_id') . ' = ' . $db->quote($session->getId()));
-
-        $db->setQuery($query, 0, 1);
-        $exists = $db->loadResult();
-
-        // If the session record doesn't exist initialise it.
-        if (!$exists)
-        {
-            $sessionData = new \stdClass;
-            $sessionData->session_id = $session->getId();
-            $sessionData->client_id = (int) $this->getClientId();
-            $sessionData->time = (int) time();
-
-            if ($session->get('session.timer.start'))
-            {
-                $sessionData->guest = (int) $user->get('guest');
-                $sessionData->time = (int) $session->get('session.timer.start');
-                $sessionData->userid = (int) $user->get('id');
-                $sessionData->username = $user->get('username');
-            }
-
-            // If the insert failed, exit the application.
-            try
-            {
-                $db->insertObject('#__session', $sessionData, 'session_id');
-            }
-            catch (RuntimeException $e)
-            {
-                die($e->getMessage());
-            }
-        }
+	    if (is_null($this->cSession))
+	    {
+    		$this->cSession = $this->getContainer()->fetch('session');
+	    }
+        
+        return $this->cSession;
     }
 
     /**
@@ -315,22 +288,7 @@ final class Application extends AbstractWebApplication
      */
     public function clearSession()
     {
-
-        $session = $this->getSession();
-
-        $user = $this->getUser();
-
-        if ($user->id)
-        {
-            $db = $db = $this->getContainer()->get('db');
-            $query = $db->getQuery(true)
-                ->delete($db->quoteName('#__session'))
-                ->where($db->quoteName('userid') . ' = ' . (int) $user->id)
-                ->where($db->quoteName('client_id') . ' = ' . (int) $user->client_id);
-            $db->setQuery($query)->execute();
-        }
-
-        $session->clear();
+        $this->getSession()->clear();
     }
 
 
@@ -465,10 +423,18 @@ final class Application extends AbstractWebApplication
         // Set the access control action to check.
         $options['action'] = 'core.login.site';
 
-        $user = new User;
+        $user = $this->getUser();
+
+        if ($user->get('id'))
+        {
+            // user is already logged in
+            $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
+        }
 
         if ($user->login($credentials, $options))
         {
+            $this->setUser($user);
+
             $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
         }
         else
@@ -821,10 +787,11 @@ final class Application extends AbstractWebApplication
 
             $this->user = $user;
         }
+        $session = $this->getContainer($user)->fetch('session');
 
-        $this->getSession()->set('user', $user);
+        $this->user = $session->set('user', $this->user->get('id'));
 
-        return $this;
+        return $this->user;
     }
 
     /**
@@ -838,16 +805,17 @@ final class Application extends AbstractWebApplication
      */
     public function getUser($id = 0)
     {
-        if ($id)
+        if (isset($this->users[$id]))
         {
-            return new User($id);
+            $this->users[$id] = new User($id);
+            return $this->users[$id];
         }
 
-        if (!isset($this->user) || is_null($this->user))
+        if (is_null($this->user))
         {
             if ($sessionUser = $this->getSession()->get('user'))
             {
-                $this->user = $sessionUser;
+                $this->user = new User($sessionUser);
             }
             else
             {
