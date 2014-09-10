@@ -11,6 +11,7 @@ namespace Cobalt\Provider;
 use JFactory;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Registry\Registry;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -38,6 +39,13 @@ class SessionServiceProvider implements ServiceProviderInterface
 			$session = new Session;
 
 			$session->start();
+
+			$registry = $session->get('registry');
+
+            if (is_null($registry))
+            {
+                $session->set('registry', new Registry('session'));
+            }
 
 			// @TODO Remove JFactory
 			JFactory::$session = $session;
