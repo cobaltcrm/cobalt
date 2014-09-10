@@ -84,7 +84,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <?php echo TextHelper::_('COBALT_NAMED'); ?>
         </li>
         <li>
-            <input name="deal_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->deal_filter; ?>" class="form-control">
+            <input name="deal_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->deal_filter; ?>" class="form-control datatable-searchbox">
         </li>
         <li>
             <div class="ajax_loader"></div>

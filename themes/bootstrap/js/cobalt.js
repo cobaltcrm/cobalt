@@ -69,6 +69,8 @@ var Cobalt = {
         var options = {
             'processing': true,
             'serverSide': true,
+            'bFilter': false,
+            'bLengthChange': false,
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
@@ -79,7 +81,12 @@ var Cobalt = {
             options.columns = dataTableColumns;
         }
 
-        jQuery('table.data-table').dataTable(options);
+        var datatable = jQuery('table.data-table').dataTable(options);
+
+        // searchbox filter
+        jQuery('.datatable-searchbox').keyup(function() {
+            datatable.fnFilter( jQuery(this).val() );
+        });
     },
 
     initFormSave: function(options) {
