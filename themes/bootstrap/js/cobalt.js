@@ -79,7 +79,12 @@ var Cobalt = {
             options.columns = dataTableColumns;
         }
 
-        jQuery('table.data-table').dataTable(options);
+        var datatable = jQuery('table.data-table').dataTable(options);
+
+        // searchbox filter
+        jQuery('.datatable-searchbox').keyup(function() {
+            datatable.fnFilter( jQuery(this).val() );
+        });
     },
 
     initFormSave: function(options) {
