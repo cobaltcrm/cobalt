@@ -17,7 +17,7 @@ if (!defined('_JDEFINES')) {
 // composer libraries check
 if (!file_exists(JPATH_VENDOR.'/autoload.php'))
 {
-    echo 'Run composer first. Read installation istructions.';
+    echo 'Run composer first. Read installation instructions.';
     exit();
 }
 
