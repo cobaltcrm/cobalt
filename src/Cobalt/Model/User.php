@@ -27,12 +27,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class User extends DefaultModel
 {
-    /**
-     * guest == 1 ... unregistered user
-     * guest == 0 ... registered user
-     * unregistered by default
-     */
-    public $guest = 1;
 
     /**
      * Constructor
@@ -64,25 +58,12 @@ class User extends DefaultModel
         // Load the UserTable object based on the user id or throw a warning.
         if (!$table->load($id))
         {
-            // Reset to guest user
-            $this->guest = 1;
-
             $this->app->enqueueMessage(JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id), 'error');
 
             return false;
         }
 
         $this->setProperties($table->getProperties());
-
-        // The user is no longer a guest
-        if ($this->id != 0)
-        {
-            $this->guest = 0;
-        }
-        else
-        {
-            $this->guest = 1;
-        }
 
         return true;
     }
@@ -238,7 +219,11 @@ class User extends DefaultModel
 
     }
 
-    public function login($credentials, $options)
+    /**
+     * 
+     * 
+     */
+    public function authenticate($credentials, $options)
     {
         $result = $credentials;
         $result['status'] = 0;
@@ -273,12 +258,14 @@ class User extends DefaultModel
                 {
                     $authenticate = new Simple;
 
-                    if (!$authenticate->verify($credentials['password'], $userInfo->password))
+                    if ($authenticate->verify($credentials['password'], $userInfo->password))
+                    {
+                        $result['status'] = 1;
+                    }
+                    else
                     {
                         $result['messages'][] = 'COBALT_MSG_WRONG_PASSWORD';
                     }
-
-                    $result['status'] = 1;
                 }
             }
         }
@@ -304,13 +291,7 @@ class User extends DefaultModel
          */
         if ($result['status'] == 1)
         {
-            $this->load($userInfo->id);
-            // $this->app->setUser($this);
-
-            // Hit the user last visit field
-            $this->setLastVisit($userInfo->id);
-
-            return true;
+            return $userInfo->id;
         }
 
         return false;
