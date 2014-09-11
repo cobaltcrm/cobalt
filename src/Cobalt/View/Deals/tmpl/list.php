@@ -13,7 +13,7 @@ $app = JFactory::getApplication();
 ?>
 <thead>
     <tr>
-        <th class="checkbox_column"><input rel="tooltip" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" onclick="selectAll(this);" /></th>
+        <th class="checkbox_column"><input rel="tooltip" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" onclick="Cobalt.selectAll(this);" /></th>
         <th class="name" ><div class="sort_order"><a href="javascript:void(0);" class="d.name"><?php echo ucwords(TextHelper::_('COBALT_DEALS_NAME')); ?></a></div></th>
         <th class="company"><div class="sort_order"><a href="javascript:void(0);" class="c.name"><?php echo ucwords(TextHelper::_('COBALT_DEALS_COMPANY')); ?></a></div></th>
         <th class="amount" ><div class="sort_order"><a href="javascript:void(0);" class="d.amount"><?php echo ucwords(TextHelper::_('COBALT_DEALS_AMOUNT')); ?></a></div></th>

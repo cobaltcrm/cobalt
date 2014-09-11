@@ -257,22 +257,27 @@ var Cobalt = {
         });
         var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
         Cobalt.save(data);
-        // showAjaxLoader();
-        // jQuery.ajax({
-        //     type:'POST',
-        //     url:'index.php?task=trash&tmpl=component&format=raw',
-        //     data: { item_id : itemIds, item_type : loc },
-        //     dataType:'JSON',
-        //     success:function(data){
-        //         if ( data.success ){
-        //             jQuery.each(itemIds,function(key,value){
-        //                 jQuery("#list_row_"+value).remove();
-        //             });
-        //             modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'));
-        //         }
-        //         hideAjaxLoader();
-        //     }
-        // });
+    },
+
+    selectAll: function(source) {
+
+        if ( typeof source === 'object' ) {
+            checkboxes = [];
+            var rows = jQuery(source).closest('table').find('tr');
+            jQuery(rows).each(function(index, tr) {
+                var td = jQuery(tr).find('td:first');
+                var checkbox = jQuery(td).find('input:checkbox');
+                if (checkbox.length) {
+                    checkboxes.push(jQuery(checkbox));
+                }
+            });
+        } else {
+            checkboxes = jQuery('[name="ids[]"]');
+        }
+
+        jQuery(checkboxes).each(function(index, checkbox) {
+            jQuery(checkbox).prop('checked', source.checked);
+        });
     }
 };
 
