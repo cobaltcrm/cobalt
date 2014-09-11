@@ -29,3 +29,6 @@ ul.inline.filter-sentence > li {padding: 0;}
    z-index: 1050;
    top: 65px;
 }
+
+/* Hide action bar by defaut (showed in right time by JS) */
+#list_edit_actions {display: none;}

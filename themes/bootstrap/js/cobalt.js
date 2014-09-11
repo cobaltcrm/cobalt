@@ -68,6 +68,7 @@ var Cobalt = {
     },
 
     initDataTables: function() {
+
         var options = {
             'processing': true,
             'serverSide': true,
@@ -95,8 +96,8 @@ var Cobalt = {
             }
         }
 
-        var dataTableId = jQuery('table.data-table').attr('id');
-        var datatable = jQuery('table.data-table').DataTable(options);
+        var table = jQuery('table.data-table');
+        var datatable = table.DataTable(options);
         var searchbox = jQuery('.datatable-searchbox');
 
         // set filter
@@ -118,7 +119,16 @@ var Cobalt = {
         });
 
         // store datatable to hash object so it can be used later.
-        Cobalt.dataTables[dataTableId] = datatable;
+        Cobalt.dataTables[table.attr('id')] = datatable;
+
+        // Toggle action bar
+        table.change(function() {
+            if (table.find('input:checkbox:checked').length > 0) {
+                jQuery('#list_edit_actions').show('fast');
+            } else {
+                jQuery('#list_edit_actions').hide('fast');
+            }
+        });
     },
 
     initFormSave: function(options) {
@@ -320,6 +330,9 @@ var Cobalt = {
         jQuery(checkboxes).each(function(index, checkbox) {
             jQuery(checkbox).prop('checked', source.checked);
         });
+
+        // trigger change event for action bar toggle
+        $('table.dataTable').trigger('change');
     }
 };
 
