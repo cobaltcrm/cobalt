@@ -21,7 +21,8 @@ use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
-use Cobalt\Model\User;
+use Cobalt\Model\User as UserModel;
+use Cobalt\User;
 use Cobalt\Helper\RouteHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -427,12 +428,16 @@ final class Application extends AbstractWebApplication
 
         if ($user->get('id'))
         {
+            $this->setUser($user);
             // user is already logged in
             $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
         }
 
-        if ($user->login($credentials, $options))
+        $userModel = new UserModel;
+
+        if ($userId = $userModel->authenticate($credentials, $options))
         {
+            $user->load((int)$userId);
             $this->setUser($user);
 
             $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
@@ -445,8 +450,9 @@ final class Application extends AbstractWebApplication
 
     public function logout()
     {
+        $userModel = new UserModel;
         // Perform the log out.
-        $error = $this->getUser()->logout();
+        $error = $userModel->logout();
 
         // Check if the log out succeeded.
         if (!($error instanceof \Exception)) {
@@ -771,27 +777,27 @@ final class Application extends AbstractWebApplication
      *
      * @param User $user The user object.
      *
-     * @return  $this  Method allows chaining
+     * @return  void
      *
      * @since   1.0
      */
     public function setUser(User $user = null)
     {
-        if (is_null($user)) {
-            // Logout
-            $this->user = new User;
+        $session = $this->getContainer()->fetch('session');
 
-        } else {
+        if (is_null($user))
+        {
+            // Logout
+            $this->user = null;
+            $session->set('cobalt_user', $this->user);
+        }
+        else
+        {
             // Login
             $user->isAdmin = true; // in_array($user->username, $this->get('acl.admin_users'));
-
             $this->user = $user;
+            $session->set('cobalt_user', $this->user->serialize());
         }
-        $session = $this->getContainer($user)->fetch('session');
-
-        $this->user = $session->set('user', $this->user->get('id'));
-
-        return $this->user;
     }
 
     /**
@@ -805,22 +811,25 @@ final class Application extends AbstractWebApplication
      */
     public function getUser($id = 0)
     {
-        if (isset($this->users[$id]))
+        // Check if user isn't already loaded in chache array
+        if ($id && isset($this->users[$id]))
         {
-            $this->users[$id] = new User($id);
             return $this->users[$id];
         }
 
-        if (is_null($this->user))
+        // Create new User object
+        $this->user = new User($this->container->fetch('db'));
+
+        // Get user from session (if yes, user is logged in)
+        if ($sessionUser = $this->getSession()->get('cobalt_user'))
         {
-            if ($sessionUser = $this->getSession()->get('user'))
-            {
-                $this->user = new User($sessionUser);
-            }
-            else
-            {
-                $this->user = new User;
-            }
+            $this->user->unserialize($sessionUser);
+        }
+
+        // If User ID is known, store it to cache array
+        if ($this->user->get('id'))
+        {
+            $this->users[$id] = $this->user;
         }
 
         return $this->user;

@@ -1,5 +1,7 @@
 var Cobalt = {
 
+    dataTables: {},
+
     init: function() {
         this.bindPopovers();
         this.bindTooltips();
@@ -51,26 +53,26 @@ var Cobalt = {
     },
 
     getFormSubmitOptions: function() {
-        return { 
-            beforeSubmit: function(arr, $form, options) {      
+        return {
+            beforeSubmit: function(arr, $form, options) {
                 // add attributes necessary for AJAX call
                 arr.push({'name': 'format', 'value': 'raw'});
-                arr.push({'name': 'tmpl', 'value': 'component'});         
+                arr.push({'name': 'tmpl', 'value': 'component'});
             },
             success:   function(response, status, xhr, $form) {
                 Cobalt.onSaveSuccess(response, status, xhr, $form);
             },
             type:      'post',
             dataType:  'json'
-        }; 
+        };
     },
 
     initDataTables: function() {
         var options = {
             'processing': true,
             'serverSide': true,
-            'bFilter': false,
             'bLengthChange': false,
+            'sDom': '<"top"l>rt<"bottom"p><"clear">',
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
@@ -80,27 +82,30 @@ var Cobalt = {
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
         }
-
-        var datatable = jQuery('table.data-table').dataTable(options);
+        var dataTableId = jQuery('table.data-table').attr('id');
+        var datatable = jQuery('table.data-table').DataTable(options);
 
         // searchbox filter
         jQuery('.datatable-searchbox').keyup(function() {
-            datatable.fnFilter( jQuery(this).val() );
+            datatable.search(jQuery(this).val()).draw();
         });
+
+        // store datatable to hash object so it can be used later.
+        Cobalt.dataTables[dataTableId] = datatable;
     },
 
     initFormSave: function(options) {
         // initialize jQuery form submit plugin
-     
+
         if(!options) {
             otpions = this.getFormSubmitOptions();
         }
 
         // bind form using 'ajaxForm' 
-        jQuery('form[data-ajax="1"]').submit(function() { 
-            jQuery(this).ajaxSubmit(options); 
-            return false; 
-        }); 
+        jQuery('form[data-ajax="1"]').submit(function() {
+            jQuery(this).ajaxSubmit(options);
+            return false;
+        });
     },
 
     onSaveSuccess: function(response) {
@@ -116,9 +121,8 @@ var Cobalt = {
         if (typeof response.remove !== 'undefined') {
             Cobalt.removeRows(response.remove);
         }
-        if (typeof response.reload !== 'undefined') {
-            setTimeout("document.location.reload(true);",response.reload);
-        }
+
+        Cobalt.updateDataTables();
     },
 
     sumbitModalForm: function(button) {
@@ -159,6 +163,14 @@ var Cobalt = {
                 field.val(value);
             }
         });
+    },
+
+    updateDataTables: function() {
+        for (var id in Cobalt.dataTables) {
+            if (typeof Cobalt.dataTables[id] === 'object') {
+                Cobalt.dataTables[id].ajax.reload();
+            }
+        }
     },
 
     removeRows: function(ids) {
@@ -247,7 +259,7 @@ var Cobalt = {
                     'task': 'save',
                     'format': 'raw'
                 };
-                data[link.attr('data-field')] = link.attr('data-value');
+            data[link.attr('data-field')] = link.attr('data-value');
 
             Cobalt.save(data);
         });
@@ -260,22 +272,27 @@ var Cobalt = {
         });
         var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
         Cobalt.save(data);
-        // showAjaxLoader();
-        // jQuery.ajax({
-        //     type:'POST',
-        //     url:'index.php?task=trash&tmpl=component&format=raw',
-        //     data: { item_id : itemIds, item_type : loc },
-        //     dataType:'JSON',
-        //     success:function(data){
-        //         if ( data.success ){
-        //             jQuery.each(itemIds,function(key,value){
-        //                 jQuery("#list_row_"+value).remove();
-        //             });
-        //             modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'));
-        //         }
-        //         hideAjaxLoader();
-        //     }
-        // });
+    },
+
+    selectAll: function(source) {
+
+        if ( typeof source === 'object' ) {
+            checkboxes = [];
+            var rows = jQuery(source).closest('table').find('tr');
+            jQuery(rows).each(function(index, tr) {
+                var td = jQuery(tr).find('td:first');
+                var checkbox = jQuery(td).find('input:checkbox');
+                if (checkbox.length) {
+                    checkboxes.push(jQuery(checkbox));
+                }
+            });
+        } else {
+            checkboxes = jQuery('[name="ids[]"]');
+        }
+
+        jQuery(checkboxes).each(function(index, checkbox) {
+            jQuery(checkbox).prop('checked', source.checked);
+        });
     }
 };
 
@@ -288,17 +305,17 @@ window.onload = function () {
  **/
 
 function ucwords(str) {
-  return (str + '')
-    .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
-      return $1.toUpperCase();
-    });
+    return (str + '')
+        .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
+            return $1.toUpperCase();
+        });
 }
 
 var Joomla = {
     JText: {
-            strings: {},
-            '_': function(key, def) {
-                return typeof this.strings[key.toUpperCase()] !== 'undefined' ? this.strings[key.toUpperCase()] : def;
+        strings: {},
+        '_': function(key, def) {
+            return typeof this.strings[key.toUpperCase()] !== 'undefined' ? this.strings[key.toUpperCase()] : def;
         },
         load: function(object) {
             for (var key in object) {
