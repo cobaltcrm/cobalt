@@ -30,31 +30,36 @@ class Datatable extends DefaultController
         $loc        = $this->makeSingular($this->input->getString('loc'));
         $modelPath  = "Cobalt\\Model\\".ucwords($loc);
         $model      = new $modelPath();
-        $model->populateState();
-        $layout     = $this->input->getString('layout', '');
-        $orderArray = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
-        $searchArray = $this->input->get('search', array('value' => '', 'regex' => false), 'ARRAY');
+        $start      = $this->input->getInt('start', 0);
+        $length     = $this->input->getInt('length', 0);
+        $orderArr   = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
+        $searchArr  = $this->input->get('search', array('value' => '', 'regex' => false), 'ARRAY');
         $columns    = $model->getDataTableColumns();
 
-        if (isset($columns[$orderArray[0]['column']]['ordering']))
+        // Set request variables which models will understand
+        if (isset($columns[$orderArr[0]['column']]['ordering']))
         {
-            $order  = $columns[$orderArray[0]['column']]['ordering'];
+            $order  = $columns[$orderArr[0]['column']]['ordering'];
             $this->input->set('filter_order', $order);
         }
         
-        if (isset($orderArray[0]['dir']))
+        if (isset($orderArr[0]['dir']))
         {
-            $dir    = $orderArray[0]['dir'];
+            $dir    = $orderArr[0]['dir'];
             $this->input->set('filter_order_Dir', $dir);
         }
 
-        if (isset($searchArray['value']))
+        if (isset($searchArr['value']))
         {
-            $value    = $searchArray['value'];
+            $value    = $searchArr['value'];
 
             $this->input->set(strtolower($loc) . '_name', $value);
         }
 
+        $this->input->set('limit', $length);
+        $this->input->set('limitstart', $start);
+
+        // Prepare response
         $response   = new \stdClass;
 
         $response->data = $model->getDataTableItems();
