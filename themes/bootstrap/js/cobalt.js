@@ -83,6 +83,16 @@ var Cobalt = {
 
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
+
+            // get default ordering
+            if (typeof order_col !== 'undefined') {
+                jQuery.each(options.columns, function(i, column) {
+                    if (typeof column.ordering !== 'undefined' &&
+                        column.ordering === order_col) {
+                        options.order = [[ i, order_dir ]];
+                    }
+                });
+            }
         }
 
         var dataTableId = jQuery('table.data-table').attr('id');

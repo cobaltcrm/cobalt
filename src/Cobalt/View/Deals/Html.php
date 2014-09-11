@@ -34,7 +34,7 @@ class Html extends AbstractHtmlView
 
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         //retrieve deal list from model
         $model = new DealModel;
