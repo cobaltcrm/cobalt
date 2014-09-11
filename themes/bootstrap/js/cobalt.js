@@ -71,8 +71,8 @@ var Cobalt = {
         var options = {
             'processing': true,
             'serverSide': true,
-            'bFilter': false,
             'bLengthChange': false,
+            'sDom': '<"top"l>rt<"bottom"p><"clear">',
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
@@ -87,7 +87,7 @@ var Cobalt = {
 
         // searchbox filter
         jQuery('.datatable-searchbox').keyup(function() {
-            datatable.fnFilter( jQuery(this).val() );
+            datatable.search(jQuery(this).val()).draw();
         });
 
         // store datatable to hash object so it can be used later.
