@@ -84,10 +84,21 @@ var Cobalt = {
         }
         var dataTableId = jQuery('table.data-table').attr('id');
         var datatable = jQuery('table.data-table').DataTable(options);
+        var searchbox = jQuery('.datatable-searchbox');
 
         // searchbox filter
-        jQuery('.datatable-searchbox').keyup(function() {
+        searchbox.keyup(function() {
             datatable.search(jQuery(this).val()).draw();
+        });
+
+        // set filter
+        jQuery('.filter-sentence a').click(function() {
+            var link = jQuery(this);
+            var filter = link.attr('data-filter');
+            if(filter) {
+                searchbox.val(filter+'&'+searchbox.val());
+                datatable.search(filter).draw();
+            }
         });
 
         // store datatable to hash object so it can be used later.

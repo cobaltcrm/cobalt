@@ -40,15 +40,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     //function to return filter types for deals
     public static function getDealTypes()
     {
-        return array(   'all'=>TextHelper::_('COBALT_ALL_DEALS'),
-                        'today'=>TextHelper::_('COBALT_DEALS_TASKS_TODAY'),
-                        'tomorrow'=>TextHelper::_('COBALT_DEALS_TASKS_TOMORROW'),
-                        'updated_thirty'=>TextHelper::_('COBALT_DEALS_UPDATED_LAST_MONTH'),
-                        'valuable'=>TextHelper::_('COBALT_DEALS_MOST_VALUABLE'),
-                        'past'=>TextHelper::_('COBALT_PAST_DUE_DEALS'),
-                        'not_updated_thirty'=>TextHelper::_('COBALT_DEALS_NOT_UPDATED'),
-                        'shared'=>TextHelper::_('COBALT_SHARED_DEALS'),
-                        'archived'=>TextHelper::_('COBALT_ARCHIVED_DEALS'));
+        return array(   
+            'filter:all'=>TextHelper::_('COBALT_ALL_DEALS'),
+            'filter:due:today'=>TextHelper::_('COBALT_DEALS_TASKS_TODAY'),
+            'filter:due:tomorrow'=>TextHelper::_('COBALT_DEALS_TASKS_TOMORROW'),
+            'filter:due:past'=>TextHelper::_('COBALT_PAST_DUE_DEALS'),
+            'filter:updated:30d'=>TextHelper::_('COBALT_DEALS_UPDATED_LAST_MONTH'),
+            'filter:updated:!30d'=>TextHelper::_('COBALT_DEALS_NOT_UPDATED'),
+            'filter:amount:valuable'=>TextHelper::_('COBALT_DEALS_MOST_VALUABLE'),
+            'filter:shared'=>TextHelper::_('COBALT_SHARED_DEALS'),
+            'filter:archived'=>TextHelper::_('COBALT_ARCHIVED_DEALS'));
     }
 
     //function to return deal stages
