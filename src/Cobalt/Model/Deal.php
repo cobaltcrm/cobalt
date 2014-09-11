@@ -377,7 +377,7 @@ class Deal extends DefaultModel
             }
 
             //owner
-            $owner_filter = $this->getState('Deal.'.$layout.'_owner_id', '');
+            $owner_filter = $this->getState('Deal.'.$layout.'_owner_id', $this->_user_id);
 
             if ($owner_filter != 'all' && $owner_filter) 
             {

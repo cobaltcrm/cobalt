@@ -19,6 +19,7 @@ use Cobalt\Model\Conversation as ConversationModel;
 use Cobalt\Model\Note as NoteModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\UsersHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -35,6 +36,9 @@ class Datatable extends DefaultController
         $orderArr   = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
         $searchArr  = $this->input->get('search', array('value' => '', 'regex' => false), 'ARRAY');
         $columns    = $model->getDataTableColumns();
+        $user       = $this->app->getUser();
+        $teamId     = UsersHelper::getTeamId();
+        $memberRole = UsersHelper::getRole();
 
         // Set request variables which models will understand
         if (isset($columns[$orderArr[0]['column']]['ordering']))
@@ -62,8 +66,8 @@ class Datatable extends DefaultController
 
         $response->data = $model->getDataTableItems();
         $response->draw = $this->input->getInt('draw');
-        $response->recordsTotal = $model->getTotal();
-        $response->recordsFiltered = $response->recordsTotal; // @TODO: make this true number
+        $response->recordsTotal = UsersHelper::getDealCount($user->get('id'), $teamId, $memberRole);
+        $response->recordsFiltered = $model->getTotal();
 
         $alerts = $this->app->getMessageQueue();
 

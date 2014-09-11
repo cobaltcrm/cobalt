@@ -135,14 +135,6 @@ use Joomla\Filter\OutputFilter;
         </li>
     </ul>
 
-    <small>
-        <span id="deals_matched"></span>
-        <?php echo TextHelper::_('COBALT_DEALS_MATCHED'); ?>
-        <?php echo TextHelper::_("COBALT_THERE_ARE"); ?>
-        <?php echo $this->totalDeals; ?>
-        <?php echo TextHelper::_("COBALT_DEALS_IN_ACCOUNT"); ?>
-    </small>
-
 <?php echo TemplateHelper::getListEditActions(); ?>
 
 <form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=deals'); ?>">
