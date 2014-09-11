@@ -19,6 +19,7 @@ use Cobalt\Model\Conversation as ConversationModel;
 use Cobalt\Model\Note as NoteModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\UsersHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -35,6 +36,9 @@ class Datatable extends DefaultController
         $orderArr   = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
         $searchArr  = $this->input->get('search', array('value' => '', 'regex' => false), 'ARRAY');
         $columns    = $model->getDataTableColumns();
+        $user       = $this->app->getUser();
+        $teamId     = UsersHelper::getTeamId();
+        $memberRole = UsersHelper::getRole();
 
         // Set request variables which models will understand
         if (isset($columns[$orderArr[0]['column']]['ordering']))
@@ -51,7 +55,7 @@ class Datatable extends DefaultController
 
         if (isset($searchArr['value']))
         {
-            $value    = $this->parseFilter($searchArr['value']);
+            $value    = $this->setFilters($searchArr['value']);
         }
 
         $this->input->set('limit', $length);
@@ -62,8 +66,8 @@ class Datatable extends DefaultController
 
         $response->data = $model->getDataTableItems();
         $response->draw = $this->input->getInt('draw');
-        $response->recordsTotal = $model->getTotal();
-        $response->recordsFiltered = $response->recordsTotal; // @TODO: make this true number
+        $response->recordsTotal = UsersHelper::getDealCount($user->get('id'), $teamId, $memberRole);
+        $response->recordsFiltered = $model->getTotal();
 
         $alerts = $this->app->getMessageQueue();
 
@@ -111,33 +115,29 @@ class Datatable extends DefaultController
     }
 
     /**
-     * Method parses text filter and decides if it's only
+     * Method parses JSON filters and decides if it's only
      * basic text search, filter applied or combination.
      * 
      * @param string $filter
      * @return string
      */
-    protected function parseFilter($filter)
+    protected function setFilters($filters)
     {
-        $filterParts = explode('&', $filter);
+        $filters = json_decode($filters);
 
-        if ($filterParts)
+        if ($filters)
         {
-            foreach ($filterParts as $filterPart)
+            foreach ($filters as $filter => $value)
             {
                 // distinquish filter from fulltext search
-                if (strpos($filterPart, 'filter:') !== false)
+                if ($filter == 'search')
                 {
-                    // clean filter query
-                    $filter = str_replace(array(' ', 'filter:'), '', $filterPart);
-
-                    $filter = explode(':', $filter);
-
-                    $this->setFilter($filter);
+                    $loc = $this->makeSingular($this->input->getString('loc'));
+                    $this->input->set(strtolower($loc) . '_name', $value);
                 }
                 else
                 {
-                    $this->setSearch($filterPart);
+                    $this->input->set($filter, $value);
                 }
             }
         }
@@ -145,22 +145,25 @@ class Datatable extends DefaultController
 
     protected function setSearch($value)
     {
-        $loc = $this->makeSingular($this->input->getString('loc'));
-        $this->input->set(strtolower($loc) . '_name', $value);
+        
     }
 
     protected function setFilter($filter)
     {
-        if (is_array($filter) && count($filter) == 2)
+        if (is_array($filter))
         {
             $layout = $this->input->getString('loc', '');
             $loc    = $this->makeSingular($layout);
-            $column = $filter[0];
-            $value  = $filter[1];
 
-            if (!$column)
+            if (count($filter) == 2)
             {
-                $column = $loc;
+                $column = $filter[0];
+                $value  = $filter[1];
+            }
+            elseif (count($filter) == 1)
+            {
+                $column = 'item';
+                $value  = $filter[0];
             }
 
             $this->input->set($column, $value);
