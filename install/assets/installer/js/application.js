@@ -34,6 +34,10 @@ $(document).ready(function(){
         document.location.href = url;
     });
 
+    $('#db_drive').change(function(){
+        db = false;
+    });
+
 
 	/** Comment for production! **/
 	// prefill();

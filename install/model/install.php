@@ -26,7 +26,7 @@ class crmModelInstall
      *
      * @var array
      */
-    protected $pdoDrivers = array('sqlsrv', 'pgsql', 'mysql');
+    protected $dbDrivers = array('mysqli', 'postgreesql', 'sqlsrv');
 
     /**
      * Gets PHP options.
@@ -74,7 +74,7 @@ class crmModelInstall
 
         // Check for database support.
         // We are satisfied if there is at least one database driver available.
-        $available = array_intersect($this->pdoDrivers, PDO::getAvailableDrivers());
+        $available = array_intersect($this->dbDrivers, JDatabaseDriver::getConnectors());
         $option = new stdClass;
         $option->label  = JText::_('INSTL_DATABASE_SUPPORT');
         $option->label .= '<br />(' . implode(', ', $available) . ')';
@@ -121,7 +121,7 @@ class crmModelInstall
         $option = new stdClass;
         $option->label  = JText::sprintf('INSTL_WRITABLE', 'configuration.php');
         $option->state  = $writable;
-        $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEYOUCANSTILLINSTALL');
+        $option->notice = ($option->state) ? null : JText::_('INSTL_NOTICEYOUCANTINSTALL');
         $options[] = $option;
 
         return $options;
@@ -160,10 +160,7 @@ class crmModelInstall
      */
     public function dboDrivers()
     {
-        $drivers = array_intersect($this->pdoDrivers, PDO::getAvailableDrivers());
-        if (empty($drivers)) {
-            $drivers = $this->pdoDrivers;
-        }
+        $drivers = array_intersect($this->dbDrivers, JDatabaseDriver::getConnectors());
 
         return $drivers;
     }
@@ -180,6 +177,7 @@ class crmModelInstall
         $input = $app->input;
 
         $postData = array(
+            'db_drive' => $input->getCmd('db_drive'),
             'site_name' => $input->getString('site_name'),
             'database_host' => $input->getCmd('database_host'),
             'database_user' => $input->getUsername('database_user'),
@@ -198,9 +196,17 @@ class crmModelInstall
         if (empty($postData['database_password'])) {
             $check[] = '';
         }
+
         if (empty($check) || count($check) < count($postData)) {
             $this->setError(JText::_('INSTL_CHECK_REQUIRED_FIELDS'));
             return false;
+        }
+
+
+        if ($this->canUpload()) {
+            if (!$this->uploadLogo()) {
+                return false;
+            }
         }
 
         $logPath = JPATH_BASE."/logs";
@@ -215,7 +221,7 @@ class crmModelInstall
         $this->config->set("password",$postData['database_password']);
         $this->config->set("db",$postData['database_name']);
         $this->config->set("dbprefix",$postData['database_prefix']);
-        $this->config->set("dbtype","mysqli");
+        $this->config->set("dbtype", $postData['db_drive']);
         $this->config->set("mailfrom",$postData['email']);
         $this->config->set("fromname",$postData['first_name'].' '.$postData['last_name']);
         $this->config->set("sendmail","/usr/sbin/sendmail");
@@ -287,6 +293,34 @@ class crmModelInstall
 
     }
 
+    public function canUpload()
+    {
+        if ($_FILES['logo']['error']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function uploadLogo()
+    {
+        if ($_FILES['logo']['error']) {
+            return false;
+        }
+
+        //uploading image
+        $allowedImageTypes = array( "image/pjpeg","image/jpeg","image/jpg","image/png","image/x-png","image/gif");
+        if (!in_array($_FILES['logo']['type'], $allowedImageTypes)) {
+            $this->setError(JText::_('INSTL_ERROR_LOGO_FILE_TYPE'));
+            return false;
+        } else if (!JFile::upload($_FILES['logo']['tmp_name'],JPATH_ROOT.'/uploads/logo/'.JFile::makeSafe($_FILES['logo']['name']))) {
+            $this->setError(JText::_('INSTL_ERROR_UPLOAD_LOGO'));
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Return Database Object
      *
@@ -332,7 +366,7 @@ class crmModelInstall
 
         //create database
         try {
-            $db = $this->getDbo('mysqli',$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
+            $db = $this->getDbo($this->config->get('dbtype'),$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
             $db->setQuery(sprintf('CREATE DATABASE IF NOT EXISTS %s;',$this->options['database']));
             $db->loadResult();
         } catch (\Exception $e) {
@@ -490,31 +524,6 @@ class crmModelInstall
     public function getOptions()
     {
         return $this->options;
-    }
-
-    public function getRegistry()
-    {
-        $c = $this->getConfig();
-        $config = new JRegistry();
-        //set configuration settings
-        $config->set('sitename',$c->get("sitename"));
-        $config->set("host",$c->get("host"));
-        $config->set("user",$c->get("user"));
-        $config->set("password",$c->get("password"));
-        $config->set("db",$c->get("db"));
-        $config->set("dbprefix",$c->get("dbprefix"));
-        $config->set("dbtype","mysqli");
-        $config->set("mailfrom",$c->get("mailfrom"));
-        $config->set("fromname",$c->get("fromname"));
-        $config->set("sendmail","/usr/sbin/sendmail");
-        $config->set("log_path",$c->get("log_path"));
-        $config->set("tmp_path",$c->get("tmp_path"));
-        $config->set("offset","UTC");
-        $config->set("error_reporting",'maximum');
-        $config->set("debug","1");
-        $config->set("secret",$c->get("secret"));
-
-        return $config;
     }
 
     protected function _splitQueries($sql)
