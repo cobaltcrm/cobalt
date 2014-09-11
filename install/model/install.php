@@ -26,7 +26,7 @@ class crmModelInstall
      *
      * @var array
      */
-    protected $dbDrivers = array('mysqli', 'postgreesql', 'sqlsrv');
+    protected $dbDrivers = array('mysqli', 'postgresql', 'sqlsrv');
 
     /**
      * Gets PHP options.
