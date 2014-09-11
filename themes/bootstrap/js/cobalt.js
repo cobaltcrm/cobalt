@@ -1,5 +1,7 @@
 var Cobalt = {
 
+    dataTables: {},
+
     init: function() {
         this.bindPopovers();
         this.bindTooltips();
@@ -69,8 +71,8 @@ var Cobalt = {
         var options = {
             'processing': true,
             'serverSide': true,
-            'bFilter': false,
             'bLengthChange': false,
+            'sDom': '<"top"l>rt<"bottom"p><"clear">',
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
@@ -80,13 +82,16 @@ var Cobalt = {
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
         }
-
-        var datatable = jQuery('table.data-table').dataTable(options);
+        var dataTableId = jQuery('table.data-table').attr('id');
+        var datatable = jQuery('table.data-table').DataTable(options);
 
         // searchbox filter
         jQuery('.datatable-searchbox').keyup(function() {
-            datatable.fnFilter( jQuery(this).val() );
+            datatable.search(jQuery(this).val()).draw();
         });
+
+        // store datatable to hash object so it can be used later.
+        Cobalt.dataTables[dataTableId] = datatable;
     },
 
     initFormSave: function(options) {
@@ -116,6 +121,8 @@ var Cobalt = {
         if (typeof response.remove !== 'undefined') {
             Cobalt.removeRows(response.remove);
         }
+
+        Cobalt.updateDataTables();
     },
 
     sumbitModalForm: function(button) {
@@ -156,6 +163,14 @@ var Cobalt = {
                 field.val(value);
             }
         });
+    },
+
+    updateDataTables: function() {
+        for (var id in Cobalt.dataTables) {
+            if (typeof Cobalt.dataTables[id] === 'object') {
+                Cobalt.dataTables[id].ajax.reload();
+            }
+        }
     },
 
     removeRows: function(ids) {
@@ -257,22 +272,27 @@ var Cobalt = {
         });
         var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
         Cobalt.save(data);
-        // showAjaxLoader();
-        // jQuery.ajax({
-        //     type:'POST',
-        //     url:'index.php?task=trash&tmpl=component&format=raw',
-        //     data: { item_id : itemIds, item_type : loc },
-        //     dataType:'JSON',
-        //     success:function(data){
-        //         if ( data.success ){
-        //             jQuery.each(itemIds,function(key,value){
-        //                 jQuery("#list_row_"+value).remove();
-        //             });
-        //             modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'));
-        //         }
-        //         hideAjaxLoader();
-        //     }
-        // });
+    },
+
+    selectAll: function(source) {
+
+        if ( typeof source === 'object' ) {
+            checkboxes = [];
+            var rows = jQuery(source).closest('table').find('tr');
+            jQuery(rows).each(function(index, tr) {
+                var td = jQuery(tr).find('td:first');
+                var checkbox = jQuery(td).find('input:checkbox');
+                if (checkbox.length) {
+                    checkboxes.push(jQuery(checkbox));
+                }
+            });
+        } else {
+            checkboxes = jQuery('[name="ids[]"]');
+        }
+
+        jQuery(checkboxes).each(function(index, checkbox) {
+            jQuery(checkbox).prop('checked', source.checked);
+        });
     }
 };
 
