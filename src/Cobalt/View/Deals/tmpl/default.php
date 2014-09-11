@@ -21,10 +21,16 @@ use Joomla\Filter\OutputFilter;
     </div>
 
     <div class="pull-right btn-group">
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i></a>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal">
+            <i class="glyphicon glyphicon-plus icon-white"></i>
+        </a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
+            <i class="glyphicon glyphicon-circle-arrow-up"></i>
+        </a>
         <?php if ( UsersHelper::canExport() ) { ?>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_DEALS'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="glyphicon glyphicon-share"></i></a>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_DEALS'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()">
+            <i class="glyphicon glyphicon-share"></i>
+        </a>
         <?php } ?>
     </div>
 
@@ -33,16 +39,24 @@ use Joomla\Filter\OutputFilter;
     <ul class="list-inline filter-sentence">
         <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
         <li class="dropdown">
-            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" ><span class="dropdown-label"><?php echo $this->deal_type_name; ?><span></a>
+            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" >
+                <span class="dropdown-label"><?php echo $this->deal_type_name; ?><span>
+            </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="deal_type_link" data-filter="item">
                 <?php foreach ($this->deal_types as $title => $text) { ?>
-                     <li><a href="#" class='filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>' data-filter-value="<?php echo $title; ?>"><?php echo $text; ?></a></li>
+                     <li>
+                        <a href="#" class='filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>' data-filter-value="<?php echo $title; ?>">
+                            <?php echo $text; ?>
+                        </a>
+                    </li>
                 <?php }?>
             </ul>
         </li>
         <li><span><?php echo TextHelper::_('COBALT_FOR'); ?></span></li>
         <li class="dropdown">
-            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_user_link"><span class="dropdown-label"><?php echo $this->user_name; ?><span></a>
+            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_user_link">
+                <span class="dropdown-label"><?php echo $this->user_name; ?><span>
+            </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="deal_user_link" data-filter="ownertype">
                 <li>
                     <a class="filter_user_<?php echo $this->user_id ?>" data-filter-value="member:<?php echo $this->user_id; ?>">
@@ -60,7 +74,7 @@ use Joomla\Filter\OutputFilter;
                    if ($this->member_role == 'exec') {
                         if ( count($this->teams) > 0 ) {
                             foreach ($this->teams as $team) { ?>
-                 <li>
+                <li>
                     <a href="#" class="filter_team_<?php echo $team['team_id']; ?>" data-filter-value="team:<?php echo $team['team_id']; ?>">
                         <?php echo $team['team_name'].TextHelper::_('COBALT_TEAM_APPEND'); ?>
                     </a>
@@ -82,19 +96,31 @@ use Joomla\Filter\OutputFilter;
         </li>
         <li><span><?php echo TextHelper::_('COBALT_IN'); ?></span></li>
         <li class="dropdown">
-            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_stages_link"><span class="dropdown-label"><?php echo $this->stage_name; ?><span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_stages_link">
+            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_stages_link">
+                <span class="dropdown-label"><?php echo $this->stage_name; ?><span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_stages_link" data-filter="stage">
                 <?php foreach ($this->stages as $title => $text) { ?>
-                   <li><a href='javascript:void(0);' class='filter_<?php echo $title; ?>' onclick="dealStage('<?php echo $title; ?>')"><?php echo $text; ?></a></li>
+                <li>
+                    <a href="#" class="filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>" data-filter-value="<?php echo $title; ?>">
+                        <?php echo $text; ?>
+                    </a>
+                </li>
                 <?php }?>
             </ul>
         </li>
         <li><span><?php echo TextHelper::_('COBALT_CLOSING'); ?></span></li>
         <li class="dropdown">
-            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_closing_link"><span class="dropdown-label"><?php echo $this->closing_name; ?><span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_closing_link">
+            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_closing_link">
+                <span class="dropdown-label"><?php echo $this->closing_name; ?><span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_closing_link" data-filter="closing">
                 <?php foreach ($this->closing_names as $title => $text) { ?>
-                   <li><a href='javascript:void(0);' class='filter_<?php echo $title; ?>' onclick="dealClose('<?php echo $title; ?>')"><?php echo $text; ?></a></li>
+                <li>
+                    <a href="#" class="filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>" data-filter-value="<?php echo $title; ?>">
+                        <?php echo $text; ?>
+                    </a>
+                </li>
                 <?php }?>
             </ul>
         </li>
@@ -110,12 +136,18 @@ use Joomla\Filter\OutputFilter;
     </ul>
 
     <small>
-        <span id="deals_matched"></span> <?php echo TextHelper::_('COBALT_DEALS_MATCHED'); ?> <?php echo TextHelper::_("COBALT_THERE_ARE"); ?> <?php echo $this->totalDeals; ?> <?php echo TextHelper::_("COBALT_DEALS_IN_ACCOUNT"); ?>
+        <span id="deals_matched"></span>
+        <?php echo TextHelper::_('COBALT_DEALS_MATCHED'); ?>
+        <?php echo TextHelper::_("COBALT_THERE_ARE"); ?>
+        <?php echo $this->totalDeals; ?>
+        <?php echo TextHelper::_("COBALT_DEALS_IN_ACCOUNT"); ?>
     </small>
+
 <?php echo TemplateHelper::getListEditActions(); ?>
+
 <form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=deals'); ?>">
-<table class="table table-hover table-striped data-table" id="deals">
-    <?php echo $this->deal_list->render(); ?>
-</table>
-<input type="hidden" name="list_type" value="deals" />
+    <table class="table table-hover table-striped data-table" id="deals">
+        <?php echo $this->deal_list->render(); ?>
+    </table>
+    <input type="hidden" name="list_type" value="deals" />
 </form>

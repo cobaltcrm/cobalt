@@ -1298,6 +1298,8 @@ class Deal extends DefaultModel
                 // filters
                 $item_filter = $this->app->input->getString('item', null);
                 $ownertype_filter = $this->app->input->getRaw('ownertype', null);
+                $stage_filter = $this->app->input->getInt('stage', null);
+                $closing_filter = $this->app->input->getString('closing', null);
 
                 //set states
                 $state->set('Deal.filter_order', $filter_order);
@@ -1306,6 +1308,8 @@ class Deal extends DefaultModel
 
                 // filter states
                 $state->set('Deal.'.$layout.'_item', $item_filter);
+                $state->set('Deal.'.$layout.'_stage_id', $stage_filter);
+                $state->set('Deal.'.$layout.'_expected_close', $closing_filter);
 
                 if ($ownertype_filter)
                 {
