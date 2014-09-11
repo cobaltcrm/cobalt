@@ -354,6 +354,34 @@ class crmModelInstall
         return $db;
     }
 
+	/**
+	 * Method to create a new database.
+	 *
+	 * @param JDatabaseDriver $db JDatabase object.
+	 * @param JObject $options JObject coming from "initialise" function to pass user
+	 * and database name to database driver.
+	 * @param boolean $utf True if the database supports the UTF-8 character set.
+	 *
+	 * @return boolean True on success.
+	 *
+	 * @since 1.0
+	 */
+	public function createDatabase($db, $options, $utf)
+	{
+		// Build the create database query.
+		try
+		{
+			// Run the create database query.
+			$db->createDatabase($options, $utf);
+		}
+		catch (RuntimeException $e)
+		{
+			// If an error occurred return false.
+			return false;
+		}
+		return true;
+	}
+
     public function createDb()
     {
         $this->options = array(
@@ -364,22 +392,33 @@ class crmModelInstall
             'prefix' => $this->config->get('dbprefix')
         );
 
-        //create database
-        try {
-            $db = $this->getDbo($this->config->get('dbtype'),$this->options['host'], $this->options['user'], $this->options['password'], $this->options['database'], $this->options['prefix'], false);
-            $db->setQuery(sprintf('CREATE DATABASE IF NOT EXISTS %s;',$this->options['database']));
-            $db->loadResult();
-        } catch (\Exception $e) {
-            $this->setError($e->getMessage());
-            return false;
-        }
+		$dbFactory = new Database\DatabaseFactory;
 
-        $dbFactory = new Database\DatabaseFactory;
+		$this->db = $dbFactory->getDriver(
+				$this->config->get('dbtype'),
+				$this->options
+		);
 
-        $this->db = $dbFactory->getDriver(
-            $this->config->get('dbtype'),
-            $this->options
-        );
+		// Try to select the database
+		try
+		{
+			$this->db->select($this->options['database']);
+		}
+		catch (RuntimeException $e)
+		{
+			// Get database's UTF support
+			$utfSupport = $this->db->hasUTFSupport();
+
+			// If the database could not be selected, attempt to create it and then select it.
+			if ($this->createDatabase($this->db, $options, $utfSupport))
+			{
+				$this->db->select($this->options['database']);
+			}
+			else
+			{
+				return false;
+			}
+		}
 
         $db_driver = $this->config->get('dbtype');
         if ($db_driver == 'mysqli') {
