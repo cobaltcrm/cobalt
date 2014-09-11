@@ -8,7 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' );
+use Joomla\Filter\OutputFilter;
+?>
 
 <div class="page-header">
 
@@ -34,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" ><span class="dropdown-label"><?php echo $this->deal_type_name; ?><span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="deal_type_link">
                 <?php foreach ($this->deal_types as $title => $text) { ?>
-                     <li><a href='javascript:void(0);' class='filter_<?php echo $title; ?>' onclick="dealType('<?php echo $title; ?>')"><?php echo $text; ?></a></li>
+                     <li><a href='javascript:void(0);' class='filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>' data-filter="<?php echo $title; ?>"><?php echo $text; ?></a></li>
                 <?php }?>
             </ul>
         </li>

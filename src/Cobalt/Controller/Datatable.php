@@ -51,9 +51,7 @@ class Datatable extends DefaultController
 
         if (isset($searchArr['value']))
         {
-            $value    = $searchArr['value'];
-
-            $this->input->set(strtolower($loc) . '_name', $value);
+            $value    = $this->parseFilter($searchArr['value']);
         }
 
         $this->input->set('limit', $length);
@@ -113,28 +111,59 @@ class Datatable extends DefaultController
     }
 
     /**
-     * Method returns plural of some word.
-     * It is quite stupic simple method for 3 words
-     * we need to make plural from. Not solwing all world problems.
+     * Method parses text filter and decides if it's only
+     * basic text search, filter applied or combination.
      * 
-     * @param string $name
+     * @param string $filter
      * @return string
      */
-    protected function makePlural($name)
+    protected function parseFilter($filter)
     {
-        if ($name == 'company')
-        {
-            $name = 'companies';
-        }
-        elseif ($name == 'person')
-        {
-            $name = 'people';
-        }
-        else
-        {
-            $name = $name . 's';
-        }
+        $filterParts = explode('&', $filter);
 
-        return $name;
+        if ($filterParts)
+        {
+            foreach ($filterParts as $filterPart)
+            {
+                // distinquish filter from fulltext search
+                if (strpos($filterPart, 'filter:') !== false)
+                {
+                    // clean filter query
+                    $filter = str_replace(array(' ', 'filter:'), '', $filterPart);
+
+                    $filter = explode(':', $filter);
+
+                    $this->setFilter($filter);
+                }
+                else
+                {
+                    $this->setSearch($filterPart);
+                }
+            }
+        }
+    }
+
+    protected function setSearch($value)
+    {
+        $loc = $this->makeSingular($this->input->getString('loc'));
+        $this->input->set(strtolower($loc) . '_name', $value);
+    }
+
+    protected function setFilter($filter)
+    {
+        if (is_array($filter) && count($filter) == 2)
+        {
+            $layout = $this->input->getString('loc', '');
+            $loc    = $this->makeSingular($layout);
+            $column = $filter[0];
+            $value  = $filter[1];
+
+            if (!$column)
+            {
+                $column = $loc;
+            }
+
+            $this->input->set($column, $value);
+        }
     }
 }

@@ -367,74 +367,70 @@ class Deal extends DefaultModel
 
         if (!$id) {
 
-            /** --------------------
-             * Sort data for reports pages
-             */
-            if ($view == 'reports') {
-                //name
-                $deal_filter = $this->getState('Deal.'.$layout.'_name');
-                if ($deal_filter != null) {
-                    $query->where("d.name LIKE '%".$deal_filter."%'");
-                }
-                //owner
-                $owner_filter = $this->getState('Deal.'.$layout.'_owner_id');
-                if ($owner_filter != null AND $owner_filter != 'all') {
-                    $owner_type = $this->getState('Deal.'.$layout.'_owner_type');
-                    if ($owner_type == 'member' OR $owner_type == null) {
-                        $query->where("d.owner_id=".$owner_filter);
+            //name
+            $deal_filter = $this->getState('Deal.'.$layout.'_name');
+            if ($deal_filter != null) {
+                $query->where("d.name LIKE '%".$deal_filter."%'");
+            }
+            //owner
+            $owner_filter = $this->getState('Deal.'.$layout.'_owner_id');
+            if ($owner_filter != null AND $owner_filter != 'all') {
+                $owner_type = $this->getState('Deal.'.$layout.'_owner_type');
+                if ($owner_type == 'member' OR $owner_type == null) {
+                    $query->where("d.owner_id=".$owner_filter);
 
+                }
+                if ($owner_type == 'team') {
+                    //get team members
+                    $team_members = UsersHelper::getTeamUsers($owner_filter);
+                    //filter by results having team ids
+                    $ids = "0,";
+                    for ($i=0;$i<count($team_members);$i++) {
+                        $member = $team_members[$i];
+                        $ids .= $member['id'].",";
                     }
-                    if ($owner_type == 'team') {
-                        //get team members
-                        $team_members = UsersHelper::getTeamUsers($owner_filter);
-                        //filter by results having team ids
-                        $ids = "0,";
-                        for ($i=0;$i<count($team_members);$i++) {
-                            $member = $team_members[$i];
-                            $ids .= $member['id'].",";
-                        }
-                        $ids = substr($ids,0,-1);
-                        $query->where("d.owner_id IN(".$ids.")");
-                    }
-                }
-                //amount
-                $amount_filter = $this->getState('Deal.'.$layout.'_amount');
-                if ($amount_filter != null AND $amount_filter != 'all') {
-                    if ( $amount_filter == 'small' ) $query->where("d.amount <= ".TextHelper::_('COBALT_SMALL_DEAL_AMOUNT'));
-                    if ( $amount_filter == 'medium' ) $query->where("d.amount > ".TextHelper::_('COBALT_SMALL_DEAL_AMOUNT')." AND d.amount <= ".TextHelper::_('COBALT_MEDIUM_DEAL_AMOUNT'));
-                    if ( $amount_filter == 'large' ) $query->where("d.amount > ".TextHelper::_('COBALT_LARGE_DEAL_AMOUNT'));
-                }
-                //source
-                $source_filter = $this->getState('Deal.'.$layout.'_source_id');
-                if ($source_filter != null AND $source_filter != 'all') {
-                    $source = $source_filter;
-                }
-                //stage
-                $stage_filter = $this->getState('Deal.'.$layout.'_stage_id');
-                if ($stage_filter != null AND $stage_filter != 'all') {
-                    $stage = $stage_filter;
-                }
-                //status
-                $status_filter = $this->getState('Deal.'.$layout.'_status_id');
-                if ($status_filter != null AND $status_filter != 'all') {
-                    $status = $status_filter;
-                }
-                //expected close
-                $expected_close_filter = $this->getState('Deal.'.$layout.'_expected_close');
-                if ($expected_close_filter != null AND $expected_close_filter != 'all') {
-                    $close = $expected_close_filter;
-                }
-                //modified
-                $modified_filter = $this->getState('Deal.'.$layout.'_modified');
-                if ($modified_filter != null AND $modified_filter != 'all') {
-                    $modified = $modified_filter;
-                }
-                //created
-                $created_filter = $this->getState('Deal.'.$layout.'_created');
-                if ($created_filter != null AND $created_filter != 'all') {
-                    $created = $created_filter;
+                    $ids = substr($ids,0,-1);
+                    $query->where("d.owner_id IN(".$ids.")");
                 }
             }
+            //amount
+            $amount_filter = $this->getState('Deal.'.$layout.'_amount');
+            if ($amount_filter != null AND $amount_filter != 'all') {
+                if ( $amount_filter == 'small' ) $query->where("d.amount <= ".TextHelper::_('COBALT_SMALL_DEAL_AMOUNT'));
+                if ( $amount_filter == 'medium' ) $query->where("d.amount > ".TextHelper::_('COBALT_SMALL_DEAL_AMOUNT')." AND d.amount <= ".TextHelper::_('COBALT_MEDIUM_DEAL_AMOUNT'));
+                if ( $amount_filter == 'large' ) $query->where("d.amount > ".TextHelper::_('COBALT_LARGE_DEAL_AMOUNT'));
+            }
+            //source
+            $source_filter = $this->getState('Deal.'.$layout.'_source_id');
+            if ($source_filter != null AND $source_filter != 'all') {
+                $source = $source_filter;
+            }
+            //stage
+            $stage_filter = $this->getState('Deal.'.$layout.'_stage_id');
+            if ($stage_filter != null AND $stage_filter != 'all') {
+                $stage = $stage_filter;
+            }
+            //status
+            $status_filter = $this->getState('Deal.'.$layout.'_status_id');
+            if ($status_filter != null AND $status_filter != 'all') {
+                $status = $status_filter;
+            }
+            //expected close
+            $expected_close_filter = $this->getState('Deal.'.$layout.'_expected_close');
+            if ($expected_close_filter != null AND $expected_close_filter != 'all') {
+                $close = $expected_close_filter;
+            }
+            //modified
+            $modified_filter = $this->getState('Deal.'.$layout.'_modified');
+            if ($modified_filter != null AND $modified_filter != 'all') {
+                $modified = $modified_filter;
+            }
+            //created
+            $created_filter = $this->getState('Deal.'.$layout.'_created');
+            if ($created_filter != null AND $created_filter != 'all') {
+                $created = $created_filter;
+            }
+
 
              //get current date to use for all date filtering
             $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
@@ -1212,10 +1208,17 @@ class Deal extends DefaultModel
                 $filter_order_Dir = $this->app->getUserStateFromRequest('Deal.filter_order_Dir','filter_order_Dir','asc');
                 $deal_filter = $this->app->getUserStateFromRequest('Deal.'.$view.'_name','deal_name',null);
 
+                // filters
+                $expected_close_filter = $this->app->getUserStateFromRequest('Deal.'.$layout.'_expected_close', 'due', null);
+
                 //set states
                 $state->set('Deal.filter_order',$filter_order);
                 $state->set('Deal.filter_order_Dir',$filter_order_Dir);
                 $state->set('Deal.'.$view.'_name',$deal_filter);
+
+                // filter states
+                $state->set('Deal.'.$layout.'_expected_close', $expected_close_filter);
+
                 break;
         }
 
