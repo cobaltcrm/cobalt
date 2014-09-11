@@ -482,16 +482,13 @@ class Deal extends DefaultModel
              * Here we filter for diferent types of deals
              */
 
-            
-            $due_filter = $this->getState('Deal.'.$layout.'_due', '');
-            $updated_filter = $this->getState('Deal.'.$layout.'_updated', '');
             $item_filter = $this->getState('Deal.'.$layout.'_item', '');
 
-            if ($item_filter != 'all')
+            if ($item_filter)
             {
 
                 //filter for deals//tasks due today
-                if ($due_filter == 'today')
+                if ($item_filter == 'due.today')
                 {
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                     $query->where("event.due_date > '$date' AND event.due_date < '$tomorrow'");
@@ -499,7 +496,7 @@ class Deal extends DefaultModel
                 }
 
                 //filter for deals//tasks due tomorrow
-                if ($due_filter == "tomorrow")
+                if ($item_filter == "due.tomorrow")
                 {
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                     $query->where("event.due_date='".$tomorrow."'");
@@ -507,28 +504,28 @@ class Deal extends DefaultModel
                 }
 
                 //filter for past deals
-                if ($due_filter == "past")
+                if ($item_filter == "due.past")
                 {
                     $query->where("event.due_date < '$date'");
                     $query->where("event.published>0");
                 }
 
                 //filter for deals not updated in the last 30 days
-                elseif ($updated_filter == "not_thirty")
+                if ($item_filter == "updated.not_thirty")
                 {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                     $query->where("d.modified < '$last_thirty_days'");
                 }
 
                 //filter for deals updated in the last 30 days
-                elseif ($updated_filter == "thirty")
+                if ($item_filter == "updated.thirty")
                 {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
                     $query->where("d.modified >'$last_thirty_days'");
                 }
 
                 //filter for most valuable deals
-                if ($amount_filter == "valuable")
+                if ($item_filter == "amount.valuable")
                 {
                     $query->where('d.amount > 0');
                 }
@@ -538,16 +535,17 @@ class Deal extends DefaultModel
                 {
                     $query->where("shared.item_id IS NOT NULL");
                 }
+                
+            }
 
-                //filter for archived deals
-                if ($item_filter == "archived" && is_null($this->archived) )
-                {
-                    $query->where("d.archived=1");
-                }
-                else
-                {
-                    $query->where("d.archived=0");
-                }
+            //filter for archived deals
+            if ($item_filter == "archived" && is_null($this->archived) )
+            {
+                $query->where("d.archived=1");
+            }
+            else
+            {
+                $query->where("d.archived=0");
             }
 
             /** --------------------------------------------
@@ -1298,26 +1296,34 @@ class Deal extends DefaultModel
                 $deal_filter = $this->app->getUserStateFromRequest('Deal.'.$view.'_name','deal_name',null);
 
                 // filters
-                $due_filter = $this->app->input->getString('due', '');
-                $updated_filter = $this->app->input->getString('updated', null);
-                $amount_filter = $this->app->input->getString('amount', null);
                 $item_filter = $this->app->input->getString('item', null);
+                $ownertype_filter = $this->app->input->getRaw('ownertype', null);
 
                 //set states
-                $state->set('Deal.filter_order',$filter_order);
-                $state->set('Deal.filter_order_Dir',$filter_order_Dir);
-                $state->set('Deal.'.$view.'_name',$deal_filter);
+                $state->set('Deal.filter_order', $filter_order);
+                $state->set('Deal.filter_order_Dir', $filter_order_Dir);
+                $state->set('Deal.'.$view.'_name', $deal_filter);
 
                 // filter states
-                $state->set('Deal.'.$layout.'_due', $due_filter);
-                $state->set('Deal.'.$layout.'_updated', $updated_filter);
-                $state->set('Deal.'.$layout.'_amount', $amount_filter);
                 $state->set('Deal.'.$layout.'_item', $item_filter);
+
+                if ($ownertype_filter)
+                {
+                    if ($ownertype_filter != 'all')
+                    {
+                        $owner_filters = explode(':', $ownertype_filter);
+                        $state->set('Deal.'.$layout.'_owner_id', $owner_filters[1]);
+                        $state->set('Deal.'.$layout.'_owner_type', $owner_filters[0]);
+                    }
+                    else
+                    {
+                        $state->set('Deal.'.$layout.'_owner_id', $ownertype_filter);
+                    }
+                }
 
                 break;
         }
-
-       $this->setState($state);
+        $this->setState($state);
 
     }
 

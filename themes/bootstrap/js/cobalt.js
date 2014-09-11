@@ -79,35 +79,32 @@ var Cobalt = {
             }
         };
 
+        var filters = {};
+
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
         }
+
         var dataTableId = jQuery('table.data-table').attr('id');
         var datatable = jQuery('table.data-table').DataTable(options);
         var searchbox = jQuery('.datatable-searchbox');
 
-        // searchbox filter
-        searchbox.keyup(function() {
-            datatable.search(jQuery(this).val()).draw();
+        // set filter
+        jQuery('.filter-sentence .dropdown-menu a').click(function(e) {
+            e.preventDefault();
+            var link = jQuery(this);
+            var filterType = link.closest('ul.dropdown-menu').attr('data-filter');
+            var filterValue = link.attr('data-filter-value');
+            var dropdownLabel = link.closest('.dropdown').find('.dropdown-label');
+            dropdownLabel.text(link.text());
+            filters[filterType] = filterValue;
+            datatable.search(JSON.stringify(filters)).draw();
         });
 
         // set filter
-        jQuery('.filter-sentence a').click(function() {
-            var link = jQuery(this);
-            var filter = link.attr('data-filter');
-            var dropdownLabel = link.closest('.dropdown').find('.dropdown-label');
-            dropdownLabel.text(link.text());
-            if(filter) {
-                var previousValue = searchbox.val();
-                console.log(previousValue, previousValue.indexOf('filter:'));
-                if (previousValue.indexOf('filter:') !== -1) {
-                    previousValue = '';
-                } else if (previousValue) {
-                    previousValue = '&'+previousValue;
-                }
-                searchbox.val(filter+previousValue);
-                datatable.search(filter).draw();
-            }
+        searchbox.keyup(function() {
+            filters.search = jQuery(this).val();
+            datatable.search(JSON.stringify(filters)).draw();
         });
 
         // store datatable to hash object so it can be used later.

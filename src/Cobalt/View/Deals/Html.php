@@ -123,7 +123,7 @@ class Html extends AbstractHtmlView
         //get deal type filters
         $deal_types = DealHelper::getDealTypes();
         $deal_type_name = $session->get('deal_type_filter');
-        $deal_type_name = ( $deal_type_name ) ? $deal_types[$deal_type_name] : $deal_types['filter:all'];
+        $deal_type_name = ( $deal_type_name ) ? $deal_types[$deal_type_name] : $deal_types[''];
 
         //get column filters
         $column_filters = DealHelper::getColumnFilters();

@@ -51,7 +51,7 @@ class Datatable extends DefaultController
 
         if (isset($searchArr['value']))
         {
-            $value    = $this->parseFilter($searchArr['value']);
+            $value    = $this->setFilters($searchArr['value']);
         }
 
         $this->input->set('limit', $length);
@@ -111,33 +111,29 @@ class Datatable extends DefaultController
     }
 
     /**
-     * Method parses text filter and decides if it's only
+     * Method parses JSON filters and decides if it's only
      * basic text search, filter applied or combination.
      * 
      * @param string $filter
      * @return string
      */
-    protected function parseFilter($filter)
+    protected function setFilters($filters)
     {
-        $filterParts = explode('&', $filter);
+        $filters = json_decode($filters);
 
-        if ($filterParts)
+        if ($filters)
         {
-            foreach ($filterParts as $filterPart)
+            foreach ($filters as $filter => $value)
             {
                 // distinquish filter from fulltext search
-                if (strpos($filterPart, 'filter:') !== false)
+                if ($filter == 'search')
                 {
-                    // clean filter query
-                    $filter = str_replace(array(' ', 'filter:'), '', $filterPart);
-
-                    $filter = explode(':', $filter);
-
-                    $this->setFilter($filter);
+                    $loc = $this->makeSingular($this->input->getString('loc'));
+                    $this->input->set(strtolower($loc) . '_name', $value);
                 }
                 else
                 {
-                    $this->setSearch($filterPart);
+                    $this->input->set($filter, $value);
                 }
             }
         }
@@ -145,8 +141,7 @@ class Datatable extends DefaultController
 
     protected function setSearch($value)
     {
-        $loc = $this->makeSingular($this->input->getString('loc'));
-        $this->input->set(strtolower($loc) . '_name', $value);
+        
     }
 
     protected function setFilter($filter)

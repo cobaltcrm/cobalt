@@ -34,31 +34,47 @@ use Joomla\Filter\OutputFilter;
         <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
         <li class="dropdown">
             <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_type_link" ><span class="dropdown-label"><?php echo $this->deal_type_name; ?><span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_type_link">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_type_link" data-filter="item">
                 <?php foreach ($this->deal_types as $title => $text) { ?>
-                     <li><a href='javascript:void(0);' class='filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>' data-filter="<?php echo $title; ?>"><?php echo $text; ?></a></li>
+                     <li><a href="#" class='filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>' data-filter-value="<?php echo $title; ?>"><?php echo $text; ?></a></li>
                 <?php }?>
             </ul>
         </li>
         <li><span><?php echo TextHelper::_('COBALT_FOR'); ?></span></li>
-        <li class='dropdown'>
+        <li class="dropdown">
             <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="deal_user_link"><span class="dropdown-label"><?php echo $this->user_name; ?><span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_user_link">
-                <li><a class="filter_user_<?php echo $this->user_id ?>" onclick="dealUser(<?php echo $this->user_id ?>,0)"><?php echo TextHelper::_('COBALT_ME'); ?></a></li>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="deal_user_link" data-filter="ownertype">
+                <li>
+                    <a class="filter_user_<?php echo $this->user_id ?>" data-filter-value="member:<?php echo $this->user_id; ?>">
+                        <?php echo TextHelper::_('COBALT_ME'); ?>
+                    </a>
+                </li>
                 <?php  if ($this->member_role != 'basic') { ?>
-                     <li><a href="javascript:void(0);" class="filter_user_all" onclick="dealUser('all',0)"><?php echo TextHelper::_('COBALT_ALL_USERS'); ?></a></li>
+                 <li>
+                    <a href="#" class="filter_user_all" data-filter-value="all">
+                        <?php echo TextHelper::_('COBALT_ALL_USERS'); ?>
+                    </a>
+                </li>
                 <?php } ?>
                 <?php
                    if ($this->member_role == 'exec') {
                         if ( count($this->teams) > 0 ) {
                             foreach ($this->teams as $team) { ?>
-                                 <li><a href='javascript:void(0);' class='filter_team_<?php echo $team['team_id']; ?>' onclick='dealUser(0,"<?php echo $team['team_id']; ?>")'><?php echo $team['team_name'].TextHelper::_('COBALT_TEAM_APPEND'); ?></a></li>
+                 <li>
+                    <a href="#" class="filter_team_<?php echo $team['team_id']; ?>" data-filter-value="team:<?php echo $team['team_id']; ?>">
+                        <?php echo $team['team_name'].TextHelper::_('COBALT_TEAM_APPEND'); ?>
+                    </a>
+                </li>
                              <?php }
                         }
                     }
                     if ( count($this->users) > 0 ) {
                         foreach ($this->users as $user) { ?>
-                            <li><a href='javascript:void(0);' class='filter_user_<?php echo $user['id']; ?>' onclick='dealUser("<?php echo $user['id']; ?>",0)'><?php echo $user['first_name']."  ".$user['last_name']; ?></a></li>
+                <li>
+                    <a href="#" class="filter_user_<?php echo $user['id']; ?>" data-filter-value="member:<?php echo $user['id']; ?>">
+                        <?php echo $user['first_name']."  ".$user['last_name']; ?>
+                    </a>
+                </li>
                         <?php }
                     }
                 ?>
