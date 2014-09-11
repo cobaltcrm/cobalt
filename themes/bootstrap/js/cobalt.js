@@ -95,8 +95,17 @@ var Cobalt = {
         jQuery('.filter-sentence a').click(function() {
             var link = jQuery(this);
             var filter = link.attr('data-filter');
+            var dropdownLabel = link.closest('.dropdown').find('.dropdown-label');
+            dropdownLabel.text(link.text());
             if(filter) {
-                searchbox.val(filter+'&'+searchbox.val());
+                var previousValue = searchbox.val();
+                console.log(previousValue, previousValue.indexOf('filter:'));
+                if (previousValue.indexOf('filter:') !== -1) {
+                    previousValue = '';
+                } else if (previousValue) {
+                    previousValue = '&'+previousValue;
+                }
+                searchbox.val(filter+previousValue);
                 datatable.search(filter).draw();
             }
         });

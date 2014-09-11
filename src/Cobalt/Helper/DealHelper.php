@@ -45,8 +45,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             'filter:due:today'=>TextHelper::_('COBALT_DEALS_TASKS_TODAY'),
             'filter:due:tomorrow'=>TextHelper::_('COBALT_DEALS_TASKS_TOMORROW'),
             'filter:due:past'=>TextHelper::_('COBALT_PAST_DUE_DEALS'),
-            'filter:updated:30d'=>TextHelper::_('COBALT_DEALS_UPDATED_LAST_MONTH'),
-            'filter:updated:!30d'=>TextHelper::_('COBALT_DEALS_NOT_UPDATED'),
+            'filter:updated:thirty'=>TextHelper::_('COBALT_DEALS_UPDATED_LAST_MONTH'),
+            'filter:updated:not_thirty'=>TextHelper::_('COBALT_DEALS_NOT_UPDATED'),
             'filter:amount:valuable'=>TextHelper::_('COBALT_DEALS_MOST_VALUABLE'),
             'filter:shared'=>TextHelper::_('COBALT_SHARED_DEALS'),
             'filter:archived'=>TextHelper::_('COBALT_ARCHIVED_DEALS'));
