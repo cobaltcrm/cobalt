@@ -1,5 +1,7 @@
 var Cobalt = {
 
+    dataTables: {},
+
     init: function() {
         this.bindPopovers();
         this.bindTooltips();
@@ -80,13 +82,16 @@ var Cobalt = {
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
         }
-
-        var datatable = jQuery('table.data-table').dataTable(options);
+        var dataTableId = jQuery('table.data-table').attr('id');
+        var datatable = jQuery('table.data-table').DataTable(options);
 
         // searchbox filter
         jQuery('.datatable-searchbox').keyup(function() {
             datatable.fnFilter( jQuery(this).val() );
         });
+
+        // store datatable to hash object so it can be used later.
+        Cobalt.dataTables[dataTableId] = datatable;
     },
 
     initFormSave: function(options) {
@@ -116,6 +121,8 @@ var Cobalt = {
         if (typeof response.remove !== 'undefined') {
             Cobalt.removeRows(response.remove);
         }
+
+        Cobalt.updateDataTables();
     },
 
     sumbitModalForm: function(button) {
@@ -156,6 +163,14 @@ var Cobalt = {
                 field.val(value);
             }
         });
+    },
+
+    updateDataTables: function() {
+        for (var id in Cobalt.dataTables) {
+            if (typeof Cobalt.dataTables[id] === 'object') {
+                Cobalt.dataTables[id].ajax.reload();
+            }
+        }
     },
 
     removeRows: function(ids) {
