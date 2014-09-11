@@ -24,7 +24,7 @@ class Trash extends DefaultController
         $item_type  = $this->input->get('item_type');
 
         //ADD TO MODELS * trash model *
-        $db         = $this->container->resolve('db');
+        $db         = $this->container->fetch('db');
         $query      = $db->getQuery(true);
         $query->update("#__".$item_type)->set("published=-1");
 

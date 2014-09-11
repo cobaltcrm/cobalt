@@ -53,18 +53,18 @@ var Cobalt = {
     },
 
     getFormSubmitOptions: function() {
-        return { 
-            beforeSubmit: function(arr, $form, options) {      
+        return {
+            beforeSubmit: function(arr, $form, options) {
                 // add attributes necessary for AJAX call
                 arr.push({'name': 'format', 'value': 'raw'});
-                arr.push({'name': 'tmpl', 'value': 'component'});         
+                arr.push({'name': 'tmpl', 'value': 'component'});
             },
             success:   function(response, status, xhr, $form) {
                 Cobalt.onSaveSuccess(response, status, xhr, $form);
             },
             type:      'post',
             dataType:  'json'
-        }; 
+        };
     },
 
     initDataTables: function() {
@@ -96,16 +96,16 @@ var Cobalt = {
 
     initFormSave: function(options) {
         // initialize jQuery form submit plugin
-     
+
         if(!options) {
             otpions = this.getFormSubmitOptions();
         }
 
         // bind form using 'ajaxForm' 
-        jQuery('form[data-ajax="1"]').submit(function() { 
-            jQuery(this).ajaxSubmit(options); 
-            return false; 
-        }); 
+        jQuery('form[data-ajax="1"]').submit(function() {
+            jQuery(this).ajaxSubmit(options);
+            return false;
+        });
     },
 
     onSaveSuccess: function(response) {
@@ -259,7 +259,7 @@ var Cobalt = {
                     'task': 'save',
                     'format': 'raw'
                 };
-                data[link.attr('data-field')] = link.attr('data-value');
+            data[link.attr('data-field')] = link.attr('data-value');
 
             Cobalt.save(data);
         });
@@ -305,17 +305,17 @@ window.onload = function () {
  **/
 
 function ucwords(str) {
-  return (str + '')
-    .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
-      return $1.toUpperCase();
-    });
+    return (str + '')
+        .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
+            return $1.toUpperCase();
+        });
 }
 
 var Joomla = {
     JText: {
-            strings: {},
-            '_': function(key, def) {
-                return typeof this.strings[key.toUpperCase()] !== 'undefined' ? this.strings[key.toUpperCase()] : def;
+        strings: {},
+        '_': function(key, def) {
+            return typeof this.strings[key.toUpperCase()] !== 'undefined' ? this.strings[key.toUpperCase()] : def;
         },
         load: function(object) {
             for (var key in object) {

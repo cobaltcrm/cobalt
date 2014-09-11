@@ -44,6 +44,7 @@ class Save extends DefaultController
                 $response->alert = new \stdClass;
                 $response->alert->message = $msg;
                 $response->alert->type = 'success';
+                $response->reload = '3000';
                 $this->app->close(json_encode($response));
             }
             else

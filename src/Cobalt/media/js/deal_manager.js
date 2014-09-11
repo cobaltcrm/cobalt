@@ -67,8 +67,7 @@ jQuery(document).ready(function(){
 	jQuery("#editable_summary").bind('click',function(){
 		jQuery("#editable_summary").hide();
 		jQuery("#editable_summary_area").show();
-	});	
-	
+	});
 	
 	/*
 	 * bind actions to actions dropdown menu items
@@ -89,7 +88,7 @@ jQuery(document).ready(function(){
 			success	:	function(data){
 				//display results
 				modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
-				
+
 				if ( archived )
 				jQuery("#archive").text("Unarchive")
 				if ( !archived )
@@ -123,7 +122,7 @@ function deal_update(loc){
 			data	:	'id='+id+'&'+dataString,
 			dataType:	'json',
 			success	:	function(data){
-					
+
 					//determine location to update on page
 					
 					//amount area
@@ -172,7 +171,7 @@ function deal_update(loc){
 					}
 					
 					modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
-				
+
 			}
 			
 		});
