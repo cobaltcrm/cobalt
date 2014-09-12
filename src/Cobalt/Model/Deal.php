@@ -1551,7 +1551,6 @@ class Deal extends DefaultModel
                 }
                 break;
             case 'actual_close':
-
                 if ($item->actual_close == "0000-00-00 00:00:00")
                 {
                     $template = TextHelper::_('COBALT_ACTIVE_DEAL');

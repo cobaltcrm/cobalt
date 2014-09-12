@@ -115,6 +115,7 @@ var Cobalt = {
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
+                Cobalt.bindDropdownItems();
             }
         };
 
@@ -352,6 +353,10 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Bind drobdowns and make links save-able. 
+     * Example on deal detail.
+     **/
     bindDropdownItems: function () {
         jQuery('.dropdown_item').click(function() {
             var link = jQuery(this),
