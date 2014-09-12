@@ -564,8 +564,8 @@ class Company extends DefaultModel
             case 'action':
                 $template = '<div class="btn-group">';
                 // @TODO: make these 2 buttons work
-                $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="#" onclick="showCompanyContactsDialogModal('.$item->id.'"><i class="glyphicon glyphicon-user"></i></a>';
-                $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="#" onclick="openNoteModal('.$item->id.',\'company\');"><i class="glyphicon glyphicon-file"></i></a>';
+                // $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="#" onclick="showCompanyContactsDialogModal('.$item->id.')"><i class="glyphicon glyphicon-user"></i></a>';
+                // $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="#" onclick="openNoteModal('.$item->id.',\'company\');"><i class="glyphicon glyphicon-file"></i></a>';
                 $template .= '</div>';
                 break;
             default:
