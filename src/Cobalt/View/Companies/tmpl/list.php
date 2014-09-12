@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 ?>
 <thead>
-    <th class="checkbox_column"><input type="checkbox" onclick="selectAll(this);" /></th>
+    <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" /></th>
     <th class="name"><?php echo TextHelper::_('COBALT_COMPANIES_NAME'); ?></th>
     <th class="contact"><?php echo ucwords(TextHelper::_('COBALT_CONTACT_DETAILS')); ?></th>
     <th class="created" ><?php echo TextHelper::_('COBALT_COMPANIES_ADDED'); ?></th>
