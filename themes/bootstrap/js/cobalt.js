@@ -354,6 +354,19 @@ var Cobalt = {
 
         // trigger change event for action bar toggle
         $('table.dataTable').trigger('change');
+    },
+
+    showDealContactsDialogModal: function(deal_id) {
+        jQuery.ajax({
+            url:'index.php?view=contacts&format=raw&tmpl=component&deal_id='+deal_id,
+            type:'GET',
+            dataType:'html',
+            success:function(data) {
+                jQuery("#CobaltAjaxModalBody").html(data);
+                jQuery("#CobaltAjaxModalHeader").text(ucwords(Joomla.JText._("COBALT_CONTACTS")));
+                jQuery("#CobaltAjaxModal").modal('show');
+            }
+        });
     }
 };
 

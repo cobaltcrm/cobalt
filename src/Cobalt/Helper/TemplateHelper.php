@@ -87,7 +87,7 @@ class TemplateHelper
             }
         }
         ?>
-                    <div class="modal hide fade" role="dialog" id="CobaltAjaxModal">
+                    <div class="modal fade" role="dialog" id="CobaltAjaxModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
