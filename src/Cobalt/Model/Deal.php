@@ -1540,6 +1540,27 @@ class Deal extends DefaultModel
                 $template .= '  </ul>';
                 $template .= ' </div>';
                 break;
+            case 'expected_close':
+                if ($item->expected_close == "0000-00-00 00:00:00")
+                {
+                    $template = TextHelper::_('COBALT_NOT_SET');
+                }
+                else
+                {
+                    $template = DateHelper::formatDate($item->expected_close);
+                }
+                break;
+            case 'actual_close':
+
+                if ($item->actual_close == "0000-00-00 00:00:00")
+                {
+                    $template = TextHelper::_('COBALT_ACTIVE_DEAL');
+                }
+                else
+                {
+                    $template = DateHelper::formatDate($item->actual_close);
+                }
+                break;
             case 'action':
                 $template = '<div class="btn-group">';
                 $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="showDealContactsDialogModal('.$item->id.');"><i class="glyphicon glyphicon-user"></i></a>';
