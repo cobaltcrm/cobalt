@@ -66,8 +66,9 @@ if ($format != "raw")
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_NAME')); ?>*
                 </label>
                 <div class="controls">
+                <!-- @TODO: onblur="checkCompanyName(this);" -->
                     <input  type="text" 
-                            onblur="checkCompanyName(this);" 
+                             
                             class="required form-control" 
                             name="name"
                             id="company_name" 
