@@ -49,7 +49,7 @@ class Company extends DefaultModel
      *
      * @return boolean True on success
      */
-    public function store($data=null)
+    public function store($data = null)
     {
         $app = \Cobalt\Container::fetch('app');
 
@@ -57,8 +57,9 @@ class Company extends DefaultModel
         $row = new CompanyTable;
         $oldRow = new CompanyTable;
 
-        if ($data == null) {
-          $data = $app->input->getRequest('post');
+        if ($data == null)
+        {
+            $data = $this->app->input->post->getArray();
         }
 
         //date generation
@@ -120,7 +121,7 @@ class Company extends DefaultModel
 
         $app->triggerEvent('onAfterCompanySave', array(&$row));
 
-        return $row;
+        return $row->id;
     }
 
     /**
@@ -380,15 +381,22 @@ class Company extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
         $id = $id ? $id : $app->input->get('id');
 
-        if ($id > 0) {
+        if ($id > 0)
+        {
             $company = $this->getCompanies($id);
-            if ( is_array($company) && count($company) >= 1 ) {
+
+            if ( is_array($company) && count($company) >= 1 )
+            {
                 return $company[0];
-            } else {
-                return (array) new CompanyTable;
             }
-        } else {
-            return (array) new CompanyTable;
+            else
+            {
+                return new CompanyTable;
+            }
+        }
+        else
+        {
+            return new CompanyTable;
         }
     }
 

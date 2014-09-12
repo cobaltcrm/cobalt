@@ -56,7 +56,7 @@ class Datatable extends DefaultController
 
         if (isset($searchArr['value']))
         {
-            $value    = $this->setFilters($searchArr['value']);
+            $value  = $this->setFilters($searchArr['value']);
         }
 
         $this->input->set('limit', $length);
