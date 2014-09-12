@@ -273,14 +273,6 @@ var Cobalt = {
         }
     },
 
-    removeRows: function(ids) {
-        jQuery.each(ids, function(i, id) {
-            jQuery('#list_row_'+id).hide('fast', function() {
-                jQuery(this).remove();
-            });
-        });
-    },
-
     /**
      * Displays modal message about AJAX action result for 2 sec.
      **/
