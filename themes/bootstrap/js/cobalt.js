@@ -317,6 +317,9 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Deletes checked rows from the table.
+     **/
     deleteListItems: function() {
         var itemIds = [];
         jQuery("input[name='ids\\[\\]']:checked").each(function() {
