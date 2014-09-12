@@ -242,6 +242,39 @@ var Cobalt = {
     },
 
     /**
+     * Request any JS object or array. Request must contain data(must contain task), onSuccess
+     */
+    editModalForm: function (data, modalID) {
+        jQuery.post('index.php', data, function(response) {
+            try {
+                response = $.parseJSON(response);
+                //display alert
+                if (typeof response.alert !== 'undefined') {
+                    Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
+                }
+                //bind item
+                if (typeof response.item !== 'undefined') {
+                    jQuery.each(response.item, function(name, value) {
+                        if (value === null) {
+                            value = '';
+                        }
+                        var field = jQuery('[name="'+name+'"]');
+                        if (field.length) {
+                            field.val(value);
+                        }
+                    });
+                }
+                //display modal
+                if (typeof response.modal !== 'undefined') {
+                    jQuery(modalID).modal(response.modal.action);
+                }
+            } catch (e) {
+                // not json
+            }
+        });
+    },
+
+    /**
      * Update all HTML elements which has ID = data.param+'_'+itemId.
      **/
     updateStuff: function(data) {
