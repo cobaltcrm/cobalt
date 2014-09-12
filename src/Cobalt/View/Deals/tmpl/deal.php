@@ -132,7 +132,7 @@ $deal = $this->dealList[0];
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_OWNER'); ?></div>
                     <div class="cobaltValue">
                         <div class="dropdown">
-                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_owner_link'>
+                            <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_owner_link">
                                 <span id="owner_first_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_first_name; ?></span>
                                 <span id="owner_last_name_<?php echo $deal->id; ?>"><?php echo $deal->owner_last_name; ?></span>
                             </a>
@@ -143,7 +143,7 @@ $deal = $this->dealList[0];
                             $users = array_merge($me,$users);
                             if ( count($users) ){ foreach ($users as $key => $user) { ?>
                                 <li>
-                                    <a href="javascript:void(0)" class="dropdown_item" data-field="owner_id" data-item="deal" data-item-id="<?php echo $deal->id; ?>" data-value="<?php echo $user['value']; ?>">
+                                    <a href="#" class="dropdown_item" data-field="owner_id" data-item="deal" data-item-id="<?php echo $deal->id; ?>" data-value="<?php echo $user['value']; ?>">
                                         <?php echo $user['label']; ?>
                                     </a>
                                 </li>

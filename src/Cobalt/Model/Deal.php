@@ -1401,6 +1401,17 @@ class Deal extends DefaultModel
         return $json ? json_encode($return) : $return;
     }
 
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     * 
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     * 
+     * @return array
+     */
     public function getDataTableColumns()
     {
         $columns = array();
@@ -1418,27 +1429,30 @@ class Deal extends DefaultModel
         return $columns;
     }
 
-    public function getDataTableItems()
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     * 
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
     {
-        $items = $this->getDeals();
-        $tableItems = array();
-        $columns = $this->getDataTableColumns();
-
-        foreach ($items as $item)
+        if (!$items)
         {
-            $tableItem = new \stdClass;
-
-            foreach ($columns as $column)
-            {
-                $tableItem->{$column['data']} = $this->getDataTableFieldTemplate($column['data'], $item);
-            }
-
-            $tableItems[] = $tableItem;
+            $items = $this->getDeals();
         }
 
-        return $tableItems;
+        return parent::getDataTableItems($items);
     }
 
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     * 
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
     public function getDataTableFieldTemplate($column, $item)
     {
 
@@ -1551,7 +1565,6 @@ class Deal extends DefaultModel
                 }
                 break;
             case 'actual_close':
-
                 if ($item->actual_close == "0000-00-00 00:00:00")
                 {
                     $template = TextHelper::_('COBALT_ACTIVE_DEAL');
@@ -1563,8 +1576,9 @@ class Deal extends DefaultModel
                 break;
             case 'action':
                 $template = '<div class="btn-group">';
-                $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="showDealContactsDialogModal('.$item->id.');"><i class="glyphicon glyphicon-user"></i></a>';
-                $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(\'.deal->id.\',\'deal\');"><i class="glyphicon glyphicon-file"></i></a>';
+                // @TODO: make these 2 buttons work
+                // $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="Cobalt.showDealContactsDialogModal('.$item->id.');"><i class="glyphicon glyphicon-user"></i></a>';
+                // $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(\'.deal->id.\',\'deal\');"><i class="glyphicon glyphicon-file"></i></a>';
                 $template .= ' <a data-toggle="popover" title="'.TextHelper::_('COBALT_VIEW_DETAILS').'" data-placement="top" data-html="true" data-content-class="extras-'.$item->id.'" class="btn" href="#" tabindex="0"><i class="glyphicon glyphicon-info-sign"></i></a>';
                 $template .= '</div>';
                 $template .= '<div class="extras-'.$item->id.' hide">';

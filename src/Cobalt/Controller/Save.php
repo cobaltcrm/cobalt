@@ -26,12 +26,12 @@ class Save extends DefaultController
 {
     public function execute()
     {
-        $modelName = ucwords($this->input->get('model'));
-        $modelPath = "Cobalt\\Model\\".$modelName;
-        $model = new $modelPath();
-        $view = $this->input->get('view');
-        $response = new \stdClass;
-        $link = $this->input->get('return', Router::to('index.php?view='.$view));
+        $modelName  = ucwords($this->input->get('model'));
+        $modelPath  = "Cobalt\\Model\\".$modelName;
+        $model      = new $modelPath();
+        $view       = $this->input->get('view');
+        $response   = new \stdClass;
+        $link       = $this->input->get('return', Router::to('index.php?view=' . $view));
 
         if ($itemId = $model->store())
         {

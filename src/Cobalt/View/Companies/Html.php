@@ -137,6 +137,13 @@ class Html extends AbstractHtmlView
                 $this->company_list = $company_list;
                 $company_name = $state->get('Company.companies_name');
                 $this->company_filter = $company_name;
+                $this->dataTableColumns = $model->getDataTableColumns();
+
+                $doc->addScriptDeclaration("
+                var loc = 'companies';
+                var order_dir = '".$state->get('Company.filter_order_Dir')."';
+                var order_col = '".$state->get('Company.filter_order')."';
+                var dataTableColumns = " . json_encode($this->dataTableColumns) . ";");
             break;
 
             case 'edit':

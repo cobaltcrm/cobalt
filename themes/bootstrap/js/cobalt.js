@@ -115,6 +115,7 @@ var Cobalt = {
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
+                Cobalt.bindDropdownItems();
             }
         };
 
@@ -199,10 +200,6 @@ var Cobalt = {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
         }
-        // Remove rows from table
-        if (typeof response.remove !== 'undefined') {
-            Cobalt.removeRows(response.remove);
-        }
 
         Cobalt.updateDataTables();
     },
@@ -272,14 +269,6 @@ var Cobalt = {
         }
     },
 
-    removeRows: function(ids) {
-        jQuery.each(ids, function(i, id) {
-            jQuery('#list_row_'+id).hide('fast', function() {
-                jQuery(this).remove();
-            });
-        });
-    },
-
     /**
      * Displays modal message about AJAX action result for 2 sec.
      **/
@@ -305,53 +294,10 @@ var Cobalt = {
         }
     },
 
-    newListItem: function (data, type) {
-
-        id = "id="+data.id;
-
-        switch ( type ){
-            case "deal":
-                var loc = "deals";
-                break;
-            case "company":
-                var loc = "companies";
-                break;
-            case "people":
-                var loc ="people";
-                break;
-            default:
-                var loc = type;
-                break;
-        }
-
-        jQuery.ajax({
-            type:'post',
-            url:'index.php?view='+loc+'&format=raw&layout=entry&'+id,
-            dataType:'html',
-            success:function(html){
-                var taskItem = jQuery('a.task_list_'+data.id),
-                    listItem = jQuery('#list_row_'+data.id);
-
-                if (type == "tasklist") {
-                    taskItem.html(data.name);
-                    taskItem.effect("highlight",2000);
-                }else{
-                    if (listItem.length != 0) {
-                        listItem.replaceWith(html);
-                    }else{
-                        jQuery("#list").prepend(html);
-                    }
-
-                    listItem.find('td').effect('highlight', 2000);
-                }
-
-                Cobalt.bindDatepickers();
-                Cobalt.bindTooltips();
-                Cobalt.bindPopovers();
-            }
-        });
-    },
-
+    /**
+     * Bind drobdowns and make links save-able. 
+     * Example on deal detail.
+     **/
     bindDropdownItems: function () {
         jQuery('.dropdown_item').click(function() {
             var link = jQuery(this),
@@ -367,6 +313,9 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Deletes checked rows from the table.
+     **/
     deleteListItems: function() {
         var itemIds = [];
         jQuery("input[name='ids\\[\\]']:checked").each(function() {
@@ -401,6 +350,19 @@ var Cobalt = {
 
         // trigger change event for action bar toggle
         $('table.dataTable').trigger('change');
+    },
+
+    showDealContactsDialogModal: function(deal_id) {
+        jQuery.ajax({
+            url:'index.php?view=contacts&format=raw&tmpl=component&deal_id='+deal_id,
+            type:'GET',
+            dataType:'html',
+            success:function(data) {
+                jQuery("#CobaltAjaxModalBody").html(data);
+                jQuery("#CobaltAjaxModalHeader").text(ucwords(Joomla.JText._("COBALT_CONTACTS")));
+                jQuery("#CobaltAjaxModal").modal('show');
+            }
+        });
     }
 };
 

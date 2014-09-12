@@ -17,19 +17,19 @@ use Cobalt\Model\People as PeopleModel;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class DropdownHelper
- {
+class DropdownHelper
+{
 
-     public static function generateDropdown($type,$selection=null,$name=null, $raw=false)
-     {
-         //base html
-         $html = '';
+    public static function generateDropdown($type, $selection = null, $name = null, $raw = false)
+    {
+        //base html
+        $html = '';
 
         //grab db
         $db = \Cobalt\Container::fetch('db');
 
         //generate query based on type
-         $query = $db->getQuery(true);
+        $query = $db->getQuery(true);
 
         switch ($type) {
             case "company":
@@ -74,6 +74,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         if ($query!="") {
             $db->setQuery($query);
             $row = $db->loadAssocList();
+        }
+
+        if ($type == 'owner')
+        {
+            $me = array(array('label' => TextHelper::_('COBALT_ME'), 'value' => UsersHelper::getLoggedInUser()->id));
+            $users = UsersHelper::getUsers(null, true);
+            $row = array_merge($me, $users);
         }
 
         if ( !isset($row) ) {
@@ -167,6 +174,18 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                         foreach ($row as $deal => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
+                        }
+
+                    $html .='</select>';
+                break;
+            case "owner":
+                $name = $name ? $name : "name=owner_id";
+                $html = '
+                    <select class="inputbox form-control" '.$name.' id="owner_id">';
+                    $html .= "<option value=\"0\" ".$selected.">Select owner...";
+                        foreach ($row as $i => $info) {
+                             $selected = ( $info['value'] == $selection ) ? "selected='selected'" : '';
+                            $html .= '<option value="'.$info['value'].'" '.$selected.' '.$name.' >'.$info['label'].'</option>';
                         }
 
                     $html .='</select>';

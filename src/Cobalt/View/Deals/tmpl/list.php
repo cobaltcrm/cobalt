@@ -14,14 +14,14 @@ $app = JFactory::getApplication();
 <thead>
     <tr>
         <th class="checkbox_column"><input rel="tooltip" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" onclick="Cobalt.selectAll(this);" /></th>
-        <th class="name" ><div class="sort_order"><a href="javascript:void(0);" class="d.name"><?php echo ucwords(TextHelper::_('COBALT_DEALS_NAME')); ?></a></div></th>
-        <th class="company"><div class="sort_order"><a href="javascript:void(0);" class="c.name"><?php echo ucwords(TextHelper::_('COBALT_DEALS_COMPANY')); ?></a></div></th>
-        <th class="amount" ><div class="sort_order"><a href="javascript:void(0);" class="d.amount"><?php echo ucwords(TextHelper::_('COBALT_DEALS_AMOUNT')); ?></a></div></th>
-        <th class="status" ><div class="sort_order"><a href="javascript:void(0);" class="d.status_id"><?php echo ucwords(TextHelper::_('COBALT_DEALS_STATUS')); ?></a></div></th>
-        <th class="stage" ><div class="sort_order"><a href="javascript:void(0);" class="d.stage_id"><?php echo ucwords(TextHelper::_('COBALT_DEALS_STAGE')); ?></a></div></th>
-        <th class="source" ><div class="sort_order"><a href="javascript:void(0);" class="d.source_id"><?php echo ucwords(TextHelper::_('COBALT_DEAL_SOURCE')); ?></a></div></th>
-        <th class="expected_close" ><div class="sort_order"><a href="javascript:void(0);" class="d.expected_close"><?php echo ucwords(TextHelper::_('COBALT_DEALS_EXPECTED_CLOSE')); ?></a></div></th>
-        <th class="actual_close" ><div class="sort_order"><a href="javascript:void(0);" class="d.actual_close"><?php echo ucwords(TextHelper::_('COBALT_DEALS_ACTUAL_CLOSE')); ?></a></div></th>
+        <th class="name" ><?php echo ucwords(TextHelper::_('COBALT_DEALS_NAME')); ?></th>
+        <th class="company"><?php echo ucwords(TextHelper::_('COBALT_DEALS_COMPANY')); ?></th>
+        <th class="amount" ><?php echo ucwords(TextHelper::_('COBALT_DEALS_AMOUNT')); ?></th>
+        <th class="status" ><?php echo ucwords(TextHelper::_('COBALT_DEALS_STATUS')); ?></th>
+        <th class="stage" ><?php echo ucwords(TextHelper::_('COBALT_DEALS_STAGE')); ?></th>
+        <th class="source" ><?php echo ucwords(TextHelper::_('COBALT_DEAL_SOURCE')); ?></th>
+        <th class="expected_close" ><?php echo ucwords(TextHelper::_('COBALT_DEALS_EXPECTED_CLOSE')); ?></th>
+        <th class="actual_close" ><?php echo ucwords(TextHelper::_('COBALT_DEALS_ACTUAL_CLOSE')); ?></th>
         <th class="contacts" >&nbsp;</th>
     </tr>
 </thead>
@@ -47,7 +47,3 @@ $app = JFactory::getApplication();
         }
 ?>
 </tbody>
-<script type="text/javascript">
-    var total = <?php echo $this->total; ?>;
-    jQuery("#deals_matched").html(total);
-</script>

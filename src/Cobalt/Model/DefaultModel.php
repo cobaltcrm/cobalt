@@ -201,4 +201,30 @@ class DefaultModel extends AbstractDatabaseModel
         return false;
     }
 
+    /**
+     * Method transforms items to the format jQuery dataTables needs
+     * 
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items)
+    {
+        $tableItems = array();
+        $columns = $this->getDataTableColumns();
+
+        foreach ($items as $item)
+        {
+            $tableItem = new \stdClass;
+
+            foreach ($columns as $column)
+            {
+                $tableItem->{$column['data']} = $this->getDataTableFieldTemplate($column['data'], (object) $item);
+            }
+
+            $tableItems[] = $tableItem;
+        }
+
+        return $tableItems;
+    }
+
 }
