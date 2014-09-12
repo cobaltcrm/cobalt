@@ -45,7 +45,14 @@ class Note extends DefaultModel
         $oldRow = new NoteTable;
 
         if ($data == null) {
-            $data = $app->input->getRequest( 'post' );
+            $data = $app->input->getArray(array(
+                'note' => 'string',
+                'deal_id' => 'int',
+                'person_id' => 'int',
+                'name' => 'string',
+                'category_id' => 'int',
+                'company_id' => 'int'
+            ));
         }
 
         if ( array_key_exists('is_email',$data) ) {
@@ -74,16 +81,13 @@ class Note extends DefaultModel
         /** check for and automatically associate and create deals **/
         if ( array_key_exists('deal_name',$data) && $data['deal_name'] != "" ) {
             $dealModel = new Deal;
-            $existingDeal = $dealModel->checkDealName($data['deal_name']);
+            $existingDeal = $dealModel->load($data['deal_id']);
 
             if ($existingDeal=="") {
                 $pdata = array();
                 $pdata['name'] = $data['deal_name'];
                 $data['deal_id'] = $dealModel->store($pdata);
-            } else {
-                $data['deal_id'] = $existingDeal;
             }
-
         }
 
         //date generation
@@ -150,6 +154,7 @@ class Note extends DefaultModel
      */
     public function getNote($id)
     {
+        $app = \Cobalt\Container::fetch('app');
         //grab db
         $db = JFactory::getDBO();
 
@@ -182,7 +187,7 @@ class Note extends DefaultModel
             }
         }
 
-        $app->trigger('onNoteLoad', array(&$results));
+        $app->triggerEvent('onNoteLoad', array(&$results));
 
         //return results
         return $results;

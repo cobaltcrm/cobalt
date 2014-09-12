@@ -29,8 +29,8 @@ $app = JFactory::getApplication();
                 <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_NOTE')); ?></h3>
             </div>
             <div class="modal-body">
-                <form id="note" name="note">
-                    <input type="hidden" name="<?php echo $app->input->get('type'); ?>_id" value="<?php echo $app->input->get('id'); ?>" />
+                <form action="index.php?task=save&model=note&view=<?php echo $app->input->getCmd('view'); ?>" method="post" id="note" name="note">
+                    <input type="hidden" name="deal_id" value="<?php echo $app->input->get('id'); ?>" />
                     <textarea rows="6" class="form-control" id="deal_note" name="note"></textarea>
                 </form>
             </div>
@@ -53,42 +53,5 @@ $app = JFactory::getApplication();
 ?>
 </div>
 <script>
-    // initialise on document ready
-    jQuery(document).ready(function ($) {
-        'use strict';
-
-        // CENTERED MODALS
-        // phase one - store every dialog's height
-        $('.modal').each(function () {
-            var t = $(this),
-                d = t.find('.modal-dialog'),
-                fadeClass = (t.is('.fade') ? 'fade' : '');
-            // render dialog
-            t.removeClass('fade')
-                .addClass('invisible')
-                .css('display', 'block');
-            // read and store dialog height
-            d.data('height', d.height());
-            // hide dialog again
-            t.css('display', '')
-                .removeClass('invisible')
-                .addClass(fadeClass);
-        });
-        // phase two - set margin-top on every dialog show
-        $('.modal').on('show.bs.modal', function () {
-            var t = $(this),
-                d = t.find('.modal-dialog'),
-                dh = d.data('height'),
-                w = $(window).width(),
-                h = $(window).height();
-            // if it is desktop & dialog is lower than viewport
-            // (set your own values)
-            if (w > 380 && (dh + 60) < h) {
-                d.css('margin-top', Math.round(0.96 * (h - dh) / 2));
-            } else {
-                d.css('margin-top', '');
-            }
-        });
-
-    });
+    $('input[name=deal_id]').val(deal_id);
 </script>

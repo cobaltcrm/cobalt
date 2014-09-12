@@ -210,7 +210,7 @@ $deal = $this->dealList[0];
                     <div id="expected_close_container"<?php if ($actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
-                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)" role="form" class="inline-form" name="expected_close_form">
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)" role="form" class="inline-form" id="expected_close_form" name="expected_close_form">
                                 <input type="text" class="input-invisible editable-modal-datepicker form-control date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
                                 <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal->expected_close; ?>" />
                                 <input type="hidden" name="task" value="save" />
@@ -306,5 +306,21 @@ $deal = $this->dealList[0];
         }?>
     </div>
 </div>
-
+<script type="application/javascript">
+    jQuery('.date_input').datepicker({
+        format:userDateFormat,
+    });
+    jQuery(".date_input").on('changeDate',function(event){
+        var selectedYear = event.date.getFullYear();
+        var selectedMonth = event.date.getMonth()+1;
+        var selectedDay = event.date.getDate();
+        var date = selectedYear+"-"+selectedMonth+"-"+selectedDay;
+        jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
+        jQuery(this).datepicker('hide');
+        if ( jQuery(this).hasClass('editable-modal-datepicker') ){
+            var form = jQuery(this).attr('id')+"_form";
+            Cobalt.sumbitForm('#'+form);
+        }
+    });
+</script>
 <?php echo CobaltHelper::showShareDialog();
