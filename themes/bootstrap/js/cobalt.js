@@ -200,10 +200,6 @@ var Cobalt = {
             $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
         }
-        // Remove rows from table
-        if (typeof response.remove !== 'undefined') {
-            Cobalt.removeRows(response.remove);
-        }
 
         Cobalt.updateDataTables();
     },
