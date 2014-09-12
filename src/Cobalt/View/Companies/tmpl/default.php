@@ -34,10 +34,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
     <li><span><?php echo TextHelper::_('COBALT_SHOW'); ?></span></li>
     <li class="dropdown">
         <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="company_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo $this->company_type; ?></span></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="company_type_link">
-            <?php foreach ($this->company_types as $title => $text) {
-            echo "<li><a href='javascript:void(0);' class='filter_".$title."' onclick=\"companyType('".$title."')\">".$text."</a></li>";
-            }?>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="company_type_link" data-filter="item">
+            <?php foreach ($this->company_types as $title => $text) { ?>
+            <li>
+                <a href="#" class="filter_<?php echo $title ?>" onclick="companyType(<?php echo $title ?>)" data-filter-value="<?php echo $title; ?>">
+                    <?php echo $text ?>
+                </a>
+            </li>
+            <?php } ?>
         </ul>
     </li>
     <li>

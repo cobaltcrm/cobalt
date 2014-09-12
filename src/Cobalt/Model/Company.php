@@ -198,6 +198,8 @@ class Company extends DefaultModel
             //get current date
             $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
 
+            $type = $this->getState('Company.item_filter', $type);
+
             //filter for type
             if ($type != null && $type != "all") {
 
@@ -487,6 +489,10 @@ class Company extends DefaultModel
         $this->state->set('Company.filter_order', $filter_order);
         $this->state->set('Company.filter_order_Dir', $filter_order_Dir);
         $this->state->set('Company.'.$view.'_name', $company_filter);
+
+        // filters
+        $item_filter = $this->app->input->getString('item', null);
+        $this->state->set('Company.item_filter', $item_filter);
     }
 
     /**
