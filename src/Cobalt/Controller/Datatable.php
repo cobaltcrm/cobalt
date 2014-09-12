@@ -39,6 +39,7 @@ class Datatable extends DefaultController
         $user       = $this->app->getUser();
         $teamId     = UsersHelper::getTeamId();
         $memberRole = UsersHelper::getRole();
+        $countFunc  = 'get' . ucwords($loc) . 'Count';
 
         // Set request variables which models will understand
         if (isset($columns[$orderArr[0]['column']]['ordering']))
@@ -66,7 +67,7 @@ class Datatable extends DefaultController
 
         $response->data = $model->getDataTableItems();
         $response->draw = $this->input->getInt('draw');
-        $response->recordsTotal = UsersHelper::getDealCount($user->get('id'), $teamId, $memberRole);
+        $response->recordsTotal = UsersHelper::$countFunc($user->get('id'), $teamId, $memberRole);
         $response->recordsFiltered = $model->getTotal();
 
         $alerts = $this->app->getMessageQueue();

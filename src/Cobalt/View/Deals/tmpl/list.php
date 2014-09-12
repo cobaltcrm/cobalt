@@ -47,7 +47,3 @@ $app = JFactory::getApplication();
         }
 ?>
 </tbody>
-<script type="text/javascript">
-    var total = <?php echo $this->total; ?>;
-    jQuery("#deals_matched").html(total);
-</script>
