@@ -64,9 +64,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
         <div class="ajax_loader"></div>
     </li>
 </ul>
-<small>
-    <span id="companies_matched"></span> <?php echo TextHelper::_('COBALT_COMPANIES_MATCHED'); ?> <?php echo TextHelper::_('COBALT_THERE_ARE'); ?> <?php echo $this->company_count; ?> <?php echo TextHelper::_('COBALT_COMPANIES_IN_ACCOUNT'); ?>
-</small>
+
 <?php echo TemplateHelper::getListEditActions(); ?>
 <form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=companies'); ?>">
     <table class="table table-hover table-striped data-table" id="deals">
