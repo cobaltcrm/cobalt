@@ -1,7 +1,13 @@
+/**
+ * Cobalt objext / namespace
+ **/
 var Cobalt = {
 
     dataTables: {},
 
+    /**
+     * These methods will be triggered on page load.
+     **/
     init: function() {
         this.bindPopovers();
         this.bindTooltips();
@@ -25,6 +31,10 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Popovers initialization. Special HTML attribute data-content-class
+     * is used for popover HTML content. Example of usage at Deal detail.
+     **/
     bindPopovers: function() {
         var selector = '[data-toggle="popover"]';
         jQuery.each(jQuery(selector), function(i, popover) {
@@ -47,6 +57,9 @@ var Cobalt = {
         $('[rel="tooltip"]').tooltip();
     },
 
+    /**
+     * Datepickers initialized and forms inside them are ready for sumbit.
+     **/
     bindDatepickers: function() {
         jQuery('.date_input').datepicker({
             format:userDateFormat,
@@ -66,6 +79,10 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Setting of form submit. Some default request attributes are prefilled,
+     * success function triggered.
+     **/
     getFormSubmitOptions: function() {
         return {
             beforeSubmit: function(arr, $form, options) {
@@ -81,6 +98,9 @@ var Cobalt = {
         };
     },
 
+    /**
+     * jQuery dataTables initializes together with filters, action toolbar and search.
+     **/
     initDataTables: function() {
 
         var options = {
@@ -145,8 +165,11 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Initialize jQuery form submit plugin.
+     * Each form[data-ajax="1"] will be submitted via AJAX.
+     **/
     initFormSave: function(options) {
-        // initialize jQuery form submit plugin
 
         if(!options) {
             otpions = this.getFormSubmitOptions();
@@ -159,6 +182,10 @@ var Cobalt = {
         });
     },
 
+    /**
+     * This is called each time an AJAX save is successfull.
+     * Here should be initialized all HTML updates depending on response.
+     **/
     onSaveSuccess: function(response) {
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
@@ -176,18 +203,29 @@ var Cobalt = {
         Cobalt.updateDataTables();
     },
 
+    /**
+     * Sumbits any form contained in modal box via AJAX. Submit button must be in the same modal.
+     * @param HTML element object
+     **/
     sumbitModalForm: function(button) {
         var modal = jQuery(button).closest('.modal');
         this.sumbitForm(modal.find('form'));
         modal.modal('hide');
     },
 
+    /**
+     * Sumbits any form via AJAX.
+     * @param HTML element object
+     **/
     sumbitForm: function(form) {
         jQuery(form).ajaxSubmit(Cobalt.getFormSubmitOptions());
-        // prevent from submitting form
+        // prevent from classic form submit
         return false;
     },
 
+    /**
+     * Saves any JS object or array. Data must contain info about model and task.
+     **/
     save: function(data) {
         jQuery.post('index.php', data, function(response) {
             try {
@@ -199,6 +237,9 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Update all HTML elements which has ID = data.param+'_'+itemId.
+     **/
     updateStuff: function(data) {
         var itemId = data.id;
         jQuery.each(data, function(name, value) {
@@ -216,6 +257,9 @@ var Cobalt = {
         });
     },
 
+    /**
+     * All dataTables from Cobalt.dataTables variable will be reloaded.
+     **/
     updateDataTables: function() {
         for (var id in Cobalt.dataTables) {
             if (typeof Cobalt.dataTables[id] === 'object') {
@@ -232,6 +276,9 @@ var Cobalt = {
         });
     },
 
+    /**
+     * Displays modal message about AJAX action result for 2 sec.
+     **/
     modalMessage: function (heading, message, type, autoclose) {
         var html = '<div class="alert alert-flying alert-'+type+' alert-dismissible" role="alert">';
         html += '<button type="button" class="close" data-dismiss="alert">';
@@ -325,6 +372,9 @@ var Cobalt = {
         Cobalt.save(data);
     },
 
+    /**
+     * Selects all checkboxes in a table.
+     **/
     selectAll: function(source) {
 
         if ( typeof source === 'object' ) {
@@ -350,7 +400,10 @@ var Cobalt = {
     }
 };
 
-window.onload = function () {
+/**
+ * Cobalt JS initialization
+ **/
+window.onload = function() {
     Cobalt.init();
 };
 
@@ -358,6 +411,9 @@ window.onload = function () {
  * Global functions
  **/
 
+/**
+ * String to uppercase
+ **/
 function ucwords(str) {
     return (str + '')
         .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
@@ -365,6 +421,9 @@ function ucwords(str) {
         });
 }
 
+/**
+ * Function for translations taken from Joomla
+ **/
 var Joomla = {
     JText: {
         strings: {},
