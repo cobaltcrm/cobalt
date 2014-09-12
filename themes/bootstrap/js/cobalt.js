@@ -37,7 +37,11 @@ var Cobalt = {
      **/
     bindPopovers: function() {
         var selector = '[data-toggle="popover"]';
-        jQuery.each(jQuery(selector), function(i, popover) {
+        var popovers = jQuery(selector);
+        popovers.click(function(e){
+            e.preventDefault();
+        });
+        jQuery.each(popovers, function(i, popover) {
             popover = jQuery(popover);
             var options = {
                 html : true,
@@ -403,9 +407,9 @@ var Cobalt = {
 /**
  * Cobalt JS initialization
  **/
-window.onload = function() {
+jQuery(function() {
     Cobalt.init();
-};
+});
 
 /**
  * Global functions
