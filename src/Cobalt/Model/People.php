@@ -23,6 +23,7 @@ use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TweetsHelper;
 use Cobalt\Pagination;
 
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -66,7 +67,43 @@ class People extends DefaultModel
         $row = new PeopleTable;
         $oldRow = new PeopleTable;
         if ($data == null) {
-          $data = $this->app->input->getRequest('post');
+            $data = $this->app->input->getArray(array(
+                'first_name' => 'string',
+                'last_name' => 'string',
+                'company' => 'string',
+                'company_id' => 'int',
+                'position' => 'string',
+                'phone' => 'string',
+                'email' => 'email',
+                'source_id' => 'int',
+                'status_id' => 'int',
+                'deal_id' => 'int',
+                'home_address_1' => 'string',
+                'home_address_2' => 'string',
+                'home_city' => 'string',
+                'home_state' => 'string',
+                'home_zip' => 'string',
+                'home_country' => 'string',
+                'work_address_1' => 'string',
+                'work_address_2' => 'string',
+                'work_city' => 'string',
+                'work_country' => 'string',
+                'work_state' => 'string',
+                'work_zip' => 'string',
+                'assignee_name' => 'string',
+                'assignee_id' => 'int',
+                'assignment_note' => 'string',
+                'mobile_phone' => 'string',
+                'home_email' => 'email',
+                'other_email' => 'email',
+                'home_phone' => 'string',
+                'fax' => 'string',
+                'website' => 'string',
+                'facebook_url' => 'string',
+                'twitter_user' => 'string',
+                'linkedin_url' => 'string',
+                'aim' => 'string'
+            ));
         }
 
         //date generation
@@ -603,16 +640,16 @@ class People extends DefaultModel
             $person = $db->loadAssoc();
 
             /* Deals */
-            $dealModel = new CobaltModelDeal();
+            $dealModel = new Deal();
             $dealModel->set('person_id',$person['id']);
             $person['deals'] = $dealModel->getDeals();;
 
             /* Notes */
-            $notesModel = new CobaltModelNote();
+            $notesModel = new Note();
             $person['notes'] = $notesModel->getNotes($person['id'],'person');
 
             /* Docs */
-            $docsModel = new CobaltModelDocument();
+            $docsModel = new Document();
             $docsModel->set('person_id',$person['id']);
             $person['documents'] = $docsModel->getDocuments();
 

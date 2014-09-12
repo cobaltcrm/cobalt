@@ -21,17 +21,22 @@ class SaveCf extends DefaultController
 {
     public function execute()
     {
-        $return = array();
-
         //get post data
-        $data = $this->input->getRequest('post');
+        $data = $this->input->getArray(array(
+            'association_id' => 'int',
+            'association_type' => 'int',
+            'person_id' => 'int'
+        ));
         //get db Object
-        $db = $this->container->resolve('db');
+        $db = $this->container->fetch('db');
         $query = $db->getQuery(true);
-        $table = $data['table'];
-        $loc = $data['loc'];
+        $table = $this->input->getCmd('table');
+        $loc = $this->input->getCmd('loc');
         unset($data['table']);
         unset($data['loc']);
+        if (empty($data['person_id'])) {
+            unset($data['person_id']);
+        }
 
         //write to tables if there is no association already in cf tables
         $query->select('* FROM #__'.$table.'_cf');
@@ -46,6 +51,8 @@ class SaveCf extends DefaultController
 
         $db->setQuery($query);
         $results = $db->loadAssocList();
+
+        $response = new \stdClass();
 
         //determine if we found any results
         if ( count($results) == 0 ) {
@@ -70,25 +77,31 @@ class SaveCf extends DefaultController
                 //determine which page we want are wanting to send information back to
                 if ($loc == 'deal') {
                     $model = new PeopleModel;
-                    $return = $model->getPerson(array_key_exists('person_id',$data) ? $data['person_id']:"");
-                    $return = $return[0];
+                    $return = $model->getPerson($data['person_id']);
+                    $response->alert = new \stdClass;
+                    $response->alert->message = \JText::_('DEAL_CONTACT_ADDED_SUCCESS');
+                    $response->alert->type = 'success';
+                    $response->item = $return;
+                    $response->reload = 2000;
                 }
 
                 if ($loc == 'person') {
                     $model = new DealModel;
                     $return = $model->getDeals(array_key_exists('deal_id',$data) ? $data['deal_id']:"");
                     $return = $return[0];
+                    $response->alert = new \stdClass;
+                    $response->alert->message = $return;
+                    $response->alert->type = 'success';
                 }
             }
-
         } else {
-
-            $return = array('error'=>true);
-
+            $response->alert = new \stdClass;
+            $response->alert->message = \JText::_('DEAL_CONTACT_ERROR_FAILURE_ADD_PERSON');
+            $response->alert->type = 'error';
         }
 
         //return json data
-        echo json_encode($return);
+        echo json_encode($response);
     }
 
 }
