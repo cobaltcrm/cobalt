@@ -37,7 +37,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
         <ul class="dropdown-menu" role="menu" aria-labelledby="company_type_link" data-filter="item">
             <?php foreach ($this->company_types as $title => $text) { ?>
             <li>
-                <a href="#" class="filter_<?php echo $title ?>" onclick="companyType(<?php echo $title ?>)" data-filter-value="<?php echo $title; ?>">
+                <a href="#" class="filter_<?php echo $title ?>" data-filter-value="<?php echo $title; ?>">
                     <?php echo $text ?>
                 </a>
             </li>
