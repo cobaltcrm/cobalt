@@ -68,41 +68,67 @@ var Cobalt = {
     },
 
     initDataTables: function() {
+
         var options = {
             'processing': true,
             'serverSide': true,
             'bLengthChange': false,
-            'sDom': '<"top"l>rt<"bottom"p><"clear">',
+            'sDom': '<"top"l>rti<"bottom"p><"clear">',
             'ajax': 'index.php?format=raw&task=datatable&loc='+loc,
             'fnDrawCallback': function(oSettings) {
                 Cobalt.bindPopovers();
             }
         };
 
+        var filters = {};
+
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
+
+            // get default ordering
+            if (typeof order_col !== 'undefined') {
+                jQuery.each(options.columns, function(i, column) {
+                    if (typeof column.ordering !== 'undefined' &&
+                        column.ordering === order_col) {
+                        options.order = [[ i, order_dir ]];
+                    }
+                });
+            }
         }
-        var dataTableId = jQuery('table.data-table').attr('id');
-        var datatable = jQuery('table.data-table').DataTable(options);
+
+        var table = jQuery('table.data-table');
+        var datatable = table.DataTable(options);
         var searchbox = jQuery('.datatable-searchbox');
 
-        // searchbox filter
-        searchbox.keyup(function() {
-            datatable.search(jQuery(this).val()).draw();
+        // set filter
+        jQuery('.filter-sentence .dropdown-menu a').click(function(e) {
+            e.preventDefault();
+            var link = jQuery(this);
+            var filterType = link.closest('ul.dropdown-menu').attr('data-filter');
+            var filterValue = link.attr('data-filter-value');
+            var dropdownLabel = link.closest('.dropdown').find('.dropdown-label');
+            dropdownLabel.text(link.text());
+            filters[filterType] = filterValue;
+            datatable.search(JSON.stringify(filters)).draw();
         });
 
         // set filter
-        jQuery('.filter-sentence a').click(function() {
-            var link = jQuery(this);
-            var filter = link.attr('data-filter');
-            if(filter) {
-                searchbox.val(filter+'&'+searchbox.val());
-                datatable.search(filter).draw();
-            }
+        searchbox.keyup(function() {
+            filters.search = jQuery(this).val();
+            datatable.search(JSON.stringify(filters)).draw();
         });
 
         // store datatable to hash object so it can be used later.
-        Cobalt.dataTables[dataTableId] = datatable;
+        Cobalt.dataTables[table.attr('id')] = datatable;
+
+        // Toggle action bar
+        table.change(function() {
+            if (table.find('input:checkbox:checked').length > 0) {
+                jQuery('#list_edit_actions').show('fast');
+            } else {
+                jQuery('#list_edit_actions').hide('fast');
+            }
+        });
     },
 
     initFormSave: function(options) {
@@ -304,6 +330,9 @@ var Cobalt = {
         jQuery(checkboxes).each(function(index, checkbox) {
             jQuery(checkbox).prop('checked', source.checked);
         });
+
+        // trigger change event for action bar toggle
+        $('table.dataTable').trigger('change');
     }
 };
 
