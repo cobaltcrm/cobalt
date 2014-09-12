@@ -14,23 +14,74 @@ $app = JFactory::getApplication();
 //define deal
 $contacts = $this->contacts;
 ?>
-
-<div class="modal hide fade" id="ajax_search_person_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></h3>
+<script>
+window.onload = function () {
+    jQuery.ajax({
+        type	:	'POST',
+        url		:	'index.php?task=getPeople&format=raw&tmpl=component',
+        dataType:	'json',
+        success	:	function(data){
+            //generate names object from received data
+            var names = new Array();
+            var namesInfo = new Array();
+            jQuery.each(data,function(index,person){
+                //gen name string for search
+                var name  = '';
+                name += person.first_name + " " + person.last_name;
+                //gen associative object for id reference
+                var infoObj = new Object();
+                infoObj = { name : name, id : person.id };
+                //push info to objects
+                namesInfo[name] = infoObj;
+                names.push( name );
+            });
+            jQuery('input[name=person_name]').typeahead({
+                source: names,
+                updater: function (name)
+                {
+                    if (namesInfo[name]) {
+                        $('#person_id').val(namesInfo[name].id);
+                    }
+                    return name;
+                }
+            });
+        }
+    });
+    $('#association_type').val(association_type);
+    $('#association_id').val(deal_id);
+    $('#loc').val(loc);
+};
+</script>
+<div class="modal fade" id="ajax_search_person_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></h3>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="index.php">
+                    <input class="form-control" type="text" name="person_name" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" value="" />
+                    <input type="hidden" name="task" value="saveCf" />
+                    <input type="hidden" name="format" value="raw" />
+                    <input type="hidden" name="tmpl" value="component" />
+                    <input type="hidden" name="table" value="people" />
+                    <input type="hidden" name="association_id" id="association_id" value="" />
+                    <input type="hidden" name="person_id" id="person_id" value="">
+                    <input type="hidden" name="association_type" id="association_type" value="deal" />
+                    <input type="hidden" name="loc" id="loc" value="" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="actions"><input class="btn btn-success" type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" onclick="Cobalt.sumbitModalForm(this);"/> <?php echo TextHelper::_('COBALT_OR'); ?> <a href="javascript:void(0);" data-dismiss="modal" aria-hidden="true"><?php echo TextHelper::_('COBALT_CANCEL'); ?></a></div>
+            </div>
         </div>
-        <div class="modal-body">
-            <input class="form-control" type="text" name="person_name" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" value="" />
-        </div>
-         <div class="modal-footer">
-            <div class="actions"><input class="btn btn-success" type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" onclick="saveCf('people');closeDialog('person')"/> <?php echo TextHelper::_('COBALT_OR'); ?> <a href="javascript:void(0);" onclick="closeDialog('person')"><?php echo TextHelper::_('COBALT_CANCEL'); ?></a></div>
-        </div>
+    </div>
 </div>
 <div class="clearfix" id="contacts">
     <div class="clearfix">
         <span class="pull-right">
-            <a class="btn" href="javascript:void(0);" onclick="addPerson()" ><i class="glyphicon glyphicon-plus"></i></a>
+            <a class="btn" href="javascript:void(0);" data-target="#ajax_search_person_dialog" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i></a>
         </span>
     </div>
     <?php if ( is_array($contacts) && count($contacts) > 0 ){ foreach ($contacts as $person) { ?>

@@ -9,6 +9,20 @@ var Cobalt = {
         this.bindDatepickers();
         this.initFormSave();
         this.initDataTables();
+        this.initModalCentralize();
+    },
+
+    initModalCentralize: function(){
+        $('#myModal').on('shown.bs.modal', function() {
+            var initModalHeight = $('#modal-dialog').outerHeight(); //give an id to .mobile-dialog
+            var userScreenHeight = $(document).outerHeight();
+            if (initModalHeight > userScreenHeight) {
+                $('#modal-dialog').css('overflow', 'auto'); //set to overflow if no fit
+            } else {
+                $('#modal-dialog').css('margin-top',
+                    (userScreenHeight / 2) - (initModalHeight/2)); //center it if it does fit
+            }
+        });
     },
 
     bindPopovers: function() {
