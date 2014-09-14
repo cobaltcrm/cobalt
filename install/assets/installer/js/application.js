@@ -120,6 +120,7 @@ function validateDb(){
 		obj['user'] = $("#dbUser").val();
 		obj['pass'] = $("#dbPass").val();
 		obj['name'] = $("#dbName").val();
+		obj['db_drive'] = $("#db_drive").val();
 
 		$.each(obj,function(key,value){
 			if ( key != "pass" && ( value == "" || value == null ) ){

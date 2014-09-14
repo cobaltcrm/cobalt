@@ -467,7 +467,12 @@ class crmModelInstall
 
     public function createCrm()
     {
-        $schema = JPATH_INSTALLATION."/sql/crm/crm.mysql.sql";
+		$db_driver = $this->config->get('dbtype');
+		if ($db_driver == 'mysqli') {
+			$db_driver = 'mysql';
+		}
+
+		$schema = JPATH_INSTALLATION."/sql/crm/" . $db_driver . "/crm.sql";
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema))) {
@@ -516,7 +521,7 @@ class crmModelInstall
         $cryptpass = $passwordHelper->create($admin['password'], PasswordInterface::MD5);
 
         $query = $this->db->getQuery(true);
-        $columns = array($this->db->quoteName('id'), $this->db->quoteName('admin'), $this->db->quoteName('name'), $this->db->quoteName('first_name'), $this->db->quoteName('last_name'), $this->db->quoteName('username'),
+        $columns = array($this->db->quoteName('id'), $this->db->quoteName('role_type'), $this->db->quoteName('admin'), $this->db->quoteName('name'), $this->db->quoteName('first_name'), $this->db->quoteName('last_name'), $this->db->quoteName('username'),
             $this->db->quoteName('email'), $this->db->quoteName('password'),
             $this->db->quoteName('block'),
             $this->db->quoteName('sendEmail'), $this->db->quoteName('registerDate'),
@@ -525,9 +530,9 @@ class crmModelInstall
         $query->columns($columns);
 
         $query->values(
-            $this->db->quote($userId) . ', ' . $this->db->quote("1") . ', ' . $this->db->quote($admin['first_name'].' '.$admin['last_name']) . ', ' . $this->db->quote($admin['first_name']). ', ' . $this->db->quote($admin['last_name']) . ', ' . $this->db->quote($admin['username']) . ', ' .
+            $this->db->quote($userId) . ', ' . $this->db->quote("exec") . ' , ' . $this->db->quote("1") . ', ' . $this->db->quote($admin['first_name'].' '.$admin['last_name']) . ', ' . $this->db->quote($admin['first_name']). ', ' . $this->db->quote($admin['last_name']) . ', ' . $this->db->quote($admin['username']) . ', ' .
             $this->db->quote($admin['email']) . ', ' . $this->db->quote($cryptpass) . ', ' .
-            $this->db->quote('0') . ', ' . $this->db->quote('1') . ', ' . $this->db->quote(date("Y-m-d H:i:s")) . ', ' . $this->db->quote("0000-00-00 00:00:00") . ', ' .
+            $this->db->quote('0') . ', ' . $this->db->quote('1') . ', ' . $this->db->quote(date("Y-m-d H:i:s")) . ', ' . $this->db->quote($this->db->getNullDate()) . ', ' .
             $this->db->quote('0') . ', ' . $this->db->quote(''));
 
         $this->db->setQuery($query);
