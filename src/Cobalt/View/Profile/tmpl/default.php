@@ -185,44 +185,48 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="email2" class="panel-body collapse">
             <div class="panel-body">
-                <form>
-                    <fieldset>
-                        <ul class="list-unstyled" >
-                            <?php /**
-                            <li>
-                                <label class="small"><input type="checkbox" name="daily_agenda" <?php if ( $this->user['daily_agenda'] ) echo 'checked'; ?> ></label>
-                                <span class="faux_input"><b><?php echo TextHelper::_('COBALT_DAILY_AGENDA'); ?></b></span>
-                                <span class="faux_input_details"><?php echo TextHelper::_('COBALT_DAILY_AGENDA_DESC'); ?></span>
-                            </li>
-                             **/ ?>
-                            <li>
-                                <label class="small"><input type="checkbox" name="morning_coffee" <?php if ( $this->user->morning_coffee ) echo 'checked'; ?>></label>
-                                <span class="faux_input"><b><?php echo TextHelper::_('COBALT_MORNING_COFFEE'); ?></b></span>
-                                <span class="faux_input_details"><?php echo TextHelper::_('COBALT_MORNING_COFFEE_DESC'); ?></span>
-                            </li>
-                            <?php /**
-                            <?php if (UsersHelper::getRole()!='basic') { ?>
-                            <li>
-                                <label class="small"><input type="checkbox" name="weekly_team_report" <?php if ( $this->user['weekly_team_report'] ) echo 'checked'; ?>></label>
-                                <span class="faux_input"><b><?php echo TextHelper::_('COBALT_TEAM_USE_REPORT'); ?></b></span>
-                                <span class="faux_input_details"><?php echo TextHelper::_('COBALT_TEAM_USE_REPORT_DESC'); ?></span>
-                            </li>
-                            <?php } ?>
-                            <li>
-                                <label class="small"><input type="checkbox" name="weekly_personal_report" <?php if ( $this->user['weekly_personal_report'] ) echo 'checked'; ?>></label>
-                                <span class="faux_input"><b><?php echo TextHelper::_('COBALT_TEAM_USE_REPORT'); ?></b></span>
-                                <span class="faux_input_details"><?php echo TextHelper::_('COBALT_PERSONAL_USE_REPORT_DESC'); ?></span>
-                            </li>
-                            <?php /* TODO: ADD CRON for 15 Min Email Reminder
-                            <li>
-                                <label class="small"><input type="checkbox" name="reminder_notifications" <?php if ( $this->user['reminder_notifications'] ) echo 'checked'; ?>></label>
-                                <span class="faux_input"><b>Email me 15 minutes before a reminder is due</b></span>
-                            </li>
-                             */ ?>
-                        </ul>
-                    </fieldset>
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
+                    <ul class="list-unstyled" >
+                        <?php /**
+                        <li>
+                            <label class="small"><input type="checkbox" name="daily_agenda" <?php if ( $this->user['daily_agenda'] ) echo 'checked'; ?> ></label>
+                            <span class="faux_input"><b><?php echo TextHelper::_('COBALT_DAILY_AGENDA'); ?></b></span>
+                            <span class="faux_input_details"><?php echo TextHelper::_('COBALT_DAILY_AGENDA_DESC'); ?></span>
+                        </li>
+                         **/ ?>
+                        <li>
+                            <label class="small">
+                                <input type="hidden" name="morning_coffee" value="0">
+                                <input type="checkbox" name="morning_coffee" value="1" <?php if ( $this->user->morning_coffee ) echo 'checked'; ?>>
+                            </label>
+                            <span class="faux_input"><b><?php echo TextHelper::_('COBALT_MORNING_COFFEE'); ?></b></span>
+                            <span class="faux_input_details"><?php echo TextHelper::_('COBALT_MORNING_COFFEE_DESC'); ?></span>
+                        </li>
+                        <?php /**
+                        <?php if (UsersHelper::getRole()!='basic') { ?>
+                        <li>
+                            <label class="small"><input type="checkbox" name="weekly_team_report" <?php if ( $this->user['weekly_team_report'] ) echo 'checked'; ?>></label>
+                            <span class="faux_input"><b><?php echo TextHelper::_('COBALT_TEAM_USE_REPORT'); ?></b></span>
+                            <span class="faux_input_details"><?php echo TextHelper::_('COBALT_TEAM_USE_REPORT_DESC'); ?></span>
+                        </li>
+                        <?php } ?>
+                        <li>
+                            <label class="small"><input type="checkbox" name="weekly_personal_report" <?php if ( $this->user['weekly_personal_report'] ) echo 'checked'; ?>></label>
+                            <span class="faux_input"><b><?php echo TextHelper::_('COBALT_TEAM_USE_REPORT'); ?></b></span>
+                            <span class="faux_input_details"><?php echo TextHelper::_('COBALT_PERSONAL_USE_REPORT_DESC'); ?></span>
+                        </li>
+                        <?php /* TODO: ADD CRON for 15 Min Email Reminder
+                        <li>
+                            <label class="small"><input type="checkbox" name="reminder_notifications" <?php if ( $this->user['reminder_notifications'] ) echo 'checked'; ?>></label>
+                            <span class="faux_input"><b>Email me 15 minutes before a reminder is due</b></span>
+                        </li>
+                         */ ?>
+                    </ul>
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
                 </form>
-                <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="button btn btn-success save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="btn button cancel">
             </div>
         </div>
     </div>
