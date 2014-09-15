@@ -102,13 +102,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <li><span><?php echo TextHelper::_('COBALT_AND_WITH_STATUS'); ?></span></li>
     <li class="dropdown">
         <a class="update-toggle-text dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" role="button" id="people_status_link"><span class="dropdown-label"><?php echo $this->status_name; ?></span></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="people_status_link">
-            <li><a class="filter_any" onclick="peopleStatus('any')"><?php echo TextHelper::_('COBALT_ANY_STATUS'); ?></a></li>
-            <?php
-                foreach ($this->status_list as $key => $status) {
-                    echo "<li><a href='javascript:void(0);' class='filter_".$status['id']."' onclick='peopleStatus(".$status['id'].")'>".$status['name']."</a></li>";
-                }
-            ?>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="people_status_link" data-filter="status">
+            <li>
+                <a class="filter_any">
+                    <?php echo TextHelper::_('COBALT_ANY_STATUS'); ?>
+                </a>
+            </li>
+            <?php foreach ($this->status_list as $key => $status) { ?>
+            <li>
+                <a href="#" data-filter-value="<?php echo $status['id']; ?>">
+                    <?php echo $status['name']; ?>
+                </a>
+            </li>
+            <?php } ?>
         </ul>
     </li>
     <li>

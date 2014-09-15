@@ -309,18 +309,6 @@ class People extends DefaultModel
                 $sess_tag   = $session->get('people_tag_filter');
                 $tag = $sess_tag;
             }
-            if ($status != null) {
-                $session->set('people_status_filter',$status);
-            } else {
-                $sess_status= $session->get('people_status_filter');
-                $status = $sess_status;
-            }
-            if ($team != null) {
-                $session->set('people_team_filter',$team);
-            } else {
-                $sess_team  = $session->get('people_team_filter');
-                $team = $sess_team;
-            }
         }
 
         //TODO specific user id, access roles
@@ -428,89 +416,97 @@ class People extends DefaultModel
         }
 
         //searching for specific person
-        if ($this->_id) {
-            if ( is_array($this->_id) ) {
-                    $query->where("p.id IN (".implode(',',$this->_id).")");
-            } else {
-                    $query->where("p.id=$this->_id");
+        if ($this->_id)
+        {
+            if ( is_array($this->_id) )
+            {
+                $query->where("p.id IN (".implode(',',$this->_id).")");
+            }
+            else
+            {
+                $query->where("p.id=$this->_id");
             }
         }
 
-        if (!$this->_id) {
-
-            if (!$export) {
-
-            //filter data
-            $item_filter = $this->state->get('People.item_filter', $this->app->input->getString('item'));
-
-            if ($item_filter && $item_filter != 'all')
+        if (!$this->_id)
+        {
+            if (!$export)
             {
-                switch ($item_filter)
+
+                //filter data
+                $item_filter = $this->state->get('People.item_filter', $this->app->input->getString('item'));
+
+                if ($item_filter && $item_filter != 'all')
                 {
-                    case 'leads':
-                        $query->where("p.type='lead'");
-                    break;
-                    case 'not_leads':
-                        $query->where("p.type='contact'");
-                    break;
-                }
-            }
-
-            //search with status
-            if ($status AND $status != 'any') {
-                $query->where('p.status_id='.$status);
-            }
-
-            //search by tags
-            if ($tag) {
-
-            }
-
-            //get current date
-            $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
-            $stage_filter = $this->state->get('People.stage_filter', $stage);
-
-            //filter for type
-            if ($stage != null  && $stage != 'all') {
-
-                //filter for deals//tasks due today
-                if ($stage == 'today') {
-                    $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("event.due_date >'$date' AND event.due_date < '$tomorrow'");
+                    switch ($item_filter)
+                    {
+                        case 'leads':
+                            $query->where("p.type='lead'");
+                        break;
+                        case 'not_leads':
+                            $query->where("p.type='contact'");
+                        break;
+                    }
                 }
 
-                //filter for deals//tasks due tomorrow
-                if ($stage == "tomorrow") {
-                    $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("event.due_date='".$tomorrow."'");
+                //search with status
+                $status_filter = $this->state->get('People.item_filter', $status);
+
+                if ($status_filter && $status_filter != 'any')
+                {
+                    $query->where('p.status_id='.$status_filter);
                 }
 
-                //filter for people updated in the last 30 days
-                if ($stage == "past_thirty") {
-                    $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("p.modified >'$last_thirty_days'");
-                }
-
-                //filter for recently added people
-                if ($stage == "recently_added") {
-                    $last_five_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
-                    $query->where("p.modified >'$last_five_days'");
-                }
-
-                //filter for last imported people
-                if ($stage == "last_import") {
+                //search by tags
+                if ($tag) {
 
                 }
 
-            } else {
-                //get latest task entry
+                //get current date
+                $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
+                $stage_filter = $this->state->get('People.stage_filter', $stage);
 
-                if ($this->recent) {
-                    $query->where(  "( event.due_date IS NULL OR event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
-                                    "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
-                                    "WHERE e2cf.association_id=p.id AND e2.published>0) )");
+                //filter for type
+                if ($stage != null  && $stage != 'all') {
+
+                    //filter for deals//tasks due today
+                    if ($stage == 'today') {
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $query->where("event.due_date >'$date' AND event.due_date < '$tomorrow'");
+                    }
+
+                    //filter for deals//tasks due tomorrow
+                    if ($stage == "tomorrow") {
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $query->where("event.due_date='".$tomorrow."'");
+                    }
+
+                    //filter for people updated in the last 30 days
+                    if ($stage == "past_thirty") {
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $query->where("p.modified >'$last_thirty_days'");
+                    }
+
+                    //filter for recently added people
+                    if ($stage == "recently_added") {
+                        $last_five_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
+                        $query->where("p.modified >'$last_five_days'");
+                    }
+
+                    //filter for last imported people
+                    if ($stage == "last_import") {
+
+                    }
+
+                } else {
+                    //get latest task entry
+
+                    if ($this->recent) {
+                        $query->where(  "( event.due_date IS NULL OR event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
+                                        "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
+                                        "WHERE e2cf.association_id=p.id AND e2.published>0) )");
+                    }
                 }
-            }
 
             }
 
@@ -787,6 +783,7 @@ class People extends DefaultModel
         $person_filter      = $app->getUserStateFromRequest('People.person_name', 'people_name', null);
         $item_filter        = $app->input->getString('item', '');
         $stage_filter       = $app->input->getString('stage', '');
+        $status_filter       = $app->input->getString('status', '');
         $ownertype_filter   = $app->input->getRaw('ownertype', null);
 
         //set states for reports
@@ -796,6 +793,7 @@ class People extends DefaultModel
         $this->state->set('People.person_name', $person_filter);
         $this->state->set('People.item_filter', $item_filter);
         $this->state->set('People.stage_filter', $stage_filter);
+        $this->state->set('People.status_filter', $status_filter);
 
         if ($ownertype_filter)
         {
