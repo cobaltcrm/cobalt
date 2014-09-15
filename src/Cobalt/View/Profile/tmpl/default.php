@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-// echo "<pre>";var_dump($this->user);die("</pre>");
+
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
