@@ -11,8 +11,6 @@
 namespace Cobalt\View\Profile;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
-use JUri;
 use Cobalt\Helper\UsersHelper;
 
 // no direct access
@@ -22,13 +20,12 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        //javascript
-        $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'src/Cobalt/media/js/profile_manager.js' );
+        $app = \Cobalt\Container::fetch('app');
 
         //get user data and pass to view
-        $this->user = UsersHelper::getLoggedInUser();
-        $this->user_id = UsersHelper::getUserId();
+        $this->user = $app->getUser();
+        $this->user_id = $this->user->get('id');
+        $this->user->getEmails();
 
         //display
         return parent::render();
