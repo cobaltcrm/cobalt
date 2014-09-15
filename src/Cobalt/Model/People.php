@@ -302,27 +302,7 @@ class People extends DefaultModel
             //get session data
             $session    = JFactory::getSession();
 
-            //determine whether we are filtering with a team or user
-            if ($team) {
-                $session->set('people_user_filter',null);
-            }
-            if ($user) {
-                $session->set('people_team_filter',null);
-            }
-
             //set user session data
-            if ($type != null) {
-                $session->set('people_type_filter',$type);
-            } else {
-                $sess_type  = $session->get('people_type_filter');
-                $type = $sess_type;
-            }
-            if ($user != null) {
-                $session->set('people_user_filter',$user);
-            } else {
-                $sess_user  = $session->get('people_user_filter');
-                $user = $sess_user;
-            }
             if ($stage != null) {
                 $session->set('people_stage_filter',$stage);
             } else {
@@ -403,24 +383,41 @@ class People extends DefaultModel
         $member_id = UsersHelper::getUserId();
         $member_role = UsersHelper::getRole();
         $team_id = UsersHelper::getTeamId();
-        if ( ( isset($user) && $user == "all" ) || ( isset($owner_filter) && $owner_filter == "all" ) ) {
-            if ($member_role != 'exec') {
-                 //manager filter
-                if ($member_role == 'manager') {
-                    $query->where("(u.team_id=$team_id OR u2.team_id=$team_id)");
-                } else {
-                //basic user filter
-                    $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
+        $owner_filter = $this->state->get('People.owner_id_filter');
+        $owner_filter_team = $this->state->get('People.owner_id_filter', $team_id);
+        $owner_filter_member = $this->state->get('People.owner_id_filter', $member_id);
+        $owner_type_filter = $this->state->get('People.owner_type_filter');
+
+        if ($owner_filter && $owner_filter == "all")
+        {
+            if ($member_role != 'exec')
+            {
+                if ($member_role == 'manager')
+                {
+                    $query->where("(u.team_id=$owner_filter_team OR u2.team_id=$owner_filter_team)");
+                }
+                else
+                {
+                    $query->where("(p.owner_id=$owner_filter_member OR p.assignee_id=$owner_filter_member)");
                 }
             }
-        } elseif ( isset($team) && $team ) {
-            $query->where("(u.team_id=$team OR u2.team_id=$team)");
-        } elseif ( isset($user) && $user != "all" ) {
-            $query->where("(p.owner_id=$user OR p.assignee_id=$user)");
-        } else {
-            if ( !(isset($owner_filter)) ) {
-                if ($this->_id) {
-                    if ($member_role == "basic") {
+        }
+        elseif ($owner_type_filter == 'team')
+        {
+            $query->where("(u.team_id=$owner_filter_team OR u2.team_id=$owner_filter_team)");
+        }
+        elseif ($owner_type_filter == 'member' )
+        {
+            $query->where("(p.owner_id=$owner_filter_member OR p.assignee_id=$owner_filter_member)");
+        }
+        else
+        {
+            if ( !(isset($owner_filter)) )
+            {
+                if ($this->_id)
+                {
+                    if ($member_role == "basic")
+                    {
                         $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                     }
                     if ($member_role == "manager") {
@@ -428,7 +425,9 @@ class People extends DefaultModel
                         $team_members = array_merge($team_members,array(0=>$member_id));
                         $query->where("(p.owner_id IN(".implode(',',$team_members).") OR p.assignee_id IN(".implode(',',$team_members)."))");
                     }
-                } else {
+                }
+                else
+                {
                     $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                 }
             }
@@ -792,6 +791,7 @@ class People extends DefaultModel
         $filter_order_Dir   = $app->getUserStateFromRequest('People.filter_order_Dir', 'filter_order_Dir', 'asc');
         $person_filter      = $app->getUserStateFromRequest('People.person_name', 'people_name', null);
         $item_filter        = $app->input->getString('item', '');
+        $ownertype_filter   = $app->input->getRaw('ownertype', null);
 
         //set states for reports
         $this->state->set('People.filter_order', $filter_order);
@@ -799,6 +799,20 @@ class People extends DefaultModel
         $this->state->set('People.filter_order_Dir', $filter_order_Dir);
         $this->state->set('People.person_name', $person_filter);
         $this->state->set('People.item_filter', $item_filter);
+
+        if ($ownertype_filter)
+        {
+            if ($ownertype_filter != 'all')
+            {
+                $owner_filters = explode(':', $ownertype_filter);
+                $this->state->set('People.owner_id_filter', $owner_filters[1]);
+                $this->state->set('People.owner_type_filter', $owner_filters[0]);
+            }
+            else
+            {
+                $this->state->set('People.owner_id_filter', $ownertype_filter);
+            }
+        }
 
     }
 

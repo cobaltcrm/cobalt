@@ -44,24 +44,44 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li><span><?php echo TextHelper::_('COBALT_OWNED_BY'); ?></span></li>
     <li class="dropdown">
-        <a class="dropdown-toggle update-toggle-text" href="javascript:void(0);" data-toggle="dropdown" role="button" id="people_user_link"><span class="dropdown-label"><?php echo $this->user_name; ?></span></a>
-        <ul class="dropdown-menu update-toggle-text" role="menu" aria-labelledby="people_user_link">
-            <li><a href="javascript:void(0);" class="filter_user_<?php echo $this->user_id; ?>" onclick="peopleUser(<?php echo $this->user_id; ?>,0)"><span class="dropdown-label"><?php echo TextHelper::_('COBALT_ME'); ?><span></a></li>
+        <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="people_user_link">
+            <span class="dropdown-label">
+                <?php echo $this->user_name; ?>
+            </span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="people_user_link" data-filter="ownertype">
+            <li>
+                <a href="#" data-filter-value="member:<?php echo $this->user_id; ?>">
+                    <?php echo TextHelper::_('COBALT_ME'); ?>
+                </a>
+            </li>
             <?php if ($this->member_role != 'basic') { ?>
-                 <li><a href="javascript:void(0);" class="filter_user_all" onclick="peopleUser('all',0)"><?php echo TextHelper::_('COBALT_ALL_USERS'); ?></a></li>
+                 <li>
+                    <a href="#" data-filter-value="all">
+                        <?php echo TextHelper::_('COBALT_ALL_USERS'); ?>
+                    </a>
+                </li>
             <?php } ?>
             <?php
                 if ($this->member_role == 'exec') {
                     if ( count($this->teams) > 0 ) {
-                        foreach ($this->teams as $team) {
-                             echo "<li><a href='javascript:void(0);' class='filter_team_".$team['team_id']."' onclick='peopleUser(0,".$team['team_id'].")'>".$team['team_name'].TextHelper::_('COBALT_TEAM_APPEND')."</a></li>";
-                         }
+                        foreach ($this->teams as $team) { ?>
+                <li>
+                    <a href="#" data-filter-value="team:<?php echo $team['team_id']; ?>">
+                        <?php echo $team['team_name'].TextHelper::_('COBALT_TEAM_APPEND') ?>
+                    </a>
+                </li>";
+            <?php       }
                     }
                 }
                 if ( count($this->users) > 0 ) {
-                    foreach ($this->users as $user) {
-                        echo "<li><a href='javascript:void(0);' class='filter_user_".$user['id']."' onclick='peopleUser(".$user['id'].")'>".$user['first_name']."  ".$user['last_name']."</a></li>";
-                    }
+                    foreach ($this->users as $user) { ?>
+                <li>
+                    <a href="#" data-filter-value="member:<?php echo $user['id']; ?>">
+                    <?php echo $user['first_name']."  ".$user['last_name'] ?>
+                    </a>
+                </li>
+            <?php   }
                 }
             ?>
         </ul>
