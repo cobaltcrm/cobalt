@@ -117,18 +117,39 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <ul class="list-unstyled" id="email_input_boxes">
                         <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_1'); ?></li>
                         <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_2'); ?></li>
-                        <li><label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label><input class="form-control" disabled="disabled" value="<?php echo $this->user->email; ?>" /></li>
-                        <?php if ( count($this->user->emails) ) {
-                            foreach ($this->user->emails as $key=>$email) {  if ($email['email'] != $this->user->email) { ?>
-                                 <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value="<?php echo $email['email']; ?>"><span class="message"></span></li>
-                             <?php } }
-                                $remaining = 2 - count($this->user->emails);
-                                for ($i=0; $i<$remaining; $i++) { ?>
-                                     <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value=""><span class="message"></span></li>
-                                <?php }
-                                } else { ?>
-                                    <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value=""><span class="message"></span></li>
-                                    <li><label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label><input class="form-control" type="text" name="email[]" value=""><span class="message"></span></li>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label>
+                            <input class="form-control" disabled="disabled" value="<?php echo $this->user->email; ?>" />
+                        </li>
+                        <?php if ( count($this->user->emails) ) { ?>
+                            <?php foreach ($this->user->emails as $key => $email) { ?>
+                                <?php if (isset($email['email']) && $email['email'] != $this->user->email) { ?>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="<?php echo $email['email']; ?>">
+                            <span class="message"></span>
+                        </li>
+                                <?php } ?>
+                            <?php } ?>
+                            <?php $remaining = 2 - count($this->user->emails); ?>
+                            <?php for ($i = 0; $i < $remaining; $i++) { ?>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="">
+                            <span class="message"></span>
+                        </li>
+                            <?php } ?>
+                        <?php } else { ?>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="">
+                            <span class="message"></span>
+                        </li>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="">
+                            <span class="message"></span>
+                        </li>
                         <?php } ?>
                     </ul>
                     <a class="add_email_link" onclick="addEmailBox();"><?php echo TextHelper::_('COBALT_ADD_ANOTHER_EMAIL'); ?></a>
@@ -233,7 +254,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo TextHelper::_('COBALT_COMMISSION_RATE'); ?>
                             </label>
                             <div class="input-append">
-                                <input class="form-control" type="text" name="commission_rate" value="<?php echo $this->user->commission_rate; ?>">
+                                <input class="form-control" type="text" name="commission_rate" value="<?php echo isset($this->user->commission_rate) ? $this->user->commission_rate : ''; ?>">
                                 <span class="input-append-addon">%</span>
                             </div>
                         </li>
