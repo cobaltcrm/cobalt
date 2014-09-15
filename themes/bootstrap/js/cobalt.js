@@ -419,6 +419,18 @@ var Cobalt = {
                 jQuery("#CobaltAjaxModal").modal('show');
             }
         });
+    },
+
+    /**
+     * Clones last list item and puts it below.
+     * @param string selector of parent element (ul).
+     **/
+    cloneItem: function(selector) {
+        var parent = jQuery(selector);
+        var lastItem = parent.children().last();
+        var newItem = lastItem.clone().hide();
+        parent.append(newItem);
+        newItem.show('fast');
     }
 };
 

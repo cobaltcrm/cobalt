@@ -17,6 +17,7 @@ use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\CobaltHelper;
 
 use Joomla\Crypt\Password\Simple;
 use Joomla\Language\Text;
@@ -150,37 +151,37 @@ class User extends DefaultModel
      * @param  mixed $emails  an array of new email addresses to be associated with the user
      * @return void
      */
-    public function updateEmail($user_id,$emails)
+    public function updateEmail($user_id, $emails)
     {
-        //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
+        $retults = array();
 
         //delete any existing entries
         $query->delete('#__users_email_cf')->where('member_id = '.$user_id);
-        $db->setQuery($query);
-        $db->query();
+        $retults[] = $this->db->setQuery($query)->execute();
 
         //insert new entries
-        $query->clear();
-        $values = array();
-        foreach ($emails as $email) {
-            if ($email != null AND $email != '') {
-                if ( !(CobaltHelper::checkEmailName($email))) {
-                    $values[] = $user_id.",'".$email."'";
+        foreach ($emails as $email)
+        {
+            if ($email)
+            {
+                $emailO = new \stdClass();
+                $emailO->member_id = $user_id;
+
+                if (!(CobaltHelper::checkEmailName($email)))
+                {
+                    $emailO->email = $email;
+                    $retults[] = $this->db->insertObject('#__users_email_cf', $emailO);
                 }
             }
         }
-        $query->insert('#__users_email_cf')->columns(array('member_id,email'))->values($values);
-         //return
-        $db->setQuery($query);
-        if ($db->execute()) {
-            return true;
-        } else {
-            print_r($db);
-            exit();
+
+        if (in_array(false, $retults))
+        {
+            return false;
         }
 
+        return true;
     }
 
     /**

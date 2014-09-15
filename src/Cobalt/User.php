@@ -359,6 +359,14 @@ class User
      */
     public $guest = 1;
 
+    /**
+	 * E-mails from users_email_cf table.
+	 *
+	 * @var    string
+	 * @since  1.0
+	 */
+	public $emails = array();
+
 	/**
 	 * Constructor.
 	 *
@@ -685,6 +693,28 @@ class User
         }
 
         return $this->db->setQuery($query)->loadObject();
+    }
+
+    /**
+     * Select a user by conditions.
+     *
+     * @param array $where    an associative array of WHERE contitions
+     * @param array $where    an associative array of SELECT contitions
+     * @return object object of founded info about user
+     */
+    public function getEmails()
+    {
+    	if ($this->emails)
+    	{
+    		return $this->emails;
+    	}
+
+        $query = $this->database->getQuery(true);
+        $query->select('email')->from('#__users_email_cf');
+        $query->where('member_id=' . (int)$this->get('id'));
+        $this->emails = $this->database->setQuery($query)->loadObjectList();
+        
+        return $this->emails;
     }
 
 	/**

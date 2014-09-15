@@ -25,6 +25,7 @@ class Html extends AbstractHtmlView
         //get user data and pass to view
         $this->user = $app->getUser();
         $this->user_id = $this->user->get('id');
+        $this->user->getEmails();
 
         //display
         return parent::render();

@@ -127,50 +127,51 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="email1" class="panel-body collapse">
             <div class="panel-body">
-                <form>
-                    <fieldset>
-                        <ul class="list-unstyled" id="email_input_boxes">
-                            <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_1'); ?></li>
-                            <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_2'); ?></li>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label>
-                                <input class="form-control" disabled="disabled" value="<?php echo $this->user->email; ?>" />
-                            </li>
-                            <?php if (isset($this->user->emails) && count($this->user->emails)) { ?>
-                                <?php foreach ($this->user->emails as $key => $email) { ?>
-                                    <?php if (isset($email['email']) && $email['email'] != $this->user->email) { ?>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
-                                <input class="form-control" type="text" name="email[]" value="<?php echo $email['email']; ?>">
-                                <span class="message"></span>
-                            </li>
-                                    <?php } ?>
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
+                    <ul class="list-unstyled" id="email_input_boxes">
+                        <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_1'); ?></li>
+                        <li><?php echo TextHelper::_('COBALT_MULTIPLE_INBOX_DESC_2'); ?></li>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label>
+                            <input class="form-control" disabled="disabled" value="<?php echo $this->user->email; ?>" />
+                        </li>
+                        <?php if (isset($this->user->emails) && count($this->user->emails)) { ?>
+                            <?php foreach ($this->user->emails as $key => $email) { ?>
+                                <?php if (isset($email->email) && $email->email != $this->user->email) { ?>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="<?php echo $email->email; ?>">
+                            <span class="message"></span>
+                        </li>
                                 <?php } ?>
-                                <?php $remaining = 2 - count($this->user->emails); ?>
-                                <?php for ($i = 0; $i < $remaining; $i++) { ?>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
-                                <input class="form-control" type="text" name="email[]" value="">
-                                <span class="message"></span>
-                            </li>
-                                <?php } ?>
-                            <?php } else { ?>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
-                                <input class="form-control" type="text" name="email[]" value="">
-                                <span class="message"></span>
-                            </li>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
-                                <input class="form-control" type="text" name="email[]" value="">
-                                <span class="message"></span>
-                            </li>
                             <?php } ?>
-                        </ul>
-                        <a class="add_email_link" onclick="addEmailBox();"><?php echo TextHelper::_('COBALT_ADD_ANOTHER_EMAIL'); ?></a>
-                    </fieldset>
+                            <?php $remaining = 2 - count($this->user->emails); ?>
+                            <?php for ($i = 0; $i < $remaining; $i++) { ?>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="">
+                            <span class="message"></span>
+                        </li>
+                            <?php } ?>
+                        <?php } else { ?>
+                        <li>
+                            <label><?php echo TextHelper::_('COBALT_EMAIL'); ?></label>
+                            <input class="form-control" type="text" name="email[]" value="">
+                            <span class="message"></span>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                    <p>
+                        <a href="#" onclick="Cobalt.cloneItem('#email_input_boxes');return false;">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <?php echo TextHelper::_('COBALT_ADD_ANOTHER_EMAIL'); ?>
+                        </a>
+                    </p>
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
                 </form>
-                <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="btn button cancel">
             </div>
         </div>
     </div>
