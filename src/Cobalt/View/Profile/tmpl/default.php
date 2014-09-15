@@ -240,24 +240,25 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="home" class="panel-body collapse">
             <div class="panel-body">
-                <form>
-                    <fieldset>
-                        <ul class="list-unstyled">
-                            <li><?php echo TextHelper::_('COBALT_SET_HOME_CHART_DESC'); ?></li>
-                            <li>
-                                <label>
-                                    <select class="form-control" name="home_page_chart">
-                                        <?php
-                                            $charts = ChartsHelper::getDashboardCharts();
-                                            echo JHtml::_('select.options', $charts, 'value', 'text', $this->user->home_page_chart, true);
-                                        ?>
-                                    </select>
-                                </label>
-                            </li>
-                        </ul>
-                    </fieldset>
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
+                    <ul class="list-unstyled">
+                        <li><?php echo TextHelper::_('COBALT_SET_HOME_CHART_DESC'); ?></li>
+                        <li>
+                            <label>
+                                <select class="form-control" name="home_page_chart">
+                                    <?php
+                                        $charts = ChartsHelper::getDashboardCharts();
+                                        echo JHtml::_('select.options', $charts, 'value', 'text', $this->user->home_page_chart, true);
+                                    ?>
+                                </select>
+                            </label>
+                        </li>
+                    </ul>
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
                 </form>
-                <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
             </div>
         </div>
     </div>
