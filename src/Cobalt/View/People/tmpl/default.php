@@ -10,14 +10,6 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
-<script type="text/javascript">
-    var loc = "people";
-    order_url = "<?php echo 'index.php?view=people&layout=list&format=raw&tmpl=component'; ?>";
-    order_dir = "<?php echo $this->state->get('People.filter_order_Dir'); ?>";
-    order_col = "<?php echo $this->state->get('People.filter_order'); ?>";
-</script>
-
-
 <div class="page-header">
 
     <div class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="personModal" aria-hidden="true">
@@ -93,27 +85,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
+    </li>
+    <li>
         <input class="form-control filter_input" name="name" type="text" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="<?php echo $this->people_filter; ?>">
     </li>
     <li class="filter_sentence">
         <div class="ajax_loader"></div>
     </li>
 </ul>
-<small><span id="people_matched"></span> <?php echo TextHelper::_('COBALT_PEOPLE_MATCHED'); ?> <?php echo TextHelper::_('COBALT_THERE_ARE'); ?> <?php echo $this->totalPeople; ?> <?php echo TextHelper::_('COBALT_PEOPLE_IN_ACCOUNT'); ?></small>
 
 <?php echo TemplateHelper::getListEditActions(); ?>
 <form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=people'); ?>">
-<table class="table table-striped table-hover" id="people">
-          <?php echo $this->people_list->render(); ?>
-</table>
-<input type="hidden" name="list_type" value="people" />
+    <table class="table table-striped table-hover data-table" id="people">
+        <?php echo $this->people_list->render(); ?>
+    </table>
+    <input type="hidden" name="list_type" value="people" />
 </form>
-<?php /*
-<div id="templates" style="display:none;">
-    <div id="edit_task" style="display:none;"></div>
-    <div id="note_modal" style="display:none;"></div>
-    <div id="edit_event" style="display:none;"></div>
-    <div id="edit_button"><a class="edit_button_link" id="edit_button_link" href="javascript:void(0)"></a></div>
-    <div id="edit_list_modal" style="display:none;" ></div>
-</div>
-*/
+

@@ -120,21 +120,21 @@ var Cobalt = {
         };
 
         var filters = {};
-
+console.log(dataTableColumns);
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
 
             // get default ordering
-            if (typeof order_col !== 'undefined') {
-                jQuery.each(options.columns, function(i, column) {
-                    if (typeof column.ordering !== 'undefined' &&
-                        column.ordering === order_col) {
-                        options.order = [[ i, order_dir ]];
-                    }
-                });
-            }
+            // if (typeof order_col !== 'undefined') {
+            //     jQuery.each(options.columns, function(i, column) {
+            //         if (typeof column.ordering !== 'undefined' &&
+            //             column.ordering === order_col) {
+            //             options.order = [[ i, order_dir ]];
+            //         }
+            //     });
+            // }
         }
-
+console.log(options.columns);
         var table = jQuery('table.data-table');
         var datatable = table.DataTable(options);
         var searchbox = jQuery('.datatable-searchbox');

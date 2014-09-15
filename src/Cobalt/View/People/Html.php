@@ -177,6 +177,12 @@ class Html extends AbstractHtmlView
             $pagination = $model->getPagination();
             $this->people_list = ViewHelper::getView('people','list','phtml',array('people'=>$people,'total'=>$total,'pagination'=>$pagination));
             $this->people_filter = $state->get('Deal.people_name');
+            $this->dataTableColumns = $model->getDataTableColumns();
+            JFactory::getDocument()->addScriptDeclaration("
+            var loc = 'people';
+            var order_dir = '".$state->get('People.filter_order_Dir')."';
+            var order_col = '".$state->get('People.filter_order')."';
+            var dataTableColumns = " . json_encode($this->dataTableColumns) . ";");
         }
 
         if ($layout == "edit") {

@@ -10,6 +10,7 @@
 
 namespace Cobalt\Model;
 
+use Joomla\Filter\OutputFilter;
 use Cobalt\Table\PeopleTable;
 use JUri;
 use Cobalt\Helper\RouteHelper;
@@ -21,6 +22,8 @@ use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TweetsHelper;
+use Cobalt\Helper\PeopleHelper;
+use Cobalt\Helper\DealHelper;
 use Cobalt\Pagination;
 
 
@@ -967,6 +970,229 @@ class People extends DefaultModel
 
         return $people;
 
+    }
+
+
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     * 
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     * 
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'avatar', 'ordering' => 'p.avatar');
+        $columns[] = array('data' => 'name', 'ordering' => 'p.last_name');
+        $columns[] = array('data' => 'company_name', 'ordering' => 'c.name');
+        $columns[] = array('data' => 'owner', 'ordering' => 'u.last_name');
+        $columns[] = array('data' => 'email', 'ordering' => 'p.email');
+        $columns[] = array('data' => 'phone', 'ordering' => 'p.phone');
+        $columns[] = array('data' => 'status_name', 'ordering' => 'stat.ordering');
+        $columns[] = array('data' => 'source_name', 'ordering' => 'source.ordering');
+        $columns[] = array('data' => 'type', 'ordering' => 'p.type');
+        $columns[] = array('data' => 'notes', 'orderable' => false);
+        $columns[] = array('data' => 'address', 'orderable' => false);
+        $columns[] = array('data' => 'created', 'ordering' => 'p.created');
+        $columns[] = array('data' => 'modified', 'ordering' => 'p.modified');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     * 
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getPeople();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     * 
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+
+        switch ($column)
+        {
+            case 'id':
+                $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
+                break;
+            case 'avatar':
+                if (isset($item->avatar) && $item->avatar)
+                {
+                    $template = '<img id="avatar_img_'.$item->id.'" data-item-type="people" data-item-id="'.$item->id.'" class="avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$item->avatar.'"/>';
+                }
+                else
+                {
+                    $template = '<img id="avatar_img_'.$item->id.'" data-item-type="people" data-item-id="'.$item->id.'" class="avatar" src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/>';
+                }
+                break;
+            case 'name':
+                $template = '<a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$item->id).'">'.$item->first_name.' '.$item->last_name.'</a>';
+                break;
+            case 'company_name':
+                $template = '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$item->company_id).'">'.$item->company_name.'</a>';
+                break;
+            case 'owner':
+                if (!isset($item->owner_last_name) || !$item->owner_last_name)
+                {
+                    $item->status_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $me = array(array('label' => TextHelper::_('COBALT_ME'), 'value' => UsersHelper::getLoggedInUser()->id));
+                $users = UsersHelper::getUsers(null, true);
+                $users = array_merge($me, $users);
+
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="oerson_owner_'.$item->id.'_link">';
+                $template .=    $item->owner_first_name . ' ' . $item->owner_last_name;
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_status_'.$item->id.'" role="menu">';
+
+                if (isset($users) && count($users))
+                {
+                    foreach ($users as $id => $user)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="owner_select dropdown_item" data-field="owner_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$user['value'].'">';
+                        $template .= '    <span class="person-owner-'.OutputFilter::stringURLUnicodeSlug($user['value']).'">'.$user['label'].'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'status_name':
+                if (!isset($item->status_id) || !$item->status_id)
+                {
+                    $item->status_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $statuses = PeopleHelper::getStatusList();
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_stage_'.$item->id.'_link">';
+                $template .= '  <span class="person-status-'.$item->status_name.'">'.$item->status_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_stage_'.$item->id.'" role="menu">';
+
+                if (isset($statuses) && count($statuses))
+                {
+                    foreach ($statuses as $id => $status)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="status_select dropdown_item" data-field="status_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$status['id'].'">';
+                        $template .= '    <span class="person-status-'.OutputFilter::stringURLUnicodeSlug($status['id']).'">'.$status['name'].'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'source_name':
+                if (!isset($item->source_id) || !$item->source_id)
+                {
+                    $item->source_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $sources = DealHelper::getSources(null, true);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="person_source_'.$item->id.'_link">';
+                $template .= '  <span class="person-source-'.$item->source_name.'">'.$item->source_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="person_source_'.$item->id.'" role="menu">';
+
+                if (isset($sources) && count($sources))
+                {
+                    foreach ($sources as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="source_select dropdown_item" data-field="source_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="person-source-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'type':
+                if (!isset($item->type) || !$item->type)
+                {
+                    $item->type = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $types = PeopleHelper::getPeopleTypes(false);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="person_type_'.$item->id.'_link">';
+                $template .=    $item->type;
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="person_type_'.$item->id.'" role="menu">';
+
+                if (isset($types) && count($types))
+                {
+                    foreach ($types as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="type_select dropdown_item" data-field="type_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="person-type-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'notes':
+                $template = '<a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="#" onclick="Cobalt.openNoteModal('.$item->id.', \'people\');"><i class="glyphicon glyphicon-file"></i></a>';
+                break;
+            case 'address':
+                $template = $item->work_city.'<br>'.$item->work_state.'<br>'.$item->work_zip.'<br>'.$item->work_country;
+                break;
+            case 'created':
+                $template = DateHelper::formatDate($item->created);
+                break;
+            case 'modified':
+                $template = DateHelper::formatDate($item->modified);
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
     }
 
 }

@@ -99,7 +99,8 @@ class Datatable extends DefaultController
         }
         elseif ($name == 'people')
         {
-            $name = 'person';
+            // this is not singular, but it's what we need
+            $name = 'people';
         }
         else
         {
@@ -144,30 +145,25 @@ class Datatable extends DefaultController
         }
     }
 
-    protected function setSearch($value)
-    {
-        
-    }
+    // protected function setFilter($filter)
+    // {
+    //     if (is_array($filter))
+    //     {
+    //         $layout = $this->input->getString('loc', '');
+    //         $loc    = $this->makeSingular($layout);
 
-    protected function setFilter($filter)
-    {
-        if (is_array($filter))
-        {
-            $layout = $this->input->getString('loc', '');
-            $loc    = $this->makeSingular($layout);
+    //         if (count($filter) == 2)
+    //         {
+    //             $column = $filter[0];
+    //             $value  = $filter[1];
+    //         }
+    //         elseif (count($filter) == 1)
+    //         {
+    //             $column = 'item';
+    //             $value  = $filter[0];
+    //         }
 
-            if (count($filter) == 2)
-            {
-                $column = $filter[0];
-                $value  = $filter[1];
-            }
-            elseif (count($filter) == 1)
-            {
-                $column = 'item';
-                $value  = $filter[0];
-            }
-
-            $this->input->set($column, $value);
-        }
-    }
+    //         $this->input->set($column, $value);
+    //     }
+    // }
 }
