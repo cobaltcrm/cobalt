@@ -115,7 +115,7 @@ class User
 	 * @var    string
 	 * @since  1.0
 	 */
-	public $timezone = 'America/New_York';
+	public $time_zone = 'America/New_York';
 
 	/**
 	 * Date format.
