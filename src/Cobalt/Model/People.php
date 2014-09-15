@@ -526,9 +526,9 @@ class People extends DefaultModel
             }
 
             /** person name filter **/
-            $people_filter = $this->getState('People.'.$view.'_name');
-            if ($people_filter != null) {
-                $query->where("( p.first_name LIKE '%".$people_filter."%' OR p.last_name LIKE '%".$people_filter."%' OR CONCAT(p.first_name,' ',p.last_name) LIKE '%".$people_filter."%')");
+            $person_filter = $this->getState('People.person_name');
+            if ($person_filter != null) {
+                $query->where("( p.first_name LIKE '%".$person_filter."%' OR p.last_name LIKE '%".$person_filter."%' OR CONCAT(p.first_name,' ',p.last_name) LIKE '%".$person_filter."%')");
             }
 
         }
@@ -784,15 +784,15 @@ class People extends DefaultModel
         $this->state->set($view.'_limitstart', $limitstart);
 
         //set default filter states for reports
-        $filter_order           = $app->getUserStateFromRequest('People.filter_order','filter_order','p.last_name');
-        $filter_order_Dir       = $app->getUserStateFromRequest('People.filter_order_Dir','filter_order_Dir','asc');
-        $people_filter          = $app->getUserStateFromRequest('People.'.$view.'_name','name',null);
+        $filter_order       = $app->getUserStateFromRequest('People.filter_order', 'filter_order', 'p.last_name');
+        $filter_order_Dir   = $app->getUserStateFromRequest('People.filter_order_Dir', 'filter_order_Dir', 'asc');
+        $person_filter      = $app->getUserStateFromRequest('People.person_name', 'people_name', null);
 
         //set states for reports
-        $this->state->set('People.filter_order',$filter_order);
-        $this->state->set('People.filter_order_Dir',$filter_order_Dir);
-        $this->state->set('People.filter_order_Dir',$filter_order_Dir);
-        $this->state->set('People.'.$view.'_name',$people_filter);
+        $this->state->set('People.filter_order', $filter_order);
+        $this->state->set('People.filter_order_Dir', $filter_order_Dir);
+        $this->state->set('People.filter_order_Dir', $filter_order_Dir);
+        $this->state->set('People.person_name', $person_filter);
 
     }
 

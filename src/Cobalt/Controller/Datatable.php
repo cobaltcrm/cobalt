@@ -134,7 +134,7 @@ class Datatable extends DefaultController
                 // distinquish filter from fulltext search
                 if ($filter == 'search')
                 {
-                    $loc = $this->makeSingular($this->input->getString('loc'));
+                    $loc = $this->makeSingular($this->input->getString('loc', ''));
                     $this->input->set(strtolower($loc) . '_name', $value);
                 }
                 else
