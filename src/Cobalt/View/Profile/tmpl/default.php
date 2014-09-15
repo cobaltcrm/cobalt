@@ -12,6 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
     var user_id = <?php echo $this->user_id; ?>;
+    var loc = 'profile';
 </script>
 <h1><?php echo TextHelper::_('COBALT_PROFILE'); ?></h1>
 
