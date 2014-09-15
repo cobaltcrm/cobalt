@@ -1190,7 +1190,8 @@ class People extends DefaultModel
                 $template .= ' </div>';
                 break;
             case 'notes':
-                $template = '<a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="#" onclick="Cobalt.openNoteModal('.$item->id.', \'people\');"><i class="glyphicon glyphicon-file"></i></a>';
+                // $template = '<a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="#" onclick="Cobalt.openNoteModal('.$item->id.', \'people\');"><i class="glyphicon glyphicon-file"></i></a>';
+                $template = ''; // @TODO: Implement notes modal
                 break;
             case 'address':
                 $template = $item->work_city.'<br>'.$item->work_state.'<br>'.$item->work_zip.'<br>'.$item->work_country;
