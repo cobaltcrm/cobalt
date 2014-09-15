@@ -10,6 +10,7 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Table\DealTable;
 use Cobalt\Table\NoteTable;
 use JFactory;
 use Cobalt\Helper\TextHelper;
@@ -51,8 +52,13 @@ class Note extends DefaultModel
                 'person_id' => 'int',
                 'name' => 'string',
                 'category_id' => 'int',
-                'company_id' => 'int'
+                'company_id' => 'int',
+                'note_id' => 'int'
             ));
+        }
+
+        if ( array_key_exists('note_id', $data) ) {
+            $data['id'] = $data['note_id'];
         }
 
         if ( array_key_exists('is_email',$data) ) {
@@ -79,14 +85,16 @@ class Note extends DefaultModel
         }
 
         /** check for and automatically associate and create deals **/
-        if ( array_key_exists('deal_name',$data) && $data['deal_name'] != "" ) {
+        if ( array_key_exists('deal_name',$data) && $data['deal_name'] != "" && (!array_key_exists('deal_id', $data) || empty($data['deal_id']) || $data['deal_id'] == 0) ) {
             $dealModel = new Deal;
-            $existingDeal = $dealModel->load($data['deal_id']);
+            $existingDeal = $dealModel->checkDealName($data['deal_name']);
 
             if ($existingDeal=="") {
                 $pdata = array();
                 $pdata['name'] = $data['deal_name'];
                 $data['deal_id'] = $dealModel->store($pdata);
+            } else {
+                $data['deal_id'] = $existingDeal;
             }
         }
 
@@ -391,5 +399,13 @@ class Note extends DefaultModel
 
         $this->setState($state);
 
+    }
+
+    public function remove($id)
+    {
+        $table = new NoteTable;
+        $table->delete($id);
+
+        return $table;
     }
 }

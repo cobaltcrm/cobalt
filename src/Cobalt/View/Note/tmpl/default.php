@@ -31,6 +31,7 @@ $app = JFactory::getApplication();
             <div class="modal-body">
                 <form action="index.php?task=save&model=note&view=<?php echo $app->input->getCmd('view'); ?>" method="post" id="note" name="note">
                     <input type="hidden" name="deal_id" value="<?php echo $app->input->get('id'); ?>" />
+                    <input type="hidden" name="note_id" value="">
                     <textarea rows="6" class="form-control" id="deal_note" name="note"></textarea>
                 </form>
             </div>
