@@ -332,7 +332,8 @@ var Cobalt = {
      * Example on deal detail.
      **/
     bindDropdownItems: function () {
-        jQuery('.dropdown_item').click(function() {
+        jQuery('.dropdown_item').click(function(e) {
+            e.preventDefault();
             var link = jQuery(this),
                 data = {
                     'model': link.attr('data-item'),

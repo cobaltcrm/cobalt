@@ -10,6 +10,7 @@
 
 namespace Cobalt\Model;
 
+use Joomla\Filter\OutputFilter;
 use Cobalt\Table\PeopleTable;
 use JUri;
 use Cobalt\Helper\RouteHelper;
@@ -21,6 +22,8 @@ use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TweetsHelper;
+use Cobalt\Helper\PeopleHelper;
+use Cobalt\Helper\DealHelper;
 use Cobalt\Pagination;
 
 
@@ -68,6 +71,7 @@ class People extends DefaultModel
         $oldRow = new PeopleTable;
         if ($data == null) {
             $data = $this->app->input->getArray(array(
+                'id' => 'int',
                 'first_name' => 'string',
                 'last_name' => 'string',
                 'company' => 'string',
@@ -78,6 +82,7 @@ class People extends DefaultModel
                 'source_id' => 'int',
                 'status_id' => 'int',
                 'deal_id' => 'int',
+                'type' => 'string',
                 'home_address_1' => 'string',
                 'home_address_2' => 'string',
                 'home_city' => 'string',
@@ -204,14 +209,17 @@ class People extends DefaultModel
         }
 
         //bind to cf tables for deal & person association
-        if ( array_key_exists('deal_id',$data) && $data['deal_id'] != 0 ) {
+        if (isset($data['deal_id']) && $data['deal_id']) 
+        {
             $deal = array (
-                        'association_id = '.$data['deal_id'],
-                        'association_type="deal"',
-                        'person_id = '.$row->id,
-                        "created = '$date'"
-                    );
-            if (!$this->dealsPeople($deal)) {
+                    'association_id = '.$data['deal_id'],
+                    'association_type="deal"',
+                    'person_id = '.$row->id,
+                    "created = '$date'"
+                );
+            
+            if (!$this->dealsPeople($deal))
+            {
                 return false;
             }
         }
@@ -297,50 +305,12 @@ class People extends DefaultModel
             //get session data
             $session    = JFactory::getSession();
 
-            //determine whether we are filtering with a team or user
-            if ($team) {
-                $session->set('people_user_filter',null);
-            }
-            if ($user) {
-                $session->set('people_team_filter',null);
-            }
-
             //set user session data
-            if ($type != null) {
-                $session->set('people_type_filter',$type);
-            } else {
-                $sess_type  = $session->get('people_type_filter');
-                $type = $sess_type;
-            }
-            if ($user != null) {
-                $session->set('people_user_filter',$user);
-            } else {
-                $sess_user  = $session->get('people_user_filter');
-                $user = $sess_user;
-            }
-            if ($stage != null) {
-                $session->set('people_stage_filter',$stage);
-            } else {
-                $sess_stage = $session->get('people_stage_filter');
-                $stage = $sess_stage;
-            }
             if ($tag != null) {
                 $session->set('people_tag_filter',$tag);
             } else {
                 $sess_tag   = $session->get('people_tag_filter');
                 $tag = $sess_tag;
-            }
-            if ($status != null) {
-                $session->set('people_status_filter',$status);
-            } else {
-                $sess_status= $session->get('people_status_filter');
-                $status = $sess_status;
-            }
-            if ($team != null) {
-                $session->set('people_team_filter',$team);
-            } else {
-                $sess_team  = $session->get('people_team_filter');
-                $team = $sess_team;
             }
         }
 
@@ -398,24 +368,41 @@ class People extends DefaultModel
         $member_id = UsersHelper::getUserId();
         $member_role = UsersHelper::getRole();
         $team_id = UsersHelper::getTeamId();
-        if ( ( isset($user) && $user == "all" ) || ( isset($owner_filter) && $owner_filter == "all" ) ) {
-            if ($member_role != 'exec') {
-                 //manager filter
-                if ($member_role == 'manager') {
-                    $query->where("(u.team_id=$team_id OR u2.team_id=$team_id)");
-                } else {
-                //basic user filter
-                    $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
+        $owner_filter = $this->state->get('People.owner_id_filter');
+        $owner_filter_team = $this->state->get('People.owner_id_filter', $team_id);
+        $owner_filter_member = $this->state->get('People.owner_id_filter', $member_id);
+        $owner_type_filter = $this->state->get('People.owner_type_filter');
+
+        if ($owner_filter && $owner_filter == "all")
+        {
+            if ($member_role != 'exec')
+            {
+                if ($member_role == 'manager')
+                {
+                    $query->where("(u.team_id=$owner_filter_team OR u2.team_id=$owner_filter_team)");
+                }
+                else
+                {
+                    $query->where("(p.owner_id=$owner_filter_member OR p.assignee_id=$owner_filter_member)");
                 }
             }
-        } elseif ( isset($team) && $team ) {
-            $query->where("(u.team_id=$team OR u2.team_id=$team)");
-        } elseif ( isset($user) && $user != "all" ) {
-            $query->where("(p.owner_id=$user OR p.assignee_id=$user)");
-        } else {
-            if ( !(isset($owner_filter)) ) {
-                if ($this->_id) {
-                    if ($member_role == "basic") {
+        }
+        elseif ($owner_type_filter == 'team')
+        {
+            $query->where("(u.team_id=$owner_filter_team OR u2.team_id=$owner_filter_team)");
+        }
+        elseif ($owner_type_filter == 'member' )
+        {
+            $query->where("(p.owner_id=$owner_filter_member OR p.assignee_id=$owner_filter_member)");
+        }
+        else
+        {
+            if ( !(isset($owner_filter)) )
+            {
+                if ($this->_id)
+                {
+                    if ($member_role == "basic")
+                    {
                         $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                     }
                     if ($member_role == "manager") {
@@ -423,91 +410,106 @@ class People extends DefaultModel
                         $team_members = array_merge($team_members,array(0=>$member_id));
                         $query->where("(p.owner_id IN(".implode(',',$team_members).") OR p.assignee_id IN(".implode(',',$team_members)."))");
                     }
-                } else {
+                }
+                else
+                {
                     $query->where("(p.owner_id=$member_id OR p.assignee_id=$member_id)");
                 }
             }
         }
 
         //searching for specific person
-        if ($this->_id) {
-            if ( is_array($this->_id) ) {
-                    $query->where("p.id IN (".implode(',',$this->_id).")");
-            } else {
-                    $query->where("p.id=$this->_id");
+        if ($this->_id)
+        {
+            if ( is_array($this->_id) )
+            {
+                $query->where("p.id IN (".implode(',',$this->_id).")");
+            }
+            else
+            {
+                $query->where("p.id=$this->_id");
             }
         }
 
-        if (!$this->_id) {
+        if (!$this->_id)
+        {
+            if (!$export)
+            {
 
-            if (!$export) {
+                //filter data
+                $item_filter = $this->state->get('People.item_filter', $this->app->input->getString('item'));
 
-            //filter data
-            if ($type AND $type != 'all') {
-                switch ($type) {
-                    case 'leads':
-                        $query->where("p.type='lead'");
-                    break;
-                    case 'not_leads':
-                        $query->where("p.type='contact'");
-                    break;
-                }
-            }
-
-            //search with status
-            if ($status AND $status != 'any') {
-                $query->where('p.status_id='.$status);
-            }
-
-            //search by tags
-            if ($tag) {
-
-            }
-
-            //get current date
-            $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
-
-            //filter for type
-            if ($stage != null  && $stage != 'all') {
-
-                //filter for deals//tasks due today
-                if ($stage == 'today') {
-                    $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("event.due_date >'$date' AND event.due_date < '$tomorrow'");
+                if ($item_filter && $item_filter != 'all')
+                {
+                    switch ($item_filter)
+                    {
+                        case 'leads':
+                            $query->where("p.type='lead'");
+                        break;
+                        case 'not_leads':
+                            $query->where("p.type='contact'");
+                        break;
+                    }
                 }
 
-                //filter for deals//tasks due tomorrow
-                if ($stage == "tomorrow") {
-                    $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("event.due_date='".$tomorrow."'");
+                //search with status
+                $status_filter = $this->state->get('People.item_filter', $status);
+
+                if ($status_filter && $status_filter != 'any')
+                {
+                    $query->where('p.status_id='.$status_filter);
                 }
 
-                //filter for people updated in the last 30 days
-                if ($stage == "past_thirty") {
-                    $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("p.modified >'$last_thirty_days'");
-                }
-
-                //filter for recently added people
-                if ($stage == "recently_added") {
-                    $last_five_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
-                    $query->where("p.modified >'$last_five_days'");
-                }
-
-                //filter for last imported people
-                if ($stage == "last_import") {
+                //search by tags
+                if ($tag) {
 
                 }
 
-            } else {
-                //get latest task entry
+                //get current date
+                $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
+                $stage_filter = $this->state->get('People.stage_filter', $stage);
 
-                if ($this->recent) {
-                    $query->where(  "( event.due_date IS NULL OR event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
-                                    "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
-                                    "WHERE e2cf.association_id=p.id AND e2.published>0) )");
+                //filter for type
+                if ($stage != null  && $stage != 'all') {
+
+                    //filter for deals//tasks due today
+                    if ($stage == 'today') {
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $query->where("event.due_date >'$date' AND event.due_date < '$tomorrow'");
+                    }
+
+                    //filter for deals//tasks due tomorrow
+                    if ($stage == "tomorrow") {
+                        $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                        $query->where("event.due_date='".$tomorrow."'");
+                    }
+
+                    //filter for people updated in the last 30 days
+                    if ($stage == "past_thirty") {
+                        $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
+                        $query->where("p.modified >'$last_thirty_days'");
+                    }
+
+                    //filter for recently added people
+                    if ($stage == "recently_added") {
+                        $last_five_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (5*24*60*60)));
+                        $query->where("p.modified >'$last_five_days'");
+                    }
+
+                    //filter for last imported people
+                    if ($stage == "last_import") {
+
+                    }
+
+                } else {
+                    //get latest task entry
+
+                    if ($this->recent) {
+                        $query->where(  "( event.due_date IS NULL OR event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
+                                        "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
+                                        "WHERE e2cf.association_id=p.id AND e2.published>0) )");
+                    }
                 }
-            }
 
             }
 
@@ -521,9 +523,9 @@ class People extends DefaultModel
             }
 
             /** person name filter **/
-            $people_filter = $this->getState('People.'.$view.'_name');
-            if ($people_filter != null) {
-                $query->where("( p.first_name LIKE '%".$people_filter."%' OR p.last_name LIKE '%".$people_filter."%' OR CONCAT(p.first_name,' ',p.last_name) LIKE '%".$people_filter."%')");
+            $person_filter = $this->getState('People.person_name');
+            if ($person_filter != null) {
+                $query->where("( p.first_name LIKE '%".$person_filter."%' OR p.last_name LIKE '%".$person_filter."%' OR CONCAT(p.first_name,' ',p.last_name) LIKE '%".$person_filter."%')");
             }
 
         }
@@ -553,17 +555,23 @@ class People extends DefaultModel
          */
         $limit = $this->getState($this->_view.'_limit');
         $limitStart = $this->getState($this->_view.'_limitstart');
-        if (!$this->_id && $limit != 0) {
+
+        if (!$this->_id && $limit != 0)
+        {
             $query->order($this->getState('People.filter_order') . ' ' . $this->getState('People.filter_order_Dir'));
-            if ( $limitStart >= $this->getTotal() ) {
+
+            if ( $limitStart >= $this->getTotal() )
+            {
                 $limitStart = 0;
                 $limit = 10;
                 $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
                 $this->state->set($this->_view.'_limit', $limit);
                 $this->state->set($this->_view.'_limitstart', $limitStart);
             }
+
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
+
         $db->setQuery($query);
         $people = $db->loadAssocList();
 
@@ -576,11 +584,6 @@ class People extends DefaultModel
 
                 //generate query to join notes
                 foreach ($people as $key => $person) {
-
-                    /* Deals */
-                    $dealModel = new Deal;
-                    $dealModel->set('person_id',$person['id']);
-                    $people[$key]['deals'] = $dealModel->getDeals();;
 
                     /* Notes */
                     $notesModel = new Note;
@@ -779,15 +782,36 @@ class People extends DefaultModel
         $this->state->set($view.'_limitstart', $limitstart);
 
         //set default filter states for reports
-        $filter_order           = $app->getUserStateFromRequest('People.filter_order','filter_order','p.last_name');
-        $filter_order_Dir       = $app->getUserStateFromRequest('People.filter_order_Dir','filter_order_Dir','asc');
-        $people_filter          = $app->getUserStateFromRequest('People.'.$view.'_name','name',null);
+        $filter_order       = $app->getUserStateFromRequest('People.filter_order', 'filter_order', 'p.last_name');
+        $filter_order_Dir   = $app->getUserStateFromRequest('People.filter_order_Dir', 'filter_order_Dir', 'asc');
+        $person_filter      = $app->getUserStateFromRequest('People.person_name', 'people_name', null);
+        $item_filter        = $app->input->getString('item', '');
+        $stage_filter       = $app->input->getString('stage', '');
+        $status_filter       = $app->input->getString('status', '');
+        $ownertype_filter   = $app->input->getRaw('ownertype', null);
 
         //set states for reports
-        $this->state->set('People.filter_order',$filter_order);
-        $this->state->set('People.filter_order_Dir',$filter_order_Dir);
-        $this->state->set('People.filter_order_Dir',$filter_order_Dir);
-        $this->state->set('People.'.$view.'_name',$people_filter);
+        $this->state->set('People.filter_order', $filter_order);
+        $this->state->set('People.filter_order_Dir', $filter_order_Dir);
+        $this->state->set('People.filter_order_Dir', $filter_order_Dir);
+        $this->state->set('People.person_name', $person_filter);
+        $this->state->set('People.item_filter', $item_filter);
+        $this->state->set('People.stage_filter', $stage_filter);
+        $this->state->set('People.status_filter', $status_filter);
+
+        if ($ownertype_filter)
+        {
+            if ($ownertype_filter != 'all')
+            {
+                $owner_filters = explode(':', $ownertype_filter);
+                $this->state->set('People.owner_id_filter', $owner_filters[1]);
+                $this->state->set('People.owner_type_filter', $owner_filters[0]);
+            }
+            else
+            {
+                $this->state->set('People.owner_id_filter', $ownertype_filter);
+            }
+        }
 
     }
 
@@ -967,6 +991,230 @@ class People extends DefaultModel
 
         return $people;
 
+    }
+
+
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     * 
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     * 
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'avatar', 'ordering' => 'p.avatar');
+        $columns[] = array('data' => 'name', 'ordering' => 'p.last_name');
+        $columns[] = array('data' => 'company_name', 'ordering' => 'c.name');
+        $columns[] = array('data' => 'owner', 'ordering' => 'u.last_name');
+        $columns[] = array('data' => 'email', 'ordering' => 'p.email');
+        $columns[] = array('data' => 'phone', 'ordering' => 'p.phone');
+        $columns[] = array('data' => 'status_name', 'ordering' => 'stat.name');
+        $columns[] = array('data' => 'source_name', 'ordering' => 'source.name');
+        $columns[] = array('data' => 'type', 'ordering' => 'p.type');
+        $columns[] = array('data' => 'notes', 'orderable' => false);
+        $columns[] = array('data' => 'address', 'orderable' => false);
+        $columns[] = array('data' => 'created', 'ordering' => 'p.created');
+        $columns[] = array('data' => 'modified', 'ordering' => 'p.modified');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     * 
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getPeople();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     * 
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+
+        switch ($column)
+        {
+            case 'id':
+                $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
+                break;
+            case 'avatar':
+                if (isset($item->avatar) && $item->avatar)
+                {
+                    $template = '<img id="avatar_img_'.$item->id.'" data-item-type="people" data-item-id="'.$item->id.'" class="avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$item->avatar.'"/>';
+                }
+                else
+                {
+                    $template = '<img id="avatar_img_'.$item->id.'" data-item-type="people" data-item-id="'.$item->id.'" class="avatar" src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/>';
+                }
+                break;
+            case 'name':
+                $template = '<a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$item->id).'">'.$item->first_name.' '.$item->last_name.'</a>';
+                break;
+            case 'company_name':
+                $template = '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$item->company_id).'">'.$item->company_name.'</a>';
+                break;
+            case 'owner':
+                if (!isset($item->owner_last_name) || !$item->owner_last_name)
+                {
+                    $item->status_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $me = array(array('label' => TextHelper::_('COBALT_ME'), 'value' => UsersHelper::getLoggedInUser()->id));
+                $users = UsersHelper::getUsers(null, true);
+                $users = array_merge($me, $users);
+
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="oerson_owner_'.$item->id.'_link">';
+                $template .=    $item->owner_first_name . ' ' . $item->owner_last_name;
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_status_'.$item->id.'" role="menu">';
+
+                if (isset($users) && count($users))
+                {
+                    foreach ($users as $id => $user)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="owner_select dropdown_item" data-field="owner_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$user['value'].'">';
+                        $template .= '    <span class="person-owner-'.OutputFilter::stringURLUnicodeSlug($user['value']).'">'.$user['label'].'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'status_name':
+                if (!isset($item->status_id) || !$item->status_id)
+                {
+                    $item->status_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $statuses = PeopleHelper::getStatusList();
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_stage_'.$item->id.'_link">';
+                $template .= '  <span class="person-status-'.$item->status_name.'">'.$item->status_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="deal_stage_'.$item->id.'" role="menu">';
+
+                if (isset($statuses) && count($statuses))
+                {
+                    foreach ($statuses as $id => $status)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="status_select dropdown_item" data-field="status_id" data-item="people" data-item-id="'.$item->id.'" data-value="'.$status['id'].'">';
+                        $template .= '    <span class="person-status-'.OutputFilter::stringURLUnicodeSlug($status['id']).'">'.$status['name'].'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'source_name':
+                if (!isset($item->source_id) || !$item->source_id)
+                {
+                    $item->source_name = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $sources = DealHelper::getSources(null, true);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="person_source_'.$item->id.'_link">';
+                $template .= '  <span class="person-source-'.$item->source_name.'">'.$item->source_name.'</span>';
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="person_source_'.$item->id.'" role="menu">';
+
+                if (isset($sources) && count($sources))
+                {
+                    foreach ($sources as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="source_select dropdown_item" data-field="source_id" data-item="people" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="person-source-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'type':
+                if (!isset($item->type) || !$item->type)
+                {
+                    $item->type = TextHelper::_('COBALT_CLICK_TO_EDIT');
+                }
+
+                $types = PeopleHelper::getPeopleTypes(false);
+                $template = '<div class="dropdown">';
+                $template .= ' <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="person_type_'.$item->id.'_link">';
+                $template .=    $item->type;
+                $template .= ' </a>';
+                $template .= ' <ul class="dropdown-menu" aria-labelledby="person_type_'.$item->id.'" role="menu">';
+
+                if (isset($types) && count($types))
+                {
+                    foreach ($types as $id => $name)
+                    {
+                        $template .= '  <li>';
+                        $template .= '   <a href="#" class="type_select dropdown_item" data-field="type" data-item="people" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '    <span class="person-type-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
+                        $template .= '   </a>';
+                        $template .= '  </li>';
+                    }
+                }
+
+                $template .= '  </ul>';
+                $template .= ' </div>';
+                break;
+            case 'notes':
+                // $template = '<a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="#" onclick="Cobalt.openNoteModal('.$item->id.', \'people\');"><i class="glyphicon glyphicon-file"></i></a>';
+                $template = ''; // @TODO: Implement notes modal
+                break;
+            case 'address':
+                $template = $item->work_city.'<br>'.$item->work_state.'<br>'.$item->work_zip.'<br>'.$item->work_country;
+                break;
+            case 'created':
+                $template = DateHelper::formatDate($item->created);
+                break;
+            case 'modified':
+                $template = DateHelper::formatDate($item->modified);
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
     }
 
 }
