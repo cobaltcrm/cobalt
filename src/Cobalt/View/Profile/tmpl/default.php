@@ -29,17 +29,21 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="language" class="panel-collapse collapse in">
             <div class="panel-body">
-                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form" class="form-inline">
-                    <select class="form-control" name="language">
-                        <?php
-                            $lngs = ConfigHelper::getLanguages();
-                            echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
-                        ?>
-                    </select>
-                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
-                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
-                    <span> - </span>
-                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
+                    <div class="form-group">
+                        <select class="form-control" name="language">
+                            <?php
+                                $lngs = ConfigHelper::getLanguages();
+                                echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                        <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                        <span> - </span>
+                        <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
+                    </div>
                 </form>
             </div>
         </div>
@@ -54,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="personal" class="panel-collapse collapse">
             <div class="panel-body">
-                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form" class="form-inline">
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
                     <div class="form-group">
                         <label for="first_name"><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?></label>
                         <input class="form-control" type="text" name="first_name" id="first_name" value="<?php echo $this->user->first_name; ?>">
@@ -81,7 +85,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="date" class="panel-body collapse">
             <div class="panel-body">
-                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form" class="form-inline">
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
                     <div class="form-group">
                         <label><?php echo TextHelper::_('COBALT_TIMEZONE'); ?></label>
                         <select class="form-control" name="time_zone">
