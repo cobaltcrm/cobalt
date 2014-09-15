@@ -4,6 +4,7 @@
 var Cobalt = {
 
     dataTables: {},
+    events: {},
 
     /**
      * These methods will be triggered on page load.
@@ -201,11 +202,38 @@ var Cobalt = {
         }
         // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
-            $('.modal').modal('hide');
             Cobalt.updateStuff(response.item);
+        }
+        // Modal Action
+        if (typeof response.modal !== 'undefined') {
+            $('.modal').modal(response.modal.action);
         }
 
         Cobalt.updateDataTables();
+
+        // Dispatch Events
+        Cobalt.triggerEvent('onSaveSuccess', response);
+    },
+
+    /**
+     * Add Event
+     */
+    addEvent: function (event, closure) {
+        if (typeof this.events[event] == 'undefined') {
+            this.events[event] = [];
+        }
+        this.events[event].push(closure);
+    },
+
+    /**
+     * Trigger a event
+     */
+    triggerEvent: function (event, params) {
+        if (typeof this.events[event] != 'undefined') {
+            for (key in this.events[event]) {
+                this.events[event][key](params);
+            }
+        }
     },
 
     /**
@@ -431,6 +459,92 @@ var Cobalt = {
         var newItem = lastItem.clone().hide();
         parent.append(newItem);
         newItem.show('fast');
+    }
+};
+
+var Notes = {
+    config: {},
+
+    init: function(){
+        this.initEvents();
+        this.initModalFormData();
+    },
+
+    initModalFormData: function(){
+        //assign deal id to modal form
+        $('input[name=deal_id]').val(deal_id);
+    },
+
+    initEvents: function() {
+        Cobalt.addEvent('onSaveSuccess', function (response){
+            // reload notes
+            if (typeof response.alert !== 'undefined') {
+                if (response.alert.type == 'success') {
+                    Notes.reloadNotes();
+                }
+            }
+        });
+    },
+
+    reloadNotes: function()
+    {
+        if (typeof this.config == 'undefined') {
+            alert('Cant Reload Notes');
+            return false;
+        }
+        this.loadMore(this.config.item_type,this.config.object_id, this.config.target_id, this.config.start_id, this.config.limit_id)
+    },
+
+    loadMore: function(item_type, object_id, target_id, start_id, limit_id, limit_qtdy) {
+        //note state values
+        this.config = {
+            item_type: item_type,
+            object_id: object_id,
+            target_id: target_id,
+            start_id: start_id,
+            limit_id: limit_id,
+            limit: limit_qtdy
+        };
+        jQuery.ajax({
+            url: 'index.php?task=GetNotes&item_type='+item_type+'&object_id='+object_id+'&start='+jQuery(start_id).val()+'&limit='+jQuery(limit_id).val()+'&format=raw&tmpl=component',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(response)
+            {
+                //display alert
+                if (typeof response.alert !== 'undefined') {
+                    Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
+                }
+                if (typeof response.html !== 'undefined') {
+                    jQuery(target_id).html(response.html);
+                }
+                if (typeof response.loadmore !== 'undefined') {
+                    jQuery(limit_id).val(response.loadmore.limit);
+                    jQuery(target_id).append('<button onclick="Cobalt.loadNotes(\''+item_type+'\',\''+object_id+'\',\''+target_id+'\', \''+start_id+'\', \''+limit_id+'\');" class="btn btn-block">Load More</button>');
+                }
+            }
+        });
+    },
+
+    removeNote: function(note_id) {
+        Cobalt.save({task: 'RemoveAjax', model: 'note', id: note_id, format: 'raw', tmpl: 'component'});
+    },
+
+    editNote: function(data, modalID){
+        if (typeof this.config !== 'undefined') {
+            var limit = $(this.config.limit_id).val();
+            limit = limit - this.config.limit;
+            if (limit < 0 || limit < this.config.limit) {
+                limit = this.config.limit;
+            }
+            $(this.config.limit_id).val(limit);
+        }
+        Cobalt.editModalForm(data, modalID);
+    },
+
+    resetModalForm: function() {
+        $('#note_id').val('');
+        $('#deal_note').val('');
     }
 };
 

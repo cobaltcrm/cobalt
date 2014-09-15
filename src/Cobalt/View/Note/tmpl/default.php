@@ -17,7 +17,7 @@ $app = JFactory::getApplication();
 <?php } ?>
 
 <div class="clearfix padding">
-    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
+    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" onclick="Notes.resetModalForm();" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
 </div>
 
 <?php if ( $app->input->get('view')!="print" ) { ?>
@@ -29,9 +29,10 @@ $app = JFactory::getApplication();
                 <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_NOTE')); ?></h3>
             </div>
             <div class="modal-body">
-                <form action="index.php?task=save&model=note&view=<?php echo $app->input->getCmd('view'); ?>" method="post" id="note" name="note">
-                    <input type="hidden" name="deal_id" value="<?php echo $app->input->get('id'); ?>" />
-                    <input type="hidden" name="note_id" value="">
+                <form action="<?php echo RouteHelper::_('index.php?task=save'); ?>" method="post" id="note" name="note">
+                    <input type="hidden" name="deal_id" id="deal_id" value="" />
+                    <input type="hidden" name="note_id" id="note_id" value="">
+                    <input type="hidden" name="model" value="note">
                     <textarea rows="6" class="form-control" id="deal_note" name="note"></textarea>
                 </form>
             </div>
@@ -43,16 +44,10 @@ $app = JFactory::getApplication();
 </div>
 <?php } ?>
 <div id="note_entries">
-<?php
-    $c = count($this->notes);
-        $limit = ( $c > 3 && $app->input->get('format')=='raw' ) ? 3 : $c;
-        for ($i=0; $i<$limit; $i++) {
-            $note = $this->notes[$i];
-            $view = ViewHelper::getView('note','entry','phtml',array('note'=>$note));
-            echo $view->render();
-        }
-?>
 </div>
+<input type="hidden" name="notes_start" id="notes_start" value="0">
+<input type="hidden" name="notes_limit" id="notes_limit" value="4">
 <script>
-    $('input[name=deal_id]').val(deal_id);
+    Notes.init();
+    Notes.loadMore('deal',<?php echo $this->object_id; ?>,'#note_entries','#notes_start','#notes_limit', 4);
 </script>
