@@ -203,7 +203,7 @@ class User
 	 * @var    integer
 	 * @since  1.0
 	 */
-	public $commision_rate = '';
+	public $commission_rate = '';
 
 	/**
 	 * Deals columns.
@@ -713,7 +713,7 @@ class User
         $query->select('email')->from('#__users_email_cf');
         $query->where('member_id=' . (int)$this->get('id'));
         $this->emails = $this->database->setQuery($query)->loadObjectList();
-        
+
         return $this->emails;
     }
 

@@ -8,7 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-
+// echo "<pre>";var_dump($this->user);die("</pre>");
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
@@ -272,23 +272,24 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="commission" class="panel-body collapse">
             <div class="panel-body">
-                <form>
-                    <fieldset>
-                        <ul class="list-unstyled" >
-                            <li><?php echo TextHelper::_('COBALT_SET_COMMISSION_RATE_DESC'); ?></li>
-                            <li>
-                                <label>
-                                    <?php echo TextHelper::_('COBALT_COMMISSION_RATE'); ?>
-                                </label>
-                                <div class="input-append">
-                                    <input class="form-control" type="text" name="commission_rate" value="<?php echo isset($this->user->commission_rate) ? $this->user->commission_rate : ''; ?>">
-                                    <span class="input-append-addon">%</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </fieldset>
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form">
+                    <ul class="list-unstyled" >
+                        <li><?php echo TextHelper::_('COBALT_SET_COMMISSION_RATE_DESC'); ?></li>
+                        <li>
+                            <label>
+                                <?php echo TextHelper::_('COBALT_COMMISSION_RATE'); ?>
+                            </label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="commission_rate" value="<?php echo isset($this->user->commission_rate) ? $this->user->commission_rate : ''; ?>">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
                 </form>
-                <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="btn button cancel">
             </div>
         </div>
     </div>
