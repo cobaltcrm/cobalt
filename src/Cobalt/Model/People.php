@@ -209,14 +209,17 @@ class People extends DefaultModel
         }
 
         //bind to cf tables for deal & person association
-        if ( array_key_exists('deal_id',$data) && $data['deal_id'] != 0 ) {
+        if (isset($data['deal_id']) && $data['deal_id']) 
+        {
             $deal = array (
-                        'association_id = '.$data['deal_id'],
-                        'association_type="deal"',
-                        'person_id = '.$row->id,
-                        "created = '$date'"
-                    );
-            if (!$this->dealsPeople($deal)) {
+                    'association_id = '.$data['deal_id'],
+                    'association_type="deal"',
+                    'person_id = '.$row->id,
+                    "created = '$date'"
+                );
+            
+            if (!$this->dealsPeople($deal))
+            {
                 return false;
             }
         }
@@ -1012,8 +1015,8 @@ class People extends DefaultModel
         $columns[] = array('data' => 'owner', 'ordering' => 'u.last_name');
         $columns[] = array('data' => 'email', 'ordering' => 'p.email');
         $columns[] = array('data' => 'phone', 'ordering' => 'p.phone');
-        $columns[] = array('data' => 'status_name', 'ordering' => 'stat.ordering');
-        $columns[] = array('data' => 'source_name', 'ordering' => 'source.ordering');
+        $columns[] = array('data' => 'status_name', 'ordering' => 'stat.name');
+        $columns[] = array('data' => 'source_name', 'ordering' => 'source.name');
         $columns[] = array('data' => 'type', 'ordering' => 'p.type');
         $columns[] = array('data' => 'notes', 'orderable' => false);
         $columns[] = array('data' => 'address', 'orderable' => false);
