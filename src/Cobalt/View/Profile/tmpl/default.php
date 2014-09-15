@@ -8,6 +8,7 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
+
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <script type="text/javascript">
@@ -28,19 +29,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="language" class="panel-collapse collapse in">
             <div class="panel-body">
-                <form>
-                    <fieldset>
-                        <ul class="list-unstyled">
-                            <select class="form-control" name="language">
-                                <?php
-                                $lngs = ConfigHelper::getLanguages();
-                                echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
-                                ?>
-                            </select>
-                        </ul>
-                    </fieldset>
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw'); ?>" data-ajax="1" role="form" class="form-inline">
+                    <select class="form-control" name="language">
+                        <?php
+                            $lngs = ConfigHelper::getLanguages();
+                            echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
+                        ?>
+                    </select>
+                    <input type="hidden" name="model" value="user" />
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
                 </form>
-                <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
             </div>
         </div>
     </div>
@@ -140,7 +141,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <label><?php echo TextHelper::_('COBALT_PRIMARY_EMAIL'); ?></label>
                                 <input class="form-control" disabled="disabled" value="<?php echo $this->user->email; ?>" />
                             </li>
-                            <?php if ( count($this->user->emails) ) { ?>
+                            <?php if (isset($this->user->emails) && count($this->user->emails)) { ?>
                                 <?php foreach ($this->user->emails as $key => $email) { ?>
                                     <?php if (isset($email['email']) && $email['email'] != $this->user->email) { ?>
                             <li>

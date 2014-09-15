@@ -177,11 +177,13 @@ var Cobalt = {
     initFormSave: function(options) {
 
         if(!options) {
-            otpions = this.getFormSubmitOptions();
+            options = Cobalt.getFormSubmitOptions();
         }
 
         // bind form using 'ajaxForm' 
-        jQuery('form[data-ajax="1"]').submit(function() {
+        var form = jQuery('form[data-ajax="1"]');
+        form.submit(function() {
+            Cobalt.makeFormBusy(form);
             jQuery(this).ajaxSubmit(options);
             return false;
         });
@@ -191,7 +193,9 @@ var Cobalt = {
      * This is called each time an AJAX save is successfull.
      * Here should be initialized all HTML updates depending on response.
      **/
-    onSaveSuccess: function(response) {
+    onSaveSuccess: function(response, status, xhr, form) {
+        Cobalt.stopFormBeingBusy(form);
+
         if (typeof response.alert !== 'undefined') {
             Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
         }
@@ -357,6 +361,24 @@ var Cobalt = {
         });
         var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
         Cobalt.save(data);
+    },
+
+    /**
+     * Disables submit button at provided form.
+     **/
+    makeFormBusy: function(form) {
+        jQuery(form)
+            .find('input[type="submit"]')
+            .attr('disabled', true);
+    },
+
+    /**
+     * Enables submit button at provided form.
+     **/
+    stopFormBeingBusy: function(form) {
+        jQuery(form)
+            .find('input[type="submit"]')
+            .attr('disabled', false);
     },
 
     /**

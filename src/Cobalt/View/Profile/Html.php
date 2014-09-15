@@ -20,9 +20,11 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
+        $app = \Cobalt\Container::fetch('app');
+
         //get user data and pass to view
-        $this->user = UsersHelper::getLoggedInUser();
-        $this->user_id = UsersHelper::getUserId();
+        $this->user = $app->getUser();
+        $this->user_id = $this->user->get('id');
 
         //display
         return parent::render();

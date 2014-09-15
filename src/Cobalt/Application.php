@@ -835,6 +835,27 @@ final class Application extends AbstractWebApplication
         return $this->user;
     }
 
+    /**
+     * When user changes, refresh his/her data from database
+     *
+     * @return boolean
+     */
+    public function refreshUser()
+    {
+        $user = $this->getUser();
+
+        if (!$user->get('id'))
+        {
+            // user must be logged in to be able to refresh itself
+            return false;
+        }
+
+        $user->load($user->get('id'));
+        $this->setUser($user);
+
+        return true;
+    }
+
     protected function detectRequestUri()
     {
         return str_replace('index.php', '', parent::detectRequestUri());

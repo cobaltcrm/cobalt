@@ -69,24 +69,40 @@ class User extends DefaultModel
     }
 
     /**
+     * Alias for load method.
+     * This is method required for Save controller so each model has get{item} method.
+     * 
+     * @param integer $id
+     * @return UserModel
+     */
+    public function getUser($id)
+    {
+        $this->load($id);
+        return $this;
+    }
+
+    /**
      * Method to store a record
      *
      * @return boolean True on success
      */
     public function store($data = null)
     {
+        if (!$data)
+        {
+            $data = $this->app->input->post->getArray();
+        }
+
         //Load Table
         $row = new UserTable;
 
-        if ($data['id']) {
+        if ($data['id'])
+        {
             $row->load($data['id']);
         }
 
-        if (!$data) {
-            $data = $this->app->input->getRequest( 'post' );
-        }
-
-        if (array_key_exists('fullscreen',$data)) {
+        if (isset($data['fullscreen']))
+        {
             $data['fullscreen'] = !$row->fullscreen;
         }
 
@@ -122,7 +138,9 @@ class User extends DefaultModel
             return false;
         }
 
-        return true;
+        $this->app->refreshUser();
+
+        return $row->id;
 
     }
 
