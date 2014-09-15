@@ -81,42 +81,39 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="date" class="panel-body collapse">
             <div class="panel-body">
-                <form>
-                    <fieldset>
-                        <ul class="list-unstyled">
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_TIMEZONE'); ?></label>
-                                <select class="form-control" name="time_zone">
-                                    <?php
-                                        $timezone_abbreviations = DateHelper::getTimezones();
-                                        echo JHtml::_('select.options', $timezone_abbreviations, 'value', 'text', $this->user->time_zone, true);
-                                    ?>
-                                </select>
-                            </li>
-                            <li>
-                            </li>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_DATE_FORMAT'); ?></label>
-                                <select class="form-control" name="date_format">
-                                    <?php
-                                        $date_formats = DateHelper::getDateFormats();
-                                        echo JHtml::_('select.options', $date_formats, 'value', 'text', $this->user->date_format, true);
-                                    ?>
-                                </select>
-                            </li>
-                            <li>
-                                <label><?php echo TextHelper::_('COBALT_TIME_FORMAT'); ?></label>
-                                <select class="form-control" name="time_format">
-                                    <?php
-                                        $time_formats = DateHelper::getTimeFormats();
-                                        echo JHtml::_('select.options', $time_formats, 'value', 'text', $this->user->time_format, true);
-                                    ?>
-                                </select>
-                            </li>
-                        </ul>
-                    </fieldset>
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form" class="form-inline">
+                    <div class="form-group">
+                        <label><?php echo TextHelper::_('COBALT_TIMEZONE'); ?></label>
+                        <select class="form-control" name="time_zone">
+                            <?php
+                                $timezone_abbreviations = DateHelper::getTimezones();
+                                echo JHtml::_('select.options', $timezone_abbreviations, 'value', 'text', $this->user->time_zone, true);
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo TextHelper::_('COBALT_DATE_FORMAT'); ?></label>
+                        <select class="form-control" name="date_format">
+                            <?php
+                                $date_formats = DateHelper::getDateFormats();
+                                echo JHtml::_('select.options', $date_formats, 'value', 'text', $this->user->date_format, true);
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo TextHelper::_('COBALT_TIME_FORMAT'); ?></label>
+                        <select class="form-control" name="time_format">
+                            <?php
+                                $time_formats = DateHelper::getTimeFormats();
+                                echo JHtml::_('select.options', $time_formats, 'value', 'text', $this->user->time_format, true);
+                            ?>
+                        </select>
+                    </div>
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
                 </form>
-                <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="btn button cancel">
             </div>
         </div>
     </div>
