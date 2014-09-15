@@ -88,11 +88,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li><span><?php echo TextHelper::_('COBALT_WHO'); ?></span></li>
     <li class="dropdown">
-        <a class="dropdown-toggle update-toggle-text" href="javascript:void(0);" data-toggle="dropdown" role="button" id="people_stages_link"><span class="dropdown-label"><?php echo $this->stages_name; ?></span></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="people_stages_link">
-            <?php foreach ($this->stages as $title => $text) {
-                echo "<li><a href='javascript:void(0);' class='filter_".$title."' onclick=\"peopleUpdated('".$title."')\">".$text."</a></li>";
-            }?>
+        <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="people_stages_link">
+            <span class="dropdown-label"><?php echo $this->stages_name; ?></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="people_stages_link" data-filter="stage">
+            <?php foreach ($this->stages as $title => $text) { ?>
+            <li>
+                <a href="#" data-filter-value="<?php echo $title; ?>"><?php echo $text ?></a>
+            </li>
+            <?php } ?>
         </ul>
     </li>
     <li><span><?php echo TextHelper::_('COBALT_AND_WITH_STATUS'); ?></span></li>

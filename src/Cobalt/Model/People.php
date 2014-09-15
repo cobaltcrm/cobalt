@@ -303,12 +303,6 @@ class People extends DefaultModel
             $session    = JFactory::getSession();
 
             //set user session data
-            if ($stage != null) {
-                $session->set('people_stage_filter',$stage);
-            } else {
-                $sess_stage = $session->get('people_stage_filter');
-                $stage = $sess_stage;
-            }
             if ($tag != null) {
                 $session->set('people_tag_filter',$tag);
             } else {
@@ -474,6 +468,7 @@ class People extends DefaultModel
 
             //get current date
             $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
+            $stage_filter = $this->state->get('People.stage_filter', $stage);
 
             //filter for type
             if ($stage != null  && $stage != 'all') {
@@ -791,6 +786,7 @@ class People extends DefaultModel
         $filter_order_Dir   = $app->getUserStateFromRequest('People.filter_order_Dir', 'filter_order_Dir', 'asc');
         $person_filter      = $app->getUserStateFromRequest('People.person_name', 'people_name', null);
         $item_filter        = $app->input->getString('item', '');
+        $stage_filter       = $app->input->getString('stage', '');
         $ownertype_filter   = $app->input->getRaw('ownertype', null);
 
         //set states for reports
@@ -799,6 +795,7 @@ class People extends DefaultModel
         $this->state->set('People.filter_order_Dir', $filter_order_Dir);
         $this->state->set('People.person_name', $person_filter);
         $this->state->set('People.item_filter', $item_filter);
+        $this->state->set('People.stage_filter', $stage_filter);
 
         if ($ownertype_filter)
         {
