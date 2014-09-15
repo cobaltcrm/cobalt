@@ -29,14 +29,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         <div id="language" class="panel-collapse collapse in">
             <div class="panel-body">
-                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw'); ?>" data-ajax="1" role="form" class="form-inline">
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form" class="form-inline">
                     <select class="form-control" name="language">
                         <?php
                             $lngs = ConfigHelper::getLanguages();
                             echo JHtml::_('select.options', $lngs, 'value', 'text', $this->user->language, true);
                         ?>
                     </select>
-                    <input type="hidden" name="model" value="user" />
                     <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
                     <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
                     <span> - </span>
@@ -54,23 +53,22 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </h4>
         </div>
         <div id="personal" class="panel-collapse collapse">
-          <div class="panel-body">
-            <form>
-                <fieldset>
-                    <ul class="list-unstyled">
-                        <li>
-                            <label><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?></label>
-                            <input class="form-control" type="text" name="first_name" value="<?php echo $this->user->first_name; ?>">
-                        </li>
-                        <li>
-                            <label><?php echo TextHelper::_('COBALT_PERSON_LAST'); ?></label>
-                            <input class="form-control" type="text" name="last_name" value="<?php echo $this->user->last_name; ?>">
-                        </li>
-                    </ul>
-                </fieldset>
-            </form>
-            <input type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" > - <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
-          </div>
+            <div class="panel-body">
+                <form method="post" action="<?php echo RouteHelper::_('index.php?task=save&format=raw&model=user'); ?>" data-ajax="1" role="form" class="form-inline">
+                    <div class="form-group">
+                        <label for="first_name"><?php echo TextHelper::_('COBALT_PERSON_FIRST'); ?></label>
+                        <input class="form-control" type="text" name="first_name" id="first_name" value="<?php echo $this->user->first_name; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label name="for"><?php echo TextHelper::_('COBALT_PERSON_LAST'); ?></label>
+                        <input class="form-control" type="text" name="last_name" id="last_name" value="<?php echo $this->user->last_name; ?>">
+                    </div>
+                    <input type="hidden" name="id" value="<?php echo $this->user_id ?>" />
+                    <input type="submit" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" class="btn btn-success button save" >
+                    <span> - </span>
+                    <input type="button" value="<?php echo TextHelper::_('COBALT_CANCEL'); ?>" class="button btn cancel">
+                </form>
+            </div>
         </div>
     </div>
     <div class="panel panel-default">
