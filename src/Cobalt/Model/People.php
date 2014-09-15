@@ -71,6 +71,7 @@ class People extends DefaultModel
         $oldRow = new PeopleTable;
         if ($data == null) {
             $data = $this->app->input->getArray(array(
+                'id' => 'int',
                 'first_name' => 'string',
                 'last_name' => 'string',
                 'company' => 'string',
@@ -81,6 +82,7 @@ class People extends DefaultModel
                 'source_id' => 'int',
                 'status_id' => 'int',
                 'deal_id' => 'int',
+                'type' => 'string',
                 'home_address_1' => 'string',
                 'home_address_2' => 'string',
                 'home_city' => 'string',
@@ -1102,7 +1104,7 @@ class People extends DefaultModel
                     foreach ($statuses as $id => $status)
                     {
                         $template .= '  <li>';
-                        $template .= '   <a href="#" class="status_select dropdown_item" data-field="status_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$status['id'].'">';
+                        $template .= '   <a href="#" class="status_select dropdown_item" data-field="status_id" data-item="people" data-item-id="'.$item->id.'" data-value="'.$status['id'].'">';
                         $template .= '    <span class="person-status-'.OutputFilter::stringURLUnicodeSlug($status['id']).'">'.$status['name'].'</span>';
                         $template .= '   </a>';
                         $template .= '  </li>';
@@ -1130,7 +1132,7 @@ class People extends DefaultModel
                     foreach ($sources as $id => $name)
                     {
                         $template .= '  <li>';
-                        $template .= '   <a href="#" class="source_select dropdown_item" data-field="source_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '   <a href="#" class="source_select dropdown_item" data-field="source_id" data-item="people" data-item-id="'.$item->id.'" data-value="'.$id.'">';
                         $template .= '    <span class="person-source-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
                         $template .= '   </a>';
                         $template .= '  </li>';
@@ -1158,7 +1160,7 @@ class People extends DefaultModel
                     foreach ($types as $id => $name)
                     {
                         $template .= '  <li>';
-                        $template .= '   <a href="#" class="type_select dropdown_item" data-field="type_id" data-item="person" data-item-id="'.$item->id.'" data-value="'.$id.'">';
+                        $template .= '   <a href="#" class="type_select dropdown_item" data-field="type" data-item="people" data-item-id="'.$item->id.'" data-value="'.$id.'">';
                         $template .= '    <span class="person-type-'.OutputFilter::stringURLUnicodeSlug($name).'">'.$name.'</span>';
                         $template .= '   </a>';
                         $template .= '  </li>';
