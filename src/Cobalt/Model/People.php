@@ -448,8 +448,12 @@ class People extends DefaultModel
             if (!$export) {
 
             //filter data
-            if ($type AND $type != 'all') {
-                switch ($type) {
+            $item_filter = $this->state->get('People.item_filter', $this->app->input->getString('item'));
+
+            if ($item_filter && $item_filter != 'all')
+            {
+                switch ($item_filter)
+                {
                     case 'leads':
                         $query->where("p.type='lead'");
                     break;
@@ -787,12 +791,14 @@ class People extends DefaultModel
         $filter_order       = $app->getUserStateFromRequest('People.filter_order', 'filter_order', 'p.last_name');
         $filter_order_Dir   = $app->getUserStateFromRequest('People.filter_order_Dir', 'filter_order_Dir', 'asc');
         $person_filter      = $app->getUserStateFromRequest('People.person_name', 'people_name', null);
+        $item_filter        = $app->input->getString('item', '');
 
         //set states for reports
         $this->state->set('People.filter_order', $filter_order);
         $this->state->set('People.filter_order_Dir', $filter_order_Dir);
         $this->state->set('People.filter_order_Dir', $filter_order_Dir);
         $this->state->set('People.person_name', $person_filter);
+        $this->state->set('People.item_filter', $item_filter);
 
     }
 

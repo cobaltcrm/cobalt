@@ -45,7 +45,7 @@ use Joomla\Filter\OutputFilter;
             <ul class="dropdown-menu" role="menu" aria-labelledby="deal_type_link" data-filter="item">
                 <?php foreach ($this->deal_types as $title => $text) { ?>
                      <li>
-                        <a href="#" class='filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>' data-filter-value="<?php echo $title; ?>">
+                        <a href="#" class="filter_<?php echo OutputFilter::stringURLUnicodeSlug($title); ?>" data-filter-value="<?php echo $title; ?>">
                             <?php echo $text; ?>
                         </a>
                     </li>
