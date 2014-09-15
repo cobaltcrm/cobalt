@@ -552,17 +552,23 @@ class People extends DefaultModel
          */
         $limit = $this->getState($this->_view.'_limit');
         $limitStart = $this->getState($this->_view.'_limitstart');
-        if (!$this->_id && $limit != 0) {
+
+        if (!$this->_id && $limit != 0)
+        {
             $query->order($this->getState('People.filter_order') . ' ' . $this->getState('People.filter_order_Dir'));
-            if ( $limitStart >= $this->getTotal() ) {
+
+            if ( $limitStart >= $this->getTotal() )
+            {
                 $limitStart = 0;
                 $limit = 10;
                 $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
                 $this->state->set($this->_view.'_limit', $limit);
                 $this->state->set($this->_view.'_limitstart', $limitStart);
             }
+
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
+
         $db->setQuery($query);
         $people = $db->loadAssocList();
 
@@ -575,11 +581,6 @@ class People extends DefaultModel
 
                 //generate query to join notes
                 foreach ($people as $key => $person) {
-
-                    /* Deals */
-                    $dealModel = new Deal;
-                    $dealModel->set('person_id',$person['id']);
-                    $people[$key]['deals'] = $dealModel->getDeals();;
 
                     /* Notes */
                     $notesModel = new Note;
