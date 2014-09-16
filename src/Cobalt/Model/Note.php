@@ -136,7 +136,7 @@ class Note extends DefaultModel
             return false;
         }
 
-        if ( array_key_exists('id',$data) ) {
+        if ( array_key_exists('id',$data) && intval($data['id']) ) {
             $id = $data['id'];
         } else {
             $id = $this->db->insertId();

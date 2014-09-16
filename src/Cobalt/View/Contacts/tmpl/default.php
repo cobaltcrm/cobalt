@@ -14,44 +14,6 @@ $app = JFactory::getApplication();
 //define deal
 $contacts = $this->contacts;
 ?>
-<script>
-window.onload = function () {
-    jQuery.ajax({
-        type	:	'POST',
-        url		:	'index.php?task=getPeople&format=raw&tmpl=component',
-        dataType:	'json',
-        success	:	function(data){
-            //generate names object from received data
-            var names = new Array();
-            var namesInfo = new Array();
-            jQuery.each(data,function(index,person){
-                //gen name string for search
-                var name  = '';
-                name += person.first_name + " " + person.last_name;
-                //gen associative object for id reference
-                var infoObj = new Object();
-                infoObj = { name : name, id : person.id };
-                //push info to objects
-                namesInfo[name] = infoObj;
-                names.push( name );
-            });
-            jQuery('input[name=person_name]').typeahead({
-                source: names,
-                updater: function (name)
-                {
-                    if (namesInfo[name]) {
-                        $('#person_id').val(namesInfo[name].id);
-                    }
-                    return name;
-                }
-            });
-        }
-    });
-    $('#association_type').val(association_type);
-    $('#association_id').val(deal_id);
-    $('#loc').val(loc);
-};
-</script>
 <div class="modal fade" id="ajax_search_person_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -169,7 +131,8 @@ window.onload = function () {
                             </span>
                         </div>
                     </span>
-                    <strong><a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']);?>"><?php echo $person['first_name'] . ' ' . $person['last_name']; ?></a></strong><br>
+                    <strong><a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']);?>"><?php echo $person['first_name'] . ' ' . $person['last_name']; ?></a></strong>
+                    <br />
                         <?php if (array_key_exists('company_id',$person)) { ?>
                             <a href="<?php echo RouteHelper::_("index.php?view=companies&layout=company&company_id=".$person['company_id']); ?>"><?php echo $person['company_name']; ?></a><br>
                         <?php } ?>
@@ -179,7 +142,14 @@ window.onload = function () {
                         <?php if (array_key_exists('email',$person) && $person['email']!="") { ?>
                                 <i class="glyphicon glyphicon-envelope"></i><a href="mailto:<?php echo $person['email']; ?>"><?php echo $person['email']; ?></a>
                         <?php } ?>
+                    <a href="javascript:void(0);" class="btn"><i class="glyphicon glyphicon-trash"></i></a>
               </div>
             </div>
     <?php } } ?>
 </div>
+<script>
+People.addPersonAutocomplete('input[name=person_name]');
+$('#association_type').val(association_type);
+$('#association_id').val(deal_id);
+$('#loc').val(loc);
+</script>
