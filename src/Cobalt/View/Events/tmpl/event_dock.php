@@ -15,10 +15,10 @@ $app = JFactory::getApplication();
 <form class="print_form">
 <?php if ($app->input->get('view')!="print") { ?>
 <div class="btn-group pull-right">
-    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Cobalt.addTaskEvent('task');"><i class="glyphicon glyphicon-tasks"></i></a>
-    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Cobalt.addTaskEvent('event');"><i class="glyphicon glyphicon-calendar"></i></a>
-    <button rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)"><i class="glyphicon glyphicon-print"></i></a>
-    <button rel="tooltip" class="btn btn-small btn-default dropdown-toggle" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" id="templates_link"><i class="glyphicon glyphicon-list"></i></a>
+    <a rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Task.add('task');" href="javascript:void(0);"><i class="glyphicon glyphicon-tasks"></i></a>
+    <a rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Task.add('event');" href="javascript:void(0);"><i class="glyphicon glyphicon-calendar"></i></a>
+    <a rel="tooltip" class="btn btn-small btn-default" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" href="javascript:void(0);"><i class="glyphicon glyphicon-print"></i></a>
+    <a rel="tooltip" class="btn btn-small btn-default dropdown-toggle" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" id="templates_link" href="javascript:void(0);"><i class="glyphicon glyphicon-list"></i></a>
     <ul class="dropdown-menu padding">
         <?php $templates = CobaltHelper::getTaskTemplates($app->input->get('layout'));
             if ( count($templates) > 0 ) { foreach ($templates as $template) { ?>
