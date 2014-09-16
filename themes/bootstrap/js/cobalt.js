@@ -4,7 +4,6 @@
 var Cobalt = {
 
     dataTables: {},
-    events: {},
 
     /**
      * These methods will be triggered on page load.
@@ -212,28 +211,21 @@ var Cobalt = {
         Cobalt.updateDataTables();
 
         // Dispatch Events
-        Cobalt.triggerEvent('onSaveSuccess', response);
+        Cobalt.trigger('onSaveSuccess', response);
     },
 
     /**
      * Add Event
      */
-    addEvent: function (event, closure) {
-        if (typeof this.events[event] == 'undefined') {
-            this.events[event] = [];
-        }
-        this.events[event].push(closure);
+    on: function (event, closure) {
+        jQuery(Cobalt).on( event, closure);
     },
 
     /**
      * Trigger a event
      */
-    triggerEvent: function (event, params) {
-        if (typeof this.events[event] != 'undefined') {
-            for (key in this.events[event]) {
-                this.events[event][key](params);
-            }
-        }
+    trigger: function (event, params) {
+        jQuery(Cobalt).trigger( event, params );
     },
 
     /**
@@ -266,7 +258,7 @@ var Cobalt = {
             } catch (e) {
                 // not json
             }
-            Cobalt.onSaveSuccess(response);
+            Cobalt.trigger('onSaveSuccess', response);
         });
     },
 
@@ -462,6 +454,42 @@ var Cobalt = {
     }
 };
 
+var People = {
+    addPersonAutocomplete: function(search_input){
+        jQuery.ajax({
+            type	:	'POST',
+            url		:	'index.php?task=getPeople&format=raw&tmpl=component',
+            dataType:	'json',
+            success	:	function(data){
+                //generate names object from received data
+                var names = new Array();
+                var namesInfo = new Array();
+                jQuery.each(data,function(index,person){
+                    //gen name string for search
+                    var name  = '';
+                    name += person.first_name + " " + person.last_name;
+                    //gen associative object for id reference
+                    var infoObj = new Object();
+                    infoObj = { name : name, id : person.id };
+                    //push info to objects
+                    namesInfo[name] = infoObj;
+                    names.push( name );
+                });
+                jQuery(search_input).typeahead({
+                    source: names,
+                    updater: function (name)
+                    {
+                        if (namesInfo[name]) {
+                            $('#person_id').val(namesInfo[name].id);
+                        }
+                        return name;
+                    }
+                });
+            }
+        });
+    }
+};
+
 var Notes = {
     config: {},
 
@@ -476,7 +504,8 @@ var Notes = {
     },
 
     initEvents: function() {
-        Cobalt.addEvent('onSaveSuccess', function (response){
+        Cobalt.on('onSaveSuccess', function (event, response){
+            console.log(response);
             // reload notes
             if (typeof response.alert !== 'undefined') {
                 if (response.alert.type == 'success') {
