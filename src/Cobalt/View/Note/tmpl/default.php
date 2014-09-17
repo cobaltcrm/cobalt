@@ -49,5 +49,5 @@ $app = JFactory::getApplication();
 <input type="hidden" name="notes_limit" id="notes_limit" value="4">
 <script>
     Notes.init();
-    Notes.loadMore('deal',<?php echo $this->object_id; ?>,'#note_entries','#notes_start','#notes_limit', 4);
+    Notes.loadMore(association_type,<?php echo $this->object_id; ?>,'#note_entries','#notes_start','#notes_limit', 4);
 </script>

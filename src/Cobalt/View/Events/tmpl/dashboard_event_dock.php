@@ -19,8 +19,8 @@ $app = JFactory::getApplication();
 <input type="hidden" name="model" value="event" />
 
         <div class="btn-group pull-right">
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Cobalt.addTaskEvent('task');" class="btn"><i class="glyphicon glyphicon-tasks"></i></a>
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Cobalt.addTaskEvent('event');" class="btn"><i class="glyphicon glyphicon-calendar"></i></a>
+            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Task.add('task');" class="btn"><i class="glyphicon glyphicon-tasks"></i></a>
+            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Task.add('event');" class="btn"><i class="glyphicon glyphicon-calendar"></i></a>
             <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" class="btn"><i class="glyphicon glyphicon-print"></i></a>
         </div>
 

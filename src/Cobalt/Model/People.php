@@ -978,7 +978,7 @@ class People extends DefaultModel
         $db->setQuery($this->query);
         $people = $db->loadAssocList();
 
-        $default_image = JURI::base().'libraries/crm/media/images/person.png';
+        $default_image = JURI::base().'src/Cobalt/media/images/person.png';
 
         $n = count($people);
         for ($i=0;$i<$n;$i++) {

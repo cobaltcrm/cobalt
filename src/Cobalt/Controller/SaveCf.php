@@ -24,7 +24,7 @@ class SaveCf extends DefaultController
         //get post data
         $data = $this->input->getArray(array(
             'association_id' => 'int',
-            'association_type' => 'int',
+            'association_type' => 'string',
             'person_id' => 'int'
         ));
         //get db Object

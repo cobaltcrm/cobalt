@@ -52,18 +52,20 @@ $contacts = $this->contacts;
               <span class="pull-left widget">
                     <?php echo '<img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.$person['avatar'].'"/>'; ?>
                     <?php if ( $app->input->get('view') == "deals" || $app->input->get('loc') == "deal" ) { ?>
-                        <div class="person_actions">
-                            <?php if ($this->primary_contact_id == $person['id']) { ?>
-                                <a class="star" id="primary_contact" onclick="unassignDealPrimaryContact(<?php echo $person['id']; ?>)" data-id="<?php echo $person['id']; ?>" href="javascript:void(0);" ></a>
-                            <?php } else { ?>
-                                <a class="white_star" id="star_<?php echo $person['id']; ?>" data-id="<?php echo $person['id']; ?>" onclick="assignDealPrimaryContact(<?php echo $person['id']; ?>);" href="javascript:void(0);" ></a>
-                            <?php } ?>
-                            <a class="remove" href="javascript:void(0);" onclick="removePersonFromDeal(<?php echo $person['id']; ?>);"></a>
+                        <div class="btn-group">
+                            <ul class="list-inline">
+                                <?php if ($this->primary_contact_id == $person['id']) { ?>
+                                <li><a class="star" id="primary_contact" onclick="Deals.assignPrimaryContact(0)" data-id="<?php echo $person['id']; ?>" href="javascript:void(0);" > <i class="glyphicon glyphicon-star"></i></li>
+                                <?php } else { ?>
+                                <li><a class="white_star" id="star_<?php echo $person['id']; ?>" data-id="<?php echo $person['id']; ?>" onclick="assignPrimaryContact(<?php echo $person['id']; ?>);" href="javascript:void(0);" > <i class="glyphicon glyphicon-star-empty"></i> </a></li>
+                                <?php } ?>
+                                <li><a class="remove" href="javascript:void(0);" onclick="Deals.removeContact(<?php echo $person['id']; ?>);"><i class="glyphicon glyphicon-trash"></i></a></li>
+                            </ul>
                         </div>
                     <?php } ?>
               </span>
               <div class="media-body">
-                    <span class="pull-right">
+                    <div class="pull-right">
                             <div class="text-center socialIcons infoDetails">
                             <?php if (array_key_exists('twitter_user',$person) && $person['twitter_user'] != "") { ?>
                                 <a href="http://www.twitter.com/#!/<?php echo $person['twitter_user']; ?>" target="_blank"><div class="twitter_light"></div></a>
@@ -142,13 +144,17 @@ $contacts = $this->contacts;
                         <?php if (array_key_exists('email',$person) && $person['email']!="") { ?>
                                 <i class="glyphicon glyphicon-envelope"></i><a href="mailto:<?php echo $person['email']; ?>"><?php echo $person['email']; ?></a>
                         <?php } ?>
-                    <a href="javascript:void(0);" class="btn"><i class="glyphicon glyphicon-trash"></i></a>
-              </div>
+
+
+                    </div>
+            </div>
             </div>
     <?php } } ?>
 </div>
 <script>
 People.addPersonAutocomplete('input[name=person_name]');
+Deals.initRemoveContact();
+Deals.initAssignContact();
 $('#association_type').val(association_type);
 $('#association_id').val(deal_id);
 $('#loc').val(loc);

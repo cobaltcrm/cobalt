@@ -58,8 +58,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- <div id="addTaskEvent" style="display: none;"> -->
 <ul id="addTaskEvent" class="dropdown-menu">
-    <li><a href="javascript:void(0);" onclick="Cobalt.addTaskEvent('task');"><?php echo TextHelper::_('COBALT_ADD_TASK'); ?></a></li>
-    <li><a href="javascript:void(0);" onclick="Cobalt.addTaskEvent('event');"><?php echo TextHelper::_('COBALT_ADD_EVENT'); ?></a></li>
+    <li><a href="javascript:void(0);" onclick="Task.add('task');"><?php echo TextHelper::_('COBALT_ADD_TASK'); ?></a></li>
+    <li><a href="javascript:void(0);" onclick="Task.add('event');"><?php echo TextHelper::_('COBALT_ADD_EVENT'); ?></a></li>
 </ul>
 <!-- </div> -->
 

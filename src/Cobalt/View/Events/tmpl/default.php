@@ -54,8 +54,8 @@ if ($filter_type == "individual") {
 
 <div class="page-header">
         <div class="btn-group pull-right">
-            <a class="btn" onclick="Cobalt.addTaskEvent('task')"><?php echo ucwords(TextHelper::_('COBALT_ADD_TASK')); ?></a> -
-            <a class="btn" onclick="Cobalt.addTaskEvent('event')"><?php echo ucwords(TextHelper::_('COBALT_ADD_EVENT')); ?></a> -
+            <a class="btn" onclick="Task.add('task')"><?php echo ucwords(TextHelper::_('COBALT_ADD_TASK')); ?></a> -
+            <a class="btn" onclick="Task.add('event')"><?php echo ucwords(TextHelper::_('COBALT_ADD_EVENT')); ?></a> -
             <a class="btn" href="<?php echo RouteHelper::_('index.php?view=calendar'); ?>" ><?php echo TextHelper::_('COBALT_SHOW_CALENDAR'); ?></a> -
             <a class="btn" href="javascript:void(0)" onclick="printItems('event_form');"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
         </div>
