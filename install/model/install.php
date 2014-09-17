@@ -622,6 +622,28 @@ class crmModelInstall
         return $queries;
     }
 
+	/**
+	 * Method to keep compatibility with Php 5.3.x because session_status doesn't exists with it
+	 *
+	 * @return boolean
+	 */
+	protected function is_session_started()
+	{
+		if ( php_sapi_name() !== 'cli' )
+		{
+			if ( version_compare(phpversion(), '5.4.0', '>=') )
+			{
+				return session_status() === PHP_SESSION_ACTIVE ? true : false;
+			}
+			else
+			{
+				return session_id() === '' ? false : true;
+			}
+		}
+
+		return false;
+	}
+
     public function setError($error)
     {
         if ( is_array($this->error) )
@@ -638,10 +660,10 @@ class crmModelInstall
             $this->error = $error;
         }
 
-        if (session_status() == PHP_SESSION_NONE)
-        {
-            session_start();
-        }
+		if ($this->is_session_started() === false )
+		{
+			session_start();
+		}
 
         JSession::getInstance('none', array())->set('error', $this->error);
     }
