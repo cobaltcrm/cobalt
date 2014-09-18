@@ -23,7 +23,9 @@ $contacts = $this->contacts;
             </div>
             <div class="modal-body">
                 <form method="post" action="index.php">
-                    <input class="form-control" type="text" name="person_name" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" value="" />
+                    <div id="person_complete">
+                        <input class="form-control" name="person_name"  type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>">
+                    </div>
                     <input type="hidden" name="task" value="saveCf" />
                     <input type="hidden" name="format" value="raw" />
                     <input type="hidden" name="tmpl" value="component" />
@@ -152,10 +154,32 @@ $contacts = $this->contacts;
     <?php } } ?>
 </div>
 <script>
-People.addPersonAutocomplete('input[name=person_name]');
 Deals.initRemoveContact();
 Deals.initAssignContact();
 $('#association_type').val(association_type);
 $('#association_id').val(deal_id);
 $('#loc').val(loc);
+CobaltAutocomplete.create({
+    id: 'addperson',
+    object: 'people',
+    fields: 'id,first_name,last_name',
+    display_key: 'name',
+    prefetch: {
+        filter: function(list) {
+            return $.map(list, function (item){ item.name = item.first_name+' '+item.last_name; return item; });
+        },
+        ajax: {
+            type: 'post',
+            data: {
+                published: 1
+            }
+        }
+    }
+});
+
+$('input[name=person_name]').typeahead({
+    highlight: true
+},CobaltAutocomplete.getConfig('addperson')).on('typeahead:selected', function(event, item, name){
+    $('#person_id').val(item.id);
+});
 </script>
