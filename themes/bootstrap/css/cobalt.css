@@ -32,3 +32,70 @@ ul.inline.filter-sentence > li {padding: 0;}
 
 /* Hide action bar by defaut (showed in right time by JS) */
 #list_edit_actions {display: none;}
+
+/* Autocomplete CSS */
+.typeahead,
+.tt-hint {
+    width: 574px;
+    height: 30px;
+    padding: 8px 12px;
+    line-height: 30px;
+    border: 1px solid #024e6a;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.typeahead {
+    background-color: #fff;
+}
+
+.tt-hint {
+    color: #999
+}
+
+.tt-dropdown-menu {
+    width: 570px;
+    margin-top: 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+    padding: 8px 20px;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.tt-suggestion + .tt-suggestion {
+    font-size: 14px;
+    border-top: 1px solid #ccc;
+}
+
+.tt-suggestions .repo-language {
+    float: right;
+    font-style: italic;
+}
+
+.tt-suggestions .repo-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tt-suggestions .repo-description {
+    margin: 0;
+}
+
+#multiple-datasets .autocomplete-title {
+    margin: 0 20px 5px 20px;
+    padding: 3px 0;
+    border-bottom: 1px solid #ccc;
+}
