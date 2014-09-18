@@ -642,7 +642,7 @@ var Task = {
                             });
                             var CompaniesAutocomplete = CobaltAutocomplete.getConfig('addTask.company');
                             CompaniesAutocomplete.templates = {
-                                header: '<p>Companies</p>'
+                                header: '<h3 class="autocomplete-title">Companies</h3>'
                             };
 
                             CobaltAutocomplete.create({
@@ -661,7 +661,7 @@ var Task = {
                             });
                             var DealAutocomplete = CobaltAutocomplete.getConfig('addTask.deal');
                             DealAutocomplete.templates = {
-                                header: '<p>Deals</p>'
+                                header: '<h3 class="autocomplete-title">Deals</h3>'
                             };
 
                             CobaltAutocomplete.create({
@@ -683,7 +683,7 @@ var Task = {
                             });
                             var PersonAutocomplete = CobaltAutocomplete.getConfig('addTask.person');
                             PersonAutocomplete.templates = {
-                                header: '<p>People</p>'
+                                header: '<h3 class="autocomplete-title">People</h3>'
                             };
 
                             console.log(DealAutocomplete);
