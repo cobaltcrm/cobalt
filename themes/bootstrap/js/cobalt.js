@@ -66,7 +66,7 @@ var Cobalt = {
      **/
     bindDatepickers: function() {
         jQuery('.date_input').datepicker({
-            format:userDateFormat,
+            format: userDateFormat,
         });
         jQuery(".date_input").on('changeDate',function(event){
             var selectedYear = event.date.getFullYear(),
@@ -535,15 +535,66 @@ var Deals = {
     }
 };
 
-var Task = {
-    add: function(type) {
-        if (typeof id == 'undefined') {
-            alert('Please define "id" in javasript');
+var CobaltAutocomplete = {
+    //bloodhound objects
+    bloodhound: {},
+    config: {},
+
+    create: function (config) {
+        if (typeof config.object == 'undefined') {
+            alert('Please send object attribute');
             return false;
         }
-        if (typeof association_type == 'undefined') {
-            alert('Please define "association_type" in javasript');
-            return false;
+        // assign object to id if not exists
+        if (typeof config.id == 'undefined') {
+            config.id = config.object;
+        }
+        if (typeof config.fields == 'undefined') {
+            config.fields = '';
+        }
+        id = config.id;
+        object_type = config.object;
+
+        if (typeof this.bloodhound[id] == 'undefined') {
+            if (typeof config.prefetch == 'undefined') {
+                config.prefetch = {};
+            }
+            config.prefetch.url = base_url+'index.php?task=autocomplete&object='+object_type+'&fields='+config.fields+'&format=raw&tmpl=component';
+
+            this.bloodhound[id] = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace(config.display_key),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                prefetch: config.prefetch
+            });
+        }
+
+        this.bloodhound[id].clearPrefetchCache();
+        this.bloodhound[id].initialize();
+
+        //initialize empty config
+        if (typeof this.config[id] == 'undefined') {
+            this.config[id] = {};
+        }
+
+        this.config[id] = {
+            displayKey: config.display_key,
+            source: this.bloodhound[id].ttAdapter()
+        };
+    },
+
+    getBloodhound: function (id) {
+        return this.bloodhound[id];
+    },
+
+    getConfig: function (id) {
+        return this.config[id];
+    }
+};
+
+var Task = {
+    add: function(type) {
+        if (typeof id == 'undefined' || typeof id != 'int') {
+            id = 0;
         }
         jQuery.ajax({
             type	:	'POST',
@@ -574,48 +625,74 @@ var Task = {
                         })
                         .then(function(){
 
-                            //assign autocomplete and ajax search functionalities to input fields
-                            jQuery.ajax({
-                                type	:	'POST',
-                                url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
-                                dataType:	'json',
-                                success	:	function(data){
 
-                                    //generate names object from received data
-                                    var names = new Array();
-                                    var namesInfo = new Array();
-                                    jQuery.each(data,function(index,entry){
-                                        //gen name string for search
-                                        if ( entry.type == "person" ) {
-                                            var name  = '';
-                                            name += entry.first_name + " " + entry.last_name;
-                                        } else {
-                                            name = entry.name;
+                            CobaltAutocomplete.create({
+                                id: 'addTask.company',
+                                object: 'company',
+                                fields: 'id,name',
+                                display_key: 'name',
+                                prefetch: {
+                                    ajax: {
+                                        type: 'post',
+                                        data: {
+                                            published: 1
                                         }
-                                        //gen associative object for id reference
-                                        var infoObj = new Object();
-                                        infoObj = { name : name, id : entry.id, type : entry.type};
-                                        //push info to objects
-                                        namesInfo[name] = infoObj;
-                                        names.push( name );
-                                    });
-                                    //assign autocomplete to element
-                                    jQuery('input[name=associate_name]').autocomplete({
-                                        source:names,
-                                        select:function(event,ui){
-                                            idExists = true;
-                                            association_id = namesInfo[ui.item.value].id;
-                                            association_type = namesInfo[ui.item.value].type;
-                                        },
-                                        search:function(){
-                                            idExists = false;
-                                        }
-                                    });
-
+                                    }
                                 }
                             });
-                        });
+                            var CompaniesAutocomplete = CobaltAutocomplete.getConfig('addTask.company');
+                            CompaniesAutocomplete.templates = {
+                                header: '<p>Companies</p>'
+                            };
 
+                            CobaltAutocomplete.create({
+                                id: 'addTask.deal',
+                                object: 'deal',
+                                fields: 'id,name',
+                                display_key: 'name',
+                                prefetch: {
+                                    ajax: {
+                                        type: 'post',
+                                        data: {
+                                            published: 1
+                                        }
+                                    }
+                                }
+                            });
+                            var DealAutocomplete = CobaltAutocomplete.getConfig('addTask.deal');
+                            DealAutocomplete.templates = {
+                                header: '<p>Deals</p>'
+                            };
+
+                            CobaltAutocomplete.create({
+                                id: 'addTask.person',
+                                object: 'people',
+                                fields: 'id,first_name,last_name',
+                                display_key: 'name',
+                                prefetch: {
+                                    filter: function(list) {
+                                        return $.map(list, function (item){ item.name = item.first_name+' '+item.last_name; return item; });
+                                    },
+                                    ajax: {
+                                        type: 'post',
+                                        data: {
+                                            published: 1
+                                        }
+                                    }
+                                }
+                            });
+                            var PersonAutocomplete = CobaltAutocomplete.getConfig('addTask.person');
+                            PersonAutocomplete.templates = {
+                                header: '<p>People</p>'
+                            };
+
+                            console.log(DealAutocomplete);
+                            console.log(CompaniesAutocomplete);
+                            console.log(PersonAutocomplete);
+
+                            $('input[name=associate_name]').typeahead({highlight: true},DealAutocomplete,CompaniesAutocomplete,PersonAutocomplete);
+
+                        });
                 });
 
                 if ( type == 'event' ) {
@@ -691,42 +768,6 @@ var Task = {
     }
 };
 
-var People = {
-    addPersonAutocomplete: function(search_input){
-        jQuery.ajax({
-            type	:	'POST',
-            url		:	'index.php?task=getPeople&format=raw&tmpl=component',
-            dataType:	'json',
-            success	:	function(data){
-                //generate names object from received data
-                var names = new Array();
-                var namesInfo = new Array();
-                jQuery.each(data,function(index,person){
-                    //gen name string for search
-                    var name  = '';
-                    name += person.first_name + " " + person.last_name;
-                    //gen associative object for id reference
-                    var infoObj = new Object();
-                    infoObj = { name : name, id : person.id };
-                    //push info to objects
-                    namesInfo[name] = infoObj;
-                    names.push( name );
-                });
-                jQuery(search_input).typeahead({
-                    source: names,
-                    updater: function (name)
-                    {
-                        if (namesInfo[name]) {
-                            $('#person_id').val(namesInfo[name].id);
-                        }
-                        return name;
-                    }
-                });
-            }
-        });
-    }
-};
-
 var Notes = {
     config: {},
 
@@ -777,10 +818,7 @@ var Notes = {
             dataType: 'JSON',
             success: function(response)
             {
-                //display alert
-                if (typeof response.alert !== 'undefined') {
-                    Cobalt.modalMessage(Joomla.JText._('COM_PANTASSO_SUCCESS_HEADER'), response.alert.message, response.alert.type);
-                }
+                CobaltResponse.alertMessage(response);
                 if (typeof response.html !== 'undefined') {
                     jQuery(target_id).html(response.html);
                 }
