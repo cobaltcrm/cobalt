@@ -73,6 +73,7 @@ ul.inline.filter-sentence > li {padding: 0;}
     padding: 8px 20px;
     font-size: 14px;
     line-height: 18px;
+    cursor: pointer;
 }
 
 .tt-suggestion + .tt-suggestion {
