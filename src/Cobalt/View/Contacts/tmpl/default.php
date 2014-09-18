@@ -57,9 +57,9 @@ $contacts = $this->contacts;
                         <div class="btn-group">
                             <ul class="list-inline">
                                 <?php if ($this->primary_contact_id == $person['id']) { ?>
-                                <li><a class="star" id="primary_contact" onclick="Deals.assignPrimaryContact(0)" data-id="<?php echo $person['id']; ?>" href="javascript:void(0);" > <i class="glyphicon glyphicon-star"></i></li>
+                                <li><a class="star" id="primary_contact" onclick="Deals.assignPrimaryContact(0)" data-id="<?php echo $person['id']; ?>" href="javascript:void(0);" > <i class="glyphicon glyphicon-star"></i></a></li>
                                 <?php } else { ?>
-                                <li><a class="white_star" id="star_<?php echo $person['id']; ?>" data-id="<?php echo $person['id']; ?>" onclick="assignPrimaryContact(<?php echo $person['id']; ?>);" href="javascript:void(0);" > <i class="glyphicon glyphicon-star-empty"></i> </a></li>
+                                <li><a class="star" id="star_<?php echo $person['id']; ?>" data-id="<?php echo $person['id']; ?>" onclick="Deals.assignPrimaryContact(<?php echo $person['id']; ?>);" href="javascript:void(0);" > <i class="glyphicon glyphicon-star-empty"></i> </a></li>
                                 <?php } ?>
                                 <li><a class="remove" href="javascript:void(0);" onclick="Deals.removeContact(<?php echo $person['id']; ?>);"><i class="glyphicon glyphicon-trash"></i></a></li>
                             </ul>
@@ -159,6 +159,7 @@ Deals.initAssignContact();
 $('#association_type').val(association_type);
 $('#association_id').val(deal_id);
 $('#loc').val(loc);
+
 CobaltAutocomplete.create({
     id: 'addperson',
     object: 'people',
@@ -176,10 +177,9 @@ CobaltAutocomplete.create({
         }
     }
 });
-
 $('input[name=person_name]').typeahead({
     highlight: true
 },CobaltAutocomplete.getConfig('addperson')).on('typeahead:selected', function(event, item, name){
-    $('#person_id').val(item.id);
+    jQuery('#person_id').val(item.id);
 });
 </script>

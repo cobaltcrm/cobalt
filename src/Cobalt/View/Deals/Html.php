@@ -57,6 +57,8 @@ class Html extends AbstractHtmlView
             if ( is_null($dealList[0]->id) ) {
                 $app->redirect(RouteHelper::_('index.php?view=deals'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
+            //display remove and assign primary contact to deal
+            $app->input->set('loc', 'deal');
         } else {
         //else load all deals
             if ( $app->input->get('layout') != 'edit' ) {
