@@ -33,9 +33,37 @@ New refactored JS is at https://github.com/cobaltcrm/cobalt/blob/master/themes/b
 
 The idea is to use only [one](https://github.com/cobaltcrm/cobalt/blob/master/themes/bootstrap/js/cobalt.js#L110) so let's try it this easy way from now on.
 
-### Cobalt Autocomplete
+## Cobalt Autocomplete
 
 The Autocomplete feature use [Twitter Typeahead.js](http://twitter.github.io/typeahead.js/) and [Bloodhound](https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md) as sugestion engine.
+
+### API Methods
+
+* CobaltAutocomplete.create(config);
+
+This Method will create an autocomplete.
+
+```javascript
+config = {
+    id: 'addPerson', //ID from autocomplete (Optional: default will be object value)
+    object: 'deal', //Object will be Cobalt/Table/DealTable (Required)
+    fields: 'id,name', //specify what fields will return from ajax request (Required)
+    display_key: 'name', //Field name that will be used for list in autocomplete (Required)
+    prefetch: {}, //For details see Bloodhound Documentation (Optional)
+}
+```
+
+* CobaltAutocomplete.getConfig(id);
+
+Return Bloodhound Configuration Object
+
+* CobaltAutocomplete.getBloodhound(id);
+
+Return Bloodhound Object
+
+### Examples
+
+Below few examples how to use CobaltAutocomplete
 
 Example 1
 
