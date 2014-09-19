@@ -199,6 +199,7 @@ var Cobalt = {
         //display alert
         CobaltResponse.alertMessage(response);
         CobaltResponse.modalAction('.modal',response);
+        CobaltResponse.reloadPage(response);
         // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
             Cobalt.updateStuff(response.item);
@@ -466,6 +467,14 @@ var CobaltResponse = {
         if (typeof response.modal !== 'undefined') {
             jQuery(modalID).modal(response.modal.action);
         }
+    },
+
+    //reload page
+    reloadPage: function (response)
+    {
+        if (typeof response.reload !== 'undefined') {
+            setTimeout('location.reload()',response.reload);
+        }
     }
 };
 
@@ -479,26 +488,24 @@ var Deals = {
     },
 
     initAssignContact: function(){
-        Cobalt.on('onAssignDealContact', function(event, response, person_id){
+        Cobalt.on('onAssignDealContact', function(event, response, person_id) {
             var primary_contact_id = jQuery("#primary_contact").attr('data-id');
             var new_primary_ele = jQuery('#star_'+person_id);
+            var icon = '#primary_contact > i';
 
-            if ( typeof primary_contact_id !== 'undefined' ){
-
-                jQuery("#contacts_container .star").each(function(key,ele){
-
-                    jQuery(ele).addClass('white_star');
-                    jQuery(ele).removeClass('star');
-                    jQuery(ele).attr('onclick','assignDealPrimaryContact('+primary_contact_id+");")
-                    jQuery(ele).attr('id','star_'+primary_contact_id);
-                });
-
+            if (typeof primary_contact_id != 'undefined' && primary_contact_id != person_id) {
+                jQuery('#primary_contact i').removeClass('glyphicon-star');
+                jQuery('#primary_contact i').addClass('glyphicon-star-empty');
+                jQuery('#primary_contact').attr('id','star_'+primary_contact_id);
             }
 
-            jQuery(new_primary_ele).addClass('star');
-            jQuery(new_primary_ele).removeClass('white_star');
-            jQuery(new_primary_ele).attr('onclick','unassignDealPrimaryContact('+person_id+")");
             jQuery(new_primary_ele).attr('id','primary_contact');
+
+            if (jQuery(icon).hasClass('glyphicon-star')) {
+                jQuery(icon).removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+            } else {
+                jQuery(icon).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+            }
         });
     },
 
@@ -552,14 +559,14 @@ var CobaltAutocomplete = {
         if (typeof config.fields == 'undefined') {
             config.fields = '';
         }
-        id = config.id;
-        object_type = config.object;
+        var id = config.id;
+        var object_type = config.object;
 
         if (typeof this.bloodhound[id] == 'undefined') {
             if (typeof config.prefetch == 'undefined') {
                 config.prefetch = {};
             }
-            config.prefetch.url = base_url+'index.php?task=autocomplete&object='+object_type+'&fields='+config.fields+'&format=raw&tmpl=component';
+            config.prefetch.url = base_url+'index.php?task=collection&object='+object_type+'&fields='+config.fields+'&format=raw&tmpl=component';
 
             this.bloodhound[id] = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace(config.display_key),
@@ -593,8 +600,11 @@ var CobaltAutocomplete = {
 
 var Task = {
     add: function(type) {
-        if (typeof id == 'undefined' || typeof id != 'int') {
+        if (typeof id == 'undefined') {
             id = 0;
+        }
+        if (typeof association_type == 'undefined') {
+            association_type = 'task';
         }
         jQuery.ajax({
             type	:	'POST',
@@ -686,10 +696,6 @@ var Task = {
                                 header: '<h3 class="autocomplete-title">People</h3>'
                             };
 
-                            console.log(DealAutocomplete);
-                            console.log(CompaniesAutocomplete);
-                            console.log(PersonAutocomplete);
-
                             $('input[name=associate_name]').typeahead({highlight: true},DealAutocomplete,CompaniesAutocomplete,PersonAutocomplete);
 
                         });
@@ -774,11 +780,29 @@ var Notes = {
     init: function(){
         this.initEvents();
         this.initModalFormData();
+        this.initAutocomplete();
     },
 
-    initModalFormData: function(){
-        //assign deal id to modal form
-        $('input[name=deal_id]').val(deal_id);
+    initModalFormData: function()
+    {
+        if (typeof deal_id == 'number') {
+            $('input[name=deal_id]').val(deal_id);
+        }
+        if (typeof person_id == 'number') {
+            $('input[name=person_id]').val(person_id);
+        }
+        if (typeof category_id == 'number') {
+            $('input[name=category_id]').val(category_id);
+        }
+        if (typeof company_id == 'number') {
+            $('input[name=company_id]').val(company_id);
+        }
+        if (typeof event_id == 'number') {
+            $('input[name=event_id]').val(event_id);
+        }
+        if (typeof note_id == 'number') {
+            $('input[name=note_id]').val(note_id);
+        }
     },
 
     initEvents: function() {
@@ -793,8 +817,75 @@ var Notes = {
         });
     },
 
-    reloadNotes: function()
-    {
+    initAutocomplete: function() {
+        if (typeof association_type != 'string') {
+            return false;
+        }
+
+        switch (association_type) {
+            case 'deal':
+                this.addAutocompletePerson();
+                break;
+            case 'person':
+                this.addAutocompleteDeal();
+                break;
+            case 'company':
+                this.addAutocompletePerson();
+                this.addAutocompleteDeal();
+                break;
+        }
+    },
+
+    addAutocompletePerson: function() {
+        CobaltAutocomplete.create({
+            id: 'note.addperson',
+            object: 'people',
+            fields: 'id,first_name,last_name',
+            display_key: 'name',
+            prefetch: {
+                filter: function(list) {
+                    return $.map(list, function (item){ item.name = item.first_name+' '+item.last_name; return item; });
+                },
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+        $('input[name=note_autocomplete_person]').typeahead({
+            highlight: true
+        },CobaltAutocomplete.getConfig('note.addperson')).on('typeahead:selected', function(event, item, name){
+            jQuery('#note_person_id').val(item.id);
+        });
+        $('#note_autocomplete_person_container').removeClass('hidden');
+    },
+
+    addAutocompleteDeal: function() {
+        CobaltAutocomplete.create({
+            id: 'note.adddeal',
+            object: 'deal',
+            fields: 'id,name',
+            display_key: 'name',
+            prefetch: {
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+        $('input[name=note_autocomplete_deal]').typeahead({
+            highlight: true
+        },CobaltAutocomplete.getConfig('note.adddeal')).on('typeahead:selected', function(event, item, name){
+            jQuery('#note_deal_id').val(item.id);
+        });
+        $('#note_autocomplete_deal_container').removeClass('hidden');
+    },
+
+    reloadNotes: function() {
         if (typeof this.config == 'undefined') {
             alert('Cant Reload Notes');
             return false;

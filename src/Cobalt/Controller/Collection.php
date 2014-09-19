@@ -16,7 +16,7 @@ use Cobalt\Model\Autocomplete as ModelAutocomplete;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Autocomplete extends DefaultController
+class Collection extends DefaultController
 {
     public function execute()
     {
