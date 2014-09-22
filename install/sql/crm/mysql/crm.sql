@@ -350,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `#__people` (
   `position` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `source_id` varchar(255) NOT NULL,
+  `source_id` int(11) NOT NULL,
   `home_address_1` varchar(255) NOT NULL DEFAULT '',
   `home_address_2` varchar(255) NOT NULL DEFAULT '',
   `home_city` varchar(255) NOT NULL DEFAULT '',

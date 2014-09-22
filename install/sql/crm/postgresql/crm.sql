@@ -356,7 +356,7 @@ CREATE TABLE "#__people" (
 	"position" varchar(255) NOT NULL,
 	"phone" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
-	"source_id" varchar(255) NOT NULL,
+	"source_id" int NOT NULL,
 	"home_address_1" varchar(255) NOT NULL,
 	"home_address_2" varchar(255) NOT NULL,
 	"home_city" varchar(255) NOT NULL,
@@ -525,7 +525,7 @@ CREATE TABLE "#__templates" (
 -- 
 -- Table: #__users_email_cf
 --
-CREATE TABLE EXISTS "#__users_email_cf" (
+CREATE TABLE "#__users_email_cf" (
 	"member_id" int NOT NULL,
 	"email" varchar(255) NOT NULL
 );
