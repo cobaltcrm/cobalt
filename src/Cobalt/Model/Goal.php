@@ -37,7 +37,7 @@ class Goal extends DefaultModel
         $row = new GoalTable;
         $oldRow = new GoalTable;
 
-        $data = $app->input->getRequest( 'post' );
+        $data = $app->input->getArray();
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -670,6 +670,28 @@ class Goal extends DefaultModel
         $results = $db->loadAssocList();
 
         return $results;
+    }
+
+    public function getGoal($id=null)
+    {
+        $id = $id ? $id : $this->app->input->get('item_id');
+
+        if ($id > 0)
+        {
+            $db = $this->getDb();
+
+            $query = $db->getQuery(true);
+
+            $query->select('*');
+            $query->from('#__goals');
+            $query->where('id='.$db->quote($id));
+
+            $db->setQuery($query);
+
+            $deal = $db->loadObject();
+        }
+
+        return $deal;
     }
 
 }

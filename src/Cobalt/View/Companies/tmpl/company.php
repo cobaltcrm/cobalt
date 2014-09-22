@@ -94,7 +94,8 @@ $company = $this->companies[0];?>
         <hr />
 
         <!-- DEALS -->
-        <span class="pull-right"><a class="btn" onclick="addDeal('company_id=<?php echo $company['id']; ?>')" href="javascript:void(0);"><i class="glyphicon glyphicon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></a></span>
+
+        <span class="pull-right"><a class="btn" onclick="Cobalt.resetModalForm(this)" data-target="#ajax_search_deal_dialog" data-toggle="modal" href="javascript:void(0);"><i class="glyphicon glyphicon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_DEAL')); ?></a></span>
         <h3><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEALS')); ?></h3>
         <div class="large_info">
             <?php echo $this->deal_dock->render(); ?>
@@ -102,7 +103,8 @@ $company = $this->companies[0];?>
         <hr />
 
         <!-- PEOPLE -->
-        <span class="pull-right"><a class="btn" href="javascript:void(0);" onclick="addPerson('company_id=<?php echo $company['id']; ?>');"><i class="glyphicon glyphicon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></a></span>
+
+        <span class="pull-right"><a class="btn" href="javascript:void(0);" onclick="Cobalt.resetModalForm(this);" data-target="#ajax_search_person_dialog" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></a></span>
         <h3><?php echo ucwords(TextHelper::_('COBALT_EDIT_PEOPLE')); ?></h3>
         <div class="large_info">
             <?php echo $this->people_dock->render(); ?>
@@ -289,27 +291,61 @@ $company = $this->companies[0];?>
 <div id="message" style="display:none;"><?php echo TextHelper::_('COBALT_SUCCESS_MESSAGE'); ?></div>
 
 <!-- PERSON ASSOCIATION -->
-<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_person_dialog'>
-    <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_PERSON'); ?></h3></div>
-    <div class="modal-body text-center">
-        <div class="input-append">
-            <input name="person_name" class="form-control" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_USER'); ?>" />
-            <input type="hidden" name="shared_user_id" id="shared_user_id" />';
-            <a class="btn btn-success" href="javascript:void(0);" onclick="addPersonToCompany();"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_('COBALT_ADD'); ?></a>
+
+<div class="modal fade" id="ajax_search_person_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ASSOCIATE_PERSON')); ?></h3>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="index.php">
+                    <div id="search_person_autocomplete">
+                        <input class="form-control" name="person_name" id="person_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>">
+                    </div>
+                    <input type="hidden" name="task" value="addPersonToCompany" />
+                    <input type="hidden" name="format" value="raw" />
+                    <input type="hidden" name="tmpl" value="component" />
+                    <input type="hidden" name="company_id" id="note_company_id" value="" />
+                    <input type="hidden" name="person_id" id="person_id" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="actions"><input class="btn btn-success" type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" onclick="Cobalt.sumbitModalForm(this);"/> <?php echo TextHelper::_('COBALT_OR'); ?> <a href="javascript:void(0);" data-dismiss="modal" aria-hidden="true"><?php echo TextHelper::_('COBALT_CANCEL'); ?></a></div>
+            </div>
         </div>
     </div>
 </div>
-
 <!--- DEAL ASSOCIATION -->
-<div class='modal hide fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
-    <div class="modal-header small"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3><?php echo TextHelper::_('COBALT_ASSOCIATE_DEAL'); ?></h3></div>
-    <div class="modal-body text-center">
-        <form id="deal">
-            <div class="input-append">
-                <input name="deal_name" class="form-control" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
-                <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
-                <a class="btn btn-success" href="javascript:void(0);" onclick="saveAjax('deal','deal');"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
+<div class='modal fade' role='dialog' tabindex='-1' aria-hidden='true' id='ajax_search_deal_dialog'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ASSOCIATE_DEAL')); ?></h3>
             </div>
-        </form>
+            <div class="modal-body">
+                <form method="post" action="index.php">
+                    <div id="search_deal_autocomplete">
+                        <input class="form-control" name="deal_name" id="deal_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>">
+                    </div>
+                    <input type="hidden" name="task" value="SaveAjax" />
+                    <input type="hidden" name="format" value="raw" />
+                    <input type="hidden" name="tmpl" value="component" />
+                    <input type="hidden" name="field" value="company_id" />
+                    <input type="hidden" name="value" id="deal_company_id" value="" />
+                    <input type="hidden" name="item_id" id="deal_id" value="">
+                    <input type="hidden" name="item_type" value="deal">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="actions"><input class="btn btn-success" type="button" value="<?php echo TextHelper::_('COBALT_SAVE'); ?>" onclick="Cobalt.sumbitModalForm(this);"/> <?php echo TextHelper::_('COBALT_OR'); ?> <a href="javascript:void(0);" data-dismiss="modal" aria-hidden="true"><?php echo TextHelper::_('COBALT_CANCEL'); ?></a></div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    Company.addPerson();
+    Company.addDeal();
+</script>

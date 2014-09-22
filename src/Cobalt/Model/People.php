@@ -197,7 +197,7 @@ class People extends DefaultModel
         $person_id = isset($data['id']) ? $data['id'] : $this->db->insertId();
 
         /** Updating the joomla user **/
-        if ( array_key_exists('id',$data) && $data['id'] != "" ) {
+        if ( array_key_exists('id',$data) && intval($data['id']) && array_key_exists('email', $data) && array_key_exists('first_name', $data) && array_key_exists('last_name', $data)) {
             self::updateJoomlaUser($data);
         }
 

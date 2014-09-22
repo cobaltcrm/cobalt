@@ -9,7 +9,9 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-
+<script>
+    loc = 'documents';
+</script>
 <div class="page-header">
     <h1><?php echo TextHelper::_('COBALT_EDIT_DOCUMENTS'); ?></h1>
 </div>

@@ -45,7 +45,7 @@ $contacts = $this->contacts;
 <div class="clearfix" id="contacts">
     <div class="clearfix">
         <span class="pull-right">
-            <a class="btn" href="javascript:void(0);" data-target="#ajax_search_person_dialog" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i></a>
+            <a class="btn" href="javascript:void(0);" data-target="#ajax_search_person_dialog" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i></a>
         </span>
     </div>
     <?php if ( is_array($contacts) && count($contacts) > 0 ){ foreach ($contacts as $person) { ?>

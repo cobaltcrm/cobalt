@@ -19,7 +19,7 @@ echo $app->input->get('view');
 <?php } ?>
 
 <div class="clearfix padding">
-    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" onclick="Notes.resetModalForm();" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
+    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
 </div>
 
 <?php if ( $app->input->get('view')!="print" ) { ?>
@@ -34,7 +34,6 @@ echo $app->input->get('view');
                 <form action="<?php echo RouteHelper::_('index.php?task=save'); ?>" method="post" id="note" name="note">
                     <input type="hidden" name="deal_id" id="note_deal_id" value="" />
                     <input type="hidden" name="person_id" id="note_person_id" value="" />
-                    <input type="hidden" name="category_id" id="note_category_id" value="" />
                     <input type="hidden" name="company_id" id="note_company_id" value="" />
                     <input type="hidden" name="event_id" id="note_event_id" value="" />
                     <input type="hidden" name="note_id" id="note_note_id" value="">
@@ -43,7 +42,7 @@ echo $app->input->get('view');
                     <br />
                     <div class="row">
                         <div class="col-xs-4">
-                            <select name="category_id" class="form-control">
+                            <select name="category_id" id="note_category_id" class="form-control">
                                 <option value=""><?php echo TextHelper::_('COBALT_NONE'); ?></option>
                                 <?php foreach ($this->categories as $value => $text): ?>
                                     <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
