@@ -136,7 +136,7 @@ $raw = $app->input->get('format'); ?>
                     <div class="form-group">
                         <label class="control-label" for="actual_close"><?php echo TextHelper::_('COBALT_DEAL_ACTUAL_CLOSE'); ?></label>
                         <div class="controls">
-                            <input class="form-control date_input required" type="text" id="actual_close" name="actual_close_input" value="<?php echo DateHelper::formatDate(isset($deal->actual_close) ? $deal->actual_close : ''); ?>">
+                            <input class="form-control date_input required" type="text" id="actual_close_<?php echo $deal->id; ?>" name="actual_close_input" value="<?php echo DateHelper::formatDate(isset($deal->actual_close) ? $deal->actual_close : ''); ?>">
                             <input type="hidden" id="actual_close_hidden" name="actual_close" value="<?php echo isset($deal->actual_close) ? $deal->actual_close : ''; ?>" />
                         </div>
                     </div>
@@ -159,6 +159,7 @@ $raw = $app->input->get('format'); ?>
             }
         ?>
         <input type="hidden" name="model" value="deal" />
+        <input type="hidden" name="refresh_page" value="1">
     </form>
 </div>
 <div class="modal-footer">
@@ -169,3 +170,16 @@ $raw = $app->input->get('format'); ?>
         <?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?>
     </button>
 </div>
+<script>
+    jQuery('.date_input').datepicker({
+        format:userDateFormat,
+    });
+    jQuery(".date_input").on('changeDate',function(event){
+        var selectedYear = event.date.getFullYear();
+        var selectedMonth = event.date.getMonth()+1;
+        var selectedDay = event.date.getDate();
+        var date = selectedYear+"-"+selectedMonth+"-"+selectedDay;
+        jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
+        jQuery(this).datepicker('hide');
+    });
+</script>

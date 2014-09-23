@@ -210,12 +210,8 @@ $deal = $this->dealList[0];
                     <div id="expected_close_container"<?php if ($actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
-                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" onsubmit="return Cobalt.sumbitForm(this)" role="form" class="inline-form" id="expected_close_form" name="expected_close_form">
-                                <input type="text" class="input-invisible editable-modal-datepicker form-control date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
-                                <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal->expected_close; ?>" />
-                                <input type="hidden" name="task" value="save" />
-                                <input type="hidden" name="model" value="deal" />
-                                <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
+                            <form action="<?php echo RouteHelper::_('index.php?task=SaveAjax&field=expected_close&item_type=deal&item_id='.$deal->id); ?>" method="post" role="form" class="inline-form" id="expected_close_form" name="expected_close_form">
+                                <input type="text" class="input-invisible editable-modal-datepicker form-control date_input" name="value" id="expected_close_<?php echo $deal->id; ?>" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
                             </form>
                         </h2>
                     </div>

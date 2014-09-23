@@ -14,6 +14,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h1>
 </div>
 
+<!-- Single button -->
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_("COBALT_ACTION"); ?>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=win_cash&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_CASH')); ?></a></li>
+        <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=win_deals&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_DEALS')); ?></a></li>
+        <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=move_deals&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_MOVE_DEALS_FORWARD')); ?></a></li>
+        <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=complete_tasks&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_COMPLETE_TASKS')); ?></a></li>
+        <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=write_notes&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WRITE_NOTES')); ?></a></li>
+        <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=create_deals&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_CREATE_DEALS')); ?></a></li>
+    </ul>
+</div>
 <div class="row-fluid">
     <div class="span6">
     <ul class="goal_float_list list-unstyled" id="goal_floats_left">
@@ -173,7 +187,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     ?>
             </div>
             <div class="pull-right">
-                    <a class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=goals&layout=add'); ?>"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
                     <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_member"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
             </div>
         </li>
@@ -245,7 +258,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </div>
             <?php if ($this->member_role != 'basic') { ?>
             <div class="pull-right">
-                    <a class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=goals&layout=add'); ?>"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
                     <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_team"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
             </div>
             <?php } ?>
@@ -296,7 +308,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
                 <?php if ($this->member_role == 'exec') { ?>
                 <div class="pull-right">
-                    <a class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=goals&layout=add'); ?>"><i class="glyphicon glyphicon-plus icon-white"></i><?php echo TextHelper::_("COBALT_ADD_GOAL"); ?></a>
                     <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_company"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
                 </div>
                 <?php } ?>
@@ -305,3 +316,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </div>
 </div>
 <div id="delete_goals"></div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<script>
+    //clear modal data when close
+    $('#editModal').on('hidden.bs.modal', function (e) {
+        $('#editModal').removeData('bs.modal');
+    })
+</script>

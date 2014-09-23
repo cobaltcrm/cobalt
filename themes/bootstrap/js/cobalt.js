@@ -107,6 +107,11 @@ var Cobalt = {
      **/
     initDataTables: function() {
 
+        if (typeof loc == 'undefined') {
+            console.log('Cant Initialize Datatables, loc is undefined');
+            return false;
+        }
+
         var options = {
             'processing': true,
             'serverSide': true,
@@ -268,7 +273,7 @@ var Cobalt = {
                 response = $.parseJSON(response);
                 //display alert
                 CobaltResponse.alertMessage(response);
-                CobaltResponse.modalAction('.modal',response);
+                CobaltResponse.modalAction(modalID,response);
                 //bind item
                 if (typeof response.item !== 'undefined') {
                     jQuery.each(response.item, function(name, value) {
@@ -447,6 +452,69 @@ var Cobalt = {
         var newItem = lastItem.clone().hide();
         parent.append(newItem);
         newItem.show('fast');
+    },
+
+    /**
+     * Reset a Modal according with modalID and association_type
+     */
+    resetModalForm: function (button) {
+        var modalID = jQuery(button).attr('data-target');
+
+        switch (modalID) {
+            case '#ajax_search_person_dialog':
+                    $('#person_name').val('');
+                    switch (association_type) {
+                        case 'company':
+                            $('#person_id').val('');
+                            break;
+                        case 'deal':
+                            $('input[name=person_name]').val('');
+                            $('#person_id').val('');
+                            break;
+                        default:
+                            console.log('Missing reset '+modalID+' for '+association_type);
+                            break;
+                    }
+                break;
+            case '#addNote':
+                    $('#note #deal_note').val('');
+                    $('#note_category_id').val('');
+                    //reset note extra fields according with association type
+                    switch (association_type) {
+                        case 'company':
+                            $('input[name=note_autocomplete_person]').val('');
+                            $('#note_person_id').val('');
+                            $('input[name=note_autocomplete_deal]').val('');
+                            $('#note_deal_id').val('');
+                            break;
+                        case 'deal':
+                            $('input[name=note_autocomplete_person]').val('');
+                            $('#note_person_id').val('');
+                            break;
+                        case 'person':
+                            $('input[name=note_autocomplete_deal]').val('');
+                            $('#note_deal_id').val('');
+                            break;
+                        default:
+                            console.log('Missing reset '+modalID+' for '+association_type);
+                            break;
+                    }
+                break;
+            case '#ajax_search_deal_dialog':
+                $('#deal_name').val('');
+                switch (association_type) {
+                    case 'company':
+                        $('#deal_id').val('');
+                        break;
+                    default:
+                        console.log('Missing reset '+modalID+' for '+association_type);
+                        break;
+                }
+                break;
+            default:
+                console.log('Missing reset configuration for '+modalID);
+                break;
+        }
     }
 };
 
@@ -935,11 +1003,57 @@ var Notes = {
             $(this.config.limit_id).val(limit);
         }
         Cobalt.editModalForm(data, modalID);
+    }
+};
+
+var Company = {
+    addPerson: function () {
+        CobaltAutocomplete.create({
+            id: 'company.addperson',
+            object: 'people',
+            fields: 'id,first_name,last_name',
+            display_key: 'name',
+            prefetch: {
+                filter: function(list) {
+                    return $.map(list, function (item){ item.name = item.first_name+' '+item.last_name; return item; });
+                },
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+        $('#person_name').typeahead({
+            highlight: true
+        },CobaltAutocomplete.getConfig('company.addperson')).on('typeahead:selected', function(event, item, name){
+            jQuery('#person_id').val(item.id);
+        });
+        $('#note_company_id').val(company_id);
     },
 
-    resetModalForm: function() {
-        $('#note_id').val('');
-        $('#deal_note').val('');
+    addDeal: function () {
+        CobaltAutocomplete.create({
+            id: 'company.adddeal',
+            object: 'deal',
+            fields: 'id,name',
+            display_key: 'name',
+            prefetch: {
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+        $('#deal_name').typeahead({
+            highlight: true
+        },CobaltAutocomplete.getConfig('company.adddeal')).on('typeahead:selected', function(event, item, name){
+            jQuery('#deal_id').val(item.id);
+        });
+        $('#deal_company_id').val(company_id);
     }
 };
 

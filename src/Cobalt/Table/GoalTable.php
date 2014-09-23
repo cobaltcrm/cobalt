@@ -16,4 +16,30 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class GoalTable extends AbstractTable
 {
     protected $tableName = '#__goals';
+
+    /**
+     * Added to filter dates to SQL format
+     *
+     * @param mixed $array
+     * @param array $ignore
+     * @return $this
+     */
+    public function bind($array, $ignore = array())
+    {
+        //transform date to SQL
+        if (!empty($array['start_date'])) {
+            $array['start_date'] = $this->dateToSql($array['start_date']);
+        }
+        if (!empty($array['end_date'])) {
+            $array['end_date'] = $this->dateToSql($array['end_date']);
+        }
+
+        return parent::bind($array, $ignore);
+    }
+
+    private function dateToSql($date)
+    {
+        $start_date = \JDate::getInstance(str_replace('/','-',$date));
+        return $start_date->toSql();
+    }
 }
