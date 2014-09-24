@@ -13,9 +13,9 @@ body {
 }
 
 /* Top Nav */
-.navbar.navbar-default {background-color: #0047ab; background-image: linear-gradient(to bottom, #0047ab, #00409b); background-image: -webkit-linear-gradient(top,#0047ab,#00409b); background-image: -o-linear-gradient(top,#0047ab,#00409b); background-image: linear-gradient(to bottom,#0047ab,#00409b);background-repeat: repeat-x;}
-.navbar .nav > li > a, .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover {color: #f1f1f1; text-shadow: 0 0 1px #00409b;}
-.navbar .nav > li > a:hover, .navbar .nav > li a.active {background: #00409b; color: #FFFFFF;}
+.navbar.navbar-default {background-color: #2d2d2d; background-image: linear-gradient(to bottom, #2d2d2d, #191919); background-image: -webkit-linear-gradient(top,#2d2d2d,#191919); background-image: -o-linear-gradient(top,#2d2d2d,#191919); background-image: linear-gradient(to bottom,#2d2d2d,#191919);background-repeat: repeat-x;}
+.navbar .nav > li > a, .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover {color: #f1f1f1; text-shadow: 0 0 1px #191919; font-weight: 100; letter-spacing: 1px;}
+.navbar .nav > li > a:hover, .navbar .nav > li a.active {background: #191919; color: #FFFFFF;}
 .navbar.navbar-default form {margin: 0;}
 #site-logo-img {height: 40px;margin: 7px 7px 0 0;}
 
