@@ -2,6 +2,8 @@ body {
     padding-top:50px;
 }
 #com_cobalt h1, #com_cobalt h2, #com_cobalt h3, #com_cobalt h4 {font-family: 'Helvetica Neue', Helvetica, Arial; font-weight: 300;}
+#com_cobalt h3 {font-size: 20px;}
+
 #com_cobalt .list-inline > li,
 #com_cobalt .list-inline > li > a {
     position: relative;

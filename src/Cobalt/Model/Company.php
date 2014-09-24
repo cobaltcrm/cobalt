@@ -555,7 +555,9 @@ class Company extends DefaultModel
                 $template = '<div class="title_holder">';
                 $template .= '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&company_id='.$item->id).'">'.$item->name.'</a>';
                 $template .= '</div>';
-                $template .= '<address>'.$item->address_formatted.'</address>';
+                if ($item->address_formatted != ''): 
+                    $template .= '<address>'.$item->address_formatted.'</address>';
+                endif;
                 $template .= '<div class="hidden"><small>'.$item->description.'</small></div>';
                 break;
             case 'contact_info':

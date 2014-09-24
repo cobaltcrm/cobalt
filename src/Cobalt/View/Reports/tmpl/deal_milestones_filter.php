@@ -16,9 +16,9 @@ for ($i=0;$i<count($this->deals);$i++) {
         <h2><a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id); ?>"><?php echo $deal->name; ?></a></h2>
         <div class="details">
             <div class="row-fluid">
-                <span class="well well-small span4"><?php echo TextHelper::_('COBALT_AMOUNT').": ".ConfigHelper::getCurrency().$deal->amount; ?></span>
-                <span class="well well-small span4"><?php echo TextHelper::_('COBALT_DEAL_STAGE').": ".$deal->stage_name; ?></span>
-                <span class="well well-small span4"><?php echo TextHelper::_('COBALT_OWNER').": ".$deal->owner_first_name." ".$deal->owner_last_name; ?></span>
+                <span class="well well-small col-md-4"><?php echo TextHelper::_('COBALT_AMOUNT').": ".ConfigHelper::getCurrency().$deal->amount; ?></span>
+                <span class="well well-small col-md-4"><?php echo TextHelper::_('COBALT_DEAL_STAGE').": ".$deal->stage_name; ?></span>
+                <span class="well well-small col-md-4"><?php echo TextHelper::_('COBALT_OWNER').": ".$deal->owner_first_name." ".$deal->owner_last_name; ?></span>
             </div>
         </div>
         <div class="events">

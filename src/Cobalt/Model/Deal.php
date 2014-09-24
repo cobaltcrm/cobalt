@@ -1579,7 +1579,7 @@ class Deal extends DefaultModel
                 // @TODO: make these 2 buttons work
                 // $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_CONTACTS').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="Cobalt.showDealContactsDialogModal('.$item->id.');"><i class="glyphicon glyphicon-user"></i></a>';
                 // $template .= ' <a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_NOTES').'" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(\'.deal->id.\',\'deal\');"><i class="glyphicon glyphicon-file"></i></a>';
-                $template .= ' <a data-toggle="popover" title="'.TextHelper::_('COBALT_VIEW_DETAILS').'" data-placement="top" data-html="true" data-content-class="extras-'.$item->id.'" class="btn" href="#" tabindex="0"><i class="glyphicon glyphicon-info-sign"></i></a>';
+                $template .= ' <a data-toggle="popover" title="'.TextHelper::_('COBALT_VIEW_DETAILS').'" data-placement="top" data-html="true" data-content-class="extras-'.$item->id.'" class="btn btn-xs btn-default" href="#" tabindex="0"><i class="glyphicon glyphicon-info-sign"></i></a>';
                 $template .= '</div>';
                 $template .= '<div class="extras-'.$item->id.' hide">';
                 $template .= ' <b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>';

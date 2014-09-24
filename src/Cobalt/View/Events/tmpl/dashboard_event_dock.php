@@ -18,11 +18,11 @@ $app = JFactory::getApplication();
 <input type="hidden" name="layout" value="events" />
 <input type="hidden" name="model" value="event" />
 
-        <div class="btn-group pull-right">
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Cobalt.addTaskEvent('task');" class="btn"><i class="glyphicon glyphicon-tasks"></i></a>
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Cobalt.addTaskEvent('event');" class="btn"><i class="glyphicon glyphicon-calendar"></i></a>
-            <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" class="btn"><i class="glyphicon glyphicon-print"></i></a>
-        </div>
+    <div class="btn-group pull-right">
+        <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Cobalt.addTaskEvent('task');" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-tasks"></i></a>
+        <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Cobalt.addTaskEvent('event');" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-calendar"></i></a>
+        <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-print"></i></a>
+    </div>
 
 <h3><?php echo ucwords(TextHelper::_('COBALT_TASKS_AND_EVENTS')); ?></h3>
 

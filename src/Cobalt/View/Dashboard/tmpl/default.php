@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <iframe name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
 
 <div class="row-fluid">
-    <div class="span4">
+    <div class="col-md-4">
         <ul class="dash_float_list list-unstyled" id="dash_floats_left">
             <li class="widget">
                 <div class="dash_float" id="com_cobalt_tasks_events">
@@ -60,13 +60,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
        </ul>
     </div>
-    <div class="span8">
+    <div class="col-md-8">
         <ul class="dash_float_list list-unstyled" id="dash_floats_right">
             <li class="widget">
                 <div class="dash_float" id="sales_container">
                     <div class="dash_float_header">
                         <div class="btn-group pull-right">
-                            <a class="btn" id="chart_select_prev"><i class="glyphicon glyphicon-chevron-left"></i></a><a class="btn" id="chart_select_next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                            <a class="btn btn-default btn-sm" id="chart_select_prev"><i class="glyphicon glyphicon-chevron-left"></i></a><a class="btn btn-default btn-sm" id="chart_select_next"><i class="glyphicon glyphicon-chevron-right"></i></a>
                         </div>
                         <h3><?php echo TextHelper::_('COBALT_SALES_HEADER'); ?></h3>
                     </div>

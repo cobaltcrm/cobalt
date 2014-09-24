@@ -1,13 +1,13 @@
-/*! DataTables Bootstrap integration
- * ©2011-2014 SpryMedia Ltd - datatables.net/license
+/*! DataTables Foundation integration
+ * Â©2011-2014 SpryMedia Ltd - datatables.net/license
  */
 
 /**
- * DataTables integration for Bootstrap 3. This requires Bootstrap 3 and
+ * DataTables integration for Foundation. This requires Foundation 5 and
  * DataTables 1.10 or newer.
  *
  * This file sets the defaults and adds options to DataTables to style its
- * controls using Bootstrap. See http://datatables.net/manual/styling/bootstrap
+ * controls using Foundation. See http://datatables.net/manual/styling/foundation
  * for further information.
  */
 (function(window, document, undefined){
@@ -16,36 +16,33 @@ var factory = function( $, DataTable ) {
 "use strict";
 
 
+$.extend( DataTable.ext.classes, {
+	sWrapper: "dataTables_wrapper dt-foundation"
+} );
+
+
 /* Set the defaults for DataTables initialisation */
 $.extend( true, DataTable.defaults, {
 	dom:
-		"<'row'<'col-xs-6'l><'col-xs-6'f>r>" +
-		"<'row'<'col-xs-12't>>" +
-		"<'row'<'col-xs-6'i><'col-xs-6'p>>",
-	renderer: 'bootstrap'
+		"<'row'<'small-6 columns'l><'small-6 columns'f>r>"+
+		"t"+
+		"<'row'<'small-6 columns'i><'small-6 columns'p>>",
+	renderer: 'foundation'
 } );
 
 
-/* Default class modification */
-$.extend( DataTable.ext.classes, {
-	sWrapper:      "dataTables_wrapper form-inline dt-bootstrap",
-	sFilterInput:  "form-control input-sm",
-	sLengthSelect: "form-control input-sm"
-} );
-
-
-/* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
+/* Page button renderer */
+DataTable.ext.renderer.pageButton.foundation = function ( settings, host, idx, buttons, page, pages ) {
+	var api = new DataTable.Api( settings );
 	var classes = settings.oClasses;
-	var lang    = settings.oLanguage.oPaginate;
+	var lang = settings.oLanguage.oPaginate;
 	var btnDisplay, btnClass;
 
 	var attach = function( container, buttons ) {
 		var i, ien, node, button;
 		var clickHandler = function ( e ) {
 			e.preventDefault();
-			if ( !$(e.currentTarget).hasClass('disabled') ) {
+			if ( e.data.action !== 'ellipsis' ) {
 				api.page( e.data.action ).draw( false );
 			}
 		};
@@ -63,37 +60,37 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 				switch ( button ) {
 					case 'ellipsis':
 						btnDisplay = '&hellip;';
-						btnClass = 'disabled';
+						btnClass = 'unavailable';
 						break;
 
 					case 'first':
 						btnDisplay = lang.sFirst;
 						btnClass = button + (page > 0 ?
-							'' : ' disabled');
+							'' : ' unavailable');
 						break;
 
 					case 'previous':
 						btnDisplay = lang.sPrevious;
 						btnClass = button + (page > 0 ?
-							'' : ' disabled');
+							'' : ' unavailable');
 						break;
 
 					case 'next':
 						btnDisplay = lang.sNext;
 						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
+							'' : ' unavailable');
 						break;
 
 					case 'last':
 						btnDisplay = lang.sLast;
 						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
+							'' : ' unavailable');
 						break;
 
 					default:
 						btnDisplay = button + 1;
 						btnClass = page === button ?
-							'active' : '';
+							'current' : '';
 						break;
 				}
 
@@ -129,15 +126,15 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 
 
 /*
- * TableTools Bootstrap compatibility
+ * TableTools Foundation compatibility
  * Required TableTools 2.1+
  */
 if ( DataTable.TableTools ) {
-	// Set the classes that TableTools uses to something suitable for Bootstrap
+	// Set the classes that TableTools uses to something suitable for Foundation
 	$.extend( true, DataTable.TableTools.classes, {
-		"container": "DTTT btn-group",
+		"container": "DTTT button-group",
 		"buttons": {
-			"normal": "btn btn-default",
+			"normal": "button",
 			"disabled": "disabled"
 		},
 		"collection": {
@@ -147,15 +144,12 @@ if ( DataTable.TableTools ) {
 				"disabled": "disabled"
 			}
 		},
-		"print": {
-			"info": "DTTT_print_info"
-		},
 		"select": {
 			"row": "active"
 		}
 	} );
 
-	// Have the collection use a bootstrap compatible drop down
+	// Have the collection use a bootstrap compatible dropdown
 	$.extend( true, DataTable.TableTools.DEFAULTS.oTags, {
 		"collection": {
 			"container": "ul",

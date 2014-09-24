@@ -259,7 +259,7 @@ $person = $this->people[0];
     </div>
 
     <div class="row-fluid">
-        <div class="span4">
+        <div class="col-md-4">
             <div class="well well-small text-center">
                 <?php echo TextHelper::_('COBALT_PERSON_TOTAL'); ?>
                 <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo (float) $person['total_pipeline']; ?></h2>
@@ -303,7 +303,7 @@ $person = $this->people[0];
             </div>
         </div>
 
-        <div class="span4">
+        <div class="col-md-4">
             <div class="well well-small text-center">
                 <?php echo ucwords(TextHelper::_('COBALT_PERSON_DEALS')); ?>
                 <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo (float) $person['won_deal_amount']; ?></h2>
@@ -348,7 +348,7 @@ $person = $this->people[0];
             </div>
         </div>
 
-        <div class="span4">
+        <div class="col-md-4">
             <div class="well well-small text-center">
                 <?php echo TextHelper::_('COBALT_PERSON_CONTACTED'); ?>
                 <?php
