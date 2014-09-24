@@ -28,10 +28,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </div>
     </div>
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
+    <div class="row">
         <div class="col-md-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
                     <?php if (!$this->php_version_check) { ?>
@@ -67,12 +67,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </div>
                         </div>
                     </div>
-                    <div class="well">
-                        <div class="module-title"><h6><?php echo JText::_('COBALT_LATEST_NEWS'); ?></h6></div>
-                        <div class="row-striped">
-                            <div class="row-fluid">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><?php echo JText::_('COBALT_LATEST_NEWS'); ?></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="alert"><?php echo JText::_('COBALT_NO_MATCHING_RESULTS'); ?></div>
+                                    <div class="alert alert-warning"><?php echo JText::_('COBALT_NO_MATCHING_RESULTS'); ?></div>
                                 </div>
                             </div>
                         </div>
