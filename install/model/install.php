@@ -376,9 +376,6 @@ class crmModelInstall
 		}
 		catch (RuntimeException $e)
 		{
-            echo '<pre>';
-            print_r($e);
-            die(__FILE__);
 			// If an error occurred return false.
 			return false;
 		}
