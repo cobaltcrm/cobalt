@@ -177,7 +177,8 @@ class Html extends AbstractHtmlView
             $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]->id);
             $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]->people,'primary_contact_id'=>$primary_contact_id));
 
-            $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal->documents));
+            $this->document_list = ViewHelper::getView('documents','list','phtml',array('documents' => $deal->documents,'total'=>$total,'pagination'=>$pagination));
+            //$this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal->documents));
             $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
         }
 

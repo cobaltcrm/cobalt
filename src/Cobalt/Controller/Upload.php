@@ -11,6 +11,7 @@
 namespace Cobalt\Controller;
 
 use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\Documents as DocumentsModel;
@@ -94,23 +95,61 @@ class Upload extends DefaultController
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_SITE.'/uploads/'.$hash;
 
+        $associationID = $this->input->getInt('association_id');
+        $associationType = $this->input->getString('association_type');
+        $filePath = $hash;
+        switch ($associationType) {
+            case 'company':
+                $associationFolder = 'companies';
+                break;
+            case 'deal':
+                $associationFolder = 'deals';
+                break;
+            case 'person':
+                $associationFolder = 'people';
+                break;
+        }
+        if (isset($associationFolder)) {
+            $tmpPath = JPATH_SITE.'/uploads/'.$associationFolder;
+            if (is_dir($tmpPath)) {
+                //check association_id folder
+                if (intval($associationID)) {
+                    $tmpPathID = $tmpPath.'/'.$associationID;
+                    //create if not exists
+                    if (!is_dir($tmpPathID)) {
+                        if (Folder::create($tmpPathID)) {
+                            //set as upload destiny
+                            $tmpPath = $tmpPathID;
+                            $associationFolder .= '/'.$associationID;
+                        }
+                    }
+                }
+                $uploadPath = $tmpPath.'/'.$hash;
+                $filePath = $associationFolder.'/'.$hash;
+            }
+        }
+
         if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
             $this->app->redirect('index.php?view=documents',$msg);
         } else {
+            $return_uri = base64_decode($this->input->getBase64('return'));
+            if (empty($return_uri)) {
+                $return_uri = 'index.php?view=documents&layout=upload&tmpl=component';
+            }
            //update the database
            //date generation
            $date = date('Y-m-d H:i:s');
            $data = array (
                 'name'              =>  $fileName,
-                'filename'          =>  $hash,
+                'filename'          =>  $filePath,
                 'filetype'          =>  $uploadedFileExtension,
                 'size'              =>  $fileSize/1024,
                 'created'           =>  $date,
                 'shared'            =>  1,
                 'is_image'          =>  is_array(getimagesize($uploadPath)) ? true : false,
-                'association_id'    =>  $this->input->get('association_id'),
-                'association_type'  =>  $this->input->get('association_type'),
+                'association_id'    =>  $associationID,
+                'association_type'  =>  $associationType,
                 'owner_id'          =>  UsersHelper::getUserId()
            );
 
@@ -118,13 +157,14 @@ class Upload extends DefaultController
            //$session = $this->container->resolve('session');
 
            if ($id=$model->store($data)) {
-            echo '<script type="text/javascript">window.top.window.uploadSuccess('.$id.');</script>';
-               // $msg = JText::_('COBALT_DOC_UPLOAD_SUCCESS');
-               // $this->app->redirect('index.php?view=documents&layout=upload&tmpl=component',$msg);
+            //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._("COBALT_UPLOADING"),Joomla.JText._("COBALT_DOC_UPLOAD_SUCCESS"),"success");</script>';
+               $msg = TextHelper::_('COBALT_DOC_UPLOAD_SUCCESS');
+               $this->app->redirect($return_uri,$msg);
                // $session->set("upload_success", true);
            } else {
-               // $msg = JText::_('COBALT_DOC_UPLOAD_FAIL');
-               // $this->app->redirect('index.php?view=documents&layout=upload&tmpl=component',$msg);
+               //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._(\'COBALT_UPLOADING\'),Joomla.JText._(\'COBALT_DOC_UPLOAD_FAIL\'),\'danger\');</script>';
+               $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
+               $this->app->redirect($return_uri,$msg);
                // $session->set("upload_success", false);
            }
         }

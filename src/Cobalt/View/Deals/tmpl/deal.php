@@ -264,28 +264,28 @@ $deal = $this->dealList[0];
                 </div>
 
         <span class="pull-right">
-            <form id="upload_form" target="hidden" action="index.php?task=upload" method="post" enctype="multipart/form-data">
-                <div class="fileupload fileupload-new" data-provides="fileupload">
-                     <span class="btn btn-file"><span class="fileupload-new" id="upload_button"><?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?></span><span class="fileupload-exists"><?php echo TextHelper::_('COBALT_UPLOADING_FILE'); ?></span><input type="file" id="upload_input_invisible" name="document" /></span>
+            <form id="upload_form" action="index.php?task=upload" method="post" enctype="multipart/form-data">
+
+
+                <div class="btn-group">
+                    <div class="btn btn-primary" id="upload_button"><i class="glyphicon glyphicon-cloud-upload"></i> <?php echo TextHelper::_('COBALT_SUBMIT'); ?></div>
+                        <div class="btn btn-default btn-file">
+                            <i class="glyphicon glyphicon-plus"></i>  <?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?> <input type="file" id="upload_input_invisible" name="document" />
+                        </div>
                 </div>
+
+
+
                 <input type="hidden" name="association_id" value="<?php echo $deal->id; ?>" />
-                <input type="hidden" name="association_type" value='deal' />
+                <input type="hidden" name="association_type" value="deal">
+                <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
             </form>
         </span>
 
         <h2><?php echo TextHelper::_('COBALT_EDIT_DOCUMENTS'); ?></h2>
         <div class="large_info">
             <table class="table table-striped table-hover" id="documents_table">
-            <thead>
-                <th><?php echo TextHelper::_('COBALT_TYPE'); ?></th>
-                <th><?php echo TextHelper::_('COBALT_FILE_NAME'); ?></th>
-                <th><?php echo TextHelper::_('COBALT_OWNER'); ?></th>
-                <th><?php echo TextHelper::_('COBALT_SIZE'); ?></th>
-                <th><?php echo TextHelper::_('COBALT_UPLOADED'); ?></th>
-            </thead>
-            <tbody id="documents">
                <?php echo $this->document_list->render(); ?>
-            </tbody>
             </table>
         </div>
     </div>

@@ -150,7 +150,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             foreach ($this->goals->individual_goals as $goal) { ?>
                                <div id="goal_<?php echo $goal['id']; ?>" class="goal_info clearfix well">
                                     <div class="clearfix">
-                                        <span class="goal_info_name"><?php echo $goal['name']; ?></span>
+                                        <span class="goal_info_name"><a href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type='.$goal['goal_type'].'&tmpl=component&format=raw&id='.$goal['id']); ?>" data-toggle="modal" data-target="#editModal"><?php echo $goal['name']; ?></a></span>
                                         <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                     </div>
                                     <div class="goal_info_progress clearfix progress progress-success">
@@ -186,9 +186,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <?php } }
                     ?>
             </div>
+            <?php if ( count($this->goals->individual_goals) > 0 ): ?>
             <div class="pull-right">
-                    <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_member"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
+                    <a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&goal_type=member&format=raw&tmpl=component&layout=delete'); ?>" class="btn delete_goals" id="goal_type_member"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
             </div>
+            <?php endif; ?>
         </li>
         <li class="widget clearfix">
             <h3><?php echo TextHelper::_("COBALT_TEAM_GOALS"); ?></h3>
@@ -220,7 +222,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         foreach ($this->goals->team_goals as $goal) { ?>
                             <div id="goal_<?php echo $goal['id']; ?>" class="goal_info well">
                                 <div class="clearfix">
-                                    <span class="goal_info_name"><?php echo $goal['name']; ?></span>
+                                    <span class="goal_info_name"><a href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type='.$goal['goal_type'].'&tmpl=component&format=raw&id='.$goal['id']); ?>" data-toggle="modal" data-target="#editModal"><?php echo $goal['name']; ?></a></span>
                                     <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                 </div>
                                 <div class="goal_info_progress clearfix progress progress-success">
@@ -256,9 +258,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <?php } }
                 ?>
             </div>
-            <?php if ($this->member_role != 'basic') { ?>
+            <?php if ($this->member_role != 'basic' && count($this->goals->team_goals) > 0) { ?>
             <div class="pull-right">
-                    <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_team"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
+                    <a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&goal_type=team&format=raw&tmpl=component&layout=delete'); ?>" class="btn delete_goals" id="goal_type_team"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
             </div>
             <?php } ?>
         </li>
@@ -270,7 +272,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             foreach ($this->goals->company_goals as $goal) { ?>
                               <div id="goal_<?php echo $goal['id']; ?>" class="goal_info well">
                                     <div class="clearfix">
-                                        <span class="goal_info_name"><?php echo $goal['name']; ?></span>
+                                        <span class="goal_info_name"><a href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type='.$goal['goal_type'].'&tmpl=component&format=raw&id='.$goal['id']); ?>" data-toggle="modal" data-target="#editModal"><?php echo $goal['name']; ?></a></span>
                                         <span class="goal_info_due_date pull-right"><?php echo TextHelper::_('COBALT_BY'); ?> <?php echo DateHelper::formatDate($goal['end_date']); ?></span>
                                     </div>
                                     <div class="goal_info_progress progress progress-success clearfix">
@@ -306,9 +308,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <?php } }
                     ?>
                 </div>
-                <?php if ($this->member_role == 'exec') { ?>
+                <?php if ($this->member_role == 'exec' && count($this->goals->company_goals) > 0) { ?>
                 <div class="pull-right">
-                    <a href="javascript:void(0);" class="btn delete_goals" id="goal_type_company"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
+                    <a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&goal_type=company&format=raw&tmpl=component&layout=delete'); ?>" class="btn delete_goals" id="goal_type_company"><i class="glyphicon glyphicon-trash"></i><?php echo TextHelper::_("COBALT_DELETE_GOALS"); ?></a>
                 </div>
                 <?php } ?>
         </li>

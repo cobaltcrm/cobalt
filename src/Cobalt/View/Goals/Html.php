@@ -17,6 +17,7 @@ use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Model\Goal as GoalModel;
+use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
