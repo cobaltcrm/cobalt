@@ -3,30 +3,21 @@ h1, h2, h3, h4, h5 ul, li {margin: 0; padding: 0; font-weight: normal;}
 h2 {padding: 3px 0px;}
 ul li, ol li {line-height: 1.7em;}
 table {border-collapse:collapse;}
-<<<<<<< HEAD
-body { font: 12px/14px Arial, sans-serif !important; margin: 0px; padding: 0; background: #f6f6f6;}
-#system-message-container {margin: 0; padding: 0;}
-#system-message {margin: 0; padding: 0;}
-#com_cobalt {max-width: 1400px; padding: 10px !important; margin: 0 auto; margin-bottom:20px; padding-top: 0px; background: #FFFFFF;}
-=======
+
 body { font: 12px/14px Arial, sans-serif !important; margin: 0px; padding: 0; }
 
 #com_cobalt {max-width: 1200px; padding: 10px !important; margin: 0 auto; margin-bottom:20px;}
 
 div.inner_container {max-width: 1200px; margin: 0 auto;}
->>>>>>> master
 #com_cobalt div.container {width: 100%;}
 div.sidebar {float:left; width: 240px;}
 
-<<<<<<< HEAD
-a {border-bottom: 1px dotted #3E95BE; color: #1E759E; text-decoration: none;}
-=======
+
 #system-message-container, #system-message {margin: 0; padding: 0;}
 
 /*#logged_in_user { color:#616161; font-weight:bold; text-align:right; max-width: 1200px; padding: 5px !important; margin: 0 auto; margin-bottom:5px; text-shadow:0 1px 0 #ffffff; }*/
 
 a {border-bottom: 1px dotted #00409b; color: #00409b; text-decoration: none;}
->>>>>>> master
 
 form.inline-form{display:inline; margin-left:10px;}
 

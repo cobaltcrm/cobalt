@@ -54,7 +54,7 @@ $date_html .= "</select>";
 
 <div class="modal-header">
     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-    <h1><img src="<?php echo JURI::base() . $this->header_img; ?>"> <?php echo ucwords($this->header); ?></h1>
+    <h4 class="modal-title"><img src="<?php echo JURI::base() . $this->header_img; ?>"> <?php echo ucwords($this->header); ?></h4>
 </div>
 <div class="modal-body">
 
