@@ -112,6 +112,18 @@ class Deal extends DefaultModel
             }
         }
 
+        if (array_key_exists('expected_close', $data)) {
+            if (strpos($data['expected_close'],'/')) {
+                $dateParts = explode('/',$data['expected_close']);
+                $expected_close = new \JDate(sprintf('%s-%s-%s 00:00:00',$dateParts[1],$dateParts[0],'20'.$dateParts[2]));
+            } else {
+                $expected_close = new \JDate($data['expected_close']);
+            }
+
+
+            $data['expected_close'] = $expected_close->toSql();
+        }
+
          if ((array_key_exists('company_name',$data) && $data['company_name']!="")  || (array_key_exists('company',$data) && $data['company'] != "")) {
 
             $company_name = array_key_exists('company_name',$data) ? $data['company_name'] : $data['company'];
@@ -183,7 +195,6 @@ class Deal extends DefaultModel
             } else {
                 $data['primary_contact_id'] = $existingPerson;
             }
-
         }
 
         // Bind the form fields to the table

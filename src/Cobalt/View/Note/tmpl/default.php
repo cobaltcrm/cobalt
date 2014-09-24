@@ -10,6 +10,8 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
+
+echo $app->input->get('view');
 ?>
 
 <?php if ( $app->input->get('format') != "raw" ) { ?>
@@ -17,7 +19,7 @@ $app = JFactory::getApplication();
 <?php } ?>
 
 <div class="clearfix padding">
-    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" onclick="Notes.resetModalForm();" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
+    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
 </div>
 
 <?php if ( $app->input->get('view')!="print" ) { ?>
@@ -30,10 +32,30 @@ $app = JFactory::getApplication();
             </div>
             <div class="modal-body">
                 <form action="<?php echo RouteHelper::_('index.php?task=save'); ?>" method="post" id="note" name="note">
-                    <input type="hidden" name="deal_id" id="deal_id" value="" />
-                    <input type="hidden" name="note_id" id="note_id" value="">
+                    <input type="hidden" name="deal_id" id="note_deal_id" value="" />
+                    <input type="hidden" name="person_id" id="note_person_id" value="" />
+                    <input type="hidden" name="company_id" id="note_company_id" value="" />
+                    <input type="hidden" name="event_id" id="note_event_id" value="" />
+                    <input type="hidden" name="note_id" id="note_note_id" value="">
                     <input type="hidden" name="model" value="note">
                     <textarea rows="6" class="form-control" id="deal_note" name="note"></textarea>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <select name="category_id" id="note_category_id" class="form-control">
+                                <option value=""><?php echo TextHelper::_('COBALT_NONE'); ?></option>
+                                <?php foreach ($this->categories as $value => $text): ?>
+                                    <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="note_autocomplete_person_container" class="hidden">
+                        <input type="text" name="note_autocomplete_person" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH_PERSON'); ?>" class="form-control"  />
+                    </div>
+                    <div id="note_autocomplete_deal_container" class="hidden">
+                        <input type="text" name="note_autocomplete_deal" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH_DEAL'); ?>" class="form-control"  />
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -49,5 +71,5 @@ $app = JFactory::getApplication();
 <input type="hidden" name="notes_limit" id="notes_limit" value="4">
 <script>
     Notes.init();
-    Notes.loadMore('deal',<?php echo $this->object_id; ?>,'#note_entries','#notes_start','#notes_limit', 4);
+    Notes.loadMore(association_type,id,'#note_entries','#notes_start','#notes_limit', 4);
 </script>

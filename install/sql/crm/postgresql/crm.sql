@@ -356,7 +356,7 @@ CREATE TABLE "#__people" (
 	"position" varchar(255) NOT NULL,
 	"phone" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
-	"source_id" varchar(255) NOT NULL,
+	"source_id" int NOT NULL,
 	"home_address_1" varchar(255) NOT NULL,
 	"home_address_2" varchar(255) NOT NULL,
 	"home_city" varchar(255) NOT NULL,
@@ -522,6 +522,14 @@ CREATE TABLE "#__templates" (
 	PRIMARY KEY ("id")
 );
 
+-- 
+-- Table: #__users_email_cf
+--
+CREATE TABLE "#__users_email_cf" (
+	"member_id" int NOT NULL,
+	"email" varchar(255) NOT NULL
+);
+
 INSERT INTO "#__branding" ("id", "header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES (1, 'eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 0, '2012-02-21 16:11:03', 'cobalt-3d.png', null, null, null, 'COBALT');
 INSERT INTO "#__branding" ("id", "header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES (2, 'eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 1, '2012-07-18 17:30:10', 'cobalt-3d.png', null, null, null, 'COBALT');
 INSERT INTO "#__config" ("id", "timezone", "imap_host", "imap_user", "imap_pass", "users_add", "config_default", "templates_edit", "menu_default", "import_default", "launch_default", "show_help", "import_sample", "currency", "lang_deal", "lang_person", "lang_company", "lang_contact", "lang_lead", "lang_task", "lang_event", "lang_goal", "welcome_message", "time_format") VALUES (1, 'America/New_York', '', '', '', 0, 0, 0, 0, 0, 0, 1, null, '$', 'deal', 'person', 'company', 'contact', 'lead', 'task', 'event', 'goal', 'Hello', 'H:i');
@@ -534,7 +542,7 @@ INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES 
 INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (4, 'Email', '2012-02-23 14:32:45', '2012-02-23 14:32:50');
 INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (5, 'Todo', '2012-02-23 14:32:35', '2012-02-23 14:32:41');
 INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (6, 'Fax', '2012-02-23 14:32:45', '2012-02-23 14:32:50');
-INSERT INTO "#__menu" ("id", menu_items, modified) VALUES (1, 'a:8:{i:0;s:9:"dashboard";i:1;s:5:"deals";i:2;s:6:"people";i:3;s:9:"companies";i:4;s:8:"calendar";i:5;s:9:"documents";i:6;s:5:"goals";i:7;s:7:"reports";}', '2012-07-19 09:19:46');
+INSERT INTO "#__menu" ("id", "menu_items", "modified") VALUES (1, 'a:8:{i:0;s:9:"dashboard";i:1;s:5:"deals";i:2;s:6:"people";i:3;s:9:"companies";i:4;s:8:"calendar";i:5;s:9:"documents";i:6;s:5:"goals";i:7;s:7:"reports";}', '2012-07-19 09:19:46');
 INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (1, 'Phone Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
 INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (2, 'Voicemail', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
 INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (3, 'Appointments', '1970-01-01 00:00:00', '2012-02-14 10:38:24');

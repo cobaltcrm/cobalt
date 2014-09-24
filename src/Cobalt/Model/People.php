@@ -197,7 +197,7 @@ class People extends DefaultModel
         $person_id = isset($data['id']) ? $data['id'] : $this->db->insertId();
 
         /** Updating the joomla user **/
-        if ( array_key_exists('id',$data) && $data['id'] != "" ) {
+        if ( array_key_exists('id',$data) && intval($data['id']) && array_key_exists('email', $data) && array_key_exists('first_name', $data) && array_key_exists('last_name', $data)) {
             self::updateJoomlaUser($data);
         }
 
@@ -209,7 +209,7 @@ class People extends DefaultModel
         }
 
         //bind to cf tables for deal & person association
-        if (isset($data['deal_id']) && $data['deal_id']) 
+        if (isset($data['deal_id']) && $data['deal_id'])
         {
             $deal = array (
                     'association_id = '.$data['deal_id'],
@@ -217,7 +217,7 @@ class People extends DefaultModel
                     'person_id = '.$row->id,
                     "created = '$date'"
                 );
-            
+
             if (!$this->dealsPeople($deal))
             {
                 return false;
@@ -328,7 +328,7 @@ class People extends DefaultModel
                         'p.home_city,p.home_state,p.home_zip,p.home_country,p.fax,p.website,p.facebook_url,p.twitter_user,'.
                         'p.linkedin_url,p.created,p.tags,p.type,p.info,p.modified,p.work_address_1,p.work_address_2,'.
                         'p.work_city,p.work_state,p.work_zip,p.work_country,p.assignment_note,p.mobile_phone,p.home_email,'.
-                        'p.other_email,p.home_phone,c.name as company_name, CONCAT(u2.first_name," ",u2.last_name) AS assignee_name,'.
+                        'p.other_email,p.home_phone,c.name as company_name, CONCAT(u2.first_name,NULL,u2.last_name) AS assignee_name,'.
                         'u.first_name AS owner_first_name,'.
                         'u.last_name AS owner_last_name, stat.name as status_name,'.
                         'source.name as source_name');
@@ -341,7 +341,7 @@ class People extends DefaultModel
 
         } else {
 
-            $query->select('p.*,c.name as company_name, CONCAT(u2.first_name," ",u2.last_name) AS assignee_name,u.first_name AS owner_first_name,
+            $query->select('p.*,c.name as company_name, CONCAT(u2.first_name,NULL,u2.last_name) AS assignee_name,u.first_name AS owner_first_name,
                         u.last_name AS owner_last_name, stat.name as status_name,stat.color as status_color,
                         source.name as source_name,event.id as event_id,
                         event.name as event_name, event.type as event_type,
@@ -978,7 +978,7 @@ class People extends DefaultModel
         $db->setQuery($this->query);
         $people = $db->loadAssocList();
 
-        $default_image = JURI::base().'libraries/crm/media/images/person.png';
+        $default_image = JURI::base().'src/Cobalt/media/images/person.png';
 
         $n = count($people);
         for ($i=0;$i<$n;$i++) {
@@ -996,13 +996,13 @@ class People extends DefaultModel
 
     /**
      * Describe and configure columns for jQuery dataTables here.
-     * 
+     *
      * 'data'       ... column id
      * 'orderable'  ... if the column can be ordered by user or not
      * 'ordering'   ... name of the column in SQL query with table prefix
      * 'sClass'     ... CSS class applied to the column
      * (other settings can be found at dataTable documentation)
-     * 
+     *
      * @return array
      */
     public function getDataTableColumns()
@@ -1029,7 +1029,7 @@ class People extends DefaultModel
     /**
      * Method transforms items to the format jQuery dataTables needs.
      * Algorithm is available in parent method, just pass items array.
-     * 
+     *
      * @param   array of object of items from the database
      * @return  array in format dataTables requires
      */
@@ -1045,7 +1045,7 @@ class People extends DefaultModel
 
     /**
      * Prepare HTML field templates for each dataTable column.
-     * 
+     *
      * @param   string column name
      * @param   object of item
      * @return  string HTML template for propper field

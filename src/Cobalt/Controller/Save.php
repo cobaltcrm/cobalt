@@ -44,7 +44,12 @@ class Save extends DefaultController
                 $response->alert = new \stdClass;
                 $response->alert->message = $msg;
                 $response->alert->type = 'success';
-                $response->reload = '3000';
+
+                // just send reload page if send refresh_page=1
+                if ($this->input->getInt('refresh_page', 0)) {
+                    $response->reload = '3000';
+                }
+
                 $this->app->close(json_encode($response));
             }
             else
