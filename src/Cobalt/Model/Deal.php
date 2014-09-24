@@ -390,7 +390,7 @@ class Deal extends DefaultModel
             //owner
             $owner_filter = $this->getState('Deal.'.$layout.'_owner_id', $this->_user_id);
 
-            if ($owner_filter != 'all' && $owner_filter) 
+            if ($owner_filter != 'all' && $owner_filter)
             {
                 $owner_type = $this->getState('Deal.'.$layout.'_owner_type');
 
@@ -546,7 +546,7 @@ class Deal extends DefaultModel
                 {
                     $query->where("shared.item_id IS NOT NULL");
                 }
-                
+
             }
 
             //filter for archived deals
@@ -1055,7 +1055,7 @@ class Deal extends DefaultModel
         $query = $this->db->getQuery(true)
             ->select("DISTINCT(d.id),d.name,d.id")
             ->from("#__deals AS d")
-            ->leftJoin('#__users AS user ON user.id = d.owner_id')
+            ->leftJoin('#__users AS users ON users.id = d.owner_id')
             ->leftJoin("#__people_cf AS pcf ON pcf.association_id = d.id AND pcf.association_type='deal'");
 
         /** ---------------------------------------------------------------
@@ -1067,7 +1067,7 @@ class Deal extends DefaultModel
         if ($member_role != 'exec') {
              //manager filter
             if ($member_role == 'manager') {
-                $query->where('user.team_id = '.$team_id);
+                $query->where('users.team_id = '.$team_id);
             } else {
             //basic user filter
                 $query->where(array('d.owner_id = '.$member_id));
@@ -1414,13 +1414,13 @@ class Deal extends DefaultModel
 
     /**
      * Describe and configure columns for jQuery dataTables here.
-     * 
+     *
      * 'data'       ... column id
      * 'orderable'  ... if the column can be ordered by user or not
      * 'ordering'   ... name of the column in SQL query with table prefix
      * 'sClass'     ... CSS class applied to the column
      * (other settings can be found at dataTable documentation)
-     * 
+     *
      * @return array
      */
     public function getDataTableColumns()
@@ -1443,7 +1443,7 @@ class Deal extends DefaultModel
     /**
      * Method transforms items to the format jQuery dataTables needs.
      * Algorithm is available in parent method, just pass items array.
-     * 
+     *
      * @param   array of object of items from the database
      * @return  array in format dataTables requires
      */
@@ -1459,7 +1459,7 @@ class Deal extends DefaultModel
 
     /**
      * Prepare HTML field templates for each dataTable column.
-     * 
+     *
      * @param   string column name
      * @param   object of item
      * @return  string HTML template for propper field
