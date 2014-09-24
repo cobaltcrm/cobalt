@@ -21,8 +21,9 @@ use Joomla\Filter\OutputFilter;
     </div>
 
     <div class="pull-right btn-group">
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal">
-            <i class="glyphicon glyphicon-plus icon-white"></i>
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-default" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal">
+            <i class="glyphicon glyphicon-plus icon-white text-success"></i>
+            <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
         </a>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
             <i class="glyphicon glyphicon-circle-arrow-up"></i>
@@ -138,7 +139,7 @@ use Joomla\Filter\OutputFilter;
 <?php echo TemplateHelper::getListEditActions(); ?>
 
 <form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=deals'); ?>">
-    <table class="table table-hover table-striped data-table" id="deals">
+    <table class="table table-hover table-striped data-table table-bordered" id="deals">
         <?php echo $this->deal_list->render(); ?>
     </table>
     <input type="hidden" name="list_type" value="deals" />

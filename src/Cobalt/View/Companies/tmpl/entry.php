@@ -8,7 +8,9 @@
         <div class="title_holder">
             <a href="<?php echo RouteHelper::_('index.php?view=companies&layout=company&company_id='.$company['id']); ?>"><?php echo $company['name']; ?></a>
         </div>
-        <address><?php echo $company['address_formatted']; ?></address>
+        <?php if (isset($company['address_formatted'])): ?>
+            <address><?php echo $company['address_formatted']; ?></address>
+        <?php endif; ?>
         <div class="hidden"><small><?php echo $company['description']; ?></small></div>
     </td>
     <td class="contact" ><?php echo $company['phone'].'<br>'.$company['email']; ?></td>

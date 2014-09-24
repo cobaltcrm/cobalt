@@ -29,8 +29,8 @@ require_once JPATH_VENDOR.'/autoload.php';
 // Installation check, and check on removal of the install directory.
 //
 if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
-    || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10)
-    || file_exists(JPATH_INSTALLATION.'/index.php')) {
+    || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10)) {
+    // || file_exists(JPATH_INSTALLATION.'/index.php')) {
 
     //checking server REQUEST_SCHEME
     if (!isset($_SERVER['REQUEST_SCHEME'])) {

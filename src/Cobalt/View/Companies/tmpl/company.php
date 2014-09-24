@@ -44,7 +44,7 @@ $company = $this->companies[0];?>
 <div class="row-fluid">
 
     <!-- LEFT MODULE -->
-    <div class="span8">
+    <div class="col-md-8">
         <div class="page-header">
             <!-- ACTIONS -->
             <div class="btn-group pull-right">
@@ -68,16 +68,16 @@ $company = $this->companies[0];?>
         </div>
 
         <div class="row-fluid">
-            <div class="span4 well well-small">
+            <div class="col-md-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_TOTAL_PIPELINE')); ?>:
                     <span class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
             </div>
-            <div class="span4 well well-small">
+            <div class="col-md-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_DEALS')); ?>:
                     <span class="text-success"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
             </div>
 
-            <div class="span4 well well-small">
+            <div class="col-md-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_CONTACTED')); ?>:
                     <?php echo DateHelper::formatDate($company['modified']); ?>
             </div>
@@ -142,7 +142,7 @@ $company = $this->companies[0];?>
     </div>
 
     <!-- RIGHT MODULE -->
-    <div class="span4">
+    <div class="col-md-4">
         <div class="widget" id="details">
 
             <!-- COMPANY DETAILS -->

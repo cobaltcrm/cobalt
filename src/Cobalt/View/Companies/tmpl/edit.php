@@ -77,10 +77,10 @@ if ($format != "raw")
                     <input type="hidden" name="company_id" id="company_id" value=""/>
                     <div id="company_message"></div>
                 </div>
-                <!-- <div class="span6">
+                <!-- <div class="col-md-6">
                     <?php // companies category table does not exist... yet ?>
                     <label class="control-label" for=""><strong><?php //echo ucwords(TextHelper::_('COBALT_COMPANY_CATEGORY')); ?></strong></label>
-                    <?php //echo CompanyHelper::getCategoryDropdown($this->company['category_id'],'category_id','span6'); ?>
+                    <?php //echo CompanyHelper::getCategoryDropdown($this->company['category_id'],'category_id','col-md-6'); ?>
                 </div> -->
             </div>
 
