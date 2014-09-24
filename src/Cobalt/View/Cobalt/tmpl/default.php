@@ -39,34 +39,28 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <?php echo JText::sprintf("COBALT_WARNING_PHP_VERSION_INVALID",$this->php_version); ?>
                         </div>
                     <?php } ?>
-                    <div class="well">
-                        <div class="module-title"><h6><?php echo JText::_('COBALT_VERSION_STATUS'); ?></h6></div>
-                        <div class="row-striped">
-                            <div class="row-fluid">
-                                <div class="span12">
-                                    <h5>
-                                        <?php if ($this->latestVersion == 'no_curl') { ?>
-                                            <span class="btn btn-danger btn-mini">
-                                                <i class="glyphicon glyphicon-remove icon-white tip"></i>
-                                            </span>
-                                            <?php echo JText::_('COBALT_CURL_NOT_INSTALLED'); ?>
-                                            <?php } elseif ( VersionHelper::isUpToDate($this->installedVersion, $this->latestVersion) ) { ?>
-                                                <span class="btn btn-success btn-mini">
-                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
-                                                </span>
-                                                <?php echo JText::sprintf('COBALT_UP_TO_DATE', $this->installedVersion); ?>
-                                            <?php } else {	?>
-                                                <span class="btn btn-danger btn-mini">
-                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
-                                                </span>
-                                                <?php echo JText::sprintf('COBALT_UPDATE', $this->installedVersion, $this->latestVersion); ?>
-                                                <a href="<?php echo $this->updateUrl; ?>" target="_blank"><?php echo JText::_('COBALT_UPDATE_LINK'); ?></a>
-                                        <?php } ?>
-                                    </h5>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-12"> 
+                        <?php if ($this->latestVersion == 'no_curl') { ?>
+                            <span class="btn btn-danger btn-mini">
+                                <i class="glyphicon glyphicon-remove icon-white tip"></i>
+                            </span>
+                            <?php echo JText::_('COBALT_CURL_NOT_INSTALLED'); ?>
+                            <?php } elseif ( VersionHelper::isUpToDate($this->installedVersion, $this->latestVersion) ) { ?>
+                                <span class="btn btn-success btn-mini">
+                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                </span>
+                                <?php echo JText::sprintf('COBALT_UP_TO_DATE', $this->installedVersion); ?>
+                            <?php } else {	?>
+                                <span class="btn btn-danger btn-mini">
+                                    <i class="glyphicon glyphicon-remove icon-white"></i>
+                                </span>
+                                <?php echo JText::sprintf('COBALT_UPDATE', $this->installedVersion, $this->latestVersion); ?>
+                                <a href="<?php echo $this->updateUrl; ?>" target="_blank"><?php echo JText::_('COBALT_UPDATE_LINK'); ?></a>
+                        <?php } ?>
                         </div>
                     </div>
+                    <hr />
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title"><?php echo JText::_('COBALT_LATEST_NEWS'); ?></h4>

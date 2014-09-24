@@ -10,8 +10,12 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <?php if ($this->help_type != "launch_default") { if (!$this->launch_default) { ?>
-    <div>
-        <ul class="help_menu">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h4 class="panel-title"><?php echo JText::_('COBALT_QUICK_START'); ?></h4>
+        </div>
+        <div class="panel-body">
+        <ul class="help_menu nav nav-pills">
             <?php if ( count ( $this->help_menu_links ) > 0 ){ foreach ($this->help_menu_links as $link) { ?>
                         <li class="<?php echo $link['completed_status']!=0 ? 'completed' : 'uncompleted'; ?>" id="<?php echo $link['config']; ?>">
                             <a href="<?php echo $link['link']; ?>">
@@ -24,6 +28,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </li>
             <?php } } ?>
         </ul>
+        </div>
     </div>
 <?php } ?>
 <?php if ($this->show_update_buttons || $this->show_help) {  ?>

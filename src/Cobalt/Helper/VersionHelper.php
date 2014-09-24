@@ -73,7 +73,7 @@ class VersionHelper
         if (is_null($latestVersion)) {
             // Check if cURL is installed
             if ( function_exists('curl_init') ) {
-                $latestVersion = self::get_url_contents("http://www.cobaltcrm.org/remote/VersionHelper.php");
+                $latestVersion = self::get_url_contents("http://www.cobaltcrm.org/remote/version.php");
             } else {
                 $latestVersion = 'no_curl';
             }
