@@ -29,22 +29,22 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <?php if ($this->show_update_buttons || $this->show_help) {  ?>
     <div id="help_description_action" class="help_description_action">
         <form action="" method="post">
-            <div class="help_text">
-                <h3><?php echo JText::_('COBALT_HELP_'.strtoupper($this->help_type).'_TITLE'); ?></h3>
+            <div class="alert alert-info">
+                <?php if (!$this->show_update_buttons) { ?>
+                    <div class="pull-right">
+                        <a class="btn-mini btn btn-danger" data-toggle="modal" href="#disable_help_hidden" onclick="disableHelp();" id="disable_help_button"><?php echo JText::_('COBALT_DISABLE_HELP'); ?></a>
+                    </div>
+                <?php } ?>
+                <h4><?php echo JText::_('COBALT_HELP_'.strtoupper($this->help_type).'_TITLE'); ?></h4>
                 <?php echo JText::_('COBALT_HELP_'.strtoupper($this->help_type).'_DESC'); ?>
             </div>
             <?php if (!$this->step_completed && $this->show_update_buttons) { ?>
-                <div id="help_actions" class="help_actions">
+                <div id="help_actions" class="pull-right btn-group">
                     <a href="javascript:void(0);" onclick="updateConfig('<?php echo $this->help_type; ?>',1);" class="btn-primary btn-large" ><i class="glyphicon glyphicon-check icon-white"></i><?php echo JText::_('COBALT_COMPLETE'); ?></a>
                     <a href="javascript:void(0);" onclick="updateConfig('<?php echo $this->help_type; ?>',0);" class="btn laterButton" ><i class="glyphicon glyphicon-repeat"></i><?php echo JText::_('COBALT_COMPLETE_LATER'); ?></a>
                 </div>
             <?php } ?>
         </form>
-        <?php if (!$this->show_update_buttons) { ?>
-            <div class="disable_help">
-                <a class="btn-mini btn-danger" data-toggle="modal" href="#disable_help_hidden" onclick="disableHelp();" id="disable_help_button"><?php echo JText::_('COBALT_DISABLE_HELP'); ?></a>
-            </div>
-        <?php } ?>
     </div>
     <div class="modal hide fade in" id="disable_help_hidden">
         <div class="modal-header">

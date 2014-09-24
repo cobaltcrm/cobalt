@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-<div class="span3">
+<div class="col-md-3">
     <div class="sidebar-nav">
         <ul class="nav nav-list">
             <li class="nav-header"><?php echo JText::_('Cobalt Menu'); ?></li>
