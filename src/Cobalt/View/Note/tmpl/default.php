@@ -19,7 +19,7 @@ echo $app->input->get('view');
 <?php } ?>
 
 <div class="clearfix padding">
-    <span class="pull-right"><a class="btn" id="edit_note_message" data-target="#addNote" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
+    <span class="pull-right"><a class="btn btn-default" id="edit_note_message" data-target="#addNote" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-mini"></i><?php echo TextHelper::_('COBALT_ADD_NOTE_BUTTON'); ?></a></span>
 </div>
 
 <?php if ( $app->input->get('view')!="print" ) { ?>

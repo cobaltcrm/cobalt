@@ -12,12 +12,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-md-9">
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="active"><a data-toggle="tab" href="#import_begin"><?php echo JText::_('COBALT_IMPORT_BEGIN'); ?></a></li>
                         <li><a data-toggle="tab" href="#import_review"><?php echo JText::_('COBALT_IMPORT_REVIEW'); ?></a></li>
@@ -27,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <div class="tab-pane active" id="import_begin">
                             <div class="step">
                                 <div class="title">
-                                    <h2><?php echo JText::_('COBALT_STEP_ONE'); ?></h2>
+                                    <h3><?php echo JText::_('COBALT_STEP_ONE'); ?></h3>
                                 </div>
                                 <div class="text">
                                     <ul>
@@ -37,7 +37,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </div>
                             <div class="step">
                                 <div class="title">
-                                    <h2><?php echo JText::_('COBALT_STEP_TWO'); ?></h2>
+                                    <h3><?php echo JText::_('COBALT_STEP_TWO'); ?></h3>
                                 </div>
                                 <div class="text">
                                     <ul>
@@ -66,7 +66,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </div>
                             <div class="step">
                                 <div class="title">
-                                    <h2><?php echo JText::_('COBALT_STEP_THREE'); ?></h2>
+                                    <h3><?php echo JText::_('COBALT_STEP_THREE'); ?></h3>
                                 </div>
                                 <div class="text">
                                     <ul>
@@ -143,13 +143,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <input type="hidden" name="import_type" value="<?php echo $this->import_type; ?>" />
                                 </form>
                                 <?php } else { ?>
-                                    <h1><?php echo JText::_('COBALT_NO_DATA_IMPORTED'); ?></h1>
+                                    <p>
+                                        <div class="alert alert-warning"><strong><?php echo JText::_('COBALT_NO_DATA_IMPORTED'); ?></strong></div>
+                                    </p>
                                 <?php } ?>
                             </div>
                         </div>
                         <div class="tab-pane" id="import_sample_tab">
                             <div class="sample_text">
-                                <h1><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h1>
+                                <h3><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_TITLE'); ?></h3>
                                 <p><div class="alert alert-info"><?php echo JText::_('COBALT_INSTALL_SAMPLE_DATA_DESC'); ?></div></p>
                                 <form action="<?php echo RouteHelper::_('index.php?view=import'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                     <input type="submit" value="<?php echo JText::_('COBALT_INSTALL_SAMPLE_BUTTON'); ?>" class="btn btn-primary" />

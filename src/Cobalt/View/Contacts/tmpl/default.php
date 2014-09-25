@@ -43,11 +43,6 @@ $contacts = $this->contacts;
     </div>
 </div>
 <div class="clearfix" id="contacts">
-    <div class="clearfix">
-        <span class="pull-right">
-            <a class="btn" href="javascript:void(0);" data-target="#ajax_search_person_dialog" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i></a>
-        </span>
-    </div>
     <?php if ( is_array($contacts) && count($contacts) > 0 ){ foreach ($contacts as $person) { ?>
             <?php if ($this->primary_contact_id == $person['id']) { $class = "active"; } else { $class = ""; } ?>
             <div class="media <?php echo $class; ?>" id="person_container_<?php echo $person['id']; ?>">

@@ -290,8 +290,11 @@ $deal = $this->dealList[0];
         </div>
     </div>
     <div class="col-xs-12 col-md-4">
-        <div class="widget">
-            <h3><?php echo ucwords(TextHelper::_('COBALT_DEAL_CONTACTS')); ?></h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a class="btn btn-default btn-xs pull-right" href="javascript:void(0);" data-target="#ajax_search_person_dialog" onclick="Cobalt.resetModalForm(this);" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i></a>
+                <h4 class="panel-title"><?php echo ucwords(TextHelper::_('COBALT_DEAL_CONTACTS')); ?></h4>
+            </div>
             <?php echo $this->contact_info->render(); ?>
         </div>
         <div class="widget" id='event_dock'>

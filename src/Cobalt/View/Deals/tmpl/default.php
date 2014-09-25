@@ -22,7 +22,7 @@ use Joomla\Filter\OutputFilter;
 
     <div class="pull-right btn-group">
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-default" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal">
-            <i class="glyphicon glyphicon-plus icon-white text-success"></i>
+            <i class="glyphicon glyphicon-plus icon-white"></i>
             <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
         </a>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
