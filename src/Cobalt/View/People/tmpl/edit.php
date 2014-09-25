@@ -43,12 +43,12 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
 <form id="edit_form" method="post" action="<?php echo 'index.php?task=people&task=save'; ?>" onsubmit="return save(this)" >
 
 <ul class="nav nav-tabs" id="myTab">
-  <li class="active"><a href="#Person" data-toggle="tab" >Person</a></li>
-  <li><a href="#Home" data-toggle="tab" >Home</a></li>
-  <li><a href="#Work" data-toggle="tab">Work</a></li>
-  <li><a href="#Assignment" data-toggle="tab" >Assignment</a></li>
-  <li><a href="#Details" data-toggle="tab">Details</a></li>
-  <li><a href="#Custom" data-toggle="tab">Custom</a></li>
+	<li class="active"><a href="#Person" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_TAB_PERSON_LABEL')); ?></a></li>
+	<li><a href="#Home" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_TAB_HOME_LABEL')); ?></a></li>
+	<li><a href="#Work" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_TAB_WORK_LABEL')); ?></a></li>
+	<li><a href="#Assignment" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_TAB_ASSIGNMENT_LABEL')); ?></a></li>
+	<li><a href="#Details" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_TAB_DETAILS_LABEL')); ?></a></li>
+	<li><a href="#Custom" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_PEOPLE_TAB_CUSTOM_LABEL')); ?></a></li>
 </ul>
 
 <div class="tab-content">
