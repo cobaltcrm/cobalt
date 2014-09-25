@@ -44,7 +44,8 @@ class SaveAjax extends DefaultController
         $return = $model->store($data, $returnRow);
 
         if ($return instanceof AbstractTable) {
-            echo json_encode($return->getProperties());
+            $response = array('item' => $return->getProperties());
+            echo json_encode($response);
         } else {
             echo json_encode($return);
         }

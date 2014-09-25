@@ -21,18 +21,38 @@ use Joomla\Filter\OutputFilter;
     </div>
 
     <div class="pull-right btn-group">
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>" data-placement="bottom" class="btn btn-default" role="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal">
-            <i class="glyphicon glyphicon-plus icon-white"></i>
-            <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
-        </a>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
-            <i class="glyphicon glyphicon-circle-arrow-up"></i>
-        </a>
-        <?php if ( UsersHelper::canExport() ) { ?>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_EXPORT_DEALS'); ?>" data-placement="bottom" class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()">
-            <i class="glyphicon glyphicon-share"></i>
-        </a>
-        <?php } ?>
+
+
+        <?php if ( UsersHelper::canExport() ): ?>
+            <button type="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus icon-white"></i>
+                <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
+            </button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
+                        <i class="glyphicon glyphicon-arrow-up"></i> <?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="Cobalt.exportCSV()">
+                        <i class="glyphicon glyphicon glyphicon-arrow-down"></i> <?php echo TextHelper::_('COBALT_EXPORT_DEALS'); ?>
+                    </a>
+                </li>
+            </ul>
+        <?php else: ?>
+            <a href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus icon-white"></i>
+                <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
+            </a>
+            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
+                <i class="glyphicon glyphicon-arrow-up"></i>
+            </a>
+        <?php endif; ?>
     </div>
 
     <h1><?php echo ucwords(TextHelper::_('COBALT_DEALS_HEADER')); ?></h1>

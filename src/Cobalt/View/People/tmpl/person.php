@@ -419,7 +419,6 @@ $person = $this->people[0];
 
 
             <div class="btn-group">
-                <div class="btn btn-primary" id="upload_button"><i class="glyphicon glyphicon-cloud-upload"></i> <?php echo TextHelper::_('COBALT_SUBMIT'); ?></div>
                 <div class="btn btn-default btn-file">
                     <i class="glyphicon glyphicon-plus"></i>  <?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?> <input type="file" id="upload_input_invisible" name="document" />
                 </div>

@@ -134,7 +134,7 @@ class Deal extends DefaultModel
             if ($existingCompany=="") {
                 $cdata = array();
                 $cdata['name'] = $company_name;
-                $data['company_id'] = $companyModel->store($cdata)->id;
+                $data['company_id'] = $companyModel->store($cdata);
             } else {
                 $data['company_id'] = $existingCompany;
             }
