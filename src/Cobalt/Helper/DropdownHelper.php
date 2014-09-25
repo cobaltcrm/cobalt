@@ -100,7 +100,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=company_id";
                 $html = '
                     <select class="inputbox form-control" '.$name.' id="company_id">';
-                        $html .= "<option value='0' ".$selected.">Select company";
+                        $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_COMPANY_SELECT_COMPANY_OPTION_LABEL');
                         foreach ($row as $company => $info) {
                             $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['id'].'" '.$selected.' >'.$info['name'].'</option>';
@@ -111,7 +111,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=stage_id";
                 $html = '
                      <select class="inputbox form-control" '.$name.' id="stage_id">';
-                        $html .= "<option value='0' ".$selected.">Select stage";
+                        $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_STAGE_SELECT_STAGE_OPTION_LABEL');
                         foreach ($row as $stage => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
@@ -122,7 +122,7 @@ class DropdownHelper
             case "source":
                 $name = $name ? $name : "name=source_id";
                 $html = '<select class="inputbox form-control" '.$name.' id="source_id">';
-                        $html .= "<option value='0' ".$selected.">Select source";
+                        $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_SOURCE_SELECT_SOURCE_OPTION_LABEL');
                         if (count($row) > 0) {
                             foreach ($row as $source => $info) {
                                  $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
@@ -135,7 +135,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=probability";
                 $html = '
                     <select class="inputbox form-control" '.$name.' id="probability_id">';
-                        $html .= "<option value='0' ".$selected.">Select probability";
+                        $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_PROBABILITY_SELECT_PROBABILITY_OPTION_LABEL');
                         for ($i=5; $i<=95; $i+=5) {
                                 $selected = ( $i == $selection ) ? "selected='selected'" : '';
                                 $html .= '<option value="'.$i.'" '.$selected.' '.$name.' >'.$i.'%</option>';
@@ -146,7 +146,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=status_id";
                 $html = '
                     <select class="inputbox form-control" '.$name.' id="status_id">';
-                    $html .= "<option value='0' ".$selected.">Select status...";
+                    $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_DEAL_STATUS_SELECT_STATUS_OPTION_LABEL');
                         foreach ($row as $status => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
@@ -158,7 +158,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=status_id";
                 $html = '
                     <select class="inputbox form-control" '.$name.' id="status_id">';
-                    $html .= "<option value='0' ".$selected.">Select status...";
+                    $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_PEOPLE_STATUS_SELECT_STATUS_OPTION_LABEL');
                         foreach ($row as $status => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
@@ -170,7 +170,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=deal_id";
                 $html = '
                     <select class="inputbox form-control" '.$name.' id="deal_id">';
-                    $html .= "<option value='0' ".$selected.">Select deal...";
+                    $html .= "<option value='0' ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_DEAL_SELECT_DEAL_OPTION_LABEL');
                         foreach ($row as $deal => $info) {
                              $selected = ( $info['id'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['id'].'" '.$selected.' '.$name.' >'.$info['name'].'</option>';
@@ -182,7 +182,7 @@ class DropdownHelper
                 $name = $name ? $name : "name=owner_id";
                 $html = '
                     <select class="inputbox form-control" '.$name.' id="owner_id">';
-                    $html .= "<option value=\"0\" ".$selected.">Select owner...";
+                    $html .= "<option value=\"0\" ".$selected.">" . TextHelper::_('COBALT_DROPDOWN_OWNER_SELECT_OWNER_OPTION_LABEL');
                         foreach ($row as $i => $info) {
                              $selected = ( $info['value'] == $selection ) ? "selected='selected'" : '';
                             $html .= '<option value="'.$info['value'].'" '.$selected.' '.$name.' >'.$info['label'].'</option>';
