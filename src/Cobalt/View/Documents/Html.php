@@ -66,6 +66,17 @@ class Html extends AbstractHtmlView
             $user_name = TextHelper::_('COBALT_ME');
         }
 
+        if ($layout == 'default') {
+            $total = $model->getTotal();
+            $pagination = $model->getPagination();
+            $this->dataTableColumns = $model->getDataTableColumns();
+            JFactory::getDocument()->addScriptDeclaration("
+            var loc = 'documents';
+            var order_dir = '".$state->get('People.filter_order_Dir')."';
+            var order_col = '".$state->get('People.filter_order')."';
+            var dataTableColumns = " . json_encode($this->dataTableColumns) . ";");
+        }
+
         //type
         $type = $session->get('document_type_filter');
         $type_names = DocumentHelper::getDocTypes();
@@ -77,7 +88,7 @@ class Html extends AbstractHtmlView
         $users = UsersHelper::getUsers();
 
         //list view
-        $document_list = ViewHelper::getView('documents','list','phtml',array('documents'=>$documents,'state'=>$state));
+        $document_list = ViewHelper::getView('documents','list','phtml',array('documents'=>$documents,'state'=>$state, 'total'=>$total,'pagination'=>$pagination));
 
         if ($layout == "download") {
             DealHelper::downloadDocument();

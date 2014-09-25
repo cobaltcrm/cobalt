@@ -20,20 +20,19 @@ class DeleteGoalEntry extends DefaultController
         $goal_id = $this->input->get('goal_id');
 
         //get db
-        $db = $this->container->resolve('db');
+        $db = $this->container->fetch('db');
         $query = $db->getQuery(true);
 
         //form query
-        $query->delete("#__goals")->where("id=$goal_id");
+        $query->delete("#__goals")->where("id=".$db->quote($goal_id));
 
         //set query
         $db->setQuery($query);
         $results = array();
-        if ( $db->query() ) {
+        if ( $db->execute() ) {
             $results['error'] = 0;
         } else {
             $results['error'] = 1;
-            print_r($db);
         }
 
         //return success

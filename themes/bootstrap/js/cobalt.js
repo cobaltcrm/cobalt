@@ -16,6 +16,13 @@ var Cobalt = {
         this.initFormSave();
         this.initDataTables();
         this.initModalCentralize();
+        this.initDocumentUploader();
+    },
+
+    initDocumentUploader: function(){
+        $('#upload_button').click(function(){
+            $('#upload_form').submit();
+        });
     },
 
     initModalCentralize: function(){
@@ -1054,6 +1061,35 @@ var Company = {
             jQuery('#deal_id').val(item.id);
         });
         $('#deal_company_id').val(company_id);
+    }
+};
+
+var Goal = {
+    delete: function(area){
+        if (confirm(Joomla.JText._('COBALT_DELETE_GOALS'))) {
+            //get goal id to delete
+            var goal =jQuery(area).parentsUntil('tr').parent('tr');
+            var goal_id = jQuery(goal).attr('id');
+            //make ajax call
+            jQuery.ajax({
+                url		: 'index.php?task=deleteGoalEntry&format=raw&tmpl=component',
+                type	: 'post',
+                data	: 'goal_id='+goal_id,
+                dataType: 'json',
+                success : function(data){
+                    if ( data.error == 0 ){
+                        //display success
+                        Cobalt.modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE','Success'), Joomla.JText._('COBALT_GENERIC_UPDATED','Successfully updated'));
+                        //get goal area to fade out
+                        jQuery(goal).fadeOut('fast');
+                        jQuery("#goal_"+goal_id).fadeOut("fast");
+                    } else {
+                        //display success
+                        Cobalt.modalMessage(Joomla.JText._('COBALT_ERROR_MESSAGE','COBALT_ERROR_ON_REMOVE'), Joomla.JText._('COBALT_ERROR_MESSAGE','COBALT_ERROR_ON_REMOVE'),'danger');
+                    }
+                }
+            });
+        }
     }
 };
 

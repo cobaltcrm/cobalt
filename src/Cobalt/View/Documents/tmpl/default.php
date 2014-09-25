@@ -59,7 +59,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </li>
     <li>
         <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
-        <input type="text" class="form-control" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
+        <input type="text" class="form-control filter_input datatable-searchbox" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
     </li>
     <li>
         <div class="ajax_loader"></div>
@@ -69,7 +69,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <small>
     <span id="documents_matched"></span> <?php echo TextHelper::_('COBALT_DOCUMENT_MATCHES'); ?>. <?php echo TextHelper::_('COBALT_DOCUMENT_THERE_ARE'); ?> <span id="documents_total"><?php echo DocumentHelper::getTotalDocuments(); ?></span> <?php echo TextHelper::_('COBALT_DOCUMENT_IN_YOUR_ACCOUNT'); ?>.
 </small>
-
-<table class="table table-striped table-hover">
-    <?php echo $this->document_list->render(); ?>
-</table>
+<?php echo TemplateHelper::getListEditActions(); ?>
+<form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=documents'); ?>">
+    <table class="table table-striped table-hover data-table" id="documents">
+        <?php echo $this->document_list->render(); ?>
+    </table>
+    <input type="hidden" name="list_type" value="documents" />
+</form>

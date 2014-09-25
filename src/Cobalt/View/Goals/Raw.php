@@ -16,6 +16,7 @@ use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -40,6 +41,7 @@ class Raw extends AbstractHtmlView
 
             //show individual goals
             if ($type == 'member') {
+                $this->header = TextHelper::_("COBALT_INDIVIDUAL_GOALS");
                 //show goals for exectuvies
                 if ($member_role == 'exec') {
                     $goals = $model->getExecIndividualGoals();
@@ -58,6 +60,7 @@ class Raw extends AbstractHtmlView
 
             //show team goals
             if ($type == 'team') {
+                $this->header = TextHelper::_("COBALT_TEAM_GOALS");
                 //show all goals to exectuvies
                 if ($member_role == 'exec') {
                     $goals = $model->getExecTeamGoals();
@@ -68,6 +71,7 @@ class Raw extends AbstractHtmlView
 
             //show company goals
             if ($type == 'company') {
+                $this->header = TextHelper::_("COBALT_COMPANY_GOALS");
                 $goals = $model->getCompanyGoals();
             }
 
@@ -78,6 +82,12 @@ class Raw extends AbstractHtmlView
 
             //get type of goal we are requesting to delete
             $type = $app->input->get('type');
+            $id = $app->input->getInt('id');
+            if ($id) {
+                $model = new GoalModel();
+                $goal = $model->getGoal($id);
+                $this->goal = $goal;
+            }
 
             switch ($type) {
                 case "win_cash":

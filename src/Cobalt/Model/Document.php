@@ -18,6 +18,10 @@ use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\FileHelper;
+use JUri;
+use Joomla\Filter\OutputFilter;
+use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -225,7 +229,7 @@ class Document extends DefaultModel
         $query->select("d.*,".
                        "c.name as company_name,".
                        "deal.name as deal_name,".
-                       "p.first_name as first_name, p.last_name as last_name,".
+                       "p.first_name as owner_first_name, p.last_name as owner_last_name,".
                        "CONCAT(u.first_name,' ',u.last_name) AS owner_name");
         $query->from("#__documents AS d");
         $query->leftJoin("#__companies AS c ON d.association_type = 'company' AND d.association_id = c.id");
@@ -246,6 +250,7 @@ class Document extends DefaultModel
         $user   = $app->input->get('user');
         $type   = $app->input->get('type');
         $team   = $app->input->get('team_id');
+        $document_name = $app->input->getString('document_name');
 
         //determine if we are searching for a team or a user
         if ($team) {
@@ -381,8 +386,14 @@ class Document extends DefaultModel
             $query->where("(d.association_type='person' AND d.association_id=".$this->person_id.')');
         }
 
+        if (!empty($document_name)) {
+            $query->where("( d.name LIKE '%".$document_name."%' OR deal.name LIKE '%".$document_name."%' OR c.name LIKE '%".$document_name."%')");
+        }
+
         //get results
-        $db->setQuery($query);
+        $offset = $app->input->getInt('start',0);
+        $limit = $app->input->getInt('length',0);
+        $db->setQuery($query, $offset, $limit);
         $results = $db->loadAssocList();
 
         $app->triggerEvent('onDocumentLoad', array(&$results));
@@ -481,4 +492,148 @@ class Document extends DefaultModel
         $this->setState($state);
     }
 
+    public function _buildQuery()
+    {
+        //database
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+
+        //query
+        $query->select("d.*");
+        $query->from("#__documents AS d");
+        $query->where("d.shared=1");
+
+        return $query;
+
+    }
+
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     *
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     *
+     * @return array
+     */
+    public function getDataTableColumns() {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'type', 'ordering' => 'd.filetype');
+        $columns[] = array('data' => 'name', 'ordering' => 'd.name');
+        if ($this->app->input->getString('loc','documents') == 'documents') {
+            $columns[] = array('data' => 'association', 'ordering' => false);
+        }
+        $columns[] = array('data' => 'owner', 'ordering' => 'u.last_name');
+        $columns[] = array('data' => 'size', 'orderable' => false);
+        $columns[] = array('data' => 'created', 'ordering' => 'd.created');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     *
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getDocuments();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     *
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+        switch ($column)
+        {
+            case 'id':
+                $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
+                break;
+            case 'type':
+                $file_path = sprintf('%s/media/images/%s.png',JPATH_COBALT,$item->filetype);
+                if (file_exists($file_path)) {
+                    $file_src = sprintf('%s/src/Cobalt/media/images/%s.png',JUri::base(),$item->filetype);
+                    $template = '<img src="'.$file_src.'" >';
+                } else {
+                    $file_src = sprintf('%s/src/Cobalt/media/images/file.png',JUri::base());
+                    $template = '<img src="'.$file_src.'" >';
+                }
+                break;
+            case 'name':
+                $template = '<div class="dropdown"><span class="caret"></span><a id="'.$item->id.'" class="document_edit dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);"> '.$item->name.'</a>';
+
+                $template .= '<ul class="dropdown-menu" role="menu">';
+                $template .= '<li><a href="javascript:void(0);" class="document_preview" id="preview_'.$item->id.'"><i class="glyphicon glyphicon-eye-open"></i> '.TextHelper::_('COBALT_PREVIEW').'</a></li>';
+                $template .= '<li><a href="javascript:void(0);" class="document_download" id="download_'.$item->id.'"><i class="glyphicon glyphicon-download"></i> '.TextHelper::_('COBALT_DOWNLOAD').'</a></li>';
+                if ($item->owner_id == UsersHelper::getLoggedInUser()->id) {
+                    $template .= '<li><a href="javascript:void(0);" class="document_delete" id="delete_'.$item->id.'"><i class="glyphicon glyphicon-remove"></i> '.TextHelper::_('COBALT_DELETE').'</a></li>';
+                }
+                $template .= '</ul></div>';
+                break;
+            case 'association':
+                $association_type = $item->association_type;
+                //assign association link
+                switch ($association_type) {
+                    case "deal":
+                        $view = 'deals';
+                        $association_type = "deal";
+                        $item->association_name = $item->deal_name;
+                        break;
+                    case "person":
+                        $view = "people";
+                        $association_type = "person";
+                        $item->association_name = $item->owern_first_name." ".$item->owner_last_name;
+                        break;
+                    case "company";
+                        $view = "companies";
+                        $association_type = "company";
+                        $item->association_name = $item->company_name;
+                        break;
+                }
+                if (isset($item->association_name)) {
+                    $template = '<a href="'.RouteHelper::_('index.php?view='.$view.'&layout='.$association_type.'&id='.$item->association_id).'" >'.$item->association_name;
+                } else {
+                    $template = "";
+                }
+                break;
+            case 'owner':
+                $template = $item->owner_name;
+                break;
+            case 'size':
+                $template = FileHelper::sizeFormat($item->size);
+                break;
+            case 'created':
+                $template = DateHelper::formatDate($item->created);
+                break;
+            case 'modified':
+                $template = DateHelper::formatDate($item->modified);
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+        return $template;
+    }
 }

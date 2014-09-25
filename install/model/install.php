@@ -372,7 +372,7 @@ class crmModelInstall
 		try
 		{
 			// Run the create database query.
-			$db->createDatabase($options, $utf);
+			$this->__createDatabase($db, $options, $utf);
 		}
 		catch (RuntimeException $e)
 		{
@@ -382,6 +382,58 @@ class crmModelInstall
 		return true;
 	}
 
+    /**
+     * Create a new database using information from $options object, obtaining query string
+     * from protected member.
+     *
+     * @param stdClass $options Object used to pass user and database name to database driver.
+     * This object must have "db_name" and "db_user" set.
+     * @param boolean $utf True if the database supports the UTF-8 character set.
+     *
+     * @return string The query that creates database
+     *
+     * @since 12.2
+     * @throws RuntimeException
+     */
+    public function __createDatabase($db, $options, $utf = true)
+    {
+        if (is_null($options))
+        {
+            throw new RuntimeException('$options object must not be null.');
+        }
+        elseif (empty($options->db_name))
+        {
+            throw new \RuntimeException('$options object must have db_name set.');
+        }
+        elseif (empty($options->db_user))
+        {
+            throw new \RuntimeException('$options object must have db_user set.');
+        }
+        $db->setQuery($this->getCreateDatabaseQuery($db, $options, $utf));
+        return $db->execute();
+    }
+
+    /**
+     * Return the query string to create new Database.
+     * Each database driver, other than MySQL, need to override this member to return correct string.
+     *
+     * @param stdClass $options Object used to pass user and database name to database driver.
+     * This object must have "db_name" and "db_user" set.
+     * @param boolean $utf True if the database supports the UTF-8 character set.
+     *
+     * @return string The query that creates database
+     *
+     * @since 12.2
+     */
+    protected function getCreateDatabaseQuery($db, $options, $utf)
+    {
+        if ($utf)
+        {
+            return 'CREATE DATABASE ' . $db->quoteName($options->db_name) . ' CHARACTER SET `utf8`';
+        }
+        return 'CREATE DATABASE ' . $this->quoteName($options->db_name);
+    }
+
     public function createDb()
     {
         $this->options = array(
@@ -389,7 +441,8 @@ class crmModelInstall
             'user' => $this->config->get('user'),
             'password' => $this->config->get('password'),
             'database' => $this->config->get('db'),
-            'prefix' => $this->config->get('dbprefix')
+            'prefix' => $this->config->get('dbprefix'),
+            'select' => false
         );
 
 		$dbFactory = new Database\DatabaseFactory;
@@ -409,8 +462,13 @@ class crmModelInstall
 			// Get database's UTF support
 			$utfSupport = $this->db->hasUTFSupport();
 
+            $createDbConfig = array(
+                'db_name' => $this->options['database'],
+                'db_user' => $this->options['user'],
+            );
+
 			// If the database could not be selected, attempt to create it and then select it.
-			if ($this->createDatabase($this->db, $options, $utfSupport))
+			if ($this->createDatabase($this->db, JArrayHelper::toObject($createDbConfig), $utfSupport))
 			{
 				$this->db->select($this->options['database']);
 			}

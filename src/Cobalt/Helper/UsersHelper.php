@@ -351,6 +351,40 @@ class UsersHelper
     }
 
     /**
+     * Get documents count associated with users
+     * @param $id int User Id to filter for
+     * @param $team int Team Id associated to user
+     * @param $role String User role to filter for
+     * @return int Count of documents returned from database
+     */
+    public static function getDocumentCount($id,$team,$role)
+    {
+        //get db
+        $db = \Cobalt\Container::fetch('db');
+        $query = $db->getQuery(true);
+
+        //query
+        $query->select('count(*)');
+        $query->from('#__documents AS d');
+        $query->leftJoin("#__users AS u ON u.id = d.owner_id AND u.published=1");
+
+        //filter based on id and role
+        if ($role != 'exec') {
+            if ($role == 'manager') {
+                $query->where("u.team_id=$team");
+            } else {
+                $query->where("d.owner_id=$id");
+            }
+        }
+        $query->where("d.shared=1");
+
+        //return results
+        $db->setQuery($query);
+
+        return $db->loadResult();
+    }
+
+    /**
      * Get people count associated with users
      * @param $id int User Id to filter for
      * @param $team int Team Id associated to user
