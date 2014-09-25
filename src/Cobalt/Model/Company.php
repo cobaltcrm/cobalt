@@ -131,7 +131,10 @@ class Company extends DefaultModel
     {
         $app = \Cobalt\Container::fetch('app');
 
-        $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
+		if ($this->db->name=='mysqli')
+		{
+			$this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
+		}
 
         $user = $this->_user;
         $team = $this->_team;
@@ -497,13 +500,13 @@ class Company extends DefaultModel
 
     /**
      * Describe and configure columns for jQuery dataTables here.
-     * 
+     *
      * 'data'       ... column id
      * 'orderable'  ... if the column can be ordered by user or not
      * 'ordering'   ... name of the column in SQL query with table prefix
      * 'sClass'     ... CSS class applied to the column
      * (other settings can be found at dataTable documentation)
-     * 
+     *
      * @return array
      */
     public function getDataTableColumns()
@@ -522,7 +525,7 @@ class Company extends DefaultModel
     /**
      * Method transforms items to the format jQuery dataTables needs.
      * Algorithm is available in parent method, just pass items array.
-     * 
+     *
      * @param   array of object of items from the database
      * @return  array in format dataTables requires
      */
@@ -538,7 +541,7 @@ class Company extends DefaultModel
 
     /**
      * Prepare HTML field templates for each dataTable column.
-     * 
+     *
      * @param   string column name
      * @param   object of item
      * @return  string HTML template for propper field
@@ -555,7 +558,7 @@ class Company extends DefaultModel
                 $template = '<div class="title_holder">';
                 $template .= '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&company_id='.$item->id).'">'.$item->name.'</a>';
                 $template .= '</div>';
-                if ($item->address_formatted != ''): 
+                if ($item->address_formatted != ''):
                     $template .= '<address>'.$item->address_formatted.'</address>';
                 endif;
                 $template .= '<div class="hidden"><small>'.$item->description.'</small></div>';
