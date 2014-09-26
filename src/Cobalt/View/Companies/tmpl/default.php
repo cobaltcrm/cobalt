@@ -23,7 +23,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
 
 
         <?php if ( UsersHelper::canExport() ): ?>
-        <button type="button" href="index.php?view=companies&layout=edit&format=raw&tmpl=component" data-target="#CobaltAjaxModal" data-toggle="modal" class="btn btn-success">
+        <button type="button" href="index.php?view=companies&layout=edit&format=raw&tmpl=component" data-target="#CobaltAjaxModal" data-toggle="modal" class="btn btn-default">
             <i class="glyphicon glyphicon-plus icon-white"></i>
             <?php echo TextHelper::_('COBALT_ADD_COMPANY'); ?>
         </button>
@@ -44,7 +44,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
             </li>
         </ul>
         <?php else: ?>
-        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_COMPANY'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="index.php?view=companies&layout=edit&format=raw&tmpl=component" data-target="#CobaltAjaxModal" data-toggle="modal">
+        <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_COMPANY'); ?>" data-placement="bottom" class="btn btn-default" role="button" href="index.php?view=companies&layout=edit&format=raw&tmpl=component" data-target="#CobaltAjaxModal" data-toggle="modal">
             <i class="glyphicon glyphicon-plus icon-white"></i>
         </a>
         <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_COMPANIES'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=companies'); ?>"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>

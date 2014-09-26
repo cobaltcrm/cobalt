@@ -18,9 +18,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </script>
 <div class="page-header">
     <div class="btn-group pull-right">
-        <a class="btn" href="javascript:void(0)" onclick="printItems(this)"><i class="glyphicon glyphicon-print"></i> <?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="printItems(this)"><i class="glyphicon glyphicon-print"></i> <?php echo TextHelper::_('COBALT_PRINT'); ?></a>
         <?php if ( UsersHelper::canExport() ) {?>
-            <a class="btn" href="javascript:void(0)" onclick="exportCsv()"><i class="glyphicon glyphicon-share"></i> <?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
+            <a class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="glyphicon glyphicon-share"></i> <?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
         <?php } ?>
     </div>
     <h1><?php echo $report['name']; ?></h1>
