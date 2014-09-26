@@ -24,7 +24,7 @@ use Joomla\Filter\OutputFilter;
 
 
         <?php if ( UsersHelper::canExport() ): ?>
-            <button type="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-success">
+            <button type="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-default">
                 <i class="glyphicon glyphicon-plus icon-white"></i>
                 <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
             </button>
@@ -45,7 +45,7 @@ use Joomla\Filter\OutputFilter;
                 </li>
             </ul>
         <?php else: ?>
-            <a href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-success">
+            <a href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-default">
                 <i class="glyphicon glyphicon-plus icon-white"></i>
                 <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
             </a>

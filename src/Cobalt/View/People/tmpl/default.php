@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <div class="btn-group pull-right">
 
         <?php if ( UsersHelper::canExport() ): ?>
-            <button type="button" class="btn btn-success" href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component'); ?>" data-target="#personModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?></button>
+            <button type="button" class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component'); ?>" data-target="#personModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?></button>
 
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </li>
             </ul>
         <?php else: ?>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?>" data-placement="bottom" class="btn btn-success" role="button" href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component'); ?>" data-target="#personModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?></a>
+            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?>" data-placement="bottom" class="btn btn-default" role="button" href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component'); ?>" data-target="#personModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?></a>
             <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_PEOPLE'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=people'); ?>">
                 <i class="glyphicon glyphicon-arrow-up"></i>
             </a>

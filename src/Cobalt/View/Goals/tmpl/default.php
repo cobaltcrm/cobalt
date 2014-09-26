@@ -11,13 +11,10 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
-    <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h1>
-</div>
-
 <!-- Single button -->
-<div class="btn-group">
+<div class="btn-group pull-right">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_("COBALT_ACTION"); ?>
+        <i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_("COBALT_CREATE"); ?>
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=win_cash&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_CASH')); ?></a></li>
@@ -28,6 +25,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=create_deals&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_CREATE_DEALS')); ?></a></li>
     </ul>
 </div>
+    <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h1>
+</div>
+
 <div class="row-fluid">
     <div class="col-md-6">
     <ul class="goal_float_list list-unstyled" id="goal_floats_left">
