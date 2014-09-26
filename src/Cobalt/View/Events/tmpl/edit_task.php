@@ -172,7 +172,6 @@ $app = JFactory::getApplication();
         ?>
 
         <input type="hidden" name="model" value="event" />
-        <input type="hidden" name="option" value="com_crmery" />
         <input type="hidden" name="task" value="save" />
         <input type="hidden" name="layout" value="edit_task" />
         <input type="hidden" name="type" value="task" />

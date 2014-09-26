@@ -10,6 +10,7 @@
 
 namespace Cobalt\View\Documents;
 
+use Cobalt\Container;
 use JUri;
 use JFactory;
 use Cobalt\Helper\TextHelper;

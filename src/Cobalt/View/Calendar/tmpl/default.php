@@ -9,30 +9,26 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-
+<link rel="stylesheet" href="themes/bootstrap/css/fullcalendar.css" type="text/css" />
+<script src="themes/bootstrap/js/jquery-ui.min.js"></script>
+<script src="themes/bootstrap/js/jquery.cluetip.min.js"></script>
+<script src="themes/bootstrap/js/fullcalendar.js"></script>
 <script type="text/javascript">
     var eventsObj = <?php echo $this->events; ?>;
     var loc = 'calendar';
 </script>
 
-<form class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
-    <div class="pull-right text-right">
-    <span class="calendar_actions">
-        <input type="hidden" name="layout" value="calendar" />
-        <input type="hidden" name="model" value="event" />
-        <div class="dropdown">
-            <a class="dropdown-toggle update-toggle-text" href="#" data-toggle="dropdown" role="button" id="company_type_link" href="javascript:void(0);"><span class="dropdown-label"><?php echo TextHelper::_('COBALT_SHOW'); ?></span><span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="company_type_link">
-                <li><a class="dropdown_item" href="javascript:void(0);" onclick="showCalendarTasks()"><?php echo TextHelper::_('COBALT_SHOW_TASKS'); ?></a></li>
-                <li><a class="dropdown_item" href="javascript:void(0);" onclick="showCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_EVENTS'); ?></a></li>
-                <li><a class="dropdown_item" href="javascript:void(0);" onclick="showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
-            </ul>
-        </div>
-        <a href="<?php echo RouteHelper::_('index.php?view=events'); ?>" ><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></a>
-        <?php /** FUTURE <a href="javascript:void(0);" onclick="printItems(this);"><?php echo TextHelper::_('COBALT_PRINT'); ?></a> **/ ?>
-    </span>
-    </div>
-</form>
+<div class="pull-right btn-group">
+    <button href="" class="btn btn-default" type="button"><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></button>
+    <button class="btn btn-default"data-toggle="dropdown" type="button">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a class="dropdown_item" href="javascript:void(0);" onclick="Calendar.showCalendarTasks()"><?php echo TextHelper::_('COBALT_SHOW_TASKS'); ?></a></li>
+        <li><a class="dropdown_item" href="javascript:void(0);" onclick="Calendar.showCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_EVENTS'); ?></a></li>
+        <li><a class="dropdown_item" href="javascript:void(0);" onclick="Calendar.showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
+    </ul>
+</div>
 
 <h1><?php echo TextHelper::_('COBALT_CALENDAR_HEADER'); ?></h1>
 
@@ -72,3 +68,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <li><a href="javascript:void(0);" style="display:none;" class="show_event_association"></a></li>
     </ul>
 </div>
+<script>
+jQuery(document).ready(function() {
+    Calendar.initialise();
+});
+</script>

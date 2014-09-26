@@ -413,7 +413,7 @@ class Document extends DefaultModel
         $query->select("*")->from("#__documents");
 
         if (!$id) {
-            $document_hash = $app->input->get('document');
+            $document_hash = $app->input->getString('document');
             $query->where("filename=".$db->quote($document_hash));
         } else {
             $query->where("id=".$id);
@@ -578,8 +578,8 @@ class Document extends DefaultModel
                 $template = '<div class="dropdown"><span class="caret"></span><a id="'.$item->id.'" class="document_edit dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);"> '.$item->name.'</a>';
 
                 $template .= '<ul class="dropdown-menu" role="menu">';
-                $template .= '<li><a href="javascript:void(0);" class="document_preview" id="preview_'.$item->id.'"><i class="glyphicon glyphicon-eye-open"></i> '.TextHelper::_('COBALT_PREVIEW').'</a></li>';
-                $template .= '<li><a href="javascript:void(0);" class="document_download" id="download_'.$item->id.'"><i class="glyphicon glyphicon-download"></i> '.TextHelper::_('COBALT_DOWNLOAD').'</a></li>';
+                $template .= '<li><a href="'.RouteHelper::_('index.php?task=PreviewDocument&format=raw&tmpl=component&document='.$item->filename).'" target="_blank" class="document_preview" id="preview_'.$item->id.'"><i class="glyphicon glyphicon-eye-open"></i> '.TextHelper::_('COBALT_PREVIEW').'</a></li>';
+                $template .= '<li><a href="'.RouteHelper::_('index.php?task=DownloadDocument&format=raw&tmpl=component&document='.$item->filename).'" target="_blank" class="document_download" id="download_'.$item->id.'"><i class="glyphicon glyphicon-download"></i> '.TextHelper::_('COBALT_DOWNLOAD').'</a></li>';
                 if ($item->owner_id == UsersHelper::getLoggedInUser()->id) {
                     $template .= '<li><a href="javascript:void(0);" class="document_delete" id="delete_'.$item->id.'"><i class="glyphicon glyphicon-remove"></i> '.TextHelper::_('COBALT_DELETE').'</a></li>';
                 }
@@ -597,7 +597,7 @@ class Document extends DefaultModel
                     case "person":
                         $view = "people";
                         $association_type = "person";
-                        $item->association_name = $item->owern_first_name." ".$item->owner_last_name;
+                        $item->association_name = $item->owner_first_name." ".$item->owner_last_name;
                         break;
                     case "company";
                         $view = "companies";
