@@ -869,6 +869,40 @@ var Task = {
                 CobaltResponse.modalAction("#CobaltAjaxModal",{modal: {action: 'show'}});
             }
         });
+    },
+
+    updateEventList: function(user,team) {
+        //make ajax call for new event listings
+        var search_event_id = ( user ) ? user : team;
+        var dataString = "";
+        if ( user ){
+            dataString += 'assignee_id='+search_event_id+"&assignee_filter_type=individual";
+        }else{
+            dataString += 'assignee_id='+search_event_id+"&assignee_filter_type=team";
+        }
+        if ( typeof loc !== 'undefined' && typeof id !== 'undefined' ){
+            dataString += "&association_type="+loc+"&association_id="+id;
+        }
+        jQuery.ajax({
+            type:'post',
+            url: base_url+'index.php?view=events&layout=event_listings&tmpl=comp&format=raw&tmpl=component',
+            data: dataString,
+            dataType:'html',
+            success:function(data){
+                //assign new html
+                jQuery.when(jQuery("#task_list").empty())
+                    .then(function(){
+                        jQuery("#task_list").html(data);
+                    });
+
+                //update link message
+                if ( user ){
+                    jQuery("#"+Task.current_area).html(jQuery("#event_user a.filter_user_"+search_event_id).text());
+                }else{
+                    jQuery("#"+Task.current_area).html(jQuery("#event_user a.filter_team_"+search_event_id).text());
+                }
+            }
+        });
     }
 };
 
