@@ -23,6 +23,9 @@ var Cobalt = {
         $('#upload_button').click(function(){
             $('#upload_form').submit();
         });
+        $('#upload_input_invisible').change(function() {
+            $('#upload_form').submit();
+        });
     },
 
     initModalCentralize: function(){
@@ -370,8 +373,15 @@ var Cobalt = {
                     'format': 'raw'
                 };
             data[link.attr('data-field')] = link.attr('data-value');
-
+            Cobalt.link = link;
             Cobalt.save(data);
+        });
+        Cobalt.on('onSaveSuccess', function(event, response){
+            if (typeof Cobalt.link != 'undefined') {
+                var id = jQuery(Cobalt.link[0].parentElement.parentElement).attr('aria-labelledby') + '_link';
+                jQuery('#'+id+' span').text(jQuery(Cobalt.link).find('span').text());
+                Cobalt.link = undefined;
+            }
         });
     },
 
@@ -459,6 +469,19 @@ var Cobalt = {
         var newItem = lastItem.clone().hide();
         parent.append(newItem);
         newItem.show('fast');
+    },
+
+    exportCSV: function(){
+        var old_action = jQuery("#list_form").attr('action');
+        var old_layout = jQuery("#list_form_layout").val();
+
+        jQuery("#list_form").attr('action','index.php?task=downloadCsv&tmpl=component&format=raw');
+        jQuery("#list_form_layout").val('custom_report');
+        jQuery("#list_form").append('<input type="hidden" id="export_flag" name="export" value="1" />');
+        jQuery("#list_form").submit();
+        jQuery("#export_flag").remove();
+        jQuery("#list_form").attr('action',old_action);
+        jQuery("#list_form_layout").val(old_layout);
     },
 
     /**
@@ -846,6 +869,40 @@ var Task = {
                 CobaltResponse.modalAction("#CobaltAjaxModal",{modal: {action: 'show'}});
             }
         });
+    },
+
+    updateEventList: function(user,team) {
+        //make ajax call for new event listings
+        var search_event_id = ( user ) ? user : team;
+        var dataString = "";
+        if ( user ){
+            dataString += 'assignee_id='+search_event_id+"&assignee_filter_type=individual";
+        }else{
+            dataString += 'assignee_id='+search_event_id+"&assignee_filter_type=team";
+        }
+        if ( typeof loc !== 'undefined' && typeof id !== 'undefined' ){
+            dataString += "&association_type="+loc+"&association_id="+id;
+        }
+        jQuery.ajax({
+            type:'post',
+            url: base_url+'index.php?view=events&layout=event_listings&tmpl=comp&format=raw&tmpl=component',
+            data: dataString,
+            dataType:'html',
+            success:function(data){
+                //assign new html
+                jQuery.when(jQuery("#task_list").empty())
+                    .then(function(){
+                        jQuery("#task_list").html(data);
+                    });
+
+                //update link message
+                if ( user ){
+                    jQuery("#"+Task.current_area).html(jQuery("#event_user a.filter_user_"+search_event_id).text());
+                }else{
+                    jQuery("#"+Task.current_area).html(jQuery("#event_user a.filter_team_"+search_event_id).text());
+                }
+            }
+        });
     }
 };
 
@@ -1014,6 +1071,21 @@ var Notes = {
 };
 
 var Company = {
+    checkName: function (company_name, onSuccess) {
+        if(company_name.length < 3) {
+            return;
+        }
+        jQuery.ajax({
+            url: base_url+'index.php?task=checkCompanyName&tmpl=component&format=raw',
+            type:'POST',
+            data: {company_name: company_name},
+            dataType: 'JSON',
+            success: function(response){
+                onSuccess(response);
+            }
+        });
+    },
+
     addPerson: function () {
         CobaltAutocomplete.create({
             id: 'company.addperson',
@@ -1090,6 +1162,24 @@ var Goal = {
                 }
             });
         }
+    }
+};
+
+var Person = {
+    checkName: function(person_name, onSuccess) {
+        if(person_name.length < 3) {
+            return;
+        }
+
+        jQuery.ajax({
+            url: base_url+'index.php?task=checkPersonName&tmpl=component&format=raw',
+            type:'POST',
+            data: {person_name: person_name},
+            dataType:'JSON',
+            success:function(response){
+                onSuccess(response);
+            }
+        });
     }
 };
 

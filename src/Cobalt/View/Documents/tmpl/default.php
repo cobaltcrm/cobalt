@@ -58,7 +58,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         </ul>
     </li>
     <li>
-        <span><?php echo TextHelper::_('COBALT_NAMED'); ?></span>
+        <?php echo TextHelper::_('COBALT_NAMED'); ?>
+    </li>
+    <li>
         <input type="text" class="form-control filter_input datatable-searchbox" placeholder="<?php echo TextHelper::_('COBALT_ANYTHING'); ?>" value="" name="document_name_search" />
     </li>
     <li>

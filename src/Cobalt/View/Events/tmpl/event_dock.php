@@ -45,23 +45,23 @@ $app = JFactory::getApplication();
                         $user_role = UsersHelper::getRole();
                         $user_id = UsersHelper::getUserId();
                     ?>
-                    <li><a class="filter_user_<?php echo $user_id; ?>" onclick="updateEventList(<?php echo $user_id; ?>,0)" ><?php echo TextHelper::_('COBALT_ME'); ?></a></li>
+                    <li><a class="filter_user_<?php echo $user_id; ?>" onclick="Task.updateEventList(<?php echo $user_id; ?>,0)" ><?php echo TextHelper::_('COBALT_ME'); ?></a></li>
                     <?php if ($user_role != 'basic') { ?>
-                        <li><a href="javascript:void(0);" class="filter_user_all" onclick="updateEventList('all',0)" >all users</a></li>
+                        <li><a href="javascript:void(0);" class="filter_user_all" onclick="Task.updateEventList('all',0)" >all users</a></li>
                     <?php } ?>
                     <?php
                         if ($user_role == 'exec') {
                             $teams = UsersHelper::getTeams();
                             if ( count($teams) > 0 ) {
                                 foreach ($teams as $team) {
-                                     echo "<li><a href='javascript:void(0);' class='filter_team_".$team['team_id']."' onclick='updateEventList(0,".$team['team_id'].")'>".$team['team_name'].TextHelper::_('COBALT_TEAM_APPEND')."</a></li>";
+                                     echo "<li><a href='javascript:void(0);' class='filter_team_".$team['team_id']."' onclick='Task.updateEventList(0,".$team['team_id'].")'>".$team['team_name'].TextHelper::_('COBALT_TEAM_APPEND')."</a></li>";
                                  }
                             }
                         }
                         $users = UsersHelper::getUsers();
                         if ( count($users) > 0 ) {
                             foreach ($users as $user) {
-                                echo "<li><a href='javascript:void(0);' class='filter_user_".$user['id']."' onclick='updateEventList(".$user['id'].",0)'>".$user['first_name']."  ".$user['last_name']."</a></li>";
+                                echo "<li><a href='javascript:void(0);' class='filter_user_".$user['id']."' onclick='Task.updateEventList(".$user['id'].",0)'>".$user['first_name']."  ".$user['last_name']."</a></li>";
                             }
                         }
 
@@ -91,3 +91,6 @@ $app = JFactory::getApplication();
 <?php } ?>
 </div>
 </form>
+<script>
+    Task.current_area = 'task_list';
+</script>

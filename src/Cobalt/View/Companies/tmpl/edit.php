@@ -61,175 +61,257 @@ if ($format != "raw")
      
         <div class="tab-content">
           <div class="tab-pane active fade in" id="Company">
-            <div class="form-group col-xs-12 col-md-12">
-                <label class="control-label" for="company_name">
-                    <?php echo ucwords(TextHelper::_('COBALT_COMPANY_NAME')); ?>*
-                </label>
-                <div class="controls">
-                <!-- @TODO: onblur="checkCompanyName(this);" -->
-                    <input  type="text" 
-                             
-                            class="required form-control" 
-                            name="name"
-                            id="company_name" 
-                            placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_NAME_NULL')); ?>" 
-                            value="<?php echo isset($this->company->name) ? $this->company->name : '' ?>"/>
-                    <input type="hidden" name="company_id" id="company_id" value=""/>
-                    <div id="company_message"></div>
-                </div>
-                <!-- <div class="col-md-6">
-                    <?php // companies category table does not exist... yet ?>
-                    <label class="control-label" for=""><strong><?php //echo ucwords(TextHelper::_('COBALT_COMPANY_CATEGORY')); ?></strong></label>
-                    <?php //echo CompanyHelper::getCategoryDropdown($this->company['category_id'],'category_id','col-md-6'); ?>
-                </div> -->
-            </div>
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label class="control-label" for="company_name">
+                              <?php echo ucwords(TextHelper::_('COBALT_COMPANY_NAME')); ?>*
+                          </label>
+                          <div class="controls">
+                              <input  type="text"
 
-            <div class="form-group col-xs-12 col-md-6">
-
-                <label class="control-label" for="company_phone">
-                    <?php echo ucwords(TextHelper::_('COBALT_COMPANY_PHONE')); ?>
-                </label>
-                <input  type="text" 
-                        name="phone"
-                        id="company_phone"
-                        class="form-control" 
-                        placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_PHONE_NULL')); ?>" 
-                        value="<?php echo isset($this->company->phone) ? $this->company->phone : ''; ?>"/>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-                <label class="control-label" for="company_fax">
-                    <?php echo ucwords(TextHelper::_('COBALT_COMPANY_FAX')); ?>
-                </label>
-                <input  type="text" 
-                        name="fax" 
-                        id="company_fax"
-                        class="form-control" 
-                        placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_FAX_NULL')); ?>" 
-                        value="<?php echo isset($this->company->fax) ? $this->company->fax : "" ?>"/>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-                <label class="control-label" for="company_email">
-                    <?php echo ucwords(TextHelper::_('COBALT_COMPANY_EMAIL')); ?>
-                </label>
-                <input  type="text" 
-                        name="email"
-                        id="company_email"
-                        class="form-control" 
-                        placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_EMAIL_NULL')); ?>" 
-                        value="<?php echo isset($this->company->email)? $this->company->email : "" ?>"/>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-                <label class="control-label" for="company_website">
-                    <?php echo TextHelper::_('COBALT_COMPANY_WEB'); ?>
-                </label>
-                <input  type="text" 
-                        name="website"
-                        id="company_website"
-                        class="form-control" 
-                        placeholder="<?php echo TextHelper::_('COBALT_WEBSITE_NULL'); ?>" 
-                        value="<?php echo isset($this->company->website) ? $this->company->website : ""?>"/>
-            </div>
-
+                                      class="required form-control"
+                                      name="name"
+                                      id="company_name"
+                                      placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_NAME_NULL')); ?>"
+                                      value="<?php echo isset($this->company->name) ? $this->company->name : '' ?>"/>
+                              <input type="hidden" name="company_id" id="company_id" value=""/>
+                              <div id="company_message"></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <div class="form-group">
+                          <label class="control-label" for="company_phone">
+                              <?php echo ucwords(TextHelper::_('COBALT_COMPANY_PHONE')); ?>
+                          </label>
+                          <div class="controls">
+                              <input  type="text"
+                                      name="phone"
+                                      id="company_phone"
+                                      class="form-control"
+                                      placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_PHONE_NULL')); ?>"
+                                      value="<?php echo isset($this->company->phone) ? $this->company->phone : ''; ?>"/>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-6">
+                      <div class="form-group">
+                          <label class="control-label" for="company_fax">
+                              <?php echo ucwords(TextHelper::_('COBALT_COMPANY_FAX')); ?>
+                          </label>
+                          <div class="controls">
+                              <input  type="text"
+                                      name="fax"
+                                      id="company_fax"
+                                      class="form-control"
+                                      placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_FAX_NULL')); ?>"
+                                      value="<?php echo isset($this->company->fax) ? $this->company->fax : "" ?>"/>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <div class="form-group">
+                          <label class="control-label" for="company_email">
+                              <?php echo ucwords(TextHelper::_('COBALT_COMPANY_EMAIL')); ?>
+                          </label>
+                          <div class="controls">
+                              <input  type="text"
+                                      name="email"
+                                      id="company_email"
+                                      class="form-control"
+                                      placeholder="<?php echo ucwords(TextHelper::_('COBALT_COMPANY_EMAIL_NULL')); ?>"
+                                      value="<?php echo isset($this->company->email)? $this->company->email : "" ?>"/>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-6">
+                      <div class="form-group">
+                          <label class="control-label" for="company_website">
+                              <?php echo TextHelper::_('COBALT_COMPANY_WEB'); ?>
+                          </label>
+                          <div class="controls">
+                              <input  type="text"
+                                      name="website"
+                                      id="company_website"
+                                      class="form-control"
+                                      placeholder="<?php echo TextHelper::_('COBALT_WEBSITE_NULL'); ?>"
+                                      value="<?php echo isset($this->company->website) ? $this->company->website : ""?>"/>
+                          </div>
+                      </div>
+                  </div>
+              </div>
         </div>
         <div class="tab-pane fade in" id="Address">
             <div id="address_info">
-                <div class="form-group col-xs-12 col-md-6">
-                    <input  class="form-control address_one"
-                            type="text"
-                            placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_1_NULL'); ?>" 
-                            name="address_1" 
-                            value="<?php echo isset($this->company->address_1) ? $this->company->address_1 : "" ?>"/>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input  class="form-control address_one"
+                                        type="text"
+                                        placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_1_NULL'); ?>"
+                                        name="address_1"
+                                        value="<?php echo isset($this->company->address_1) ? $this->company->address_1 : "" ?>"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-xs-12 col-md-6">
-                    <input  class="form-control address_two" 
-                            type="text" 
-                            placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_2_NULL'); ?>" 
-                            name="address_2" 
-                            value="<?php echo isset($this->company->address_2) ? $this->company->address_2 : "" ?>"/>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input  class="form-control address_two"
+                                        type="text"
+                                        placeholder="<?php echo TextHelper::_('COBALT_ADDRESS_2_NULL'); ?>"
+                                        name="address_2"
+                                        value="<?php echo isset($this->company->address_2) ? $this->company->address_2 : "" ?>"/>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="form-group col-xs-12 col-md-6">
-                    <input  class="form-control address_city" 
-                            type="text" 
-                            placeholder="<?php echo TextHelper::_('COBALT_CITY_NULL'); ?>" 
-                            name="address_city" 
-                            value="<?php echo isset($this->company->address_city) ? $this->company->address_city : "" ?>"/>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input  class="form-control address_city"
+                                        type="text"
+                                        placeholder="<?php echo TextHelper::_('COBALT_CITY_NULL'); ?>"
+                                        name="address_city"
+                                        value="<?php echo isset($this->company->address_city) ? $this->company->address_city : "" ?>"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input  class="form-control address_state"
+                                        type="text"
+                                        placeholder="<?php echo TextHelper::_('COBALT_STATE_NULL'); ?>"
+                                        name="address_state"
+                                        value="<?php echo isset($this->company->address_state) ? $this->company->address_state : "" ?>"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input  class="form-control address_zip"
+                                        type="text"
+                                        placeholder="<?php echo TextHelper::_('COBALT_ZIP_NULL'); ?>"
+                                        name="address_zip"
+                                        value="<?php echo isset($this->company->address_zip) ? $this->company->address_zip : "" ?>"/>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="form-group col-xs-12 col-md-6">
-                    <input  class="form-control address_state" 
-                            type="text" 
-                            placeholder="<?php echo TextHelper::_('COBALT_STATE_NULL'); ?>" 
-                            name="address_state" 
-                            value="<?php echo isset($this->company->address_state) ? $this->company->address_state : "" ?>"/>
-                </div>
-                <div class="form-group col-xs-12 col-md-6">
-                    <input  class="form-control address_zip" 
-                            type="text" 
-                            placeholder="<?php echo TextHelper::_('COBALT_ZIP_NULL'); ?>" 
-                            name="address_zip" 
-                            value="<?php echo isset($this->company->address_zip) ? $this->company->address_zip : "" ?>"/>
-                </div>
-                <div class="form-group col-xs-12 col-md-6">
-                    <input  class="form-control address_country" 
-                            type="text" 
-                            placeholder="<?php echo TextHelper::_('COBALT_COUNTRY_NULL'); ?>" 
-                            name="address_country" 
-                            value="<?php echo isset($this->company->address_country) ? $this->company->address_country : "" ?>"/>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input  class="form-control address_country"
+                                        type="text"
+                                        placeholder="<?php echo TextHelper::_('COBALT_COUNTRY_NULL'); ?>"
+                                        name="address_country"
+                                        value="<?php echo isset($this->company->address_country) ? $this->company->address_country : "" ?>"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="tab-pane fade in" id="Assignment">
-            <?php if (UsersHelper::getRole() == 'exec' 
-                    || UsersHelper::getRole() == "manager" 
-                    || !($this->company->id > 0) 
-                    || (array_key_exists('owner_id', $this->company) 
-                        && UsersHelper::getUserId() == $this->company->owner_id) 
-                    || UsersHelper::isAdmin()) { ?>
-                <div class="form-group col-xs-12 col-md-12">
-                    <label class="control-label" for="">
-                        <?php echo ucwords(TextHelper::_('COBALT_COMPANY_OWNER')); ?>
-                    </label>
-                    <?php echo DropdownHelper::generateDropdown('owner', $ownerId, 'company'); ?>
+            <?php if (UsersHelper::getRole() == 'exec'
+            || UsersHelper::getRole() == "manager"
+            || !($this->company->id > 0)
+            || (array_key_exists('owner_id', $this->company)
+                && UsersHelper::getUserId() == $this->company->owner_id)
+            || UsersHelper::isAdmin()) { ?>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label" for="">
+                            <?php echo ucwords(TextHelper::_('COBALT_COMPANY_OWNER')); ?>
+                        </label>
+                        <div class="controls">
+                            <?php echo DropdownHelper::generateDropdown('owner', $ownerId, 'company'); ?>
+                        </div>
+                    </div>
                 </div>
+            </div>
             <?php } ?>
-            <div class="form-group col-xs-12 col-md-12">
-                <label class="control-label" for="company_description">
-                    <?php echo TextHelper::_('COBALT_COMPANY_DESCRIPTION'); ?>
-                </label>
-                <textarea name="description" id="company_description" class="form-control"><?php echo isset($this->company->description) ? $this->company->description : "" ?></textarea>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label" for="company_description">
+                            <?php echo TextHelper::_('COBALT_COMPANY_DESCRIPTION'); ?>
+                        </label>
+                        <div class="controls">
+                            <textarea name="description" id="company_description" class="form-control"><?php echo isset($this->company->description) ? $this->company->description : "" ?></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tab-pane fade in" id="Details">
-            <div class="form-group col-xs-12 col-md-6">
-                <input  class="form-control"
-                        type="text" 
-                        name="facebook_url" 
-                        value="<?php echo isset($this->company->facebook_url) ? $this->company->facebook_url : "" ?>" 
-                        placeholder="<?php echo TextHelper::_('COBALT_FACEBOOK_URL'); ?>" />
+            <br />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="controls">
+                            <input  class="form-control"
+                                    type="text"
+                                    name="facebook_url"
+                                    value="<?php echo isset($this->company->facebook_url) ? $this->company->facebook_url : "" ?>"
+                                    placeholder="<?php echo TextHelper::_('COBALT_FACEBOOK_URL'); ?>" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="controls">
+                            <input  class="form-control"
+                                    data-minlength="4"
+                                    type="text"
+                                    name="twitter_user"
+                                    value="<?php echo isset($this->company->twitter_user) ? $this->company->twitter_user : "" ?>"
+                                    placeholder="<?php echo TextHelper::_('COBALT_TWITTER_USER'); ?>" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-xs-12 col-md-6">
-                <input  class="form-control"
-                        data-minlength="4" 
-                        type="text" 
-                        name="twitter_user" 
-                        value="<?php echo isset($this->company->twitter_user) ? $this->company->twitter_user : "" ?>" 
-                        placeholder="<?php echo TextHelper::_('COBALT_TWITTER_USER'); ?>" />
-            </div>
-            <div class="form-group col-xs-12 col-md-6">
-                <input  class="form-control"
-                        type="text" 
-                        name="flickr_url" 
-                        value="<?php echo isset($this->company->flickr_url) ? $this->company->flickr_url : "" ?>" 
-                        placeholder="<?php echo TextHelper::_('COBALT_FLICKR_URL'); ?>" />
-            </div>
-            <div class="form-group col-xs-12 col-md-6">
-                <input  class="form-control" 
-                        type="text" 
-                        name="youtube_url" 
-                        value="<?php echo isset($this->company->youtube_url) ? $this->company->youtube_url : "" ?>"
-                        placeholder="<?php echo TextHelper::_('COBALT_YOUTUBE_URL'); ?>" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="controls">
+                            <input  class="form-control"
+                                    type="text"
+                                    name="flickr_url"
+                                    value="<?php echo isset($this->company->flickr_url) ? $this->company->flickr_url : "" ?>"
+                                    placeholder="<?php echo TextHelper::_('COBALT_FLICKR_URL'); ?>" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="controls">
+                            <input  class="form-control"
+                                    type="text"
+                                    name="youtube_url"
+                                    value="<?php echo isset($this->company->youtube_url) ? $this->company->youtube_url : "" ?>"
+                                    placeholder="<?php echo TextHelper::_('COBALT_YOUTUBE_URL'); ?>" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tab-pane fade in" id="Custom">

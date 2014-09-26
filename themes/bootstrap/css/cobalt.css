@@ -38,7 +38,7 @@ ul.inline.filter-sentence > li {padding: 0;}
 /* Autocomplete CSS */
 .typeahead,
 .tt-hint {
-    width: 574px;
+    width: auto;
     height: 30px;
     padding: 8px 12px;
     line-height: 30px;
@@ -58,7 +58,7 @@ ul.inline.filter-sentence > li {padding: 0;}
 }
 
 .tt-dropdown-menu {
-    width: 570px;
+    width: auto;
     margin-top: 12px;
     background-color: #fff;
     border: 1px solid #ccc;

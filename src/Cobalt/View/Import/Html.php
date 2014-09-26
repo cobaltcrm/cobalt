@@ -75,6 +75,9 @@ class Html extends AbstractHtmlView
         $import_header = ucwords(TextHelper::_('COBALT_IMPORT_'.$import_type));
         $this->import_type = $import_type;
         $this->import_header = $import_header;
+        if ($this->getLayout() == 'default') {
+            $this->setLayout('import');
+        }
 
         //display
         return parent::render();

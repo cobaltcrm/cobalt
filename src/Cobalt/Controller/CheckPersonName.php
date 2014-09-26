@@ -20,7 +20,7 @@ class CheckPersonName extends DefaultController
 {
     public function execute()
     {
-        $person_name = $this->input->get('person_name');
+        $person_name = $this->input->getString('person_name');
         $personModel = new PeopleModel;
         $existingPerson = $personModel->checkPersonName($person_name);
 
