@@ -218,7 +218,7 @@ class UsersHelper
         $query = $db->getQuery(true);
 
         //query
-        $query->select("t.*,u.first_name,u.last_name,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name");
+        $query->select("t.*,u.first_name,u.last_name,(CASE WHEN (t.name IS NOT NULL) THEN t.name ELSE CONCAT(u.first_name,NULL,u.last_name) END) AS team_name");
         $query->from("#__teams AS t");
         $query->leftJoin("#__users AS u ON u.id = t.leader_id AND u.published=1");
 
