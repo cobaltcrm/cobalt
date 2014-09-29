@@ -25,49 +25,56 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
+        $doc = $app->getDocument();
+        $doc->addScript(JURI::base().'src/Cobalt/media/js/import_manager.js');
 
-        //Load java libs
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/import_manager.js');
-
-        if ( count($_FILES) > 0 ) {
+        if (count($_FILES) > 0)
+        {
             $model = new ImportModel;
-            foreach ($_FILES as $file) {
+
+            foreach ($_FILES as $file)
+            {
                 $import_data = $model->readCSVFile($file['tmp_name']);
             }
+
             $this->headers = $import_data['headers'];
             unset($import_data['headers']);
             $this->import_data = $import_data;
 
-            if ( count($import_data) > 500 ) {
-                    switch ( $app->input->get('import_type') ) {
-                        case "company":
-                            $view = "companies";
-                            $import_model = "company";
-                        break;
-                        case "people":
-                            $view = "people";
-                            $import_model = "people";
-                        break;
-                        case "deals":
-                            $view = "deals";
-                            $import_model = "deal";
-                        break;
-                    }
-                    if ( $model->importCSVData($import_data,$import_model) ) {
-                        $success = "SUCCESSFULLY";
-                    } else {
-                        $success = "UNSUCCESSFULLY";
-                        $view = "import&import_type=".$app->input->get('import_type');
-                    }
-                $app = JFactory::getApplication();
+            if (count($import_data) > 500)
+            {
+                switch ($app->input->get('import_type'))
+                {
+                    case "company":
+                        $view = "companies";
+                        $import_model = "company";
+                    break;
+                    case "people":
+                        $view = "people";
+                        $import_model = "people";
+                    break;
+                    case "deals":
+                        $view = "deals";
+                        $import_model = "deal";
+                    break;
+                }
+
+                if ($model->importCSVData($import_data, $import_model))
+                {
+                    $success = "SUCCESSFULLY";
+                }
+                else
+                {
+                    $success = "UNSUCCESSFULLY";
+                    $view = "import&import_type=".$app->input->get('import_type');
+                }
+
                 $msg = TextHelper::_('COBALT_'.$success.'_IMPORTED_ITEMS');
                 $app->redirect(RouteHelper::_('index.php?view='.$view),$msg);
             }
 
-            $doc = JFactory::getDocument();
-             $doc->addScriptDeclaration('import_length='.count($import_data).';');
+            $doc->addScriptDeclaration('import_length='.count($import_data).';');
 
         }
 
@@ -75,12 +82,13 @@ class Html extends AbstractHtmlView
         $import_header = ucwords(TextHelper::_('COBALT_IMPORT_'.$import_type));
         $this->import_type = $import_type;
         $this->import_header = $import_header;
-        if ($this->getLayout() == 'default') {
+
+        if ($this->getLayout() == 'default')
+        {
             $this->setLayout('import');
         }
 
         //display
         return parent::render();
     }
-
 }
