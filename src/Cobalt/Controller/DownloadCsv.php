@@ -34,7 +34,5 @@ class DownloadCsv extends DefaultController
         echo $model->getCsv();
 
         exit();
-
    }
-
 }
