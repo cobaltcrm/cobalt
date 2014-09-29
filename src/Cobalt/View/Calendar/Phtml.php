@@ -11,6 +11,7 @@
 namespace Cobalt\View\Calendar;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

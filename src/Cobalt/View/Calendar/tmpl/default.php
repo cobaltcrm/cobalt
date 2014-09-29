@@ -9,24 +9,24 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-<link rel="stylesheet" href="themes/bootstrap/css/fullcalendar.css" type="text/css" />
-<script src="themes/bootstrap/js/jquery-ui.min.js"></script>
-<script src="themes/bootstrap/js/jquery.cluetip.min.js"></script>
-<script src="themes/bootstrap/js/fullcalendar.js"></script>
 <script type="text/javascript">
+    var new_event_date = null;
+    var menu = true;
+    var curr_cal_event = null;
+    var cloning = false;
     var eventsObj = <?php echo $this->events; ?>;
     var loc = 'calendar';
 </script>
 
 <div class="pull-right btn-group">
-    <button href="" class="btn btn-default" type="button"><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></button>
-    <button class="btn btn-default"data-toggle="dropdown" type="button">
+    <button onclick="location.href = '<?php echo RouteHelper::_('index.php?view=events'); ?>'" class="btn btn-default" type="button"><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></button>
+    <button id="company_type_link" class="btn btn-default"data-toggle="dropdown" type="button">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a class="dropdown_item" href="javascript:void(0);" onclick="Calendar.showCalendarTasks()"><?php echo TextHelper::_('COBALT_SHOW_TASKS'); ?></a></li>
-        <li><a class="dropdown_item" href="javascript:void(0);" onclick="Calendar.showCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_EVENTS'); ?></a></li>
-        <li><a class="dropdown_item" href="javascript:void(0);" onclick="Calendar.showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
+        <li><a href="javascript:void(0);" onclick="Calendar.showCalendarTasks()"><?php echo TextHelper::_('COBALT_SHOW_TASKS'); ?></a></li>
+        <li><a href="javascript:void(0);" onclick="Calendar.showCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_EVENTS'); ?></a></li>
+        <li><a href="javascript:void(0);" onclick="Calendar.showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
     </ul>
 </div>
 

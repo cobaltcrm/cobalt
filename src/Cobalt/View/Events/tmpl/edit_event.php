@@ -25,7 +25,7 @@ $app = JFactory::getApplication();
       <div class="tab-pane active fade in" id="Event">
             <div class="cobaltRow">
                 <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_TASK_NAME'); ?><span class="required">*</span></div>
-                <div class="cobaltValue"><input class="required inputbox" type="text" name="name" value="<?php if ( array_key_exists('name',$event) ) echo $event['name']; ?>"/></div>
+                <div class="cobaltValue"><input class="form-control inputbox" type="text" name="name" value="<?php if ( array_key_exists('name',$event) ) echo $event['name']; ?>"/></div>
             </div>
             <?php if ( array_key_exists('id',$event) && $event['id'] > 0 ) { ?>
                 <div class="cobaltRow">
@@ -104,7 +104,7 @@ $app = JFactory::getApplication();
           <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_EVENT_START_TIME'); ?><span class="required">*</span></div>
             <div class="cobaltValue">
-                        <input id="start_time" class="required inputbox date_input" type="text" value="<?php if ( array_key_exists('start_time',$event) ) echo DateHelper::formatDate($event['start_time']); ?>" name="start_time_input" />
+                        <input id="start_time" class="form-control inputbox date_input" type="text" value="<?php if ( array_key_exists('start_time',$event) ) echo DateHelper::formatDate($event['start_time']); ?>" name="start_time_input" />
                         <input id="start_time_hidden" name="start_time" type="hidden" value="<?php if ( array_key_exists('start_time',$event) ) { echo $event['start_time']; } ?>" />
                         <select class="form-control" name="start_time_hour">
                             <?php
@@ -117,7 +117,7 @@ $app = JFactory::getApplication();
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_EVENT_END_TIME'); ?><span class="required">*</span></div>
             <div class="cobaltValue">
-                        <input id="end_time" class="required inputbox date_input" type="text" value="<?php if ( array_key_exists('end_time',$event) ) echo DateHelper::formatDate($event['end_time']); ?>" name="end_time_input" />
+                        <input id="end_time" class="required form-control date_input" type="text" value="<?php if ( array_key_exists('end_time',$event) ) echo DateHelper::formatDate($event['end_time']); ?>" name="end_time_input" />
                         <input id="end_time_hidden" type="hidden" name="end_time" value="<?php if ( array_key_exists('end_time',$event) ) { echo $event['end_time']; } ?>" />
                         <select class="form-control" name="end_time_hour">
                             <?php
@@ -127,11 +127,11 @@ $app = JFactory::getApplication();
                         </select>
             </div>
         </div>
-        <div class="cobaltRow">
-            <label class="checkbox">
-                <input type="checkbox" name="all_day" /><?php echo TextHelper::_('COBALT_EDIT_EVENT_ALL_DAY_MESSAGE'); ?>
-            </label>
-        </div>
+          <div class="checkbox">
+              <label>
+                  <input type="checkbox" name="all_day" /><?php echo TextHelper::_('COBALT_EDIT_EVENT_ALL_DAY_MESSAGE'); ?>
+              </label>
+          </div>
         <div class="cobaltRow">
             <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_TASK_REPEAT'); ?></div>
             <div class="cobaltValue">
@@ -171,5 +171,7 @@ $app = JFactory::getApplication();
         }
     ?>
     <input type="hidden" name="task" value="save" />
+    <input type="hidden" name="model" value="event">
     <input type="hidden" name="type" value="event" />
+    <input type="hidden" name="layout" value="edit_event" />
 </form>

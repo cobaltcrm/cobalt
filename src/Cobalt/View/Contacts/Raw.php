@@ -14,6 +14,7 @@ use Joomla\View\AbstractHtmlView;
 use JFactory;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Model\People as PeopleModel;
+use Cobalt\Helper\TextHelper;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 

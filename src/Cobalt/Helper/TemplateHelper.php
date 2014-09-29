@@ -413,6 +413,11 @@ class TemplateHelper
         TextHelper::script('COBALT_ADDING_EVENT');
         TextHelper::script('COBALT_ADDING_TASK');
         TextHelper::script('COBALT_CONTACTS');
+        TextHelper::script('COBALT_COMPANY');
+        TextHelper::script('COBALT_DEALS_HEADER');
+        TextHelper::script('COBALT_PEOPLE');
+        TextHelper::script('COBALT_ERROR_MARK_ITEM_COMPLETE');
+
     }
 
     public static function getListEditActions()

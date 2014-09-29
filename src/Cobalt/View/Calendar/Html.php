@@ -15,6 +15,7 @@ use JFactory;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Helper\UsersHelper;
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -26,14 +27,6 @@ class Html extends AbstractHtmlView
         //load model and retrieve events to pass to calendar
         $model = new EventModel;
         $events = $model->getEvents('calendar');
-
-        //load js libs
-        $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'src/Cobalt/media/js/fullcalendar.js' );
-        $document->addScript( JURI::base().'src/Cobalt/media/js/calendar_manager.js' );
-
-        //load required css for calendar
-        $document->addStyleSheet( JURI::base().'src/Cobalt/media/css/fullcalendar.css' );
 
         //pass reference vars to view
         $this->events = json_encode($events);

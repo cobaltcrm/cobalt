@@ -96,7 +96,7 @@
                 </ul>
             </div>
         </td>
-        <td class="notes"><a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(<?php echo $person['id']; ?>, 'people');"><i class="glyphicon glyphicon-file"></i></a>
+        <td class="notes"><a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="Calendar.openNoteModal(<?php echo $person['id']; ?>, 'people');"><i class="glyphicon glyphicon-file"></i></a>
         <?php
         echo '<td class="address">'.$person['work_city'].'<br>'.$person['work_state'].'<br>'.$person['work_zip'].'<br>'.$person['work_country'].'</td>';
         echo '<td class="added">'.DateHelper::formatDate($person['created']).'</td>';

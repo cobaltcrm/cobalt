@@ -54,10 +54,18 @@ if ($filter_type == "individual") {
 
 <div class="page-header">
         <div class="btn-group pull-right">
-            <a class="btn" onclick="Task.add('task')"><?php echo ucwords(TextHelper::_('COBALT_ADD_TASK')); ?></a> -
-            <a class="btn" onclick="Task.add('event')"><?php echo ucwords(TextHelper::_('COBALT_ADD_EVENT')); ?></a> -
-            <a class="btn" href="<?php echo RouteHelper::_('index.php?view=calendar'); ?>" ><?php echo TextHelper::_('COBALT_SHOW_CALENDAR'); ?></a> -
-            <a class="btn" href="javascript:void(0)" onclick="printItems('event_form');"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button" id="btnGroupVerticalDrop1">
+                    <?php echo ucwords(TextHelper::_('COBALT_ADD')); ?>
+                    <span class="caret"></span>
+                </button>
+                <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu">
+                    <li><a href="javascript:void(0);" onclick="Task.add('task')"><?php echo ucwords(TextHelper::_('COBALT_ADD_TASK')); ?></a></li>
+                    <li><a href="javascript:void(0);" onclick="Task.add('event')"><?php echo ucwords(TextHelper::_('COBALT_ADD_EVENT')); ?></a></li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default" onclick="location.href = '<?php echo RouteHelper::_('index.php?view=calendar'); ?>'" ><?php echo TextHelper::_('COBALT_SHOW_CALENDAR'); ?></button>
+            <button type="button" class="btn btn-default" href="javascript:void(0)" onclick="printItems('event_form');"><?php echo TextHelper::_('COBALT_PRINT'); ?></button>
         </div>
     <h1><?php echo ucwords(TextHelper::_('COBALT_TASKS_HEADER')); ?></h1>
 </div>
@@ -147,7 +155,7 @@ if ($filter_type == "individual") {
 <table id='events_list' class="table table-hover table-striped">
        <thead>
             <tr>
-                <th class="checkbox_column"><input type="checkbox" onclick="selectAll(this);" /></th>
+                <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" /></th>
                 <th><div class="sort_order"><a class="e.name" onclick="sortTable('e.name',this)"><?php echo ucwords(TextHelper::_('COBALT_EVENTS_NEXT_TASK')); ?></div></th>
                 <th><div class="sort_order"><a class="e.due_date" onclick="sortTable('e.due_date',this)"><?php echo ucwords(TextHelper::_('COBALT_EVENTS_DUE_DATE')); ?></div></th>
                 <th><?php echo ucwords(TextHelper::_('COBALT_EVENTS_FOR')); ?></th>
@@ -172,4 +180,17 @@ if ($filter_type == "individual") {
 <div id="deal_contacts_modal_dialog" style="display:none;"></div>
 <div id="edit_task" style="display:none;"></div>
 <div id="edit_event" style="display:none;"></div>
-<div id="note_modal" style="display:none;"></div>
+<div id="note_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 id="noteModalHeaderTitle">&nbsp;</h3>
+            </div>
+            <div class="modal-body" id="noteModalBody"></div>
+            <div class="modal-footer">
+                <button aria-hidden="true" data-dismiss="modal" class="btn btn-default" id="CobaltAjaxModalCloseButton"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>

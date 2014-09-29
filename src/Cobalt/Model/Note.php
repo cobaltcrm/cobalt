@@ -53,7 +53,8 @@ class Note extends DefaultModel
                 'name' => 'string',
                 'category_id' => 'int',
                 'company_id' => 'int',
-                'note_id' => 'int'
+                'note_id' => 'int',
+                'event_id' => 'int'
             ));
         }
 
@@ -249,6 +250,7 @@ class Note extends DefaultModel
 
         if ($object_id) {
             switch ($type) {
+                case 'person':
                 case 'people':
                     $query->where('n.person_id ='.$object_id);
                 break;
