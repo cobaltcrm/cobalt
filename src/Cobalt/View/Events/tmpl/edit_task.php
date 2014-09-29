@@ -175,7 +175,5 @@ $app = JFactory::getApplication();
         <input type="hidden" name="task" value="save" />
         <input type="hidden" name="layout" value="edit_task" />
         <input type="hidden" name="type" value="task" />
-        <input type="hidden" name="association_type" value="<?php echo $app->input->getString('view'); ?>" />
-        <input type="hidden" name="association_id" value="<?php echo $app->input->getString('id'); ?>" />
     </div>
 </form>

@@ -177,75 +177,30 @@ class TemplateHelper
         $list_html .= '</ul>';
 
         $list_html .= '<ul class="nav navbar-nav navbar-right">';
-        $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="right" class="dropdown">';
-        $list_html .= '<a class="feature-btn dropdown-toggle" data-toggle="dropdown" href="#" id="create_button">';
-        $list_html .= '<i class="glyphicon glyphicon-plus-sign icon-white"></i>';
-        $list_html .= '</a>';
-        $list_html .= '<ul class="dropdown-menu">';
-        $list_html .= '<li>';
-        $list_html .= '<a href="'.RouteHelper::_('index.php?view=companies&layout=edit&format=raw&tmpl=component').'" data-target="#CobaltAjaxModal" data-toggle="modal">';
-        $list_html .= '<i class="glyphicon glyphicon-plus-sign"></i> ' . ucwords(TextHelper::_('COBALT_NEW_COMPANY'));
-        $list_html .= '</a>';
-        $list_html .= '</li>';
-        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component').'" data-target="#CobaltAjaxModal" data-toggle="modal">';
-        $list_html .= '<i class="glyphicon glyphicon-plus-sign"></i> ' . ucwords(TextHelper::_('COBALT_NEW_PERSON'));
-        $list_html .= '</a></li>';
-        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=deals&layout=edit&format=raw&tmpl=component').'" data-target="#CobaltAjaxModal" data-toggle="modal">';
-        $list_html .= '<i class="glyphicon glyphicon-plus-sign"></i> ' . ucwords(TextHelper::_('COBALT_NEW_DEAL'));
-        $list_html .= '</a></li>';
-        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=goals&layout=add').'">';
-        $list_html .= '<i class="glyphicon glyphicon-plus-sign"></i> ' . ucwords(TextHelper::_('COBALT_NEW_GOAL'));
-        $list_html .= '</a></li>';
+        $list_html .= '<li class="dropdown"><a rel="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="bottom" class="feature-btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" id="create_button"><i class="glyphicon glyphicon-plus-sign icon-white"></i></a><ul class="dropdown-menu">';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=companies&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_COMPANY')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=people&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_PERSON')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=deals&layout=edit').'">'.ucwords(TextHelper::_('COBALT_NEW_DEAL')).'</a></li>';
+        $list_html .= '<li><a href="'.RouteHelper::_('index.php?view=goals&layout=add').'">'.ucwords(TextHelper::_('COBALT_NEW_GOAL')).'</a></li>';
         $list_html .= '</ul></li>';
-        $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom">';
-        $list_html .= '<a class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" >';
-        $list_html .= '<i class="glyphicon glyphicon-user icon-white"></i>';
-        $list_html .= '</a>';
-        $list_html .= '</li>';
-        $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom">';
-        $list_html .= '<a class="block-btn" href="http://www.cobaltcrm.org/" target="_blank">';
-        $list_html .= '<i class="glyphicon glyphicon-question-sign icon-white"></i>';
-        $list_html .= '</a>';
-        $list_html .= '</li>';
-        $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom">';
-        $list_html .= '<a class="block-btn" href="#" onclick="Cobalt.showSiteSearch(); return false;">';
-        $list_html .= '<i class="glyphicon glyphicon-search icon-white"></i>';
-        $list_html .= '</a>';
-        $list_html .= '</li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_VIEW_PROFILE').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=profile').'" ><i class="glyphicon glyphicon-user icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SUPPORT').'" data-placement="bottom" class="block-btn" href="http://www.cobaltcrm.org/support"><i class="glyphicon glyphicon-question-sign icon-white"></i></a></li>';
+        $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom" class="block-btn" href="javascript:void(0);"><i onclick="showSiteSearch();" class="glyphicon glyphicon-search icon-white"></i></a></li>';
 
-        if (UsersHelper::isAdmin())
-        {
-            $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom">';
-            $list_html .= '<a class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" >';
-            $list_html .= '<i class="glyphicon glyphicon-cog icon-white"></i>';
-            $list_html .= '</a>';
-            $list_html .= '</li>';
+        if ( UsersHelper::isAdmin() ) {
+            $list_html .= '<li><a rel="tooltip" title="'.TextHelper::_('COBALT_ADMINISTRATOR_CONFIGURATION').'" data-placement="bottom" class="block-btn" href="'.RouteHelper::_('index.php?view=cobalt').'" ><i class="glyphicon glyphicon-cog icon-white"></i></a></li>';
         }
 
-        if (UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print"))
-        {
+        if ( UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print") ) {
             $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
-            $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom">';
-            $list_html .= '<a class="block-btn" data-toggle="modal" href="#logoutModal">';
-            $list_html .= '<i class="glyphicon glyphicon-off icon-white"></i>';
-            $list_html .= '</a>';
-            $list_html .= '</li>';
+            $list_html .= '<li><a class="block-btn" rel="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom" data-toggle="modal" href="#logoutModal"><i class="glyphicon glyphicon-off icon-white"></i></a></li>';
         }
-        
         $list_html .= '</ul>';
 
         $list_html .= '</div>';
-        $list_html .= '<div class="container">';
-        $list_html .= '<div style="display:none;" class="pull-right col-xs-3" id="site_search">';
-        $list_html .= '<form action="index.php" id="site_search_form">';
-        $list_html .= '<input type="text" class="form-control site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
-        $list_html .= '<input type="hidden" name="view" />';
-        $list_html .= '<input type="hidden" name="id" />';
-        $list_html .= '<input type="hidden" name="layout" />';
-        $list_html .= '</form>';
-        $list_html .= '</div>';
-        $list_html .= '</div>';
-        $list_html .= '</div>';
+        $list_html .= '<div style="display:none;" class="pull-right" id="site_search">';
+        $list_html .= '<input class="inputbox site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
+        $list_html .= '</div></div>';
 
         //return html
         echo $list_html;
@@ -458,9 +413,11 @@ class TemplateHelper
         TextHelper::script('COBALT_ADDING_EVENT');
         TextHelper::script('COBALT_ADDING_TASK');
         TextHelper::script('COBALT_CONTACTS');
+        TextHelper::script('COBALT_COMPANY');
         TextHelper::script('COBALT_DEALS_HEADER');
-        TextHelper::script('COBALT_COMPANY_HEADER');
-        TextHelper::script('COBALT_PEOPLE_HEADER');
+        TextHelper::script('COBALT_PEOPLE');
+        TextHelper::script('COBALT_ERROR_MARK_ITEM_COMPLETE');
+
     }
 
     public static function getListEditActions()
@@ -501,32 +458,4 @@ class TemplateHelper
         return $list_html;
     }
 
-    public static function showMessages()
-    {
-        $app            = \Cobalt\Container::fetch('app');
-        $document       = $app->getDocument();
-        $messageTypes   = $app->getMessageQueue();
-        $js             = '';
-
-        if (is_array($messageTypes) && $messageTypes)
-        {
-            foreach ($messageTypes as $type => $messages)
-            {
-                if (is_array($messages) && $messages)
-                {
-                    foreach ($messages as $message)
-                    {
-                        $js .= "Cobalt.modalMessage('', '" . $message . "', '" . $type . "');"."\n";
-                    }
-                }
-            }
-            $document->addScriptDeclaration("
-                jQuery(function() {
-                    " . $js . "
-                });
-            ");
-
-            $app->clearMessageQueue();
-        }
-    }
 }

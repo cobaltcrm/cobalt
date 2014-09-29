@@ -13,6 +13,7 @@ namespace Cobalt\View\Note;
 use Joomla\View\AbstractHtmlView;
 use JFactory;
 use Cobalt\Model\Note as NoteModel;
+use Cobalt\Helper\NoteHelper;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -22,11 +23,17 @@ class Raw extends AbstractHtmlView
     {
         $app = JFactory::getApplication();
 
-        $this->type = $app->input->get('type');
-        $this->id = $app->input->get('id');
+        $this->type = $app->input->getCmd('type');
+        $this->id = $app->input->getInt('id');
         $layout = $this->getLayout();
         $this->format = $app->input->get('format');
         $this->view = $app->input->get('view','default');
+
+        switch ($this->type) {
+            case 'event':
+                $this->var = 'event_id';
+                break;
+        }
 
         //retrieve task list from model
         $model = new NoteModel;
@@ -38,6 +45,7 @@ class Raw extends AbstractHtmlView
         }
 
         $this->notes = $notes;
+        $this->categories = NoteHelper::getCategories();
 
         //display
         echo parent::render();

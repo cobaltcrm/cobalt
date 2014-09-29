@@ -25,6 +25,7 @@ use Cobalt\Helper\TweetsHelper;
 use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Pagination;
+use Cobalt\Model\Event;
 
 
 // no direct access
@@ -916,7 +917,7 @@ class People extends DefaultModel
         }
 
         if ($this->event_id) {
-            $event_model = new CobaltModelEvent();
+            $event_model = new Event();
             $event = $event_model->getEvent($this->event_id);
             if ( array_key_exists('association_type',$event) && $event['association_type'] != null ) {
                 switch ($event['association_type']) {

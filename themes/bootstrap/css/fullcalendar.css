@@ -83,7 +83,9 @@ html .fc,
 
 .fc-header .fc-button {
 	margin-right: -1px;
-	}
+    background: -moz-linear-gradient(center top , #fefefe 0%, #e6e6e6 100%) repeat scroll 0 0 #e6e6e6;
+    border: 1px solid #ccc !important;
+}
 	
 .fc-header .fc-corner-right {
 	margin-right: 1px; /* back to normal */
@@ -618,6 +620,6 @@ table.fc-border-separate {
 	
 .fc-agenda .ui-resizable-resizing { /* TODO: better selector */
 	_overflow: hidden;
-	}
+}
 	
 	

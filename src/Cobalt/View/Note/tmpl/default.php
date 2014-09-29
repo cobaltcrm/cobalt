@@ -10,9 +10,15 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
-
-echo $app->input->get('view');
 ?>
+
+<?php if (isset($this->type) && isset($this->id)): ?>
+<script>
+    association_type = '<?php echo $this->type; ?>';
+    id = '<?php echo intval($this->id); ?>';
+    <?php if (isset($this->var)) echo sprintf('%s=%s',$this->var,$this->id); ?>
+</script>
+<?php endif; ?>
 
 <?php if ( $app->input->get('format') != "raw" ) { ?>
 <h2 id="notes_header"><?php echo TextHelper::_('COBALT_EDIT_NOTES'); ?></h2><hr />

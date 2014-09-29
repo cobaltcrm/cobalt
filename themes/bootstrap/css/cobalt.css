@@ -126,3 +126,18 @@ ul.inline.filter-sentence > li {padding: 0;}
     cursor: inherit;
     display: block;
 }
+
+/* calendar */
+div#actions, div.filters, div.dropdown_area, div#edit_menu {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px 0 #ccc;
+    display: none;
+    margin-top: 8px;
+    overflow: hidden;
+    padding: 10px;
+    position: absolute;
+    text-align: left;
+    z-index: 1;
+}

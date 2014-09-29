@@ -22,30 +22,16 @@ $person = $this->people[0];
         var association_type = 'person';
     </script>
 
-    <div data-remote="index.php?view=people&layout=edit&id=<?php echo $person['id']; ?>&format=raw&tmpl=component" class="modal hide fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel"><?php echo ucwords(TextHelper::_('COBALT_ADD_PERSON')); ?></h3>
-        </div>
-        <div class="modal-body">
-            <p></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo ucwords(TextHelper::_('COBALT_CANCEL')); ?></button>
-            <button onclick="saveProfileItem('edit_form');" class="btn btn-primary"><?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?></button>
-        </div>
-    </div>
-
     <iframe id="hidden" name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
 
 
     <div class="row-fluid">
-    <div class="span3">
-        <?php $image = !empty($person['avatar']) ? '/avatars/' . $person['avatar'] : '/images/person.png'; ?>
+    <div class="col-sm-3">
+        <?php $image = !empty($person['avatar']) ? '/avatars/' . $person['avatar'] : '/images/person_profile.png'; ?>
         <div class="row-fluid">
             <img id="avatar_img_<?php echo $person['id']; ?>" data-item-type="people" data-item-id="<?php echo $person['id']; ?>" class="avatar" src="<?php echo JUri::base() . 'src/Cobalt/media' . $image; ?>"/>
         </div>
-
+        <br />
         <div class="well" id="details">
             <div class="row-fluid">
                 <strong><?php echo TextHelper::_('COBALT_PERSON_MOBILE_PHONE'); ?></strong>
@@ -212,15 +198,15 @@ $person = $this->people[0];
         </div>
     </div>
 
-    <div class="span9">
+    <div class="col-sm-9">
     <div class="btn-group actions_container pull-right">
-        <a class="btn" role="button" href="#personModal" data-toggle="modal"><?php echo ucwords(TextHelper::_("COBALT_EDIT_BUTTON")); ?></a>
-        <button class="btn dropdown-toggle" data-toggle="dropdown">
+        <a class="btn btn-default" href="index.php?view=people&layout=edit&id=<?php echo $person['id']; ?>&format=raw&tmpl=component" data-target="#editPerson" data-toggle="modal"><?php echo ucwords(TextHelper::_("COBALT_EDIT_BUTTON")); ?></a>
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
             <li>
-                <a onclick="addDeal('person_id=<?php echo $person['id']; ?>')"><?php echo TextHelper::_('COBALT_ASSOCIATE_TO_DEAL'); ?></a>
+                <a data-target="#ajax_search_deal_dialog" data-toggle="modal"><?php echo TextHelper::_('COBALT_ASSOCIATE_TO_DEAL'); ?></a>
             </li>
             <?php if ($person['owner_id'] == UsersHelper::getUserId()) : ?>
                 <li><a onclick="shareItemDialog();"><?php echo TextHelper::_('COBALT_SHARE'); ?></a></li>
@@ -244,11 +230,12 @@ $person = $this->people[0];
                 </form>
             </li>
             <li>
+                <a onclick="exportVcard()">
+                    <?php echo TextHelper::_('COBALT_VCARD'); ?>
+                </a>
                 <form id="vcard_form" action="" method="POST">
                     <input type="hidden" name="person_id" value="<?php echo $person['id']; ?>"/>
-                    <a onclick="exportVcard()">
-                        <?php echo TextHelper::_('COBALT_VCARD'); ?>
-                    </a>
+
                 </form>
             </li>
         </ul>
@@ -406,10 +393,10 @@ $person = $this->people[0];
     <?php $this->custom_fields_view->render(); ?>
 
 
-    <h2 class="dotted"><?php echo TextHelper::_('COBALT_EDIT_NOTES'); ?></h2>
     <?php echo $person['notes']->render(); ?>
 
     <h2 class="dotted"><?php echo ucwords(TextHelper::_('COBALT_EDIT_DEALS')); ?></h2>
+    <hr>
     <div class="large_info">
         <?php $this->deal_dock->render(); ?>
     </div>
@@ -432,6 +419,7 @@ $person = $this->people[0];
         </form>
 	</span>
     <h2 class="dotted"><?php echo TextHelper::_('COBALT_EDIT_DOCUMENTS'); ?></h2>
+    <hr>
     <div class="large_info">
         <table class="table table-striped table-hover" id="documents_table">
             <?php echo $this->document_list->render(); ?>
@@ -454,3 +442,15 @@ $person = $this->people[0];
     </div>
     </div>
 <?php echo CobaltHelper::showShareDialog(); ?>
+<!-- Edit Person -->
+<div class="modal fade" id="editPerson" tabindex="-1" role="dialog" aria-labelledby="editPerson" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<script>
+    //clear modal data when close
+    $('#editPerson').on('hidden.bs.modal', function (e) {
+        $('#editPerson').removeData('bs.modal');
+    })
+</script>

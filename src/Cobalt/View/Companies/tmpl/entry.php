@@ -19,7 +19,7 @@
     <td class="notes" >
         <div class="btn-group">
             <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_CONTACTS'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="showCompanyContactsDialogModal(<?php echo $company['id']; ?>);"><i class="glyphicon glyphicon-user"></i></a>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="openNoteModal(<?php echo $company['id']; ?>,'company');"><i class="glyphicon glyphicon-file"></i></a>
+            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn" href="javascript:void(0);" onclick="Calendar.openNoteModal(<?php echo $company['id']; ?>,'company');"><i class="glyphicon glyphicon-file"></i></a>
         </div>
     </td>
 </tr>

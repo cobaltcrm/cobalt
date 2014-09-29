@@ -14,6 +14,7 @@ use Joomla\View\AbstractHtmlView;
 use JFactory;
 use JUri;
 use Cobalt\Model\Note as NoteModel;
+use Cobalt\Helper\NoteHelper;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -46,6 +47,7 @@ class Html extends AbstractHtmlView
 
         $notes = $model->getNotes($id,$view,FALSE);
         $this->notes = $notes;
+        $this->categories = NoteHelper::getCategories();
 
         //display
         return parent::render();

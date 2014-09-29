@@ -136,17 +136,6 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
               </div>
           </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
   </div>
   <div class="tab-pane fade" id="Home">
         <div id="home_info">
@@ -346,24 +335,6 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
               </div>
           </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
   <div class="tab-pane fade" id="Custom">
         <?php echo $this->edit_custom_fields_view->render(); ?>
@@ -388,3 +359,24 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
         <?php echo ucwords(TextHelper::_('COBALT_SAVE')); ?>
     </button>
 </div>
+<script>
+    CobaltAutocomplete.create({
+        id: 'addowner',
+        object: 'user',
+        fields: 'id,username',
+        display_key: 'username',
+        prefetch: {
+            ajax: {
+                type: 'post',
+                data: {
+                    published: 1
+                }
+            }
+        }
+    });
+    $('input[name=assignee_name]').typeahead({
+        highlight: true
+    },CobaltAutocomplete.getConfig('addowner')).on('typeahead:selected', function(event, item, name){
+        jQuery('input[name=assignee_id]').val(item.id);
+    });
+</script>

@@ -8,6 +8,7 @@ $this
     // Add theme stylesheets
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/bootstrap.css')
     ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/cobalt.css')
+    ->addStyleSheet($this->baseurl.'/themes/bootstrap/css/fullcalendar.css')
 
     // Add core stylesheets
     ->addStyleSheet($this->baseurl.'/src/Cobalt/media/css/datepicker.css')
@@ -15,9 +16,12 @@ $this
 
     // Add theme Scripts
     ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/jquery-ui.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bootstrap-typeahead.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/bloodhound.min.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.cluetip.min.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/fullcalendar.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 
     // Add core scripts

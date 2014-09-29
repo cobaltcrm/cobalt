@@ -75,7 +75,7 @@ $extras = '<b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>
     <td class="contacts_notes">
         <div class="btn-group">
             <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_CONTACTS'); ?>" data-placement="bottom" class="btn btn-xs btn-default" href="javascript:void(0);" onclick="showDealContactsDialogModal(<?php echo $deal->id; ?>);"><i class="glyphicon glyphicon-user"></i></a>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn btn-xs btn-default" href="javascript:void(0);" onclick="openNoteModal(<?php echo $deal->id; ?>,'deal');"><i class="glyphicon glyphicon-file"></i></a>
+            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_VIEW_NOTES'); ?>" data-placement="bottom" class="btn btn-xs btn-default" href="javascript:void(0);" onclick="Calendar.openNoteModal(<?php echo $deal->id; ?>,'deal');"><i class="glyphicon glyphicon-file"></i></a>
             <a rel="popover" title="<?php echo TextHelper::_('COBALT_VIEW_DETAILS'); ?>" data-placement="top" data-html="true" data-content='<?php echo $extras; ?>' class="btn-default btn-xs btn" href="javascript:void(0);"><i class="glyphicon glyphicon-info-sign"></i></a>
         </div>
     </td>

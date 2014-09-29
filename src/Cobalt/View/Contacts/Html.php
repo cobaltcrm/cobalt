@@ -13,6 +13,7 @@ namespace Cobalt\View\Contacts;
 use Joomla\View\AbstractHtmlView;
 use JFactory;
 use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
