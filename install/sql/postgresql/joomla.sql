@@ -2150,7 +2150,7 @@ CREATE TABLE "#__users" (
   "companies_columns" text NULL,
   "fullscreen" smallint DEFAULT 0 NOT NULL,
   "color" varchar(255) DEFAULT NULL,
-  "published" smallint DEFAULT 0 NOT NULL,
+  "published" smallint DEFAULT 1,
   "password" varchar(255) DEFAULT NULL,
   "name" varchar(255) DEFAULT NULL,
   "email" varchar(100) DEFAULT NULL,
