@@ -252,7 +252,10 @@ class Deal extends DefaultModel
 
     public function _buildQuery()
     {
-        $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
+		if ($this->db->name=='mysqli')
+		{
+			$this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
+		}
 
         //set defaults
         $id = $this->_id;

@@ -286,8 +286,10 @@ class People extends DefaultModel
         /** Large SQL Selections **/
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        $db->setQuery("SET SQL_BIG_SELECTS=1");
-        $db->query();
+		if ($this->db->name=='mysqli')
+		{
+			$this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
+		}
 
         $view = $this->app->input->get('view');
         $layout = $this->app->input->get('layout');
