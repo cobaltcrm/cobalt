@@ -547,8 +547,27 @@ var Cobalt = {
         }
     },
 
-    closeTaskEvent: function (type){
+    closeTaskEvent: function (type) {
         jQuery("#edit_"+type).dialog('close');
+    },
+
+    seekImport: function(seek) {
+        var current_import = Cobalt.current_import || 0;
+        var next_import = current_import + seek;
+        var import_length = jQuery('.imported_row').length;
+
+        jQuery("#editForm").innerHeight(jQuery("#editForm").css('height').replace('px', ''));
+
+        if (next_import >= 0 && next_import <= (import_length - 1)) {
+            jQuery("#import_entry_" + current_import).fadeOut('fast', function() {
+                jQuery("#viewing_entry").fadeOut('fast',function() {
+                    jQuery("#viewing_entry").html(next_import + 1)
+                    jQuery("#viewing_entry").fadeIn('fast');
+                })
+                jQuery("#import_entry_" + next_import).fadeIn('fast');
+            });
+            Cobalt.current_import = next_import;
+        }
     }
 };
 
