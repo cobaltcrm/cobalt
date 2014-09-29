@@ -6,3 +6,6 @@
 /build/packaging
 /build/packages/*
 !/build/packages/.placeholder
+/uploads/companies/*
+/uploads/deals/*
+/uploads/people/*

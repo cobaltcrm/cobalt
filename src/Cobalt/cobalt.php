@@ -96,6 +96,8 @@ if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
 
     //load javascript language
     TemplateHelper::loadJavascriptLanguage();
+
+    TemplateHelper::showMessages();
 }
 
 if (!$loggedIn && !($controllerObj instanceof Cobalt\Controller\Login)) {

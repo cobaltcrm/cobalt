@@ -660,17 +660,18 @@ final class Application extends AbstractWebApplication
      * @param	string	An optional message to display on redirect.
      * @param	string  An optional message type.
      * @param	boolean	True if the page is 301 Permanently Moved, otherwise 303 See Other is assumed.
-     * @param	boolean	True if the enqueued messages are passed to the redirection, false else.
      * @return none; calls exit().
      * @since	1.5
      * @see		JApplication::enqueueMessage()
      */
-    public function redirect($url, $msg='', $msgType='message', $moved = false, $persistMsg = true)
+    public function redirect($url, $msg = '', $msgType = 'message', $moved = false)
     {
-        if (!$persistMsg) {
-            $this->_messageQueue = array();
+        if ($msg)
+        {
+            $this->enqueueMessage($msg, $msgType);
         }
-        parent::redirect($url, $msg, $msgType, $moved);
+
+        parent::redirect($url, $moved);
     }
 
     public function getClientId()

@@ -102,6 +102,9 @@ ul.inline.filter-sentence > li {padding: 0;}
     padding: 3px 0;
     border-bottom: 1px solid #ccc;
 }
+#site_search_input {
+    background-color: #fff !important;
+}
 
 /* File Button */
 .btn-file {

@@ -26,13 +26,13 @@ class Export extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Determine request type
-        $download_type = $app->input->get('list_type');
+        $download_type = $app->input->getCmd('list_type');
 
         //Generate CSV data based on request type
         $data = $this->getCsvData($download_type);
 
         //return csv file
-        return($this->generateCsv($data['header'],$data['rows']));
+        return ($this->generateCsv($data['header'], $data['rows']));
 
     }
 
@@ -49,7 +49,8 @@ class Export extends DefaultModel
 
         $export_ids = $app->input->get('ids');
 
-        switch ($data_type) {
+        switch ($data_type)
+        {
             case "deals":
                 $model = new Deal;
                 $data = $model->getDeals($export_ids);
@@ -76,7 +77,7 @@ class Export extends DefaultModel
             break;
             case "notes":
                 $model = new Note;
-                $data = $model->getNotes(NULL,NULL,FALSE);
+                $data = $model->getNotes(NULL, NULL, FALSE);
             break;
             case "custom_report":
                 $model = new Report;
@@ -85,11 +86,12 @@ class Export extends DefaultModel
 
         }
 
-        if ( count($data) ) {
-            $header = array_keys($data[0]);
+        if (count($data))
+        {
+            $header = array_keys((array) $data[0]);
         }
 
-        return array('header'=>$header,'rows'=>$data);
+        return array('header' => $header, 'rows' => $data);
 
     }
 
@@ -99,22 +101,25 @@ class Export extends DefaultModel
      * @param  [type] $data   [description]
      * @return [type] [description]
      */
-    public function generateCsv($header,$data)
+    public function generateCsv($header, $data)
     {
         $str = "";
 
-        if ( count($header) ) {
-            $str .= implode(',',$header)."\r\n";
+        if (count($header))
+        {
+            $str .= implode(',', $header) . "\r\n";
         }
 
-        if ( count($data) ) {
-            foreach ($data as $row) {
-                $str .= implode(',',$row)."\r\n";
+        if (count($data))
+        {
+            foreach ($data as $row)
+            {
+                $row = (array) $row;
+                $str .= implode(',', $row) . "\r\n";
             }
         }
 
         return $str;
-
     }
 
     /**
@@ -147,7 +152,5 @@ class Export extends DefaultModel
         $str .= "END:VCARD\r\n";
 
         return $str;
-
     }
-
 }
