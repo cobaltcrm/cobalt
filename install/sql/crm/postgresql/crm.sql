@@ -11,7 +11,7 @@ CREATE TABLE "#__banter_rooms" (
 -- Table: #__branding
 --
 CREATE TABLE "#__branding" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"header" varchar(255) NOT NULL,
 	"tabs_hover" varchar(255) NOT NULL,
 	"tabs_hover_text" varchar(255) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE "#__branding" (
 -- Table: #__companies
 --
 CREATE TABLE "#__companies" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"owner_id" int NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"description" text NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE "#__companies" (
 	"address_country" varchar(255),
 	"website" varchar(255) NOT NULL,
 	"created" timestamp NOT NULL,
-	"notes" text NOT NULL,
+	"notes" text,
 	"phone" varchar(255) NOT NULL,
 	"modified" timestamp NOT NULL,
 	"avatar" varchar(255),
@@ -63,7 +63,7 @@ CREATE TABLE "#__companies" (
 -- Table: #__config
 --
 CREATE TABLE "#__config" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"timezone" varchar(255),
 	"imap_host" varchar(255),
 	"imap_user" varchar(255),
@@ -94,7 +94,7 @@ CREATE TABLE "#__config" (
 -- Table: #__conversations
 --
 CREATE TABLE "#__conversations" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"deal_id" int NOT NULL,
 	"author" int NOT NULL,
 	"created" timestamp NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE "#__conversations" (
 -- Table: #__deal_custom
 --
 CREATE TABLE "#__deal_custom" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"values" varchar(255) NOT NULL,
 	"type" varchar(250) NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE "#__deal_custom_cf" (
 -- Table: #__deal_status
 --
 CREATE TABLE "#__deal_status" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"ordering" int,
 	"class" varchar(255),
@@ -146,7 +146,7 @@ CREATE TABLE "#__deal_status" (
 -- Table: #__deals
 --
 CREATE TABLE "#__deals" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"summary" text NOT NULL,
 	"company_id" int NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE "#__deals" (
 -- Table: #__documents
 --
 CREATE TABLE "#__documents" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"filename" varchar(255) NOT NULL,
 	"name" varchar(255),
 	"association_id" int NOT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE "#__documents" (
 -- Table: #__events
 --
 CREATE TABLE "#__events" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"owner_id" int NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"description" text NOT NULL,
@@ -221,7 +221,7 @@ CREATE TABLE "#__events" (
 -- Table: #__events_categories
 --
 CREATE TABLE "#__events_categories" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"created" timestamp NOT NULL,
 	"modified" timestamp NOT NULL,
@@ -241,7 +241,7 @@ CREATE TABLE "#__events_cf" (
 -- Table: #__formwizard
 --
 CREATE TABLE "#__formwizard" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255),
 	"description" text,
 	"type" varchar(250),
@@ -260,7 +260,7 @@ CREATE TABLE "#__formwizard" (
 -- Table: #__goals
 --
 CREATE TABLE "#__goals" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"owner_id" int NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"goal_type" varchar(250) NOT NULL,
@@ -281,7 +281,7 @@ CREATE TABLE "#__goals" (
 -- Table: #__history
 --
 CREATE TABLE "#__history" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"type" varchar(250),
 	"type_id" int,
 	"user_id" int,
@@ -297,7 +297,7 @@ CREATE TABLE "#__history" (
 -- Table: #__login_history
 --
 CREATE TABLE "#__login_history" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"user_id" int,
 	"date" date,
 	PRIMARY KEY ("id")
@@ -307,7 +307,7 @@ CREATE TABLE "#__login_history" (
 -- Table: #__menu
 --
 CREATE TABLE "#__menu" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"menu_items" text,
 	"modified" timestamp,
 	PRIMARY KEY ("id")
@@ -317,7 +317,7 @@ CREATE TABLE "#__menu" (
 -- Table: #__notes
 --
 CREATE TABLE "#__notes" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"deal_id" int NOT NULL,
 	"person_id" int NOT NULL,
 	"name" varchar(255) NOT NULL,
@@ -336,7 +336,7 @@ CREATE TABLE "#__notes" (
 -- Table: #__notes_categories
 --
 CREATE TABLE "#__notes_categories" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"created" timestamp NOT NULL,
 	"modified" timestamp NOT NULL,
@@ -347,7 +347,7 @@ CREATE TABLE "#__notes_categories" (
 -- Table: #__people
 --
 CREATE TABLE "#__people" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"uid" int NOT NULL,
 	"owner_id" int NOT NULL,
 	"first_name" varchar(255) NOT NULL,
@@ -406,7 +406,7 @@ CREATE TABLE "#__people_cf" (
 -- Table: #__people_status
 --
 CREATE TABLE "#__people_status" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"color" varchar(255) NOT NULL,
 	"created" timestamp NOT NULL,
@@ -419,7 +419,7 @@ CREATE TABLE "#__people_status" (
 -- Table: #__people_tags
 --
 CREATE TABLE "#__people_tags" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"created" timestamp NOT NULL,
 	"modified" timestamp NOT NULL,
@@ -438,7 +438,7 @@ CREATE TABLE "#__people_tags_cf" (
 -- Table: #__reports
 --
 CREATE TABLE "#__reports" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"owner_id" int NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"fields" text NOT NULL,
@@ -460,7 +460,7 @@ CREATE TABLE "#__shared" (
 -- Table: #__sources
 --
 CREATE TABLE "#__sources" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"type" varchar(250) NOT NULL,
 	"created" timestamp NOT NULL,
@@ -474,7 +474,7 @@ CREATE TABLE "#__sources" (
 -- Table: #__stages
 --
 CREATE TABLE "#__stages" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"percent" int NOT NULL,
 	"created" timestamp NOT NULL,
@@ -489,7 +489,7 @@ CREATE TABLE "#__stages" (
 -- Table: #__teams
 --
 CREATE TABLE "#__teams" (
-	"team_id" int NOT NULL,
+	"team_id" SERIAL,
 	"leader_id" int NOT NULL,
 	"name" varchar(255),
 	PRIMARY KEY (team_id)
@@ -499,7 +499,7 @@ CREATE TABLE "#__teams" (
 -- Table: #__template_data
 --
 CREATE TABLE "#__template_data" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"template_id" int NOT NULL,
 	"created" timestamp NOT NULL,
 	"modified" timestamp NOT NULL,
@@ -513,7 +513,7 @@ CREATE TABLE "#__template_data" (
 -- Table: #__templates
 --
 CREATE TABLE "#__templates" (
-	"id" int NOT NULL,
+	"id" SERIAL,
 	"name" varchar(255) NOT NULL,
 	"type" varchar(250),
 	"created" timestamp NOT NULL,
