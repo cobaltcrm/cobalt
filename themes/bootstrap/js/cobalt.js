@@ -211,16 +211,16 @@ var Cobalt = {
     onSaveSuccess: function(response, status, xhr, form) {
         Cobalt.stopFormBeingBusy(form);
 
+        Cobalt.updateDataTables();
+
         //display alert
         CobaltResponse.alertMessage(response);
-        CobaltResponse.modalAction('.modal',response);
+        CobaltResponse.modalAction('.modal', response);
         CobaltResponse.reloadPage(response);
         // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
             Cobalt.updateStuff(response.item);
         }
-
-        Cobalt.updateDataTables();
 
         // Dispatch Events
         Cobalt.trigger('onSaveSuccess', response);
@@ -395,6 +395,8 @@ var Cobalt = {
         });
         var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
         Cobalt.save(data);
+
+        jQuery('#list_edit_actions').hide('fast');
     },
 
     /**
@@ -973,7 +975,6 @@ var Notes = {
 
     initEvents: function() {
         Cobalt.on('onSaveSuccess', function (event, response){
-            console.log(response);
             // reload notes
             if (typeof response.alert !== 'undefined') {
                 if (response.alert.type == 'success') {
