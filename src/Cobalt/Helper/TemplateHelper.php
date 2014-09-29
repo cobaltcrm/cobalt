@@ -208,8 +208,8 @@ class TemplateHelper
         $list_html .= '</a>';
         $list_html .= '</li>';
         $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_SEARCH').'" data-placement="bottom">';
-        $list_html .= '<a class="block-btn" href="javascript:void(0);">';
-        $list_html .= '<i onclick="showSiteSearch();" class="glyphicon glyphicon-search icon-white"></i>';
+        $list_html .= '<a class="block-btn" href="#" onclick="Cobalt.showSiteSearch(); return false;">';
+        $list_html .= '<i class="glyphicon glyphicon-search icon-white"></i>';
         $list_html .= '</a>';
         $list_html .= '</li>';
 
@@ -235,9 +235,17 @@ class TemplateHelper
         $list_html .= '</ul>';
 
         $list_html .= '</div>';
-        $list_html .= '<div style="display:none;" class="pull-right" id="site_search">';
-        $list_html .= '<input class="inputbox site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
-        $list_html .= '</div></div>';
+        $list_html .= '<div class="container">';
+        $list_html .= '<div style="display:none;" class="pull-right col-xs-3" id="site_search">';
+        $list_html .= '<form action="index.php" id="site_search_form">';
+        $list_html .= '<input type="text" class="form-control site_search" name="site_search_input" id="site_search_input" placeholder="'.TextHelper::_('COBALT_SEARCH_SITE').'" value="" />';
+        $list_html .= '<input type="hidden" name="view" />';
+        $list_html .= '<input type="hidden" name="id" />';
+        $list_html .= '<input type="hidden" name="layout" />';
+        $list_html .= '</form>';
+        $list_html .= '</div>';
+        $list_html .= '</div>';
+        $list_html .= '</div>';
 
         //return html
         echo $list_html;
@@ -450,6 +458,9 @@ class TemplateHelper
         TextHelper::script('COBALT_ADDING_EVENT');
         TextHelper::script('COBALT_ADDING_TASK');
         TextHelper::script('COBALT_CONTACTS');
+        TextHelper::script('COBALT_DEALS_HEADER');
+        TextHelper::script('COBALT_COMPANY_HEADER');
+        TextHelper::script('COBALT_PEOPLE_HEADER');
     }
 
     public static function getListEditActions()

@@ -570,6 +570,102 @@ var Cobalt = {
             });
             Cobalt.current_import = next_import;
         }
+    },
+
+    showSiteSearch: function() {
+
+        jQuery("#site_search").slideToggle('fast');
+        var searchInput = jQuery("#site_search_input").focus().val('');
+        var searchForm = jQuery("#site_search_form");
+
+        var CompaniesAutocomplete = CobaltAutocomplete.create({
+            id: 'siteSearch.company',
+            object: 'company',
+            fields: 'id,name',
+            display_key: 'name',
+            prefetch: {
+                filter: function(list) {
+                    return $.map(list, function (item) {
+                        item.association_type = 'company'; return item;
+                    });
+                },
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+
+        CompaniesAutocomplete.templates = {
+            header: '<h3 class="autocomplete-title">'+Joomla.JText._("COBALT_COMPANY_HEADER")+'</h3>'
+        };
+
+        var DealAutocomplete = CobaltAutocomplete.create({
+            id: 'siteSearch.deal',
+            object: 'deal',
+            fields: 'id,name',
+            display_key: 'name',
+            prefetch: {
+                filter: function(list) {
+                    return $.map(list, function (item) {
+                        item.association_type = 'deal'; return item;
+                    });
+                },
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+
+        DealAutocomplete.templates = {
+            header: '<h3 class="autocomplete-title">'+Joomla.JText._("COBALT_DEALS_HEADER")+'</h3>'
+        };
+
+        var PersonAutocomplete = CobaltAutocomplete.create({
+            id: 'siteSearch.person',
+            object: 'people',
+            fields: 'id,first_name,last_name',
+            display_key: 'name',
+            prefetch: {
+                filter: function(list) {
+                    return $.map(list, function (item) {
+                        item.association_type = 'person'; item.name = item.first_name+' '+item.last_name; return item;
+                    });
+                },
+                ajax: {
+                    type: 'post',
+                    data: {
+                        published: 1
+                    }
+                }
+            }
+        });
+
+        PersonAutocomplete.templates = {
+            header: '<h3 class="autocomplete-title">'+Joomla.JText._("COBALT_PEOPLE_HEADER")+'</h3>'
+        };
+
+        searchInput
+        .typeahead({highlight: true}, DealAutocomplete, CompaniesAutocomplete, PersonAutocomplete)
+        .on('typeahead:selected', function(event, item, name) {
+            var view = '';
+            if (item.association_type === 'deal') {
+                view = 'deals';
+            } else if (item.association_type === 'company') {
+                view = 'companies';
+            } else if (item.association_type === 'person') {
+                view = 'people';
+            }
+            searchForm.find('input[name=view]').val(view);
+            searchForm.find('input[name=layout]').val(item.association_type);
+            searchForm.find('input[name=id]').val(item.id);
+            searchForm.submit();
+        });
     }
 };
 
@@ -710,6 +806,8 @@ var CobaltAutocomplete = {
             displayKey: config.display_key,
             source: this.bloodhound[id].ttAdapter()
         };
+
+        return this.config[id];
     },
 
     getBloodhound: function (id) {
