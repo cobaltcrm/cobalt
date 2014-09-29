@@ -73,7 +73,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </small>
 <?php echo TemplateHelper::getListEditActions(); ?>
 <form method="post" id="list_form" action="<?php echo RouteHelper::_('index.php?view=documents'); ?>">
-    <table class="table table-striped table-hover data-table" id="documents">
+    <table class="table table-hover table-striped data-table table-bordered dataTable no-footer" id="documents">
         <?php echo $this->document_list->render(); ?>
     </table>
     <input type="hidden" name="list_type" value="documents" />

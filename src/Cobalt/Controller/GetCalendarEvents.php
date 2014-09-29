@@ -21,7 +21,7 @@ class GetCalendarEvents extends DefaultController
     public function execute()
     {
         //post data
-        $data = $this->input->getRequest('get');
+        $data = $this->input->getArray();
 
         //set date parameters
         $start_date = DateHelper::formatDBDate(date("Y-m-d 00:00:00",$data['start']));

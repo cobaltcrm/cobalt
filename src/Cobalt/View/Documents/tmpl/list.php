@@ -26,13 +26,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_UPLOADED'); ?></th>
     </tr>
     </thead>
-   <tbody class="results" id="list">
+   <tbody id="list">
 
 <?php
 
     if ( count($this->documents) > 0 ) {
         foreach ($this->documents as $key => $document) {
             $k = $key%2;
+            $row_class = $k == 0 ? 'odd' : 'even' ;
 
             //assign association link
             switch ($document['association_type']) {
@@ -44,7 +45,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 case "person":
                     $view = "people";
                     $association_type = "person";
-                    $document['association_name'] = $document['first_name']." ".$document['last_name'];
+                    $document['association_name'] = $document['owner_first_name']." ".$document['owner_last_name'];
                     break;
                 case "company";
                     $view = "companies";
@@ -58,7 +59,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $association_link = "";
             }
 
-            echo '<tr class="document_'.$key.'" id="document_row_'.$document['id'].'" class="cobalt_row_'.$k.'">';
+            echo '<tr id="document_row_'.$document['id'].'" role="row" class="'.$row_class.'">';
+                echo '<td class="text-center"><input type="checkbox" value="'.$document['id'].'" name="ids[]" class="export"></td>';
                 echo '<td><img width="30px" height="30px" src="'.JURI::base().'src/Cobalt/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
                 echo '<td><div class="dropdown"><span class="caret"></span> <a href="javascript:void(0);" class="document_edit dropdown-toggle" role="button" data-toggle="dropdown" id="'.$document['id'].'">'.$document['name'].'</a>';
                 echo '<ul class="dropdown-menu" role="menu">';

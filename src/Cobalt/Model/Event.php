@@ -20,6 +20,7 @@ use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\TextHelper;
 
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -814,7 +815,7 @@ class Event extends DefaultModel
         $db = JFactory::getDBO();
 
         if (!$id) {
-            $event = JTable::getInstance('Event','Table');
+            $event = new EventTable();
 
             return $event;
         }
@@ -985,7 +986,7 @@ class Event extends DefaultModel
         if ( is_array($results) && array_key_exists(0,$results) ) {
             return $results[0];
         } else {
-            $table = JTable::getInstance('event','Table');
+            $table = new EventTable();
 
             return $table;
         }
@@ -1027,7 +1028,7 @@ class Event extends DefaultModel
 
         //return
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
 
         return true;
 
@@ -1125,7 +1126,7 @@ class Event extends DefaultModel
         $date = $app->input->get('date');
         $repeats = $app->input->get('repeats');
         $event_type = ( $app->input->get('event_type') ) ? $app->input->get('event_type') : $app->input->get('type');
-        $data = $app->input->getRequest('post');
+        $data = $app->input->getArray();
         if ( $id != null ) $data['event_id'] = $id;
 
         $db = JFactory::getDBO();
@@ -1142,7 +1143,7 @@ class Event extends DefaultModel
 
         //Load Tables
         $rowId = $id ? $id : $data['event_id'];
-        $oldRow = JTable::getInstance('event','Table');
+        $oldRow = new EventTable();
         $oldRow->load($rowId);
 
         //remove individual events
@@ -1273,12 +1274,13 @@ class Event extends DefaultModel
                 }
             }
 
-        $row = JTable::getInstance('event','Table');
+        $row = new EventTable();
         $row->load($rowId);
         $status = "deleted";
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
+        return true;
     }
 
     /**
@@ -1298,7 +1300,7 @@ class Event extends DefaultModel
         $completed = $app->input->get('completed') != "" ? $app->input->get('completed') : 1;
 
         //Load Tables
-        $oldRow = JTable::getInstance('event','Table');
+        $oldRow = new EventTable();
         $oldRow->load($event_id);
 
         //We are only editing a single event entry OR a parent entry
@@ -1358,7 +1360,7 @@ class Event extends DefaultModel
 
         }
 
-        $row = JTable::getInstance('event','Table');
+        $row = new EventTable();
         $row->load($event_id);
         $status = "completed";
 
@@ -1406,7 +1408,7 @@ class Event extends DefaultModel
             $dates = $db->loadObjectList();
 
             //Load Tables
-            $oldRow = JTable::getInstance('event','Table');
+            $oldRow = new EventTable();
             $oldRow->load($event_id);
 
             if ( count($dates) > 0 ) {
@@ -1427,7 +1429,7 @@ class Event extends DefaultModel
                 }
             }
 
-            $row = JTable::getInstance('event','Table');
+            $row = new EventTable();
             $row->load($event_id);
             $status = "postponed";
 
