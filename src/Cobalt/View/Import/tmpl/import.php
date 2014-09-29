@@ -28,8 +28,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <div class="col-sm-10">
         <h3 class="help-block"><?php echo TextHelper::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED'); ?></h3>
         <p class="help-block"><?php echo TextHelper::_('COBALT_ENSURE_YOUR_FILE_IS_FORMATTED_INSTRUCTIONS'); ?></p>
-        <form id="download_import_template" method="post">
-            <p><input class="btn btn-primary" onclick="downloadImportTemplate()" type="button" value="<?php echo TextHelper::_('COBALT_DOWNLOAD_TEMPLATE'); ?>" /></p>
+        <form id="download_import_template" method="post" action="index.php?task=downloadImportTemplate&tmpl=component&format=raw">
+            <p>
+                <input class="btn btn-primary" type="submit" value="<?php echo TextHelper::_('COBALT_DOWNLOAD_TEMPLATE'); ?>" />
+            </p>
             <input type="hidden" name="template_type" value="<?php echo $this->import_type; ?>" />
         </form>
     </div>
