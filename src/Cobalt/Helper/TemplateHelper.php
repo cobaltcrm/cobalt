@@ -468,4 +468,32 @@ class TemplateHelper
         return $list_html;
     }
 
+    public static function showMessages()
+    {
+        $app            = \Cobalt\Container::fetch('app');
+        $document       = $app->getDocument();
+        $messageTypes   = $app->getMessageQueue();
+        $js             = '';
+
+        if (is_array($messageTypes) && $messageTypes)
+        {
+            foreach ($messageTypes as $type => $messages)
+            {
+                if (is_array($messages) && $messages)
+                {
+                    foreach ($messages as $message)
+                    {
+                        $js .= "Cobalt.modalMessage('', '" . $message . "', '" . $type . "');"."\n";
+                    }
+                }
+            }
+            $document->addScriptDeclaration("
+                jQuery(function() {
+                    " . $js . "
+                });
+            ");
+
+            $app->clearMessageQueue();
+        }
+    }
 }
