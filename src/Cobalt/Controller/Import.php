@@ -22,15 +22,13 @@ class Import extends DefaultController
     public function execute()
     {
         $success = false;
+        $data = $this->input->get('import_id', array(), 'ARRAY');
+        $import_type = $this->input->getString('import_type');
 
-        $data = $this->input->getRequest('post');
-
-        if ( is_array($data) && count($data) > 0 ) {
-
-            $import_type = $data['import_type'];
-            unset($data['import_type']);
-
-            switch ($import_type) {
+        if (is_array($data) && count($data) > 0)
+        {
+            switch ($import_type)
+            {
                 case "companies":
                         $import_model = "company";
                     break;
@@ -42,25 +40,26 @@ class Import extends DefaultController
                     break;
             }
 
-            if ( isset($import_model) ) {
+            if (isset($import_model))
+            {
                 $model = new ImportModel;
-                if ( $model->importCSVData($data['import_id'],$import_model) ) {
+
+                if ($model->importCSVData($data, $import_model))
+                {
                     $success = true;
                 }
             }
         }
 
-        if ($success) {
-
+        if ($success)
+        {
             $msg = TextHelper::_('COBALT_IMPORT_WAS_SUCCESSFUL');
-            $this->app->redirect(RouteHelper::_('index.php?view='.$import_type),$msg);
-
-        } else {
-
+            $this->app->redirect(RouteHelper::_('index.php?view=' . $import_type), $msg);
+        }
+        else
+        {
             $msg = TextHelper::_('COBALT_ERROR_IMPORTING');
-            $this->app->redirect(RouteHelper::_('index.php?view='.$import_type),$msg);
-
+            $this->app->redirect(RouteHelper::_('index.php?view=' . $import_type), $msg);
         }
     }
-
 }
