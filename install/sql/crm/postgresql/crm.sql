@@ -49,7 +49,7 @@ CREATE TABLE "#__companies" (
 	"phone" varchar(255) NOT NULL,
 	"modified" timestamp NOT NULL,
 	"avatar" varchar(255),
-	"published" int,
+	"published" int DEFAULT 1,
 	"fax" varchar(255),
 	"email" varchar(255),
 	"twitter_user" text,
@@ -100,7 +100,7 @@ CREATE TABLE "#__conversations" (
 	"created" timestamp NOT NULL,
 	"conversation" text NOT NULL,
 	"modified" timestamp NOT NULL,
-	"published" int,
+	"published" int DEFAULT 1,
 	PRIMARY KEY ("id")
 );
 
@@ -164,7 +164,7 @@ CREATE TABLE "#__deals" (
 	"archived" int NOT NULL,
 	"actual_close" timestamp NOT NULL,
 	"primary_contact_id" int NOT NULL,
-	"published" int,
+	"published" int DEFAULT 1,
 	"last_viewed" timestamp,
 	PRIMARY KEY ("id")
 );
@@ -213,7 +213,7 @@ CREATE TABLE "#__events" (
 	"actual_close" timestamp NOT NULL,
 	"excludes" text NOT NULL,
 	"parent_id" int NOT NULL,
-	"published" int,
+	"published" int DEFAULT 1,
 	PRIMARY KEY ("id")
 );
 
@@ -273,7 +273,7 @@ CREATE TABLE "#__goals" (
 	"start_date" timestamp NOT NULL,
 	"end_date" timestamp NOT NULL,
 	"created" timestamp NOT NULL,
-	"published" int,
+	"published" int DEFAULT 1,
 	PRIMARY KEY ("id")
 );
 
@@ -327,7 +327,7 @@ CREATE TABLE "#__notes" (
 	"created" timestamp NOT NULL,
 	"modified" timestamp NOT NULL,
 	"owner_id" int NOT NULL,
-	"published" int,
+	"published" int DEFAULT 1,
 	"event_id" int,
 	PRIMARY KEY ("id")
 );
@@ -388,7 +388,7 @@ CREATE TABLE "#__people" (
 	"home_phone" varchar(255) NOT NULL,
 	"avatar" varchar(255),
 	"aim" varchar(255),
-	"published" int,
+	"published" int DEFAULT 1,
 	PRIMARY KEY ("id")
 );
 
@@ -528,6 +528,62 @@ CREATE TABLE "#__templates" (
 CREATE TABLE "#__users_email_cf" (
 	"member_id" int NOT NULL,
 	"email" varchar(255) NOT NULL
+);
+
+CREATE TYPE people_type AS ENUM ('number','text','currency','picklist','forecast','date');
+
+-- 
+-- Table: #__people_custom
+--
+CREATE TABLE IF NOT EXISTS "#__people_custom" (
+	"id" SERIAL,
+	"name" varchar(255) NOT NULL,
+	"values" varchar(255) NOT NULL,
+	"type" people_type,
+	"required" smallint NOT NULL,
+	"multiple_selections" smallint NOT NULL,
+	"created" TIMESTAMP WITHOUT TIME ZONE,
+	"modified" TIMESTAMP WITHOUT TIME ZONE,
+	"ordering" int DEFAULT NULL,
+	PRIMARY KEY ("id")
+);
+
+-- 
+-- Table: #__people_custom_cf
+--
+CREATE TABLE IF NOT EXISTS "#__people_custom_cf" (
+	"people_id" SERIAL,
+	"custom_field_id" int NOT NULL,
+	"value" text NOT NULL,
+	"modified" TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE TYPE company_type AS ENUM ('number','text','currency','picklist','forecast','date');
+
+-- 
+-- Table: #__company_custom
+--
+CREATE TABLE IF NOT EXISTS "#__company_custom" (
+	"id" SERIAL,
+	"name" varchar(255) NOT NULL,
+	"values" varchar(255) NOT NULL,
+	"type" company_type,
+	"required" smallint NOT NULL,
+	"multiple_selections" smallint NOT NULL,
+	"created" TIMESTAMP WITHOUT TIME ZONE,
+	"modified" TIMESTAMP WITHOUT TIME ZONE,
+	"ordering" int DEFAULT NULL,
+	PRIMARY KEY ("id")
+);
+
+-- 
+-- Table: #__company_custom_cf
+--
+CREATE TABLE IF NOT EXISTS "#__company_custom_cf" (
+	"company_id" SERIAL,
+	"custom_field_id" int NOT NULL,
+	"value" text NOT NULL,
+	"modified" TIMESTAMP WITHOUT TIME ZONE
 );
 
 INSERT INTO "#__branding" ("id", "header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES (1, 'eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 0, '2012-02-21 16:11:03', 'cobalt-3d.png', null, null, null, 'COBALT');
