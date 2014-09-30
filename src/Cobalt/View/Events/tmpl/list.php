@@ -37,9 +37,24 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     echo '<input type="checkbox" name="ids[]" value="'.$id.'" />';
                 }
             echo '</td>';
-            echo '<td><a class="dropdown '.$completed.'" id="event_menu_'.$event['id'].'_link" >';
+            echo '<td><div class="dropdown"><a data-toggle="dropdown" role="button" class="dropdown-toggle '.$completed.'" id="event_menu_'.$event['id'].'_link" >';
             echo $event['name'];
-            echo '</a></td>';
+            echo '</a>';
+
+        echo '<ul class="dropdown-menu" role="menu" aria-labelledby="event_menu_'.$event['id'].'_link">';
+        if ($event['completed'] == 1) {
+            echo '<li><a href="javascript:void(0);" onclick="Calendar.markEventIncomplete(this)" >'.TextHelper::_('COBALT_MARK_INCOMPLETE').'</a></li>';
+        } else {
+            echo '<li><a href="javascript:void(0);" onclick="Calendar.markEventComplete(this)" >'.TextHelper::_('COBALT_MARK_COMPLETE').'</a></li>';
+            echo '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,1)" >'.TextHelper::_('COBALT_POSTPONE_1_DAY').'</a></li>';
+            echo '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,7)" >'.TextHelper::_('COBALT_POSTPONE_7_DAYS').'</a></li>';
+        }
+        $id = ( array_key_exists('parent_id',$event) && $event['parent_id'] ) != 0 ? $event['parent_id'] : $event['id'];
+        echo '<li><a href="javascript:void(0);" onclick="Calendar.editEvent('.$id.',\''.$event['type'].'\')" >'.TextHelper::_('COBALT_EDIT').'</a></li>';
+        echo '<li><a href="javascript:void(0);" onclick="Calendar.removeCalendarEvent(this)" >'.TextHelper::_('COBALT_DELETE').'</a></li>';
+        echo '</ul>';
+
+            echo '</div></td>';
             echo '<td class="due_date_column">'.$due_date.' '.DateHelper::formatTime($time,"(".UsersHelper::getTimeFormat().")").'</td>';
             echo '<td>';
                 if ($event['deal_name']) { echo '<a href='.RouteHelper::_('index.php?view=deals&layout=deal&id='.$event['deal_id']).'>'.$event['deal_name'].'</a><br />';}
