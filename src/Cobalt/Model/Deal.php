@@ -333,7 +333,7 @@ class Deal extends DefaultModel
             $queryString .= 'd.modified,d.category,d.expected_close,d.created,SUM(d.amount) AS filtered_total,';
             $queryString .= '( d.amount * ( d.probability / 100 )) AS forecast,';
             $queryString .= 'c.name as company_name,';
-            $queryString .= 'IF(stat.name != "",stat.name,"none") as status_name,';
+            $queryString .= '(CASE WHEN (stat.name IS NOT NULL) THEN stat.name ELSE NULL END) as status_name,';
             $queryString .= 'source.name as source_name,';
             $queryString .= 'stage.name as stage_name,stage.percent,';
             $queryString .= 'p.first_name as primary_contact_first_name,p.last_name as primary_contact_last_name,';
@@ -354,7 +354,7 @@ class Deal extends DefaultModel
             $queryString  = 'd.*,SUM(d.amount) AS filtered_total,';
             $queryString .= '( d.amount * ( d.probability / 100 )) AS forecast,';
             $queryString .= 'c.name as company_name,';
-            $queryString .= 'IF(stat.name != "",stat.name,"none") as status_name,';
+            $queryString .= '(CASE WHEN (stat.name IS NOT NULL) THEN stat.name ELSE NULL END) as status_name,';
             $queryString .= 'source.name as source_name,';
             $queryString .= 'stage.name as stage_name,stage.percent,';
             $queryString .= 'event_cf.*,';

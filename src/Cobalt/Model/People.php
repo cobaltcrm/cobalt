@@ -898,7 +898,7 @@ class People extends DefaultModel
     {
     $this->query->select("DISTINCT(p.id),p.*,
                         u.first_name as owner_first_name,u.last_name as owner_last_name,
-                        c.id as company_id,c.name as company_name,IF(p.id=d2.primary_contact_id, 1, 0) AS is_primary_contact");
+                        c.id as company_id,c.name as company_name,(CASE WHEN (p.id=d2.primary_contact_id) THEN 1 ELSE 0 END) AS is_primary_contact");
 
     $this->query->from("#__people AS p");
     $this->query->leftJoin("#__people_cf as cf ON cf.person_id = p.id");
