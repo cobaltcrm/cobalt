@@ -2277,23 +2277,17 @@ var Calendar = {
                          **/
 
                         var dataString = "event_id="+calEvent.id+"&parent_id="+calEvent.parent_id+"&date="+date+"&event_type="+calEvent.type+"&repeats="+calEvent.repeats+"&end_time="+end_date+"&start_time="+date+"&due_date="+date;
-                        jQuery.ajax({
-                            url:'index.php?task=markEventComplete&format=raw&tmpl=component',
-                            type:'post',
-                            data:dataString,
-                            dataType:'json',
-                            success:function(data){
-                                if ( calEvent.parent_id != 0 ){
-                                    calEvent.id = data.id;
-                                    calEvent.parent_id = data.parent_id;
-                                }
-                                if (data.success) {
-                                    jQuery(jsEvent.currentTarget).css('text-decoration','line-through');
-                                } else {
-                                    CobaltResponse.alertMessage({alert: {type: 'danger',message: Joomla.JText._('COBALT_ERROR_MARK_ITEM_COMPLETE')}});
-                                }
-                                jQuery("div.edit_menu").fadeOut('fast')
+                        Calendar.markAsComplete(dateString, function(data){
+                            if ( calEvent.parent_id != 0 ){
+                                calEvent.id = data.id;
+                                calEvent.parent_id = data.parent_id;
                             }
+                            if (data.success) {
+                                jQuery(jsEvent.currentTarget).css('text-decoration','line-through');
+                            } else {
+                                CobaltResponse.alertMessage({alert: {type: 'danger',message: Joomla.JText._('COBALT_ERROR_MARK_ITEM_COMPLETE')}});
+                            }
+                            jQuery("div.edit_menu").fadeOut('fast')
                         });
                     });
 
@@ -2308,6 +2302,46 @@ var Calendar = {
         //reset menu trigger
         menu = true;
 
+    },
+
+    markAsComplete: function (postData, onSuccess)
+    {
+        //default they
+        if (typeof onSuccess == 'undefined') {
+            onSuccess = function(response){
+                CobaltResponse.alertMessage(response);
+                CobaltResponse.reloadPage(response);
+            };
+        }
+        jQuery.ajax({
+            url: 'index.php?task=markEventComplete&format=raw&tmpl=component',
+            type: 'post',
+            data: postData,
+            dataType: 'json',
+            success:function(data){
+                onSuccess(data);
+            }
+        });
+    },
+
+    markAsIncomplete: function (postData, onSuccess)
+    {
+        //default they
+        if (typeof onSuccess == 'undefined') {
+            onSuccess = function(response){
+                CobaltResponse.alertMessage(response);
+                CobaltResponse.reloadPage(response);
+            };
+        }
+        jQuery.ajax({
+            url: 'index.php?task=markEventComplete&format=raw&tmpl=component',
+            type: 'post',
+            data: postData,
+            dataType: 'json',
+            success:function(data){
+                onSuccess(data);
+            }
+        });
     },
 
     removeCalendarEvent: function (calEvent,type,date){
@@ -2594,113 +2628,113 @@ var Calendar = {
 
     openNoteModal: function(id,type){
 
-    jQuery.ajax({
-        type	:	'POST',
-        url		:	'index.php?view=note&type='+type+'&id='+id+'&format=raw&tmpl=component',
-        success	:	function(data){
+        jQuery.ajax({
+            type	:	'POST',
+            url		:	'index.php?view=note&type='+type+'&id='+id+'&format=raw&tmpl=component',
+            success	:	function(data){
 
-            //clear past html
-            jQuery("#edit_task").empty();
-            jQuery("#edit_event").empty();
+                //clear past html
+                jQuery("#edit_task").empty();
+                jQuery("#edit_event").empty();
 
-            jQuery("#noteModalBody").html(data);
-            jQuery("#noteModalHeaderTitle").text(Joomla.JText._("COBALT_EDIT_NOTES"));
-            //var heading = Joomla.JText._('COBALT_ADD_NEW_NOTE','Add New Note');
+                jQuery("#noteModalBody").html(data);
+                jQuery("#noteModalHeaderTitle").text(Joomla.JText._("COBALT_EDIT_NOTES"));
+                //var heading = Joomla.JText._('COBALT_ADD_NEW_NOTE','Add New Note');
 
-            //bind note entry
-            jQuery("#show_note_area_button").bind('click',function(){
-                showNoteArea(type,id);
-            });
+                //bind note entry
+                jQuery("#show_note_area_button").bind('click',function(){
+                    showNoteArea(type,id);
+                });
 
-            //display areas that could possible faded out from other event entries
-            jQuery("span.associate_to").css("display",'block');
-            jQuery('#associate_to').css('display','none');
+                //display areas that could possible faded out from other event entries
+                jQuery("span.associate_to").css("display",'block');
+                jQuery('#associate_to').css('display','none');
 
-            //bind association input area
-            jQuery("span.associate_to").bind('click',function(){
+                //bind association input area
+                jQuery("span.associate_to").bind('click',function(){
 
-                jQuery.when(jQuery("span.associate_to").fadeOut('fast'))
-                    //show input fields
-                    .then(function(){
-                        jQuery('#associate_to').fadeIn('fast');
-                        jQuery('#associate_to').focus();
-                    })
-                    .then(function(){
+                    jQuery.when(jQuery("span.associate_to").fadeOut('fast'))
+                        //show input fields
+                        .then(function(){
+                            jQuery('#associate_to').fadeIn('fast');
+                            jQuery('#associate_to').focus();
+                        })
+                        .then(function(){
 
-                        //assign autocomplete and ajax search functionalities to input fields
-                        jQuery.ajax({
-                            type	:	'POST',
-                            url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
-                            dataType:	'json',
-                            success	:	function(data){
+                            //assign autocomplete and ajax search functionalities to input fields
+                            jQuery.ajax({
+                                type	:	'POST',
+                                url		:	'index.php?task=getTaskAssociations&format=raw&tmpl=component',
+                                dataType:	'json',
+                                success	:	function(data){
 
-                                //generate names object from received data
-                                var names = new Array();
-                                var namesInfo = new Array();
-                                jQuery.each(data,function(index,entry){
-                                    //gen name string for search
-                                    if ( entry.type == "person" ) {
-                                        var name  = '';
-                                        name += entry.first_name + " " + entry.last_name;
-                                    } else {
-                                        name = entry.name;
-                                    }
-                                    //gen associative object for id reference
-                                    var infoObj = new Object();
-                                    infoObj = { name : name, id : entry.id, type : entry.type};
-                                    //push info to objects
-                                    namesInfo[name] = infoObj;
-                                    names.push( name );
-                                });
-                                //assign autocomplete to element
-                                jQuery('input[name=associate_name]').autocomplete({
-                                    source:names,
-                                    select:function(event,ui){
-                                        idExists = true;
-                                        association_id = namesInfo[ui.item.value].id;
-                                        association_type = namesInfo[ui.item.value].type;
-                                    },
-                                    search:function(){
-                                        idExists = false;
-                                    }
-                                });
+                                    //generate names object from received data
+                                    var names = new Array();
+                                    var namesInfo = new Array();
+                                    jQuery.each(data,function(index,entry){
+                                        //gen name string for search
+                                        if ( entry.type == "person" ) {
+                                            var name  = '';
+                                            name += entry.first_name + " " + entry.last_name;
+                                        } else {
+                                            name = entry.name;
+                                        }
+                                        //gen associative object for id reference
+                                        var infoObj = new Object();
+                                        infoObj = { name : name, id : entry.id, type : entry.type};
+                                        //push info to objects
+                                        namesInfo[name] = infoObj;
+                                        names.push( name );
+                                    });
+                                    //assign autocomplete to element
+                                    jQuery('input[name=associate_name]').autocomplete({
+                                        source:names,
+                                        select:function(event,ui){
+                                            idExists = true;
+                                            association_id = namesInfo[ui.item.value].id;
+                                            association_type = namesInfo[ui.item.value].type;
+                                        },
+                                        search:function(){
+                                            idExists = false;
+                                        }
+                                    });
 
+                                }
+                            });
+                        });
+
+                });
+
+                jQuery("#note_modal").modal('show');
+
+                if ( type == 'task' ) {
+
+                    //bind due date fields
+                    jQuery('span.due_date').bind('click',function(){
+
+                        //hide span message
+                        jQuery.when(jQuery("span.due_date").fadeOut('fast'))
+                            //show input fields
+                            .then(function(){jQuery('#due_date').fadeIn('fast')});
+
+                        //assign date picker to field
+                        jQuery('input[name=due_date]').datepicker({
+                            dateFormat:'yy-mm-dd',
+                            onClose:function(data){
+                                //if the user doesnt set the date then hide the picker
+                                if ( jQuery("input[name=due_date]").val() == '' ){
+                                    jQuery.when(jQuery("#due_date").fadeOut('fast'))
+                                        .then(function(){jQuery("span.due_date").fadeIn('fast');});
+                                }
                             }
                         });
                     });
 
-            });
-
-            jQuery("#note_modal").modal('show');
-
-            if ( type == 'task' ) {
-
-                //bind due date fields
-                jQuery('span.due_date').bind('click',function(){
-
-                    //hide span message
-                    jQuery.when(jQuery("span.due_date").fadeOut('fast'))
-                        //show input fields
-                        .then(function(){jQuery('#due_date').fadeIn('fast')});
-
-                    //assign date picker to field
-                    jQuery('input[name=due_date]').datepicker({
-                        dateFormat:'yy-mm-dd',
-                        onClose:function(data){
-                            //if the user doesnt set the date then hide the picker
-                            if ( jQuery("input[name=due_date]").val() == '' ){
-                                jQuery.when(jQuery("#due_date").fadeOut('fast'))
-                                    .then(function(){jQuery("span.due_date").fadeIn('fast');});
-                            }
-                        }
-                    });
-                });
+                }
 
             }
-
-        }
-    });
-}
+        });
+    }
 };
 
 var Company = {

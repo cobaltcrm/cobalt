@@ -1068,7 +1068,7 @@ class Event extends DefaultModel
         $query->set(array("excludes='".$result."'"));
         $query->where("id=".$parent_id);
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
 
     }
 
@@ -1105,7 +1105,7 @@ class Event extends DefaultModel
 
         //set query and update db with new data
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
 
     }
 
@@ -1138,7 +1138,7 @@ class Event extends DefaultModel
             $query->update('#__events')->set("published=-1")->where('id='.$id." OR parent_id=".$id);
             //run database query
             $db->setQuery($query);
-            $db->query();
+            $db->execute();
         }
 
         //Load Tables
@@ -1262,12 +1262,12 @@ class Event extends DefaultModel
                         $query->set(array("completed=0"));
                         $query->where("id=".$data['event_id']);
                         $db->setQuery($query);
-                        $db->query();
+                        $db->execute();
                     }
                 } elseif ( array_key_exists('event_id',$data) && $data['event_id'] != 0 ) {
                     $query->update('#__events')->set("published=-1")->where('id='.$data['event_id']);
                     $db->setQuery($query);
-                    $db->query();
+                    $db->execute();
                 } else {
                     //if we are receiving a virtual event
                     $this->addExcludes($data['parent_id'],$date);
@@ -1280,7 +1280,7 @@ class Event extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
-        return true;
+        return JFactory::getDbo()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1311,7 +1311,7 @@ class Event extends DefaultModel
             $date = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
             $query->update("#__events")->set(array('completed='.$completed,'actual_close="'.$date.'"'))->where("id=".$event_id);
             $db->setQuery($query);
-            $db->query();
+            $db->execute();
 
         //We are dealing with a virtually generated event
         } else {
@@ -1366,6 +1366,7 @@ class Event extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
+        return JFactory::getDbo()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1388,6 +1389,7 @@ class Event extends DefaultModel
         $db->setQuery($query);
         $db->query();
 
+        return JFactory::getDbo()->getAffectedRows() ? true : false;
     }
 
     /**
