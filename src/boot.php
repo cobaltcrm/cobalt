@@ -37,7 +37,7 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
         $_SERVER['REQUEST_SCHEME'] = (isset($_SERVER['HTTPS']) || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'off')) ? 'https' : 'http' ;
     }
 
-    $installUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'install/index.php';
+    $installUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/install/index.php';
 
     if (file_exists(JPATH_INSTALLATION.'/index.php')) {
         header('Location: '.$installUri);
