@@ -17,7 +17,7 @@ var Cobalt = {
         this.initDataTables();
         this.initModalCentralize();
         this.initDocumentUploader();
-        this.displayPieChart();
+        this.displayCharts();
     },
 
     initDocumentUploader: function(){
@@ -671,10 +671,10 @@ var Cobalt = {
         });
     },
 
-    displayPieChart: function() {
+    displayCharts: function() {
         if (typeof loc !== 'undefined' && loc === 'dashboard') {
             // console.log(graphData);
-            var options = {
+            var PieOptions = {
                 inGraphDataShow : true, 
                 inGraphDataAnglePosition : 2,
                 inGraphDataRadiusPosition: 2,
@@ -686,10 +686,16 @@ var Cobalt = {
             };
 
             var dealsByStagePie = document.getElementById("dealsByStagePie").getContext("2d");
-            new Chart(dealsByStagePie).Pie(graphData.deal_stage, options);
+            new Chart(dealsByStagePie).Pie(graphData.deal_stage, PieOptions);
 
             var dealsByStatusPie = document.getElementById("dealsByStatusPie").getContext("2d");
-            new Chart(dealsByStatusPie).Pie(graphData.deal_status, options);
+            new Chart(dealsByStatusPie).Pie(graphData.deal_status, PieOptions);
+
+            var BarOptions = {barShowStroke: false};
+
+            var monthlyRevenue = document.getElementById("monthlyRevenue").getContext("2d");
+            new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
+
         }
     }
 };

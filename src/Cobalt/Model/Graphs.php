@@ -50,8 +50,8 @@ class Graphs extends DefaultModel
 
         //revenue data
         $model = new Revenue;
-        $monthly_revenue = $model->getMonthlyRevenue($type,$id);
-        $yearly_revenue = $model->getYearlyRevenue($type,$id);
+        $monthly_revenue = $model->getMonthlyRevenue($type, $id);
+        $yearly_revenue = $model->getYearlyRevenue($type, $id);
 
         //commission data
         $model = new Commission;

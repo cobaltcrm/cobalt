@@ -78,7 +78,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner">
-                                <div class="item active">
+                                <div class="item">
                                     <canvas id="dealsByStagePie" width="350" height="350"></canvas>
                                     <div class="carousel-caption">
                                         <?php echo TextHelper::_('COBALT_DEALS_BY_STAGE_PIE_CHART'); ?>
@@ -88,6 +88,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <canvas id="dealsByStatusPie" width="350" height="350"></canvas>
                                     <div class="carousel-caption">
                                         <?php echo TextHelper::_('COBALT_DEALS_BY_STATUS_PIE_CHART'); ?>
+                                    </div>
+                                </div>
+                                <div class="item active">
+                                    <canvas id="monthlyRevenue" width="350" height="350"></canvas>
+                                    <div class="carousel-caption">
+                                        <?php echo TextHelper::_('COBALT_REVENUE_THIS_MONTH'); ?>
                                     </div>
                                 </div>
                             </div>
