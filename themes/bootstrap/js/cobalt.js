@@ -140,6 +140,29 @@ var Cobalt = {
         if (typeof dataTableColumns === 'object') {
             options.columns = dataTableColumns;
 
+            options.language = {
+            		"sEmptyTable": Joomla.JText._("COBALT_DATATABLE_NO_DATA_AVAILABLE_IN_TABLE"),
+            		"sInfo": Joomla.JText._("COBALT_DATATABLE_SHOWING_START_TO_END_ENTRIES"),
+            		"sInfoEmpty": Joomla.JText._("COBALT_DATATABLE_SHOWING_ZERO_TO_ZERO_OF_ZERO_ENTRIES"),
+            		"sInfoFiltered": Joomla.JText._("COBALT_DATATABLE_FILTERED_TOTAL_ENTRIES"),
+            		"sInfoThousands": Joomla.JText._("COBALT_DATATABLE_INFO_THOUSANDS"),
+            		"sLengthMenu": Joomla.JText._("COBALT_DATATABLE_SHOW_MENU_ENTRIES"),
+            		"sLoadingRecords": Joomla.JText._("COBALT_DATATABLE_LOADING"),
+            		"sProcessing": Joomla.JText._("COBALT_DATATABLE_PROCESSING"),
+            		"sSearch": Joomla.JText._("COBALT_DATATABLE_SEARCH"),
+            		"sZeroRecords": Joomla.JText._("COBALT_DATATABLE_NO_MATCHING_RECORDS_FOUND"),
+            		"oPaginate": {
+            			"sFirst": Joomla.JText._("COBALT_DATATABLE_FIRST_PAGE"),
+            			"sLast": Joomla.JText._("COBALT_DATATABLE_LAST_PAGE"),
+            			"sNext": Joomla.JText._("COBALT_DATATABLE_NEXT_PAGE"),
+            			"sPrevious": Joomla.JText._("COBALT_DATATABLE_PREVIOUS_PAGE")
+            		},
+            		"oAria": {
+            			"sSortAscending": Joomla.JText._("COBALT_DATATABLE_ACTIVATE_TO_SORT_COLUMN_ASCENDING"),
+            			"sSortDescending": Joomla.JText._("COBALT_DATATABLE_ACTIVATE_TO_SORT_COLUMN_DESCENDING")
+            		}
+            };
+            
             // get default ordering
             if (typeof order_col !== 'undefined') {
                 jQuery.each(options.columns, function(i, column) {
