@@ -34,8 +34,9 @@ class Html extends AbstractHtmlView
         //get model and retrieve info
         $model = new EventModel;
 
-        if (TemplateHelper::isMobile()) {
-            $model->set('current_events',true);
+        if (TemplateHelper::isMobile())
+        {
+            $model->set('current_events', true);
         }
 
         $events = $model->getEvents();
@@ -48,10 +49,7 @@ class Html extends AbstractHtmlView
         $dealModel->set('archived',0);
         $recentDeals = $dealModel->getDeals();
 
-        // load java libs
         $doc = JFactory::getDocument();
-        $doc->addScript( JURI::base().'src/Cobalt/media/js/highcharts.js' );
-        $doc->addScript( JURI::base().'src/Cobalt/media/js/dashboard.js' );
 
         //get data for sales graphs
         $model = new GraphsModel;
@@ -69,15 +67,16 @@ class Html extends AbstractHtmlView
         $json = TRUE;
         $peopleModel = new PeopleModel;
 
-        if (TemplateHelper::isMobile()) {
+        if (TemplateHelper::isMobile())
+        {
 
-            $dealModel->set('recent',false);
+            $dealModel->set('recent', false);
             $totalDeals = $dealModel->getTotal();
 
-            $peopleModel->set('type','leads');
+            $peopleModel->set('type', 'leads');
             $totalLeads = $peopleModel->getTotal();
 
-            $peopleModel->set('type','not_leads');
+            $peopleModel->set('type', 'not_leads');
             $totalContacts = $peopleModel->getTotal();
 
             $companyModel = new CompanyModel;
@@ -91,7 +90,6 @@ class Html extends AbstractHtmlView
             $this->numLeads  	= $totalLeads;
             $this->numContacts 	= $totalContacts;
             $this->numCompanies = $totalCompanies;
-
         }
 
         $peopleNames = $peopleModel->getPeopleNames($json);
@@ -111,5 +109,4 @@ class Html extends AbstractHtmlView
         //display
         return parent::render();
     }
-
 }

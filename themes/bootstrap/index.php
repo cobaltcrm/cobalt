@@ -22,6 +22,7 @@ $this
     ->addScript($this->baseurl.'/themes/bootstrap/js/bloodhound.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/jquery.cluetip.min.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/fullcalendar.js')
+    ->addScript($this->baseurl.'/themes/bootstrap/js/ChartNew.js')
     ->addScript($this->baseurl.'/themes/bootstrap/js/cobalt.js')
 
     // Add core scripts

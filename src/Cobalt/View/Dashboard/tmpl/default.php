@@ -65,13 +65,42 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <li class="widget">
                 <div class="dash_float" id="sales_container">
                     <div class="dash_float_header">
-                        <div class="btn-group pull-right">
-                            <a class="btn btn-default btn-sm" id="chart_select_prev"><i class="glyphicon glyphicon-chevron-left"></i></a><a class="btn btn-default btn-sm" id="chart_select_next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-                        </div>
                         <h3><?php echo TextHelper::_('COBALT_SALES_HEADER'); ?></h3>
                     </div>
                     <div id="sales_graphs_container">
-                        <div id="sales_graphs"></div>
+                        <div id="carousel-example-generic" class="carousel slide text-center" data-ride="carousel">
+
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <canvas id="dealsByStagePie" width="350" height="350"></canvas>
+                                    <div class="carousel-caption">
+                                        <?php echo TextHelper::_('COBALT_DEALS_BY_STAGE_PIE_CHART'); ?>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <canvas id="dealsByStatusPie" width="350" height="350"></canvas>
+                                    <div class="carousel-caption">
+                                        <?php echo TextHelper::_('COBALT_DEALS_BY_STATUS_PIE_CHART'); ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+
+                        </div>
                     </div>
                 </div>
            </li>
