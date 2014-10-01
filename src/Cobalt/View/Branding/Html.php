@@ -38,9 +38,6 @@ class Html extends AbstractHtmlView
         $document->addScript(JURI::base().'src/Cobalt/media/js/branding_manager.js');
         $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
-        //stylesheets
-        StylesHelper::loadStyleSheets();
-
         //view refs
         $model = new BrandingModel;
         $themes = $model->getThemes();

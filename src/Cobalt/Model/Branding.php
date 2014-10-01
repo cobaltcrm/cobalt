@@ -74,7 +74,7 @@ class Branding extends DefaultModel
             //$fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
             //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-            $uploadPath = JPATH_SITE.'/libraries/crm/media/logos/'.$hashFilename;
+            $uploadPath = JPATH_SITE.'/src/Cobalt/media/logos/'.$hashFilename;
 
             if (!File::upload($fileTemp, $uploadPath)) {
                 echo TextHelper::_( 'ERROR MOVING FILE' );
