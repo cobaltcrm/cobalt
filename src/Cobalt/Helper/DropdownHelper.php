@@ -51,7 +51,7 @@ class DropdownHelper
                 $query->select('d.id,d.name');
                 $query->from("#__deals AS d");
                 $query->where("d.published > 0");
-                $query->leftJoin('#__users AS user ON user.id = d.owner_id');
+                $query->leftJoin('#__users AS users ON users.id = d.owner_id');
                 /** ---------------------------------------------------------------
                  * Filter data using member role permissions
                  */
@@ -61,7 +61,7 @@ class DropdownHelper
                 if ($member_role != 'exec') {
                      //manager filter
                     if ($member_role == 'manager') {
-                        $query->where('user.team_id = '.$team_id);
+                        $query->where('users.team_id = '.$team_id);
                     } else {
                     //basic user filter
                         $query->where(array('d.owner_id = '.$member_id));
