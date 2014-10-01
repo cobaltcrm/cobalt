@@ -8,16 +8,6 @@
 
 defined('_CEXEC') or die;
 
-/*
- * Define Cobalt's version number here, update this at release time
- *
- * Always ensure -dev is appended while in development between releases
- * and that the base version number is the next planned release.
- *
- * i.e.  If 1.0.0 was released, this should be 1.0.1-dev
- */
-define('COBALT_VERSION', '1.0.0-dev');
-
 // Cobalt Application defines.
 define('JPATH_ROOT',          dirname(__DIR__));
 define('JPATH_BASE',          JPATH_ROOT);
