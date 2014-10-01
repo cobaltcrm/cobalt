@@ -448,6 +448,22 @@ class TemplateHelper
         TextHelper::script('COBALT_DEALS_HEADER');
         TextHelper::script('COBALT_PEOPLE');
         TextHelper::script('COBALT_ERROR_MARK_ITEM_COMPLETE');
+        TextHelper::script('COBALT_DATATABLE_NO_DATA_AVAILABLE_IN_TABLE');
+        TextHelper::script('COBALT_DATATABLE_NO_MATCHING_RECORDS_FOUND');
+        TextHelper::script('COBALT_DATATABLE_SHOWING_START_TO_END_ENTRIES');
+        TextHelper::script('COBALT_DATATABLE_SHOWING_ZERO_TO_ZERO_OF_ZERO_ENTRIES');
+        TextHelper::script('COBALT_DATATABLE_FILTERED_TOTAL_ENTRIES');
+        TextHelper::script('COBALT_DATATABLE_INFO_THOUSANDS');
+        TextHelper::script('COBALT_DATATABLE_SHOW_MENU_ENTRIES');
+        TextHelper::script('COBALT_DATATABLE_LOADING');
+        TextHelper::script('COBALT_DATATABLE_PROCESSING');
+        TextHelper::script('COBALT_DATATABLE_SEARCH');
+        TextHelper::script('COBALT_DATATABLE_FIRST_PAGE');
+        TextHelper::script('COBALT_DATATABLE_LAST_PAGE');
+        TextHelper::script('COBALT_DATATABLE_NEXT_PAGE');
+        TextHelper::script('COBALT_DATATABLE_PREVIOUS_PAGE');
+        TextHelper::script('COBALT_DATATABLE_ACTIVATE_TO_SORT_COLUMN_ASCENDING');
+        TextHelper::script('COBALT_DATATABLE_ACTIVATE_TO_SORT_COLUMN_DESCENDING');
     }
 
     public static function getListEditActions()
