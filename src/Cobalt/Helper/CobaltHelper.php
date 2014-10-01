@@ -17,22 +17,22 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
  class CobaltHelper
  {
-    public static function percent2Color($value,$brightness = 255, $max = 100,$min = 0, $thirdColorHex = '00')
+    public static function percent2Color($value, $brightness = 255, $max = 100, $min = 0, $thirdColorHex = '00')
     {
         // Calculate first and second color (Inverse relationship)
         $value = number_format($value);
-        $first = (1-($value/$max))*$brightness;
-        $second = ($value/$max)*$brightness;
+        $first = (1 - ($value / $max)) * $brightness;
+        $second = ($value / $max) * $brightness;
 
         // Find the influence of the middle color (yellow if 1st and 2nd are red and green)
-        $diff = abs($first-$second);
-        $influence = ($brightness-$diff)/2;
+        $diff = abs($first - $second);
+        $influence = ($brightness - $diff) / 2;
         $first = intval($first + $influence);
         $second = intval($second + $influence);
 
         // Convert to HEX, format and return
-        $firstHex = str_pad(dechex($first),2,0,STR_PAD_LEFT);
-        $secondHex = str_pad(dechex($second),2,0,STR_PAD_LEFT);
+        $firstHex = str_pad(dechex($first), 2, 0, STR_PAD_LEFT);
+        $secondHex = str_pad(dechex($second), 2, 0, STR_PAD_LEFT);
 
         return $firstHex . $secondHex . $thirdColorHex ;
     }
@@ -43,7 +43,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      * @param  [int]    $id   [Optional ID to get all events with a template]
      * @return [mixed]  $results
      */
-    public static function getTaskTemplates($type,$id=null)
+    public static function getTaskTemplates($type, $id = null)
     {
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);

@@ -26,10 +26,11 @@ class Graphs extends DefaultModel
      * @param $id id of type to filter by
      * @return $graph_data gathered graph data
      */
-    public function getGraphData($type=null,$id=null)
+    public function getGraphData($type = null, $id = null)
     {
         //set default search data
-        if ($type == null) {
+        if ($type == null)
+        {
             $type = 'member';
             $id = UsersHelper::getUserId();
         }
@@ -37,8 +38,8 @@ class Graphs extends DefaultModel
         //deal data
         $model = new Deal;
         $model->set('archived',0);
-        $deals_by_stage = $model->getGraphDeals('stage',$type,$id);
-        $deals_by_status = $model->getGraphDeals('status',$type,$id);
+        $deals_by_stage = $model->getGraphDeals('stage', $type, $id);
+        $deals_by_status = $model->getGraphDeals('status', $type, $id);
         $lead_sources = $model->getLeadSources($type,$id);
         $stage_names = array();
         $stage_totals = array();
@@ -49,44 +50,37 @@ class Graphs extends DefaultModel
 
         //revenue data
         $model = new Revenue;
-        $monthly_revenue = $model->getMonthlyRevenue($type,$id);
-        $yearly_revenue = $model->getYearlyRevenue($type,$id);
+        $monthly_revenue = $model->getMonthlyRevenue($type, $id);
+        $yearly_revenue = $model->getYearlyRevenue($type, $id);
 
         //commission data
         $model = new Commission;
         $monthly_commissions = $model->getMonthlyCommission($type,$id);
         $yearly_commissions = $model->getYearlyCommission($type,$id);
 
-        //get stage names
-        if ( count($deals_by_stage) > 0 ) {
-            foreach ($deals_by_stage as $stage) {
-                $stage_names[] = $stage['name'];
-                $stage_totals[] = $stage['y'];
-            }
-        }
-        //get status names
-        if ( count($deals_by_status) > 0 ) {
-            foreach ($deals_by_status as $status) {
-                $status_names[] = TextHelper::_('COBALT_'.strtoupper($status['name']).'_STATUS');
-                $status_totals[] = $status['y'];
-            }
-        }
         //get lead source names
-        if ( count($lead_sources) > 0 ) {
-            foreach ($lead_sources as $lead) {
+        if ( count($lead_sources) > 0 )
+        {
+            foreach ($lead_sources as $lead)
+            {
                 $lead_source_names[] = $lead['name'];
                 $lead_totals[] = $lead['y'];
             }
         }
+
         //get weeks
         $weeks = array();
         $count = 0;
-        if ($monthly_revenue) {
-            foreach ($monthly_revenue as $week) {
+
+        if ($monthly_revenue)
+        {
+            foreach ($monthly_revenue as $week)
+            {
                 $count++;
                 $weeks[] = "Week ".$count;
             }
         }
+
         //get months
         $months = DateHelper::getMonthNamesShort();
 
@@ -111,5 +105,4 @@ class Graphs extends DefaultModel
 
         return $graph_data;
     }
-
 }

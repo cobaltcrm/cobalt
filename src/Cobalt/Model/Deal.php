@@ -1157,64 +1157,93 @@ class Deal extends DefaultModel
         $query = $this->db->getQuery(true);
 
         //search by type
-        if ($type == 'stage') {
+        if ($type == 'stage')
+        {
             $query
-                ->select("d.stage_id,count(*) AS y, stage.name AS name")
+                ->select("count(*) AS value, stage.name AS title")
                 ->from("#__deals AS d")
-                ->leftJoin("#__stages AS stage ON stage.id=d.stage_id");
+                ->leftJoin("#__stages AS stage ON stage.id = d.stage_id");
         }
-        if ($type == 'status') {
+
+        if ($type == 'status')
+        {
             $query
-                ->select("d.status_id,count(*) AS y,status.name AS name")
+                ->select("count(*) AS value, status.name AS title")
                 ->from("#__deals AS d")
-                ->leftJoin("#__deal_status AS status ON status.id=d.status_id");
+                ->leftJoin("#__deal_status AS status ON status.id = d.status_id");
         }
 
         //if user is not an executive then there are limitations
-        if ($access_type != 'company') {
+        if ($access_type != 'company')
+        {
 
             //team sorting
-            if ($access_type == 'team') {
+            if ($access_type == 'team')
+            {
                 //get team members
                 $team_members = UsersHelper::getTeamUsers($access_id);
                 $members = array();
                 $members[] = 0;
-                foreach ($team_members as $key=>$member) {
+
+                foreach ($team_members as $key => $member)
+                {
                     $members[] = $member['id'];
                 }
-                $query->where("d.owner_id IN (".implode(",",$members).")");
+
+                $query->where("d.owner_id IN (" . implode(",", $members) . ")");
             }
 
             //member sorting
-            if ($access_type == 'member') {
+            if ($access_type == 'member')
+            {
                 $query->where("d.owner_id=$access_id");
             }
-
         }
 
         //grouping
-        if ($type =='stage') {
-            $query->where("d.stage_id<>0 AND d.stage_id=stage.id");
+        if ($type =='stage')
+        {
+            $query->where("d.stage_id <> 0 AND d.stage_id = stage.id");
             $query->group("d.stage_id");
         }
-        if ($type == 'status') {
-            $query->where("d.status_id<>0 AND d.status_id=status.id");
+
+        if ($type == 'status')
+        {
+            $query->where("d.status_id <> 0 AND d.status_id = status.id");
             $query->group("d.status_id");
         }
 
-        if ( !is_null($this->archived) ) {
-            $query->where("d.archived=".$this->archived);
+        if (!is_null($this->archived))
+        {
+            $query->where("d.archived=" . $this->archived);
         }
 
-        $query->where("d.published=".$this->published);
+        $query->where("d.published=" . $this->published);
 
         $results = $this->db->setQuery($query)->loadAssocList();
 
-        //clean results and force datatypes for graph rendering
-        if ( count($results) > 0 ) {
-            foreach ($results as $key => $stage) {
-                $results[$key]['y'] = (int) $stage['y'];
-                $results[$key]['data'] = array((int) $stage['y']);
+        
+        if (count($results) > 0)
+        {
+            $max = 0;
+
+            // get max value
+            foreach ($results as $stage)
+            {
+                if ($stage['value'] > $max)
+                {
+                    $max = (int) $stage['value'];
+                }
+            }
+
+            //clean results and force datatypes for graph rendering
+            foreach ($results as $key => $stage)
+            {
+                // $results[$key]['y'] = (int) $stage['y'];
+                // $results[$key]['data'] = array((int) $stage['y']);
+                $results[$key]['value'] = (int) $stage['value'];
+                $results[$key]['color'] = '#' . CobaltHelper::percent2Color($stage['value'], 200, $max);
+                $results[$key]['highlight'] = '#' . CobaltHelper::percent2Color($stage['value'], 220, $max);
             }
         }
 
