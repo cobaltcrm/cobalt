@@ -110,11 +110,11 @@ class Revenue extends DefaultModel
 
         $data->datasets[0] = new \stdClass;
         $data->datasets[0]->data = $totals;
-        $data->datasets[0]->label = 'test';
+        $data->datasets[0]->label = '';
         $data->datasets[0]->fillColor = "rgba(151,187,205,0.5)";
         $data->datasets[0]->strokeColor = "rgba(151,187,205,0.8)";
-        $data->datasets[0]->highlightFill = "rgba(151,187,205,0.75)";
-        $data->datasets[0]->highlightStroke = "rgba(151,187,205,1)";
+        $data->datasets[0]->pointColor = "rgba(151,187,205,0.75)";
+        $data->datasets[0]->pointStrokeColor = "rgba(151,187,205,1)";
 
         //return results
         return $data;
