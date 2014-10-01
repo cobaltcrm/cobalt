@@ -4,6 +4,7 @@
 var Cobalt = {
 
     dataTables: {},
+    dialogOptions: {},
 
     /**
      * These methods will be triggered on page load.
@@ -552,7 +553,7 @@ var Cobalt = {
     },
 
     closeTaskEvent: function (type) {
-        jQuery("#edit_"+type).dialog('close');
+        jQuery("#edit_"+type).dialog(Cobalt.dialogOptions).dialog('close');
     },
 
     seekImport: function(seek) {
@@ -1205,7 +1206,90 @@ var Notes = {
     }
 };
 
+var Events = {
+    updateList: function(){
+        var dataString = "";
+
+        if ( typeof layout !== 'undefined' && ( layout == 'default' || layout == 'list' ) ){
+            var list_layout = "list";
+            var container = "events";
+            dataString = "";
+        }else{
+            var list_layout = "event_listings";
+            var container = "task_list";
+            if ( typeof loc != "undefined" && loc != 'calendar' && loc != "dashboard" ){
+                dataString += "&association_type="+loc;
+                switch ( loc ){
+                    case "company":
+                        dataString += "&association_id="+company_id;
+                        break;
+                    case "deal":
+                        dataString += "&association_id="+deal_id;
+                        break;
+                    case "person":
+                        dataString += "&association_id="+person_id;
+                        break;
+                }
+            }
+        }
+
+        //make ajax call
+        jQuery.ajax({
+            type	:	"POST",
+            url 	: 	'index.php?view=events&layout='+list_layout+'&format=raw&tmpl=component',
+            data 	: 	dataString,
+            dataType:	'html',
+            success	:	function(data){
+                modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'),Joomla.JText._('COBALT_EVENTS_SUCCESSFULLY_UPDATED'));
+                jQuery("#"+container).html(data);
+            }});
+    }
+};
+
 var Calendar = {
+    postponeEvent: function (element, days) {
+        var dataString = "";
+        var form = jQuery("#"+jQuery(element).parentsUntil('div').attr('id').replace('_menu','_form')+" :input");
+        jQuery(form).each(function(){
+            if ( this.type != "button" ){
+                var val = ( this.type == 'checkbox' || this.type == 'radio' ) ? ( ( jQuery(this).is(':checked') ) ? 1 : 0 ) : jQuery(this).val();
+                dataString += "&"+this.name+"="+val;
+            }
+        });
+
+        dataString += "&days="+days;
+
+        jQuery.ajax({
+            url:'index.php?task=postponeEvent&format=raw&tmpl=component',
+            type:'post',
+            data:dataString,
+            dataType:'json',
+            success:function(data){
+                Events.updateList();
+                CobaltResponse.alertMessage({
+                    type: 'success',
+                    message: Joomla.JText._('COBALT_EVENT_HAS_BEEN_POSTPONED') + days + " " + Joomla.JText._('COBALT_DAYS')
+                });
+                modalMessage(Joomla.JText._('COBALT_SUCCESS_MESSAGE'),Joomla.JText._('COBALT_EVENT_HAS_BEEN_POSTPONED') + days + " " + Joomla.JText._('COBALT_DAYS'));
+
+            }
+        });
+    },
+
+    eventUserFilter: function (type,id){
+        dataString = "assignee_id="+id+"&assignee_filter_type="+type;
+        jQuery.ajax({
+            url: base_url+'index.php?view=events&layout=list&tmpl=component&format=raw',
+            type:'POST',
+            data:dataString,
+            dataType:'HTML',
+            success:function(data){
+                console.log(current_area);
+                jQuery("#"+current_area).empty().html(data);
+            }
+        });
+    },
+
     showCalendarTasks: function(){
         jQuery("div.calendar_event").css('display','none');
         jQuery("div.calendar_task").css('display','block');
@@ -2277,7 +2361,7 @@ var Calendar = {
                          **/
 
                         var dataString = "event_id="+calEvent.id+"&parent_id="+calEvent.parent_id+"&date="+date+"&event_type="+calEvent.type+"&repeats="+calEvent.repeats+"&end_time="+end_date+"&start_time="+date+"&due_date="+date;
-                        Calendar.markAsComplete(dateString, function(data){
+                        Calendar.markEventComplete(dataString, function(data){
                             if ( calEvent.parent_id != 0 ){
                                 calEvent.id = data.id;
                                 calEvent.parent_id = data.parent_id;
@@ -2304,7 +2388,7 @@ var Calendar = {
 
     },
 
-    markAsComplete: function (postData, onSuccess)
+    markEventComplete: function (postData, onSuccess)
     {
         //default they
         if (typeof onSuccess == 'undefined') {
@@ -2324,24 +2408,14 @@ var Calendar = {
         });
     },
 
-    markAsIncomplete: function (postData, onSuccess)
+    markAsComplete: function (elem)
     {
-        //default they
-        if (typeof onSuccess == 'undefined') {
-            onSuccess = function(response){
-                CobaltResponse.alertMessage(response);
-                CobaltResponse.reloadPage(response);
-            };
-        }
-        jQuery.ajax({
-            url: 'index.php?task=markEventComplete&format=raw&tmpl=component',
-            type: 'post',
-            data: postData,
-            dataType: 'json',
-            success:function(data){
-                onSuccess(data);
-            }
-        });
+        console.log(elem);
+    },
+
+    markAsIncomplete: function (elem)
+    {
+        alert('teste');
     },
 
     removeCalendarEvent: function (calEvent,type,date){
@@ -2426,7 +2500,7 @@ var Calendar = {
                 jQuery("#CobaltAjaxModalBody").html(data);
                 jQuery("#CobaltAjaxModalHeader").text(ucwords(Joomla.JText._('COBALT_EDITING_'+ucwords(type))));
 
-                jQuery("#CobaltAjaxModalSaveButton").attr("onclick","Cobalt.saveAjax('edit_"+type+"','event')");
+                jQuery("#CobaltAjaxModalSaveButton").attr("onclick","Cobalt.sumbitModalForm(this)");
                 jQuery("#CobaltAjaxModalCloseButton").attr("onclick","Cobalt.closeTaskEvent('"+type+"');");
 
                 var due_input = jQuery("input[name=due_date_input]").val();
@@ -2546,7 +2620,7 @@ var Calendar = {
                 }
 
                 //open dialog
-                jQuery('#edit_'+type).dialog('open');
+                jQuery('#edit_'+type).dialog(Cobalt.dialogOptions).dialog('open');
 
                 //assign autocomplete and ajax search functionalities to input fields
                 //bind association input area

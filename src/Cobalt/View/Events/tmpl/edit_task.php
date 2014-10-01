@@ -76,10 +76,8 @@ $app = JFactory::getApplication();
                         <?php } ?>
                         <?php $association_id = $app->input->getVar('association_id'); ?>
                         <?php $association_type = $app->input->getVar('association_type'); ?>
-                        <?php if ($association_id) { ?>
-                            <input type="hidden" name="association_id" value="<?php echo $association_id; ?>" />
-                            <input type="hidden" name="association_type" value="<?php echo $association_type; ?>" />
-                        <?php } ?>
+                        <input type="hidden" name="association_id" value="<?php echo $association_id; ?>" />
+                        <input type="hidden" name="association_type" value="<?php echo $association_type; ?>" />
                     </div>
                 </div>
             </div>

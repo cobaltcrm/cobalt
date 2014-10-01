@@ -70,6 +70,34 @@ class UsersHelper
         return $results;
     }
 
+    public static function getEventCount($id,$team,$role)
+    {
+        //get db
+        $db = \Cobalt\Container::fetch('db');
+        $query = $db->getQuery(true);
+
+        //query
+        $query->select('count(*)');
+        $query->from('#__events AS e');
+        $query->leftJoin("#__users AS u ON u.id = e.owner_id AND u.published=1");
+
+        //filter based on id and role
+        if ($role != 'exec') {
+            if ($role == 'manager') {
+                $query->where("u.team_id=$team");
+            } else {
+                $query->where("d.owner_id=$id");
+            }
+        }
+        $query->where("e.published=1");
+
+
+        //return results
+        $db->setQuery($query);
+
+        return $db->loadResult();
+    }
+
     public static function getFirstName($id=null)
     {
         $id = $id ? $id : self::getLoggedInUser()->id;
