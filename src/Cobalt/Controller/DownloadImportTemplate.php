@@ -21,7 +21,7 @@ class DownloadImportTemplate extends DefaultController
     {
         $template_type = $this->input->get('template_type');
 
-        $path = JPATH_SITE . '/src/Cobalt/media/import_templates/import_' . $template_type . '.csv';
+        $path = JPATH_SITE . '/media/import_templates/import_' . $template_type . '.csv';
 
         if (!file_exists($path))
         {
