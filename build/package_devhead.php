@@ -257,4 +257,4 @@ system('rm vendor/tracy/tracy/readme.md');
 // Step 5 - ZIP it up
 echo "Packaging Cobalt\n";
 system('find . -type d -name .git -exec rm -rf {} \\; > /dev/null');
-system('zip -r ../packages/cobalt-head.zip install/ language/ libraries/ plugins/ src/ themes/ uploads/vendor/ .htaccess index.php > /dev/null');
+system('zip -r ../packages/cobalt-head.zip install/ language/ libraries/ plugins/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');
