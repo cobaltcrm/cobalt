@@ -141,3 +141,23 @@ div#actions, div.filters, div.dropdown_area, div#edit_menu {
     text-align: left;
     z-index: 1;
 }
+
+/* Chart slider */
+.carousel-control.left, .carousel-control.right {
+    background-image: none;
+}
+.carousel-control {
+    text-shadow: 0 3px 14px rgba(0, 0, 0, .6);
+}
+.carousel-caption {
+    color: #666;
+}
+.carousel-indicators li {
+    border: 1px solid #666;
+}
+.carousel-indicators .active {
+    background-color: #666;
+}
+.carousel-inner > .item {
+    padding-bottom: 68px;
+}

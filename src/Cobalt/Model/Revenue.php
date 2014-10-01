@@ -14,6 +14,7 @@ use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -26,7 +27,7 @@ class Revenue extends DefaultModel
      * @param $access_id the id of the $access_type we want to filter by
      * @return mixed $results
      */
-    public function getMonthlyRevenue($access_type=null,$access_id=null)
+    public function getMonthlyRevenue($access_type = null, $access_id = null)
     {
         //get db
         $db = JFactory::getDBO();
@@ -42,59 +43,81 @@ class Revenue extends DefaultModel
         $won_stage_ids = DealHelper::getWonStages();
 
         //gen query
-        $results = array();
-        foreach ($weeks as $week) {
+        $data = new \stdClass;
+        $data->labels = array();
+        $data->datasets = array();
+        $totals = array();
+
+        foreach ($weeks as $week)
+        {
             $start_date = $week['start_date'];
             $end_date = $week['end_date'];
+
+            $weekDate = new \DateTime($start_date . ' +2 day');
+            $data->labels[] = TextHelper::_('COBALT_WEEK') . ' ' . $weekDate->format("W");
+
             //flush query
             $query = $db->getQuery(true);
             //gen query string
-            $query->select("SUM(d.amount) AS y");
+            $query->select("SUM(d.amount)");
             $query->from("#__deals AS d");
-            $query->where("d.stage_id IN (".implode(',',$won_stage_ids).")");
+            $query->where("d.stage_id IN (" . implode(',', $won_stage_ids) . ")");
             $query->where("d.modified >= '$start_date'");
             $query->where("d.modified < '$end_date'");
             $query->where("d.modified IS NOT NULL");
 
             //sort by published deals
-            $query->where("d.published>0");
+            $query->where("d.published > 0");
 
             //filter by owner type
-            if ($access_type != 'company') {
-
+            if ($access_type != 'company')
+            {
                 //team sorting
-                if ($access_type == 'team') {
+                if ($access_type == 'team')
+                {
                     //get team members
                     $team_members = UsersHelper::getTeamUsers($access_id);
                     $query .= " AND d.owner_id IN (";
                     //loop to make string
-                    foreach ($team_members as $key=>$member) {
+                    foreach ($team_members as $key => $member)
+                    {
                         $query .= "'".$member['id']."',";
                     }
-                    $query  = substr($query,0,-1);
+
+                    $query  = substr($query, 0, -1);
                     $query .= ") ";
                 }
 
                 //member filter
-                if ($access_type == 'member') {
-                    $query->where("d.owner_id=$access_id");
+                if ($access_type == 'member')
+                {
+                    $query->where("d.owner_id = $access_id");
                 }
             }
 
             //return results
             $db->setQuery($query);
 
-            $totals = $db->loadAssoc();
-            if (!$totals) {
-                $totals = array('y'=>0);
+            $total = (int) $db->loadResult();
+
+            if (!$total)
+            {
+                $total = 0;
             }
 
-            $totals['y'] = (int) $totals['y'];
-            $results[] = $totals;
+            $totals[] = $total;
         }
 
+        $data->datasets[0] = new \stdClass;
+        $data->datasets[0]->data = $totals;
+        $data->datasets[0]->label = '';
+        $data->datasets[0]->fillColor = "rgba(151,187,205,0.5)";
+        $data->datasets[0]->strokeColor = "rgba(151,187,205,0.8)";
+        $data->datasets[0]->pointColor = "rgba(151,187,205,0.75)";
+        $data->datasets[0]->pointStrokeColor = "rgba(151,187,205,1)";
+
         //return results
-        return $results;
+        return $data;
 
     }
 
