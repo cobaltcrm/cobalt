@@ -10,10 +10,10 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Helper\UsersHelper;
 use Cobalt\Table\UserTable;
 use JFactory;
 use Joomla\Registry\Registry;
-use JUserHelper;
 use Cobalt\Helper\ConfigHelper;
 
 // no direct access
@@ -46,10 +46,7 @@ class Users extends DefaultModel
         }
 
         if ( array_key_exists('password',$data) && $data['password'] != "" ) {
-            $salt = JUserHelper::genRandomPassword(32);
-            $crypt = JUserHelper::getCryptedPassword($data['password'], $salt);
-            $cryptpass = $crypt . ':' . $salt;
-            $data['password'] = $cryptpass;
+	        $data['password'] = UsersHelper::hashPassword($data['password']);
         } else {
             unset($data['password']);
         }
