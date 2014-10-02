@@ -31,7 +31,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         //display title
         $document = JFactory::getDocument();
@@ -43,8 +43,8 @@ class Html extends AbstractHtmlView
         $model->set("_layout",$layout);
 
         //add toolbar buttons to manage users
-        if ($layout == 'default') {
-
+        if ($layout == 'default')
+        {
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
@@ -61,17 +61,22 @@ class Html extends AbstractHtmlView
             $this->listOrder = $this->state->get('Users.filter_order');
             $this->listDirn   = $this->state->get('Users.filter_order_Dir');
 
-        } elseif ( $this->getLayout() == 'edit' ) {
-
+        }
+        elseif ($this->getLayout() == 'edit')
+        {
             //buttons
             ToolbarHelper::cancel('cancel');
             ToolbarHelper::save('save');
 
             //get id
-            $id = $app->input->get('cid',null,'array');
-            if ( is_array($id) && array_key_exists(0,$id) ) {
+            $id = $app->input->get('cid', null, 'array');
+
+            if (is_array($id) && array_key_exists(0, $id))
+            {
                 $id = $id[0];
-            } else {
+            }
+            else
+            {
                 $id = null;
             }
 
@@ -92,12 +97,6 @@ class Html extends AbstractHtmlView
             $this->managers = $managers;
         }
 
-        //javascripts
-        $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
-
-        //stylesheets
-        $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
-
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
@@ -105,5 +104,4 @@ class Html extends AbstractHtmlView
         //display
         return parent::render();
     }
-
 }
