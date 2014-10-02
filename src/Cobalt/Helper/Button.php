@@ -116,12 +116,12 @@ class Button
 	{
 		if ($this->tag == 'button')
 		{
-			return '<button name="' . $this->name . '" type="' . $this->type . '" id="' . $this->id . '" value="' . $this->value . '" class="' . $this->class . '">' . TextHelper::_($this->label) . '</button>';
+			return '<button name="' . $this->name . '" type="' . $this->type . '" id="' . $this->id . '" value="' . $this->value . '" class="' . $this->class . '">' . $this->getIconHtml() . TextHelper::_($this->label) . '</button>';
 		}
 
 		if ($this->tag == 'input')
 		{
-			return '<input name="' . $this->name . '" type="' . $this->type . '" id="' . $this->id . '" value="' . TextHelper::_($this->label) . '" class="' . $this->class . '" />';
+			return '<input name="' . $this->name . '" type="' . $this->type . '" id="' . $this->id . '" value="' . $this->getIconHtml() . TextHelper::_($this->label) . '" class="' . $this->class . '" />';
 		}
 		
 		if ($this->tag == 'a')
