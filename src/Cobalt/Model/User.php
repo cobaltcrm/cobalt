@@ -108,7 +108,7 @@ class User extends DefaultModel
         {
             $data['fullscreen'] = !$row->fullscreen;
         }
-
+        
         if (isset($data['password']) && $data['password'])
         {
             $crypt = new Simple;

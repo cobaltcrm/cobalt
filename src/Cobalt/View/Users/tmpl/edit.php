@@ -20,14 +20,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                 <div class="col-md-9">
                     <form action="index.php" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" autocomplete="off">
                         <legend>
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                             <h2><?php echo TextHelper::_("COBALT_MANAGING_USER"); ?></h2>
                             </div>
-                            <div class="col-sm-2">
-                            
+                            <div class="col-sm-3">
+                                <?php echo $this->toolbar->render(); ?>
                             </div>
+                            <div class="clearfix"></div>
                         </legend>
-                        <div class="clearfix"></div>
+                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="uid_name">
                                 <?php echo JText::_('COBALT_SELECT_USER_TO_ADD'); ?>
@@ -125,18 +126,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     onchange="updateRole(this.value)" >
                                     <?php echo JHtml::_('select.options', $this->member_roles, 'value', 'text', $this->user->role_type, true);?>
                                 </select>
-                                <div id="team_name" <?php if ($this->user->role_type != "manager") { ?> style="display:none;" <?php } ?> >
-                                    <label class="col-sm-2 control-label" for="team_name">
-                                        <?php echo JText::_('COBALT_TEAM_NAME'); ?>
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input 
-                                            type="text" 
-                                            class="form-control" 
-                                            name="team_name" 
-                                            id="team_name"
-                                            value="<?php if ( isset($this->user->team_name) ) echo $this->user->team_name; ?>" />
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div id="team_name" <?php if ($this->user->role_type != "manager") { ?> style="display:none;" <?php } ?> >
+                                <label class="col-sm-2 control-label" for="team_name">
+                                    <?php echo JText::_('COBALT_TEAM_NAME'); ?>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="team_name" 
+                                        id="team_name"
+                                        value="<?php if ( isset($this->user->team_name) ) echo $this->user->team_name; ?>" />
                                 </div>
                             </div>
                         </div>
@@ -196,6 +199,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                         </div>
                         <div class="form-group">
                             <label class="checkbox col-sm-10 pull-right">
+                                <input type="hidden" name="admin" value="0" />
                                 <input 
                                     value="1" 
                                     data-placement="left" 
@@ -209,7 +213,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                         </div>
                         <div class="form-group">
                             <label class="checkbox col-sm-10 pull-right">
+                                <input type="hidden" name="can_delete" value="0" />
                                 <input 
+                                    value="1" 
                                     data-placement="left" 
                                     type="checkbox" 
                                     name="can_delete" 
@@ -221,7 +227,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                         </div>
                         <div class="form-group">
                             <label class="checkbox col-sm-10 pull-right">
+                                <input type="hidden" name="exports" value="0" />
                                 <input 
+                                    value="1" 
                                     data-placement="left" 
                                     type="checkbox" 
                                     name="exports" 
@@ -231,12 +239,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                 <?php echo JText::_('COBALT_ALLOWED_TO_EXPORT'); ?>
                             </label>
                         </div>
-                        <?php if ($this->user->id) { ?>
-                            <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
-                        <?php } ?>
-                        <input type="hidden" name="controller" value="" />
-                        <input type="hidden" name="model" value="users" />
-                        <input type="hidden" name="view" value="users" />
+
+                        <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
+                        <input type="hidden" name="model" value="user" />
+                        <input type="hidden" name="task" value="save" />
                         <?php echo JHtml::_('form.token'); ?>
                     </form>
                 </div>

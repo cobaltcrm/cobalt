@@ -66,9 +66,9 @@ class Html extends AbstractHtmlView
         {
             $model = new UserModel;
             $model->set("_layout", $layout);
-            //buttons
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel();
 
             //get id
             $id = $app->input->getInt('id', null);
