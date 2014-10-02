@@ -19,7 +19,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.0
  */
-class User
+class User implements \Serializable
 {
 	/**
 	 * Id.
@@ -353,7 +353,7 @@ class User
      * guest == 1 ... unregistered user
      * guest == 0 ... registered user
      * unregistered by default
-     * 
+     *
      * @var    boolean
 	 * @since  1.0
      */
@@ -671,7 +671,7 @@ class User
         	$date = new Date();
 	        $table->store(array('id' => $id, 'lastvisitDate' => $date->__toString()));
         }
-        
+
         return false;
     }
 
@@ -752,4 +752,16 @@ class User
 
         return $default;
     }
+
+	/**
+	 * Check if the user is authenticated
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	public function isAuthenticated()
+	{
+		return $this->id > 0;
+	}
 }

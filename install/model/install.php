@@ -10,8 +10,6 @@ defined('_CEXEC') or die;
 
 use Joomla\Application\AbstractApplication;
 use Joomla\Database;
-use Joomla\Crypt\PasswordInterface;
-use Joomla\Crypt\Password;
 use Joomla\Filesystem\File as JFile;
 
 class crmModelInstall
@@ -575,8 +573,7 @@ class crmModelInstall
         }
 
         // Create random salt/password for the admin user
-        $passwordHelper = new Password\Simple;
-        $cryptpass = $passwordHelper->create($admin['password'], PasswordInterface::MD5);
+	    $cryptpass = \Cobalt\Helper\UsersHelper::hashPassword($admin['password']);
 
         $query = $this->db->getQuery(true);
         $columns = array($this->db->quoteName('id'), $this->db->quoteName('role_type'), $this->db->quoteName('admin'), $this->db->quoteName('name'), $this->db->quoteName('first_name'), $this->db->quoteName('last_name'), $this->db->quoteName('username'),

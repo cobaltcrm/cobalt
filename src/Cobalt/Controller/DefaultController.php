@@ -18,52 +18,50 @@ use Joomla\Input\Input;
 use Joomla\Application\AbstractApplication;
 use Joomla\Controller\AbstractController;
 
+/**
+ * Default controller class for the application
+ *
+ * @method         \Cobalt\Application  getApplication()  Get the application object.
+ * @property-read  \Cobalt\Application  $app              Application object
+ *
+ * @since          1.0
+ */
 class DefaultController extends AbstractController
 {
     /**
-     * @var \Cobalt\Container
+     * @var Container
      */
     protected $container;
 
-    /**
-     * @var \Cobalt\Application
-     */
-    protected $app;
-
-    /**
-     * @var \Joomla\Input\Input
-     */
-    protected $input;
-
-    /**
-     * Override the parent so that we can get at the application and input objects properties.
-     *
-     * @param Input               $input
-     * @param AbstractApplication $app
-     */
+	/**
+	 * Instantiate the controller.
+	 *
+	 * @param   Input                $input  The input object.
+	 * @param   AbstractApplication  $app    The application object.
+	 *
+	 * @since   1.0
+	 */
     public function __construct(Input $input = null, AbstractApplication $app = null)
     {
-        $this->container = Container::getInstance();
-        $this->input = $input;
-        $this->app = $app;
-
         parent::__construct($input, $app);
+
+	    $this->container = Container::getInstance();
     }
 
     public function execute()
     {
         // Get the document object.
-        $document   = $this->app->getDocument();
-        $viewFormat = $this->input->getWord('format', 'html');
-        $viewName   = $this->input->getWord('view', 'dashboard');
-        $layoutName = $this->input->getWord('layout', 'default');
+        $document   = $this->getApplication()->getDocument();
+        $viewFormat = $this->getInput()->getWord('format', 'html');
+        $viewName   = $this->getInput()->getWord('view', 'dashboard');
+        $layoutName = $this->getInput()->getWord('layout', 'default');
 
-        $this->input->set('view', $viewName);
+        $this->getInput()->set('view', $viewName);
 
         // Register the layout paths for the view
         $paths = new \SplPriorityQueue;
 
-        $themeOverride = JPATH_THEMES . '/' . $this->app->get('theme') . '/html/' . strtolower($viewName);
+        $themeOverride = JPATH_THEMES . '/' . $this->getApplication()->get('theme') . '/html/' . strtolower($viewName);
         if (is_dir($themeOverride)) {
             $paths->insert($themeOverride, 'normal');
         }

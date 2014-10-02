@@ -768,4 +768,17 @@ class UsersHelper
         $lang->setDefault($lng);
     }
 
+	/**
+	 * Hashes a password using the current encryption.
+	 *
+	 * @param   string  $password  The plaintext password to encrypt.
+	 *
+	 * @return  string  The encrypted password.
+	 *
+	 * @since   1.0
+	 */
+	public static function hashPassword($password)
+	{
+		return password_hash($password, PASSWORD_DEFAULT);
+	}
  }

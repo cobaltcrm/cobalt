@@ -10,14 +10,27 @@
 
 namespace Cobalt\Controller;
 
+use Cobalt\Helper\RouteHelper;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Logout controller
+ *
+ * @since   1.0
+ */
 class Logout extends DefaultController
 {
-    public function execute()
-    {
-        $this->app->logout();
-    }
-
+	/**
+	 * Execute the controller
+	 *
+	 * @return  void  Redirects the application
+	 *
+	 * @since   1.0
+	 */
+	public function execute()
+	{
+		$this->getApplication()->setUser(null)->redirect(RouteHelper::_('index.php', false));
+	}
 }

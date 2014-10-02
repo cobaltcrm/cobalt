@@ -10,7 +10,7 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\UsersTable;
+use Cobalt\Table\UserTable;
 use JFactory;
 use Joomla\Registry\Registry;
 use JUserHelper;
@@ -26,7 +26,7 @@ class Users extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new UsersTable;
+        $row = new UserTable;
         $data = $app->input->getRequest( 'post' );
 
         $app->triggerEvent('onBeforeCRMUserSave', array(&$data));
@@ -202,7 +202,7 @@ class Users extends DefaultModel
             return $db->loadAssoc();
 
         } else {
-            return (array) new UsersTable;
+            return (array) new UserTable;
         }
 
     }
