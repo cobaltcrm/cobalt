@@ -227,7 +227,7 @@ $deal = $this->dealList[0];
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_SOURCE'); ?></div>
                     <div class="cobaltValue">
                         <div class='dropdown'>
-                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_source_<?php echo $deal->id; ?>_link'>
+                            <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_source_<?php echo $deal->id; ?>_link">
                                 <span id="source_name_<?php echo $deal->id; ?>">
                                     <?php $sourceName = $deal->source_id > 0 ? $deal->source_name : TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>
                                     <?php echo $sourceName; ?>
@@ -238,7 +238,7 @@ $deal = $this->dealList[0];
                             $sources = DealHelper::getSources();
                             if (count($sources)) { foreach ($sources as $id => $name) { ?>
                                 <li>
-                                    <a href="javascript:void(0)" class="dropdown_item" data-field="source_id" data-item="deal" data-item-id="<?php echo $deal->id; ?>" data-value="<?php echo $id; ?>"><?php echo $name; ?></a>
+                                    <a href="#" class="dropdown_item" data-field="source_id" data-item="deal" data-item-id="<?php echo $deal->id; ?>" data-value="<?php echo $id; ?>"><?php echo $name; ?></a>
                                 </li>
                             <?php }} ?>
                             </ul>

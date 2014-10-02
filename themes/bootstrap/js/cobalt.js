@@ -235,13 +235,13 @@ var Cobalt = {
      **/
     onSaveSuccess: function(response, status, xhr, form) {
         Cobalt.stopFormBeingBusy(form);
-
         Cobalt.updateDataTables();
 
         //display alert
         CobaltResponse.alertMessage(response);
         CobaltResponse.modalAction('.modal', response);
         CobaltResponse.reloadPage(response);
+
         // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
             Cobalt.updateStuff(response.item);
@@ -339,6 +339,7 @@ var Cobalt = {
             var element = jQuery('#'+name+'_'+itemId);
             var field = jQuery('[name="'+name+'"]');
             if (element.length) {
+
                 element.text(value);
             }
             if (field.length) {
@@ -401,7 +402,10 @@ var Cobalt = {
             Cobalt.link = link;
             Cobalt.save(data);
         });
-        Cobalt.on('onSaveSuccess', function(event, response){
+        Cobalt.on('onSaveSuccess', function(event, response) {
+            if (typeof response.item !== 'undefined') {
+                Cobalt.updateStuff(response.item);
+            }
             if (typeof Cobalt.link != 'undefined') {
                 var id = jQuery(Cobalt.link[0].parentElement.parentElement).attr('aria-labelledby') + '_link';
                 jQuery('#'+id+' span').text(jQuery(Cobalt.link).find('span').text());
