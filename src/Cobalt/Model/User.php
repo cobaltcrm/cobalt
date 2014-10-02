@@ -19,7 +19,6 @@ use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CobaltHelper;
 
-use Joomla\Crypt\Password\Simple;
 use Joomla\Language\Text;
 use Joomla\Date\Date;
 
@@ -72,7 +71,7 @@ class User extends DefaultModel
     /**
      * Alias for load method.
      * This is method required for Save controller so each model has get{item} method.
-     * 
+     *
      * @param integer $id
      * @return UserModel
      */
@@ -236,119 +235,6 @@ class User extends DefaultModel
         $db->setQuery($query);
         $db->query();
 
-    }
-
-    /**
-     * 
-     * 
-     */
-    public function authenticate($credentials, $options)
-    {
-        $result = $credentials;
-        $result['status'] = 0;
-        $result['messages'] = array();
-
-        $this->app->triggerEvent('onBeforeUserLogin', array($result, $options));
-
-        if (!isset($credentials['username']) || !$credentials['username'])
-        {
-            $result['messages'][] = 'COBALT_MSG_MISSING_USERNAME';
-        }
-        elseif (!isset($credentials['password']) || !$credentials['password'])
-        {
-            $result['messages'][] = 'COBALT_MSG_MISSING_PASSWORD';
-        }
-        else
-        {
-            $userInfo = $this->getUserBy(array('username' => $credentials['username']), array('id', 'password', 'block'));
-
-            if (!$userInfo->password)
-            {
-                $result['messages'][] = 'COBALT_MSG_USER_NOT_FOUND';
-            }
-            else
-            {
-                if ($userInfo->block == 1)
-                {
-                    $result['messages'][] = 'COBALT_MSG_USER_IS_BLOCKED';
-                    $this->app->triggerEvent('onUserAuthorisationFailure', array($result));
-                }
-                else
-                {
-                    $authenticate = new Simple;
-
-                    if ($authenticate->verify($credentials['password'], $userInfo->password))
-                    {
-                        $result['status'] = 1;
-                    }
-                    else
-                    {
-                        $result['messages'][] = 'COBALT_MSG_WRONG_PASSWORD';
-                    }
-                }
-            }
-        }
-
-        // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
-        $this->app->triggerEvent('onUserLogin', array($result, $options));
-
-        // Enqueue messages if any
-        if (isset($result['messages']) && $result['messages'])
-        {
-            foreach ($result['messages'] as $msg)
-            {
-                $this->app->enqueueMessage(Text::_($msg));
-            }
-        }
-
-        /*
-         * If any of the user plugins did not successfully complete the login routine
-         * then the whole method fails.
-         *
-         * Any errors raised should be done in the plugin as this provides the ability
-         * to provide much more information about why the routine may have failed.
-         */
-        if ($result['status'] == 1)
-        {
-            return $userInfo->id;
-        }
-
-        return false;
-    }
-
-    /**
-     * Logout user function.
-     *
-     * @param integer $userid  The user to load and logout
-     * @param array   $options Array('clientid' => array of client id's)
-     *
-     * @return boolean
-     */
-    public function logout($userid = null, $options = array())
-    {
-        // Get a user object from the Application.
-        $user = $this->app->getUser($userid);
-
-        // Set clientid in the options array if it hasn't been set already.
-        if (!isset($options['clientid']))
-        {
-            $options['clientid'] = $this->app->getClientId();
-        }
-
-        // OK, the credentials are built. Lets fire the onLogout event.
-        $this->app->triggerEvent('onUserLogout', array($user, $options));
-
-        if (isset($user->id) && $user->id)
-        {
-            $this->app->clearSession();
-            $this->app->setUser(null);
-            return true;
-        }
-
-        // Trigger onUserLoginFailure Event.
-        $this->app->triggerEvent('onUserLogoutFailure', array($user));
-
-        return false;
     }
 
     public function setLastVisit($id)

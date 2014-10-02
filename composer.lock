@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a24488c42924267260dddd70cc6bca13",
+    "hash": "f86c7b6cb1400aca6d41bbf7642cba18",
     "packages": [
         {
             "name": "filp/whoops",
@@ -279,43 +279,6 @@
                 "joomla"
             ],
             "time": "2014-02-09 01:25:57"
-        },
-        {
-            "name": "joomla/crypt",
-            "version": "1.1.0",
-            "target-dir": "Joomla/Crypt",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/joomla-framework/crypt.git",
-                "reference": "972e24f5a5c2edd307d57f9d299db0722c8e077f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/crypt/zipball/972e24f5a5c2edd307d57f9d299db0722c8e077f",
-                "reference": "972e24f5a5c2edd307d57f9d299db0722c8e077f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.10"
-            },
-            "type": "joomla-package",
-            "autoload": {
-                "psr-0": {
-                    "Joomla\\Crypt": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "description": "Joomla Crypt Package",
-            "homepage": "https://github.com/joomla/joomla-framework-crypt",
-            "keywords": [
-                "crypt",
-                "framework",
-                "joomla"
-            ],
-            "time": "2013-12-02 00:36:30"
         },
         {
             "name": "joomla/database",
