@@ -86,7 +86,7 @@ class UsersHelper
             if ($role == 'manager') {
                 $query->where("u.team_id=$team");
             } else {
-                $query->where("d.owner_id=$id");
+                $query->where("e.owner_id=$id");
             }
         }
         $query->where("e.published=1");

@@ -1301,7 +1301,7 @@ var Events = {
 var Calendar = {
     postponeEvent: function (element, days) {
         var dataString = "";
-        var form = jQuery("#"+jQuery(element).parentsUntil('div').attr('id').replace('_menu','_form')+" :input");
+        var form = jQuery("#"+jQuery(element).closest('tr').attr('id')+" input");
         jQuery(form).each(function(){
             if ( this.type != "button" ){
                 var val = ( this.type == 'checkbox' || this.type == 'radio' ) ? ( ( jQuery(this).is(':checked') ) ? 1 : 0 ) : jQuery(this).val();

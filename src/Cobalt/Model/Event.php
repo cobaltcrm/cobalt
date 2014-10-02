@@ -1427,7 +1427,7 @@ class Event extends DefaultModel
                     }
                     $query->where("id=".$event_id);
                     $db->setQuery($query);
-                    $db->query();
+                    $db->execute();
                 }
             }
 
@@ -1704,6 +1704,23 @@ class Event extends DefaultModel
             case 'id':
                 $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
                 break;
+            case 'name':
+                $class = $item->completed ? 'line-through' : '';
+                $template = '<div class="dropdown"><a data-toggle="dropdown" role="button" class="dropdown-toggle '. $class .'" id="event_menu_'.$item->id.'_link" >'.$item->name.'</a>';
+                $template .= '<ul class="dropdown-menu" role="menu" aria-labelledby="event_menu_'.$item->id.'_link">';
+                if ($item->completed == 1) {
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.markEventIncomplete(this)" >'.TextHelper::_('COBALT_MARK_INCOMPLETE').'</a></li>';
+                } else {
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.markEventComplete(this)" >'.TextHelper::_('COBALT_MARK_COMPLETE').'</a></li>';
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,1)" >'.TextHelper::_('COBALT_POSTPONE_1_DAY').'</a></li>';
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,7)" >'.TextHelper::_('COBALT_POSTPONE_7_DAYS').'</a></li>';
+                }
+                $id = $item->parent_id != 0 ? $item->parent_id : $item->id;
+                $template .= '<li><a href="javascript:void(0);" onclick="Calendar.editEvent('.$id.',\''.$item->type.'\')" >'.TextHelper::_('COBALT_EDIT').'</a></li>';
+                $template .= '<li><a href="javascript:void(0);" onclick="Calendar.removeCalendarEvent(this)" >'.TextHelper::_('COBALT_DELETE').'</a></li>';
+                $template .= '</ul>';
+                $template .= '</div>';
+                break;
             case 'for':
                 switch ($item->association_type) {
                     case 'deal':
@@ -1714,6 +1731,9 @@ class Event extends DefaultModel
                         break;
                     case 'person':
                         $template = '<a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$item->person_id).'">'.$item->person_first_name.' '.$item->person_last_name.'</a>';
+                        break;
+                    default:
+                        $template = '';
                         break;
                 }
                 break;

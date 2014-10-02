@@ -78,7 +78,7 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
                       <div class="form-group">
                           <label class="control-label" for="company_name"><?php echo ucwords(TextHelper::_('COBALT_PERSON_COMPANY')); ?></label>
                           <div class="controls">
-                              <input type="text" onblur="checkCompanyName(this);" class="form-control" name="company" id="company_name" value="<?php if ( array_key_exists('company_name',$person) ) echo $person['company_name']; ?>" />
+                              <input type="text" class="form-control" name="company" id="company_name" value="<?php if ( array_key_exists('company_name',$person) ) echo $person['company_name']; ?>" />
                               <input type="hidden" name="company_id" id="company_id" value="<?php echo $company_id; ?>" />
                               <div id="company_message"></div>
                           </div>
@@ -378,5 +378,39 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
         highlight: true
     },CobaltAutocomplete.getConfig('addowner')).on('typeahead:selected', function(event, item, name){
         jQuery('input[name=assignee_id]').val(item.id);
+    });
+
+    CobaltAutocomplete.create({
+        id: 'addCompany',
+        object: 'company',
+        fields: 'id,name',
+        display_key: 'name',
+        prefetch: {
+            ajax: {
+                type: 'post',
+                data: {
+                    published: 1
+                }
+            }
+        }
+    });
+    $('input[name=company]').typeahead({
+        highlight: true
+    },CobaltAutocomplete.getConfig('addCompany')).on('typeahead:selected', function(event, item, name){
+        jQuery('input[name=company_id]').val(item.id);
+    });
+    //company name
+    jQuery('input[name=company]').keyup(function(){
+        Company.checkName(jQuery('#company_name').val(), function (response) {
+            if(response.success) {
+                if(response.company_id) {
+                    jQuery('input[name=company_id]').val(response.company_id);
+                } else {
+                    jQuery('input[name=company_id]').val('');
+                }
+                jQuery('#company_message').html(response.message);
+                jQuery('#company_message').fadeIn();
+            }
+        });
     });
 </script>
