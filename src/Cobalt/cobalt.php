@@ -55,44 +55,11 @@ if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
     //Grab document instance
     $document = $this->getDocument();
 
-    //load scripts
-    $document->addScript( JURI::base().'libraries/crm/media/js/jquery.js' );
-    $document->addScript( JURI::base().'libraries/crm/media/js/jquery-ui.js' );
-    $document->addScript( JURI::base().'libraries/crm/media/js/jquery.tools.min.js' );
-    $document->addScript( JURI::base().'libraries/crm/media/js/bootstrap.min.js' );
-    $document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-colorpicker.js' );
-    $document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-datepicker.js' );
-    $document->addScript( JURI::base().'libraries/crm/media/js/bootstrap-fileupload.js' );
-
     //start component div wrapper
     if ( $this->input->get('view') != "print") {
         TemplateHelper::loadToolbar();
     }
     TemplateHelper::startCompWrap();
-
-    //mobile detection
-    if (TemplateHelper::isMobile()) {
-         $this->input->set('tmpl','component');
-         $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
-         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.1.0.1.min.js' );
-         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.datepicker.js' );
-         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.js' );
-         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.extensions.js' );
-         $document->addScript( JURI::base().'libraries/crm/media/js/jquery.mobile.map.services.js' );
-         $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.mobile.js');
-         $document->setMetaData('viewport','width=device-width, initial-scale=1');
-    } else {
-        //load task events javascript which will be used throughout page redirects
-        $document->addScript( JURI::base().'libraries/crm/media/js/timepicker.js');
-        $document->addScript( JURI::base().'libraries/crm/media/js/cobalt.js' );
-        $document->addScript( JURI::base().'libraries/crm/media/js/filters.js');
-        $document->addScript( JURI::base().'libraries/crm/media/js/autogrow.js');
-        $document->addScript( JURI::base().'libraries/crm/media/js/jquery.cluetip.min.js');
-
-    }
-
-    //load styles
-    StylesHelper::loadStyleSheets();
 
     //load javascript language
     TemplateHelper::loadJavascriptLanguage();

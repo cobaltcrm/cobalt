@@ -48,12 +48,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             return JUri::base()."/src/Cobalt/media/logos/".$logo;
         }
 
-        //get base stylesheets
-        public static function getBaseStyle()
-        {
-            return JURI::base()."libraries/crm/media/css/bootstrap.css";
-        }
-
         //dynamically generate styles
         public static function getDynamicStyle()
         {
@@ -87,48 +81,4 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             //return
             return $style;
         }
-
-        //load all styles
-        public static function loadStyleSheets()
-        {
-            $app = \Cobalt\Container::fetch('app');
-            $document = $app->getDocument();
-
-            $view = $app->input->get('view');
-            if ($view == "print") {
-                $document->addStyleSheet( JURI::base().'libraries/crm/media/css/print.css' );
-            }
-
-            if (TemplateHelper::isMobile()) {
-                $document->addStyleSheet( JURI::base().'libraries/crm/media/css/mobile.css' );
-                $document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.min.css' );
-                $document->addStyleSheet( JURI::base().'libraries/crm/media/css/jquery.mobile.datepicker.css' );
-            } else {
-                //base stylesheet
-                $base_style = StylesHelper::getBaseStyle();
-
-                //dynamic stylesheet
-                $dyn_style = StylesHelper::getDynamicStyle();
-
-                //add sheets to document
-                $document->addStyleSheet($base_style);
-                $document->addStyleSheet(JURI::base().'libraries/crm/media/css/datepicker.css');
-                $document->addStyleSheet(JURI::base().'libraries/crm/media/css/bootstrap-responsive.css');
-                $document->addStyleSheet(JURI::base().'libraries/crm/media/css/bootstrap-colorpicker.css');
-                $document->addStyleSheet(JURI::base().'libraries/crm/media/css/style.css');
-                $document->addStyleSheet('http://fonts.googleapis.com/css?family=Open+Sans:300,400');
-                $document->addStyleDeclaration($dyn_style);
-
-            }
-
-            jimport('joomla.environment.browser');
-            $browser = JBrowser::getInstance();
-            $browserType = $browser->getBrowser();
-            $browserVersion = $browser->getMajor();
-            if (($browserType == 'msie') && ($browserVersion < 8)) {
-              $document->addStyleSheet( JURI::base().'libraries/crm/media/css/ie.css' );
-            }
-
-        }
-
  }

@@ -282,12 +282,12 @@ class crmModelInstall
 
         //rename-move installation folder
         //TODO: needs to check if writable
-        if ( !rename(JPATH_INSTALLATION,JPATH_BASE."/_install") )
+        /*if ( !rename(JPATH_INSTALLATION,JPATH_BASE."/_install") )
         {
             $this->setError(JText::_('INSTL_ERROR_RENAME_FOLDER'));
 
             return false;
-        }
+        }*/
 
         return true;
 

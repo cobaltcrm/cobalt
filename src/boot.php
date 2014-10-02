@@ -8,10 +8,6 @@
 
 defined('_CEXEC') or die;
 
-if (!defined('_JDEFINES')) {
-    require_once __DIR__ . '/defines.php';
-}
-
 @ini_set('magic_quotes_runtime', 0);
 
 // composer libraries check
@@ -37,10 +33,8 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
         $_SERVER['REQUEST_SCHEME'] = (isset($_SERVER['HTTPS']) || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'off')) ? 'https' : 'http' ;
     }
 
-    $installUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'install/index.php';
-
     if (file_exists(JPATH_INSTALLATION.'/index.php')) {
-        header('Location: '.$installUri);
+        header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'index.php')).'install/index.php');
         exit();
 
     } else {

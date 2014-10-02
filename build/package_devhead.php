@@ -18,6 +18,7 @@ echo "Copying files\n";
 system('cp -r ../install packaging/');
 system('cp -r ../language packaging/');
 system('cp -r ../libraries packaging/');
+system('cp -r ../media packaging/');
 system('cp -r ../plugins packaging/');
 system('cp -r ../src packaging/');
 system('cp -r ../themes packaging/');
@@ -257,4 +258,4 @@ system('rm vendor/tracy/tracy/readme.md');
 // Step 5 - ZIP it up
 echo "Packaging Cobalt\n";
 system('find . -type d -name .git -exec rm -rf {} \\; > /dev/null');
-system('zip -r ../packages/cobalt-head.zip install/ language/ libraries/ plugins/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');
+system('zip -r ../packages/cobalt-head.zip install/ language/ libraries/ media/ plugins/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');
