@@ -18,8 +18,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <form action="index.php?view=users" method="post" name="adminForm" id="adminForm" class="form-horizontal" autocomplete="off">
-                        <legend><h2><?php echo TextHelper::_("COBALT_MANAGING_USER"); ?></h2></legend>
+                    <form action="index.php" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" autocomplete="off">
+                        <legend>
+                            <div class="col-sm-10">
+                            <h2><?php echo TextHelper::_("COBALT_MANAGING_USER"); ?></h2>
+                            </div>
+                            <div class="col-sm-2">
+                            
+                            </div>
+                        </legend>
+                        <div class="clearfix"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="uid_name">
                                 <?php echo JText::_('COBALT_SELECT_USER_TO_ADD'); ?>
@@ -179,11 +187,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     data-placement="right" 
                                     id="user_color" 
                                     type="color" 
-                                    class="required" 
+                                    class="form-control"  
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_USER_COLOR'); ?>" 
                                     name="color" 
-                                    value="<?php echo $this->user['color']; ?>" />
+                                    value="<?php echo $this->user['color'] ? $this->user['color'] : '#84a5f6'; ?>" />
                             </div>
                         </div>
                         <div class="form-group">

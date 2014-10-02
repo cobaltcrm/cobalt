@@ -17,6 +17,7 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Model\Users as UsersModel;
 
@@ -35,7 +36,6 @@ class Html extends AbstractHtmlView
 
         //display title
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         //load model
         $layout = $this->getLayout();
@@ -45,6 +45,10 @@ class Html extends AbstractHtmlView
         //add toolbar buttons to manage users
         if ($layout == 'default')
         {
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew();
+            $this->toolbar->addDeleteRow();
+            
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
