@@ -19,13 +19,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
                     <legend><h3><?php echo JText::_('COBALT_ADD_TO_ACCOUNT'); ?></h3></legend>
-                    <div class="alert alert-info">
-                        <h3><?php echo JText::_("COBALT_USER_ROLES_VISIBILITY"); ?></h3>
-                        <b><?php echo JText::_('COBALT_EXECUTIVE'); ?></b> - <?php echo JText::_('COBALT_EXECUTIVE_DESC'); ?><br />
-                        <b><?php echo JText::_('COBALT_MANAGERS'); ?></b> - <?php echo JText::_('COBALT_MANAGERS_DESC'); ?><br />
-                        <b><?php echo JText::_('COBALT_BASIC_USERS'); ?></b> - <?php echo JText::_('COBALT_BASIC_USERS_DESC'); ?>
-                    </div>
+                    
                     <form action="index.php" method="post" name="adminForm" id="adminForm">
+                        <?php echo $this->toolbar->render(); ?>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -94,6 +90,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <?php echo JHtml::_('form.token'); ?>
                         </div>
                     </form>
+                    <div class="alert alert-info">
+                        <h3><?php echo JText::_("COBALT_USER_ROLES_VISIBILITY"); ?></h3>
+                        <b><?php echo JText::_('COBALT_EXECUTIVE'); ?></b> - <?php echo JText::_('COBALT_EXECUTIVE_DESC'); ?><br />
+                        <b><?php echo JText::_('COBALT_MANAGERS'); ?></b> - <?php echo JText::_('COBALT_MANAGERS_DESC'); ?><br />
+                        <b><?php echo JText::_('COBALT_BASIC_USERS'); ?></b> - <?php echo JText::_('COBALT_BASIC_USERS_DESC'); ?>
+                    </div>
                 </div>
             </div>
         </div>

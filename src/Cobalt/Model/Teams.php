@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\TeamsTable;
 use Cobalt\Table\UserTable;
-use JFactory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -26,20 +25,22 @@ class Teams extends DefaultModel
     public function getTeams()
     {
         //Database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //Query String
         $query->select("t.*,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name");
         $query->from("#__teams AS t");
         $query->leftJoin("#__users AS u ON u.team_id = t.leader_id");
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadAssocList();
 
         //clean data
         $teams = array();
-        if ( count($results) > 0 ) {
-            foreach ($results as $key=>$team) {
+        
+        if (count($results) > 0)
+        {
+            foreach ($results as $key=>$team)
+            {
                 $teams[$team['leader_id']] = $team['team_id'];
             }
         }
@@ -54,37 +55,40 @@ class Teams extends DefaultModel
      * @param  int $leader_id the id of the leader for the team to create
      * @return int $team_id the id of the newly created team
      */
-    public function createTeam($leader_id,$name=NULL)
+    public function createTeam($leader_id, $name = NULL)
     {
         //Database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         $query->clear();
-        $query->select("team_id")->from("#__users")->where('id='.$leader_id);
+        $query->select("team_id")->from("#__users")->where('id=' . $leader_id);
         $db->setQuery($query);
-        $team_id = $db->loadResult();
-        $team_data = array( 'leader_id'=>$leader_id,'name'=>$name );
+        $team_id = $this->db->loadResult();
+        $team_data = array( 'leader_id' => $leader_id, 'name' => $name );
         $row = new TeamsTable;
 
-        if ($team_id > 0) {
+        if ($team_id > 0)
+        {
             $team_data['team_id'] = $team_id;
             $row->load($team_id);
         }
 
-        if (!$row->bind($team_data)) {
+        if (!$row->bind($team_data))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->check()) {
+        if (!$row->check())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->store()) {
+        if (!$row->store())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
@@ -102,24 +106,28 @@ class Teams extends DefaultModel
      * @param  int  $team_id   the id of the newly created team
      * @return void
      */
-    public function assignLeader($leader_id,$team_id)
+    public function assignLeader($leader_id, $team_id)
     {
         //bind user tables
         $row = new UserTable;
-        $team_data = array ( 'id'=>$leader_id,'team_id'=>$team_id );
-        if (!$row->bind($team_data)) {
+        $team_data = array ('id'=>$leader_id, 'team_id' => $team_id);
+
+        if (!$row->bind($team_data))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->check()) {
+        if (!$row->check())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->store()) {
+        if (!$row->store())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
@@ -127,17 +135,16 @@ class Teams extends DefaultModel
 
     }
 
-    public function updateTeam($old_team,$new_team)
+    public function updateTeam($old_team, $new_team)
     {
         //update the database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //delete old team
         $query->delete('#__teams');
         $query->where("team_id=$old_team");
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
         //update users table for new team
         $query->clear()
@@ -145,8 +152,8 @@ class Teams extends DefaultModel
             ->set(array("team_id=".$new_team))
             ->where("team_id=".$old_team);
 
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
     }
 

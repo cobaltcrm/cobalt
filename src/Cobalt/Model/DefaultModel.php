@@ -29,6 +29,11 @@ class DefaultModel extends AbstractDatabaseModel
     protected $_view;
     protected $_layout;
     protected $db;
+
+	/**
+	 * @var    \Cobalt\Application
+	 * @since  1.0
+	 */
     protected $app;
 
     public function __construct(DatabaseDriver $db = null)
@@ -38,11 +43,9 @@ class DefaultModel extends AbstractDatabaseModel
             $db = Container::fetch('db');
         }
 
-        $this->db = $db;
+	    parent::__construct($db);
 
         $this->app = Container::fetch('app');
-
-        parent::__construct($db);
 
         $ids = $this->app->input->get("cids", null, 'array');
 
@@ -205,7 +208,7 @@ class DefaultModel extends AbstractDatabaseModel
 
     /**
      * Method transforms items to the format jQuery dataTables needs
-     * 
+     *
      * @param   array of object of items from the database
      * @return  array in format dataTables requires
      */

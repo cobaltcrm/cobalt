@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Table\UserTable;
-use JFactory;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\ConfigHelper;
 
@@ -23,13 +22,11 @@ class Users extends DefaultModel
 {
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = new UserTable;
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->post->getArray();
 
-        $app->triggerEvent('onBeforeCRMUserSave', array(&$data));
+        $this->app->triggerEvent('onBeforeCRMUserSave', array(&$data));
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -65,11 +62,10 @@ class Users extends DefaultModel
 
         //republish / register users
         if ( array_key_exists('id',$data) && $data['id'] != "" ) {
-            $db = JFactory::getDBO();
-            $query = $db->getQuery(true);
+            $query = $this->db->getQuery(true);
             $query->clear()->select("id")->from("#__users")->where("id=".$data['id']);
-            $db->setQuery($query);
-            $id = $db->loadResult();
+            $this->db->setQuery($query);
+            $id = $this->db->loadResult();
             if ($id) {
                 $data['id'] = $id;
                 $data['published'] = 1;
@@ -116,33 +112,31 @@ class Users extends DefaultModel
         $row->id = ( array_key_exists('id',$data) && $data['id'] > 0 ) ? $data['id'] : $this->db->insertId();
         $this->updateUserMap($row);
 
-        $app->triggerEvent('onAfterCRMUserSave', array(&$data));
+        $this->app->triggerEvent('onAfterCRMUserSave', array(&$data));
 
         return true;
     }
 
     public function updateUserMap($user)
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         $query->delete("#__user_usergroup_map")->where("user_id=".$user->id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
         $groupId = $user->admin == 1 ? "2" : "2";
         $query->clear();
-        $query->insert("#__user_usergroup_map")->columns(array($db->quoteName('user_id'),$db->quoteName('group_id')))->values($db->quote($user->id).', '.$db->quote($groupId));
-        $db->setQuery($query);
-        $db->query();
+        $query->insert("#__user_usergroup_map")->columns(array($this->db->quoteName('user_id'),$this->db->quoteName('group_id')))->values($this->db->quote($user->id).', '.$this->db->quote($groupId));
+        $this->db->setQuery($query);
+        $this->db->execute();
 
     }
 
     public function _buildQuery()
     {
          //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
          //select
         $query->select("u.*,ju.username,ju.email,ju.lastvisitDate as last_login,
@@ -163,7 +157,6 @@ class Users extends DefaultModel
     public function getUsers($id=null)
     {
         //get dbo
-        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //sort
@@ -175,28 +168,27 @@ class Users extends DefaultModel
         $query->where("u.published=1");
 
         //return results
-        $db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $db->loadAssocList();
+        return $this->db->loadAssocList();
     }
 
     public function getUser($id=null)
     {
-        $app = \Cobalt\Container::fetch('app');
-        $id = $id ? $id : $app->input->get("id");
+        $this->app = \Cobalt\Container::fetch('app');
+        $id = $id ? $id : $this->app->input->get("id");
 
         if ($id > 0) {
 
-            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             if ($id) {
                 $query->where("u.id=$id");
             }
 
-            $db->setQuery($query);
+            $this->db->setQuery($query);
 
-            return $db->loadAssoc();
+            return $this->db->loadAssoc();
 
         } else {
             return (array) new UserTable;
@@ -207,9 +199,9 @@ class Users extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Users.filter_order','filter_order','u.last_name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Users.filter_order_Dir','filter_order_Dir','asc');
+        $this->app = \Cobalt\Container::fetch('app');
+        $filter_order = $this->app->getUserStateFromRequest('Users.filter_order','filter_order','u.last_name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Users.filter_order_Dir','filter_order_Dir','asc');
 
         $state = new Registry;
 
@@ -223,8 +215,7 @@ class Users extends DefaultModel
     public function getJoomlaUsersToAdd()
     {
         //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //select
         $query->select("ju.id,ju.name,ju.username,ju.email,cu.id as cid,cu.published");
@@ -234,8 +225,8 @@ class Users extends DefaultModel
         $query->leftJoin("#__users AS cu ON ju.id = cu.id");
 
         //return results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadAssocList();
         $users = array();
         foreach ($results as $key => $user) {
             if (!$user['cid'] || $user['published'] == -1) {
@@ -252,8 +243,7 @@ class Users extends DefaultModel
     public function getCobaltUsers($idsOnly=FALSE)
     {
         //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //select
         $query->select("u.id AS value,CONCAT(u.first_name,' ',u.last_name) AS label");
@@ -261,8 +251,8 @@ class Users extends DefaultModel
         $query->where("u.published=1");
 
         //return results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadAssocList();
 
         return $results;
     }
@@ -270,8 +260,7 @@ class Users extends DefaultModel
     public function getJoomlaUsersToAddList($namesOnly=FALSE)
     {
         //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //select
         $query->select("ju.id,ju.name,ju.username,cu.id as cid,cu.published");
@@ -281,8 +270,8 @@ class Users extends DefaultModel
         $query->leftJoin("#__users AS cu ON ju.id = cu.id");
 
         //return results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadAssocList();
 
         $users = array();
         foreach ($results as $key=>$user) {
@@ -302,8 +291,7 @@ class Users extends DefaultModel
     public function getTeamId($user_id)
     {
         //get db
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //get id
         $query->select("team_id");
@@ -311,19 +299,17 @@ class Users extends DefaultModel
         $query->where('id='.$user_id);
 
         //return id
-        $db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $db->loadResult();
+        return $this->db->loadResult();
     }
 
     public function delete($ids)
     {
-        $app = \Cobalt\Container::fetch('app');
         //get db
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
-        $app->triggerEvent('onBeforeCRMUserDelete', array(&$ids));
+        $this->app->triggerEvent('onBeforeCRMUserDelete', array(&$ids));
 
         $query->update("#__users");
                 if ( is_array($ids) ) {
@@ -332,9 +318,9 @@ class Users extends DefaultModel
                     $query->where("id=".$ids);
                 }
         $query->set("published=-1");
-        $db->setQuery($query);
-        if ( $db->execute() ) {
-            $app->trigger('onAfterCRMUserDelete', array(&$ids));
+        $this->db->setQuery($query);
+        if ( $this->db->execute() ) {
+            $this->app->trigger('onAfterCRMUserDelete', array(&$ids));
 
             return true;
         } else {

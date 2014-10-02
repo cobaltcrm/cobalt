@@ -10,8 +10,8 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Helper\TextHelper;
 use Cobalt\Table\UserTable;
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
@@ -19,7 +19,6 @@ use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CobaltHelper;
 
-use Joomla\Language\Text;
 use Joomla\Date\Date;
 
 // no direct access
@@ -27,6 +26,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class User extends DefaultModel
 {
+
+	protected $_view;
+	protected $_layout;
 
     /**
      * Constructor
@@ -58,12 +60,14 @@ class User extends DefaultModel
         // Load the UserTable object based on the user id or throw a warning.
         if (!$table->load($id))
         {
-            $this->app->enqueueMessage(JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id), 'error');
+            $this->app->enqueueMessage(TextHelper::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id), 'error');
 
             return false;
         }
 
         $this->setProperties($table->getProperties());
+
+        unset($this->password);
 
         return true;
     }
@@ -96,7 +100,7 @@ class User extends DefaultModel
         //Load Table
         $row = new UserTable;
 
-        if ($data['id'])
+        if (isset($data['id']) && $data['id'])
         {
             $row->load($data['id']);
         }
@@ -106,36 +110,49 @@ class User extends DefaultModel
             $data['fullscreen'] = !$row->fullscreen;
         }
 
+        if (isset($data['password']) && $data['password'])
+        {
+	        $data['password'] = UsersHelper::hashPassword($data['password']);
+        }
+
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
         $data['modified'] = $date;
 
-        //update users email address
-        if ( array_key_exists('email',$data)) {
-            $emails = $data['email'];
-            $this->updateEmail($data['id'],$emails);
-            unset($data['email']);
-        }
-
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
+        if (!$row->bind($data))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Make sure the record is valid
-        if (!$row->check()) {
+        if (!$row->check())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
-        if (!$row->store()) {
+        if (!$row->store())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
+        }
+
+        //update users email address
+        if (array_key_exists('email', $data))
+        {
+            $this->updateEmail($row->id, $data['email']);
+        }
+
+        if (isset($data['team_name']) && $data['team_name'])
+        {
+            $teamModel = new Teams;
+            $teamModel->createTeam($row->id, $data['team_name']);
         }
 
         $this->app->refreshUser();
@@ -160,20 +177,24 @@ class User extends DefaultModel
         $retults[] = $this->db->setQuery($query)->execute();
 
         //insert new entries
-        foreach ($emails as $email)
+        if (is_array($emails))
         {
-            if ($email)
+            foreach ($emails as $email)
             {
-                $emailO = new \stdClass();
-                $emailO->member_id = $user_id;
-
-                if (!(CobaltHelper::checkEmailName($email)))
+                if ($email)
                 {
-                    $emailO->email = $email;
-                    $retults[] = $this->db->insertObject('#__users_email_cf', $emailO);
+                    $emailO = new \stdClass();
+                    $emailO->member_id = $user_id;
+
+                    if (!(CobaltHelper::checkEmailName($email)))
+                    {
+                        $emailO->email = $email;
+                        $retults[] = $this->db->insertObject('#__users_email_cf', $emailO);
+                    }
                 }
             }
         }
+
 
         if (in_array(false, $retults))
         {
@@ -193,16 +214,14 @@ class User extends DefaultModel
         //get user id
         $user_id = UsersHelper::getUserId();
 
-        //get database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //get current array
         $query->select($loc."_columns");
         $query->from("#__users");
         $query->where("id=".$user_id);
-        $db->setQuery($query);
-        $result = unserialize($db->loadResult());
+        $this->db->setQuery($query);
+        $result = unserialize($this->db->loadResult());
 
         //if we have no data assigned grab the defaults
         if ( !is_array($result) ) {
@@ -232,8 +251,8 @@ class User extends DefaultModel
 
         //update the database
         $query->update('#__users')->set($loc."_columns='".$result."'")->where("id=".$user_id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
     }
 
