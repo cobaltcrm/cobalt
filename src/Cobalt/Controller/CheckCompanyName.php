@@ -20,7 +20,7 @@ class CheckCompanyName extends DefaultController
 {
     public function execute()
     {
-        $company_name = $this->input->getString('company_name');
+        $company_name = $this->getInput()->getString('company_name');
         $companyModel = new CompanyModel;
         $existingCompany = $companyModel->checkCompanyName($company_name);
 

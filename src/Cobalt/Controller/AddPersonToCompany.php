@@ -20,8 +20,8 @@ class AddPersonToCompany extends DefaultController
     public function execute()
     {
         //parameters
-        $person_id = $this->input->get("person_id");
-        $company_id = $this->input->get('company_id');
+        $person_id = $this->getInput()->get("person_id");
+        $company_id = $this->getInput()->get('company_id');
 
         //construct data
         $data = array('id' => $person_id, 'company_id' => $company_id);

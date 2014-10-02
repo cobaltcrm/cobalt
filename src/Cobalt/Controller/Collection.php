@@ -22,8 +22,8 @@ class Collection extends DefaultController
     {
         $response = array();
 
-        $fields = $this->input->getString('fields');
-        $object  = ucwords($this->input->getCmd('object'));
+        $fields = $this->getInput()->getString('fields');
+        $object  = ucwords($this->getInput()->getCmd('object'));
 
         $model = new ModelAutocomplete();
         $model->setObject($object);
@@ -33,17 +33,17 @@ class Collection extends DefaultController
                 'type' => 'error',
                 'message' => 'Object request not found'
             );
-            $this->app->close(json_encode($response));
+            $this->getApplication()->close(json_encode($response));
         } else if (!$model->hasAutocomplete()) {
             $response['alert'] = array(
                 'type' => 'error',
                 'message' => 'Type not found'
             );
-            $this->app->close(json_encode($response));
+            $this->getApplication()->close(json_encode($response));
         }
 
         $response = $model->getData(explode(',', $fields));
 
-        $this->app->close(json_encode($response));
+        $this->getApplication()->close(json_encode($response));
     }
 }

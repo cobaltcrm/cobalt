@@ -26,12 +26,12 @@ class Save extends DefaultController
 {
     public function execute()
     {
-        $modelName  = ucwords($this->input->get('model'));
+        $modelName  = ucwords($this->getInput()->get('model'));
         $modelPath  = "Cobalt\\Model\\".$modelName;
         $model      = new $modelPath();
-        $view       = $this->input->get('view');
+        $view       = $this->getInput()->get('view');
         $response   = new \stdClass;
-        $link       = $this->input->get('return', Router::to('index.php?view=' . $view));
+        $link       = $this->getInput()->get('return', Router::to('index.php?view=' . $view));
 
         if ($itemId = $model->store())
         {
@@ -46,15 +46,15 @@ class Save extends DefaultController
                 $response->alert->type = 'success';
 
                 // just send reload page if send refresh_page=1
-                if ($this->input->getInt('refresh_page', 0)) {
+                if ($this->getInput()->getInt('refresh_page', 0)) {
                     $response->reload = '3000';
                 }
 
-                $this->app->close(json_encode($response));
+                $this->getApplication()->close(json_encode($response));
             }
             else
             {
-                $this->app->redirect($link, $msg);
+                $this->getApplication()->redirect($link, $msg);
             }
         }
         else
@@ -63,14 +63,14 @@ class Save extends DefaultController
 
             if ($this->isAjaxRequest())
             {
-                $this->app->redirect($link, $msg);
+                $this->getApplication()->redirect($link, $msg);
             }
             else
             {
                 $response->alert = new \stdClass;
                 $response->alert->message = $msg;
                 $response->alert->type = 'danger';
-                $this->app->close(json_encode($response));
+                $this->getApplication()->close(json_encode($response));
             }
         }
     }

@@ -17,7 +17,7 @@ class Edit extends DefaultController
 {
     public function execute()
     {
-        $this->input->set('layout', 'edit');
+        $this->getInput()->set('layout', 'edit');
 
         parent::execute();
     }

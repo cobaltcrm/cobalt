@@ -17,12 +17,12 @@ class Delete extends DefaultController
 {
     public function execute()
     {
-        $view = $this->input->get("view");
-        $modelName = "Cobalt\\Model\\".ucwords($this->input->get("model"));
+        $view = $this->getInput()->get("view");
+        $modelName = "Cobalt\\Model\\".ucwords($this->getInput()->get("model"));
         $model = new $modelName();
 
-        $model->delete($this->input->get("cid", null, 'array'));
-        $this->app->redirect("index.php?view=".$view);
+        $model->delete($this->getInput()->get("cid", null, 'array'));
+        $this->getApplication()->redirect("index.php?view=".$view);
     }
 
 }

@@ -20,7 +20,7 @@ class CheckDealName extends DefaultController
 {
     public function execute()
     {
-        $deal_name = $this->input->get('deal_name');
+        $deal_name = $this->getInput()->get('deal_name');
         $dealModel = new DealModel;
         $existingDeal = $dealModel->checkDealName($deal_name);
 

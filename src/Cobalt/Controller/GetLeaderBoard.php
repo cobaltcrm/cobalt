@@ -24,7 +24,7 @@ class GetLeaderBoard extends DefaultController
         $model = new GoalModel;
 
         //get data
-        $leaderboard = $model->getLeaderBoards($this->input->get('id'));
+        $leaderboard = $model->getLeaderBoards($this->getInput()->get('id'));
 
         //pass data to view
         $view = ViewHelper::getView('goals','leaderboard', 'raw', array('leaderboard'=>$leaderboard ));

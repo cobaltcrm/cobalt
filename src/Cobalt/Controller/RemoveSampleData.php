@@ -41,7 +41,7 @@ class RemoveSampleData extends DefaultController
         $configModel->store($data);
 
         $msg = TextHelper::_('COBALT_SAMPLE_DATA_REMOVED');
-        $this->app->redirect('index.php?view=import', $msg);
+        $this->getApplication()->redirect('index.php?view=import', $msg);
 
     }
 

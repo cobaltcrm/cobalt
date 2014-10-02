@@ -20,7 +20,7 @@ class GetConvoEntry extends DefaultController
 {
     public function execute()
     {
-        $convo_id = $this->input->get('convo_id');
+        $convo_id = $this->getInput()->get('convo_id');
 
         $model = new ConversationModel;
         $convo = $model->getConversation($convo_id);

@@ -19,14 +19,14 @@ class RemoveAjax extends DefaultController
 {
     public function execute()
     {
-        $modelName = 'Cobalt\\Model\\'.ucwords($this->input->get('model'));
-        $controllerName = $this->input->get('controller');
+        $modelName = 'Cobalt\\Model\\'.ucwords($this->getInput()->get('model'));
+        $controllerName = $this->getInput()->get('controller');
 
-        $objectName = $this->input->get('model');
+        $objectName = $this->getInput()->get('model');
 
         $model = new $modelName();
 
-        $ids = $this->input->get('id');
+        $ids = $this->getInput()->get('id');
 
         if ( is_array($ids) ) {
             foreach ($ids as $id) {

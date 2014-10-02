@@ -24,7 +24,7 @@ class GetIndividualGoals extends DefaultController
         $model = new GoalModel;
 
         //get data
-        $goals = $model->getIndividualGoals($this->input->get('id'));
+        $goals = $model->getIndividualGoals($this->getInput()->get('id'));
 
         //pass data to view
         $view = ViewHelper::getView('goals','filters', 'raw', array('goals'=>$goals));

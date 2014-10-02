@@ -25,7 +25,7 @@ class DeleteReport extends DefaultController
 
         //get model
         $model = new ReportModel;
-        if ( $model->deleteReport($this->input->get('id')) ) {
+        if ( $model->deleteReport($this->getInput()->get('id')) ) {
             $return['error'] = false;
         }
 

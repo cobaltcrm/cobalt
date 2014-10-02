@@ -22,7 +22,7 @@ class SaveCf extends DefaultController
     public function execute()
     {
         //get post data
-        $data = $this->input->getArray(array(
+        $data = $this->getInput()->getArray(array(
             'association_id' => 'int',
             'association_type' => 'string',
             'person_id' => 'int'
@@ -30,8 +30,8 @@ class SaveCf extends DefaultController
         //get db Object
         $db = $this->container->fetch('db');
         $query = $db->getQuery(true);
-        $table = $this->input->getCmd('table');
-        $loc = $this->input->getCmd('loc');
+        $table = $this->getInput()->getCmd('table');
+        $loc = $this->getInput()->getCmd('loc');
         unset($data['table']);
         unset($data['loc']);
         if (empty($data['person_id'])) {

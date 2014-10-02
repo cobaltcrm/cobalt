@@ -17,7 +17,7 @@ class DeleteGoalEntry extends DefaultController
 {
     public function execute()
     {
-        $goal_id = $this->input->get('goal_id');
+        $goal_id = $this->getInput()->get('goal_id');
 
         //get db
         $db = $this->container->fetch('db');

@@ -25,9 +25,9 @@ class FilterCompanies extends DefaultController
         $view->setLayout('list');
 
         //get filters
-        $type = $this->input->get('type');
-        $user = $this->input->get('user');
-        $team = $this->input->get('team_id');
+        $type = $this->getInput()->get('type');
+        $user = $this->getInput()->get('user');
+        $team = $this->getInput()->get('team_id');
 
         //get deals
         $model = new CompanyModel;
