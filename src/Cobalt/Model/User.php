@@ -11,6 +11,7 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\UserTable;
+use Cobalt\Model\Teams;
 use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CompanyHelper;
@@ -108,7 +109,7 @@ class User extends DefaultModel
         {
             $data['fullscreen'] = !$row->fullscreen;
         }
-        
+
         if (isset($data['password']) && $data['password'])
         {
             $crypt = new Simple;
@@ -147,6 +148,12 @@ class User extends DefaultModel
         if (array_key_exists('email', $data))
         {
             $this->updateEmail($row->id, $data['email']);
+        }
+
+        if (isset($data['team_name']) && $data['team_name'])
+        {
+            $teamModel = new Teams;
+            $teamModel->createTeam($row->id, $data['team_name']);
         }
 
         $this->app->refreshUser();

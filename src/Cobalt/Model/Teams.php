@@ -38,8 +38,11 @@ class Teams extends DefaultModel
 
         //clean data
         $teams = array();
-        if ( count($results) > 0 ) {
-            foreach ($results as $key=>$team) {
+        
+        if (count($results) > 0)
+        {
+            foreach ($results as $key=>$team)
+            {
                 $teams[$team['leader_id']] = $team['team_id'];
             }
         }
@@ -54,37 +57,41 @@ class Teams extends DefaultModel
      * @param  int $leader_id the id of the leader for the team to create
      * @return int $team_id the id of the newly created team
      */
-    public function createTeam($leader_id,$name=NULL)
+    public function createTeam($leader_id, $name = NULL)
     {
         //Database
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->clear();
-        $query->select("team_id")->from("#__users")->where('id='.$leader_id);
+        $query->select("team_id")->from("#__users")->where('id=' . $leader_id);
         $db->setQuery($query);
         $team_id = $db->loadResult();
-        $team_data = array( 'leader_id'=>$leader_id,'name'=>$name );
+        $team_data = array( 'leader_id' => $leader_id, 'name' => $name );
         $row = new TeamsTable;
 
-        if ($team_id > 0) {
+        if ($team_id > 0)
+        {
             $team_data['team_id'] = $team_id;
             $row->load($team_id);
         }
 
-        if (!$row->bind($team_data)) {
+        if (!$row->bind($team_data))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->check()) {
+        if (!$row->check())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->store()) {
+        if (!$row->store())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
@@ -102,24 +109,28 @@ class Teams extends DefaultModel
      * @param  int  $team_id   the id of the newly created team
      * @return void
      */
-    public function assignLeader($leader_id,$team_id)
+    public function assignLeader($leader_id, $team_id)
     {
         //bind user tables
         $row = new UsersTable;
-        $team_data = array ( 'id'=>$leader_id,'team_id'=>$team_id );
-        if (!$row->bind($team_data)) {
+        $team_data = array ('id'=>$leader_id, 'team_id' => $team_id);
+
+        if (!$row->bind($team_data))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->check()) {
+        if (!$row->check())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
-        if (!$row->store()) {
+        if (!$row->store())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
@@ -127,7 +138,7 @@ class Teams extends DefaultModel
 
     }
 
-    public function updateTeam($old_team,$new_team)
+    public function updateTeam($old_team, $new_team)
     {
         //update the database
         $db = JFactory::getDBO();
