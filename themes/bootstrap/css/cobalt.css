@@ -161,3 +161,9 @@ div#actions, div.filters, div.dropdown_area, div#edit_menu {
 .carousel-inner > .item {
     padding-bottom: 68px;
 }
+
+/* Support button dropdown inside btn-group */
+
+.btn-group-dropdown {
+    position: absolute;
+}

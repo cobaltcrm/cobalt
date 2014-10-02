@@ -2746,8 +2746,8 @@ var Calendar = {
             type:'GET',
             dataType:'html',
             success:function(data){
-                jQuery("#CobaltAjaxModalBody").html(data);
-                jQuery("#CobaltAjaxModal").modal('show');
+                jQuery("#contactsModalBody").html(data);
+                jQuery("#contacts_modal").modal('show');
             }
         });
     },

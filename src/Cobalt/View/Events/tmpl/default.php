@@ -189,7 +189,21 @@ if ($filter_type == "individual") {
             </div>
             <div class="modal-body" id="noteModalBody"></div>
             <div class="modal-footer">
-                <button aria-hidden="true" data-dismiss="modal" class="btn btn-default" id="CobaltAjaxModalCloseButton"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
+                <button aria-hidden="true" data-dismiss="note_modal" class="btn btn-default" id="CobaltAjaxModalCloseButton"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="contacts_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>&nbsp;</h3>
+            </div>
+            <div class="modal-body" id="contactsModalBody"></div>
+            <div class="modal-footer">
+                <button aria-hidden="true" data-dismiss="modal" class="btn btn-default"><?php echo TextHelper::_('COBALT_CANCEL'); ?></button>
             </div>
         </div>
     </div>
