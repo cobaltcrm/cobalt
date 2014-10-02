@@ -27,6 +27,12 @@ define('_CEXEC', 1);
 define('COBALT_VERSION', '1.0.0-dev');
 
 /*
+ * Define whether the application was launched from the command line or a web request
+ */
+$isCli = defined('STDIN') && defined('STDOUT') && isset($_SERVER['argv']) && php_sapi_name() === 'cli';
+define('COBALT_CLI', $isCli);
+
+/*
  * Users are able to move files in the filesystem, for example to move all non-web assets outside the webroot.
  * To accomplish this, a user must copy the <JPATH_ROOT>/src/defines.php file to the same folder as this index.php file
  * AND set the '_CDEFINES' define to true, otherwise the system defaults will be used
@@ -62,9 +68,14 @@ if (!defined('_CDEFINES'))
 
 require_once __DIR__ . '/src/boot.php';
 
-use Tracy\Debugger;
-Debugger::enable();
+if (COBALT_CLI)
+{
+	// Support coming soon ;-)
+}
+else
+{
+	\Tracy\Debugger::enable();
 
-// $container is setup in the previous require.
-$app = new \Cobalt\Application;
-$app->execute();
+	$app = new \Cobalt\Application;
+	$app->execute();
+}

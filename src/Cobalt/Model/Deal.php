@@ -206,7 +206,7 @@ class Deal extends DefaultModel
             return false;
         }
 
-        $this->app->triggerEvent('onBeforeDealSave', array(&$row));
+        //$this->app->triggerEvent('onBeforeDealSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -242,7 +242,7 @@ class Deal extends DefaultModel
         $row->actual_close_formatted = isset($row->actual_close) ? DateHelper::formatDate($row->actual_close) : DateHelper::formatDate(date("Y-m-d"));
         $row->expected_close_formatted = isset($row->expected_close) ? DateHelper::formatDate($row->expected_close) : DateHelper::formatDate(date("Y-m-d"));
 
-        $this->app->triggerEvent('onAfterDealSave', array(&$row));
+        //$this->app->triggerEvent('onAfterDealSave', array(&$row));
 
         //return success
         if ($returnRow) {
@@ -997,7 +997,7 @@ class Deal extends DefaultModel
         /** ------------------------------------------
          *  Return results
          */
-        $this->app->triggerEvent('onDealLoad', array(&$deals));
+        //$this->app->triggerEvent('onDealLoad', array(&$deals));
 
         // cast to array so it never returns null to view
         return (array) $deals;
@@ -1222,7 +1222,7 @@ class Deal extends DefaultModel
 
         $results = $this->db->setQuery($query)->loadAssocList();
 
-        
+
         if (count($results) > 0)
         {
             $max = 0;

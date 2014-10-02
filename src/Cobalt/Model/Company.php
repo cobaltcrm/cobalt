@@ -94,7 +94,7 @@ class Company extends DefaultModel
             return false;
         }
 
-        $app->triggerEvent('onBeforeCompanySave', array(&$row));
+        //$app->triggerEvent('onBeforeCompanySave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -119,7 +119,7 @@ class Company extends DefaultModel
             CobaltHelper::storeCustomCf($id,$customArray,'company');
         }
 
-        $app->triggerEvent('onAfterCompanySave', array(&$row));
+        //$app->triggerEvent('onAfterCompanySave', array(&$row));
 
         return $row->id;
     }
@@ -376,7 +376,7 @@ class Company extends DefaultModel
 
         }
 
-        $app->triggerEvent('onCompanyLoad',array(&$companies));
+        //$app->triggerEvent('onCompanyLoad',array(&$companies));
 
         return $companies;
     }

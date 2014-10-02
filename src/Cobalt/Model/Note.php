@@ -121,7 +121,7 @@ class Note extends DefaultModel
             return false;
         }
 
-        $app->triggerEvent('onBeforeNoteSave', array(&$row));
+        //$app->triggerEvent('onBeforeNoteSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -151,7 +151,7 @@ class Note extends DefaultModel
             $model->storeAttachments($data['email_id'], $data['person_id']);
         }
 
-        $app->triggerEvent('onAfterNoteSave', array(&$row));
+        //$app->triggerEvent('onAfterNoteSave', array(&$row));
 
         return $id;
     }
@@ -196,7 +196,7 @@ class Note extends DefaultModel
             }
         }
 
-        $app->triggerEvent('onNoteLoad', array(&$results));
+        //$app->triggerEvent('onNoteLoad', array(&$results));
 
         //return results
         return $results;
@@ -334,7 +334,7 @@ class Note extends DefaultModel
             }
         }
 
-        $app->triggerEvent('onNoteLoad', array(&$results));
+        //$app->triggerEvent('onNoteLoad', array(&$results));
 
         if (!$display) {
             //return results

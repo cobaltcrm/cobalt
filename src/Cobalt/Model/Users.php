@@ -26,7 +26,7 @@ class Users extends DefaultModel
         $row = new UserTable;
         $data = $this->app->input->post->getArray();
 
-        $this->app->triggerEvent('onBeforeCRMUserSave', array(&$data));
+        //$this->app->triggerEvent('onBeforeCRMUserSave', array(&$data));
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -112,7 +112,7 @@ class Users extends DefaultModel
         $row->id = ( array_key_exists('id',$data) && $data['id'] > 0 ) ? $data['id'] : $this->db->insertId();
         $this->updateUserMap($row);
 
-        $this->app->triggerEvent('onAfterCRMUserSave', array(&$data));
+        //$this->app->triggerEvent('onAfterCRMUserSave', array(&$data));
 
         return true;
     }
@@ -309,7 +309,7 @@ class Users extends DefaultModel
         //get db
         $query = $this->db->getQuery(true);
 
-        $this->app->triggerEvent('onBeforeCRMUserDelete', array(&$ids));
+        //$this->app->triggerEvent('onBeforeCRMUserDelete', array(&$ids));
 
         $query->update("#__users");
                 if ( is_array($ids) ) {
@@ -320,7 +320,7 @@ class Users extends DefaultModel
         $query->set("published=-1");
         $this->db->setQuery($query);
         if ( $this->db->execute() ) {
-            $this->app->trigger('onAfterCRMUserDelete', array(&$ids));
+            //$this->app->trigger('onAfterCRMUserDelete', array(&$ids));
 
             return true;
         } else {

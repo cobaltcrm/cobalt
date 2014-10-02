@@ -47,14 +47,6 @@ final class Application extends AbstractWebApplication
 	 */
 	private $container;
 
-    /**
-     * The Dispatcher object.
-     *
-     * @var    Dispatcher
-     * @since  1.0
-     */
-    protected $dispatcher;
-
 	/**
 	 * A session object.
 	 *
@@ -148,11 +140,10 @@ final class Application extends AbstractWebApplication
         // Setup the application pieces.
 	    $this->setContainer($container);
         $this->loadConfiguration();
-        $this->loadDispatcher();
         $this->loadDocument();
 
         // Load the library language file
-        $this->getLanguage()->load('lib_joomla', JPATH_BASE);
+        //$this->getLanguage()->load('lib_joomla', JPATH_BASE);
 
 	    // TODO - NO MORE JFACTORY
 	    JFactory::$application = $this;
@@ -176,26 +167,6 @@ final class Application extends AbstractWebApplication
         }
 
         $this->config->merge($config);
-
-        return $this;
-    }
-
-    /**
-     * Allows the application to load a custom or default dispatcher.
-     *
-     * The logic and options for creating this object are adequately generic for default cases
-     * but for many applications it will make sense to override this method and create event
-     * dispatchers, if required, based on more specific needs.
-     *
-     * @param Dispatcher $dispatcher An optional dispatcher object. If omitted, the factory dispatcher is created.
-     *
-     * @return  $this  Method allows chaining
-     *
-     * @since   1.0
-     */
-    public function loadDispatcher(Dispatcher $dispatcher = null)
-    {
-        $this->dispatcher = ($dispatcher === null) ? new Dispatcher : $dispatcher;
 
         return $this;
     }
@@ -382,13 +353,16 @@ final class Application extends AbstractWebApplication
         // Set metadata
         $this->document->setTitle('Cobalt');
 
+	    // Install check
+	    if (!file_exists(JPATH_CONFIGURATION . '/configuration.php')  || (filesize(JPATH_CONFIGURATION . '/configuration.php') < 10))
+		{
+			// TODO - Integrate the standalone install application into the main application code
+		}
+
+	    // TODO - This standalone file really should be moved back into this method
         ob_start();
         require_once __DIR__.'/cobalt.php';
         $contents = ob_get_clean();
-
-        // Trigger the onAfterDispatch event.
-        JPluginHelper::importPlugin('system');
-        $this->triggerEvent('onAfterDispatch');
 
         if ($this->input->get('format', 'html') === 'raw') {
             $this->setBody($contents);
@@ -660,44 +634,6 @@ final class Application extends AbstractWebApplication
     public function getClientId()
     {
         return $this->_clientId;
-    }
-
-    /**
-     * Registers a handler to a particular event group.
-     *
-     * @param string   $event   The event name.
-     * @param callable $handler The handler, a function or an instance of a event object.
-     *
-     * @return Application The application to allow chaining.
-     *
-     * @since   12.1
-     */
-    public function registerEvent($event, $handler)
-    {
-        if ($this->dispatcher instanceof Dispatcher) {
-            $this->dispatcher->triggerEvent($event, $handler);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Calls all handlers associated with an event group.
-     *
-     * @param string $event The event name.
-     * @param array  $args  An array of arguments (optional).
-     *
-     * @return array An array of results from each function call, or null if no dispatcher is defined.
-     *
-     * @since   12.1
-     */
-    public function triggerEvent($event, array $args = null)
-    {
-        if ($this->dispatcher instanceof Dispatcher) {
-            return $this->dispatcher->triggerEvent($event, $args);
-        }
-
-        return null;
     }
 
     /**

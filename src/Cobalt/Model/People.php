@@ -179,7 +179,7 @@ class People extends DefaultModel
         }
 
         $app = \Cobalt\Container::fetch('app');
-        $app->triggerEvent('onBeforePersonSave', array(&$row));
+        //$app->triggerEvent('onBeforePersonSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -233,7 +233,7 @@ class People extends DefaultModel
             $row->form_id   = '';
         }
 
-        $app->triggerEvent('onAfterPersonSave', array(&$row));
+        //$app->triggerEvent('onAfterPersonSave', array(&$row));
 
         return $person_id;
     }
@@ -607,7 +607,7 @@ class People extends DefaultModel
             }
         }
 
-        $this->app->triggerEvent('onPersonLoad', array(&$people));
+        //$this->app->triggerEvent('onPersonLoad', array(&$people));
 
         //return results
         return $people;
@@ -674,7 +674,7 @@ class People extends DefaultModel
 
         }
 
-        $app->triggerEvent('onPersonLoad', array(&$person));
+        //$app->triggerEvent('onPersonLoad', array(&$person));
 
         return $person;
     }
