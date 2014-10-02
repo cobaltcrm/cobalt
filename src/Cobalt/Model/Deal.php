@@ -1204,13 +1204,13 @@ class Deal extends DefaultModel
         if ($type =='stage')
         {
             $query->where("d.stage_id <> 0 AND d.stage_id = stage.id");
-            $query->group("d.stage_id");
+            $query->group("d.stage_id,stage.name");
         }
 
         if ($type == 'status')
         {
             $query->where("d.status_id <> 0 AND d.status_id = status.id");
-            $query->group("d.status_id");
+            $query->group("d.status_id,status.name");
         }
 
         if (!is_null($this->archived))
@@ -1222,7 +1222,7 @@ class Deal extends DefaultModel
 
         $results = $this->db->setQuery($query)->loadAssocList();
 
-        
+
         if (count($results) > 0)
         {
             $max = 0;
