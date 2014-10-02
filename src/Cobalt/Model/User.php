@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\TextHelper;
 use Cobalt\Table\UserTable;
-use Cobalt\Model\Teams;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
@@ -113,8 +112,7 @@ class User extends DefaultModel
 
         if (isset($data['password']) && $data['password'])
         {
-            $crypt = new Simple;
-            $data['password'] = $crypt->create($data['password']);
+	        $data['password'] = UsersHelper::hashPassword($data['password']);
         }
 
         //date generation
@@ -196,7 +194,7 @@ class User extends DefaultModel
                 }
             }
         }
-        
+
 
         if (in_array(false, $retults))
         {
