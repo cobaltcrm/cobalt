@@ -2980,6 +2980,42 @@ var Person = {
     }
 };
 
+var User = {
+    //update member and team data depending on selection
+    updateRole: function(element) {
+        var value = jQuery(element).val();
+
+        if (value == "manager" ) {
+            jQuery("#team_name").slideDown('fast');
+        }else{
+            jQuery("#team_name").slideUp('fast');
+        }
+        
+        //show team assignment
+        if (value == 'basic') {
+            jQuery("#team_assignment").slideDown('fast');
+        }else{
+            jQuery("#team_assignment").slideUp('fast');
+        }
+        
+        //if we are downgrading a users access
+        if (role_type == 'manager' && value != 'manager') {
+            new_manager = true;
+            jQuery("#manager_id").addClass('required');
+            jQuery("#manager_assignment").show();
+        } else {
+            new_manager = false;
+            jQuery("#manager_id").removeClass('required');
+            jQuery("#manager_assignment").hide();
+        }
+        
+        //reassign a team if we are changing role
+        if (role_type != value) {
+            jQuery("select[name=team_id]").val('');
+        }
+    }
+};
+
 /**
  * Cobalt JS initialization
  **/

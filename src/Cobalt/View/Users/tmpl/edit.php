@@ -123,24 +123,22 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     id="role_type" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_ROLE'); ?>" 
-                                    onchange="updateRole(this.value)" >
+                                    onchange="User.updateRole(this)" >
                                     <?php echo JHtml::_('select.options', $this->member_roles, 'value', 'text', $this->user->role_type, true);?>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div id="team_name" <?php if ($this->user->role_type != "manager") { ?> style="display:none;" <?php } ?> >
-                                <label class="col-sm-2 control-label" for="team_name">
-                                    <?php echo JText::_('COBALT_TEAM_NAME'); ?>
-                                </label>
-                                <div class="col-sm-10">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        name="team_name" 
-                                        id="team_name"
-                                        value="<?php if ( isset($this->user->team_name) ) echo $this->user->team_name; ?>" />
-                                </div>
+                        <div class="form-group" id="team_name" <?php if ($this->user->role_type != "manager") { ?> style="display:none;" <?php } ?> >
+                            <label class="col-sm-2 control-label" for="team_name">
+                                <?php echo JText::_('COBALT_TEAM_NAME'); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    name="team_name" 
+                                    id="team_name"
+                                    value="<?php if (isset($this->user->team_name)) echo $this->user->team_name; ?>" />
                             </div>
                         </div>
                         <?php if ($this->user->role_type == 'basic') {  ?>
