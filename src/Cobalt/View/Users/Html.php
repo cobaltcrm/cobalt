@@ -20,6 +20,7 @@ use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Model\Users as UsersModel;
+use Cobalt\Model\User as UserModel;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -40,7 +41,7 @@ class Html extends AbstractHtmlView
         //load model
         $layout = $this->getLayout();
         $model = new UsersModel;
-        $model->set("_layout",$layout);
+        $model->set("_layout", $layout);
 
         //add toolbar buttons to manage users
         if ($layout == 'default')
@@ -48,11 +49,6 @@ class Html extends AbstractHtmlView
             $this->toolbar = new Toolbar;
             $this->toolbar->addNew();
             $this->toolbar->addDeleteRow();
-            
-            //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
 
             //get users
             $users = $model->getUsers();
@@ -68,28 +64,20 @@ class Html extends AbstractHtmlView
         }
         elseif ($this->getLayout() == 'edit')
         {
+            $model = new UserModel;
+            $model->set("_layout", $layout);
             //buttons
             ToolbarHelper::cancel('cancel');
             ToolbarHelper::save('save');
 
             //get id
-            $id = $app->input->get('cid', null, 'array');
-
-            if (is_array($id) && array_key_exists(0, $id))
-            {
-                $id = $id[0];
-            }
-            else
-            {
-                $id = null;
-            }
+            $id = $app->input->getInt('id', null);
 
             //plugins
             $app->triggerEvent('onBeforeCRMUserEdit', array(&$id));
 
             //get user
             $this->user = $model->getUser($id);
-            $this->users = $model->getUsers();
 
             //view data
             $roles = DropdownHelper::getMemberRoles();

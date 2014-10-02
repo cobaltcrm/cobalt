@@ -41,7 +41,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     name="username" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_START_TYPING_JOOMLA_NAME'); ?>" 
-                                    value="<?php if ( isset($this->user) ) echo $this->user['username']; ?>"
+                                    value="<?php if ( isset($this->user) ) echo $this->user->username; ?>"
                                     autocomplete="off">
                             </div>
                         </div>
@@ -75,7 +75,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     data-original-title="<?php echo JText::_('COBALT_ENTER_FIRST_NAME_HERE'); ?>" 
                                     name="first_name" 
                                     id="first_name" 
-                                    value="<?php echo $this->user['first_name']; ?>" />
+                                    value="<?php echo $this->user->first_name; ?>" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -91,7 +91,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     id="last_name" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_ENTER_LAST_NAME_HERE'); ?>" 
-                                    value="<?php echo $this->user['last_name']; ?>" />
+                                    value="<?php echo $this->user->last_name; ?>" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,7 +107,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     name="email" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_EDIT_USER_EMAIL'); ?>" 
-                                    value="<?php echo $this->user['email']; ?>" />
+                                    value="<?php echo $this->user->email; ?>" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -123,9 +123,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_ROLE'); ?>" 
                                     onchange="updateRole(this.value)" >
-                                    <?php echo JHtml::_('select.options', $this->member_roles, 'value', 'text', $this->user['role_type'], true);?>
+                                    <?php echo JHtml::_('select.options', $this->member_roles, 'value', 'text', $this->user->role_type, true);?>
                                 </select>
-                                <div id="team_name" <?php if ($this->user['role_type'] != "manager") { ?> style="display:none;" <?php } ?> >
+                                <div id="team_name" <?php if ($this->user->role_type != "manager") { ?> style="display:none;" <?php } ?> >
                                     <label class="col-sm-2 control-label" for="team_name">
                                         <?php echo JText::_('COBALT_TEAM_NAME'); ?>
                                     </label>
@@ -135,12 +135,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                             class="form-control" 
                                             name="team_name" 
                                             id="team_name"
-                                            value="<?php if ( isset($this->user) ) echo $this->user['team_name']; ?>" />
+                                            value="<?php if ( isset($this->user->team_name) ) echo $this->user->team_name; ?>" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php if ($this->user['role_type'] == 'basic') {  ?>
+                        <?php if ($this->user->role_type == 'basic') {  ?>
                         <div class="form-group" id="team_assignment">
                         <?php } else { ?>
                         <div class="form-group" style="display:none;" id="team_assignment">
@@ -156,11 +156,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_TEAM'); ?>" >
                                     <option value="0"><?php echo JText::_("COBALT_NONE"); ?></option>
-                                    <?php echo JHtml::_('select.options', $this->teams, 'value', 'text', $this->user['team_id'], true);?>
+                                    <?php echo JHtml::_('select.options', $this->teams, 'value', 'text', $this->user->team_id, true);?>
                                 </select>
                             </div>
                         </div>
-                        <?php if ($this->user['role_type'] == 'manager') { ?>
+                        <?php if ($this->user->role_type == 'manager') { ?>
                         <div class="form-group" style="display:none;" id="manager_assignment">
                             <label class="col-sm-2 control-label" for="manager_id">
                                 <?php echo JText::_('COBALT_ASSIGN_NEW_MANAGER'); ?><span class="required">*</span>
@@ -191,7 +191,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_USER_COLOR'); ?>" 
                                     name="color" 
-                                    value="<?php echo $this->user['color'] ? $this->user['color'] : '#84a5f6'; ?>" />
+                                    value="<?php echo $this->user->color ? $this->user->color : '#84a5f6'; ?>" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -203,7 +203,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     name="admin" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_IF_CHECKED_ADMINISTRATOR'); ?>" 
-                                    <?php echo ($this->user['admin'] ? 'checked' : ''); ?> />
+                                    <?php echo ($this->user->admin ? 'checked' : ''); ?> />
                                 <?php echo JText::_("COBALT_ADMNISTRATOR"); ?>
                             </label>
                         </div>
@@ -215,7 +215,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     name="can_delete" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_IF_CHECKED_DELETE'); ?>" 
-                                    <?php echo ($this->user['can_delete'] ? 'checked' : ''); ?> />
+                                    <?php echo ($this->user->can_delete ? 'checked' : ''); ?> />
                                 <?php echo JText::_('COBALT_ALLOWED_TO_DELETE'); ?>
                             </label>
                         </div>
@@ -227,12 +227,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     name="exports" 
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_IF_CHECKED_EXPORT'); ?>" 
-                                    <?php echo ($this->user['exports'] ? 'checked' : ''); ?> />
+                                    <?php echo ($this->user->exports ? 'checked' : ''); ?> />
                                 <?php echo JText::_('COBALT_ALLOWED_TO_EXPORT'); ?>
                             </label>
                         </div>
-                        <?php if ($this->user['id']) { ?>
-                            <input type="hidden" name="id" value="<?php echo $this->user['id']; ?>" />
+                        <?php if ($this->user->id) { ?>
+                            <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
                         <?php } ?>
                         <input type="hidden" name="controller" value="" />
                         <input type="hidden" name="model" value="users" />
