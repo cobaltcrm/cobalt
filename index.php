@@ -70,7 +70,18 @@ require_once __DIR__ . '/src/boot.php';
 
 if (COBALT_CLI)
 {
-	// Support coming soon ;-)
+	try
+	{
+		$app = new \Cobalt\CLI\Application;
+		$app->execute();
+	}
+	catch (\Exception $e)
+	{
+		fwrite(STDOUT, "\nERROR: " . $e->getMessage() . "\n");
+		fwrite(STDOUT, "\n" . $e->getTraceAsString() . "\n");
+
+		exit;
+	}
 }
 else
 {
