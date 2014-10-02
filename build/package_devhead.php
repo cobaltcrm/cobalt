@@ -52,6 +52,13 @@ system('rm vendor/joomla/application/composer.json');
 system('rm vendor/joomla/application/phpunit.*');
 system('rm vendor/joomla/application/README.md');
 
+// joomla/authentication
+system('rm -rf vendor/joomla/authentication/Docs');
+system('rm -rf vendor/joomla/authentication/Tests');
+system('rm vendor/joomla/authentication/composer.json');
+system('rm vendor/joomla/authentication/phpunit.*');
+system('rm vendor/joomla/authentication/README.md');
+
 // joomla/compat
 system('rm vendor/joomla/compat/composer.json');
 system('rm vendor/joomla/compat/README.md');
@@ -65,15 +72,6 @@ system('rm vendor/joomla/controller/.travis.yml');
 system('rm vendor/joomla/controller/composer.json');
 system('rm vendor/joomla/controller/phpunit.*');
 system('rm vendor/joomla/controller/README.md');
-
-// joomla/crypt
-system('rm -rf vendor/joomla/crypt/Joomla/Crypt/Tests');
-system('rm vendor/joomla/crypt/Joomla/Crypt/.gitattributes');
-system('rm vendor/joomla/crypt/Joomla/Crypt/.gitignore');
-system('rm vendor/joomla/crypt/Joomla/Crypt/.travis.yml');
-system('rm vendor/joomla/crypt/Joomla/Crypt/composer.json');
-system('rm vendor/joomla/crypt/Joomla/Crypt/phpunit.*');
-system('rm vendor/joomla/crypt/Joomla/Crypt/README.md');
 
 // joomla/database
 system('rm -rf vendor/joomla/database/.travis');
