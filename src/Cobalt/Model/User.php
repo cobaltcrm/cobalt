@@ -66,6 +66,8 @@ class User extends DefaultModel
 
         $this->setProperties($table->getProperties());
 
+        unset($this->password);
+
         return true;
     }
 
@@ -97,7 +99,7 @@ class User extends DefaultModel
         //Load Table
         $row = new UserTable;
 
-        if ($data['id'])
+        if (isset($data['id']) && $data['id'])
         {
             $row->load($data['id']);
         }
@@ -107,36 +109,44 @@ class User extends DefaultModel
             $data['fullscreen'] = !$row->fullscreen;
         }
 
+        if (isset($data['password']) && $data['password'])
+        {
+            $crypt = new Simple;
+            $data['password'] = $crypt->create($data['password']);
+        }
+
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
         $data['modified'] = $date;
 
-        //update users email address
-        if ( array_key_exists('email',$data)) {
-            $emails = $data['email'];
-            $this->updateEmail($data['id'],$emails);
-            unset($data['email']);
-        }
-
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
+        if (!$row->bind($data))
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Make sure the record is valid
-        if (!$row->check()) {
+        if (!$row->check())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
         }
 
         // Store the web link table to the database
-        if (!$row->store()) {
+        if (!$row->store())
+        {
             $this->setError($this->db->getErrorMsg());
 
             return false;
+        }
+
+        //update users email address
+        if (array_key_exists('email', $data))
+        {
+            $this->updateEmail($row->id, $data['email']);
         }
 
         $this->app->refreshUser();
@@ -161,20 +171,24 @@ class User extends DefaultModel
         $retults[] = $this->db->setQuery($query)->execute();
 
         //insert new entries
-        foreach ($emails as $email)
+        if (is_array($emails))
         {
-            if ($email)
+            foreach ($emails as $email)
             {
-                $emailO = new \stdClass();
-                $emailO->member_id = $user_id;
-
-                if (!(CobaltHelper::checkEmailName($email)))
+                if ($email)
                 {
-                    $emailO->email = $email;
-                    $retults[] = $this->db->insertObject('#__users_email_cf', $emailO);
+                    $emailO = new \stdClass();
+                    $emailO->member_id = $user_id;
+
+                    if (!(CobaltHelper::checkEmailName($email)))
+                    {
+                        $emailO->email = $email;
+                        $retults[] = $this->db->insertObject('#__users_email_cf', $emailO);
+                    }
                 }
             }
         }
+        
 
         if (in_array(false, $retults))
         {
