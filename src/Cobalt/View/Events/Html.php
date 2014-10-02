@@ -62,6 +62,15 @@ class Html extends AbstractHtmlView
                 $this->event_users = UsersHelper::getUsers(NULL,TRUE);
                 $this->event_teams = UsersHelper::getTeams();
 
+                $this->dataTableColumns = $model->getDataTableColumns();
+                $document->addScriptDeclaration("
+            loc = 'events';
+            order_url = 'index.php?view=events&layout=list&format=raw&tmpl=component';
+            order_dir = '".$state->get('Event.'.$view.'_'.$layout.'_'.'filter_order_Dir')."';
+            order_col = '".$state->get('Event.'.$view.'_'.$layout.'_'.'filter_order')."';
+            var dataTableColumns = " . json_encode($this->dataTableColumns) . ";");
+
+
                 $this->state = $state;
             break;
         }

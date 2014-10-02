@@ -1154,7 +1154,7 @@ class Event extends DefaultModel
                         //delete event entry
                         $query->update('#__events')->set("published=-1")->where('id='.$data['event_id']);
                         $db->setQuery($query);
-                        $db->query();
+                        $db->execute();
                         //delete from cf table
                         // $query->clear();
                         // $query->delete("#__events_cf")->where('event_id='.$data['event_id']);
@@ -1323,7 +1323,7 @@ class Event extends DefaultModel
 
             //Add the event to the parent exclusion
             $exp1 = explode(" ",$date);
-            $append = $event['type'] == "task" ? $event['due_date'] : $event['start_time'];
+            $append = $event->type == "task" ? $event->due_date : $event->start_time;
             $exp2 = explode(" ",$append);
             $excludeDate = $exp1[0]." ".$exp2[1];
 
@@ -1334,7 +1334,7 @@ class Event extends DefaultModel
             $data['completed'] = $completed;
             $new_data = array_merge($event,$data);
 
-            if ($event['type'] == "task") {
+            if ($event->type == "task") {
                 $new_data['due_date'] = DateHelper::formatDate($excludeDate,false,false);
                 $new_data['type'] = "task";
             } else {
@@ -1427,7 +1427,7 @@ class Event extends DefaultModel
                     }
                     $query->where("id=".$event_id);
                     $db->setQuery($query);
-                    $db->query();
+                    $db->execute();
                 }
             }
 
@@ -1438,6 +1438,358 @@ class Event extends DefaultModel
             ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
     }
+
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     *
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     *
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 'name');
+        $columns[] = array('data' => 'due_date', 'ordering' => 'due_date');
+        $columns[] = array('data' => 'for', 'ordering' => false);
+        $columns[] = array('data' => 'owner', 'ordering' => false);
+        $columns[] = array('data' => 'assigned_to', 'orderable' => false);
+        $columns[] = array('data' => 'type', 'ordering' => 'type');
+        $columns[] = array('data' => 'contacts', 'ordering' => false);
+        $columns[] = array('data' => 'notes', 'ordering' => false);
+
+        return $columns;
+    }
+
+    public function _buildQuery()
+    {
+        $app = \Cobalt\Container::fetch('app');
+        $loc = $app->input->getCmd('loc',$this->loc);
+        $association = null;
+
+        $user = null;
+
+        if ($this->db->name=='mysqli')
+        {
+            $this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
+        }
+
+        $query = $this->db->getQuery(true);
+        $db = $this->db;
+
+        $query->select("e.*,".
+            "a.*,".
+            "ci.name AS category_name,".
+            "c.name as company_name, c.id as company_id,".
+            "d.name as deal_name,d.id as deal_id,".
+            "p.first_name as person_first_name, p.last_name as person_last_name,p.id as person_id,".
+            "assignee.color AS assignee_color,".
+            'assignee.first_name AS assignee_first_name,assignee.last_name AS assignee_last_name,'.
+            "owner.first_name as owner_first_name, owner.last_name as owner_last_name ".
+            "FROM #__events AS e");
+        $query->leftJoin("#__events_categories AS ci ON ci.id = e.category_id");
+        $query->leftJoin("#__events_cf AS a ON e.id = a.event_id");
+        $query->leftJoin("#__companies AS c ON a.association_type = 'company' AND a.association_id = c.id AND c.published>0");
+        $query->leftJoin("#__deals AS d ON a.association_type = 'deal' AND a.association_id = d.id AND d.published>0");
+        $query->leftJoin("#__people AS p ON a.association_type = 'person' AND a.association_id = p.id AND p.published>0");
+        $query->leftJoin('#__users AS assignee ON assignee.id = e.assignee_id');
+        $query->leftJoin('#__users AS owner ON owner.id = e.owner_id');
+
+        //gather info
+        $user_role = UsersHelper::getRole();
+        $user_id = UsersHelper::getUserId();
+        $team_id = UsersHelper::getTeamId();
+
+        //filter based on user role
+        if ($user_role != 'exec' && $this->view != "print") {
+            //manager filter
+            if ($user_role == 'manager') {
+                $query->where('(assignee.team_id = '.$team_id.' OR owner.team_id = '.$team_id.")");
+            } else {
+                //basic user filter
+                $query->where("(e.assignee_id = ".$user_id." OR e.owner_id =".$user_id.")");
+            }
+        }
+
+        //search for certain user events
+        if ($user && $this->view != "print") {
+            if ($user == $user_id) {
+                $query->where("(e.assignee_id=".$user_id.' OR e.owner_id='.$user_id.')');
+            } elseif ($user != 'all') {
+                $query->where(array("e.assignee_id=".$user));
+            }
+        }
+
+        if (!$association) {
+            $association = $app->input->get('association_id') ? $app->input->get('association_id') : $app->input->get('id');
+        }
+        $association_type = $app->input->get('association_type') ? $app->input->get('association_type') : $app->input->get('layout');
+        $association_types = array("company","deal","person");
+
+        if ($association) {
+            $association_type = $association_type ? $association_type : $loc;
+            if ($association_type == "company") {
+                if ( is_array($association)) {
+                    $query->where("(p.company_id=".$association." OR d.company_id=".$association." OR ( a.association_type=".$db->quote("company")." AND a.association_id IN(".implode(",",$association).") ))");
+                } else {
+                    $query->where("(p.company_id=".$association." OR d.company_id=".$association." OR ( a.association_type=".$db->quote("company")." AND a.association_id=".$association." ))");
+                }
+            } else {
+                if ( is_array($association) ) {
+                    $query->where("a.association_id IN(".implode(",",$association).")");
+                } else {
+                    $query->where("a.association_id=".$association);
+                }
+                $query->where("a.association_type=".$db->quote($association_type));
+            }
+        } elseif ( $association_type && in_array($association_type,$association_types)) {
+            $query->where("a.association_type=".$db->Quote($association_type));
+        } else {
+            /** hide events associated with archived deals **/
+            $query->where("(d.archived=0 OR d.archived IS NULL)");
+        }
+
+        if ($this->_id != null) {
+            if ( is_array($this->_id) ) {
+                $query->where("e.id IN (".implode(',',$this->_id).")");
+            } else {
+                $query->where("e.id=$this->_id");
+            }
+        }
+
+        if ($this->current_events) {
+            $now = DateHelper::formatDBDate(date('Y-m-d'));
+            $query->where('e.due_date != "0000-00-00 00:00:00" AND e.due_date >="'.$now.'"');
+        }
+
+        /** Filter by status **/
+        $status_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_status');
+        if ($status_filter != null && $this->view != "print") {
+            $query->where("e.completed=$status_filter");
+        } else {
+            if ($this->completed != null) {
+                if ($this->completed == 'true') {
+                    $query->where("e.completed=1");
+                } elseif ($this->completed != 'false') {
+                    $query->where("e.completed=".$this->completed);
+                }
+            } else {
+                $query->where("e.completed=0");
+            }
+        }
+
+        /** Filter by type **/
+        $type_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_type');
+        if ($type_filter != null && $type_filter != "all" && $this->view != "print") {
+            $query->where("e.type='$type_filter'");
+        }
+
+        /** Filter by category **/
+        $category_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_category');
+        if ($category_filter != null && $category_filter != "any" && $this->view != "print") {
+            $query->where("e.category_id=$category_filter");
+        }
+
+        /** Filter by due date **/
+        $due_date_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_due_date');
+        if ($due_date_filter != null && $due_date_filter != "any" && $this->view != "print") {
+            $date = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
+            switch ($due_date_filter) {
+                case "today":
+                    $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                    $query->where("((e.due_date >= '$date' AND e.due_date < '$tomorrow') OR (e.start_time >= '$date' AND e.start_time < '$tomorrow'))");
+                    break;
+                case "tomorrow":
+                    $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
+                    $day_after_tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (2*24*60*60)));
+                    $query->where("((e.due_date >= '$tomorrow' AND e.due_date < '$day_after_tomorrow') OR (e.start_time >= '$tomorrow' AND e.start_time < '$day_after_tomorrow'))");
+                    break;
+                case "this_week":
+                    $date_info = getDate(strtotime($date));
+                    $today = $date_info['wday'];
+                    $days_to_remove = -1 + $today;
+                    $days_to_add = 5 - $today;
+                    $beginning_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." - $days_to_remove days")));
+                    $end_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." + $days_to_add days")));
+                    $query->where("((e.due_date >= '$beginning_of_week' AND e.due_date < '$end_of_week') OR (e.start_time >= '$beginning_of_week' AND e.start_time < '$end_of_week'))");
+                    break;
+                case "past_due":
+                    $query->where("((e.due_date < '$date' AND e.due_date != '0000-00-00 00:00:00') OR (e.start_time < '$date' AND e.start_time != '0000-00-00 00:00:00'))");
+                    break;
+                case "not_past_due":
+                    $query->where("((e.due_date >= '$date' AND e.due_date != '0000-00-00 00:00:00') OR (e.start_time >= '$date' AND e.start_time != '0000-00-00 00:00:00'))");
+                    break;
+            }
+        }
+
+        /** Filter by assignee id **/
+        $assignee_id_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_assignee_id');
+        $assignee_filter_type = $this->getState('Event.'.$this->view.'_'.$this->layout.'_assignee_filter_type');
+        if ($loc != "calendar" && $assignee_id_filter != null && $assignee_id_filter != 'all' && $this->view != "print") {
+            if ($assignee_filter_type == "team") {
+                $team_members = UsersHelper::getTeamUsers($assignee_id_filter,TRUE);
+                $query->where("e.assignee_id IN(".implode(',',$team_members).")");
+            } else {
+                $query->where("e.assignee_id=$assignee_id_filter");
+            }
+        }
+
+        /** Filter by association type **/
+        $association_type_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_association_type');
+        if ($association_type_filter != null && $association_type_filter != "any" && !$association && $assignee_id_filter != 'all' && $this->view != "print" /*&& !$assignee_id_filter */) {
+            $query->where("a.association_type='".$association_type_filter."'");
+        }
+
+        $query->where("e.published=".$this->published);
+
+        if ($this->start_date) {
+            $query->where("(e.due_date >= '".$this->start_date."' OR e.start_time >= '".$this->start_date."' OR e.repeats != 'none' )");
+        }
+
+        if ($this->end_date) {
+            $query->where("(e.due_date < '".$this->end_date."' OR e.end_time < '".$this->end_date."' OR e.repeats != 'none' )");
+        }
+
+        if ($this->deal_id > 0) {
+            $query->where("(a.association_id=".$this->deal_id." AND a.association_type='deal')");
+        }
+
+        $this->filter_order = $this->getState('Event.'.$this->view.'_'.$this->layout.'_filter_order');
+        $this->filter_order_Dir = $this->getState('Event.'.$this->view.'_'.$this->layout.'_filter_order_Dir');
+        $query->order($this->filter_order . ' ' . $this->filter_order_Dir);
+
+        /** ------------------------------------------
+         * Set query limits and load results
+         */
+        if (  $this->getState("Event.".$this->view.'_'.$this->layout.'_limit') != 0 ) {
+            $query .= " LIMIT ".($this->getState("Event.".$this->view.'_'.$this->layout.'_limit'))." OFFSET ".($this->getState("Event.".$this->view.'_'.$this->layout.'_limitstart'));
+        }
+
+        return $query;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     *
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getEvents();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     *
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+        switch ($column)
+        {
+            case 'id':
+                $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
+                break;
+            case 'name':
+                $class = $item->completed ? 'line-through' : '';
+                $template = '<div class="dropdown"><a data-toggle="dropdown" role="button" class="dropdown-toggle '. $class .'" id="event_menu_'.$item->id.'_link" >'.$item->name.'</a>';
+                $template .= '<ul class="dropdown-menu" role="menu" aria-labelledby="event_menu_'.$item->id.'_link">';
+                if ($item->completed == 1) {
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.markEventIncomplete(this)" >'.TextHelper::_('COBALT_MARK_INCOMPLETE').'</a></li>';
+                } else {
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.markEventComplete(this)" >'.TextHelper::_('COBALT_MARK_COMPLETE').'</a></li>';
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,1)" >'.TextHelper::_('COBALT_POSTPONE_1_DAY').'</a></li>';
+                    $template .= '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,7)" >'.TextHelper::_('COBALT_POSTPONE_7_DAYS').'</a></li>';
+                }
+                $id = $item->parent_id != 0 ? $item->parent_id : $item->id;
+                $template .= '<li><a href="javascript:void(0);" onclick="Calendar.editEvent('.$id.',\''.$item->type.'\')" >'.TextHelper::_('COBALT_EDIT').'</a></li>';
+                $template .= '<li><a href="javascript:void(0);" onclick="Calendar.removeCalendarEvent(this)" >'.TextHelper::_('COBALT_DELETE').'</a></li>';
+                $template .= '</ul>';
+                $template .= '</div>';
+                break;
+            case 'for':
+                switch ($item->association_type) {
+                    case 'deal':
+                        $template = '<a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$item->deal_id).'">'.$item->deal_name.'</a>';
+                        break;
+                    case 'company':
+                        $template = '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$item->company_id).'">'.$item->company_name.'</a>';
+                        break;
+                    case 'person':
+                        $template = '<a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$item->person_id).'">'.$item->person_first_name.' '.$item->person_last_name.'</a>';
+                        break;
+                    default:
+                        $template = '';
+                        break;
+                }
+                break;
+            case 'owner':
+                $template = $item->owner_first_name.' '.$item->owner_last_name;
+                break;
+            case 'assigned_to':
+                $template = $item->assignee_first_name.' '.$item->assignee_last_name;
+                break;
+            case 'contacts':
+                $template = '<a href="javascript:void(0);" onclick="Calendar.showEventContactsDialogModal('.$item->id.');"><img src="'.\JURI::base().'src/Cobalt/media/images/card.png'.'"/></a>';
+                break;
+            case 'notes':
+                $template = '<a href="javascript:void(0);" onclick="Calendar.openNoteModal(\''.$item->id.'\',\'event\');"><img src="'.\JURI::base().'src/Cobalt/media/images/notes.png'.'"/></a>';
+                $template .= '<div id="event_form_'.$item->id.'">';
+                $template .= '<input type="hidden" name="event_id" value="'.$item->id.'" />';
+                $template .= '<input type="hidden" name="parent_id" value="'.$item->parent_id.'" />';
+                if ($item->type == "task") {
+                    $template .= '<input type="hidden" name="date" value="'.$item->due_date.'" />';
+                } else {
+                    $template .= '<input type="hidden" name="date" value="'.$item->start_time.'" />';
+                }
+                $template .= '<input type="hidden" name="event_type" value="'.$item->type.'" />';
+                $template .= '<input type="hidden" name="repeats" value="'.$item->repeats.'" />';
+                $template .= '<input type="hidden" name="type" value="single" />';
+                $template .= '</div>';
+                $template .= '<div class="filters" id="event_menu_'.$item->id.'">';
+                $template .= '<ul>';
+                if ( $item->completed == 1 ) {
+                    $template .= '<li><a href="javascript:void(0);" onclick="markEventIncomplete(this)" >'.TextHelper::_('COBALT_MARK_INCOMPLETE').'</a></li>';
+                } else {
+                    $template .= '<li><a href="javascript:void(0);" onclick="markEventComplete(this)" >'.TextHelper::_('COBALT_MARK_COMPLETE').'</a></li>';
+                    $template .= '<li><a href="javascript:void(0);" onclick="postponeEvent(this,1)" >'.TextHelper::_('COBALT_POSTPONE_1_DAY').'</a></li>';
+                    $template .= '<li><a href="javascript:void(0);" onclick="postponeEvent(this,7)" >'.TextHelper::_('COBALT_POSTPONE_7_DAYS').'</a></li>';
+                }
+                $id = ( $item->parent_id ) != 0 ? $item->parent_id : $item->id ;
+                $template .= '<li><a href="javascript:void(0);" onclick="editEvent('.$id.',\''.$item->type.'\')" >'.TextHelper::_('COBALT_EDIT').'</a></li>';
+                $template .= '<li><a href="javascript:void(0);" onclick="deleteEvent(this)" >'.TextHelper::_('COBALT_DELETE').'</a></li>';
+                $template .= '</ul>';
+                $template .= '</div>';
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
+    }
+
 
     /**
      * Populate user state requests

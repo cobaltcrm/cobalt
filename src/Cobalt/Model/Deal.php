@@ -1511,7 +1511,7 @@ class Deal extends DefaultModel
         $columns[] = array('data' => 'source_name', 'ordering' => 'd.source_id');
         $columns[] = array('data' => 'expected_close', 'ordering' => 'd.expected_close');
         $columns[] = array('data' => 'actual_close', 'ordering' => 'd.actual_close');
-        $columns[] = array('data' => 'action', 'orderable' => false);
+        $columns[] = array('data' => 'action', 'ordering' => false);
 
         return $columns;
     }

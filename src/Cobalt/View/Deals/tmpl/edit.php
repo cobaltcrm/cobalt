@@ -242,6 +242,8 @@ $raw = $app->input->get('format'); ?>
         highlight: true
     },CobaltAutocomplete.getConfig('deal.addprimarycontact')).on('typeahead:selected', function(event, item, name){
         jQuery('#primary_contact_id').val(item.id);
+    }).on('typeahead:closed',function(event, item, name){
+        console.log(item);
     });
 
     CobaltAutocomplete.create({
@@ -270,6 +272,8 @@ $raw = $app->input->get('format'); ?>
             if(response.success) {
                 if(response.company_id) {
                     jQuery('#company_id').val(response.company_id);
+                } else {
+                    jQuery('#company_id').val('');
                 }
                 jQuery('#company_message').html(response.message);
                 jQuery('#company_message').fadeIn();

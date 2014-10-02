@@ -47,9 +47,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     echo '<a class="dropdown-toggle '.$completed.'" data-toggle="dropdown" role="button" href="javascript:void(0);" id="event_menu_'.$event['id'].'_link">'.$event['name'].'</a>';
                           echo '<ul class="dropdown-menu" role="menu" aria-labelledby="event_menu_'.$event['id'].'_link">';
                            if ($event['completed'] == 1) {
-                            echo '<li><a href="javascript:void(0);" onclick="Calendar.markEventIncomplete(this)" >'.TextHelper::_('COBALT_MARK_INCOMPLETE').'</a></li>';
+                            echo '<li><a href="javascript:void(0);" onclick="Calendar.markAsIncomplete(this)" >'.TextHelper::_('COBALT_MARK_INCOMPLETE').'</a></li>';
                            } else {
-                            echo '<li><a href="javascript:void(0);" onclick="Calendar.markEventComplete(this)" >'.TextHelper::_('COBALT_MARK_COMPLETE').'</a></li>';
+                            echo '<li><a href="javascript:void(0);" onclick="Calendar.markAsComplete(this)" >'.TextHelper::_('COBALT_MARK_COMPLETE').'</a></li>';
                             echo '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,1)" >'.TextHelper::_('COBALT_POSTPONE_1_DAY').'</a></li>';
                             echo '<li><a href="javascript:void(0);" onclick="Calendar.postponeEvent(this,7)" >'.TextHelper::_('COBALT_POSTPONE_7_DAYS').'</a></li>';
                           }
