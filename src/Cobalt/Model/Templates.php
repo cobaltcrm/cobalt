@@ -10,8 +10,8 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Table\TemplateDataTable;
 use Cobalt\Table\TemplatesTable;
-use JFactory;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -23,11 +23,9 @@ class Templates extends DefaultModel
 
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = new TemplatesTable;
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->post->getArray();
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -88,7 +86,7 @@ class Templates extends DefaultModel
         //loop through template events and bind the tables to update the database
         //TODO remove ids that are no longer used associated with the template
         for ( $i=0; $i<count($items); $i++ ) {
-            $temp_table = JTable::getInstance('templatedata','Table');
+	        $temp_table = new TemplateDataTable;
             $item = $items[$i];
             $item['template_id'] = $template_id;
             if ( !array_key_exists('id',$item) AND $item['id'] == null ) {
@@ -105,8 +103,7 @@ class Templates extends DefaultModel
 
     public function _buildQuery()
     {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //query
         $query->select("t.*");
@@ -124,15 +121,14 @@ class Templates extends DefaultModel
     public function getTemplates()
     {
         //database
-        $db = JFactory::getDBO();
         $query = $this->_buildQuery();
 
         //sort
         $query->order($this->getState('Templates.filter_order') . ' ' . $this->getState('Templates.filter_order_Dir'));
 
         //return results
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadAssocList();
 
         //return data
         return $results;
@@ -146,7 +142,6 @@ class Templates extends DefaultModel
         if ($id > 0) {
 
             //database
-            $db = JFactory::getDBO();
             $query = $this->_buildQuery();
 
             //sort
@@ -154,16 +149,16 @@ class Templates extends DefaultModel
             $query->where("t.id=$id");
 
             //return results
-            $db->setQuery($query);
-            $result = $db->loadAssoc();
+            $this->db->setQuery($query);
+            $result = $this->db->loadAssoc();
 
             //left join essential data if we are searching for a specific template
-            $query = $db->getQuery(true);
+            $query = $this->db->getQuery(true);
             $query->select("t.*");
             $query->from("#__template_data AS t");
             $query->where("t.template_id=$id");
-            $db->setQuery($query);
-            $result['data'] = $db->loadAssocList();
+            $this->db->setQuery($query);
+            $result['data'] = $this->db->loadAssocList();
 
             //return data
             return $result;
@@ -178,9 +173,8 @@ class Templates extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Templates.filter_order','filter_order','t.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Templates.filter_order_Dir','filter_order_Dir','asc');
+        $filter_order = $this->app->getUserStateFromRequest('Templates.filter_order','filter_order','t.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Templates.filter_order_Dir','filter_order_Dir','asc');
 
         $state = new Registry;
 
@@ -194,13 +188,12 @@ class Templates extends DefaultModel
     public function remove($id)
     {
         //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //delete id
         $query->delete('#__templates')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
     }
 
 }

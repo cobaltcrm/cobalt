@@ -11,7 +11,6 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\TagsTable;
-use JFactory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -22,7 +21,7 @@ class Tags extends DefaultModel
     {
         //Load Tables
         $row = new TagsTable;
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->getRequest( 'post' );
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -65,8 +64,7 @@ class Tags extends DefaultModel
     public function getTags($id=null)
     {
         //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //query
         $query->select("t.*");
@@ -79,18 +77,17 @@ class Tags extends DefaultModel
         }
 
         //return results
-        $db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $db->loadAssocList();
+        return $this->db->loadAssocList();
 
     }
 
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Tags.filter_order','filter_order','t.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Tags.filter_order_Dir','filter_order_Dir','asc');
+        $filter_order = $this->app->getUserStateFromRequest('Tags.filter_order','filter_order','t.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Tags.filter_order_Dir','filter_order_Dir','asc');
 
         //set states
         $this->setState('Tags.filter_order', $filter_order);
@@ -100,13 +97,12 @@ class Tags extends DefaultModel
     public function remove($id)
     {
         //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //delete id
         $query->delete('#__people_tags')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
     }
 
 }

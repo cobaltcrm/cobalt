@@ -10,9 +10,9 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Helper\TextHelper;
 use Cobalt\Table\UserTable;
 use Cobalt\Model\Teams;
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
@@ -20,7 +20,6 @@ use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CobaltHelper;
 
-use Joomla\Language\Text;
 use Joomla\Date\Date;
 
 // no direct access
@@ -28,6 +27,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class User extends DefaultModel
 {
+
+	protected $_view;
+	protected $_layout;
 
     /**
      * Constructor
@@ -59,7 +61,7 @@ class User extends DefaultModel
         // Load the UserTable object based on the user id or throw a warning.
         if (!$table->load($id))
         {
-            $this->app->enqueueMessage(JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id), 'error');
+            $this->app->enqueueMessage(TextHelper::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id), 'error');
 
             return false;
         }
@@ -214,16 +216,14 @@ class User extends DefaultModel
         //get user id
         $user_id = UsersHelper::getUserId();
 
-        //get database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //get current array
         $query->select($loc."_columns");
         $query->from("#__users");
         $query->where("id=".$user_id);
-        $db->setQuery($query);
-        $result = unserialize($db->loadResult());
+        $this->db->setQuery($query);
+        $result = unserialize($this->db->loadResult());
 
         //if we have no data assigned grab the defaults
         if ( !is_array($result) ) {
@@ -253,8 +253,8 @@ class User extends DefaultModel
 
         //update the database
         $query->update('#__users')->set($loc."_columns='".$result."'")->where("id=".$user_id);
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
     }
 
