@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\TeamsTable;
 use Cobalt\Table\UserTable;
-use JFactory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -26,15 +25,14 @@ class Teams extends DefaultModel
     public function getTeams()
     {
         //Database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //Query String
         $query->select("t.*,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name");
         $query->from("#__teams AS t");
         $query->leftJoin("#__users AS u ON u.team_id = t.leader_id");
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadAssocList();
 
         //clean data
         $teams = array();
@@ -57,13 +55,12 @@ class Teams extends DefaultModel
     public function createTeam($leader_id,$name=NULL)
     {
         //Database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         $query->clear();
         $query->select("team_id")->from("#__users")->where('id='.$leader_id);
-        $db->setQuery($query);
-        $team_id = $db->loadResult();
+        $this->db->setQuery($query);
+        $team_id = $this->db->loadResult();
         $team_data = array( 'leader_id'=>$leader_id,'name'=>$name );
         $row = new TeamsTable;
 
@@ -130,14 +127,13 @@ class Teams extends DefaultModel
     public function updateTeam($old_team,$new_team)
     {
         //update the database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+        $query = $this->db->getQuery(true);
 
         //delete old team
         $query->delete('#__teams');
         $query->where("team_id=$old_team");
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
         //update users table for new team
         $query->clear()
@@ -145,8 +141,8 @@ class Teams extends DefaultModel
             ->set(array("team_id=".$new_team))
             ->where("team_id=".$old_team);
 
-        $db->setQuery($query);
-        $db->query();
+        $this->db->setQuery($query);
+        $this->db->execute();
 
     }
 

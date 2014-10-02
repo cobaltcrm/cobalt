@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\DateHelper;
 
 // no direct access
@@ -23,11 +22,9 @@ class Template extends DefaultModel
      */
     public function createTemplate()
     {
-        $app = \Cobalt\Container::fetch('app');
-
-        $template_id = $app->input->get('template_id');
-        $association_id = $app->input->get('association_id');
-        $association_type = $app->input->get('association_type');
+        $template_id = $this->app->input->get('template_id');
+        $association_id = $this->app->input->get('association_id');
+        $association_type = $this->app->input->get('association_type');
 
         $template = $this->getTemplate($template_id);
 
@@ -66,15 +63,14 @@ class Template extends DefaultModel
     {
         $template_id = $template_id ? $template_id : $this->id;
 
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(TRUE);
+        $query = $this->db->getQuery(TRUE);
 
         $query->select("t.*")
             ->from("#__template_data AS t")
             ->where("t.template_id=".$template_id);
 
-        $db->setQuery($query);
-        $events = $db->loadAssocList();
+        $this->db->setQuery($query);
+        $events = $this->db->loadAssocList();
 
         return $events;
     }
