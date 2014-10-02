@@ -16,5 +16,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class TeamsTable extends AbstractTable
 {
     protected $tableName = '#__teams';
-    protected $tableName_key = 'team_id';
+    protected $tableKeys = array('team_id');
 }

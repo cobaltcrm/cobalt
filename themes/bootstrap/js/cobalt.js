@@ -235,13 +235,13 @@ var Cobalt = {
      **/
     onSaveSuccess: function(response, status, xhr, form) {
         Cobalt.stopFormBeingBusy(form);
-
         Cobalt.updateDataTables();
 
         //display alert
         CobaltResponse.alertMessage(response);
         CobaltResponse.modalAction('.modal', response);
         CobaltResponse.reloadPage(response);
+
         // Update info in various HTML tags
         if (typeof response.item !== 'undefined') {
             Cobalt.updateStuff(response.item);
@@ -339,6 +339,7 @@ var Cobalt = {
             var element = jQuery('#'+name+'_'+itemId);
             var field = jQuery('[name="'+name+'"]');
             if (element.length) {
+
                 element.text(value);
             }
             if (field.length) {
@@ -401,7 +402,10 @@ var Cobalt = {
             Cobalt.link = link;
             Cobalt.save(data);
         });
-        Cobalt.on('onSaveSuccess', function(event, response){
+        Cobalt.on('onSaveSuccess', function(event, response) {
+            if (typeof response.item !== 'undefined') {
+                Cobalt.updateStuff(response.item);
+            }
             if (typeof Cobalt.link != 'undefined') {
                 var id = jQuery(Cobalt.link[0].parentElement.parentElement).attr('aria-labelledby') + '_link';
                 jQuery('#'+id+' span').text(jQuery(Cobalt.link).find('span').text());
@@ -2973,6 +2977,42 @@ var Person = {
                 onSuccess(response);
             }
         });
+    }
+};
+
+var User = {
+    //update member and team data depending on selection
+    updateRole: function(element) {
+        var value = jQuery(element).val();
+
+        if (value == "manager" ) {
+            jQuery("#team_name").slideDown('fast');
+        }else{
+            jQuery("#team_name").slideUp('fast');
+        }
+        
+        //show team assignment
+        if (value == 'basic') {
+            jQuery("#team_assignment").slideDown('fast');
+        }else{
+            jQuery("#team_assignment").slideUp('fast');
+        }
+        
+        //if we are downgrading a users access
+        if (role_type == 'manager' && value != 'manager') {
+            new_manager = true;
+            jQuery("#manager_id").addClass('required');
+            jQuery("#manager_assignment").show();
+        } else {
+            new_manager = false;
+            jQuery("#manager_id").removeClass('required');
+            jQuery("#manager_assignment").hide();
+        }
+        
+        //reassign a team if we are changing role
+        if (role_type != value) {
+            jQuery("select[name=team_id]").val('');
+        }
     }
 };
 

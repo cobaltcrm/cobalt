@@ -33,7 +33,7 @@ class AbstractTable implements \IteratorAggregate
      * @var    array
      * @since  1.0
      */
-    protected $tableKeys = array();
+    protected $tableKeys = array('id');
 
     /**
      * Indicates that the primary keys autoincrement.
@@ -73,7 +73,8 @@ class AbstractTable implements \IteratorAggregate
     public function __construct($table = null, $keys = null, DatabaseDriver $db = null)
     {
         // Set internal variables.
-        if (is_null($this->tableName)) {
+        if (is_null($this->tableName))
+        {
             $this->tableName = $table;
         }
 
@@ -81,23 +82,24 @@ class AbstractTable implements \IteratorAggregate
         $this->tableFields = new \stdClass;
 
         // Set the key to be an array.
-        if (is_null($keys)) {
-            $keys = array('id');
-        } elseif (is_string($keys)) {
-            $keys = array($keys);
-        } elseif (is_object($keys)) {
-            $keys = (array) $keys;
+        if (is_string($keys) && $keys)
+        {
+            $this->tableKeys = array($keys);
+        }
+        elseif (is_object($keys) && $keys)
+        {
+            $this->tableKeys = (array) $keys;
         }
 
-        $this->tableKeys = $keys;
-
-        $this->autoIncrement = (count($keys) == 1) ? true : false;
+        $this->autoIncrement = (count($this->tableKeys) == 1) ? true : false;
 
         // Initialise the table properties.
         $fields = $this->getFields();
 
-        if ($fields) {
-            foreach ($fields as $name => $v) {
+        if ($fields)
+        {
+            foreach ($fields as $name => $v)
+            {
                 // Add the field if it is not already present.
                 $this->tableFields->$name = null;
             }

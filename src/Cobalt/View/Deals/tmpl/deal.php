@@ -201,17 +201,24 @@ $deal = $this->dealList[0];
                     <div id="actual_close_container"<?php if (!$actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_ACTUAL_CLOSE'); ?>
                         <h2>
-                            <form class="inline-form" name="actual_close_form">
-                                <input type="text" class="input-invisible input-small form-control date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal->actual_close); ?>" />
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" class="inline-form" id="actual_close_form" name="actual_close_form" onsubmit="return Cobalt.sumbitForm(this)" role="form">
+                                <input type="text" class="input-invisible editable-modal-datepicker input-small form-control date_input" name="actual_close_hidden" id="actual_close" value="<?php echo DateHelper::formatDate($deal->actual_close); ?>" />
                                 <input type="hidden" name="actual_close" id="actual_close_hidden" value="<?php echo $deal->actual_close; ?>" />
+                                <input type="hidden" name="task" value="save" />
+                                <input type="hidden" name="model" value="deal" />
+                                <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
                             </form>
                         </h2>
                     </div>
                     <div id="expected_close_container"<?php if ($actual_close) { echo $style; } ?>>
                         <?php echo TextHelper::_('COBALT_EXP_CLOSE'); ?>
                         <h2>
-                            <form action="<?php echo RouteHelper::_('index.php?task=SaveAjax&field=expected_close&item_type=deal&item_id='.$deal->id); ?>" method="post" role="form" class="inline-form" id="expected_close_form" name="expected_close_form">
-                                <input type="text" class="input-invisible editable-modal-datepicker form-control date_input" name="value" id="expected_close_<?php echo $deal->id; ?>" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
+                            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" role="form" class="inline-form" id="expected_close_form" name="expected_close_form" onsubmit="return Cobalt.sumbitForm(this)">
+                                <input type="text" class="input-invisible editable-modal-datepicker input-small form-control date_input" name="expected_close_hidden" id="expected_close" value="<?php echo DateHelper::formatDate($deal->expected_close); ?>" />
+                                <input type="hidden" name="expected_close" id="expected_close_hidden" value="<?php echo $deal->expected_close; ?>" />
+                                <input type="hidden" name="task" value="save" />
+                                <input type="hidden" name="model" value="deal" />
+                                <input type="hidden" name="id" value="<?php echo $deal->id; ?>" />
                             </form>
                         </h2>
                     </div>
@@ -220,7 +227,7 @@ $deal = $this->dealList[0];
                     <div class="cobaltField"><?php echo TextHelper::_('COBALT_EDIT_SOURCE'); ?></div>
                     <div class="cobaltValue">
                         <div class='dropdown'>
-                            <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='deal_source_<?php echo $deal->id; ?>_link'>
+                            <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id="deal_source_<?php echo $deal->id; ?>_link">
                                 <span id="source_name_<?php echo $deal->id; ?>">
                                     <?php $sourceName = $deal->source_id > 0 ? $deal->source_name : TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>
                                     <?php echo $sourceName; ?>
@@ -231,7 +238,7 @@ $deal = $this->dealList[0];
                             $sources = DealHelper::getSources();
                             if (count($sources)) { foreach ($sources as $id => $name) { ?>
                                 <li>
-                                    <a href="javascript:void(0)" class="dropdown_item" data-field="source_id" data-item="deal" data-item-id="<?php echo $deal->id; ?>" data-value="<?php echo $id; ?>"><?php echo $name; ?></a>
+                                    <a href="#" class="dropdown_item" data-field="source_id" data-item="deal" data-item-id="<?php echo $deal->id; ?>" data-value="<?php echo $id; ?>"><?php echo $name; ?></a>
                                 </li>
                             <?php }} ?>
                             </ul>
@@ -240,7 +247,7 @@ $deal = $this->dealList[0];
                 </div>
             </div>
         </div>
-
+        <div class="clearfix"></div>
         <hr />
         <div class="edit-summary-container">
             <h2><?php echo TextHelper::_('COBALT_EDIT_SUMMARY'); ?></h2>

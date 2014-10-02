@@ -17,8 +17,10 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Model\Users as UsersModel;
+use Cobalt\Model\User as UserModel;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -31,24 +33,22 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         //display title
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         //load model
         $layout = $this->getLayout();
         $model = new UsersModel;
-        $model->set("_layout",$layout);
+        $model->set("_layout", $layout);
 
         //add toolbar buttons to manage users
-        if ($layout == 'default') {
-
-            //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+        if ($layout == 'default')
+        {
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew();
+            $this->toolbar->addDeleteRow();
 
             //get users
             $users = $model->getUsers();
@@ -61,26 +61,23 @@ class Html extends AbstractHtmlView
             $this->listOrder = $this->state->get('Users.filter_order');
             $this->listDirn   = $this->state->get('Users.filter_order_Dir');
 
-        } elseif ( $this->getLayout() == 'edit' ) {
-
-            //buttons
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+        }
+        elseif ($this->getLayout() == 'edit')
+        {
+            $model = new UserModel;
+            $model->set("_layout", $layout);
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel();
 
             //get id
-            $id = $app->input->get('cid',null,'array');
-            if ( is_array($id) && array_key_exists(0,$id) ) {
-                $id = $id[0];
-            } else {
-                $id = null;
-            }
+            $id = $app->input->getInt('id', null);
 
             //plugins
             $app->triggerEvent('onBeforeCRMUserEdit', array(&$id));
 
             //get user
             $this->user = $model->getUser($id);
-            $this->users = $model->getUsers();
 
             //view data
             $roles = DropdownHelper::getMemberRoles();
@@ -92,12 +89,6 @@ class Html extends AbstractHtmlView
             $this->managers = $managers;
         }
 
-        //javascripts
-        $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
-
-        //stylesheets
-        $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
-
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
@@ -105,5 +96,4 @@ class Html extends AbstractHtmlView
         //display
         return parent::render();
     }
-
 }
