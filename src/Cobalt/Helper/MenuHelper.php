@@ -356,17 +356,6 @@ public static function getHelpMenuLinks()
         }
         $modules['percentage'] = number_format(($completed/$count)*100,0) ;
 
-        /** Auto show input tooltips **/
-        $input_fields = explode(',',$app->input->get('show_fields'));
-        if ( count ( $input_fields ) > 0 ) {
-            $document = $app->getDocument();
-            foreach ($input_fields as $input_field) {
-                $document->addScriptDeclaration(
-                        "$(document).ready(function(){showTooltip('".$input_field."');});"
-                    );
-            }
-        }
-
         return $modules;
 
     }
