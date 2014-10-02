@@ -19,10 +19,10 @@ class UpdateColumns extends DefaultController
    public function execute()
    {
        //get the location of the page
-       $loc = $this->input->get('loc');
+       $loc = $this->getInput()->get('loc');
 
        //get new data to insert into user tables
-       $column = $this->input->get('column');
+       $column = $this->getInput()->get('column');
 
        //get model
        $model = new UserModel;

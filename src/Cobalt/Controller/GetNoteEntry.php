@@ -20,7 +20,7 @@ class GetNoteEntry extends DefaultController
 {
     public function execute()
     {
-        $note_id = $this->input->get('note_id');
+        $note_id = $this->getInput()->get('note_id');
 
         $model = new NoteModel;
         $note = $model->getNote($note_id);

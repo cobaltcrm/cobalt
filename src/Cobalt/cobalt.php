@@ -41,7 +41,7 @@ $format = $this->input->get('format');
 
 $overrides = array('ajax', 'mail', 'login');
 
-$loggedIn = ($user->guest === 0 && $user->id);
+$loggedIn = $user->isAuthenticated();
 
 if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
 

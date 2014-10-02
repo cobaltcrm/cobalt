@@ -19,10 +19,10 @@ class SaveAjax extends DefaultController
 {
     public function execute()
     {
-        $item_id = $this->input->get('item_id');
-        $item_type = $this->input->get('item_type');
-        $field = $this->input->get('field');
-        $value = $this->input->getString('value');
+        $item_id = $this->getInput()->get('item_id');
+        $item_type = $this->getInput()->get('item_type');
+        $field = $this->getInput()->get('field');
+        $value = $this->getInput()->getString('value');
 
         $db = $this->container->fetch('db');
 

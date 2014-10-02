@@ -22,8 +22,8 @@ class Import extends DefaultController
     public function execute()
     {
         $success = false;
-        $data = $this->input->get('import_id', array(), 'ARRAY');
-        $import_type = $this->input->getString('import_type');
+        $data = $this->getInput()->get('import_id', array(), 'ARRAY');
+        $import_type = $this->getInput()->getString('import_type');
 
         if (is_array($data) && count($data) > 0)
         {
@@ -54,12 +54,12 @@ class Import extends DefaultController
         if ($success)
         {
             $msg = TextHelper::_('COBALT_IMPORT_WAS_SUCCESSFUL');
-            $this->app->redirect(RouteHelper::_('index.php?view=' . $import_type), $msg);
+            $this->getApplication()->redirect(RouteHelper::_('index.php?view=' . $import_type), $msg);
         }
         else
         {
             $msg = TextHelper::_('COBALT_ERROR_IMPORTING');
-            $this->app->redirect(RouteHelper::_('index.php?view=' . $import_type), $msg);
+            $this->getApplication()->redirect(RouteHelper::_('index.php?view=' . $import_type), $msg);
         }
     }
 }

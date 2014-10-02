@@ -17,7 +17,7 @@ class Update extends DefaultController
 {
     public function execute()
     {
-        $modelName = 'Cobalt\\Model\\'.ucwords($this->input->get('model'));
+        $modelName = 'Cobalt\\Model\\'.ucwords($this->getInput()->get('model'));
 
         $model = new $modelName();
 

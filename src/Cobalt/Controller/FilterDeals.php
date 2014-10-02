@@ -25,11 +25,11 @@ class FilterDeals extends DefaultController
         $view->setLayout('list');
 
         //get filters
-        $type = $this->input->get('type');
-        $stage = $this->input->get('stage');
-        $user = $this->input->get('user');
-        $close = $this->input->get('close');
-        $team = $this->input->get('team_id');
+        $type = $this->getInput()->get('type');
+        $stage = $this->getInput()->get('stage');
+        $user = $this->getInput()->get('user');
+        $close = $this->getInput()->get('close');
+        $team = $this->getInput()->get('team_id');
 
         //get deals
         $model = new DealModel;

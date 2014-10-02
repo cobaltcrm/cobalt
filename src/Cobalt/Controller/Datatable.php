@@ -28,15 +28,15 @@ class Datatable extends DefaultController
 {
     public function execute()
     {
-        $loc        = $this->makeSingular($this->input->getString('loc'));
+        $loc        = $this->makeSingular($this->getInput()->getString('loc'));
         $modelPath  = "Cobalt\\Model\\".ucwords($loc);
         $model      = new $modelPath();
-        $start      = $this->input->getInt('start', 0);
-        $length     = $this->input->getInt('length', 0);
-        $orderArr   = $this->input->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
-        $searchArr  = $this->input->get('search', array('value' => '', 'regex' => false), 'ARRAY');
+        $start      = $this->getInput()->getInt('start', 0);
+        $length     = $this->getInput()->getInt('length', 0);
+        $orderArr   = $this->getInput()->get('order', array(array('column' => 1, 'dir' => 'asc')), 'ARRAY');
+        $searchArr  = $this->getInput()->get('search', array('value' => '', 'regex' => false), 'ARRAY');
         $columns    = $model->getDataTableColumns();
-        $user       = $this->app->getUser();
+        $user       = $this->getApplication()->getUser();
         $teamId     = UsersHelper::getTeamId();
         $memberRole = UsersHelper::getRole();
         $countFunc  = 'get' . ucwords($loc) . 'Count';
@@ -45,13 +45,13 @@ class Datatable extends DefaultController
         if (isset($columns[$orderArr[0]['column']]['ordering']))
         {
             $order  = $columns[$orderArr[0]['column']]['ordering'];
-            $this->input->set('filter_order', $order);
+            $this->getInput()->set('filter_order', $order);
         }
-        
+
         if (isset($orderArr[0]['dir']))
         {
             $dir    = $orderArr[0]['dir'];
-            $this->input->set('filter_order_Dir', $dir);
+            $this->getInput()->set('filter_order_Dir', $dir);
         }
 
         if (isset($searchArr['value']))
@@ -59,35 +59,35 @@ class Datatable extends DefaultController
             $value  = $this->setFilters($searchArr['value']);
         }
 
-        $this->input->set('limit', $length);
-        $this->input->set('limitstart', $start);
+        $this->getInput()->set('limit', $length);
+        $this->getInput()->set('limitstart', $start);
 
         // Prepare response
         $response   = new \stdClass;
 
         $response->data = $model->getDataTableItems();
-        $response->draw = $this->input->getInt('draw');
+        $response->draw = $this->getInput()->getInt('draw');
         $response->recordsTotal = UsersHelper::$countFunc($user->get('id'), $teamId, $memberRole);
         $response->recordsFiltered = $model->getTotal();
 
-        $alerts = $this->app->getMessageQueue();
+        $alerts = $this->getApplication()->getMessageQueue();
 
         if (isset($alerts[0]))
         {
             $response->alert = new \stdClass;
             $response->alert->message = $alerts[0];
             $response->alert->type = 'alert';
-            $this->app->clearMessageQueue();
+            $this->getApplication()->clearMessageQueue();
         }
 
-        $this->app->close(json_encode($response));
+        $this->getApplication()->close(json_encode($response));
     }
 
     /**
      * Method returns singular of some word.
      * It is quite stupic simple method for 3 words
      * we need to make signular from. Not solwing all world problems.
-     * 
+     *
      * @param string $name
      * @return string
      */
@@ -110,7 +110,7 @@ class Datatable extends DefaultController
             {
                 $name = mb_substr($name, 0, -1);
             }
-            
+
         }
 
         return $name;
@@ -119,7 +119,7 @@ class Datatable extends DefaultController
     /**
      * Method parses JSON filters and decides if it's only
      * basic text search, filter applied or combination.
-     * 
+     *
      * @param string $filter
      * @return string
      */
@@ -134,12 +134,12 @@ class Datatable extends DefaultController
                 // distinquish filter from fulltext search
                 if ($filter == 'search')
                 {
-                    $loc = $this->makeSingular($this->input->getString('loc', ''));
-                    $this->input->set(strtolower($loc) . '_name', $value);
+                    $loc = $this->makeSingular($this->getInput()->getString('loc', ''));
+                    $this->getInput()->set(strtolower($loc) . '_name', $value);
                 }
                 else
                 {
-                    $this->input->set($filter, $value);
+                    $this->getInput()->set($filter, $value);
                 }
             }
         }
@@ -149,7 +149,7 @@ class Datatable extends DefaultController
     // {
     //     if (is_array($filter))
     //     {
-    //         $layout = $this->input->getString('loc', '');
+    //         $layout = $this->getInput()->getString('loc', '');
     //         $loc    = $this->makeSingular($layout);
 
     //         if (count($filter) == 2)
@@ -163,7 +163,7 @@ class Datatable extends DefaultController
     //             $value  = $filter[0];
     //         }
 
-    //         $this->input->set($column, $value);
+    //         $this->getInput()->set($column, $value);
     //     }
     // }
 }

@@ -21,9 +21,11 @@ use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
+use Joomla\Authentication\Authentication;
 use Cobalt\Model\User as UserModel;
-use Cobalt\User;
 use Cobalt\Helper\RouteHelper;
+use Cobalt\Authentication\DatabaseStrategy;
+use Cobalt\Authentication\AuthenticationException;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -109,7 +111,14 @@ final class Application extends AbstractWebApplication
     protected $messageQueue = array();
 
     protected $users = array();
-    protected $user = null;
+
+	/**
+	 * The User object.
+	 *
+	 * @var    User
+	 * @since  1.0
+	 */
+	private $user;
 
     /**
      * The Language object
@@ -276,7 +285,7 @@ final class Application extends AbstractWebApplication
 	    {
     		$this->cSession = $this->getContainer()->fetch('session');
 	    }
-        
+
         return $this->cSession;
     }
 
@@ -405,71 +414,45 @@ final class Application extends AbstractWebApplication
         return $this->document;
     }
 
-    /**
-     * Login authentication function
-     *
-     * @param	array	Array('username' => string, 'password' => string)
-     * @param	array	Array('remember' => boolean)
-     *
-     * @see JApplication::login
-     */
-    public function login($credentials, $options = array())
-    {
-        // Set the application login entry point
-        if (!array_key_exists('entry_url', $options))
-        {
-            $options['entry_url'] = \RouteHelper::_('index.php?view=login');
-        }
+	/**
+	 * Logs the user into the application
+	 *
+	 * @return  void  Redirects the application
+	 *
+	 * @since   1.0
+	 * @throws  AuthenticationException
+	 */
+	public function login()
+	{
+		// Get the Authentication object
+		$authentication = new Authentication;
 
-        // Set the access control action to check.
-        $options['action'] = 'core.login.site';
+		// Add our authentication strategy
+		$strategy = new DatabaseStrategy($this->input, $this->getContainer()->get('db'));
+		$authentication->addStrategy('database', $strategy);
 
-        $user = $this->getUser();
+		// Authenticate the user
+		$authentication->authenticate(array('database'));
 
-        if ($user->get('id'))
-        {
-            $this->setUser($user);
-            // user is already logged in
-            $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
-        }
+		switch ($strategy->getResult())
+		{
+			case Authentication::NO_CREDENTIALS :
+				throw new AuthenticationException('A username and/or password were not provided.');
 
-        $userModel = new UserModel;
+			case Authentication::NO_SUCH_USER :
+				throw new AuthenticationException('The username provided does not exist.');
 
-        if ($userId = $userModel->authenticate($credentials, $options))
-        {
-            $user->load((int)$userId);
-            $this->setUser($user);
+			case Authentication::INVALID_CREDENTIALS :
+				throw new AuthenticationException('The username and/or password is incorrect.');
 
-            $this->redirect(\RouteHelper::_('index.php?view=dashboard'));
-        }
-        else
-        {
-            $this->redirect(\RouteHelper::_('index.php?view=login'));
-        }
-    }
+			case Authentication::SUCCESS :
+				$user = $this->getUser();
+				$user->loadByUsername($this->input->{$this->input->getMethod()}->get('username', false, 'username'));
 
-    public function logout()
-    {
-        $userModel = new UserModel;
-        // Perform the log out.
-        $error = $userModel->logout();
-
-        // Check if the log out succeeded.
-        if (!($error instanceof \Exception)) {
-            // Get the return url from the request and validate that it is internal.
-            // Lw== is / encoded
-            $return = base64_decode($this->input->get('return', 'Lw=='));
-            if (!Uri::isInternal($return)) {
-                $return = '';
-            }
-
-            // Redirect the user.
-            $this->redirect(RouteHelper::_($return, false));
-        } else {
-            $this->redirect(RouteHelper::_('index.php', false));
-        }
-
-    }
+				// Set the authenticated user in the session and redirect to the manager
+				$this->setUser($user)->redirect(RouteHelper::_('index.php?view=dashboard'));
+		}
+	}
 
     /**
      * Get the application parameters
@@ -773,68 +756,65 @@ final class Application extends AbstractWebApplication
         $this->getSession()->getFlashBag()->set($type, $message);
     }
 
-    /**
-     * Login or logout a user.
-     *
-     * @param User $user The user object.
-     *
-     * @return  void
-     *
-     * @since   1.0
-     */
-    public function setUser(User $user = null)
-    {
-        $session = $this->getContainer()->fetch('session');
+	/**
+	 * Login or logout a user.
+	 *
+	 * @param   User|null  $user  The User object or null to set a guest user.
+	 *
+	 * @return  $this
+	 *
+	 * @since   1.0
+	 */
+	public function setUser(User $user = null)
+	{
+		$this->user = is_null($user) ? new User($this->getContainer()->get('db')) : $user;
+		$this->getSession()->set('cobalt_user', $this->user);
 
-        if (is_null($user))
-        {
-            // Logout
-            $this->user = null;
-            $session->set('cobalt_user', $this->user);
-        }
-        else
-        {
-            // Login
-            $user->isAdmin = true; // in_array($user->username, $this->get('acl.admin_users'));
-            $this->user = $user;
-            $session->set('cobalt_user', $this->user->serialize());
-        }
-    }
+		return $this;
+	}
 
-    /**
-     * Get a user object.
-     *
-     * @param integer $id The user id or the current user.
-     *
-     * @return JUser
-     *
-     * @since   1.0
-     */
-    public function getUser($id = 0)
-    {
+	/**
+	 * Get a user object.
+	 *
+	 * @param   integer  $id  The user id or the current user.
+	 *
+	 * @return  User
+	 *
+	 * @since   1.0
+	 */
+	public function getUser($id = 0)
+	{
         // Check if user isn't already loaded in chache array
         if ($id && isset($this->users[$id]))
         {
             return $this->users[$id];
         }
 
-        // Create new User object
-        $this->user = new User($this->container->fetch('db'));
+		if ($id)
+		{
+			return new User($this->getContainer()->get('db'), $id);
+		}
 
-        // Get user from session (if yes, user is logged in)
-        if ($sessionUser = $this->getSession()->get('cobalt_user'))
-        {
-            $this->user->unserialize($sessionUser);
-        }
+		if (is_null($this->user))
+		{
+			if ($this->user = $this->getSession()->get('cobalt_user'))
+			{
+				$this->user->setDatabase($this->getContainer()->get('db'));
+			}
+			else
+			{
+				$this->user = new User($this->getContainer()->get('db'));
+			}
+		}
 
         // If User ID is known, store it to cache array
-        if ($this->user->get('id'))
+        if ($this->user->id)
         {
             $this->users[$id] = $this->user;
         }
 
-        return $this->user;
-    }
+		return $this->user;
+	}
 
     /**
      * When user changes, refresh his/her data from database

@@ -10,10 +10,10 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\UsersTable;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Table\UserTable;
 use JFactory;
 use Joomla\Registry\Registry;
-use JUserHelper;
 use Cobalt\Helper\ConfigHelper;
 
 // no direct access
@@ -26,7 +26,7 @@ class Users extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new UsersTable;
+        $row = new UserTable;
         $data = $app->input->getRequest( 'post' );
 
         $app->triggerEvent('onBeforeCRMUserSave', array(&$data));
@@ -46,10 +46,7 @@ class Users extends DefaultModel
         }
 
         if ( array_key_exists('password',$data) && $data['password'] != "" ) {
-            $salt = JUserHelper::genRandomPassword(32);
-            $crypt = JUserHelper::getCryptedPassword($data['password'], $salt);
-            $cryptpass = $crypt . ':' . $salt;
-            $data['password'] = $cryptpass;
+	        $data['password'] = UsersHelper::hashPassword($data['password']);
         } else {
             unset($data['password']);
         }
@@ -202,7 +199,7 @@ class Users extends DefaultModel
             return $db->loadAssoc();
 
         } else {
-            return (array) new UsersTable;
+            return (array) new UserTable;
         }
 
     }

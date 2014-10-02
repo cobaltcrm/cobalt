@@ -19,14 +19,14 @@ class DownloadImportTemplate extends DefaultController
 {
     public function execute()
     {
-        $template_type = $this->input->get('template_type');
+        $template_type = $this->getInput()->get('template_type');
 
         $path = JPATH_SITE . '/media/import_templates/import_' . $template_type . '.csv';
 
         if (!file_exists($path))
         {
             $msg = TextHelper::_('COBALT_EXPORT_MISSING_FILE') . ' (' . $path . ')';
-            $this->app->redirect('index.php?view=import&import_type=' . $template_type, $msg, 'danger');
+            $this->getApplication()->redirect('index.php?view=import&import_type=' . $template_type, $msg, 'danger');
         }
         else
         {

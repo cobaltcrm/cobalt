@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bf75b30a68aa5b821e758338db181c2f",
+    "hash": "f86c7b6cb1400aca6d41bbf7642cba18",
     "packages": [
         {
             "name": "filp/whoops",
@@ -65,6 +65,45 @@
             "time": "2014-07-11 05:56:54"
         },
         {
+            "name": "ircmaxell/password-compat",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/password_compat.git",
+                "reference": "1fc1521b5e9794ea77e4eca30717be9635f1d4f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/1fc1521b5e9794ea77e4eca30717be9635f1d4f4",
+                "reference": "1fc1521b5e9794ea77e4eca30717be9635f1d4f4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/password.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A compatibility library for the proposed simplified password hashing algorithm: https://wiki.php.net/rfc/password_hash",
+            "homepage": "https://github.com/ircmaxell/password_compat",
+            "keywords": [
+                "hashing",
+                "password"
+            ],
+            "time": "2013-04-30 19:58:08"
+        },
+        {
             "name": "joomla/application",
             "version": "1.2.1",
             "source": {
@@ -109,6 +148,55 @@
                 "joomla"
             ],
             "time": "2014-05-20 14:35:14"
+        },
+        {
+            "name": "joomla/authentication",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/authentication.git",
+                "reference": "24afaee42fb60c5affe2443762b56832267274e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/authentication/zipball/24afaee42fb60c5affe2443762b56832267274e8",
+                "reference": "24afaee42fb60c5affe2443762b56832267274e8",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/password-compat": "~1.0",
+                "joomla/input": "~1.0",
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Authentication\\": "src/",
+                    "Joomla\\Authentication\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Authentication Package",
+            "homepage": "https://github.com/joomla-framework/authentication",
+            "keywords": [
+                "Authentication",
+                "framework",
+                "joomla"
+            ],
+            "time": "2014-09-28 18:45:42"
         },
         {
             "name": "joomla/compat",
@@ -191,43 +279,6 @@
                 "joomla"
             ],
             "time": "2014-02-09 01:25:57"
-        },
-        {
-            "name": "joomla/crypt",
-            "version": "1.1.0",
-            "target-dir": "Joomla/Crypt",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/joomla-framework/crypt.git",
-                "reference": "972e24f5a5c2edd307d57f9d299db0722c8e077f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/crypt/zipball/972e24f5a5c2edd307d57f9d299db0722c8e077f",
-                "reference": "972e24f5a5c2edd307d57f9d299db0722c8e077f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.10"
-            },
-            "type": "joomla-package",
-            "autoload": {
-                "psr-0": {
-                    "Joomla\\Crypt": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "description": "Joomla Crypt Package",
-            "homepage": "https://github.com/joomla/joomla-framework-crypt",
-            "keywords": [
-                "crypt",
-                "framework",
-                "joomla"
-            ],
-            "time": "2013-12-02 00:36:30"
         },
         {
             "name": "joomla/database",
@@ -775,25 +826,32 @@
         },
         {
             "name": "joomla/string",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/string.git",
-                "reference": "f1152e6cce135ff90f4b0097792e8be23989b143"
+                "reference": "edc67e83f8e603ac7b55bf32b87d5b53fe1acd8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/string/zipball/f1152e6cce135ff90f4b0097792e8be23989b143",
-                "reference": "f1152e6cce135ff90f4b0097792e8be23989b143",
+                "url": "https://api.github.com/repos/joomla-framework/string/zipball/edc67e83f8e603ac7b55bf32b87d5b53fe1acd8a",
+                "reference": "edc67e83f8e603ac7b55bf32b87d5b53fe1acd8a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.10"
             },
             "require-dev": {
-                "joomla/test": "~1.0"
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
             },
             "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Joomla\\String\\": "src/",
@@ -811,7 +869,7 @@
                 "joomla",
                 "string"
             ],
-            "time": "2014-08-23 19:33:54"
+            "time": "2014-09-18 12:21:47"
         },
         {
             "name": "joomla/uri",
@@ -979,17 +1037,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.3.19",
+            "version": "v2.3.20",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "d0125fed988da9e189864c2e6de967b3ee7f1d98"
+                "reference": "e5c18fae9fb16db2f3dd921a455e7d423445ae6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/d0125fed988da9e189864c2e6de967b3ee7f1d98",
-                "reference": "d0125fed988da9e189864c2e6de967b3ee7f1d98",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/e5c18fae9fb16db2f3dd921a455e7d423445ae6d",
+                "reference": "e5c18fae9fb16db2f3dd921a455e7d423445ae6d",
                 "shasum": ""
             },
             "require": {
@@ -1025,7 +1083,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-03 07:39:11"
+            "time": "2014-09-23 10:19:50"
         },
         {
             "name": "tracy/tracy",

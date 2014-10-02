@@ -20,7 +20,7 @@ class CheckEmailName extends DefaultController
 {
     public function execute()
     {
-        $emailExists = CobaltHelper::checkEmailName($this->input->get('email'));
+        $emailExists = CobaltHelper::checkEmailName($this->getInput()->get('email'));
 
         if ($emailExists) {
             $success = true;

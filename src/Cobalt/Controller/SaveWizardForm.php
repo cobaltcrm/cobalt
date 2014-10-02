@@ -21,7 +21,7 @@ class SaveWizardForm extends DefaultController
 {
     public function execute()
     {
-        $type = $this->input->get('save_type');
+        $type = $this->getInput()->get('save_type');
         switch ($type) {
             case "lead":
             case "contact":
@@ -36,7 +36,7 @@ class SaveWizardForm extends DefaultController
         }
         $model->store();
 
-        header('Location: '.base64_decode($this->input->get('return')));
+        header('Location: '.base64_decode($this->getInput()->get('return')));
    }
 
 }

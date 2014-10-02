@@ -13,23 +13,37 @@ namespace Cobalt\Controller;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+use Cobalt\Helper\RouteHelper;
+
 class Login extends DefaultController
 {
-    public function execute()
-    {
-        $this->input->set('view', 'login');
+	/**
+	 * Execute the controller
+	 *
+	 * @return  boolean  True if controller finished execution
+	 *
+	 * @since   1.0
+	 */
+	public function execute()
+	{
+		// If logged in, move on to the manager
+		if ($this->getApplication()->getUser()->isAuthenticated())
+		{
+			$this->getApplication()->redirect(RouteHelper::_('index.php?view=dashboard'));
+		}
 
-        $credentials = array(
-            'username' => $this->input->get('username'),
-            'password' => $this->input->get('password', null, 'HTML')
-        );
+		$method = $this->getInput()->getMethod();
 
-        if (isset($credentials['username']))
-        {
-            $this->app->login($credentials);
-        }
+		$username = $this->getInput()->$method->get('username', false, 'username');
+		$password = $this->getInput()->$method->get('password', false, 'raw');
 
-        parent::execute();
-    }
+		if ($username && $password)
+		{
+			$this->getApplication()->login();
+		}
 
+		$this->getInput()->set('view', 'login');
+
+		return parent::execute();
+	}
 }

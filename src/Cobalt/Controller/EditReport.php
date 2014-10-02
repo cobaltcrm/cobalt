@@ -26,10 +26,10 @@ class EditReport extends DefaultController
         $link = 'index.php?view=reports&layout=custom_reports';
         if ( $model->store() ) {
             $msg = TextHelper::_('COBALT_CUSTOM_REPORT_SUCCESSFULLY_ADDED');
-            $this->app->redirect($link, $msg);
+            $this->getApplication()->redirect($link, $msg);
         } else {
             $msg = TextHelper::_('COBALT_PROBLEM_CREATING_CUSTOM_REPORT');
-            $this->app->redirect($link, $msg);
+            $this->getApplication()->redirect($link, $msg);
         }
     }
 

@@ -16,4 +16,50 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 class UserTable extends AbstractTable
 {
     protected $tableName = '#__users';
+
+	/**
+	 * Fetches the list of users and their password hashes
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function getUserPasswords()
+	{
+		$data = $this->db->setQuery(
+			$this->db->getQuery(true)
+				->select('username, password')
+				->from($this->getTableName())
+		)->loadAssocList();
+
+		$users = array();
+
+		foreach ($data as $row)
+		{
+			$users[$row['username']] = $row['password'];
+		}
+
+		return $users;
+	}
+
+	/**
+	 * Load a user by username
+	 *
+	 * @param   string  $username  The username of the user to load
+	 *
+	 * @return  $this
+	 *
+	 * @since   1.0
+	 */
+	public function loadByUserName($username)
+	{
+		$check = $this->db->setQuery(
+			$this->db->getQuery(true)
+				->select('*')
+				->from($this->getTableName())
+				->where('username = ' . $this->db->quote($username))
+		)->loadObject();
+
+		return ($check) ? $this->bind($check) : $this;
+	}
 }

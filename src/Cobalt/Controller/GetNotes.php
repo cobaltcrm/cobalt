@@ -23,10 +23,10 @@ class GetNotes extends DefaultController
     {
         $response = array();
 
-        $start = $this->input->getInt('start', 0);
-        $limit = $this->input->getInt('limit', 4);
-        $object_id = $this->input->getInt('object_id', 0);
-        $item_type = $this->input->getCmd('item_type');
+        $start = $this->getInput()->getInt('start', 0);
+        $limit = $this->getInput()->getInt('limit', 4);
+        $object_id = $this->getInput()->getInt('object_id', 0);
+        $item_type = $this->getInput()->getCmd('item_type');
 
         if ($start < 0) {
             $response['alert'] = array(

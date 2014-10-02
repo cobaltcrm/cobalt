@@ -19,9 +19,9 @@ class Cancel extends DefaultController
 {
     public function execute()
     {
-        $view = $this->input->get('view');
+        $view = $this->getInput()->get('view');
 
         $msg = TextHelper::_('Entry cancelled!');
-        $this->app->redirect('index.php?view='.$view,$msg);
+        $this->getApplication()->redirect('index.php?view='.$view,$msg);
     }
 }

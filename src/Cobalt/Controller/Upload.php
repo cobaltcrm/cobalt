@@ -95,8 +95,8 @@ class Upload extends DefaultController
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_SITE.'/uploads/'.$hash;
 
-        $associationID = $this->input->getInt('association_id');
-        $associationType = $this->input->getString('association_type');
+        $associationID = $this->getInput()->getInt('association_id');
+        $associationType = $this->getInput()->getString('association_type');
         $filePath = $hash;
         switch ($associationType) {
             case 'company':
@@ -131,9 +131,9 @@ class Upload extends DefaultController
 
         if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-            $this->app->redirect('index.php?view=documents',$msg);
+            $this->getApplication()->redirect('index.php?view=documents',$msg);
         } else {
-            $return_uri = base64_decode($this->input->getBase64('return'));
+            $return_uri = base64_decode($this->getInput()->getBase64('return'));
             if (empty($return_uri)) {
                 $return_uri = 'index.php?view=documents&layout=upload&tmpl=component';
             }
@@ -159,12 +159,12 @@ class Upload extends DefaultController
            if ($id=$model->store($data)) {
             //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._("COBALT_UPLOADING"),Joomla.JText._("COBALT_DOC_UPLOAD_SUCCESS"),"success");</script>';
                $msg = TextHelper::_('COBALT_DOC_UPLOAD_SUCCESS');
-               $this->app->redirect($return_uri,$msg);
+               $this->getApplication()->redirect($return_uri,$msg);
                // $session->set("upload_success", true);
            } else {
                //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._(\'COBALT_UPLOADING\'),Joomla.JText._(\'COBALT_DOC_UPLOAD_FAIL\'),\'danger\');</script>';
                $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-               $this->app->redirect($return_uri,$msg);
+               $this->getApplication()->redirect($return_uri,$msg);
                // $session->set("upload_success", false);
            }
         }

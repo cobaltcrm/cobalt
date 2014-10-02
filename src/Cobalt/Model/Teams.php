@@ -11,7 +11,7 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\TeamsTable;
-use Cobalt\Table\UsersTable;
+use Cobalt\Table\UserTable;
 use JFactory;
 
 // no direct access
@@ -112,7 +112,7 @@ class Teams extends DefaultModel
     public function assignLeader($leader_id, $team_id)
     {
         //bind user tables
-        $row = new UsersTable;
+        $row = new UserTable;
         $team_data = array ('id'=>$leader_id, 'team_id' => $team_id);
 
         if (!$row->bind($team_data))

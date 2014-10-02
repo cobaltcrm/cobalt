@@ -19,7 +19,7 @@ class ToggleMailingList extends DefaultController
 {
     public function execute()
     {
-        $data = $this->input->getRequest('post');
+        $data = $this->getInput()->getRequest('post');
         $subscribe = $data['subscribe'];
         $success = false;
 
