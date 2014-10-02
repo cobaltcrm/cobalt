@@ -45,11 +45,6 @@ if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')
 
 require_once JPATH_CONFIGURATION.'/configuration.php';
 
-JLoader::register('JUser', JPATH_ROOT . '/src/compat/JUser.php');
-JLoader::register('JTableUser', JPATH_ROOT . '/src/compat/JTableUser.php');
-JLoader::register('JRoute', JPATH_ROOT . '/src/compat/JRoute.php');
-JLoader::registerPrefix('Modular', JPATH_SITE.'/libraries/modular/');
-
 // Alias the helper classes, so we don't have to add the use statement to every layout.
 $helpers = glob(JPATH_ROOT . '/src/Cobalt/Helper/*.php');
 
