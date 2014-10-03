@@ -24,9 +24,6 @@ UsersHelper::loadLanguage();
 //set site timezone
 $tz = DateHelper::getSiteTimezone();
 
-//Load plugins
-JPluginHelper::importPlugin('cobalt');
-
 //get user object
 $user = $this->getUser();
 

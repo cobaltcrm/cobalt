@@ -764,7 +764,7 @@ class Event extends DefaultModel
             }
         }
 
-        $app->triggerEvent('onEventLoad', array(&$rows));
+        //$app->triggerEvent('onEventLoad', array(&$rows));
 
         //Return results
         return $rows;

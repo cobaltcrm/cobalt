@@ -188,7 +188,7 @@ class Document extends DefaultModel
         }
 
        $app = \Cobalt\Container::fetch('app');
-       $app->triggerEvent('onBeforeDocumentSave', array(&$row));
+       //$app->triggerEvent('onBeforeDocumentSave', array(&$row));
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -208,7 +208,7 @@ class Document extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'document', $status);
 
-        $app->triggerEvent('onAfterDocumentSave', array(&$row));
+        //$app->triggerEvent('onAfterDocumentSave', array(&$row));
 
         return $id;
     }
@@ -396,7 +396,7 @@ class Document extends DefaultModel
         $db->setQuery($query, $offset, $limit);
         $results = $db->loadAssocList();
 
-        $app->triggerEvent('onDocumentLoad', array(&$results));
+        //$app->triggerEvent('onDocumentLoad', array(&$results));
 
         //return results
         return $results;
@@ -425,7 +425,7 @@ class Document extends DefaultModel
 
         $document->path = getcwd().'/uploads/'.$document->filename;
 
-        $app->triggerEvent('onDocumentLoad', array(&$document));
+        //$app->triggerEvent('onDocumentLoad', array(&$document));
 
         return $document;
 
