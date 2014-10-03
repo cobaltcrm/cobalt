@@ -15,6 +15,7 @@ use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Statuses as StatusesModel;
@@ -28,6 +29,9 @@ class Html extends AbstractHtmlView
     {
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
+
+        // Create toolbar
+        $this->toolbar = new Toolbar;
 
         //document
         $document = JFactory::getDocument();
@@ -47,8 +51,8 @@ class Html extends AbstractHtmlView
         if ($layout && $layout == 'edit') {
 
             //toolbar buttons
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar->cancel();
+            $this->toolbar->save();
 
             //javascripts
             $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
@@ -69,9 +73,9 @@ class Html extends AbstractHtmlView
         } else {
 
             //buttons
-            ToolbarHelper::addNew('edit');
+            $this->toolbar->addNew();
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar->addDeleteRow();
 
             //statuses
             $statuses = $model->getStatuses();

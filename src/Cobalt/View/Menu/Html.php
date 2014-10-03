@@ -15,6 +15,7 @@ use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Model\Menu as MenuModel;
 
@@ -35,8 +36,9 @@ class Html extends AbstractHtmlView
         $side_menu = MenuHelper::getMenuModules();
         $this->side_menu = $side_menu;
 
-        ToolbarHelper::cancel('cancel');
-        ToolbarHelper::save('save');
+        // Create toolbar
+        $this->toolbar = new Toolbar;
+        $this->toolbar->save();
 
         $model = new MenuModel;
         $menu = $model->getMenu();

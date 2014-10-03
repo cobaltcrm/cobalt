@@ -15,6 +15,7 @@ use JFactory;
 use JUri;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Documents as DocumentsModel;
@@ -32,6 +33,9 @@ class Html extends AbstractHtmlView
 
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
+
+        // Create toolbar
+        $this->toolbar = new Toolbar;
 
         //get the layout
         $layout = $this->getLayout();
@@ -53,8 +57,8 @@ class Html extends AbstractHtmlView
         //determine layout type
         if ($layout && $layout == 'edit') {
 
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar->cancel();
+            $this->toolbar->save();
 
         } else {
 

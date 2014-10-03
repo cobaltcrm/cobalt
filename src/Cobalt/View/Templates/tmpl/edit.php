@@ -9,63 +9,58 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
     <div class="row-fluid">
-        <div class="span12" id="content">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
             <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-md-9">
                     <form action="index.php?view=templates" method="post" name="adminForm" id="adminForm" class="form-validate"  >
                         <div class="row-fluid">
                             <fieldset class="adminform">
-                                <legend><h3><?php echo TextHelper::_("COBALT_EDITING_WORKFLOW"); ?></h3></legend>
-                                <ul class="list-unstyled adminformlist cobaltadminlist">
-                                    <li>
-                                        <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
-                                        <input type="text" class="form-control" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template['name']; ?>" />
-                                    </li>
-                                    <li>
-                                        <span class="cobaltfaux-label"><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></span>
-                                        <br />
+                                <div class="page-header">
+                                    <?php echo $this->toolbar->render(); ?>
+                                    <h3><?php echo TextHelper::_("COBALT_EDITING_WORKFLOW"); ?></h3>
+                                </div>
+                                <div class="form-group">
+                                    <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
+                                    <input type="text" class="form-control" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template['name']; ?>" />
+                                </div>
+                                <span class="cobaltfaux-label"><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></span><br />
 
-                                        <label class="radio">
-                                          <input type="radio" name="type" value="deal" <?php if($this->template['type']=='deal') echo 'checked'; ?> />
-                                          <?php echo JText::_('COBALT_DEAL'); ?>
-                                        </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="type" value="deal" <?php if($this->template['type']=='deal') echo 'checked'; ?> />
+                                  <?php echo JText::_('COBALT_DEAL'); ?>
+                                </label>
 
-                                        <label class="radio">
-                                          <input type="radio" name="type" value="person" <?php if($this->template['type']=='person') echo 'checked'; ?>/>
-                                          <?php echo JText::_('COBALT_PERSON'); ?>
-                                        </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="type" value="person" <?php if($this->template['type']=='person') echo 'checked'; ?>/>
+                                  <?php echo JText::_('COBALT_PERSON'); ?>
+                                </label>
 
-                                        <label class="radio">
-                                          <input type="radio" name="type" value="company" <?php if($this->template['type']=='company') echo 'checked'; ?> />
-                                          <?php echo JText::_('COBALT_COMPANY'); ?>
-                                        </label>
-
-                                    </li>
-                                    <li>
+                                <label class="radio-inline">
+                                  <input type="radio" name="type" value="company" <?php if($this->template['type']=='company') echo 'checked'; ?> />
+                                  <?php echo JText::_('COBALT_COMPANY'); ?>
+                                </label>
+                                <div class="form-group">
                                         <span class="cobaltfaux-label"></span>
                                         <span class="cobaltfield"></span>
-                                    </li>
-                                    <li>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="default" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>"  <?php if($this->template['default']) echo 'checked'; ?> />
-                                            <b><?php echo JText::_("COBALT_MAKE_DEFAULT_TEMPLATE"); ?></b>
-                                        </label>
-                                    </li>
-                                    <li>
-                                </ul>
+                                </div>
+                                <div class="checkbox">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="default" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>"  <?php if($this->template['default']) echo 'checked'; ?> />
+                                        <?php echo JText::_("COBALT_MAKE_DEFAULT_TEMPLATE"); ?>
+                                    </label>
+                                </div>
                             </fieldset>
                         </div>
                         <div class="row-fluid">
                             <fieldset class="adminform">
-                                <legend><h3><?php echo JText::_("COBALT_ENTER_ITEMS"); ?></h3></legend>
-                                <ul class="list-unstyled adminformlist cobaltadminlist">
-                                    <li>
+                                <div class="page-header">
+                                    <h4><?php echo JText::_("COBALT_ENTER_ITEMS"); ?></h4>
+                                </div>
                                         <div id="items">
                                             <?php if ( array_key_exists("data",$this->template) && count($this->template['data']) ){ foreach ($this->template['data'] as $data) { ?>
                                                 <span class="cobaltfield clrboth">
@@ -113,11 +108,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                                 </span>
                                             <?php } ?>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <label><a href="javascript:void(0);" class="btn btn-success" id="add_item"><i class="icon-white glyphicon glyphicon-plus-sign"></i> <b>Add More Items</a></b></label>
-                                    </li>
-                                </ul>
+                                    <p> </p>
+                                        <label><a href="javascript:void(0);" class="btn btn-success" id="add_item"><i class="icon-white glyphicon glyphicon-plus-sign"></i> <?php echo JText::_('COBALT_ADD_MORE_ITEMS'); ?></a></label>
                             </fieldset>
                         </div>
                         <div>

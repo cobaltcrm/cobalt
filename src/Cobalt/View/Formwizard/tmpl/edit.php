@@ -13,45 +13,47 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
     <div class="row-fluid">
-        <div class="span12" id="content">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
             <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-md-9">
                     <form action="index.php?view=formwizard" method="post" name="adminForm" id="adminForm" class="form-validate" >
-                        <div class="row-fluid">
-                            <legend><h2><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FORM'); ?></h2></legend>
-                            <ul class="list-unstyled adminformlist cobaltadminlist">
-                                <li>
-                                    <label><b><?php echo JText::_('COBALT_FORM_TYPE'); ?></b></label>
-                                    <?php echo $this->form_types; ?>
-                                </li>
-                                <li>
-                                    <label><b><?php echo JText::_('COBALT_FORM_NAME'); ?></b></label>
-                                    <input type="text" id="name" name="name" class="required" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_FORM'); ?>" value="<?php if(isset($this->form)) echo $this->form['name']; ?>">
-                                </li>
-                                <li>
-                                    <label><b><?php echo JText::_('COBALT_FORM_DESCRIPTION'); ?></b></label>
-                                    <textarea id="description" name="description"><?php if(isset($this->form)) echo $this->form['description']; ?></textarea>
-                                </li>
-                                 <li>
-                                    <label><b><?php echo JText::_('COBALT_FORM_FIELDS'); ?></b></label>
-                                    <input onclick="showFieldCheckboxes()" type="button" class="btn btn-primary" data-toggle="modal" href="#show_fields_button_modal" id="show_fields_button" value="<?php echo JText::_('COBALT_SELECT_FIELDS'); ?>" />
-                                </li>
-                                 <li>
-                                    <label><b><?php echo JText::_('COBALT_FORM_RETURN_URL'); ?></b></label>
-                                    <input type="text" id="return_url" name="return_url" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_RETURN_URL_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form['return_url']; ?>">
-                                </li>
-                                <li>
-                                    <label><b><?php echo JText::_('COBALT_OWNER'); ?></b></label>
-                                    <input class="required" type="text" id="owner_id" name="owner_id_input" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_OWNER_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form['owner_name']; ?>">
-                                    <input class="required" type="hidden" id="owner_id_hidden" name="owner_id" value="<?php if ( isset($this->form) ) echo $this->form['owner_id']; ?>" />
-                                </li>
-                                 <li>
-                                    <label><b><?php echo JText::_('COBALT_FORM_HTML'); ?></b></label>
-                                    <textarea wrap="off" cols="20" rows="15" style="width:300px !important;" id="fields" onclick="selectTextarea(this);" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_FORM_HTML_TOOLTIP'); ?>" name="html"><?php if(isset($this->form)) echo $this->form['html']; ?></textarea>
-                                </li>
-                            </ul>
+                        <div class="page-header">
+                            <h3>
+                                <?php echo $this->toolbar->render(); ?>
+                                <?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FORM'); ?>
+                            </h3>
+                        </div>
+                        <div class="form-group">
+                            <label><?php echo JText::_('COBALT_FORM_TYPE'); ?></label>
+                            <?php echo $this->form_types; ?>
+                        </div>
+                        <div class="form-group">
+                            <label><b><?php echo JText::_('COBALT_FORM_NAME'); ?></b></label>
+                            <input type="text" id="name" name="name" class="form-control required" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_FORM'); ?>" value="<?php if(isset($this->form)) echo $this->form['name']; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label><b><?php echo JText::_('COBALT_FORM_DESCRIPTION'); ?></b></label>
+                            <textarea class="form-control" id="description" name="description"><?php if(isset($this->form)) echo $this->form['description']; ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><b><?php echo JText::_('COBALT_FORM_FIELDS'); ?></b></label><br />
+                            <input onclick="showFieldCheckboxes()" type="button" class="btn btn-primary" data-toggle="modal" href="#show_fields_button_modal" id="show_fields_button" value="<?php echo JText::_('COBALT_SELECT_FIELDS'); ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label><b><?php echo JText::_('COBALT_FORM_RETURN_URL'); ?></b></label>
+                            <input type="text" class="form-control" id="return_url" name="return_url" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_RETURN_URL_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form['return_url']; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label><b><?php echo JText::_('COBALT_OWNER'); ?></b></label>
+                            <input class="form-control required" type="text" id="owner_id" name="owner_id_input" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_OWNER_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form['owner_name']; ?>">
+                            <input class="required" type="hidden" id="owner_id_hidden" name="owner_id" value="<?php if ( isset($this->form) ) echo $this->form['owner_id']; ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label><b><?php echo JText::_('COBALT_FORM_HTML'); ?></b></label>
+                            <textarea wrap="off" cols="20" rows="15" class="form-control" disabled id="fields" onclick="selectTextarea(this);" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_FORM_HTML_TOOLTIP'); ?>" name="html"><?php if(isset($this->form)) echo $this->form['html']; ?></textarea>
+                        </div>
                             <div>
                                 <?php if ( isset($this->form) && array_key_exists('id',$this->form) ) { ?>
                                     <input type="hidden" name="id" id="form_id" value="<?php echo $this->form['id']; ?>" />

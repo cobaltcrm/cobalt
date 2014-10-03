@@ -151,15 +151,16 @@ class MenuHelper
                 'id'        => "menu_menu_link",
                 'view'      => "menu"
             ),
-             array(
-                'link' => RouteHelper::_('index.php?view=adminimport'),
-                'class' => 'glyphicon glyphicon-upload',
-                'text' => TextHelper::_('Import'),
-                'access' => array( ),
-                'tooltip'   => TextHelper::_('COBALT_CONFIG_IMPORT_TOOLTIP'),
-                'id'        => "adminimport_menu_link",
-                'view'      => "adminimport"
-            ),
+            // TODO: Remove Admin Import Menu and Layouts
+            //  array(
+            //     'link' => RouteHelper::_('index.php?view=adminimport'),
+            //     'class' => 'glyphicon glyphicon-upload',
+            //     'text' => TextHelper::_('Import'),
+            //     'access' => array( ),
+            //     'tooltip'   => TextHelper::_('COBALT_CONFIG_IMPORT_TOOLTIP'),
+            //     'id'        => "adminimport_menu_link",
+            //     'view'      => "adminimport"
+            // ),
              array(
                 'link' => RouteHelper::_('index.php?view=formwizard'),
                 'class' => 'glyphicon glyphicon-star-empty',
