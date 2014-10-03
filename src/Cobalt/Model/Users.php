@@ -23,7 +23,7 @@ class Users extends DefaultModel
     public function store()
     {
         //Load Tables
-        $row = new UserTable;
+        $row = $this->getTable('User');
         $data = $this->app->input->post->getArray();
 
         //$this->app->triggerEvent('onBeforeCRMUserSave', array(&$data));
@@ -191,7 +191,7 @@ class Users extends DefaultModel
             return $this->db->loadAssoc();
 
         } else {
-            return (array) new UserTable;
+            return (array) $this->getTable('User');
         }
 
     }

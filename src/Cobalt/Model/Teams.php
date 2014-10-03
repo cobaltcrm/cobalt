@@ -36,7 +36,7 @@ class Teams extends DefaultModel
 
         //clean data
         $teams = array();
-        
+
         if (count($results) > 0)
         {
             foreach ($results as $key=>$team)
@@ -65,7 +65,7 @@ class Teams extends DefaultModel
         $db->setQuery($query);
         $team_id = $this->db->loadResult();
         $team_data = array( 'leader_id' => $leader_id, 'name' => $name );
-        $row = new TeamsTable;
+        $row = $this->getTable('Teams');
 
         if ($team_id > 0)
         {
@@ -73,21 +73,7 @@ class Teams extends DefaultModel
             $row->load($team_id);
         }
 
-        if (!$row->bind($team_data))
-        {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        if (!$row->check())
-        {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        if (!$row->store())
+        if (!$row->save($team_data))
         {
             $this->setError($this->db->getErrorMsg());
 
@@ -109,7 +95,7 @@ class Teams extends DefaultModel
     public function assignLeader($leader_id, $team_id)
     {
         //bind user tables
-        $row = new UserTable;
+        $row = $this->getTable('User');
         $team_data = array ('id'=>$leader_id, 'team_id' => $team_id);
 
         if (!$row->bind($team_data))

@@ -42,8 +42,8 @@ class Note extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new NoteTable;
-        $oldRow = new NoteTable;
+        $row = $this->getTable('Note');
+        $oldRow = $this->getTable('Note');
 
         if ($data == null) {
             $data = $app->input->getArray(array(
@@ -115,27 +115,16 @@ class Note extends DefaultModel
         $data['owner_id'] = UsersHelper::getUserId();
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        //$app->triggerEvent('onBeforeNoteSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         if ( array_key_exists('id',$data) && intval($data['id']) ) {
             $id = $data['id'];
@@ -405,7 +394,7 @@ class Note extends DefaultModel
 
     public function remove($id)
     {
-        $table = new NoteTable;
+        $table = $this->getTable('Note');
         $table->delete($id);
 
         return $table;

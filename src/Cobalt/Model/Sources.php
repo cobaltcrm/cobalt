@@ -25,7 +25,7 @@ class Sources extends DefaultModel
 	public function store()
 	{
 		// Load Tables
-		$row  = new SourcesTable;
+		$row  = $this->getTable('Sources');
 		$data = $this->app->input->post->getArray();
 
 		// Date generation
@@ -41,33 +41,9 @@ class Sources extends DefaultModel
 		// Bind the form fields to the table
 		try
 		{
-			$row->bind($data);
+			$row->save($data);
 		}
 		catch (\InvalidArgumentException $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Make sure the record is valid
-		try
-		{
-			$row->check();
-		}
-		catch (\Exception $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Store the record
-		try
-		{
-			$row->store();
-		}
-		catch (\Exception $exception)
 		{
 			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
@@ -110,7 +86,7 @@ class Sources extends DefaultModel
 		}
 		else
 		{
-			return (array) new SourcesTable;
+			return (array) $this->getTable('Sources');
 		}
 	}
 
@@ -131,7 +107,7 @@ class Sources extends DefaultModel
 
 	public function remove($id)
 	{
-		$table = new SourcesTable;
+		$table = $this->getTable('Sources');
 		$table->delete($id);
 	}
 }

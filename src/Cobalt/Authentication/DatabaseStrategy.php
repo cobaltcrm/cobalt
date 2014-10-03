@@ -8,6 +8,7 @@
 
 namespace Cobalt\Authentication;
 
+use Cobalt\Container;
 use Cobalt\Table\UserTable;
 
 use Joomla\Authentication\AuthenticationStrategyInterface;
@@ -56,7 +57,7 @@ class DatabaseStrategy implements AuthenticationStrategyInterface
 	{
 		$this->input = $input;
 
-		$usersTable = new UserTable;
+		$usersTable = new UserTable(Container::fetch('db'));
 		$this->credentialStore = $usersTable->getUserPasswords();
 	}
 

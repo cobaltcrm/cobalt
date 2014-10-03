@@ -18,14 +18,14 @@ use Joomla\Model\AbstractModel;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Menu extends AbstractModel
+class Menu extends DefaultModel
 {
     public function store()
     {
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new MenuTable;
+        $row = $this->getTable('Menu');
         $data = $app->input->getRequest( 'post' );
 
         //date generation
@@ -36,25 +36,16 @@ class Menu extends AbstractModel
         $data['menu_items'] = serialize($data['menu_items']);
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         return true;
     }

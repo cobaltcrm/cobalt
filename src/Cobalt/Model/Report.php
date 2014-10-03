@@ -33,8 +33,8 @@ class Report extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new ReportTable;
-        $oldRow = new ReportTable;
+        $row = $this->getTable('Report');
+        $oldRow = $this->getTable('Report');
 
         $data = $app->input->getRequest('post');
 
@@ -59,25 +59,16 @@ class Report extends DefaultModel
         $data['fields'] = serialize($data['fields']);
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         return true;
     }

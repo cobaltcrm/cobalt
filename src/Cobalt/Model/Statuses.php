@@ -28,7 +28,7 @@ class Statuses extends DefaultModel
 	public function store()
 	{
 		// Load Tables
-		$row  = new StatusesTable;
+		$row  = $this->getTable('Statuses');
 		$data = $this->app->input->post->getArray();
 
 		// Date generation
@@ -45,33 +45,9 @@ class Statuses extends DefaultModel
 		// Bind the form fields to the table
 		try
 		{
-			$row->bind($data);
+			$row->save($data);
 		}
 		catch (\InvalidArgumentException $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Make sure the record is valid
-		try
-		{
-			$row->check();
-		}
-		catch (\Exception $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Store the record
-		try
-		{
-			$row->store();
-		}
-		catch (\Exception $exception)
 		{
 			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
@@ -116,7 +92,7 @@ class Statuses extends DefaultModel
 			return $this->db->setQuery($query)->loadAssoc();
 		}
 
-		return (array) new StatusesTable;
+		return (array) $this->getTable('Statuses');
 	}
 
 	public function populateState()
@@ -136,7 +112,7 @@ class Statuses extends DefaultModel
 
 	public function remove($id)
 	{
-		$table = new StatusesTable;
+		$table = $this->getTable('Statuses');
 		$table->delete($id);
 	}
 }

@@ -68,8 +68,8 @@ class People extends DefaultModel
     public function store($data=null)
     {
         //Load Tables
-        $row = new PeopleTable;
-        $oldRow = new PeopleTable;
+        $row = $this->getTable('People');
+        $oldRow = $this->getTable('People');
         if ($data == null) {
             $data = $this->app->input->getArray(array(
                 'id' => 'int',
@@ -172,28 +172,16 @@ class People extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        $app = \Cobalt\Container::fetch('app');
-        //$app->triggerEvent('onBeforePersonSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $person_id = isset($data['id']) ? $data['id'] : $this->db->insertId();
 
@@ -669,7 +657,7 @@ class People extends DefaultModel
         } else {
 
              //TODO update things to OBJECTS
-            $person = (array) new PeopleTable;
+            $person = (array) $this->getTable('People');
             $this->person = $person;
 
         }

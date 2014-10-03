@@ -54,8 +54,8 @@ class Company extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new CompanyTable;
-        $oldRow = new CompanyTable;
+        $row    = $this->getTable('Company');
+        $oldRow = $this->getTable('Company');
 
         if ($data == null)
         {
@@ -88,27 +88,16 @@ class Company extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        //$app->triggerEvent('onBeforeCompanySave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $id = !empty($data['id']) ? $data['id'] : $this->db->insertId();
 
@@ -396,12 +385,12 @@ class Company extends DefaultModel
             }
             else
             {
-                return new CompanyTable;
+                return $this->getTable('Company');
             }
         }
         else
         {
-            return new CompanyTable;
+            return $this->getTable('Company');
         }
     }
 

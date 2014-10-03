@@ -21,7 +21,7 @@ class Tags extends DefaultModel
 	public function store()
 	{
 		// Load Tables
-		$row  = new TagsTable;
+		$row  = $this->getTable('Tags');
 		$data = $this->app->input->post->getArray();
 
 		// Date generation
@@ -37,33 +37,9 @@ class Tags extends DefaultModel
 		// Bind the form fields to the table
 		try
 		{
-			$row->bind($data);
+			$row->save($data);
 		}
 		catch (\InvalidArgumentException $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Make sure the record is valid
-		try
-		{
-			$row->check();
-		}
-		catch (\Exception $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Store the record
-		try
-		{
-			$row->store();
-		}
-		catch (\Exception $exception)
 		{
 			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
@@ -111,7 +87,7 @@ class Tags extends DefaultModel
 
 	public function remove($id)
 	{
-		$table = new TagsTable;
+		$table = $this->getTable('Tags');
 		$table->delete($id);
 	}
 }

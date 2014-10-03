@@ -24,7 +24,7 @@ class Stages extends DefaultModel
 	public function store()
 	{
 		// Load Tables
-		$row  = new StagesTable;
+		$row  = $this->getTable('Stages');
 		$data = $this->app->input->post->getArray();
 
 		// Date generation
@@ -42,33 +42,9 @@ class Stages extends DefaultModel
 		// Bind the form fields to the table
 		try
 		{
-			$row->bind($data);
+			$row->save($data);
 		}
 		catch (\InvalidArgumentException $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Make sure the record is valid
-		try
-		{
-			$row->check();
-		}
-		catch (\Exception $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
-
-			return false;
-		}
-
-		// Store the record
-		try
-		{
-			$row->store();
-		}
-		catch (\Exception $exception)
 		{
 			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
@@ -110,7 +86,7 @@ class Stages extends DefaultModel
 			return $this->db->setQuery($query)->loadAssoc();
 		}
 
-		return (array) new StagesTable;
+		return (array) $this->getTable('Stages');
 	}
 
 	public function populateState()
@@ -130,7 +106,7 @@ class Stages extends DefaultModel
 
 	public function remove($id)
 	{
-		$table = new StagesTable;
+		$table = $this->getTable('Stages');
 		$table->delete($id);
 	}
 }

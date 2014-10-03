@@ -55,7 +55,7 @@ class User extends DefaultModel
      */
     public function load($id)
     {
-        $table = new UserTable;
+        $table = $this->getTable('User');
 
         // Load the UserTable object based on the user id or throw a warning.
         if (!$table->load($id))
@@ -98,7 +98,7 @@ class User extends DefaultModel
         }
 
         //Load Table
-        $row = new UserTable;
+        $row = $this->getTable('User');
 
         if (isset($data['id']) && $data['id'])
         {

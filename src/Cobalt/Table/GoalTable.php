@@ -10,36 +10,58 @@
 
 namespace Cobalt\Table;
 
+use Cobalt\Helper\DateHelper;
+
+use Joomla\Database\DatabaseDriver;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class GoalTable extends AbstractTable
 {
-    protected $tableName = '#__goals';
+	/**
+	 * Constructor
+	 *
+	 * @param   DatabaseDriver  $db  A database connector object
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db)
+	{
+		parent::__construct('#__goals', 'id', $db);
+	}
 
-    /**
-     * Added to filter dates to SQL format
-     *
-     * @param mixed $array
-     * @param array $ignore
-     * @return $this
-     */
-    public function bind($array, $ignore = array())
+	/**
+	 * Method to bind an associative array or object to the AbstractTable instance.
+	 *
+	 * This method only binds properties that are publicly accessible and optionally takes an array of properties to ignore when binding.
+	 *
+	 * @param   array|\stdClass  $src     An associative array or object to bind to the AbstractTable instance.
+	 * @param   array|string     $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  $this
+	 *
+	 * @since   1.0
+	 * @throws  \InvalidArgumentException
+	 */
+	public function bind($src, $ignore = array())
     {
-        //transform date to SQL
-        if (!empty($array['start_date'])) {
-            $array['start_date'] = $this->dateToSql($array['start_date']);
-        }
-        if (!empty($array['end_date'])) {
-            $array['end_date'] = $this->dateToSql($array['end_date']);
-        }
+	    //transform date to SQL
+	    if (!empty($array['start_date']))
+	    {
+		    $array['start_date'] = $this->dateToSql($array['start_date']);
+	    }
 
-        return parent::bind($array, $ignore);
+	    if (!empty($array['end_date']))
+	    {
+		    $array['end_date'] = $this->dateToSql($array['end_date']);
+	    }
+
+	    return parent::bind($array, $ignore);
     }
 
     private function dateToSql($date)
     {
-        $start_date = \JDate::getInstance(str_replace('/','-',$date));
-        return $start_date->toSql();
+	    return DateHelper::formatDBDate(str_replace('/', '-', $date));
     }
 }

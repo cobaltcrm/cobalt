@@ -73,8 +73,8 @@ class Deal extends DefaultModel
     public function store($data = null, $returnRow = false)
     {
         //Load Tables
-        $row = new DealTable;
-        $oldRow = new DealTable;
+        $row    = $this->getTable('Deal');
+        $oldRow = $this->getTable('Deal');
 
         if ($data == null)
         {
@@ -200,27 +200,16 @@ class Deal extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        //$this->app->triggerEvent('onBeforeDealSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $deal_id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $row->id;
 
@@ -1068,7 +1057,7 @@ class Deal extends DefaultModel
         else
         {
             //TODO update things to OBJECTS
-            $deal = new DealTable;
+            $deal = $this->getTable('Deal');
         }
 
         return $deal;
