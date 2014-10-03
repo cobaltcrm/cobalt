@@ -43,7 +43,7 @@ class Source extends DefaultModel
 		$query->leftJoin("#__users AS u ON u.id = d.owner_id");
 
 		//set our sorting direction if set via post
-		$query->order($this->getState()->get('Source.filter_order') . ' ' . $this->getState()->get('Source.filter_order_Dir'));
+		$query->order($state->get('Source.filter_order') . ' ' . $state->get('Source.filter_order_Dir'));
 
 		//group data
 		$query->group("s.id");
@@ -90,7 +90,11 @@ class Source extends DefaultModel
 		$filter_order_Dir = $this->app->getUserStateFromRequest('Source.filter_order_Dir', 'filter_order_Dir', 'asc');
 
 		//set states
-		$this->getState()->set('Source.filter_order', $filter_order);
-		$this->getState()->set('Source.filter_order_Dir', $filter_order_Dir);
+		$state = new Registry;
+
+		$state->set('Source.filter_order', $filter_order);
+		$state->set('Source.filter_order_Dir', $filter_order_Dir);
+
+		$this->setState($state);
 	}
 }

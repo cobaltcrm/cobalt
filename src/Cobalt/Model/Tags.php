@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\DateHelper;
 use Cobalt\Table\TagsTable;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -64,7 +65,7 @@ class Tags extends DefaultModel
 
 		$query->select('*')
 			->from('#__people_tags')
-			->order($this->getState()->get('Tags.filter_order') . ' ' . $this->getState()->get('Tags.filter_order_Dir'));
+			->order($state->get('Tags.filter_order') . ' ' . $state->get('Tags.filter_order_Dir'));
 
 		if ($id)
 		{
@@ -81,8 +82,12 @@ class Tags extends DefaultModel
 		$filter_order_Dir = $this->app->getUserStateFromRequest('Tags.filter_order_Dir', 'filter_order_Dir', 'asc');
 
 		//set states
-		$this->getState()->set('Tags.filter_order', $filter_order);
-		$this->getState()->set('Tags.filter_order_Dir', $filter_order_Dir);
+		$state = new Registry;
+
+		$state->set('Tags.filter_order', $filter_order);
+		$state->set('Tags.filter_order_Dir', $filter_order_Dir);
+
+		$this->setState($state);
 	}
 
 	public function remove($id)
