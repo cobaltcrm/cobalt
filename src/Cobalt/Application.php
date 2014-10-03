@@ -11,21 +11,18 @@ namespace Cobalt;
 defined('_CEXEC') or die;
 
 use JFactory;
-use JPluginHelper;
 use JDocument;
 
-use JUri as Uri;
-use Joomla\String\String;
-use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
 use Joomla\Authentication\Authentication;
-use Cobalt\Model\User as UserModel;
+
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Authentication\DatabaseStrategy;
 use Cobalt\Authentication\AuthenticationException;
+
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
