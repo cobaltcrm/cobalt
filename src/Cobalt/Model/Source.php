@@ -12,6 +12,9 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\UsersHelper;
+use Joomla\Registry\Registry;
+
+new Registry;
 
 // no direct access
 defined('_CEXEC') or die('Restricted access');
