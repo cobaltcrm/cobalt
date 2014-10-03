@@ -43,7 +43,7 @@ class Source extends DefaultModel
 		$query->leftJoin("#__users AS u ON u.id = d.owner_id");
 
 		//set our sorting direction if set via post
-		$query->order($state->get('Source.filter_order') . ' ' . $state->get('Source.filter_order_Dir'));
+		$query->order($this->getState()->get('Source.filter_order') . ' ' . $this->getState()->get('Source.filter_order_Dir'));
 
 		//group data
 		$query->group("s.id");
