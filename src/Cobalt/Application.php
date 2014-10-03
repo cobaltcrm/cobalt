@@ -19,7 +19,11 @@ use Joomla\Language\Text;
 use Joomla\Application\AbstractWebApplication;
 use Joomla\Authentication\Authentication;
 
+use Cobalt\Helper\ActivityHelper;
+use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\TemplateHelper;
+use Cobalt\Helper\UsersHelper;
 use Cobalt\Authentication\DatabaseStrategy;
 use Cobalt\Authentication\AuthenticationException;
 
@@ -351,7 +355,7 @@ final class Application extends AbstractWebApplication
 		if (!file_exists(JPATH_CONFIGURATION . '/configuration.php')  || (filesize(JPATH_CONFIGURATION . '/configuration.php') < 10))
 		{
 			// Redirect to the installer if we aren't there
-			if (strpos($this->get('uri.route'), 'install') === false)
+			if (strpos($this->get('uri.route'), 'install') === false && $this->input->getString('task') != 'install')
 			{
 				ob_end_flush();
 				$this->redirect(RouteHelper::_('index.php?view=install'));
@@ -368,22 +372,27 @@ final class Application extends AbstractWebApplication
 			// Perform the Request task
 			$controllerObj->execute();
 		}
+		elseif (file_exists(JPATH_CONFIGURATION . '/configuration.php') && (filesize(JPATH_CONFIGURATION . '/configuration.php') > 10)
+		&& strpos($this->get('uri.route'), 'install') !== false)
+		{
+			$this->redirect(RouteHelper::_('index.php'));
+		}
 		else
 		{
 			// Finish bootstrapping the application now
 			$this->getContainer()->registerServiceProvider(new Provider\ConfigServiceProvider)
-				->registerServiceProvider(new Provider\DatabaseServiceProvider)
-				->registerServiceProvider(new Provider\SessionServiceProvider);
+			     ->registerServiceProvider(new Provider\DatabaseServiceProvider)
+			     ->registerServiceProvider(new Provider\SessionServiceProvider);
 
 			$this->loadConfiguration();
 
 			// Load Language
 			UsersHelper::loadLanguage();
 
-			//set site timezone
+			// Set site timezone
 			$tz = DateHelper::getSiteTimezone();
 
-			//get user object
+			// Get user object
 			$user = $this->getUser();
 
 			// Fetch the controller
@@ -392,65 +401,64 @@ final class Application extends AbstractWebApplication
 			// Require specific controller if requested
 			$controller = $this->input->get('controller', 'default');
 
-			//load user toolbar
-			$format = $this->input->get('format');
-
+			// Load user toolbar
+			$format    = $this->input->get('format');
 			$overrides = array('ajax', 'mail', 'login');
+			$loggedIn  = $user->isAuthenticated();
 
-			$loggedIn = $user->isAuthenticated();
+			if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides))
+			{
+				ActivityHelper::saveUserLoginHistory();
 
-			if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
+				// Set a default view if none exists
+				$this->input->def('view', 'dashboard');
 
-			    ActivityHelper::saveUserLoginHistory();
+				// Grab document instance
+				$document = $this->getDocument();
 
-			    // Set a default view if none exists
-			    if (! $this->input->get('view')) {
-			        $this->input->set('view', 'dashboard' );
-			    }
-
-			    //Grab document instance
-			    $document = $this->getDocument();
-
-			    //start component div wrapper
-			    if (!in_array($this->input->get('view'), array('install', 'print'))) {
-			        TemplateHelper::loadToolbar();
-			    }
-
-				if ($this->input->get('view') != 'install') {
-					TemplateHelper::startCompWrap();
+				// Start component div wrapper
+				if (!in_array($this->input->get('view'), array('print')))
+				{
+					TemplateHelper::loadToolbar();
 				}
 
-			    //load javascript language
-			    TemplateHelper::loadJavascriptLanguage();
+				TemplateHelper::startCompWrap();
 
-			    TemplateHelper::showMessages();
+				// Load javascript language
+				TemplateHelper::loadJavascriptLanguage();
+
+				TemplateHelper::showMessages();
 			}
 
-			if (!$loggedIn && !($controllerObj instanceof Cobalt\Controller\Login)) {
-			    $this->redirect(RouteHelper::_('index.php?view=login'));
+			if (!$loggedIn && !($controllerObj instanceof \Cobalt\Controller\Login))
+			{
+				$this->redirect(RouteHelper::_('index.php?view=login'));
 			}
 
-			//fullscreen detection
-			if (UsersHelper::isFullscreen()) {
-			    $this->input->set('tmpl', 'component' );
+			// Fullscreen detection
+			if (UsersHelper::isFullscreen())
+			{
+				$this->input->set('tmpl', 'component');
 			}
 
 			// Perform the Request task
 			$controllerObj->execute();
 
-			//end componenet wrapper
-			if ($user !== false && $format !== 'raw') {
-				if ($this->input->get('view') != 'install') {
-					TemplateHelper::endCompWrap();
-				}
+			// End componenet wrapper
+			if ($user !== false && $format !== 'raw')
+			{
+				TemplateHelper::endCompWrap();
 			}
 		}
 
 		$contents = ob_get_clean();
 
-		if ($this->input->get('format', 'html') === 'raw') {
+		if ($this->input->get('format', 'html') === 'raw')
+		{
 			$this->setBody($contents);
-		} else {
+		}
+		else
+		{
 			$this->document->setBuffer($contents, 'cobalt');
 			$this->setBody($this->document->render(false, (array) $template));
 		}

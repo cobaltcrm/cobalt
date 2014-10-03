@@ -8,7 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined('_CEXEC') or die('Restricted access'); ?>
+defined('_CEXEC') or die('Restricted access');
+
+use Joomla\Language\Text; ?>
 
 <div id="wrapper">
 <div id="cobalt-3d-container">
@@ -32,19 +34,19 @@ defined('_CEXEC') or die('Restricted access'); ?>
 	<?php endif; ?>
 <?php endif; ?>
 <div id="rootwizard" class="tabbable tabs-left">
-	<form id="install-form" enctype="multipart/form-data" method="post" action="<?php echo $this->basepath; ?>/index.php?c=install&m=install" class="form-horizontal" role="form">
+	<form id="install-form" enctype="multipart/form-data" method="post" action="<?php echo $this->basepath; ?>/index.php?task=install" class="form-horizontal" role="form">
 		<ul class="nav nav-tabs">
-			<li><a href="#installer" data-toggle="tab"><i class="icon-wrench"></i> <?php echo JText::_('INSTL_TAB_SETTINGS'); ?></a></li>
-			<li><a href="#site" data-toggle="tab" class="active"><i class="icon-home"></i> <?php echo JText::_('INSTL_TAB_SITE'); ?></a></li>
-			<li><a href="#database" data-toggle="tab"><i class="icon-hdd"></i> <?php echo JText::_('INSTL_TAB_DATABASE'); ?></a></li>
-			<li><a href="#admin" data-toggle="tab"><i class="icon-user"></i> <?php echo JText::_('INSTL_TAB_ADMIN'); ?></a></li>
+			<li><a href="#installer" data-toggle="tab"><i class="icon-wrench"></i> <?php echo Text::_('INSTL_TAB_SETTINGS'); ?></a></li>
+			<li><a href="#site" data-toggle="tab" class="active"><i class="icon-home"></i> <?php echo Text::_('INSTL_TAB_SITE'); ?></a></li>
+			<li><a href="#database" data-toggle="tab"><i class="icon-hdd"></i> <?php echo Text::_('INSTL_TAB_DATABASE'); ?></a></li>
+			<li><a href="#admin" data-toggle="tab"><i class="icon-user"></i> <?php echo Text::_('INSTL_TAB_ADMIN'); ?></a></li>
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane" id="installer">
 				<br/>
 
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><?php echo JText::_('INSTL_SELECT_LANGUAGE_TITLE'); ?></label>
+					<label class="col-sm-3 control-label"><?php echo Text::_('INSTL_SELECT_LANGUAGE_TITLE'); ?></label>
 
 					<div class="col-sm-8">
 						<select name="lang" id="lang" class="form-control">
@@ -55,7 +57,7 @@ defined('_CEXEC') or die('Restricted access'); ?>
 						</select>
 					</div>
 				</div>
-				<h2><?php echo JText::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_TITLE'); ?></h2>
+				<h2><?php echo Text::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_TITLE'); ?></h2>
 				<table class="table table-striped">
 					<?php $canInstall = true;
 					foreach ($this->phpOptions as $phpOption): ?>
@@ -63,9 +65,9 @@ defined('_CEXEC') or die('Restricted access'); ?>
 							<td><?php echo $phpOption->label; ?></td>
 							<td>
 								<?php if ($phpOption->state): ?>
-									<span <?php if (!empty($phpOption->notice)): ?> data-placement="right" data-toggle="tooltip" title="<?php echo $phpOption->notice; ?>" <?php endif; ?> class="label label-success"><?php echo JText::_('INSTL_YES'); ?></span>
+									<span <?php if (!empty($phpOption->notice)): ?> data-placement="right" data-toggle="tooltip" title="<?php echo $phpOption->notice; ?>" <?php endif; ?> class="label label-success"><?php echo Text::_('INSTL_YES'); ?></span>
 								<?php else: $canInstall = false; ?>
-									<span <?php if (!empty($phpOption->notice)): ?> data-placement="right" data-toggle="tooltip" title="<?php echo $phpOption->notice; ?>" <?php endif; ?> class="label label-danger"><?php echo JText::_('INSTL_NO'); ?></span>
+									<span <?php if (!empty($phpOption->notice)): ?> data-placement="right" data-toggle="tooltip" title="<?php echo $phpOption->notice; ?>" <?php endif; ?> class="label label-danger"><?php echo Text::_('INSTL_NO'); ?></span>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -75,10 +77,10 @@ defined('_CEXEC') or die('Restricted access'); ?>
 
 				<div class="pull-right">
 					<?php if ($canInstall): ?>
-						<a href="#site" data-toggle="tab" data-showtab="site" class="btn btn-success btn-next"><?php echo JText::_('INSTL_NEXT'); ?>
+						<a href="#site" data-toggle="tab" data-showtab="site" class="btn btn-success btn-next"><?php echo Text::_('INSTL_NEXT'); ?>
 							<i class="glyphicon glyphicon-chevron-right"></i></a>
 					<?php else: ?>
-						<a href="" class="btn btn-primary"><?php echo JText::_('INSTL_BTN_CHECK_SETTINGS'); ?>
+						<a href="" class="btn btn-primary"><?php echo Text::_('INSTL_BTN_CHECK_SETTINGS'); ?>
 							<i class="glyphicon glyphicon-refresh"></i></a>
 					<?php endif; ?>
 				</div>
@@ -88,14 +90,14 @@ defined('_CEXEC') or die('Restricted access'); ?>
 				<br/>
 
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><?php echo JText::_('INSTL_LBL_SITE_NAME'); ?></label>
+					<label class="col-sm-3 control-label"><?php echo Text::_('INSTL_LBL_SITE_NAME'); ?></label>
 
 					<div class="col-sm-8">
-						<input type="text" name="site_name" class="form-control" id="siteName" placeholder="<?php echo JText::_('INSTL_PLHD_SITE_NAME'); ?>" data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_SITE_NAME'); ?>">
+						<input type="text" name="site_name" class="form-control" id="siteName" placeholder="<?php echo Text::_('INSTL_PLHD_SITE_NAME'); ?>" data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_SITE_NAME'); ?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><?php echo JText::_('INSTL_LBL_SITE_LOGO'); ?></label>
+					<label class="col-sm-3 control-label"><?php echo Text::_('INSTL_LBL_SITE_LOGO'); ?></label>
 
 					<div class="col-sm-8">
 						<div class="fileinput fileinput-new" data-provides="fileinput">
@@ -104,8 +106,8 @@ defined('_CEXEC') or die('Restricted access'); ?>
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
 							<div>
-								<span class="btn btn-default btn-file"><span class="fileinput-new"><?php echo JText::_('INSTL_BTN_SELECT_LOGO'); ?></span><span class="fileinput-exists">Change</span><input type="file" name="logo" title="<?php echo JText::_('INSTL_TITLE_SITE_LOGO'); ?>"></span>
-								<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput"><?php echo JText::_('INSTL_BTN_REMOVE'); ?></a>
+								<span class="btn btn-default btn-file"><span class="fileinput-new"><?php echo Text::_('INSTL_BTN_SELECT_LOGO'); ?></span><span class="fileinput-exists">Change</span><input type="file" name="logo" title="<?php echo Text::_('INSTL_TITLE_SITE_LOGO'); ?>"></span>
+								<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput"><?php echo Text::_('INSTL_BTN_REMOVE'); ?></a>
 							</div>
 						</div>
 					</div>
@@ -113,11 +115,11 @@ defined('_CEXEC') or die('Restricted access'); ?>
 				<br/>
 
 				<div class="pull-left">
-					<a href="#installer" data-toggle="tab" data-showtab="installer" class="btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> <?php echo JText::_('INSTL_BACK'); ?>
+					<a href="#installer" data-toggle="tab" data-showtab="installer" class="btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> <?php echo Text::_('INSTL_BACK'); ?>
 					</a>
 				</div>
 				<div class="pull-right">
-					<a href="#database" data-toggle="tab" data-showtab="database" class="btn btn-success btn-next"><?php echo JText::_('INSTL_NEXT'); ?>
+					<a href="#database" data-toggle="tab" data-showtab="database" class="btn btn-success btn-next"><?php echo Text::_('INSTL_NEXT'); ?>
 						<i class="glyphicon glyphicon-chevron-right"></i></a>
 				</div>
 				<div class="clearfix"></div>
@@ -127,62 +129,62 @@ defined('_CEXEC') or die('Restricted access'); ?>
 				<div class="clearfix overflow" id="database-validation-message"></div>
 
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="dbDriver"><?php echo JText::_('INSTL_LBL_DATABASE_DRIVER'); ?></label>
+					<label class="col-sm-3 control-label" for="dbDriver"><?php echo Text::_('INSTL_LBL_DATABASE_DRIVER'); ?></label>
 
 					<div class="col-sm-8">
-						<select data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_DATABASE_DRIVER'); ?>" id="db_drive" name="db_drive" class="form-control">
+						<select data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_DATABASE_DRIVER'); ?>" id="db_drive" name="db_drive" class="form-control">
 							<?php foreach ($this->dboDrivers as $driver): ?>
-								<option <?php if ($driver == 'mysql'): ?> selected="selected" <?php endif; ?> value="<?php echo $driver; ?>"><?php echo $driver; ?></option>
+								<option <?php if ($driver == 'mysql'): ?> selected="selected" <?php endif; ?> value="<?php echo $driver; ?>"><?php echo Text::_(strtoupper($driver)); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="dbHost"><?php echo JText::_('INSTL_LBL_DATABASE_HOST'); ?></label>
+					<label class="col-sm-3 control-label" for="dbHost"><?php echo Text::_('INSTL_LBL_DATABASE_HOST'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_DATABASE_HOST'); ?>" type="text" id="dbHost" name="database_host" placeholder="<?php echo JText::_('INSTL_PLHD_DATABASE_HOST'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_DATABASE_HOST'); ?>" type="text" id="dbHost" name="database_host" placeholder="<?php echo Text::_('INSTL_PLHD_DATABASE_HOST'); ?>" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="dbUser"><?php echo JText::_('INSTL_LBL_DATABASE_USER'); ?></label>
+					<label class="col-sm-3 control-label" for="dbUser"><?php echo Text::_('INSTL_LBL_DATABASE_USER'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_DATABASE_USER'); ?>" type="text" id="dbUser" name="database_user" placeholder="<?php echo JText::_('INSTL_PLHD_DATABASE_USER'); ?>" class="form-control">
-					</div>
-				</div>
-
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label" for="dbPass"><?php echo JText::_('INSTL_LBL_DATABASE_PASSWORD'); ?></label>
-
-					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_DATABASE_PASSWORD'); ?>" type="password" id="dbPass" name="database_password" placeholder="<?php echo JText::_('INSTL_PLHD_DATABASE_PASSWORD'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_DATABASE_USER'); ?>" type="text" id="dbUser" name="database_user" placeholder="<?php echo Text::_('INSTL_PLHD_DATABASE_USER'); ?>" class="form-control">
 					</div>
 				</div>
 
 
 				<div class="form-group">
-					<label class="col-sm-3  control-label" for="dbName"><?php echo JText::_('INSTL_LBL_DATABASE_NAME'); ?></label>
+					<label class="col-sm-3 control-label" for="dbPass"><?php echo Text::_('INSTL_LBL_DATABASE_PASSWORD'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_DATABASE_NAME'); ?>" type="text" id="dbName" name="database_name" placeholder="<?php echo JText::_('INSTL_PLHD_DATABASE_NAME'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_DATABASE_PASSWORD'); ?>" type="password" id="dbPass" name="database_password" placeholder="<?php echo Text::_('INSTL_PLHD_DATABASE_PASSWORD'); ?>" class="form-control">
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-sm-3  control-label" for="dbName"><?php echo Text::_('INSTL_LBL_DATABASE_NAME'); ?></label>
+
+					<div class="col-sm-8">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_DATABASE_NAME'); ?>" type="text" id="dbName" name="database_name" placeholder="<?php echo Text::_('INSTL_PLHD_DATABASE_NAME'); ?>" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3  control-label" for="dbPrefix"><?php echo JText::_('INSTL_LBL_DATABASE_TABLE_PREFIX'); ?></label>
+					<label class="col-sm-3  control-label" for="dbPrefix"><?php echo Text::_('INSTL_LBL_DATABASE_TABLE_PREFIX'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_DATABASE_TABLE_PREFIX'); ?>" type="text" id="dbPrefix" name="database_prefix" placeholder="<?php echo JText::_('INSTL_PLHD_DATABASE_TABLE_PREFIX'); ?>" value="cob_" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_DATABASE_TABLE_PREFIX'); ?>" type="text" id="dbPrefix" name="database_prefix" placeholder="<?php echo Text::_('INSTL_PLHD_DATABASE_TABLE_PREFIX'); ?>" value="cob_" class="form-control">
 					</div>
 				</div>
 				<div class="pull-left">
-					<a href="#site" data-toggle="tab" data-showtab="site" class="btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> <?php echo JText::_('INSTL_BACK'); ?>
+					<a href="#site" data-toggle="tab" data-showtab="site" class="btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> <?php echo Text::_('INSTL_BACK'); ?>
 					</a>
 				</div>
 				<div class="pull-right">
-					<a href="#admin" data-toggle="tab" data-showtab="admin" class="btn btn-success btn-next"><?php echo JText::_('INSTL_NEXT'); ?>
+					<a href="#admin" data-toggle="tab" data-showtab="admin" class="btn btn-success btn-next"><?php echo Text::_('INSTL_NEXT'); ?>
 						<i class="glyphicon glyphicon-chevron-right"></i></a>
 				</div>
 				<div class="clearfix"></div>
@@ -191,38 +193,38 @@ defined('_CEXEC') or die('Restricted access'); ?>
 				<br/>
 
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="adminFirstname"><?php echo JText::_('INSTL_LBL_ADMIN_FIRST_NAME'); ?></label>
+					<label class="col-sm-3 control-label" for="adminFirstname"><?php echo Text::_('INSTL_LBL_ADMIN_FIRST_NAME'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_ADMIN_FIRST_NAME'); ?>" type="text" id="adminFirstname" name="first_name" placeholder="<?php echo JText::_('INSTL_PLHD_ADMIN_FIRST_NAME'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_ADMIN_FIRST_NAME'); ?>" type="text" id="adminFirstname" name="first_name" placeholder="<?php echo Text::_('INSTL_PLHD_ADMIN_FIRST_NAME'); ?>" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="adminLastname"><?php echo JText::_('INSTL_LBL_ADMIN_LAST_NAME'); ?></label>
+					<label class="col-sm-3 control-label" for="adminLastname"><?php echo Text::_('INSTL_LBL_ADMIN_LAST_NAME'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_ADMIN_LAST_NAME'); ?>" type="text" id="adminLastname" name="last_name" placeholder="<?php echo JText::_('INSTL_PLHD_ADMIN_LAST_NAME'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_ADMIN_LAST_NAME'); ?>" type="text" id="adminLastname" name="last_name" placeholder="<?php echo Text::_('INSTL_PLHD_ADMIN_LAST_NAME'); ?>" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="adminEmail"><?php echo JText::_('INSTL_LBL_ADMIN_EMAIL'); ?></label>
+					<label class="col-sm-3 control-label" for="adminEmail"><?php echo Text::_('INSTL_LBL_ADMIN_EMAIL'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_ADMIN_EMAIL'); ?>" type="text" id="adminEmail" name="email" placeholder="<?php echo JText::_('INSTL_PLHD_ADMIN_EMAIL'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_ADMIN_EMAIL'); ?>" type="text" id="adminEmail" name="email" placeholder="<?php echo Text::_('INSTL_PLHD_ADMIN_EMAIL'); ?>" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="adminUsername"><?php echo JText::_('INSTL_LBL_ADMIN_USERNAME'); ?></label>
+					<label class="col-sm-3 control-label" for="adminUsername"><?php echo Text::_('INSTL_LBL_ADMIN_USERNAME'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_ADMIN_USERNAME'); ?>" type="text" id="adminUsername" name="username" placeholder="<?php echo JText::_('INSTL_PLHD_ADMIN_USERNAME'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_ADMIN_USERNAME'); ?>" type="text" id="adminUsername" name="username" placeholder="<?php echo Text::_('INSTL_PLHD_ADMIN_USERNAME'); ?>" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="adminPassword"><?php echo JText::_('INSTL_LBL_ADMIN_PASSWORD'); ?></label>
+					<label class="col-sm-3 control-label" for="adminPassword"><?php echo Text::_('INSTL_LBL_ADMIN_PASSWORD'); ?></label>
 
 					<div class="col-sm-8">
-						<input data-placement="right" data-toggle="tooltip" title="<?php echo JText::_('INSTL_TITLE_ADMIN_PASSWORD'); ?>" type="password" id="adminPassword" name="password" placeholder="<?php echo JText::_('INSTL_PLHD_ADMIN_PASSWORD'); ?>" class="form-control">
+						<input data-placement="right" data-toggle="tooltip" title="<?php echo Text::_('INSTL_TITLE_ADMIN_PASSWORD'); ?>" type="password" id="adminPassword" name="password" placeholder="<?php echo Text::_('INSTL_PLHD_ADMIN_PASSWORD'); ?>" class="form-control">
 					</div>
 				</div>
 
@@ -230,11 +232,11 @@ defined('_CEXEC') or die('Restricted access'); ?>
 				<br/>
 
 				<div class="pull-left">
-					<a href="#database" data-toggle="tab" data-showtab="database" class="btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> <?php echo JText::_('INSTL_BACK'); ?>
+					<a href="#database" data-toggle="tab" data-showtab="database" class="btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> <?php echo Text::_('INSTL_BACK'); ?>
 					</a>
 				</div>
 				<div class="pull-right">
-					<a href="#" onclick="validateAdmin();" class="btn btn-success"><?php echo JText::_('INSTL_BTN_INSTALL'); ?></a>
+					<a href="#" onclick="validateAdmin();" class="btn btn-success"><?php echo Text::_('INSTL_BTN_INSTALL'); ?></a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

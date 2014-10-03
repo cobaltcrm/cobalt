@@ -237,7 +237,7 @@ class Install extends AbstractModel
         $this->config->set("password",$postData['database_password']);
         $this->config->set("db",$postData['database_name']);
         $this->config->set("dbprefix",$postData['database_prefix']);
-        $this->config->set("dbtype", $postData['db_drive']);
+        $this->config->set("dbtype", strtolower($postData['db_drive']));
         $this->config->set("mailfrom",$postData['email']);
         $this->config->set("fromname",$postData['first_name'].' '.$postData['last_name']);
         $this->config->set("sendmail","/usr/sbin/sendmail");
@@ -738,7 +738,7 @@ class Install extends AbstractModel
 			session_start();
 		}
 
-        JSession::getInstance('none', array())->set('error', $this->error);
+        //JSession::getInstance('none', array())->set('error', $this->error);
     }
 
     public function getError()
