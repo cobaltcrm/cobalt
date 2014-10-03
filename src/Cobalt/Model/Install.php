@@ -30,7 +30,8 @@ class Install extends AbstractModel
     /**
      * List of Drivers according installation SQL
      *
-     * @var array
+     * @var    array
+     * @since  1.0
      */
     protected $dbDrivers = array('Mysqli', 'Postgresql', 'Sqlsrv');
 
@@ -52,6 +53,8 @@ class Install extends AbstractModel
      * Gets PHP options.
      *
      * @return	array  Array of PHP config options
+     *
+   	 * @since   1.0
      */
     public function getPhpOptions()
     {
@@ -186,127 +189,107 @@ class Install extends AbstractModel
     /**
      * Run Install Process
      *
-     * @return bool
+     * @param   array  $postData  Input data
+     *
+     * @return  boolean
+     *
+   	 * @since   1.0
      */
-    public function install()
+    public function install(array $postData)
     {
-        $input = \Cobalt\Container::fetch('app')->input;
+	    // Validation post data
+	    $check = array_filter(array_values($postData));
 
-        $postData = array(
-            'db_drive' => $input->getCmd('db_drive'),
-            'site_name' => $input->getString('site_name'),
-            'database_host' => $input->getCmd('database_host'),
-            'database_user' => $input->getUsername('database_user'),
-            'database_password' => $input->getString('database_password'),
-            'database_name' => $input->getString('database_name'),
-            'database_prefix' => $input->getString('database_prefix'),
-            'first_name' => $input->getString('first_name'),
-            'last_name' => $input->getString('last_name'),
-            'username' => $input->getUsername('username'),
-            'password' => $input->getString('password'),
-            'email' => $input->getString('email')
-        );
+	    if (empty($postData['database_password']))
+	    {
+		    $check[] = '';
+	    }
 
-        //validation post data
-        $check = array_filter(array_values($postData));
-        if (empty($postData['database_password'])) {
-            $check[] = '';
-        }
+	    if (empty($check) || count($check) < count($postData))
+	    {
+		    $this->setError(Text::_('INSTL_CHECK_REQUIRED_FIELDS'));
 
-        if (empty($check) || count($check) < count($postData)) {
-            $this->setError(Text::_('INSTL_CHECK_REQUIRED_FIELDS'));
-            return false;
-        }
+		    return false;
+	    }
 
+	    if ($this->canUpload())
+	    {
+		    if (!$this->uploadLogo())
+		    {
+			    return false;
+		    }
+	    }
 
-        if ($this->canUpload()) {
-            if (!$this->uploadLogo()) {
-                return false;
-            }
-        }
+	    $config = array(
+		    'sitename' => $postData['site_name'],
+	        'host' => $postData['database_host'],
+	        'user' => $postData['database_user'],
+	        'password' => $postData['database_password'],
+	        'db' => $postData['database_name'],
+	        'dbprefix' => $postData['database_prefix'],
+	        'dbtype' => strtolower($postData['db_drive']),
+	        'mailfrom' => $postData['email'],
+	        'fromname' => $postData['first_name'] . ' ' . $postData['last_name'],
+	        'sendmail' => '/usr/sbin/sendmail',
+	        'log_path' => JPATH_ROOT . '/logs',
+	        'tmp_path' => JPATH_ROOT . '/tmp',
+	        'offset' => 'UTC',
+	        'error_reporting' => 'maximum',
+	        'debug' => '1',
+	        'secret' => $this->genRandomPassword(16),
+	        'sef' => '1',
+	        'sef_rewrite' => '1',
+	        'sef_suffix' => '1',
+	        'unicodeslugs' => '0',
+	        'language' => 'en-GB'
+	    );
 
-        $logPath = JPATH_BASE."/logs";
-        $tmpPath = JPATH_BASE."/tmp";
+	    $this->config = new Registry($config);
 
-        $this->config = new Registry;
+	    $file = JPATH_CONFIGURATION . '/configuration.php';
 
-        //set configuration settings
-        $this->config->set('sitename',$postData['site_name']);
-        $this->config->set("host",$postData['database_host']);
-        $this->config->set("user",$postData['database_user']);
-        $this->config->set("password",$postData['database_password']);
-        $this->config->set("db",$postData['database_name']);
-        $this->config->set("dbprefix",$postData['database_prefix']);
-        $this->config->set("dbtype", strtolower($postData['db_drive']));
-        $this->config->set("mailfrom",$postData['email']);
-        $this->config->set("fromname",$postData['first_name'].' '.$postData['last_name']);
-        $this->config->set("sendmail","/usr/sbin/sendmail");
-        $this->config->set("log_path",$logPath);
-        $this->config->set("tmp_path",$tmpPath);
-        $this->config->set("offset","UTC");
-        $this->config->set("error_reporting",'maximum');
-        $this->config->set("debug","1");
-        $this->config->set("secret",$this->genRandomPassword(16));
-        $this->config->set("sef","1");
-        $this->config->set("sef_rewrite","1");
-        $this->config->set("sef_suffix","1");
-        $this->config->set("unicodeslugs","0");
-        $this->config->set("language","en-GB");
+	    $content = $this->config->toString('php', array('class' => 'JConfig'));
 
-        //TODO: needs to check if writable
-        $file = JPATH_BASE."/configuration.php";
+	    if (!is_writable($file) || !is_writable(JPATH_CONFIGURATION) || !JFile::write($file, $content))
+	    {
+		    $this->setError(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
 
-        $content = $this->config->toString('php',array('class' => 'JConfig'));
-        if ( !JFile::write($file, $content) )
-        {
-            $this->setError(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
+		    return false;
+	    }
 
-            return false;
-        }
+	    // Populate database
+	    if (!$this->createDb())
+	    {
+		    $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
 
-        //populate database
-        if ( !$this->createDb() )
-        {
-            $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
+		    return false;
+	    }
 
-            return false;
-        }
+	    // Populate crm
+	    if (!$this->createCrm())
+	    {
+		    $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
 
-        //populate crm
-        if ( !$this->createCrm() )
-        {
-            $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
+		    return false;
+	    }
 
-            return false;
-        }
+	    //create admin user
+	    $admin = array(
+		    'username'   => $postData['username'],
+		    'password'   => $postData['password'],
+		    'email'      => $postData['email'],
+		    'first_name' => $postData['first_name'],
+		    'last_name'  => $postData['last_name']
+	    );
 
-        //create admin user
-        $admin = array(
-            'username'		=> $postData['username'],
-            'password'		=> $postData['password'],
-            'email'			=> $postData['email'],
-            'first_name'	=> $postData['first_name'],
-            'last_name'		=> $postData['last_name']
-        );
+	    if (!$this->createAdmin($admin))
+	    {
+		    $this->setError(Text::_('INSTL_ERROR_CREATE_USER'));
 
-        if ( !$this->createAdmin($admin) )
-        {
-            $this->setError(Text::_('INSTL_ERROR_CREATE_USER'));
+		    return false;
+	    }
 
-            return false;
-        }
-
-        //rename-move installation folder
-        //TODO: needs to check if writable
-        /*if ( !rename(JPATH_INSTALLATION,JPATH_BASE."/_install") )
-        {
-            $this->setError(Text::_('INSTL_ERROR_RENAME_FOLDER'));
-
-            return false;
-        }*/
-
-        return true;
-
+	    return true;
     }
 
     public function canUpload()
@@ -347,7 +330,7 @@ class Install extends AbstractModel
      * @param $database
      * @param string $prefix
      * @param bool $select
-     * @return JDatabaseDriver
+     * @return DatabaseDriver
      */
     public function getDbo($driver, $host, $user, $password, $database, $prefix = '', $select = true)
     {
@@ -365,7 +348,7 @@ class Install extends AbstractModel
                 'select' => $select
             );
 // Get a database object.
-            $db = Database\DatabaseDriver::getInstance($options);
+            $db = DatabaseDriver::getInstance($options);
         }
         return $db;
     }

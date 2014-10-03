@@ -11,23 +11,39 @@
 namespace Cobalt\Controller;
 
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
+defined('_CEXEC') or die('Restricted access');
 
 class Install extends DefaultController
 {
-    public function execute()
-    {
-	    ini_set('display_errors', 0);
+	public function execute()
+	{
+		ini_set('display_errors', 0);
 
-	    /** @var \Cobalt\Model\Install $model */
-	    $model = $this->getModel('Install');
+		// Get the request data
+		$data = $this->getInput()->getArray(array(
+			'db_drive' => 'cmd',
+		    'site_name' => 'string',
+		    'database_host' => 'cmd',
+		    'database_user' => 'username',
+		    'database_password'=> 'raw',
+		    'database_name'=> 'string',
+		    'database_prefix'=> 'string',
+		    'first_name' => 'string',
+		    'last_name' => 'string',
+		    'username' => 'username',
+		    'password' => 'raw',
+		    'email' => 'string'
+		));
 
-	    if (!$model->install())
-	    {
-		    // Error handler
-	    }
+		/** @var \Cobalt\Model\Install $model */
+		$model = $this->getModel('Install');
 
-	    // Success
-	    $this->getApplication()->redirect($this->getApplication()->get('uri.host.base'));
-    }
+		if (!$model->install($data))
+		{
+			// Error handler
+		}
+
+		// Success
+		$this->getApplication()->redirect($this->getApplication()->get('uri.host.base'));
+	}
 }
