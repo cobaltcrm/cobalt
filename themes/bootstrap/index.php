@@ -3,6 +3,7 @@ defined('_CEXEC') or die;
 unset($this->_scripts);
 unset($this->_styleSheets);
 $this->_style = array();
+$this->baseurl = \Cobalt\Container::fetch('app')->get('uri.base.host');
 
 $this
     // Add theme stylesheets
@@ -39,6 +40,13 @@ $this
     ->setTab("\t")
     ->setBase(null)
     ->setGenerator('Cobalt CRM');
+
+if (strpos(\Cobalt\Container::fetch('app')->get('uri.route'), 'install') !== false) :
+	$this->addStylesheet($this->baseurl . '/themes/bootstrap/jasny/css/jasny-bootstrap.min.css')
+		->addStylesheet($this->baseurl . '/themes/bootstrap/css/install.css')
+		->addScript($this->baseurl . '/themes/bootstrap/wizard/js/wizard.min.js')
+		->addScript($this->baseurl . '/themes/bootstrap/js/install.js');
+endif;
 ?>
 <!DOCTYPE html>
 <html>

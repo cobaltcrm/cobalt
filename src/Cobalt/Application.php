@@ -24,6 +24,7 @@ use Cobalt\Authentication\DatabaseStrategy;
 use Cobalt\Authentication\AuthenticationException;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 /**
  * Cobalt Application class
@@ -120,15 +121,10 @@ final class Application extends AbstractWebApplication
 
 		$container = Container::getInstance();
 
-		$container
-			->registerServiceProvider(new Provider\ApplicationServiceProvider($this))
-			->registerServiceProvider(new Provider\ConfigServiceProvider)
-			->registerServiceProvider(new Provider\DatabaseServiceProvider)
-			->registerServiceProvider(new Provider\SessionServiceProvider);
+		$container->registerServiceProvider(new Provider\ApplicationServiceProvider($this));
 
 		// Setup the application pieces.
 		$this->setContainer($container);
-		$this->loadConfiguration();
 		$this->loadDocument();
 
 		// Load the library language file
@@ -331,6 +327,13 @@ final class Application extends AbstractWebApplication
 		return null;
 	}
 
+	/**
+	 * Method to run the application routines.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
 	public function doExecute()
 	{
 		// Register the template to the config
@@ -341,15 +344,108 @@ final class Application extends AbstractWebApplication
 		// Set metadata
 		$this->document->setTitle('Cobalt');
 
+		// Start the output buffer
+		ob_start();
+
 		// Install check
 		if (!file_exists(JPATH_CONFIGURATION . '/configuration.php')  || (filesize(JPATH_CONFIGURATION . '/configuration.php') < 10))
 		{
-			// TODO - Integrate the standalone install application into the main application code
+			// Redirect to the installer if we aren't there
+			if (strpos($this->get('uri.route'), 'install') === false)
+			{
+				ob_end_flush();
+				$this->redirect(RouteHelper::_('index.php?view=install'));
+			}
+
+			// Build a session object to push into the DI container
+			$session = new Session(new MockFileSessionStorage());
+
+			$this->getContainer()->set('session', $session);
+
+			// Fetch the controller
+			$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
+
+			// Perform the Request task
+			$controllerObj->execute();
+		}
+		else
+		{
+			// Finish bootstrapping the application now
+			$this->getContainer()->registerServiceProvider(new Provider\ConfigServiceProvider)
+				->registerServiceProvider(new Provider\DatabaseServiceProvider)
+				->registerServiceProvider(new Provider\SessionServiceProvider);
+
+			$this->loadConfiguration();
+
+			// Load Language
+			UsersHelper::loadLanguage();
+
+			//set site timezone
+			$tz = DateHelper::getSiteTimezone();
+
+			//get user object
+			$user = $this->getUser();
+
+			// Fetch the controller
+			$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
+
+			// Require specific controller if requested
+			$controller = $this->input->get('controller', 'default');
+
+			//load user toolbar
+			$format = $this->input->get('format');
+
+			$overrides = array('ajax', 'mail', 'login');
+
+			$loggedIn = $user->isAuthenticated();
+
+			if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides)) {
+
+			    ActivityHelper::saveUserLoginHistory();
+
+			    // Set a default view if none exists
+			    if (! $this->input->get('view')) {
+			        $this->input->set('view', 'dashboard' );
+			    }
+
+			    //Grab document instance
+			    $document = $this->getDocument();
+
+			    //start component div wrapper
+			    if (!in_array($this->input->get('view'), array('install', 'print'))) {
+			        TemplateHelper::loadToolbar();
+			    }
+
+				if ($this->input->get('view') != 'install') {
+					TemplateHelper::startCompWrap();
+				}
+
+			    //load javascript language
+			    TemplateHelper::loadJavascriptLanguage();
+
+			    TemplateHelper::showMessages();
+			}
+
+			if (!$loggedIn && !($controllerObj instanceof Cobalt\Controller\Login)) {
+			    $this->redirect(RouteHelper::_('index.php?view=login'));
+			}
+
+			//fullscreen detection
+			if (UsersHelper::isFullscreen()) {
+			    $this->input->set('tmpl', 'component' );
+			}
+
+			// Perform the Request task
+			$controllerObj->execute();
+
+			//end componenet wrapper
+			if ($user !== false && $format !== 'raw') {
+				if ($this->input->get('view') != 'install') {
+					TemplateHelper::endCompWrap();
+				}
+			}
 		}
 
-		// TODO - This standalone file really should be moved back into this method
-		ob_start();
-		require_once __DIR__.'/cobalt.php';
 		$contents = ob_get_clean();
 
 		if ($this->input->get('format', 'html') === 'raw') {
