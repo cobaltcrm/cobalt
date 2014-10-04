@@ -3,7 +3,7 @@ defined('_CEXEC') or die;
 unset($this->_scripts);
 unset($this->_styleSheets);
 $this->_style = array();
-$this->baseurl = \Cobalt\Container::fetch('app')->get('uri.base.host');
+$this->baseurl = \Cobalt\Container::fetch('app')->get('uri.base.full');
 
 $this
     // Add theme stylesheets
