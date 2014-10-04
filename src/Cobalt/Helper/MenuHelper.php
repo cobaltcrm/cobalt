@@ -33,7 +33,7 @@ class MenuHelper
 
     public static function getMenuLinks()
     {
-        return array(
+        $menuItems = array(
             array(
                 'link'   => RouteHelper::_('index.php?view=cobalt'),
                 'class' => 'glyphicon glyphicon-home',
@@ -180,6 +180,28 @@ class MenuHelper
                 'view'      => "config"
             )
         );
+
+        return self::setActive($menuItems);
+    }
+
+    public static function setActive($menuItems)
+    {
+        $app = \Cobalt\Container::fetch('app');
+        $view = $app->input->getCmd('view', 'cobalt');
+
+        foreach ($menuItems as &$item)
+        {
+            if ($item['view'] == $view)
+            {
+                $item['active'] = true;
+            }
+            else
+            {
+                $item['active'] = false;
+            }
+        }
+
+        return $menuItems;
     }
 
     public static function getQuickMenuLinks()
