@@ -49,7 +49,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <tr class="">
                                         <td class="center"><?php echo JHtml::_('grid.id', $key, $document['id']); ?></td>
                                         <td class="order"><?php echo '<img width="30px" height="30px" src="'.JURI::base().'src/Cobalt/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>'; ?></td>
-                                        <td class="order"><?php echo JHtml::_('link', 'index.php?view=documents&layout=download&document='.$document['filename'], $document['name'], array('target'=>'_blank')); ?></td>
+                                        <td class="order">
+                                            <a href="<?php echo RouteHelper::_('index.php?view=documents&layout=download&document='.$document['filename']); ?>" target="_blank">
+                                                <?php echo $document['name']; ?>
+                                            </a>
+                                        </td>
                                         <td class="order"><?php echo $document['size']; ?>kb</td>
                                         <td class="order"><?php echo date("F j, Y", strtotime($document['created'])); ?></td>
                                     </tr>
