@@ -249,7 +249,7 @@ $person = $this->people[0];
         <div class="col-md-4">
             <div class="well well-small text-center">
                 <?php echo TextHelper::_('COBALT_PERSON_TOTAL'); ?>
-                <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo (float) $person['total_pipeline']; ?></h2>
+                <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo !empty($person['total_pipeline']) ? (float) $person['total_pipeline'] : 0 ; ?></h2>
             </div>
             <div class="crmeryRow top">
                 <div class="crmeryField"><?php echo ucwords(TextHelper::_('COBALT_COMPANY')); ?>:</div>
@@ -293,7 +293,7 @@ $person = $this->people[0];
         <div class="col-md-4">
             <div class="well well-small text-center">
                 <?php echo ucwords(TextHelper::_('COBALT_PERSON_DEALS')); ?>
-                <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo (float) $person['won_deal_amount']; ?></h2>
+                <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo !empty($person['won_deal_amount']) ? (float) $person['won_deal_amount'] : 0 ; ?></h2>
             </div>
             <div class="crmeryRow top">
                 <div class="crmeryField"><?php echo TextHelper::_('COBALT_TITLE'); ?>:</div>
