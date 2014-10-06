@@ -50,7 +50,7 @@ class crmControllerInstall
     public function install()
     {
         //prevent display error for install
-        ini_set('display_errors', 0);
+        //ini_set('display_errors', 0);
 
         $model = new crmModelInstall();
 
@@ -71,8 +71,6 @@ class crmControllerInstall
         // $app->login($model->getAdmin());
 
         //REDIRECT TO ADMIN PAGE
-
-
 
         header('Location: '.JUri::root()."?view=cobalt");
 

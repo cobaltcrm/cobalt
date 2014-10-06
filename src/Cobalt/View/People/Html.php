@@ -166,7 +166,7 @@ class Html extends AbstractHtmlView
             $model = new EventModel;
             $events = $model->getEvents("person",null,$app->input->get('id'));
             $this->event_dock = ViewHelper::getView('events','event_dock','phtml',array('events'=>$events));
-            $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml', array('deals'=>$person['deals']));
+            $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml', array('deals' => !empty($person['deals']) ? $person['deals'] : array() ));
 
             $this->document_list = ViewHelper::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
             $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'people','item'=>$person));

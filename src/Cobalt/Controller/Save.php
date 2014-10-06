@@ -63,14 +63,15 @@ class Save extends DefaultController
 
             if ($this->isAjaxRequest())
             {
-                $this->getApplication()->redirect($link, $msg);
-            }
-            else
-            {
                 $response->alert = new \stdClass;
                 $response->alert->message = $msg;
                 $response->alert->type = 'danger';
                 $this->getApplication()->close(json_encode($response));
+            }
+            else
+            {
+                $this->getApplication()->redirect($link, $msg);
+
             }
         }
     }
