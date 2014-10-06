@@ -19,6 +19,7 @@ use Cobalt\Helper\TweetsHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\TemplateHelper;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -54,8 +55,8 @@ class Company extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new CompanyTable;
-        $oldRow = new CompanyTable;
+        $row    = $this->getTable('Company');
+        $oldRow = $this->getTable('Company');
 
         if ($data == null)
         {
@@ -88,27 +89,16 @@ class Company extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        $app->triggerEvent('onBeforeCompanySave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $id = !empty($data['id']) ? $data['id'] : $this->db->insertId();
 
@@ -119,7 +109,7 @@ class Company extends DefaultModel
             CobaltHelper::storeCustomCf($id,$customArray,'company');
         }
 
-        $app->triggerEvent('onAfterCompanySave', array(&$row));
+        //$app->triggerEvent('onAfterCompanySave', array(&$row));
 
         return $row->id;
     }
@@ -376,7 +366,7 @@ class Company extends DefaultModel
 
         }
 
-        $app->triggerEvent('onCompanyLoad',array(&$companies));
+        //$app->triggerEvent('onCompanyLoad',array(&$companies));
 
         return $companies;
     }
@@ -396,12 +386,12 @@ class Company extends DefaultModel
             }
             else
             {
-                return new CompanyTable;
+                return $this->getTable('Company');
             }
         }
         else
         {
-            return new CompanyTable;
+            return $this->getTable('Company');
         }
     }
 
@@ -480,8 +470,10 @@ class Company extends DefaultModel
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
-        $this->state->set($view.'_limit', $limit);
-        $this->state->set($view.'_limitstart', $limitstart);
+	    $state = new Registry;
+
+        $state->set($view.'_limit', $limit);
+        $state->set($view.'_limitstart', $limitstart);
 
         //set default filter states for reports
         $filter_order           = $app->getUserStateFromRequest('Company.filter_order','filter_order','c.name');
@@ -489,13 +481,15 @@ class Company extends DefaultModel
         $company_filter         = $app->getUserStateFromRequest('Company.'.$view.'_name','company_name',null);
 
         //set states for reports
-        $this->state->set('Company.filter_order', $filter_order);
-        $this->state->set('Company.filter_order_Dir', $filter_order_Dir);
-        $this->state->set('Company.'.$view.'_name', $company_filter);
+        $state->set('Company.filter_order', $filter_order);
+        $state->set('Company.filter_order_Dir', $filter_order_Dir);
+        $state->set('Company.'.$view.'_name', $company_filter);
 
         // filters
         $item_filter = $this->app->input->getString('item', null);
-        $this->state->set('Company.item_filter', $item_filter);
+        $state->set('Company.item_filter', $item_filter);
+
+	    $this->setState($state);
     }
 
     /**

@@ -10,145 +10,103 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
+use Cobalt\Helper\DateHelper;
 use Cobalt\Table\StagesTable;
 use Joomla\Registry\Registry;
 
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
+defined('_CEXEC') or die('Restricted access');
 
 class Stages extends DefaultModel
 {
-    public $_view = "stages";
+	public $_view = "stages";
 
-    public function store()
-    {
-        $app = \Cobalt\Container::fetch('app');
+	public function store()
+	{
+		// Load Tables
+		$row  = $this->getTable('Stages');
+		$data = $this->app->input->post->getArray();
 
-        //Load Tables
-        $row = new StagesTable;
-        $data = $app->input->getRequest( 'post' );
+		// Date generation
+		$date = DateHelper::formatDBDate('now');
 
-        //date generation
-        $date = date('Y-m-d H:i:s');
+		if (!array_key_exists('id', $data))
+		{
+			$data['created'] = $date;
+		}
 
-        if ( !array_key_exists('id',$data) ) {
-            $data['created'] = $date;
-        }
+		$data['modified'] = $date;
+		$data['color']    = str_replace("#", "", $data['color']);
+		$data['won']      = array_key_exists('won', $data) ? 1 : 0;
 
-        $data['modified'] = $date;
-        $data['color'] = str_replace("#","",$data['color']);
-        $data['won'] = array_key_exists('won',$data) ? 1 : 0;
+		// Bind the form fields to the table
+		try
+		{
+			$row->save($data);
+		}
+		catch (\InvalidArgumentException $exception)
+		{
+			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
-        // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+			return false;
+		}
 
-            return false;
-        }
+		return true;
+	}
 
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
+	public function _buildQuery()
+	{
+		return $this->db->getQuery(true)
+			->select("s.*")
+			->from("#__stages AS s")
+			->order($this->getState()->get('Stages.filter_order') . ' ' . $this->getState()->get('Stages.filter_order_Dir'));
+	}
 
-            return false;
-        }
+	/**
+	 * Get list of stages
+	 *
+	 * @param  int $id specific search id
+	 *
+	 * @return mixed $results results
+	 */
+	public function getStages($id = null)
+	{
+		return $this->db->setQuery($this->_buildQuery())->loadAssocList();
+	}
 
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
+	public function getStage($id = null)
+	{
+		$id = $id ? $id : $this->id;
 
-            return false;
-        }
+		if ($id > 0 && $id != null)
+		{
+			$query = $this->_buildQuery()
+				->where("id=" . $id);
 
-        return true;
-    }
+			return $this->db->setQuery($query)->loadAssoc();
+		}
 
-    public function _buildQuery()
-    {
-        //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+		return (array) $this->getTable('Stages');
+	}
 
-        //query
-        $query->select("s.*");
-        $query->from("#__stages AS s");
+	public function populateState()
+	{
+		//get states
+		$filter_order     = $this->app->getUserStateFromRequest('Stages.filter_order', 'filter_order', 's.name');
+		$filter_order_Dir = $this->app->getUserStateFromRequest('Stages.filter_order_Dir', 'filter_order_Dir', 'asc');
 
-        //sort
-        $query->order($this->getState('Stages.filter_order') . ' ' . $this->getState('Stages.filter_order_Dir'));
+		$state = new Registry;
 
-        return $query;
+		//set states
+		$state->set('Stages.filter_order', $filter_order);
+		$state->set('Stages.filter_order_Dir', $filter_order_Dir);
 
-    }
+		$this->setState($state);
+	}
 
-    /**
-     * Get list of stages
-     * @param  int   $id specific search id
-     * @return mixed $results results
-     */
-    public function getStages($id=null)
-    {
-        //database
-        $db = JFactory::getDBO();
-        $query = $this->_buildQuery();
-
-        //return results
-        $db->setQuery($query);
-
-        return $db->loadAssocList();
-
-    }
-
-    public function getStage($id=null)
-    {
-        $id = $id ? $id : $this->id;
-
-        if ($id > 0 && $id != null) {
-
-            //database
-            $db = JFactory::getDBO();
-            $query = $this->_buildQuery();
-
-            $query->where("id=".$id);
-
-            //return results
-            $db->setQuery($query);
-
-            return $db->loadAssoc();
-
-        } else {
-            return (array) new StagesTable;
-
-        }
-
-    }
-
-    public function populateState()
-    {
-        //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Stages.filter_order','filter_order','s.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Stages.filter_order_Dir','filter_order_Dir','asc');
-
-        $state = new Registry;
-
-        //set states
-        $state->set('Stages.filter_order', $filter_order);
-        $state->set('Stages.filter_order_Dir',$filter_order_Dir);
-
-        $this->setState($state);
-    }
-
-    public function remove($id)
-    {
-        //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
-        //delete id
-        $query->delete('#__stages')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
-    }
-
+	public function remove($id)
+	{
+		$table = $this->getTable('Stages');
+		$table->delete($id);
+	}
 }

@@ -18,10 +18,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_ADD_TO_ACCOUNT'); ?></h3></legend>
+
+                    <div class="page-header">
+                        <h3>
+                            <?php echo $this->toolbar->render(); ?>
+                            <?php echo JText::_('COBALT_ADD_TO_ACCOUNT'); ?>
+                        </h3>
+                    </div>
                     
                     <form action="index.php" method="post" name="adminForm" id="adminForm">
-                        <?php echo $this->toolbar->render(); ?>
                         <table class="table table-striped">
                             <thead>
                                 <tr>

@@ -73,8 +73,8 @@ class Deal extends DefaultModel
     public function store($data = null, $returnRow = false)
     {
         //Load Tables
-        $row = new DealTable;
-        $oldRow = new DealTable;
+        $row    = $this->getTable('Deal');
+        $oldRow = $this->getTable('Deal');
 
         if ($data == null)
         {
@@ -200,27 +200,16 @@ class Deal extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        $this->app->triggerEvent('onBeforeDealSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $deal_id = array_key_exists('id',$data) && $data['id'] > 0 ? $data['id'] : $row->id;
 
@@ -242,7 +231,7 @@ class Deal extends DefaultModel
         $row->actual_close_formatted = isset($row->actual_close) ? DateHelper::formatDate($row->actual_close) : DateHelper::formatDate(date("Y-m-d"));
         $row->expected_close_formatted = isset($row->expected_close) ? DateHelper::formatDate($row->expected_close) : DateHelper::formatDate(date("Y-m-d"));
 
-        $this->app->triggerEvent('onAfterDealSave', array(&$row));
+        //$this->app->triggerEvent('onAfterDealSave', array(&$row));
 
         //return success
         if ($returnRow) {
@@ -997,7 +986,7 @@ class Deal extends DefaultModel
         /** ------------------------------------------
          *  Return results
          */
-        $this->app->triggerEvent('onDealLoad', array(&$deals));
+        //$this->app->triggerEvent('onDealLoad', array(&$deals));
 
         // cast to array so it never returns null to view
         return (array) $deals;
@@ -1068,7 +1057,7 @@ class Deal extends DefaultModel
         else
         {
             //TODO update things to OBJECTS
-            $deal = new DealTable;
+            $deal = $this->getTable('Deal');
         }
 
         return $deal;
@@ -1204,13 +1193,13 @@ class Deal extends DefaultModel
         if ($type =='stage')
         {
             $query->where("d.stage_id <> 0 AND d.stage_id = stage.id");
-            $query->group("d.stage_id");
+            $query->group("d.stage_id,stage.name");
         }
 
         if ($type == 'status')
         {
             $query->where("d.status_id <> 0 AND d.status_id = status.id");
-            $query->group("d.status_id");
+            $query->group("d.status_id,status.name");
         }
 
         if (!is_null($this->archived))
@@ -1222,7 +1211,7 @@ class Deal extends DefaultModel
 
         $results = $this->db->setQuery($query)->loadAssocList();
 
-        
+
         if (count($results) > 0)
         {
             $max = 0;

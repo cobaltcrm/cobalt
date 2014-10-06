@@ -10,12 +10,24 @@
 
 namespace Cobalt\Table;
 
+use Joomla\Database\DatabaseDriver;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class UserTable extends AbstractTable
 {
-    protected $tableName = '#__users';
+	/**
+	 * Constructor
+	 *
+	 * @param   DatabaseDriver  $db  A database connector object
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db)
+	{
+		parent::__construct('#__users', 'id', $db);
+	}
 
 	/**
 	 * Fetches the list of users and their password hashes

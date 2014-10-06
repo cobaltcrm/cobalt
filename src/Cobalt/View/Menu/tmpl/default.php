@@ -19,12 +19,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <?php echo $this->side_menu['menu']->render(); ?>
                 <div class="col-md-9">
                     <form action="index.php?view=menu" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-                        <legend><h3 id="header"><?php echo JText::_('COBALT_EDIT_MENU'); ?></h3></legend>
+                        <div class="page-header">
+                            <?php echo $this->toolbar->render(); ?>
+                            <h3><?php echo JText::_('COBALT_EDIT_MENU'); ?></h3>
+                        </div>
                         <div class="alert alert-info"><?php echo JText::_('COBALT_EDIT_MENU_DESC'); ?></div>
                         <?php foreach ($this->menu_template as $menu_item) { ?>
-                            <div class="form-group">
-                            <label class="checkbox">
-                                <input type="checkbox" class="form-control" name="menu_items[]" value="<?php echo $menu_item; ?>" <?php if (is_array($this->menu->menu_items) && in_array($menu_item,$this->menu->menu_items)) { echo 'checked="checked"'; } ?> />
+                            <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="menu_items[]" value="<?php echo $menu_item; ?>" <?php if (is_array($this->menu->menu_items) && in_array($menu_item,$this->menu->menu_items)) { echo 'checked="checked"'; } ?> />
                                 <?php echo JText::_('COBALT_'.strtoupper($menu_item)); ?>
                             </label>
                             </div>

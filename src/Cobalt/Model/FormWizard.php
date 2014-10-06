@@ -42,7 +42,7 @@ class FormWizard extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new FormWizardTable;
+        $row = $this->getTable('FormWizard');
         $data = $app->input->getRequest( 'post' );
 
         $app = \Cobalt\Container::fetch('app');
@@ -88,25 +88,16 @@ class FormWizard extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         return true;
     }
@@ -157,7 +148,7 @@ class FormWizard extends DefaultModel
             return $result;
 
         } else {
-            return (array) new FormWizardTable;
+            return (array) $this->getTable('FormWizard');
 
         }
     }

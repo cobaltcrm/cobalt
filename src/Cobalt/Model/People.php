@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 use Joomla\Filter\OutputFilter;
 use Cobalt\Table\PeopleTable;
+use Joomla\Registry\Registry;
 use JUri;
 use Cobalt\Helper\RouteHelper;
 use JFactory;
@@ -68,8 +69,8 @@ class People extends DefaultModel
     public function store($data=null)
     {
         //Load Tables
-        $row = new PeopleTable;
-        $oldRow = new PeopleTable;
+        $row = $this->getTable('People');
+        $oldRow = $this->getTable('People');
         if ($data == null) {
             $data = $this->app->input->getArray(array(
                 'id' => 'int',
@@ -172,28 +173,16 @@ class People extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        $app = \Cobalt\Container::fetch('app');
-        $app->triggerEvent('onBeforePersonSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $person_id = isset($data['id']) ? $data['id'] : $this->db->insertId();
 
@@ -233,7 +222,7 @@ class People extends DefaultModel
             $row->form_id   = '';
         }
 
-        $app->triggerEvent('onAfterPersonSave', array(&$row));
+        //$app->triggerEvent('onAfterPersonSave', array(&$row));
 
         return $person_id;
     }
@@ -607,7 +596,7 @@ class People extends DefaultModel
             }
         }
 
-        $this->app->triggerEvent('onPersonLoad', array(&$people));
+        //$this->app->triggerEvent('onPersonLoad', array(&$people));
 
         //return results
         return $people;
@@ -669,12 +658,12 @@ class People extends DefaultModel
         } else {
 
              //TODO update things to OBJECTS
-            $person = (array) new PeopleTable;
+            $person = (array) $this->getTable('People');
             $this->person = $person;
 
         }
 
-        $app->triggerEvent('onPersonLoad', array(&$person));
+        //$app->triggerEvent('onPersonLoad', array(&$person));
 
         return $person;
     }
@@ -781,8 +770,9 @@ class People extends DefaultModel
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
-        $this->state->set($view.'_limit', $limit);
-        $this->state->set($view.'_limitstart', $limitstart);
+	    $state = new Registry;
+        $state->set($view.'_limit', $limit);
+        $state->set($view.'_limitstart', $limitstart);
 
         //set default filter states for reports
         $filter_order       = $app->getUserStateFromRequest('People.filter_order', 'filter_order', 'p.last_name');
@@ -794,28 +784,29 @@ class People extends DefaultModel
         $ownertype_filter   = $app->input->getRaw('ownertype', null);
 
         //set states for reports
-        $this->state->set('People.filter_order', $filter_order);
-        $this->state->set('People.filter_order_Dir', $filter_order_Dir);
-        $this->state->set('People.filter_order_Dir', $filter_order_Dir);
-        $this->state->set('People.person_name', $person_filter);
-        $this->state->set('People.item_filter', $item_filter);
-        $this->state->set('People.stage_filter', $stage_filter);
-        $this->state->set('People.status_filter', $status_filter);
+        $state->set('People.filter_order', $filter_order);
+        $state->set('People.filter_order_Dir', $filter_order_Dir);
+        $state->set('People.filter_order_Dir', $filter_order_Dir);
+        $state->set('People.person_name', $person_filter);
+        $state->set('People.item_filter', $item_filter);
+        $state->set('People.stage_filter', $stage_filter);
+        $state->set('People.status_filter', $status_filter);
 
         if ($ownertype_filter)
         {
             if ($ownertype_filter != 'all')
             {
                 $owner_filters = explode(':', $ownertype_filter);
-                $this->state->set('People.owner_id_filter', $owner_filters[1]);
-                $this->state->set('People.owner_type_filter', $owner_filters[0]);
+                $state->set('People.owner_id_filter', $owner_filters[1]);
+                $state->set('People.owner_type_filter', $owner_filters[0]);
             }
             else
             {
-                $this->state->set('People.owner_id_filter', $ownertype_filter);
+                $state->set('People.owner_id_filter', $ownertype_filter);
             }
         }
 
+	    $this->setState($state);
     }
 
     public function getDropdowns()

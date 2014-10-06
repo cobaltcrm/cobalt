@@ -20,8 +20,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="span9">
                     <form action="index.php?view=dealcustom" method="post" name="adminForm" id="adminForm" class="form-validate"  >
                         <div class="row-fluid">
-                            <legend><h3><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FIELD'); ?></h3></legend>
-                            <label><b>Name</b></label>
+                            <div class="page-header">
+                                <?php echo $this->toolbar->render(); ?>
+                                <h3><?php echo TextHelper::_('COBALT_EDITING_CUSTOM_FIELD'); ?></h3>
+                            </div>
+                            <label><?php echo JText::_('COBALT_NAME'); ?></label>
                             <input type="text" class="form-control required" name="name" value="<?php echo $this->custom['name']; ?>" />
                             <label><b>Type</b></label>
                             <select class="form-control required" name="type">

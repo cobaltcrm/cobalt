@@ -13,6 +13,7 @@ namespace Cobalt\Model;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Container;
 use Cobalt\Pagination;
+use Cobalt\Table\AbstractTable;
 use Joomla\Model\AbstractDatabaseModel;
 use Joomla\Database\DatabaseDriver;
 
@@ -232,4 +233,28 @@ class DefaultModel extends AbstractDatabaseModel
         return $tableItems;
     }
 
+	/**
+	 * Method to get a table object
+	 *
+	 * @param   string  $name    The table name.
+	 * @param   string  $suffix  The class suffix. Optional.
+	 *
+	 * @return  AbstractTable
+	 *
+	 * @since   1.0
+	 * @throws  \RuntimeException
+	 */
+	public function getTable($name, $suffix = 'Table')
+	{
+		$namespace = str_replace('Model', 'Table', __NAMESPACE__);
+
+		$class = $namespace . '\\' . $name . $suffix;
+
+		if (!class_exists($class) && !($class instanceof AbstractTable))
+		{
+			throw new \RuntimeException(sprintf('Table class %s not found or is not an instance of AbstractTable.', $class));
+		}
+
+		return new $class($this->getDb());
+	}
 }

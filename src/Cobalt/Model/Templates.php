@@ -24,7 +24,7 @@ class Templates extends DefaultModel
     public function store()
     {
         //Load Tables
-        $row = new TemplatesTable;
+        $row = $this->getTable('Templates');
         $data = $this->app->input->post->getArray();
 
         //date generation
@@ -86,16 +86,23 @@ class Templates extends DefaultModel
         //loop through template events and bind the tables to update the database
         //TODO remove ids that are no longer used associated with the template
         for ( $i=0; $i<count($items); $i++ ) {
-	        $temp_table = new TemplateDataTable;
+	        $temp_table = $this->getTable('TemplateData');
             $item = $items[$i];
             $item['template_id'] = $template_id;
             if ( !array_key_exists('id',$item) AND $item['id'] == null ) {
                 $data['created'] = $date;
             }
             $data['modified'] = $date;
-            $temp_table->bind($item);
-            $temp_table->check();
-            $temp_table->store();
+	        try
+	   	    {
+	   		    $temp_table->save($item);
+	   	    }
+	   	    catch (\Exception $exception)
+	   	    {
+	   		    $this->app->enqueueMessage($exception->getMessage(), 'error');
+
+	   		    return false;
+	   	    }
         }
 
         return true;
@@ -164,7 +171,7 @@ class Templates extends DefaultModel
             return $result;
 
         } else {
-            return (array) new TemplatesTable;
+            return (array) $this->getTable('Templates');
 
         }
 

@@ -111,12 +111,14 @@ class Toolbar
      */
     public function render()
     {
-    	$toolbar = '';
+    	$toolbar = '<div class="pull-right">';
 
     	foreach ($this->buttons as $button)
     	{
     		$toolbar .= $button->render() . "\n";
     	}
+
+        $toolbar .= '</div>';
 
         return $toolbar;
     }

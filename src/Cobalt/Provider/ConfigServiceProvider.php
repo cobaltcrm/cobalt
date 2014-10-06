@@ -32,6 +32,8 @@ class ConfigServiceProvider implements ServiceProviderInterface
 	 */
 	public function register(Container $container)
 	{
+		require_once JPATH_CONFIGURATION . '/configuration.php';
+
 		$config = new Registry(new JConfig);
 
 		// Set the error_reporting

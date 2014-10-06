@@ -19,6 +19,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
                     <form action="index.php?view=config" method="post" name="adminForm" id="adminForm" class="form-validate"  >
+
+                        <div class="page-header">
+                            <h3>
+                                <?php echo $this->toolbar->render(); ?>
+                                <?php echo JText::_('COBALT_CONFIG'); ?>
+                            </h3>
+                        </div>
+
                         <ul class="nav nav-tabs" id="myTab">
                             <li class="active"><a data-toggle="tab" href="#locale"><?php echo JText::_('COBALT_LOCALE'); ?></a></li>
                             <li><a data-toggle="tab" href="#currency"><?php echo JText::_('COBALT_CURRENCY'); ?></a></li>

@@ -60,8 +60,8 @@ class Event extends DefaultModel
         $db = JFactory::getDBO();
 
         //Load Tables
-        $row = new EventTable;
-        $oldRow = new EventTable;
+        $row    = $this->getTable('Event');
+        $oldRow = $this->getTable('Event');
 
         $data = ( $data == null ) ? $_POST: $data;
 
@@ -133,28 +133,16 @@ class Event extends DefaultModel
         }
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        // $dispatcher = JEventDispatcher::getInstance();
-        // $dispatcher->trigger('onBeforeEventSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         if ( $oldRow->id && $row->type == "task" && ( $row->due_date > $oldRow->due_date )) {
             $status = "postponed";
@@ -764,7 +752,7 @@ class Event extends DefaultModel
             }
         }
 
-        $app->triggerEvent('onEventLoad', array(&$rows));
+        //$app->triggerEvent('onEventLoad', array(&$rows));
 
         //Return results
         return $rows;
@@ -815,7 +803,7 @@ class Event extends DefaultModel
         $db = JFactory::getDBO();
 
         if (!$id) {
-            $event = new EventTable();
+            $event = $this->getTable('Event');
 
             return $event;
         }
@@ -986,7 +974,7 @@ class Event extends DefaultModel
         if ( is_array($results) && array_key_exists(0,$results) ) {
             return $results[0];
         } else {
-            $table = new EventTable();
+            $table = $this->getTable('Event');
 
             return $table;
         }
@@ -1143,7 +1131,7 @@ class Event extends DefaultModel
 
         //Load Tables
         $rowId = $id ? $id : $data['event_id'];
-        $oldRow = new EventTable();
+        $oldRow = $this->getTable('Event');
         $oldRow->load($rowId);
 
         //remove individual events
@@ -1274,7 +1262,7 @@ class Event extends DefaultModel
                 }
             }
 
-        $row = new EventTable();
+        $row = $this->getTable('Event');
         $row->load($rowId);
         $status = "deleted";
 
@@ -1300,7 +1288,7 @@ class Event extends DefaultModel
         $completed = $app->input->get('completed') != "" ? $app->input->get('completed') : 1;
 
         //Load Tables
-        $oldRow = new EventTable();
+        $oldRow = $this->getTable('Table');
         $oldRow->load($event_id);
 
         //We are only editing a single event entry OR a parent entry
@@ -1360,7 +1348,7 @@ class Event extends DefaultModel
 
         }
 
-        $row = new EventTable();
+        $row = $this->getTable('Event');
         $row->load($event_id);
         $status = "completed";
 
@@ -1410,7 +1398,7 @@ class Event extends DefaultModel
             $dates = $db->loadObjectList();
 
             //Load Tables
-            $oldRow = new EventTable();
+            $oldRow = $this->getTable('Event');
             $oldRow->load($event_id);
 
             if ( count($dates) > 0 ) {
@@ -1431,7 +1419,7 @@ class Event extends DefaultModel
                 }
             }
 
-            $row = new EventTable();
+            $row = $this->getTable('Event');
             $row->load($event_id);
             $status = "postponed";
 

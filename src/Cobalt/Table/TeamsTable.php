@@ -10,11 +10,22 @@
 
 namespace Cobalt\Table;
 
+use Joomla\Database\DatabaseDriver;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class TeamsTable extends AbstractTable
 {
-    protected $tableName = '#__teams';
-    protected $tableKeys = array('team_id');
+	/**
+	 * Constructor
+	 *
+	 * @param   DatabaseDriver  $db  A database connector object
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db)
+	{
+		parent::__construct('#__teams', 'team_id', $db);
+	}
 }

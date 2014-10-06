@@ -36,7 +36,7 @@ class Teams extends DefaultModel
 
         //clean data
         $teams = array();
-        
+
         if (count($results) > 0)
         {
             foreach ($results as $key=>$team)
@@ -55,17 +55,18 @@ class Teams extends DefaultModel
      * @param  int $leader_id the id of the leader for the team to create
      * @return int $team_id the id of the newly created team
      */
-    public function createTeam($leader_id, $name = NULL)
+    public function createTeam($leader_id, $name = NULL, $team_id = null)
     {
-        //Database
-        $query = $this->db->getQuery(true);
+        if (!$team_id)
+        {
+            $query = $this->db->getQuery(true);
+            $query->clear();
+            $query->select("team_id")->from("#__users")->where('id = ' . (int) $leader_id);
+            $team_id = $this->db->setQuery($query)->loadResult();
+        }
 
-        $query->clear();
-        $query->select("team_id")->from("#__users")->where('id=' . $leader_id);
-        $db->setQuery($query);
-        $team_id = $this->db->loadResult();
         $team_data = array( 'leader_id' => $leader_id, 'name' => $name );
-        $row = new TeamsTable;
+        $row = $this->getTable('Teams');
 
         if ($team_id > 0)
         {
@@ -73,21 +74,7 @@ class Teams extends DefaultModel
             $row->load($team_id);
         }
 
-        if (!$row->bind($team_data))
-        {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        if (!$row->check())
-        {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        if (!$row->store())
+        if (!$row->save($team_data))
         {
             $this->setError($this->db->getErrorMsg());
 
@@ -95,7 +82,7 @@ class Teams extends DefaultModel
         }
 
         $team_id = $row->team_id;
-        $this->assignLeader($leader_id,$team_id);
+        $this->assignLeader($leader_id, $team_id);
 
         return $team_id;
     }
@@ -109,7 +96,7 @@ class Teams extends DefaultModel
     public function assignLeader($leader_id, $team_id)
     {
         //bind user tables
-        $row = new UserTable;
+        $row = $this->getTable('User');
         $team_data = array ('id'=>$leader_id, 'team_id' => $team_id);
 
         if (!$row->bind($team_data))

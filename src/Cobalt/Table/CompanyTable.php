@@ -10,10 +10,22 @@
 
 namespace Cobalt\Table;
 
+use Joomla\Database\DatabaseDriver;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class CompanyTable extends AbstractTable
 {
-    protected $tableName = '#__companies';
+	/**
+	 * Constructor
+	 *
+	 * @param   DatabaseDriver  $db  A database connector object
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db)
+	{
+		parent::__construct('#__companies', 'id', $db);
+	}
 }

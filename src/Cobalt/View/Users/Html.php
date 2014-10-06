@@ -74,10 +74,12 @@ class Html extends AbstractHtmlView
             $id = $app->input->getInt('id', null);
 
             //plugins
-            $app->triggerEvent('onBeforeCRMUserEdit', array(&$id));
+            // $app->triggerEvent('onBeforeCRMUserEdit', array(&$id));
 
             //get user
             $this->user = $model->getUser($id);
+
+            $this->team = $this->user->getTeamByLeader();
 
             //view data
             $roles = DropdownHelper::getMemberRoles();

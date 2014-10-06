@@ -17,9 +17,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_SHARED_DOCUMENTS'); ?></h3></legend>
-                    <div class="alert alert-info"><?php echo JText::_('COBALT_SHARED_DOCS_DESC'); ?></div>
                     <form action="<?php echo RouteHelper::_('index.php?view=documents'); ?>" method="post" name="adminForm" id="adminForm">
+                        <div class="page-header">
+                            <?php echo $this->toolbar->render(); ?>
+                            <h3><?php echo JText::_('COBALT_SHARED_DOCUMENTS'); ?></h3>
+                        </div>
+                        
+                        <div class="alert alert-info"><?php echo JText::_('COBALT_SHARED_DOCS_DESC'); ?></div>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -45,7 +49,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <tr class="">
                                         <td class="center"><?php echo JHtml::_('grid.id', $key, $document['id']); ?></td>
                                         <td class="order"><?php echo '<img width="30px" height="30px" src="'.JURI::base().'src/Cobalt/media/images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>'; ?></td>
-                                        <td class="order"><?php echo JHtml::_('link', 'index.php?view=documents&layout=download&document='.$document['filename'], $document['name'], array('target'=>'_blank')); ?></td>
+                                        <td class="order">
+                                            <a href="<?php echo RouteHelper::_('index.php?view=documents&layout=download&document='.$document['filename']); ?>" target="_blank">
+                                                <?php echo $document['name']; ?>
+                                            </a>
+                                        </td>
                                         <td class="order"><?php echo $document['size']; ?>kb</td>
                                         <td class="order"><?php echo date("F j, Y", strtotime($document['created'])); ?></td>
                                     </tr>

@@ -14,6 +14,7 @@ use Cobalt\Table\ReportTable;
 use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -33,8 +34,8 @@ class Report extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //Load Tables
-        $row = new ReportTable;
-        $oldRow = new ReportTable;
+        $row = $this->getTable('Report');
+        $oldRow = $this->getTable('Report');
 
         $data = $app->input->getRequest('post');
 
@@ -59,25 +60,16 @@ class Report extends DefaultModel
         $data['fields'] = serialize($data['fields']);
 
         // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         return true;
     }
@@ -580,6 +572,8 @@ class Report extends DefaultModel
                 $layout = "custom_report";
             }
 
+	        $state = new Registry;
+
             /** --------------------------------------
              * Filter data for different views
              */
@@ -590,8 +584,8 @@ class Report extends DefaultModel
                     $filter_order = $app->getUserStateFromRequest('Report.filter_order','filter_order','report.name');
                     $filter_order_Dir = $app->getUserStateFromRequest('Report.filter_order_Dir','filter_order_Dir','asc');
                     //set states for reports
-                    $this->state->set('Report.filter_order',$filter_order);
-                    $this->state->set('Report.filter_order_Dir',$filter_order_Dir);
+                    $state->set('Report.filter_order',$filter_order);
+                    $state->set('Report.filter_order_Dir',$filter_order_Dir);
                 break;
 
                 case "custom_report"    :
@@ -619,29 +613,31 @@ class Report extends DefaultModel
                     if ( count($custom_fields) > 0 ) {
                         foreach ($custom_fields as $row) {
                                 $custom_field_value = $app->getUserStateFromRequest('Report.'.$id.'_'.$layout.'_'.$row['id'],'custom_'.$row['id'],null);
-                                $this->state->set('Report.'.$id.'_'.$layout.'_'.$row['id'],$custom_field_value);
+                                $state->set('Report.'.$id.'_'.$layout.'_'.$row['id'],$custom_field_value);
                         }
                     }
 
                     //set states for reports
-                    $this->state->set('Report.'.$id.'_'.$layout.'_filter_order',$filter_order);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_filter_order_Dir',$filter_order_Dir);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_name',$deal_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_owner_id',$owner_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_owner_type',$owner_type_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_amount',$amount_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_source_id',$source_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_stage_id',$stage_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_status_id',$status_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_expected_close',$expected_close_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_modified',$modified_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_created',$created_filter);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_primary_contact_phone',$primary_contact_phone);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_primary_contact_name',$primary_contact_name);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_primary_contact_phone',$primary_contact_phone);
-                    $this->state->set('Report.'.$id.'_'.$layout.'_primary_contact_email',$primary_contact_email);
+                    $state->set('Report.'.$id.'_'.$layout.'_filter_order',$filter_order);
+                    $state->set('Report.'.$id.'_'.$layout.'_filter_order_Dir',$filter_order_Dir);
+                    $state->set('Report.'.$id.'_'.$layout.'_name',$deal_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_owner_id',$owner_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_owner_type',$owner_type_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_amount',$amount_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_source_id',$source_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_stage_id',$stage_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_status_id',$status_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_expected_close',$expected_close_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_modified',$modified_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_created',$created_filter);
+                    $state->set('Report.'.$id.'_'.$layout.'_primary_contact_phone',$primary_contact_phone);
+                    $state->set('Report.'.$id.'_'.$layout.'_primary_contact_name',$primary_contact_name);
+                    $state->set('Report.'.$id.'_'.$layout.'_primary_contact_phone',$primary_contact_phone);
+                    $state->set('Report.'.$id.'_'.$layout.'_primary_contact_email',$primary_contact_email);
                 break;
 
             }
+
+	        $this->setState($state);
         }
 }

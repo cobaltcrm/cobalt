@@ -10,8 +10,9 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Helper\DateHelper;
 use Cobalt\Table\StatusesTable;
-use JFactory;
+
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -19,135 +20,99 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class Statuses extends DefaultModel
 {
-    public $id = null;
-    public $_view = "statuses";
 
-    public function store()
-    {
-        $app = \Cobalt\Container::fetch('app');
+	public $id = null;
 
-        //Load Tables
-        $row = new StatusesTable;
-        $data = $app->input->getRequest( 'post' );
+	public $_view = "statuses";
 
-        //date generation
-        $date = date('Y-m-d H:i:s');
+	public function store()
+	{
+		// Load Tables
+		$row  = $this->getTable('Statuses');
+		$data = $this->app->input->post->getArray();
 
-        if ( !array_key_exists('id',$data) ) {
-            $data['created'] = $date;
-        }
+		// Date generation
+		$date = DateHelper::formatDBDate('now');
 
-        $data['modified'] = $date;
-        $data['color'] = str_replace("#","",$data['color']);
+		if (!array_key_exists('id', $data))
+		{
+			$data['created'] = $date;
+		}
 
-        // Bind the form fields to the table
-        if (!$row->bind($data)) {
-            $this->setError($this->db->getErrorMsg());
+		$data['modified'] = $date;
+		$data['color']    = str_replace("#", "", $data['color']);
 
-            return false;
-        }
+		// Bind the form fields to the table
+		try
+		{
+			$row->save($data);
+		}
+		catch (\InvalidArgumentException $exception)
+		{
+			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
+			return false;
+		}
 
-            return false;
-        }
+		return true;
+	}
 
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
+	public function _buildQuery()
+	{
+		$query = $this->db->getQuery(true);
 
-            return false;
-        }
+		return $query->select('s.*')
+			->from('#__people_status AS s')
+			->order($this->getState()->get('Statuses.filter_order') . ' ' . $this->getState()->get('Statuses.filter_order_Dir'));
+	}
 
-        return true;
-    }
+	/**
+	 * Get list of stages
+	 *
+	 * @param  int $id specific search id
+	 *
+	 * @return mixed $results results
+	 */
+	public function getStatuses($id = null)
+	{
+		return $this->db->setQuery($this->_buildQuery())->loadAssocList();
+	}
 
-    public function _buildQuery()
-    {
-        //database
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+	public function getStatus($id = null)
+	{
+		$id = $id ? $id : $this->id;
 
-        //query
-        $query->select("s.*");
-        $query->from("#__people_status AS s");
+		if ($id > 0)
+		{
+			//database
+			$query = $this->_buildQuery()
+				->where('s.id = ' . $id);
 
-        //sort
-        $query->order($this->getState('Statuses.filter_order') . ' ' . $this->getState('Statuses.filter_order_Dir'));
+			//return results
+			return $this->db->setQuery($query)->loadAssoc();
+		}
 
-        return $query;
-    }
+		return (array) $this->getTable('Statuses');
+	}
 
-    /**
-     * Get list of stages
-     * @param  int   $id specific search id
-     * @return mixed $results results
-     */
-    public function getStatuses($id=null)
-    {
-        //database
-        $db = JFactory::getDBO();
-        $query = $this->_buildQuery();
+	public function populateState()
+	{
+		//get states
+		$filter_order     = $this->app->getUserStateFromRequest('Statuses.filter_order', 'filter_order', 's.name');
+		$filter_order_Dir = $this->app->getUserStateFromRequest('Statuses.filter_order_Dir', 'filter_order_Dir', 'asc');
 
-        //return results
-        $db->setQuery($query);
+		$state = new Registry;
 
-        return $db->loadAssocList();
+		//set states
+		$state->set('Statuses.filter_order', $filter_order);
+		$state->set('Statuses.filter_order_Dir', $filter_order_Dir);
 
-    }
+		$this->setState($state);
+	}
 
-    public function getStatus($id=null)
-    {
-        $id = $id ? $id : $this->id;
-
-        if ($id > 0) {
-
-            //database
-            $db = JFactory::getDBO();
-            $query = $this->_buildQuery();
-
-            $query->where("s.id=$id");
-
-            //return results
-            $db->setQuery($query);
-
-            return $db->loadAssoc();
-
-        } else {
-            return (array) new StatusesTable;
-
-        }
-
-    }
-
-    public function populateState()
-    {
-        //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Statuses.filter_order','filter_order','s.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Statuses.filter_order_Dir','filter_order_Dir','asc');
-
-        $state = new Registry;
-
-        //set states
-        $state->set('Statuses.filter_order', $filter_order);
-        $state->set('Statuses.filter_order_Dir',$filter_order_Dir);
-
-        $this->setState($state);
-    }
-
-    public function remove($id)
-    {
-        //get dbo
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
-        //delete id
-        $query->delete('#__people_status')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
-    }
-
+	public function remove($id)
+	{
+		$table = $this->getTable('Statuses');
+		$table->delete($id);
+	}
 }

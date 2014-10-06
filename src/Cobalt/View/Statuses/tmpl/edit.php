@@ -13,18 +13,25 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
     <div class="row-fluid">
-        <div class="span12" id="content">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
             <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
+                <div class="col-md-9">
                     <form action="index.php?view=statuses" method="post" name="adminForm" id="adminForm" class="form-validate"  >
                         <div class="row-fluid">
-                            <legend><h3><?php echo TextHelper::_('COBALT_EDITING_STATUS'); ?></h3></legend>
-                            <label><b><?php echo JText::_("COBALT_NAME"); ?></b></label>
-                            <input type="text" class="form-control" name="name" value="<?php echo $this->status['name']; ?>" />
-                            <label><b><?php echo JText::_('COBALT_HEADER_STATUS_COLOR'); ?></b></label>
+                            <div class="page-header">
+                                <?php echo $this->toolbar->render(); ?>
+                                <h3><?php echo TextHelper::_('COBALT_EDITING_STATUS'); ?></h3>
+                            </div>
+                            <div class="form-group">
+                                <label><?php echo JText::_("COBALT_NAME"); ?></label>
+                                <input type="text" class="form-control" name="name" value="<?php echo $this->status['name']; ?>" />
+                            </div>
+                            <div class="form-group">
+                            <label><?php echo JText::_('COBALT_HEADER_STATUS_COLOR'); ?></label>
                             <span class="cobaltfield"><input type="text" class="form-control hascolorpicker" name="color" value="<?php echo $this->status['color']; ?>" /><div id="colorwheel" class="colorwheel"></div></span>
+                            </div>
                             <div>
                                 <?php if ($this->status['id']) { ?>
                                     <input type="hidden" name="id" value="<?php echo $this->status['id']; ?>" />

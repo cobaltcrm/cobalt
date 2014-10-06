@@ -402,7 +402,7 @@ class User implements \Serializable
 	{
 		$db = $this->database;
 
-		$table = new UserTable($db);
+		$table = $this->getTable();
 
 		$table->loadByUserName($userName);
 
@@ -434,7 +434,7 @@ class User implements \Serializable
 	public function load($identifier)
 	{
 		// Create the user table object
-		$table = new UserTable(null, null, $this->database);
+		$table = $this->getTable();
 
 		// Load the User object based on the user id or throw a warning.
 		if (!$table->load($identifier))
@@ -651,9 +651,16 @@ class User implements \Serializable
 		return $this;
 	}
 
+	/**
+	 * Fetches the table object
+	 *
+	 * @return  UserTable
+	 *
+	 * @since   1.0
+	 */
 	public function getTable()
 	{
-		return new UserTable(null, null, $this->database);
+		return new UserTable($this->database);
 	}
 
 	public function setLastVisit($id = null)

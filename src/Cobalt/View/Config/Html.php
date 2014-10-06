@@ -15,8 +15,9 @@ use JUri;
 use JFactory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\ToolbarHelper;
-use Cobalt\Helper\MenuHelper;;
-use Cobalt\Helper\DateHelper;;
+use Cobalt\Helper\Toolbar;
+use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\ConfigHelper;
 use Cobalt\Model\Config as ConfigModel;
 
@@ -32,8 +33,8 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //display toolbar
-        ToolbarHelper::cancel('cancel');
-        ToolbarHelper::save('save');
+        $this->toolbar = new Toolbar;
+        $this->toolbar->save();
 
         //document
         $document = JFactory::getDocument();

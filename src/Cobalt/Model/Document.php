@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\DocumentTable;
 use JFactory;
 use Joomla\Registry\Registry;
 use Joomla\Filesystem\File;
@@ -20,7 +19,6 @@ use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\FileHelper;
 use JUri;
-use Joomla\Filter\OutputFilter;
 use Cobalt\Helper\RouteHelper;
 
 // no direct access
@@ -159,8 +157,8 @@ class Document extends DefaultModel
         }
 
         //Load Tables
-        $row = new DocumentTable;
-        $oldRow = new DocumentTable;
+        $row    = $this->getTable('Documents');
+        $oldRow = $this->getTable('Documents');
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -181,34 +179,22 @@ class Document extends DefaultModel
         $newData['is_image'] = $is_image;
 
         // Bind the form fields to the table
-        if (!$row->bind($newData)) {
-            $this->setError($this->db->getErrorMsg());
+	    try
+	    {
+		    $row->save($data);
+	    }
+	    catch (\Exception $exception)
+	    {
+		    $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-
-       $app = \Cobalt\Container::fetch('app');
-       $app->triggerEvent('onBeforeDocumentSave', array(&$row));
-
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->db->getErrorMsg());
-
-            return false;
-        }
+		    return false;
+	    }
 
         $id = ( array_key_exists('id',$data) ) ? $data['id'] : $this->db->insertId();
 
         ActivityHelper::saveActivity($oldRow, $row,'document', $status);
 
-        $app->triggerEvent('onAfterDocumentSave', array(&$row));
+        //$app->triggerEvent('onAfterDocumentSave', array(&$row));
 
         return $id;
     }
@@ -396,7 +382,7 @@ class Document extends DefaultModel
         $db->setQuery($query, $offset, $limit);
         $results = $db->loadAssocList();
 
-        $app->triggerEvent('onDocumentLoad', array(&$results));
+        //$app->triggerEvent('onDocumentLoad', array(&$results));
 
         //return results
         return $results;
@@ -425,7 +411,7 @@ class Document extends DefaultModel
 
         $document->path = getcwd().'/uploads/'.$document->filename;
 
-        $app->triggerEvent('onDocumentLoad', array(&$document));
+        //$app->triggerEvent('onDocumentLoad', array(&$document));
 
         return $document;
 

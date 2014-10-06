@@ -18,8 +18,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_FORM_WIZARD_HEADER'); ?></h3></legend>
                     <form action="index.php?view=formwizard" method="post" name="adminForm" id="adminForm">
+                        <div class="page-header">
+                            <h3>
+                                <?php echo $this->toolbar->render(); ?>
+                                <?php echo JText::_('COBALT_FORM_WIZARD_HEADER'); ?>
+                            </h3>
+                        </div>
                         <table class="table table-striped">
                             <thead>
                                 <tr>

@@ -77,22 +77,25 @@ var Cobalt = {
      * Datepickers initialized and forms inside them are ready for sumbit.
      **/
     bindDatepickers: function() {
-        jQuery('.date_input').datepicker({
-            format: userDateFormat,
-        });
-        jQuery(".date_input").on('changeDate',function(event){
-            var selectedYear = event.date.getFullYear(),
-                selectedMonth = event.date.getMonth()+ 1,
-                selectedDay = event.date.getDate(),
-                date = selectedYear+"-"+selectedMonth+"-"+selectedDay;
+        var elements = jQuery('.date_input');
+        if (elements.length) {
+            elements.datepicker({
+                format: userDateFormat,
+            });
+            elements.on('changeDate',function(event){
+                var selectedYear = event.date.getFullYear(),
+                    selectedMonth = event.date.getMonth()+ 1,
+                    selectedDay = event.date.getDate(),
+                    date = selectedYear+"-"+selectedMonth+"-"+selectedDay;
 
-            jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
-            jQuery(this).datepicker('hide');
+                jQuery("#"+jQuery(event.currentTarget).attr('id')+'_hidden').val(date);
+                jQuery(this).datepicker('hide');
 
-            if ( jQuery(this).hasClass('editable-modal-datepicker') ){
-                Cobalt.sumbitForm(jQuery(this).closest('form'));
-            }
-        });
+                if ( jQuery(this).hasClass('editable-modal-datepicker') ){
+                    Cobalt.sumbitForm(jQuery(this).closest('form'));
+                }
+            });
+        }
     },
 
     /**

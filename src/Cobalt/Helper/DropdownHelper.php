@@ -580,7 +580,7 @@ class DropdownHelper
 
         }
 
-        public static function getFormTypes($selected="lead",$name="type",$class="class='inputbox'")
+        public static function getFormTypes($selected="lead",$name="type",$class="class='form-control'")
         {
             $import_types = array(
                 'lead'=>TextHelper::_('COBALT_LEAD'),

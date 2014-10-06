@@ -14,6 +14,7 @@ use JUri;
 use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\DropdownHelper;
@@ -30,6 +31,9 @@ class Html extends AbstractHtmlView
     {
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
+
+        // Create toolbar
+        $this->toolbar = new Toolbar;
 
         //javascripts
         $document = JFactory::getDocument();
@@ -50,8 +54,8 @@ class Html extends AbstractHtmlView
         if ($layout == "edit") {
 
              //toolbar buttons
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar->cancel();
+            $this->toolbar->save();
 
             //javascripts
             $document->addScript(JURI::base().'src/Cobalt/media/js/template_manager.js');
@@ -63,9 +67,9 @@ class Html extends AbstractHtmlView
         } else {
 
             //buttons
-            ToolbarHelper::addNew('edit');
+            $this->toolbar->addNew();
             ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar->addDeleteRow();
 
             $templates = $model->getTemplates();
             $this->templates = $templates;

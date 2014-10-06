@@ -33,7 +33,7 @@ class MenuHelper
 
     public static function getMenuLinks()
     {
-        return array(
+        $menuItems = array(
             array(
                 'link'   => RouteHelper::_('index.php?view=cobalt'),
                 'class' => 'glyphicon glyphicon-home',
@@ -151,15 +151,16 @@ class MenuHelper
                 'id'        => "menu_menu_link",
                 'view'      => "menu"
             ),
-             array(
-                'link' => RouteHelper::_('index.php?view=adminimport'),
-                'class' => 'glyphicon glyphicon-upload',
-                'text' => TextHelper::_('Import'),
-                'access' => array( ),
-                'tooltip'   => TextHelper::_('COBALT_CONFIG_IMPORT_TOOLTIP'),
-                'id'        => "adminimport_menu_link",
-                'view'      => "adminimport"
-            ),
+            // TODO: Remove Admin Import Menu and Layouts
+            //  array(
+            //     'link' => RouteHelper::_('index.php?view=adminimport'),
+            //     'class' => 'glyphicon glyphicon-upload',
+            //     'text' => TextHelper::_('Import'),
+            //     'access' => array( ),
+            //     'tooltip'   => TextHelper::_('COBALT_CONFIG_IMPORT_TOOLTIP'),
+            //     'id'        => "adminimport_menu_link",
+            //     'view'      => "adminimport"
+            // ),
              array(
                 'link' => RouteHelper::_('index.php?view=formwizard'),
                 'class' => 'glyphicon glyphicon-star-empty',
@@ -179,6 +180,28 @@ class MenuHelper
                 'view'      => "config"
             )
         );
+
+        return self::setActive($menuItems);
+    }
+
+    public static function setActive($menuItems)
+    {
+        $app = \Cobalt\Container::fetch('app');
+        $view = $app->input->getCmd('view', 'cobalt');
+
+        foreach ($menuItems as &$item)
+        {
+            if ($item['view'] == $view)
+            {
+                $item['active'] = true;
+            }
+            else
+            {
+                $item['active'] = false;
+            }
+        }
+
+        return $menuItems;
     }
 
     public static function getQuickMenuLinks()

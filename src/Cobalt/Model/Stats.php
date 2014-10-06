@@ -10,244 +10,231 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
+defined('_CEXEC') or die('Restricted access');
 
 class Stats extends DefaultModel
 {
-    public $person_id;
-    public $access;
-    public $users;
-    public $today;
-    public $previousDay;
 
-    public function __construct()
-    {
-        $this->previousDay = DateHelper::formatDBDate(date('Y-m-d')." - 1 day");
-        $this->today = DateHelper::formatDBDate(date('Y-m-d'));
-        $this->access = UsersHelper::getRole($this->person_id);
-        $this->users = $this->getUsers($this->person_id,$this->access);
-    }
+	public $person_id;
 
-    public function getDistinctEntries($type,$field)
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+	public $access;
 
-        $query->select("DISTINCT h.type_id");
-        $query->from("#__history AS h");
-        $query->where("h.field='".$field."' AND h.type='".$type."'");
-        // $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
-        $query->where("h.user_id IN(".implode(',',$this->users).")");
-        $db->setQuery($query);
-        $results = $db->loadColumn();
+	public $users;
 
-        return $results;
+	public $today;
 
-    }
+	public $previousDay;
 
-    public function joinField($ids,$type,$field)
-    {
-        $results = array();
+	public function __construct()
+	{
+		$this->previousDay = DateHelper::formatDBDate(date('Y-m-d') . " - 1 day");
+		$this->today       = DateHelper::formatDBDate(date('Y-m-d'));
+		$this->access      = UsersHelper::getRole($this->person_id);
+		$this->users       = $this->getUsers($this->person_id, $this->access);
+	}
 
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+	public function getDistinctEntries($type, $field)
+	{
+		// $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
+		$query = $this->db->getQuery(true)
+			->select("DISTINCT h.type_id")
+			->from("#__history AS h")
+			->where("h.field=" . $this->db->quote($field) . " AND h.type=" . $this->db->quote($type))
+			->where("h.user_id IN(" . implode(',', $this->users) . ")");
 
-        if ( count ( $ids ) > 0 ) {
-            foreach ($ids as $id) {
-                $query->clear();
-                $query->select("h.type_id,".$type.".*,h.new_value");
-                $query->from("#__history AS h");
-                $query->leftJoin("#__".$type." AS ".$type." ON ".$type.".id = h.type_id");
-                $query->where("h.type_id=".$id);
-                // $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
-                $query->where("h.field='".$field."'");
-                $query->order("h.date DESC LIMIT 1");
-                $db->setQuery($query);
-                $results[] = $db->loadObject();
+		return $this->db->setQuery($query)->loadColumn();
+	}
 
-            }
-        }
+	public function joinField($ids, $type, $field)
+	{
+		$results = array();
 
-        return $results;
-    }
+		$query = $this->db->getQuery(true);
 
-    public function getUsers($user_id,$user_role)
-    {
-        if ($user_role != 'basic') {
+		if (count($ids) > 0)
+		{
+			foreach ($ids as $id)
+			{
+				// $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
+				$query->clear()
+					->select("h.type_id," . $type . ".*,h.new_value")
+					->from("#__history AS h")
+					->leftJoin("#__" . $type . " AS " . $type . " ON " . $type . ".id = h.type_id")
+					->where("h.type_id=" . $id)
+					->where("h.field=" . $this->db->quote($field))
+					->order("h.date DESC LIMIT 1");
 
-            $db = JFactory::getDBO();
-            $query = $db->getQuery(true);
+				$results[] = $this->db->setQuery($query)->loadObject();
+			}
+		}
 
-            $query->select("id");
-            $query->from("#__users");
+		return $results;
+	}
 
-            //if manager
-            if ($user_role == "manager") {
-                $team_id = UsersHelper::getTeamId($user_id);
-                $query->where('team_id='.$team_id);
-            }
-            //if exec there is no where clause, load all users
+	public function getUsers($user_id, $user_role)
+	{
+		if ($user_role != 'basic')
+		{
+			$query = $this->db->getQuery(true)
+				->select("id")
+				->from("#__users");
 
-            //load results
-            $db->setQuery($query);
-            $results = $db->loadColumn();
+			//if manager
+			if ($user_role == "manager")
+			{
+				$team_id = UsersHelper::getTeamId($user_id);
+				$query->where('team_id=' . $team_id);
+			}
+			//if exec there is no where clause, load all users
 
-        } else {
-            $results = array($user_id);
-        }
+			//load results
+			$results = $this->db->setQuery($query)->loadColumn();
+		}
+		else
+		{
+			$results = array($user_id);
+		}
 
-        return $results;
-    }
+		return $results;
+	}
 
-    public function getActiveDealsAmount()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+	public function getActiveDealsAmount()
+	{
+		$query = $this->db->getQuery(true);
 
-        /** get unique history **/
-        $deal_ids = $this->getDistinctEntries('deal','stage_id');
+		/** get unique history **/
+		$deal_ids = $this->getDistinctEntries('deal', 'stage_id');
 
-        $query->clear();
-        $query->select("SUM(d.amount)");
-        $query->from("#__deals AS d");
-        $query->where("d.id IN(".implode(',',$deal_ids).')');
-        // $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
+		$query->clear()
+			->select("SUM(d.amount)")
+			->from("#__deals AS d")
+			->where("d.id IN(" . implode(',', $deal_ids) . ')');
+		// $query->where("(h.date >= '".$this->previousDay."' AND h.date < '".$this->today."')");
 
-        $db->setQuery($query);
-        $result = $db->loadResult();
+		return $this->db->setQuery($query)->loadResult();
+	}
 
-        return $result;
+	public function getStages()
+	{
+		$query = $this->db->getQuery(true);
 
-    }
+		/** Select distinct history entries **/
+		$results = $this->getDistinctEntries('deal', 'stage_id');
 
-    public function getStages()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+		/** Get most recent entry from the above **/
+		$deals = $this->joinField($results, 'deals', 'stage_id');
 
-        /** Select distinct history entries **/
-        $results = $this->getDistinctEntries('deal','stage_id');
+		/** Merge with all possible stages **/
+		$query->clear()
+			->select("s.name,s.color,s.id,0 AS amount")
+			->from("#__stages AS s");
 
-        /** Get most recent entry from the above **/
-        $deals = $this->joinField($results,'deals','stage_id');
+		$stages = $this->db->setQuery($query)->loadAssocList('id');
 
-        /** Merge with all possible stages **/
-        $query->clear();
-        $query->select("s.name,s.color,s.id,0 AS amount");
-        $query->from("#__stages AS s");
-        $db->setQuery($query);
-        $stages = $db->loadAssocList('id');
+		/** Sum amounts from above **/
+		if (count($deals) > 0)
+		{
+			foreach ($deals as $deal)
+			{
+				if (array_key_exists($deal->new_value, $stages))
+				{
+					$stages[$deal->new_value]['amount'] += $deal->amount;
+				}
+			}
+		}
 
-        /** Sum amounts from above **/
-        if ( count ($deals) > 0 ) {
-            foreach ($deals as $deal) {
-                if ( array_key_exists($deal->new_value,$stages) ) {
-                    $stages[$deal->new_value]['amount'] += $deal->amount;
-                }
-            }
-        }
+		usort($stages, array($this, 'sortAmount'));
 
-        usort($stages,'self::sortAmount');
+		return $stages;
+	}
 
-        return $stages;
+	public function sortAmount($a, $b)
+	{
+		return $a['amount'] < $b['amount'];
+	}
 
-    }
+	public function getLeads()
+	{
+		/** person ids **/
+		$person_ids = $this->getDistinctEntries('person', 'type');
+		$people     = $this->joinField($person_ids, 'people', 'type');
+		$leads      = array('lead' => 0, 'contact' => 0);
 
-    public function sortAmount($a,$b)
-    {
-          return $a['amount']<$b['amount'];
-    }
+		if (count($people) > 0)
+		{
+			foreach ($people as $person)
+			{
+				$leads[$person->type]++;
+			}
+		}
 
-    public function getLeads()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+		return $leads;
+	}
 
-        /** person ids **/
-        $person_ids = $this->getDistinctEntries('person','type');
-        $people = $this->joinField($person_ids,'people','type');
-        $leads = array('lead'=>0,'contact'=>0);
-        if ( count($people) > 0 ) {
-            foreach ($people as $person) {
-                $leads[$person->type]++;
-            }
-        }
+	public function getNotes()
+	{
 
-        return $leads;
+		$note_ids = $this->getDistinctEntries('note', 'id');
 
-    }
+		$query = $this->db->getQuery(true)
+			->select("c.*")
+			->from("#__notes_categories AS c");
 
-    public function getNotes()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+		$categories = $this->db->setQuery($query)->loadAssocList();
 
-        $note_ids = $this->getDistinctEntries('note','id');
+		$totals = array();
 
-        $query->clear();
-        $query->select("c.*");
-        $query->from("#__notes_categories AS c");
-        $db->setQuery($query);
+		if (count($categories) > 0)
+		{
+			foreach ($categories as $category)
+			{
+				$query->clear()
+					->select("COUNT(n.id)")
+					->from("#__notes AS n")
+					->where("n.category_id = " . $category['id'])
+					->where("n.id IN(" . implode(',', $note_ids) . ")");
 
-        $categories = $db->loadAssocList();
+				$totals[$category['name']] = $this->db->setQuery($query)->loadResult();
+			}
+		}
 
-        $totals = array();
+		return $totals;
+	}
 
-        if ( count($categories) > 0 ) {
-            foreach ($categories as $category) {
-                $query->clear();
-                $query->select("COUNT(n.id)");
-                $query->from("#__notes AS n");
-                $query->where("n.category_id = ".$category['id']);
-                $query->where("n.id IN(".implode(',',$note_ids).")");
-                $db->setQuery($query);
-                $totals[$category['name']] = $db->loadResult();
-            }
-        }
+	public function getTodos()
+	{
+		$events = $this->getDistinctEntries('event', 'id');
 
-        return $totals;
+		$query = $this->db->getQuery(true)
+			->select("c.*")
+			->from("#__events_categories AS c");
 
-    }
+		$categories = $this->db->setQuery($query)->loadAssocList();
 
-    public function getTodos()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
+		$totals = array();
 
-        $events = $this->getDistinctEntries('event','id');
+		if (count($categories) > 0)
+		{
+			foreach ($categories as $category)
+			{
+				$query->clear()
+					->select("COUNT(e.id) AS total,SUM(e.completed) AS completed")
+					->from("#__events AS e")
+					->where("e.category_id = " . $category['id'])
+					->where("e.id IN(" . implode(',', $events) . ")");
 
-        $query->clear();
-        $query->select("c.*");
-        $query->from("#__events_categories AS c");
-        $db->setQuery($query);
+				$totals[$category['name']] = $this->db->setQuery($query)->loadObject();
+			}
+		}
 
-        $categories = $db->loadAssocList();
+		return $totals;
+	}
 
-        $totals = array();
-
-        if ( count($categories) > 0 ) {
-            foreach ($categories as $category) {
-                $query->clear();
-                $query->select("COUNT(e.id) AS total,SUM(e.completed) AS completed");
-                $query->from("#__events AS e");
-                $query->where("e.category_id = ".$category['id']);
-                $query->where("e.id IN(".implode(',',$events).")");
-                $db->setQuery($query);
-                $totals[$category['name']] = $db->loadObject();
-            }
-        }
-
-        return $totals;
-
-    }
-
-    public function getDealActivity()
-    {
-    }
-
+	public function getDealActivity()
+	{
+	}
 }

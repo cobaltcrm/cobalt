@@ -17,9 +17,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_TASK_PEOPLE_TEMPLATES'); ?></h3></legend>
-                    <div class="alert alert-info"><?php echo JText::_('COBALT_TASK_PEOPLE_TEMPLATES_DESC_1'); ?></div>
                     <form action="index.php?view=templates" method="post" name="adminForm" id="adminForm">
+                    <div class="page-header">
+                        <?php echo $this->toolbar->render(); ?>
+                        <h3><?php echo JText::_('COBALT_TASK_PEOPLE_TEMPLATES'); ?></h3>
+                    </div>
+                    <div class="alert alert-info"><?php echo JText::_('COBALT_TASK_PEOPLE_TEMPLATES_DESC_1'); ?></div>
                          <table class="table table-striped">
                                 <thead>
                                     <tr>
