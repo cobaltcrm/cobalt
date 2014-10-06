@@ -94,11 +94,15 @@ class Toolbar
      *
      * @since   1.0
      */
-    public function cancel($label = 'COBALT_TOOLBAR_CANCEL', $class = 'btn btn-default', $icon = 'floppy-remove')
+    public function cancel($view = null, $label = 'COBALT_TOOLBAR_CANCEL', $class = 'btn btn-default', $icon = 'floppy-remove')
     {
-    	$view = $this->app->input->getCmd('view');
+        if (!$view)
+        {
+            $view = $this->app->input->getCmd('view');
+        }
+    	
     	$link = new Button('a', $label, '', '', $class);
-    	$link->setLink('index.php?view=' . $view)->setIcon($icon);
+    	$link->setLink(RouteHelper::_('index.php?view=' . $view))->setIcon($icon);
         $this->buttons[] = $link;
     }
 

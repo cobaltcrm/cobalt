@@ -17,6 +17,7 @@ use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Stages as StagesModel;
 
 // no direct access
@@ -42,10 +43,11 @@ class Html extends AbstractHtmlView
         $document = JFactory::getDocument();
         $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
-        if ($layout && $layout == 'edit') {
-
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+        if ($layout && $layout == 'edit')
+        {
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('stages');
 
             $document->addScript(JURI::base().'src/Cobalt/media/js/stage_manager.js');
             $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
@@ -53,9 +55,9 @@ class Html extends AbstractHtmlView
             $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
 
             $this->stage = $model->getStage();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');

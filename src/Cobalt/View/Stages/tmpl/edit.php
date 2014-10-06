@@ -12,34 +12,95 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
-                    <form action="index.php?view=stages" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-                        <legend><h3><?php echo TextHelper::_('COBALT_EDITING_STAGE'); ?></h3></legend>
-                            <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
-                            <input type="text" class="form-control" name="name" value="<?php echo $this->stage['name']; ?>" />
-                            <label><b><?php echo JText::_('COBALT_HEADER_PERCENT'); ?></b></label>
-                            <span class="cobaltfield">
-                                <input type="hidden" name="percent" value="<?php echo $this->stage['percent']; ?>"/>
-                                <div class="" id="percent"></div>
-                                <div id="percent_value"><?php echo $this->stage['percent']."%"; ?></div>
-                            </span>
-                            <label><b><?php echo JText::_("COBALT_COLOR"); ?></b></label>
-                            <input class="form-control hascolorpicker" type="text" name="color" value="<?php echo $this->stage['color']; ?>"><div class="colorwheel"></div>
-                            <label><b><?php echo JText::_("COBALT_WON_STAGE"); ?></b></label>
-                            <input <?php if ( isset($this->stage) && array_key_exists('won',$this->stage) && $this->stage['won'] == 1 ) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
-                            <div>
-                                <?php if ($this->stage['id']) { ?>
-                                    <input type="hidden" name="id" value="<?php echo $this->stage['id']; ?>" />
-                                <?php } ?>
-                                <input type="hidden" name="controller" value="" />
-                                <input type="hidden" name="model" value="stages" />
-                                <?php echo JHtml::_('form.token'); ?>
+                <div class="col-md-9">
+                    <form action="index.php" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal"  >
+                        
+                        <legend>
+                            <div class="col-sm-9">
+                            <h2><?php echo TextHelper::_("COBALT_EDITING_STAGE"); ?></h2>
                             </div>
+                            <div class="col-sm-3">
+                                <?php echo $this->toolbar->render(); ?>
+                            </div>
+                            <div class="clearfix"></div>
+                        </legend>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="name">
+                                <?php echo JText::_('COBALT_NAME'); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    name="name" 
+                                    id="name" 
+                                    value="<?php echo $this->stage['name']; ?>" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="percent">
+                                <?php echo JText::_('COBALT_HEADER_PERCENT'); ?>
+                            </label>
+                            <div class="col-sm-8">
+                                <input 
+                                    type="range" 
+                                    name="percent_slider" 
+                                    id="percent_slider" 
+                                    value="<?php echo $this->stage['percent']; ?>" 
+                                    onchange="jQuery('#percent').val(jQuery(this).val());"
+                                    min="0" 
+                                    max="100"/>
+                            </div>
+                            <div class="col-sm-2 text-right input-group">
+                                <input 
+                                    type="number" 
+                                    name="percent" 
+                                    id="percent"
+                                    class="form-control"
+                                    value="<?php echo $this->stage['percent']; ?>" 
+                                    onchange="jQuery('#percent_slider').val(jQuery(this).val());"
+                                    min="0" 
+                                    max="100"/>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="color">
+                                <?php echo JText::_("COBALT_COLOR"); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input 
+                                    data-placement="right" 
+                                    id="color" 
+                                    type="color" 
+                                    class="form-control"  
+                                    name="color" 
+                                    value="<?php echo $this->stage['color'] ? '#' . $this->stage['color'] : '#00b725'; ?>" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <?php echo JText::_("COBALT_WON_STAGE"); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input <?php if ( isset($this->stage) && array_key_exists('won',$this->stage) && $this->stage['won'] == 1 ) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
+                            </div>
+                        </div>
+
+                        <div>
+                            <input type="hidden" name="id" value="<?php echo isset($this->stage['id']) ? $this->stage['id'] : ''; ?>" />
+                            <input type="hidden" name="task" value="save" />
+                            <input type="hidden" name="model" value="stages" />
+                            <?php echo JHtml::_('form.token'); ?>
                         </div>
                     </form>
                 </div>
