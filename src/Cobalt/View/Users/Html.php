@@ -43,14 +43,12 @@ class Html extends AbstractHtmlView
         $model = new UsersModel;
         $model->set("_layout", $layout);
 
-        
-
         //add toolbar buttons to manage users
         if ($layout == 'default')
         {
             $this->toolbar = new Toolbar;
             $this->toolbar->addNew();
-            $this->toolbar->addDeleteRow();
+            $this->toolbar->addTrashRow();
 
             //get users
             $users = $model->getUsers();

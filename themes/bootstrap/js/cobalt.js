@@ -423,12 +423,15 @@ var Cobalt = {
     /**
      * Deletes checked rows from the table.
      **/
-    deleteListItems: function() {
+    deleteListItems: function(task) {
+        if (!task) {
+            task = 'trash'; // can be 'delete'
+        }
         var itemIds = [];
         jQuery("input[name='ids\\[\\]']:checked").each(function() {
             itemIds.push(jQuery(this).val());
         });
-        var data = {'item_id': itemIds,'item_type': loc, 'task': 'trash', 'format': 'raw'};
+        var data = {'item_id': itemIds,'item_type': loc, 'task': task, 'format': 'raw'};
         Cobalt.save(data);
 
         jQuery('#list_edit_actions').hide('fast');

@@ -416,6 +416,7 @@ class TemplateHelper
         TextHelper::script('COBALT_ITEM_SUCCESSFULLY_UPDATED');
         TextHelper::script('COBALT_OK');
         TextHelper::script('COBALT_ADDED');
+        TextHelper::script('COBALT_DELETED');
         TextHelper::script('COBALT_VERIFY_ALERT');
         TextHelper::script('COM_CMERY_ARE_YOU_SURE_DELETE_REPORT');
         TextHelper::script('COBALT_DEALS_BY_STAGE');
