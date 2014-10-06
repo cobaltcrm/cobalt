@@ -545,8 +545,8 @@ class People extends DefaultModel
         /** ------------------------------------------
          * Set query limits/ordering and load results
          */
-        $limit = $this->getState($this->_view.'_limit');
-        $limitStart = $this->getState($this->_view.'_limitstart');
+        $limit = $this->getState($this->_view . '_limit');
+        $limitStart = $this->getState($this->_view . '_limitstart');
 
         if (!$this->_id && $limit != 0)
         {
@@ -557,8 +557,8 @@ class People extends DefaultModel
                 $limitStart = 0;
                 $limit = 10;
                 $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
-                $this->state->set($this->_view.'_limit', $limit);
-                $this->state->set($this->_view.'_limitstart', $limitStart);
+                $this->state->set($this->_view . '_limit', $limit);
+                $this->state->set($this->_view . '_limitstart', $limitStart);
             }
 
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
@@ -764,15 +764,15 @@ class People extends DefaultModel
 
         //TODO add these limits to the switch statement to support multiple pages and layouts
         // Get pagination request variables
-        $limit = $app->getUserStateFromRequest($view.'_limit','limit',10);
-        $limitstart = $app->getUserStateFromRequest($view.'_limitstart','limitstart',0);
+        $limit = $app->getUserStateFromRequest($view . '_limit', 'limit', 10);
+        $limitstart = $app->getUserStateFromRequest($view . '_limitstart', 'limitstart', 0);
 
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
 	    $state = new Registry;
-        $state->set($view.'_limit', $limit);
-        $state->set($view.'_limitstart', $limitstart);
+        $state->set($view . '_limit', $limit);
+        $state->set($view . '_limitstart', $limitstart);
 
         //set default filter states for reports
         $filter_order       = $app->getUserStateFromRequest('People.filter_order', 'filter_order', 'p.last_name');

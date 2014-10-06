@@ -522,10 +522,7 @@ class UsersHelper
     }
 
     /**
-     * Get people count associated with users
-     * @param $id int User Id to filter for
-     * @param $team int Team Id associated to user
-     * @param $role String User role to filter for
+     * Get stages count associated with users
      * @return int Count of people returned from database
      */
     public static function getStagesCount()
@@ -534,10 +531,17 @@ class UsersHelper
     }
 
     /**
-     * Get people count associated with users
-     * @param $id int User Id to filter for
-     * @param $team int Team Id associated to user
-     * @param $role String User role to filter for
+     * Get stages count associated with users
+     * @return int Count of people returned from database
+     */
+    public static function getCategoriesCount()
+    {
+        return self::getItemsCount('notes_categories');
+    }
+
+    /**
+     * Get an item count associated with users
+     * @param $item string name of the item
      * @return int Count of people returned from database
      */
     public static function getItemsCount($item = null)
