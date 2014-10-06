@@ -102,7 +102,7 @@ class Note extends DefaultModel
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
-        if ( !array_key_exists('id',$data) ) {
+        if ( empty($data['id']) ) {
             $data['created'] = $date;
             $status = "created";
         } else {
