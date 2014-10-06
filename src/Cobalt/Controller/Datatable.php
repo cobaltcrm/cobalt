@@ -28,7 +28,7 @@ class Datatable extends DefaultController
 {
     public function execute()
     {
-        $loc        = $this->makeSingular($this->getInput()->getString('loc'));
+        $loc        = $this->getModelName($this->getInput()->getString('loc'));
         $modelPath  = "Cobalt\\Model\\".ucwords($loc);
         $model      = new $modelPath();
         $start      = $this->getInput()->getInt('start', 0);
@@ -84,28 +84,22 @@ class Datatable extends DefaultController
     }
 
     /**
-     * Method returns singular of some word.
-     * It is quite stupic simple method for 3 words
-     * we need to make signular from. Not solwing all world problems.
+     * Method returns model of item.
      *
      * @param string $name
      * @return string
      */
-    protected function makeSingular($name)
+    protected function getModelName($name)
     {
+        $doNotChange = array('stages', 'people', 'users');
+        
+        if (in_array($name, $doNotChange))
+        {
+            return $name;
+        }
         if ($name == 'companies')
         {
             $name = 'company';
-        }
-        elseif ($name == 'people')
-        {
-            // this is not singular, but it's what we need
-            $name = 'people';
-        }
-        elseif ($name == 'users')
-        {
-            // this is not singular, but it's what we need
-            $name = 'users';
         }
         else
         {
@@ -139,7 +133,7 @@ class Datatable extends DefaultController
                 // distinquish filter from fulltext search
                 if ($filter == 'search')
                 {
-                    $loc = $this->makeSingular($this->getInput()->getString('loc', ''));
+                    $loc = $this->getModelName($this->getInput()->getString('loc', ''));
                     $this->getInput()->set(strtolower($loc) . '_name', $value);
                 }
                 else
@@ -149,26 +143,4 @@ class Datatable extends DefaultController
             }
         }
     }
-
-    // protected function setFilter($filter)
-    // {
-    //     if (is_array($filter))
-    //     {
-    //         $layout = $this->getInput()->getString('loc', '');
-    //         $loc    = $this->makeSingular($layout);
-
-    //         if (count($filter) == 2)
-    //         {
-    //             $column = $filter[0];
-    //             $value  = $filter[1];
-    //         }
-    //         elseif (count($filter) == 1)
-    //         {
-    //             $column = 'item';
-    //             $value  = $filter[0];
-    //         }
-
-    //         $this->getInput()->set($column, $value);
-    //     }
-    // }
 }

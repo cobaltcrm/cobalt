@@ -18,7 +18,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <form action="index.php" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal"  >
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal"  >
                         
                         <legend>
                             <div class="col-sm-9">
@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     class="form-control" 
                                     name="name" 
                                     id="name" 
-                                    value="<?php echo $this->stage['name']; ?>" />
+                                    value="<?php echo $this->stage->name; ?>" />
                             </div>
                         </div>
 
@@ -53,7 +53,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     type="range" 
                                     name="percent_slider" 
                                     id="percent_slider" 
-                                    value="<?php echo $this->stage['percent']; ?>" 
+                                    value="<?php echo $this->stage->percent; ?>" 
                                     onchange="jQuery('#percent').val(jQuery(this).val());"
                                     min="0" 
                                     max="100"/>
@@ -64,7 +64,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     name="percent" 
                                     id="percent"
                                     class="form-control"
-                                    value="<?php echo $this->stage['percent']; ?>" 
+                                    value="<?php echo $this->stage->percent; ?>" 
                                     onchange="jQuery('#percent_slider').val(jQuery(this).val());"
                                     min="0" 
                                     max="100"/>
@@ -83,7 +83,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     type="color" 
                                     class="form-control"  
                                     name="color" 
-                                    value="<?php echo $this->stage['color'] ? '#' . $this->stage['color'] : '#00b725'; ?>" />
+                                    value="<?php echo $this->stage->color ? '#' . $this->stage->color : '#00b725'; ?>" />
                             </div>
                         </div>
 
@@ -92,12 +92,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php echo JText::_("COBALT_WON_STAGE"); ?>
                             </label>
                             <div class="col-sm-10">
-                                <input <?php if ( isset($this->stage) && array_key_exists('won',$this->stage) && $this->stage['won'] == 1 ) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
+                                <input <?php if (isset($this->stage->won) && $this->stage->won == 1) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
                             </div>
                         </div>
 
                         <div>
-                            <input type="hidden" name="id" value="<?php echo isset($this->stage['id']) ? $this->stage['id'] : ''; ?>" />
+                            <input type="hidden" name="id" value="<?php echo isset($this->stage->id) ? $this->stage->id : ''; ?>" />
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="stages" />
                             <?php echo JHtml::_('form.token'); ?>

@@ -127,9 +127,9 @@ class Stages extends DefaultModel
         $columns = array();
         $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
         $columns[] = array('data' => 'name', 'ordering' => 's.name');
-        $columns[] = array('data' => 'color', 'ordering' => 's.color');
-        $columns[] = array('data' => 'percent', 'ordering' => 's.percent');
-        $columns[] = array('data' => 'won', 'ordering' => 's.won');
+        $columns[] = array('data' => 'color', 'ordering' => 's.color', 'sClass' => 'text-center');
+        $columns[] = array('data' => 'percent', 'ordering' => 's.percent', 'sClass' => 'text-center');
+        $columns[] = array('data' => 'won', 'ordering' => 's.won', 'sClass' => 'text-center');
 
         return $columns;
     }
@@ -169,6 +169,17 @@ class Stages extends DefaultModel
                 break;
             case 'name':
                 $template .= '<a href="'.RouteHelper::_('index.php?view=stages&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
+                break;
+            case 'color':
+                $template .= '<i class="glyphicon glyphicon-bookmark" style="color:#'.$item->color.'"></i>';
+                break;
+            case 'won':
+            	$template .= '';
+            	if ($item->won)
+            	{
+            		$template .= '<i class="glyphicon glyphicon-ok"></i>';
+            	}
+                
                 break;
             default:
                 if (isset($column) && isset($item->{$column}))
