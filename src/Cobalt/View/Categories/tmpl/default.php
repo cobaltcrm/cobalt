@@ -13,46 +13,33 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <?php echo $this->menu['quick_menu']->render(); ?>
     <div class="row">
         <div class="col-sm-12" id="content">
-        <div id="system-message-container"></div>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_NOTE_CATEGORIES'); ?></h3></legend>
+                    <div class="page-header">
+                        <h3>
+                            <?php echo $this->toolbar->render(); ?>
+                            <?php echo JText::_('COBALT_NOTE_CATEGORIES'); ?>
+                        </h3>
+                    </div>
+
                     <div class="alert alert-info">
                         <?php echo JText::_('COBALT_NOTES_DESC_1'); ?>
                         <?php echo JText::_('COBALT_NOTES_DESC_2'); ?>
                     </div>
+                    
                     <form action="index.php?view=categories" method="post" name="adminForm" id="adminForm">
-                        <table class="table table-striped">
+                        <table class="table table-striped data-table">
                             <thead>
                                 <tr>
                                     <th width="1%">
                                         <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="checkAll(this)" />
                                     </th>
-                                    <th class="left">
-                                        <?php echo JHtml::_('grid.sort',  'COBALT_HEADER_NOTE_CATEGORY', 'c.name', $this->listDirn, $this->listOrder); ?>
+                                    <th>
+                                        <?php echo TextHelper::_('COBALT_HEADER_NOTE_CATEGORY'); ?>
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php if ( count($this->categories) ) { foreach ($this->categories as $key=>$category) { ?>
-                                    <tr class="row<?php echo $i % 2; ?>">
-                                        <td class="center">
-                                            <?php echo JHtml::_('grid.id', $key, $category['id']); ?>
-                                        </td>
-                                        <td class="left">
-                                            <?php echo JHtml::_('link','index.php?view=categories&layout=edit&id='.$category['id'],$category['name']); ?>
-                                        </td>
-                                    </tr>
-                                <?php }} ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="13">
-                                        <!-- pagination -->
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                         <div>
                             <input type="hidden" name="controller" value="" />

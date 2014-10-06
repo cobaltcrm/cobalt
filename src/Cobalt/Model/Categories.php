@@ -11,7 +11,8 @@
 namespace Cobalt\Model;
 
 use Joomla\Registry\Registry;
-use Cobalt\Table\CategoriesTable;;
+use Cobalt\Table\CategoriesTable;
+use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -25,12 +26,13 @@ class Categories extends DefaultModel
         //Load Tables
         $app = \Cobalt\Container::fetch('app');
         $row = $this->getTable('Categories');
-        $data = $app->input->getRequest('post');
+        $data = $this->app->input->post->getArray();
 
         //date generation
         $date = date('Y-m-d H:i:s');
 
-        if ( !array_key_exists('id',$data) ) {
+        if (!$row->id)
+        {
             $data['created'] = $date;
         }
 
@@ -76,22 +78,24 @@ class Categories extends DefaultModel
     {
         $id = $id ? $id : $this->id;
 
-        if ($id > 0) {
-
+        if ($id > 0)
+        {
             $query = $this->_buildQuery()
                 ->order($this->getState('Categories.filter_order') . ' ' . $this->getState('Categories.filter_order_Dir'));
 
-            if ($id) {
-                $query->where("c.id=$id");
+            if ($id)
+            {
+                $query->where("c.id = $id");
             }
 
-            return $db->setQuery($query)->loadAssoc();
-
-        } else {
-            return (array) $this->getTable('Categories');
+            return $this->db->setQuery($query)->loadObject();
 
         }
+        else
+        {
+            return $this->getTable('Categories');
 
+        }
     }
 
     public function populateState()
@@ -110,13 +114,81 @@ class Categories extends DefaultModel
         $this->setState($state);
     }
 
-    public function remove($id)
+    public function delete($id)
     {
-        $query = $this->db->getQuery(true)
-            ->delete('#__notes_categories')
-            ->where('id = '.(int) $id);
+        $table = $this->getTable('Categories');
+        $table->delete($id);
+    }
 
-        $this->db->setQuery($query)->execute();
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     *
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     *
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 'c.name');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     *
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getCategories();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     *
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+        $template = '';
+
+        switch ($column)
+        {
+            case 'id':
+                $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
+                break;
+            case 'name':
+                $template .= '<a href="'.RouteHelper::_('index.php?view=categories&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
     }
 
 }
