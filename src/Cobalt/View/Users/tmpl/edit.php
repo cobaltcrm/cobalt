@@ -138,7 +138,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     class="form-control" 
                                     name="team_name" 
                                     id="team_name"
-                                    value="<?php if (isset($this->user->team_name)) echo $this->user->team_name; ?>" />
+                                    value="<?php echo isset($this->team->name) ? $this->team->name : '' ?>" />
                             </div>
                         </div>
                         <?php if ($this->user->role_type == 'basic') {  ?>
@@ -157,7 +157,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                                     rel="tooltip" 
                                     data-original-title="<?php echo JText::_('COBALT_ASSIGN_USER_TEAM'); ?>" >
                                     <option value="0"><?php echo JText::_("COBALT_NONE"); ?></option>
-                                    <?php echo JHtml::_('select.options', $this->teams, 'value', 'text', $this->user->team_id, true);?>
+                                    <?php echo JHtml::_('select.options', $this->teams, 'team_id', 'name', $this->user->team_id, true);?>
                                 </select>
                             </div>
                         </div>

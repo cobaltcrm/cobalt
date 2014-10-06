@@ -251,15 +251,18 @@ class UsersHelper
         $query->leftJoin("#__users AS u ON u.id = t.leader_id AND u.published=1");
 
         //search for specific team
-        if ($id) {
-            $query->where("t.team_id=$id");
+        if ($id)
+        {
+            $query->where("t.team_id = $id");
         }
 
         $user_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
-        if ($user_role == 'manager') {
+
+        if ($user_role == 'manager')
+        {
             $team_id = UsersHelper::getTeamId();
-            $query->where('t.team_id='.$team_id);
+            $query->where('t.team_id=' . $team_id);
         }
 
         //return results
