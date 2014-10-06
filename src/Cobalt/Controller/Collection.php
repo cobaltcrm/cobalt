@@ -28,7 +28,8 @@ class Collection extends DefaultController
         $model = new ModelAutocomplete();
         $model->setObject($object);
 
-        if (empty($object)) {
+        if (empty($object))
+        {
             $response['alert'] = array(
                 'type' => 'error',
                 'message' => 'Object request not found'

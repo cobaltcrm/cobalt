@@ -46,11 +46,15 @@ class Autocomplete extends DefaultModel
     public function getTableFilters()
     {
         $filters = array();
-        foreach ($this->table->getFields() as $field) {
+
+        foreach ($this->table->getFields() as $field)
+        {
             $field_name = $field->Field;
-            $field_type = substr($field->Type,0,strpos($field->Type,'('));
+            $field_type = substr($field->Type, 0, strpos($field->Type, '('));
+
             //transform database type to JInput filter type
-            switch ($field_type) {
+            switch ($field_type)
+            {
                 case 'tinyint':
                 case 'int':
                     $field_type = 'int';
@@ -59,6 +63,7 @@ class Autocomplete extends DefaultModel
                     $field_type = 'string';
                     break;
             }
+
             $filters[$field_name] = $field_type;
         }
 
@@ -86,7 +91,8 @@ class Autocomplete extends DefaultModel
         $this->table = $this->getTable($this->_object);
 
 
-        if (empty($fields)) {
+        if (empty($fields))
+        {
             $fields = array(
                 $this->table->getKeyName()
             );
@@ -99,19 +105,22 @@ class Autocomplete extends DefaultModel
         $query->select(implode(',', $fields));
         $query->from($this->db->quoteName($this->table->getTableName()));
 
-        foreach ($this->getRequestFilters() as $field => $value) {
+        foreach ($this->getRequestFilters() as $field => $value)
+        {
             $query->where($this->db->quoteName($field) . ' = ' . $this->db->quote($value));
         }
 
         $this->db->setQuery($query);
-        if (count($fields) == 1) {
+
+        if (count($fields) == 1)
+        {
             $rows = $this->db->loadColumn();
-        } else {
+        }
+        else
+        {
             $rows = $this->db->loadObjectList();
         }
 
         return $rows;
     }
-
-
 }
