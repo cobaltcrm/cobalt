@@ -43,6 +43,8 @@ class Html extends AbstractHtmlView
         $model = new UsersModel;
         $model->set("_layout", $layout);
 
+        
+
         //add toolbar buttons to manage users
         if ($layout == 'default')
         {
@@ -60,6 +62,12 @@ class Html extends AbstractHtmlView
             $this->users = $users;
             $this->listOrder = $this->state->get('Users.filter_order');
             $this->listDirn   = $this->state->get('Users.filter_order_Dir');
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'users';
+                var order_dir = '" . $this->state->get('Users.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Users.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
         }
         elseif ($this->getLayout() == 'edit')

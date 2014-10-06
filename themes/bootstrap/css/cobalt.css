@@ -162,8 +162,18 @@ div#actions, div.filters, div.dropdown_area, div#edit_menu {
     padding-bottom: 68px;
 }
 
-/* Support button dropdown inside btn-group */
+/* DataTables */
+.dataTables_wrapper {
+    position: relative;
+}
+.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
 
+/* Support button dropdown inside btn-group */
 .btn-group-dropdown {
     position: absolute;
+
 }

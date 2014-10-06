@@ -123,7 +123,6 @@ var Cobalt = {
     initDataTables: function() {
 
         if (typeof loc == 'undefined') {
-            console.log('Cant Initialize Datatables, loc is undefined');
             return false;
         }
 

@@ -60,7 +60,7 @@ class Toolbar
     {
     	$view = $this->app->input->getCmd('view');
     	$link = new Button('a', $label, '', '', $class);
-    	$link->setLink('index.php?view=' . $view . '&layout=edit')->setIcon($icon);
+    	$link->setLink('#')->setIcon($icon)->setAttribute('onclick="Cobalt.deleteListItems()"');
         $this->buttons[] = $link;
     }
 

@@ -102,6 +102,11 @@ class Datatable extends DefaultController
             // this is not singular, but it's what we need
             $name = 'people';
         }
+        elseif ($name == 'users')
+        {
+            // this is not singular, but it's what we need
+            $name = 'users';
+        }
         else
         {
             $lastChar = mb_substr($name, -1);
