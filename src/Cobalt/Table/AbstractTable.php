@@ -122,10 +122,11 @@ class AbstractTable implements \IteratorAggregate
 	 */
 	public function __set($key, $value)
 	{
-		if (!(isset($this->tableFields->$key) || is_null($this->tableFields->$key)))
-		{
-			throw new \InvalidArgumentException(__METHOD__ . ' - Set unknown property: ' . $key);
-		}
+		// @TODO: Don't set a property which is not defined in database table.
+		// if (!(isset($this->tableFields->$key) || is_null($this->tableFields->$key)))
+		// {
+		// 	throw new \InvalidArgumentException(__METHOD__ . ' - Set unknown property: ' . $key);
+		// }
 
 		$this->tableFields->$key = $value;
 	}
