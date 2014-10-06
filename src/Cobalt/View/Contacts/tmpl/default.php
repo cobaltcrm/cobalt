@@ -119,17 +119,17 @@ $contacts = $this->contacts;
                                 </div>
                             </span>
 
-                    <div class="btn-group">
+                    <div class="btn-group btn-group-dropdown">
                         <a href="javascript:void(0);" id="contact-id-<?php echo $person['id']; ?>" class="dropdown-toggle" data-toggle="dropdown"><?php echo $person['first_name'] . ' ' . $person['last_name']; ?> <b class="caret"></b></a>
                         <?php if ( $app->input->get('view') == "contacts" || $app->input->get('view') == "deals" || $app->input->get('loc') == "deal" ) { ?>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']);?>">View Contact</a></li>
-                                    <?php if ($this->primary_contact_id == $person['id']) { ?>
-                                        <li><a class="star" id="primary_contact" onclick="Deals.assignPrimaryContact(0)" data-id="<?php echo $person['id']; ?>" href="javascript:void(0);" > <i class="glyphicon glyphicon-star"></i></a></li>
+                                    <li><a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']);?>"> <i class="glyphicon glyphicon-user"></i> <?php echo TextHelper::_('COBALT_VIEW_DETAILS'); ?></a></li>
+                                    <?php if (isset($this->primary_contact_id) && $this->primary_contact_id == $person['id']) { ?>
+                                        <li><a class="star" id="primary_contact" onclick="Deals.assignPrimaryContact(0)" data-id="<?php echo $person['id']; ?>" href="javascript:void(0);" > <i class="glyphicon glyphicon-star"></i> <?php echo TextHelper::_('COBALT_UNASSIGN_PRIMARY_CONTACT'); ?></a></li>
                                     <?php } else { ?>
-                                        <li><a class="star" id="star_<?php echo $person['id']; ?>" data-id="<?php echo $person['id']; ?>" onclick="Deals.assignPrimaryContact(<?php echo $person['id']; ?>);" href="javascript:void(0);" > <i class="glyphicon glyphicon-star-empty"></i> </a></li>
+                                        <li><a class="star" id="star_<?php echo $person['id']; ?>" data-id="<?php echo $person['id']; ?>" onclick="Deals.assignPrimaryContact(<?php echo $person['id']; ?>);" href="javascript:void(0);" > <i class="glyphicon glyphicon-star-empty"></i> <?php echo TextHelper::_('COBALT_ASSIGN_PRIMARY_CONTACT'); ?></a></li>
                                     <?php } ?>
-                                    <li><a class="remove" href="javascript:void(0);" onclick="Deals.removeContact(<?php echo $person['id']; ?>);"><i class="glyphicon glyphicon-trash"></i></a></li>
+                                    <li><a class="remove" href="javascript:void(0);" onclick="Deals.removeContact(<?php echo $person['id']; ?>);"><i class="glyphicon glyphicon-trash"></i> <?php echo TextHelper::_('COBALT_REMOVE'); ?></a></li>
                                 </ul>
                         <?php } ?>
                     </div>

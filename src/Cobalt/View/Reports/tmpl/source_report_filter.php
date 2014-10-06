@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 
   for ( $i=0; $i<count($this->reports); $i++ ) {
-      $report = $this->reports[$i];
+      $report = (array)$this->reports[$i];
       $k = $i%2; ?>
      <tr class="cobalt_row_<?php echo $k; ?>">
         <?php if ( $app->input->get('view') != "print" ) { ?>
@@ -34,7 +34,8 @@ $app = JFactory::getApplication();
 <?php
     $filtered_amount = 0;
     if ( count($this->reports) > 0 ) {
-    foreach ($this->reports as $key=>$report) {
+    foreach ($this->reports as $i=>$report) {
+        $report = (array)$this->reports[$i];
         $filtered_amount += $report['amount'];
     }
 }?>

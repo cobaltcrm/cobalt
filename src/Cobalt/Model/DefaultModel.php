@@ -27,6 +27,9 @@ class DefaultModel extends AbstractDatabaseModel
     protected $__state_set;
     protected $_total;
     protected $_pagination;
+    protected $_view;
+    protected $_layout;
+    protected $db;
 
 	/**
 	 * @var    \Cobalt\Application
