@@ -14,6 +14,9 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Table\UserTable;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\ConfigHelper;
+use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\DateHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -154,18 +157,20 @@ class Users extends DefaultModel
 
     }
 
-    public function getUsers($id=null)
+    public function getUsers($id = null)
     {
         //get dbo
         $query = $this->_buildQuery();
 
         //sort
         $query->order($this->getState('Users.filter_order') . ' ' . $this->getState('Users.filter_order_Dir'));
-        if ($id) {
-            $query->where("u.id=$id");
+        
+        if ($id)
+        {
+            $query->where("u.id = $id");
         }
 
-        $query->where("u.published=1");
+        $query->where("u.published = 1");
 
         //return results
         $this->db->setQuery($query);
@@ -246,7 +251,7 @@ class Users extends DefaultModel
         $query = $this->db->getQuery(true);
 
         //select
-        $query->select("u.id AS value,CONCAT(u.first_name,' ',u.last_name) AS label");
+        $query->select("u.id AS value, CONCAT(u.first_name, ' ', u.last_name) AS label");
         $query->from("#__users AS u");
         $query->where("u.published=1");
 
@@ -312,21 +317,118 @@ class Users extends DefaultModel
         //$this->app->triggerEvent('onBeforeCRMUserDelete', array(&$ids));
 
         $query->update("#__users");
-                if ( is_array($ids) ) {
-                    $query->where("id IN(".implode(',',$ids).")");
-                } else {
-                    $query->where("id=".$ids);
-                }
+
+        if (is_array($ids))
+        {
+            $query->where("id IN(".implode(',',$ids).")");
+        }
+        else
+        {
+            $query->where("id=".$ids);
+        }
+
         $query->set("published=-1");
         $this->db->setQuery($query);
-        if ( $this->db->execute() ) {
+
+        if ( $this->db->execute() )
+        {
             //$this->app->trigger('onAfterCRMUserDelete', array(&$ids));
 
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
 
+    }
+
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     *
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     *
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 'u.last_name');
+        $columns[] = array('data' => 'username', 'ordering' => 'ju.username');
+        $columns[] = array('data' => 'team_id', 'ordering' => 'u.team_id');
+        $columns[] = array('data' => 'email', 'ordering' => 'ju.email');
+        $columns[] = array('data' => 'role_type', 'ordering' => 'u.role_type');
+        $columns[] = array('data' => 'last_login', 'ordering' => 'ju.lastvisitDate');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     *
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getUsers();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     *
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+        $template = '';
+
+        switch ($column)
+        {
+            case 'id':
+                $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
+                break;
+            case 'name':
+                $template .= '<a href="'.RouteHelper::_('index.php?view=users&layout=edit&id='.$item->id).'">'.$item->first_name.' '.$item->last_name.'</a>';
+                break;
+            case 'team_id':
+                if (isset($item->team_id) && $item->team_id)
+                {
+                    $template .= $item->team_name . TextHelper::_("COBALT_TEAM_APPEND");
+                }
+                break;
+            case 'role_type':
+                $template .= ucwords($item->role_type);
+                break;
+            case 'last_login':
+                $template = DateHelper::formatDate($item->last_login);
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
     }
 
 }
