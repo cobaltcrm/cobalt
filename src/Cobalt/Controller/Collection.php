@@ -34,15 +34,19 @@ class Collection extends DefaultController
                 'message' => 'Object request not found'
             );
             $this->getApplication()->close(json_encode($response));
-        } else if (!$model->hasAutocomplete()) {
-            $response['alert'] = array(
-                'type' => 'error',
-                'message' => 'Type not found'
-            );
-            $this->getApplication()->close(json_encode($response));
         }
 
-        $response = $model->getData(explode(',', $fields));
+        try
+        {
+            $response = $model->getData(explode(',', $fields));
+        }
+        catch (\Exception $e)
+        {
+            $response['alert'] = array(
+                'type' => 'error',
+                'message' => $e->getMessage()
+            );
+        }
 
         $this->getApplication()->close(json_encode($response));
     }

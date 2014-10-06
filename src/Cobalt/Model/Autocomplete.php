@@ -24,13 +24,6 @@ class Autocomplete extends DefaultModel
     private $_object = '';
 
     /**
-     * Table Class Name
-     *
-     * @var string
-     */
-    private $class_name = '';
-
-    /**
      * @var AbstractTable
      */
     private $table;
@@ -43,17 +36,6 @@ class Autocomplete extends DefaultModel
     public function setObject($object)
     {
         $this->_object = $object;
-        $this->class_name = sprintf('Cobalt\\Table\\%sTable', $this->_object);
-    }
-
-    /**
-     * Check if Table Class Exists
-     *
-     * @return bool
-     */
-    public function hasAutocomplete()
-    {
-        return class_exists($this->class_name);
     }
 
     /**
@@ -101,7 +83,7 @@ class Autocomplete extends DefaultModel
      */
     public function getData(array $fields)
     {
-        $this->table = new $this->class_name();
+        $this->table = $this->getTable($this->_object);
 
 
         if (empty($fields)) {
