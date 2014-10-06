@@ -316,15 +316,15 @@ $person = $this->people[0];
                 <div class="crmeryValue">
                     <?php $person_type = (array_key_exists('type', $person) && $person['type'] != "") ? $person['type'] : TextHelper::_('COBALT_NOT_SET'); ?>
                     <div class="dropdown" data-item="people" data-field="type" data-item-id="<?php echo $person['id']; ?>" id="person_type">
-                        <a href="#" class='dropdown-toggle' data-toggle="dropdown" id="person_type_link"><?php echo ucwords($person_type); ?></a>
-                        <ul class="dropdown-menu pull-right">
+                        <a href="#" class='dropdown-toggle' data-toggle="dropdown" id="person_type_link"><span><?php echo ucwords($person_type); ?></span></a>
+                        <ul class="dropdown-menu pull-right" aria-labelledby="person_type">
                             <?php
                             $types = PeopleHelper::getPeopleTypes(false);
                             if (count($types))
                             {
                                 foreach ($types as $key => $type)
                                 {
-                                    echo '<li><a href="javascript:void(0);" class="dropdown_item" data-value="' . $key . '">' . ucwords($type) . '</a></li>';
+                                    echo '<li><a href="javascript:void(0);" class="dropdown_item" data-item="people" data-field="type" data-item-id="'.$person['id'].'" data-value="' . $key . '">' . ucwords($type) . '</a></li>';
                                 }
                             }
                             ?>
@@ -347,8 +347,8 @@ $person = $this->people[0];
                 <div class="crmeryValue">
                     <?php $person['status_name'] = ($person['status_name'] == '') ? TextHelper::_('COBALT_NO_STATUS') : $person['status_name']; ?>
                     <div class="dropdown" data-item="people" data-field="status_id" data-item-id="<?php echo $person['id']; ?>" id="person_status_<?php echo $person['id']; ?>">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="person_status_<?php echo $person['id']; ?>_link"><span class="status-dot person-status-color" style="background-color:#<?php echo $person['status_color']; ?>"></span><?php echo $person['status_name']; ?></a>
-                        <ul class="dropdown-menu pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="person_status_<?php echo $person['id']; ?>_link"><span class="status-dot person-status-color"><?php echo $person['status_name']; ?></span></a>
+                        <ul class="dropdown-menu pull-right" aria-labelledby="person_status_<?php echo $person['id']; ?>">
                             <li>
                                 <a href="javascript:void(0)" class="status_select dropdown_item" data-value="0">
                                     <span class="status-dot person-status-none"></span>None
@@ -359,7 +359,7 @@ $person = $this->people[0];
                             {
                                 foreach ($statuses as $key => $status)
                                 {
-                                    echo '<li><a href="javascript:void(0)" class="status_select dropdown_item" data-value="' . $status['id'] . '"><span class="status-dot person-status-color" style="background-color:#' . $status['color'] . '"></span>' . $status['name'] . '</a></li>';
+                                    echo '<li><a href="javascript:void(0)" class="status_select dropdown_item" data-item="people" data-field="status_id" data-item-id="'.$person['id'].'" data-value="' . $status['id'] . '"><span class="status-dot person-status-color">' . $status['name'] . '</span></a></li>';
                                 }
                             } ?>
                         </ul>
@@ -372,14 +372,14 @@ $person = $this->people[0];
                 <div class="crmeryValue">
                     <?php $person['source_name'] = ($person['source_name'] == '') ? TextHelper::_('COBALT_NO_SOURCE') : $person['source_name']; ?>
                     <div class="dropdown" data-item="people" data-field="source_id" data-item-id="<?php echo $person['id']; ?>" id="person_source_<?php echo $person['id']; ?>">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="person_source_<?php echo $person['id']; ?>_link"><?php echo $person['source_name']; ?></a>
-                        <ul class="dropdown-menu pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="person_source_<?php echo $person['id']; ?>_link"><span><?php echo $person['source_name']; ?></span></a>
+                        <ul class="dropdown-menu pull-right" aria-labelledby="person_source_<?php echo $person['id']; ?>">
                             <?php $sources = DealHelper::getSources();
                             if (count($sources))
                             {
                                 foreach ($sources as $id => $name)
                                 {
-                                    echo '<li><a href="javascript:void(0)" class="source_select dropdown_item" data-value="' . $id . '">' . $name . '</a></li>';
+                                    echo '<li><a href="javascript:void(0)" class="source_select dropdown_item" data-item="people" data-field="source_id" data-item-id="'.$person['id'].'" data-value="' . $id . '">' . $name . '</a></li>';
                                 }
                             } ?>
                         </ul>
@@ -433,7 +433,7 @@ $person = $this->people[0];
             <form id="deal">
                 <div class="input-append">
                     <input name="deal_name" type="text" placeholder="<?php echo TextHelper::_('COBALT_BEGIN_TYPING_TO_SEARCH'); ?>" />
-                    <input type="hidden" name="company_id" value="<?php echo $company['id'];  ?>" />
+                    <input type="hidden" name="company_id" value="<?php echo $person['company_id'];  ?>" />
                     <a class="btn btn-success" href="" onclick="saveCf('people');"><i class="icon-white glyphicon glyphicon-plus"></i><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                 </div>
             </form>

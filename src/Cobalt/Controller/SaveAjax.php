@@ -40,15 +40,17 @@ class SaveAjax extends DefaultController
 
         $model = new $modelClass();
 
-        $returnRow = true;
-        $return = $model->store($data, $returnRow);
-
-        if ($return instanceof AbstractTable) {
-            $response = array('item' => $return->getProperties());
-            echo json_encode($response);
+        $response   = new \stdClass;
+        $response->alert = new \stdClass;
+        $return = $model->store($data, true);
+        if ($return instanceof AbstractTable){
+            $response->item = $return->getProperties();
         } else {
-            echo json_encode($return);
+            $response->item = $return;
         }
+        $response->alert->message = TextHelper::_('COBALT_SUCCESSFULLY_SAVED');
+        $response->alert->type = 'success';
+        echo json_encode($response);
     }
 
 }

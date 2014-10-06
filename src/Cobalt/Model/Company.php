@@ -374,7 +374,7 @@ class Company extends DefaultModel
     public function getCompany($id = null)
     {
         $app = \Cobalt\Container::fetch('app');
-        $id = $id ? $id : $app->input->get('id');
+        $id = $id ? $id : $app->input->getInt('id');
 
         if ($id > 0)
         {

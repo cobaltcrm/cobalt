@@ -11,6 +11,7 @@
 namespace Cobalt\View\Reports;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Helper\DealHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -21,6 +22,7 @@ class Phtml extends AbstractHtmlView
 
     public function render()
     {
+        $this->deal_sources = DealHelper::getSources();
         return 	parent::render();
      }
 }

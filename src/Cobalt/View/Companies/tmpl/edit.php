@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $app = JFactory::getApplication();
-$ownerId = array_key_exists('owner_id', $this->company) ? $this->company->owner_id : UsersHelper::getUserId();
+$ownerId = is_object($this->company) && isset($this->company->owner_id) ? $this->company->owner_id : UsersHelper::getUserId();
 $format = $app->input->get('format');
 if ($format != "raw")
 { ?>
