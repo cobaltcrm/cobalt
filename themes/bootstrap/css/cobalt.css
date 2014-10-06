@@ -161,3 +161,13 @@ div#actions, div.filters, div.dropdown_area, div#edit_menu {
 .carousel-inner > .item {
     padding-bottom: 68px;
 }
+
+/* DataTables */
+.dataTables_wrapper {
+    position: relative;
+}
+.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
