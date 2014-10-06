@@ -328,18 +328,28 @@ class AbstractTable implements \IteratorAggregate
 
 		$pKey = (is_null($pKey)) ? $this->$key : $pKey;
 
+		
+
 		// If no primary key is given, return false.
 		if ($pKey === null)
 		{
 			throw new \UnexpectedValueException('Null primary key not allowed.');
 		}
 
+		$query = $this->db->getQuery(true)
+			->delete($this->db->quoteName($this->tableName));
+
+		if (is_array($pKey))
+		{
+			$query->where($this->db->quoteName($key) . ' IN (' . implode(',', $pKey) . ')');
+		}
+		else
+		{
+			$query->where($this->db->quoteName($key) . ' = ' . $this->db->quote($pKey));
+		}
+
 		// Delete the row by primary key.
-		$this->db->setQuery(
-			$this->db->getQuery(true)
-				->delete($this->db->quoteName($this->tableName))
-				->where($this->db->quoteName($key) . ' = ' . $this->db->quote($pKey))
-		)->execute();
+		$this->db->setQuery($query)->execute();
 
 		return $this;
 	}
