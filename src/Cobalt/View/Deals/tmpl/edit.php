@@ -195,7 +195,6 @@ $raw = $app->input->get('format'); ?>
             }
         ?>
         <input type="hidden" name="model" value="deal" />
-        <input type="hidden" name="refresh_page" value="1">
     </form>
 </div>
 <div class="modal-footer">
@@ -293,4 +292,8 @@ $raw = $app->input->get('format'); ?>
         });
     });
 
+    //clear modal data when close
+    $('#dealModal').on('hidden.bs.modal', function (e) {
+        $('#dealModal').removeData('bs.modal');
+    })
 </script>
