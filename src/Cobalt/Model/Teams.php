@@ -55,15 +55,16 @@ class Teams extends DefaultModel
      * @param  int $leader_id the id of the leader for the team to create
      * @return int $team_id the id of the newly created team
      */
-    public function createTeam($leader_id, $name = NULL)
+    public function createTeam($leader_id, $name = NULL, $team_id = null)
     {
-        //Database
-        $query = $this->db->getQuery(true);
+        if (!$team_id)
+        {
+            $query = $this->db->getQuery(true);
+            $query->clear();
+            $query->select("team_id")->from("#__users")->where('id = ' . (int) $leader_id);
+            $team_id = $this->db->setQuery($query)->loadResult();
+        }
 
-        $query->clear();
-        $query->select("team_id")->from("#__users")->where('id=' . $leader_id);
-        $db->setQuery($query);
-        $team_id = $this->db->loadResult();
         $team_data = array( 'leader_id' => $leader_id, 'name' => $name );
         $row = $this->getTable('Teams');
 
@@ -81,7 +82,7 @@ class Teams extends DefaultModel
         }
 
         $team_id = $row->team_id;
-        $this->assignLeader($leader_id,$team_id);
+        $this->assignLeader($leader_id, $team_id);
 
         return $team_id;
     }

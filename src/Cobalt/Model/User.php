@@ -119,6 +119,11 @@ class User extends DefaultModel
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
         $data['modified'] = $date;
 
+        if (!$row->id)
+        {
+            $data['created'] = $date;
+        }
+
         // Bind the form fields to the table
         if (!$row->bind($data))
         {
@@ -151,8 +156,9 @@ class User extends DefaultModel
 
         if (isset($data['team_name']) && $data['team_name'])
         {
+            $teamId = $this->getTeamByLeader($row->id)->team_id;
             $teamModel = new Teams;
-            $teamModel->createTeam($row->id, $data['team_name']);
+            $teamModel->createTeam($row->id, $data['team_name'], $teamId);
         }
 
         $this->app->refreshUser();
@@ -224,8 +230,10 @@ class User extends DefaultModel
         $result = unserialize($this->db->loadResult());
 
         //if we have no data assigned grab the defaults
-        if ( !is_array($result) ) {
-            switch ($loc) {
+        if (!is_array($result))
+        {
+            switch ($loc)
+            {
                 case "deals":
                     $result = DealHelper::getDefaultColumnFilters();
                     break;
@@ -238,10 +246,13 @@ class User extends DefaultModel
             }
         }
         //if we do find the value in the array remove it
-        if ( in_array($column,$result) ) {
+        if (in_array($column,$result))
+        {
             $key = array_search($column,$result);
             unset($result[$key]);
-        } else {
+        }
+        else
+        {
             //if we dont find the value in the array add it
             $result[] = $column;
         }
@@ -283,6 +294,34 @@ class User extends DefaultModel
         }
 
         return $this->db->setQuery($query)->loadObject();
+    }
+
+    /**
+     * Select a team by it's leader.
+     *
+     * @param integer $userId   user ID of the leader
+     * @return object object of loaded info about team
+     */
+    public function getTeamByLeader($userId = null)
+    {
+        if (!$userId)
+        {
+            $userId = $this->id;
+        }
+
+        if (!$userId)
+        {
+            return null;
+        }
+
+        $query = $this->db->getQuery(true)
+            ->select('team_id, name')
+            ->from('#__teams')
+            ->where('leader_id = ' . (int) $userId);
+
+        $team = $this->db->setQuery($query)->loadObject();
+
+        return $team;
     }
 
 }
