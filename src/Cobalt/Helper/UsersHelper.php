@@ -422,37 +422,98 @@ class UsersHelper
      * @param $role String User role to filter for
      * @return int Count of people returned from database
      */
-    public static function getPeopleCount($id=null,$team=null,$role=null)
+    public static function getPeopleCount($id = null, $team = null, $role = null)
     {
         //get db
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
-        if (!$id) {
+        if (!$id)
+        {
             $id = UsersHelper::getUserId();
         }
-        if (!$team) {
+
+        if (!$team)
+        {
             $team = UsersHelper::getTeamId();
         }
-        if (!$role) {
+
+        if (!$role)
+        {
             $role = UsersHelper::getRole();
         }
 
         //query
         $query->select('count(*)');
         $query->from('#__people AS p');
-        $query->leftJoin("#__users AS u ON ( u.id = p.owner_id OR u.id = p.assignee_id ) AND u.published=1");
+        $query->leftJoin("#__users AS u ON ( u.id = p.owner_id OR u.id = p.assignee_id ) AND u.published = 1");
 
         //filter based on id and role
-        if ($role != 'exec') {
-            if ($role == 'manager') {
-                $query->where("u.team_id=$team");
-            } else {
-                $query->where("( p.owner_id=$id OR p.assignee_id=$id )");
+        if ($role != 'exec')
+        {
+            if ($role == 'manager')
+            {
+                $query->where("u.team_id = $team");
+            }
+            else
+            {
+                $query->where("( p.owner_id = $id OR p.assignee_id = $id )");
             }
         }
 
-        $query->where("p.published=1");
+        $query->where("p.published = 1");
+
+        //return results
+        $db->setQuery($query);
+
+        return $db->loadResult();
+    }
+
+    /**
+     * Get people count associated with users
+     * @param $id int User Id to filter for
+     * @param $team int Team Id associated to user
+     * @param $role String User role to filter for
+     * @return int Count of people returned from database
+     */
+    public static function getUsersCount($id = null, $team = null, $role = null)
+    {
+        //get db
+        $db = \Cobalt\Container::fetch('db');
+        $query = $db->getQuery(true);
+
+        if (!$id)
+        {
+            $id = UsersHelper::getUserId();
+        }
+
+        if (!$team)
+        {
+            $team = UsersHelper::getTeamId();
+        }
+
+        if (!$role)
+        {
+            $role = UsersHelper::getRole();
+        }
+
+        //query
+        $query->select('count(*)');
+        $query->from("#__users AS u");
+        $query->where("u.published = 1");
+
+        //filter based on id and role
+        if ($role != 'exec')
+        {
+            if ($role == 'manager')
+            {
+                $query->where("u.team_id = $team");
+            }
+            else
+            {
+                $query->where("( p.owner_id = $id OR p.assignee_id = $id )");
+            }
+        }
 
         //return results
         $db->setQuery($query);
