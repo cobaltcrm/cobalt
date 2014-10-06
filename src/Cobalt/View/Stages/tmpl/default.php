@@ -49,34 +49,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php
-                            $i = 0;
-                            $ordering   = ($this->listOrder == 's.ordering');
-                            if ( count($this->stages) ) { foreach ($this->stages as $key=>$stage) { ?>
-                                <tr class="row<?php echo $i % 2; ?>">
-                                    <td class="center">
-                                        <?php echo JHtml::_('grid.id', $key, $stage['id']); ?>
-                                    </td>
-                                    <td style="text-align:left;" class="order"><?php echo JHtml::_('link','index.php?view=stages&layout=edit&id='.$stage['id'],$stage['name']); ?></td>
-                                    <td class="order">
-                                        <?php if ($this->saveOrder) :?>
-                                            <?php if ($this->listDirn == 'asc') : ?>
-                                                <span><?php echo $this->pagination->orderUpIcon($i, TRUE, 'stages.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, TRUE, 'stages.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                                            <?php elseif ($this->listDirn == 'desc') : ?>
-                                                <span><?php echo $this->pagination->orderUpIcon($i, TRUE, 'stages.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, TRUE, 'stages.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                        <?php $disabled = $this->saveOrder ?  '' : 'disabled="disabled"'; ?>
-                                        <input type="text" name="order[]" size="5" value="<?php echo $stage['ordering'];?>" <?php echo $disabled ?> class="text-area-order" />
-                                    </td>
-                                    <td><div class="status-dot" style="background-color: #<?php echo $stage['color']; ?>;"></div></td>
-                                    <td class="order"><?php echo $stage['percent']; ?>%</td>
-                                </tr>
-                            <?php $i++; }} ?>
-                        </tbody>
                     </table>
                 </div>
             </div>
