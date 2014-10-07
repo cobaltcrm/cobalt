@@ -11,26 +11,40 @@
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
-                    <form action="index.php?view=categories" method="post" name="adminForm" id="adminForm" class="form-validate" >
-                        <div class="row-fluid">
-                            <legend><h3><?php echo TextHelper::_('COBALT_EDITING_CATEGORY'); ?></h3></legend>
-                            <label><b><?php echo TextHelper::_('COBALT_NAME'); ?></b></label>
-                            <input type="text" class="form-control" name="name" value="<?php echo $this->category['name']; ?>" />
-                            <div>
-                                <?php if ($this->category['id']) { ?>
-                                    <input type="hidden" name="id" value="<?php echo $this->category['id']; ?>" />
-                                <?php } ?>
-                                <input type="hidden" name="controller" value="" />
-                                <input type="hidden" name="model" value="categories" />
-                                <?php echo JHtml::_('form.token'); ?>
+                <div class="col-md-9">
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal"  >
+
+                        <legend>
+                            <div class="col-sm-9">
+                            <h2><?php echo TextHelper::_("COBALT_EDITING_CATEGORY"); ?></h2>
+                            </div>
+                            <div class="col-sm-3">
+                                <?php echo $this->toolbar->render(); ?>
+                            </div>
+                            <div class="clearfix"></div>
+                        </legend>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="name">
+                                <?php echo TextHelper::_('COBALT_NAME'); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" value="<?php echo $this->category->name; ?>" />
                             </div>
                         </div>
+
+                        <div>
+                            <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
+                            <input type="hidden" name="task" value="save" />
+                            <input type="hidden" name="model" value="categories" />
+                            <?php echo JHtml::_('form.token'); ?>
+                        </div>
+
                     </form>
                 </div>
             </div>

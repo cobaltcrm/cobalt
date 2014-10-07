@@ -17,6 +17,7 @@ use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Stages as StagesModel;
 
 // no direct access
@@ -26,6 +27,9 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
@@ -37,15 +41,17 @@ class Html extends AbstractHtmlView
         $model = new StagesModel;
 
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
+        $model->set("_layout", $layout);
+        $this->state = $model->getState();
         $this->pagination   = $model->getPagination();
         $document = JFactory::getDocument();
         $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
-        if ($layout && $layout == 'edit') {
-
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+        if ($layout && $layout == 'edit')
+        {
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('stages');
 
             $document->addScript(JURI::base().'src/Cobalt/media/js/stage_manager.js');
             $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
@@ -53,20 +59,25 @@ class Html extends AbstractHtmlView
             $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
 
             $this->stage = $model->getStage();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('stages');
+            $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'stages';
+                var order_dir = '" . $this->state->get('Stages.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Stages.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             $stages = $model->getStages();
             $this->stages = $stages;
 
             // Initialise state variables.
             $state = $model->getState();
-            $this->state = $state;
 
             $this->listOrder  = $this->state->get('Stages.filter_order');
             $this->listDirn   = $this->state->get('Stages.filter_order_Dir');

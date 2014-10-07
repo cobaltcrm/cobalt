@@ -15,8 +15,8 @@ use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use JFactory;
 use JUri;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Categories as CategoriesModel;
 
 // no direct access
@@ -30,44 +30,51 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
 
         //site document
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
+        $document = $app->getDocument();
+        $document->addScript(JURI::base() . "/src/Cobalt/media/js/cobalt-admin.js");
 
          //gather information for view
         $model = new CategoriesModel;
 
+        $this->state = $model->getState();
+
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
+        $model->set("_layout", $layout);
 
-        if ($layout && $layout == 'edit') {
-
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+        if ($layout && $layout == 'edit')
+        {
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('categories');
 
             $this->category = $model->getCategory();
+        }
+        else
+        {
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('categories');
+            $this->toolbar->addDeleteRow();
 
-        } else {
-
-            //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'remove');
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'categories';
+                var order_dir = '" . $this->state->get('Categories.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Categories.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             //view references
             $categories = $model->getCategories();
             $this->categories = $categories;
 
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder  = $state->get('Categories.filter_order');
-            $this->listDirn   = $state->get('Categories.filter_order_Dir');
+            $this->listOrder  = $this->state->get('Categories.filter_order');
+            $this->listDirn   = $this->state->get('Categories.filter_order_Dir');
         }
 
         //display

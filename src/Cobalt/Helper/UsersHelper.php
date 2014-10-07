@@ -522,6 +522,50 @@ class UsersHelper
     }
 
     /**
+     * Get stages count associated with users
+     * @return int Count of people returned from database
+     */
+    public static function getStagesCount()
+    {
+        return self::getItemsCount('stages');
+    }
+
+    /**
+     * Get stages count associated with users
+     * @return int Count of people returned from database
+     */
+    public static function getCategoriesCount()
+    {
+        return self::getItemsCount('notes_categories');
+    }
+
+    /**
+     * Get an item count associated with users
+     * @param $item string name of the item
+     * @return int Count of people returned from database
+     */
+    public static function getItemsCount($item = null)
+    {
+        if (!$item || !UsersHelper::isAdmin())
+        {
+            return false;
+        }
+
+        //get db
+        $db = \Cobalt\Container::fetch('db');
+        $query = $db->getQuery(true);
+
+        //query
+        $query->select('count(*)');
+        $query->from('#__' . $item);
+
+        //return results
+        $db->setQuery($query);
+
+        return $db->loadResult();
+    }
+
+    /**
      * Get people emails associated with users
      * @param $id int User Id to filter for
      * @param $team int Team Id associated to user

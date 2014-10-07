@@ -28,6 +28,7 @@ class Toolbar
 	/**
      * Adds the common 'new' link to the button bar.
      *
+     * @param string    $view  Name of the view which should load the form.
      * @param string  	$label  Text of the link.
      * @param string  	$class  An override for the CSS class.
      * @param string 	$icon 	Part of the icon class name.
@@ -36,16 +37,20 @@ class Toolbar
      *
      * @since   1.0
      */
-    public function addNew($label = 'COBALT_TOOLBAR_NEW', $class = 'btn btn-primary', $icon = 'plus')
+    public function addNew($view = null, $label = 'COBALT_TOOLBAR_NEW', $class = 'btn btn-primary', $icon = 'plus')
     {
-    	$view = $this->app->input->getCmd('view');
+        if (!$view)
+        {
+            $view = $this->app->input->getCmd('view');
+        }
+    	
     	$link = new Button('a', $label, '', '', $class);
     	$link->setLink('index.php?view=' . $view . '&layout=edit')->setIcon($icon);
         $this->buttons[] = $link;
     }
 
     /**
-     * Adds the common 'delete row' button to the button bar.
+     * Adds the common 'trash row' button to the button bar.
      * This delete button is intended to delete rows from a table.
      *
      * @param string  	$label  Text of the link.
@@ -56,11 +61,31 @@ class Toolbar
      *
      * @since   1.0
      */
-    public function addDeleteRow($label = 'COBALT_TOOLBAR_DELETE', $class = 'btn btn-default', $icon = 'minus')
+    public function addTrashRow($label = 'COBALT_TOOLBAR_TRASH', $class = 'btn btn-default', $icon = 'minus')
     {
     	$view = $this->app->input->getCmd('view');
     	$link = new Button('a', $label, '', '', $class);
     	$link->setLink('#')->setIcon($icon)->setAttribute('onclick="Cobalt.deleteListItems()"');
+        $this->buttons[] = $link;
+    }
+
+    /**
+     * Adds the common 'delete row' button to the button bar.
+     * This delete button is intended to delete rows from a table.
+     *
+     * @param string    $label  Text of the link.
+     * @param string    $class  An override for the CSS class.
+     * @param string    $icon   Part of the icon class name.
+     *
+     * @return void
+     *
+     * @since   1.0
+     */
+    public function addDeleteRow($label = 'COBALT_TOOLBAR_DELETE', $class = 'btn btn-default', $icon = 'minus')
+    {
+        $view = $this->app->input->getCmd('view');
+        $link = new Button('a', $label, '', '', $class);
+        $link->setLink('#')->setIcon($icon)->setAttribute('onclick="Cobalt.deleteListItems(\'delete\')"');
         $this->buttons[] = $link;
     }
 
@@ -86,6 +111,7 @@ class Toolbar
     /**
      * Adds the common 'new' link to the button bar.
      *
+     * @param string    $view  Name of the view where should be user returned.
      * @param string  	$label  Text of the link.
      * @param string  	$class  An override for the CSS class.
      * @param string 	$icon 	Part of the icon class name.
@@ -94,11 +120,15 @@ class Toolbar
      *
      * @since   1.0
      */
-    public function cancel($label = 'COBALT_TOOLBAR_CANCEL', $class = 'btn btn-default', $icon = 'floppy-remove')
+    public function cancel($view = null, $label = 'COBALT_TOOLBAR_CANCEL', $class = 'btn btn-default', $icon = 'floppy-remove')
     {
-    	$view = $this->app->input->getCmd('view');
+        if (!$view)
+        {
+            $view = $this->app->input->getCmd('view');
+        }
+    	
     	$link = new Button('a', $label, '', '', $class);
-    	$link->setLink('index.php?view=' . $view)->setIcon($icon);
+    	$link->setLink(RouteHelper::_('index.php?view=' . $view))->setIcon($icon);
         $this->buttons[] = $link;
     }
 
