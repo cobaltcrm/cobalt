@@ -15,7 +15,7 @@ mkdir(__DIR__ . '/packaging');
 
 // Step 3 - Copy files to packaging space
 echo "Copying files\n";
-system('cp -r ../install packaging/');
+system('cp -r ../installer packaging/');
 system('cp -r ../language packaging/');
 system('cp -r ../libraries packaging/');
 system('cp -r ../media packaging/');
@@ -255,4 +255,4 @@ system('rm vendor/tracy/tracy/readme.md');
 // Step 5 - ZIP it up
 echo "Packaging Cobalt\n";
 system('find . -type d -name .git -exec rm -rf {} \\; > /dev/null');
-system('zip -r ../packages/cobalt-head.zip install/ language/ libraries/ media/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');
+system('zip -r ../packages/cobalt-head.zip installer/ language/ libraries/ media/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');
