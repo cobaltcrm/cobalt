@@ -323,6 +323,12 @@ class Install extends AbstractModel
 	 */
     public function uploadLogo()
     {
+	    // Skip this for CLI installations, we'll handle this in the CLI command
+	    if (COBALT_CLI)
+	    {
+		    return true;
+	    }
+
 	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
 
 	    if (!$this->canUpload())
@@ -338,14 +344,11 @@ class Install extends AbstractModel
 
 		    return false;
 	    }
-	    else
+	    elseif (!JFile::upload($file['tmp_name'], JPATH_ROOT . '/uploads/logo/' . JFile::makeSafe($file['name'])))
 	    {
-		    if (!JFile::upload($file['tmp_name'], JPATH_ROOT . '/uploads/logo/' . JFile::makeSafe($file['name'])))
-		    {
-			    $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
+		    $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
 
-			    return false;
-		    }
+		    return false;
 	    }
 
 	    return true;

@@ -10,12 +10,15 @@ namespace Cobalt\CLI;
 
 defined('_CEXEC') or die;
 
+use Cobalt\CLI\Command\Install;
 use Cobalt\Container;
 use Cobalt\Provider\ApplicationServiceProvider;
 use Cobalt\Provider\ConfigServiceProvider;
 use Cobalt\Provider\DatabaseServiceProvider;
 
 use Joomla\Application\AbstractCliApplication;
+use Joomla\Language\Language;
+use Joomla\Language\Text;
 
 /**
  * CLI application supporting the base application
@@ -64,7 +67,14 @@ class Application extends AbstractCliApplication
 	 */
 	protected function doExecute()
 	{
-		$this->out('Finished!');
+		// If --install option provided, run the install routine to set up the database
+		if ($this->input->getBool('install', false))
+		{
+			$command = new Install($this);
+			$command->execute();
+		}
+
+		$this->out('Execution complete!');
 	}
 
 	/**
@@ -83,6 +93,25 @@ class Application extends AbstractCliApplication
 		}
 
 		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
+	}
+
+	/**
+	 * Get a language object.
+	 *
+	 * @return Language
+	 *
+	 * @since   1.0
+	 */
+	public function getLanguage()
+	{
+		if (is_null($this->language)) {
+			$this->language = Language::getInstance('en-GB');
+
+			// Configure Text to use language instance
+			Text::setLanguage($this->language);
+		}
+
+		return $this->language;
 	}
 
 	/**
