@@ -348,8 +348,4 @@ $company = $this->companies[0];?>
 <script>
     Company.addPerson();
     Company.addDeal();
-    //clear modal data when close
-    $('#companyModal').on('hidden.bs.modal', function (e) {
-        $('#companyModal').removeData('bs.modal');
-    })
 </script>

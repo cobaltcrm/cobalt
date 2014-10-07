@@ -292,8 +292,4 @@ $raw = $app->input->get('format'); ?>
         });
     });
 
-    //clear modal data when close
-    $('#dealModal').on('hidden.bs.modal', function (e) {
-        $('#dealModal').removeData('bs.modal');
-    })
 </script>

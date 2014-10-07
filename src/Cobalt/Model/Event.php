@@ -1115,6 +1115,7 @@ class Event extends DefaultModel
         $repeats = $app->input->get('repeats');
         $event_type = ( $app->input->get('event_type') ) ? $app->input->get('event_type') : $app->input->get('type');
         $data = $app->input->getArray();
+        $data = array_filter($data);
         if ( $id != null ) $data['event_id'] = $id;
 
         $db = JFactory::getDBO();

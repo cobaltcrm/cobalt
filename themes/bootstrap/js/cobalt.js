@@ -17,27 +17,37 @@ var Cobalt = {
         this.initFormSave();
         this.initDataTables();
         this.initModalCentralize();
+        this.initModalRemoveData();
         this.initDocumentUploader();
         this.displayCharts();
     },
 
-    initDocumentUploader: function(){
-        $('#upload_button').click(function(){
-            $('#upload_form').submit();
+    /**
+     * On Modal Close Remove Data
+     */
+    initModalRemoveData: function (){
+        jQuery('.modal').on('hidden.bs.modal', function (e) {
+            jQuery('.modal').removeData('bs.modal');
         });
-        $('#upload_input_invisible').change(function() {
-            $('#upload_form').submit();
+    },
+
+    initDocumentUploader: function(){
+        jQuery('#upload_button').click(function(){
+            jQuery('#upload_form').submit();
+        });
+        jQuery('#upload_input_invisible').change(function() {
+            jQuery('#upload_form').submit();
         });
     },
 
     initModalCentralize: function(){
         $('#myModal').on('shown.bs.modal', function() {
-            var initModalHeight = $('#modal-dialog').outerHeight(); //give an id to .mobile-dialog
-            var userScreenHeight = $(document).outerHeight();
+            var initModalHeight = jQuery('#modal-dialog').outerHeight(); //give an id to .mobile-dialog
+            var userScreenHeight = jQuery(document).outerHeight();
             if (initModalHeight > userScreenHeight) {
-                $('#modal-dialog').css('overflow', 'auto'); //set to overflow if no fit
+                jQuery('#modal-dialog').css('overflow', 'auto'); //set to overflow if no fit
             } else {
-                $('#modal-dialog').css('margin-top',
+                jQuery('#modal-dialog').css('margin-top',
                     (userScreenHeight / 2) - (initModalHeight/2)); //center it if it does fit
             }
         });
@@ -61,7 +71,7 @@ var Cobalt = {
                 content: function() {
                     var contentClass = popover.attr('data-content-class');
                     if (contentClass) {
-                        return $('.'+contentClass).html();
+                        return jQuery('.'+contentClass).html();
                     }
                 }
             };
@@ -70,7 +80,7 @@ var Cobalt = {
     },
 
     bindTooltips: function() {
-        $('[rel="tooltip"]').tooltip();
+        jQuery('[rel="tooltip"]').tooltip();
     },
 
     /**
@@ -730,6 +740,88 @@ var Cobalt = {
             var monthlyRevenue = document.getElementById("monthlyRevenue").getContext("2d");
             new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
 
+        }
+        if (typeof loc !== 'undefined' && loc === 'report_dashboard') {
+            var PieOptions = {
+                inGraphDataShow : true,
+                inGraphDataAnglePosition : 2,
+                inGraphDataRadiusPosition: 2,
+                inGraphDataRotate : "inRadiusAxisRotateLabels",
+                inGraphDataAlign : "center",
+                inGraphDataVAlign : "middle",
+                inGraphDataFontColor : "white",
+                inGraphDataFontSize : 14
+            };
+            var BarOptions = {barShowStroke: false};
+
+            var dealsByStagePie = document.getElementById("deal_stage").getContext("2d");
+            new Chart(dealsByStagePie).Pie(graphData.deal_stage, PieOptions);
+
+            var dealsByStatusPie = document.getElementById("deal_status").getContext("2d");
+            new Chart(dealsByStatusPie).Pie(graphData.deal_status, PieOptions);
+
+            var yearlyCommissions = document.getElementById("yearly_commissions").getContext("2d");
+            new Chart(yearlyCommissions).Line(graphData.yearly_commissions, LineOptions);
+
+            //var yearlyRevenue = document.getElementById("yearly_revenue").getContext("2d");
+            //new Chart(yearlyRevenue).Line(graphData.yearly_revenue, BarOptions);
+
+            var monthlyRevenue = document.getElementById("monthly_revenue").getContext("2d");
+            new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
+
+            //var monthlyCommissions = document.getElementById("monthly_commissions").getContext("2d");
+            //new Chart(monthlyCommissions).Bar(graphData.monthly_commissions, BarOptions);
+        }
+    },
+
+    printItems: function (print_button) {
+        if ( typeof print_button === 'object' ){
+            var form = jQuery(print_button).closest('form.print_form');
+        } else {
+            var form = jQuery(print_button);
+        }
+
+        jQuery(form).submit();
+    },
+
+    exportCsv: function(){
+        var old_action = jQuery("#list_form").attr('action');
+        var old_layout = jQuery("#list_form_layout").val();
+
+        jQuery("#list_form").attr('action','index.php?task=downloadCsv&tmpl=component&format=raw');
+        jQuery("#list_form_layout").val('custom_report');
+        jQuery("#list_form").append('<input type="hidden" id="export_flag" name="export" value="1" />');
+        jQuery("#list_form").submit();
+        jQuery("#export_flag").remove();
+        jQuery("#list_form").attr('action',old_action);
+        jQuery("#list_form_layout").val(old_layout);
+    }
+};
+
+var CobaltChart = {
+    Options: {
+        Pie: {
+            inGraphDataShow : true,
+            inGraphDataAnglePosition : 2,
+            inGraphDataRadiusPosition: 2,
+            inGraphDataRotate : "inRadiusAxisRotateLabels",
+            inGraphDataAlign : "center",
+            inGraphDataVAlign : "middle",
+            inGraphDataFontColor : "white",
+            inGraphDataFontSize : 14
+        },
+        Bar: {
+            barShowStroke: false
+        }
+    },
+    showChart: function (target, graph_data, chart_type) {
+        switch (chart_type) {
+            case 'pie':
+                new Chart(document.getElementById(target).getContext("2d")).Pie(graph_data, this.Options.Pie);
+                break;
+            case 'bar':
+                new Chart(document.getElementById(target).getContext("2d")).Bar(graph_data, this.Options.Bar);
+                break;
         }
     }
 };

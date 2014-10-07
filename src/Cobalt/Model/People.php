@@ -111,6 +111,7 @@ class People extends DefaultModel
                 'linkedin_url' => 'string',
                 'aim' => 'string'
             ));
+            $data = array_filter($data);
         }
 
         //date generation

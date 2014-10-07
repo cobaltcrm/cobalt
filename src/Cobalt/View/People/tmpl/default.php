@@ -157,4 +157,3 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </table>
     <input type="hidden" name="list_type" value="people" />
 </form>
-

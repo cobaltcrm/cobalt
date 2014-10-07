@@ -23,7 +23,7 @@ $app = JFactory::getApplication();
             <div class="btn-group pull-right">
                 <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Task.add('task');" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-tasks"></i></a>
                 <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Task.add('event');" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-calendar"></i></a>
-                <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-print"></i></a>
+                <a href="javascript:void(0);" rel="tooltip" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="Cobalt.printItems(this)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-print"></i></a>
             </div>
             <h4 class="panel-title"><?php echo ucwords(TextHelper::_('COBALT_TASKS_AND_EVENTS')); ?></h4>
         </div>

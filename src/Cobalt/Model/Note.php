@@ -56,6 +56,7 @@ class Note extends DefaultModel
                 'note_id' => 'int',
                 'event_id' => 'int'
             ));
+            $data = array_filter($data);
         }
 
         if ( array_key_exists('note_id', $data) ) {

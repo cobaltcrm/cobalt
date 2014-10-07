@@ -222,7 +222,7 @@ $person = $this->people[0];
                 </li>
             <?php endif; ?>
             <li>
-                <a onclick="printItems(this,'people')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+                <a onclick="Cobalt.printItems('form.print_form')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
                 <form class="print_form" method="POST" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                     <input type="hidden" name="layout" value="person"/>
@@ -448,9 +448,3 @@ $person = $this->people[0];
         <div class="modal-content"></div>
     </div>
 </div>
-<script>
-    //clear modal data when close
-    $('#editPerson').on('hidden.bs.modal', function (e) {
-        $('#editPerson').removeData('bs.modal');
-    })
-</script>

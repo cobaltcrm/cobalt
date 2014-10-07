@@ -74,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
                     <?php break;
 
-                    case "forecast" ?>
+                    case "forecast": ?>
                     <span id="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" class="forecast">
                         <?php echo ConfigHelper::getCurrency().$custom_field_filter; ?>
                     </span>
