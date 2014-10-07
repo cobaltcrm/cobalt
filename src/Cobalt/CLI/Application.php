@@ -44,9 +44,7 @@ class Application extends AbstractCliApplication
 	{
 		$container = Container::getInstance();
 
-		$container->registerServiceProvider(new ApplicationServiceProvider($this))
-			->registerServiceProvider(new ConfigServiceProvider)
-			->registerServiceProvider(new DatabaseServiceProvider);
+		$container->registerServiceProvider(new ApplicationServiceProvider($this));
 
 		$this->setContainer($container);
 
@@ -73,6 +71,10 @@ class Application extends AbstractCliApplication
 			$command = new Install($this);
 			$command->execute();
 		}
+
+		// If a non-install CLI script is added, un-comment these lines or otherwise integrate them into the routines
+		/* $container->registerServiceProvider(new ConfigServiceProvider)
+			->registerServiceProvider(new DatabaseServiceProvider); */
 
 		$this->out('Execution complete!');
 	}
