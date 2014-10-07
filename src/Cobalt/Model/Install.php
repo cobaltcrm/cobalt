@@ -212,12 +212,9 @@ class Install extends AbstractModel
 		    return false;
 	    }
 
-	    if ($this->canUpload())
+	    if (!$this->uploadLogo())
 	    {
-		    if (!$this->uploadLogo())
-		    {
-			    return false;
-		    }
+		    return false;
 	    }
 
 	    $config = array(
@@ -292,32 +289,66 @@ class Install extends AbstractModel
 	    return true;
     }
 
+	/**
+	 * Checks that the logo file can be uploaded
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 * @todo    Convert to throwing exceptions based on the error code
+	 */
     public function canUpload()
     {
-        if ($_FILES['logo']['error']) {
-            return false;
-        }
+	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
 
-        return true;
+	    if (!isset($file['error']))
+	    {
+		    return false;
+	    }
+
+	    if ($file['error'] === UPLOAD_ERR_OK)
+	    {
+		    return true;
+	    }
+
+	    return false;
     }
 
+	/**
+	 * Uploads the logo file
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
     public function uploadLogo()
     {
-        if ($_FILES['logo']['error']) {
-            return false;
-        }
+	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
 
-        //uploading image
-        $allowedImageTypes = array( "image/pjpeg","image/jpeg","image/jpg","image/png","image/x-png","image/gif");
-        if (!in_array($_FILES['logo']['type'], $allowedImageTypes)) {
-            $this->setError(Text::_('INSTL_ERROR_LOGO_FILE_TYPE'));
-            return false;
-        } else if (!JFile::upload($_FILES['logo']['tmp_name'],JPATH_ROOT.'/uploads/logo/'.JFile::makeSafe($_FILES['logo']['name']))) {
-            $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
-            return false;
-        }
+	    if (!$this->canUpload())
+	    {
+		    return false;
+	    }
 
-        return true;
+	    $allowedImageTypes = array('image/pjpeg', 'image/jpeg', 'image/jpg', 'image/png', 'image/x-png', 'image/gif');
+
+	    if (!in_array($file['type'], $allowedImageTypes))
+	    {
+		    $this->setError(Text::_('INSTL_ERROR_LOGO_FILE_TYPE'));
+
+		    return false;
+	    }
+	    else
+	    {
+		    if (!JFile::upload($file['tmp_name'], JPATH_ROOT . '/uploads/logo/' . JFile::makeSafe($file['name'])))
+		    {
+			    $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
+
+			    return false;
+		    }
+	    }
+
+	    return true;
     }
 
     /**
