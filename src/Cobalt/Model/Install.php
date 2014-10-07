@@ -194,6 +194,7 @@ class Install extends AbstractModel
      * @return  boolean
      *
    	 * @since   1.0
+     * @throws  \RuntimeException
      */
     public function install(array $postData)
     {
@@ -207,9 +208,7 @@ class Install extends AbstractModel
 
 	    if (empty($check) || count($check) < count($postData))
 	    {
-		    $this->setError(Text::_('INSTL_CHECK_REQUIRED_FIELDS'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_CHECK_REQUIRED_FIELDS'));
 	    }
 
 	    if (!$this->uploadLogo())
@@ -247,27 +246,31 @@ class Install extends AbstractModel
 
 	    $content = $this->config->toString('php', array('class' => 'JConfig'));
 
-	    if (!is_writable($file) || !is_writable(JPATH_CONFIGURATION) || !JFile::write($file, $content))
-	    {
-		    $this->setError(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
+		// Determine if the configuration file path is writable.
+		if (file_exists($file))
+		{
+			$canWrite = is_writable($file);
+		}
+		else
+		{
+			$canWrite = is_writable(JPATH_CONFIGURATION . '/');
+		}
 
-		    return false;
+	    if (!$canWrite && !JFile::write($file, $content))
+	    {
+		    throw new \RuntimeException(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
 	    }
 
 	    // Populate database
 	    if (!$this->createDb())
 	    {
-		    $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
 	    }
 
 	    // Populate crm
 	    if (!$this->createCrm())
 	    {
-		    $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
 	    }
 
 	    //create admin user
@@ -281,9 +284,7 @@ class Install extends AbstractModel
 
 	    if (!$this->createAdmin($admin))
 	    {
-		    $this->setError(Text::_('INSTL_ERROR_CREATE_USER'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_ERROR_CREATE_USER'));
 	    }
 
 	    return true;

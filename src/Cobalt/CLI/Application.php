@@ -36,6 +36,14 @@ class Application extends AbstractCliApplication
 	private $container;
 
 	/**
+	 * The Language object
+	 *
+	 * @var    Language
+	 * @since  1.0
+	 */
+	private $language;
+
+	/**
 	 * Constructor
 	 *
 	 * @since   1.0
