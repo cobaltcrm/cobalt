@@ -48,10 +48,6 @@ class Application extends AbstractCliApplication
 
 		$this->setContainer($container);
 
-		// Set error reporting based on config
-		$errorReporting = (int) $container->get('config')->get('errorReporting', 0);
-		error_reporting($errorReporting);
-
 		parent::__construct();
 	}
 
@@ -74,7 +70,11 @@ class Application extends AbstractCliApplication
 
 		// If a non-install CLI script is added, un-comment these lines or otherwise integrate them into the routines
 		/* $container->registerServiceProvider(new ConfigServiceProvider)
-			->registerServiceProvider(new DatabaseServiceProvider); */
+			->registerServiceProvider(new DatabaseServiceProvider);
+
+        // Set error reporting based on config
+		$errorReporting = (int) $container->get('config')->get('errorReporting', 0);
+		error_reporting($errorReporting); */
 
 		$this->out('Execution complete!');
 	}
