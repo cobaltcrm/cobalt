@@ -14,6 +14,7 @@ defined('_CEXEC') or die;
 
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseFactory;
+use Joomla\Filesystem\Exception\FilesystemException;
 use Joomla\Filesystem\File as JFile;
 use Joomla\Language\Text;
 use Joomla\Model\AbstractModel;
@@ -256,9 +257,24 @@ class Install extends AbstractModel
 			$canWrite = is_writable(JPATH_CONFIGURATION . '/');
 		}
 
-	    if (!$canWrite && !JFile::write($file, $content))
+	    if (!$canWrite)
 	    {
 		    throw new \RuntimeException(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
+	    }
+
+	    // Write the config file to the filesystem
+	    try
+	    {
+		    $isWritten = JFile::write($file, $content);
+	    }
+	    catch (FilesystemException $exception)
+	    {
+		    throw new \RuntimeException('Could not write configuration file to the filesystem: ' . $exception->getMessage());
+	    }
+
+	    if (!$isWritten)
+	    {
+		    throw new \RuntimeException('Could not write configuration file to the filesystem.');
 	    }
 
 	    // Populate database
