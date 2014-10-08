@@ -107,6 +107,28 @@ class CompanyCustom extends DefaultModel
             $query->where("c.id=$id");
         }
 
+        /** ------------------------------------------
+         * Set query limits/ordering and load results
+         */
+        $limit = $this->getState($this->_view . '_limit');
+        $limitStart = $this->getState($this->_view . '_limitstart');
+
+        if ($limit != 0)
+        {
+            $query->order($this->getState('Companycustom.filter_order') . ' ' . $this->getState('Companycustom.filter_order_Dir'));
+
+            if ($limitStart >= $this->getTotal())
+            {
+                $limitStart = 0;
+                $limit = 10;
+                $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
+                $this->state->set($this->_view . '_limit', $limit);
+                $this->state->set($this->_view . '_limitstart', $limitStart);
+            }
+
+            $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
+        }
+
         $results = $this->db->setQuery($query)->loadAssocList();
 
         if (count($results) > 0)
@@ -151,6 +173,16 @@ class CompanyCustom extends DefaultModel
         //set states
         $state->set('Companycustom.filter_order', $filter_order);
         $state->set('Companycustom.filter_order_Dir',$filter_order_Dir);
+
+        // Get pagination request variables
+        $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
+        $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
+
+        // In case limit has been changed, adjust it
+        $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+
+        $state->set($this->_view . '_limit', $limit);
+        $state->set($this->_view . '_limitstart', $limitstart);
 
         $this->setState($state);
     }
