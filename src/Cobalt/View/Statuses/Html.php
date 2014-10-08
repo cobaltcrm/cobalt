@@ -16,7 +16,6 @@ use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Statuses as StatusesModel;
 
@@ -30,65 +29,50 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         // Create toolbar
         $this->toolbar = new Toolbar;
 
-        //document
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
-
          /** Menu Links **/
-        $menu = MenuHelper::getMenuModules();
-        $this->menu = $menu;
+        $this->menu = MenuHelper::getMenuModules();
 
         $layout = $this->getLayout();
 
         //gather information for view
         $model = new StatusesModel;
-        $model->set("_layout",$layout);
-        $this->pagination   = $model->getPagination();
 
-        if ($layout && $layout == 'edit') {
+        // Initialise state variables.
+        $this->state = $model->getState();
 
+        $model->set("_layout", $layout);
+
+        if ($layout && $layout == 'edit')
+        {
             //toolbar buttons
-            $this->toolbar->cancel();
+            $this->toolbar->cancel('statuses');
             $this->toolbar->save();
-
-            //javascripts
-            $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
-
-            //stylesheets
-            $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
 
             //get status
             $this->status = $model->getStatus();
-
-            //script declarations
-            if ($this->status['color'] != null) {
-                $document->addScriptDeclaration('var status_color = "'.$this->status['color'].'";');
-            } else {
-                $document->addScriptDeclaration('var status_color = "ff0000";');
-            }
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            $this->toolbar->addNew();
-            ToolbarHelper::editList('edit');
+            $this->toolbar->addNew('statuses');
+            // ToolbarHelper::editList('edit');
             $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'statuses';
+                var order_dir = '" . $this->state->get('Statuses.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Statuses.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             //statuses
             $statuses = $model->getStatuses();
             $this->statuses  = $statuses;
-
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder  = $this->state->get('Statuses.filter_order');
-            $this->listDirn   = $this->state->get('Statuses.filter_order_Dir');
-            $this->saveOrder  = $this->listOrder == 'c.ordering';
-
         }
 
         //display
