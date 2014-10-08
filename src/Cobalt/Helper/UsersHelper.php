@@ -522,8 +522,44 @@ class UsersHelper
     }
 
     /**
+     * Get deal_custom count associated with users
+     * @return int Count of deal_custom returned from database
+     */
+    public static function getDealcustomCount()
+    {
+        return self::getItemsCount('deal_custom');
+    }
+
+    /**
+     * Get people_custom count associated with users
+     * @return int Count of people_custom returned from database
+     */
+    public static function getPeoplecustomCount()
+    {
+        return self::getItemsCount('people_custom');
+    }
+
+    /**
+     * Get companycustom count associated with users
+     * @return int Count of companycustom returned from database
+     */
+    public static function getCompanycustomCount()
+    {
+        return self::getItemsCount('company_custom');
+    }
+
+    /**
+     * Get sources count associated with users
+     * @return int Count of sources returned from database
+     */
+    public static function getSourcesCount()
+    {
+        return self::getItemsCount('stages');
+    }
+
+    /**
      * Get stages count associated with users
-     * @return int Count of people returned from database
+     * @return int Count of stages returned from database
      */
     public static function getStagesCount()
     {
@@ -531,8 +567,8 @@ class UsersHelper
     }
 
     /**
-     * Get stages count associated with users
-     * @return int Count of people returned from database
+     * Get categories count associated with users
+     * @return int Count of categories returned from database
      */
     public static function getCategoriesCount()
     {
@@ -542,7 +578,7 @@ class UsersHelper
     /**
      * Get an item count associated with users
      * @param $item string name of the item
-     * @return int Count of people returned from database
+     * @return int Count of items returned from database
      */
     public static function getItemsCount($item = null)
     {

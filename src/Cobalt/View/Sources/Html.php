@@ -17,6 +17,7 @@ use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Sources as SourcesModel;
 use Joomla\View\AbstractHtmlView;
 
@@ -30,9 +31,8 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
-        //document
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
+        //application
+        $app = \Cobalt\Container::fetch('app');
 
          /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
@@ -41,38 +41,43 @@ class Html extends AbstractHtmlView
         //gather information for view
         $model = new SourcesModel;
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
-        $this->pagination   = $model->getPagination();
+        $model->set("_layout", $layout);
 
-        if ($layout && $layout == 'edit') {
+        // Initialise state variables.
+        $state = $model->getState();
+        $this->state = $state;
 
+        if ($layout && $layout == 'edit')
+        {
             //toolbar
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('sources');
 
             //information for view
             $this->source_types = DropdownHelper::getSources();
             $this->source = $model->getSource();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('sources');
+            $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'sources';
+                var order_dir = '" . $this->state->get('Sources.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Sources.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             //get sources
             $sources = $model->getSources();
             $this->sources = $sources;
 
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
             $this->listOrder  = $this->state->get('Sources.filter_order');
             $this->listDirn   = $this->state->get('Sources.filter_order_Dir');
             $this->saveOrder  = $this->listOrder == 's.ordering';
-
         }
 
         //display

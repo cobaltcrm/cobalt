@@ -10,42 +10,58 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\RouteHelper;
-use Cobalt\Helper\TextHelper;
-use Cobalt\Table\SourcesTable;
 use Joomla\Registry\Registry;
 
 // no direct access
-defined('_CEXEC') or die('Restricted access');
+defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Sources extends DefaultModel
+class PeopleCustom extends DefaultModel
 {
-
-	public $_view = "sources";
+    public $_view = "peoplecustom";
 
 	public function store()
 	{
-		// Load Tables
-		$row  = $this->getTable('Sources');
+		//Load Tables
+		$row  = $this->getTable('PeopleCustom');
 		$data = $this->app->input->post->getArray();
 
-		// Date generation
-		$date = DateHelper::formatDBDate('now');
-
+		//date generation
+		$date = date('Y-m-d H:i:s');
 		if (!array_key_exists('id', $data))
 		{
 			$data['created'] = $date;
 		}
-
 		$data['modified'] = $date;
+
+		//generate custom values
+		$data['values'] = array_key_exists('values', $data) ? json_encode(($data['values'])) : "";
+
+		//filter checkboxes
+		if (array_key_exists('required', $data))
+		{
+			$data['required'] = ($data['required'] == 'on') ? 1 : 0;
+		}
+		else
+		{
+			$data['required'] = 0;
+		}
+
+		if (array_key_exists('multiple_selections', $data))
+		{
+			$data['multiple_selections'] = ($data['multiple_selections'] == 'on') ? 1 : 0;
+		}
+		else
+		{
+			$data['multiple_selections'] = 0;
+		}
 
 		// Bind the form fields to the table
 		try
 		{
 			$row->save($data);
 		}
-		catch (\InvalidArgumentException $exception)
+		catch (\Exception $exception)
 		{
 			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
@@ -55,21 +71,27 @@ class Sources extends DefaultModel
 		return true;
 	}
 
-	public function _buildQuery()
-	{
-		return $this->db->getQuery(true)
-			->select("s.*")
-			->from("#__sources AS s");
-	}
+    public function _buildQuery()
+    {
+	    return $this->getDb()->getQuery(true)
+	        ->select('c.*')
+	        ->from('#__people_custom AS c');
+    }
+
+    /**
+	 * Alias for getCustom
+	 */
+    public function getPeoplecustom()
+    {
+    	return $this->getCustom();
+    }
 
 	/**
 	 * Get list of stages
 	 *
-	 * @param  int $id specific search id
-	 *
-	 * @return mixed $results results
+	 * @return  array
 	 */
-	public function getSources()
+	public function getCustom()
 	{
 		$query = $this->_buildQuery();
 
@@ -79,9 +101,9 @@ class Sources extends DefaultModel
         $limit = $this->getState($this->_view . '_limit');
         $limitStart = $this->getState($this->_view . '_limitstart');
 
-		if ($limit != 0)
+        if ($limit != 0)
         {
-            $query->order($this->getState('Sources.filter_order') . ' ' . $this->getState('Sources.filter_order_Dir'));
+            $query->order($this->getState('Peoplecustom.filter_order') . ' ' . $this->getState('Peoplecustom.filter_order_Dir'));
 
             if ($limitStart >= $this->getTotal())
             {
@@ -95,37 +117,54 @@ class Sources extends DefaultModel
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-		return $this->db->setQuery($query)->loadAssocList();
+		$results = $this->getDb()->setQuery($query)->loadAssocList();
+
+		if (count($results) > 0)
+		{
+			foreach ($results as $key => $result)
+			{
+				$results[$key]['values'] = json_decode($result['values']);
+			}
+		}
+
+		return $results;
 	}
 
-	public function getSource($id = null)
+	public function getItem($id = null)
 	{
 		$id = $id ? $id : $this->id;
 
 		if ($id > 0)
 		{
-			$query = $this->_buildQuery()
-				->where("s.id = $id");
+			//database
+			$db    = $this->getDb();
+			$query = $this->_buildQuery();
 
-			return $this->db->setQuery($query)->loadObject();
+			$query->where("c.id = $id");
+
+			//return results
+			$db->setQuery($query);
+			$result = $db->loadObject();
+
+			$result->values = json_decode($result->values);
+
+			return $result;
 		}
-		else
-		{
-			return $this->getTable('Sources');
-		}
+
+		return $this->getTable('PeopleCustom');
 	}
 
 	public function populateState()
 	{
 		//get states
-		$filter_order     = $this->app->getUserStateFromRequest('Sources.filter_order', 'filter_order', 's.name');
-		$filter_order_Dir = $this->app->getUserStateFromRequest('Sources.filter_order_Dir', 'filter_order_Dir', 'asc');
+		$filter_order     = $this->app->getUserStateFromRequest('Peoplecustom.filter_order', 'filter_order', 'c.name');
+		$filter_order_Dir = $this->app->getUserStateFromRequest('Peoplecustom.filter_order_Dir', 'filter_order_Dir', 'asc');
 
 		$state = new Registry;
 
 		//set states
-		$state->set('Sources.filter_order', $filter_order);
-		$state->set('Sources.filter_order_Dir', $filter_order_Dir);
+		$state->set('Peoplecustom.filter_order', $filter_order);
+		$state->set('Peoplecustom.filter_order_Dir', $filter_order_Dir);
 
 		// Get pagination request variables
         $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
@@ -142,8 +181,7 @@ class Sources extends DefaultModel
 
 	public function delete($id)
 	{
-		$table = $this->getTable('Sources');
-		$table->delete($id);
+		return $this->getTable('PeopleCustom')->delete($id);
 	}
 
 	/**
@@ -161,9 +199,8 @@ class Sources extends DefaultModel
     {
         $columns = array();
         $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
-        $columns[] = array('data' => 'name', 'ordering' => 's.name');
-        $columns[] = array('data' => 'cost', 'ordering' => 's.cost', 'sClass' => 'text-center');
-        $columns[] = array('data' => 'type', 'ordering' => 's.type', 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 'c.name');
+        $columns[] = array('data' => 'type', 'ordering' => 'c.type', 'sClass' => 'text-center');
 
         return $columns;
     }
@@ -179,7 +216,7 @@ class Sources extends DefaultModel
     {
         if (!$items)
         {
-            $items = $this->getSources();
+            $items = $this->getCustom();
         }
 
         return parent::getDataTableItems($items);
@@ -202,13 +239,7 @@ class Sources extends DefaultModel
                 $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'name':
-                $template .= '<a href="'.RouteHelper::_('index.php?view=sources&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
-                break;
-            case 'cost':
-                $template .= TextHelper::price($item->cost);
-                break;
-            case 'type':
-            	$template .= ($item->type == "per") ? "Per Lead/Deal" : "Flat Fee";
+                $template .= '<a href="'.RouteHelper::_('index.php?view=peoplecustom&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
                 break;
             default:
                 if (isset($column) && isset($item->{$column}))

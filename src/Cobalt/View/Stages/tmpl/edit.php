@@ -18,11 +18,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal"  >
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
                         
                         <legend>
                             <div class="col-sm-9">
-                            <h2><?php echo TextHelper::_("COBALT_EDITING_STAGE"); ?></h2>
+                                <h2><?php echo TextHelper::_("COBALT_EDITING_STAGE"); ?></h2>
                             </div>
                             <div class="col-sm-3">
                                 <?php echo $this->toolbar->render(); ?>

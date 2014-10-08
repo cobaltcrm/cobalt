@@ -52,15 +52,16 @@ class MenuHelper
                 'id'        => "user_menu_link",
                 'view'      => "users"
             ),
-            array(
-                'link' => RouteHelper::_('index.php?view=branding'),
-                'class' => 'glyphicon glyphicon-tint',
-                'text' => TextHelper::_('Colors and Branding'),
-                'access' => array( ),
-                'tooltip'   => TextHelper::_('COBALT_COLORS_MENU_TOOLTIP'),
-                'id'        => "colors_menu_link",
-                'view'      => "branding"
-            ),
+            // @TODO: make this config
+            // array(
+            //     'link' => RouteHelper::_('index.php?view=branding'),
+            //     'class' => 'glyphicon glyphicon-tint',
+            //     'text' => TextHelper::_('Colors and Branding'),
+            //     'access' => array( ),
+            //     'tooltip'   => TextHelper::_('COBALT_COLORS_MENU_TOOLTIP'),
+            //     'id'        => "colors_menu_link",
+            //     'view'      => "branding"
+            // ),
             array(
                 'link' => RouteHelper::_('index.php?view=stages'),
                 'class' => 'glyphicon glyphicon-tasks',
