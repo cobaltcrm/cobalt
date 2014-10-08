@@ -13,12 +13,12 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 ?>
     <thead>
     <tr>
-        <?php if (JFactory::getApplication()->input->getString('loc','documents') == 'documents'): ?>
+        <?php if (\Cobalt\Container::fetch('app')->input->getString('loc','documents') == 'documents'): ?>
         <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" /></th>
         <?php endif; ?>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_TYPE'); ?></th>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_NAME'); ?></th>
-        <?php if (JFactory::getApplication()->input->getString('loc','documents') == 'documents'): ?>
+        <?php if (\Cobalt\Container::fetch('app')->input->getString('loc','documents') == 'documents'): ?>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_ASSOCIATION'); ?></th>
         <?php endif; ?>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_OWNER'); ?></th>
@@ -72,7 +72,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 echo '<li><a href="javascript:void(0);" class="document_delete" id="delete_'.$document['id'].'"><i class="glyphicon glyphicon-trash"></i> '.TextHelper::_('COBALT_DELETE').'</a></li>';
                 echo '</ul>';
                 echo '</div></td>';
-                if (JFactory::getApplication()->input->getString('loc','documents') == 'documents') {
+                if (\Cobalt\Container::fetch('app')->input->getString('loc','documents') == 'documents') {
                     echo '<td>'.$association_link.'</a></td>';
                 }
                 echo '<td>'.$document['owner_name'].'</td>';

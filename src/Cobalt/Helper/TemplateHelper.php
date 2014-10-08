@@ -10,9 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
-use JUri;
-
 use Cobalt\Model\Menu as MenuModel;
 
 // no direct access
@@ -40,7 +37,7 @@ class TemplateHelper
                     <div id="document_preview_modal" style="display:none;"></div>
                     <?php echo TemplateHelper::getEventDialog(); ?>
                     <?php echo TemplateHelper::getAvatarDialog(); ?>
-                    <script type="text/javascript">var base_url = "<?php echo JUri::base(); ?>";</script>
+                    <script type="text/javascript">var base_url = "<?php echo \Cobalt\Container::fetch('app')->get('uri.base.full'); ?>";</script>
                     <?php if (UsersHelper::getLoggedInUser()) : ?>
                     <script type="text/javascript">var userDateFormat = "<?php echo UsersHelper::getDateFormat(false); ?>";</script>
                     <script type="text/javascript">var user_id = "<?php echo UsersHelper::getUserId(); ?>";</script>
@@ -156,7 +153,7 @@ class TemplateHelper
             $list_html .= '<img id="site-logo-img" src="'.StylesHelper::getSiteLogo().'" />';
             $list_html .= '</div>';
         }
-        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.JUri::base().'">';
+        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.\Cobalt\Container::fetch('app')->get('uri.base.full').'">';
         $list_html .= StylesHelper::getSiteName();
         $list_html .= '</a>';
         $list_html .= '</div>'; // navbar-header end
@@ -211,7 +208,7 @@ class TemplateHelper
             $list_html .= '</a>';
             $list_html .= '</li>';
         }
-        if (UsersHelper::getLoggedInUser() && !(JFactory::getApplication()->input->get('view')=="print"))
+        if (UsersHelper::getLoggedInUser() && !(\Cobalt\Container::fetch('app')->input->get('view')=="print"))
         {
             $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
             $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom">';

@@ -12,7 +12,6 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\EventTable;
-use JFactory;
 use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\UsersHelper;
@@ -57,7 +56,7 @@ class Event extends DefaultModel
     {
 
         $app = \Cobalt\Container::fetch('app');
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         //Load Tables
         $row    = $this->getTable('Event');
@@ -184,7 +183,7 @@ class Event extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
         $loc = $loc ? $loc : $this->loc;
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
         $query->select("e.*,".
                        "a.*,".
@@ -800,7 +799,7 @@ class Event extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         if (!$id) {
             $event = $this->getTable('Event');
@@ -988,7 +987,7 @@ class Event extends DefaultModel
     public function eventsCf($cfdata,$type)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //search for existing associations
@@ -1030,7 +1029,7 @@ class Event extends DefaultModel
     public function addExcludes($parent_id,$date)
     {
         //Dbo
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //gen query
@@ -1068,7 +1067,7 @@ class Event extends DefaultModel
     public function updateEvent($parent_id,$data)
     {
         //dbo
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //unset values
@@ -1117,7 +1116,7 @@ class Event extends DefaultModel
         $data = $app->input->getArray();
         if ( $id != null ) $data['event_id'] = $id;
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //remove an entire series
@@ -1268,7 +1267,7 @@ class Event extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
-        return JFactory::getDbo()->getAffectedRows() ? true : false;
+        return $this->getDb()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1294,7 +1293,7 @@ class Event extends DefaultModel
         //We are only editing a single event entry OR a parent entry
         if ($repeats == 'none' /*|| $parent_id == 0*/) {
 
-            $db = JFactory::getDBO();
+            $db = $this->getDb();
             $query = $db->getQuery(true);
             $date = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
             $query->update("#__events")->set(array('completed='.$completed,'actual_close="'.$date.'"'))->where("id=".$event_id);
@@ -1354,7 +1353,7 @@ class Event extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
-        return JFactory::getDbo()->getAffectedRows() ? true : false;
+        return $this->getDb()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1371,13 +1370,13 @@ class Event extends DefaultModel
         $event_type = $app->input->get('event_type');
         $repeats = $app->input->get("repeats");
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
         $query->update("#__events")->set(array('completed=0','actual_close="0000-00-00 00:00:00"'))->where("id=".$event_id);
         $db->setQuery($query);
         $db->query();
 
-        return JFactory::getDbo()->getAffectedRows() ? true : false;
+        return $this->getDb()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1391,7 +1390,7 @@ class Event extends DefaultModel
             $event_id = ( $event_id == null ) ? $app->input->get('event_id') : $event_id;
             $days = ( $days == null ) ? $app->input->get("days") : $days;
 
-            $db = JFactory::getDBO();
+            $db = $this->getDb();
             $query = $db->getQuery(true);
             $query->select("e.type,e.due_date,e.start_time,e.end_time")->from("#__events AS e")->where("e.id=".$event_id);
             $db->setQuery($query);

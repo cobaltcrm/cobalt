@@ -2,8 +2,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
-
 // no direct access
 defined('_CEXEC') or die('Restricted access');
 
@@ -66,7 +64,7 @@ class VersionHelper
      */
     public static function getLatestVersion()
     {
-        $session = JFactory::getSession();
+        $session = \Cobalt\Container::fetch('app')->getSession();
         // $latestVersion = $session->get('cobalt_version', null);
         $latestVersion = null;
 

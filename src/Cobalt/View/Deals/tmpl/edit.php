@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $deal = $this->deal;
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 $raw = $app->input->get('format'); ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">

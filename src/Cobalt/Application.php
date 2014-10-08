@@ -228,8 +228,7 @@ final class Application extends AbstractWebApplication
 	 */
 	public static function getHash($seed)
 	{
-		// TODO - Temporarily refactored back to JFactory, needs to pull from $this->getContainer instead
-		return md5(JFactory::getConfig()->get('secret') . $seed);
+		return md5(Container::fetch('config')->get('secret') . $seed);
 	}
 
 	/**

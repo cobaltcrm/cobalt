@@ -12,7 +12,6 @@ namespace Cobalt\View\PeopleCustom;
 
 use Joomla\View\AbstractHtmlView;
 use JUri;
-use JFactory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
@@ -40,7 +39,7 @@ class Html extends AbstractHtmlView
         $model = new PeopleCustomModel;
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
-        
+
         // Initialise state variables.
         $this->state = $model->getState();
 

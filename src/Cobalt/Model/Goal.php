@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DealHelper;
@@ -81,7 +80,7 @@ class Goal extends DefaultModel
     public function getIndividualGoals($id=null)
     {
         //load database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //load goals associated with an individual
@@ -124,7 +123,7 @@ class Goal extends DefaultModel
     public function getExecIndividualGoals()
     {
         //load database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //load goals associated with an individual
@@ -162,7 +161,7 @@ class Goal extends DefaultModel
     public function getManagerIndividualGoals()
     {
         //load database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //load goals associated with an individual
@@ -214,7 +213,7 @@ class Goal extends DefaultModel
         $team_id = UsersHelper::getTeamId();
 
        //load database
-       $db = JFactory::getDBO();
+       $db = $this->getDb();
        $query = $db->getQuery(true);
 
        //load goals associated with team id
@@ -258,7 +257,7 @@ class Goal extends DefaultModel
     public function getExecTeamGoals()
     {
         //load database
-       $db = JFactory::getDBO();
+       $db = $this->getDb();
        $query = $db->getQuery(true);
 
        //load goals associated with team id
@@ -296,7 +295,7 @@ class Goal extends DefaultModel
     public function getCompanyGoals()
     {
         //load database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //load goals associated with the company
@@ -327,7 +326,7 @@ class Goal extends DefaultModel
     public function getLeaderBoards($id=null)
     {
         //load database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //load goals and associate with user depending on team//role that have a leaderboard flag in the database
@@ -380,7 +379,7 @@ class Goal extends DefaultModel
     public function goalInfo($goal)
     {
         //get DBO
-         $db = JFactory::getDBO();
+         $db = $this->getDb();
          $query = $db->getQuery(true);
 
         //win_cash
@@ -591,7 +590,7 @@ class Goal extends DefaultModel
     public function leaderboardInfo($leaderboard)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //get won stage id

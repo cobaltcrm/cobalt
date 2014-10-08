@@ -11,7 +11,6 @@
 namespace Cobalt\View\Cobalt;
 
 use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\UsersHelper;

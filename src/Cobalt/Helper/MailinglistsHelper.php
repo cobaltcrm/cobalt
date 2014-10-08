@@ -10,7 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
 use Cobalt\Model\People as PeopleModel;
 
 // no direct access

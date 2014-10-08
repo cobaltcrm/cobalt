@@ -25,7 +25,7 @@ class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         //if we are deleting goals determine which goals the user is allowed to delete
         if ( $this->getLayout() == 'delete' ) {

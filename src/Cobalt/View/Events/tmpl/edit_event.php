@@ -12,7 +12,7 @@ defined('_CEXEC') or die('Restricted access');
 
 //assign event
 $event = $this->event;
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 
 ?>
 <form class="validate" id="edit_event_form">

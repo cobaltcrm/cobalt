@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Joomla\Registry\Registry;
 use Joomla\Filesystem\File;
 use Cobalt\Helper\TextHelper;
@@ -208,7 +207,7 @@ class Document extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //get DBO
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         //gen query
         $query = $db->getQuery(true);
@@ -229,7 +228,7 @@ class Document extends DefaultModel
         $team_id = UsersHelper::getTeamId();
 
         //get session data
-        $session = JFactory::getSession();
+        $session = $this->app->getSession();
 
         //get post data
         $assoc  = $app->input->get('assoc');
@@ -393,7 +392,7 @@ class Document extends DefaultModel
     {
         $app = \Cobalt\Container::fetch('app');
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         $query->select("*")->from("#__documents");
@@ -425,7 +424,7 @@ class Document extends DefaultModel
     public function deleteDocument($id)
     {
         //get dbo
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //get filename to delete
@@ -481,7 +480,7 @@ class Document extends DefaultModel
     public function _buildQuery()
     {
         //database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //query

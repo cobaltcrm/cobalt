@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Table\DocumentsTable;
 use Cobalt\Helper\TextHelper;
 use Joomla\Filesystem\File;
@@ -61,7 +60,7 @@ class Documents extends DefaultModel
     public function _buildQuery()
     {
          //database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -81,7 +80,7 @@ class Documents extends DefaultModel
     public function getDocuments($id=null)
     {
         //database
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $this->_buildQuery();
 
         //sort
@@ -115,7 +114,7 @@ class Documents extends DefaultModel
     public function remove($id)
     {
         //get dbo
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //delete id
@@ -220,7 +219,7 @@ class Documents extends DefaultModel
                         );
 
            $model = new static;
-           $session = JFactory::getSession();
+           $session = $this->app->getSession();
 
            if ($model->store($data)) {
                $msg = TextHelper::_('COM_CRMERY_DOC_UPLOAD_SUCCESS');

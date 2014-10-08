@@ -11,7 +11,6 @@
 namespace Cobalt\View\Documents;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
 use Cobalt\Model\Document as DocumentModel;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,7 +19,7 @@ class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
          //get model
         $model = new DocumentModel;

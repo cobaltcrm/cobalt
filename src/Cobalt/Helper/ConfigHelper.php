@@ -10,7 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
 use Cobalt\Model\Config as ConfigModel;
 use Joomla\Filesystem\Folder;
 
@@ -162,7 +161,7 @@ class ConfigHelper
 
     public static function getLanguage()
     {
-        $config = JFactory::getConfig();
+        $config = Container::fetch('config');
 
         return $config->get('language');
 
@@ -170,7 +169,7 @@ class ConfigHelper
 
     public static function saveLanguage($lang)
     {
-        $config = JFactory::getConfig();
+        $config = Container::fetch('config');
         $config->set("language",$lang);
 
         $file = JPATH_CONFIGURATION."/configuration.php";

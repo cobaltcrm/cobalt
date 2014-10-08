@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 //define deal
 $contacts = $this->contacts;
 ?>

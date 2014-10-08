@@ -10,8 +10,6 @@
 
 namespace Cobalt\View\Calendar;
 
-use JUri;
-use JFactory;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Helper\UsersHelper;
 use Joomla\View\AbstractHtmlView;

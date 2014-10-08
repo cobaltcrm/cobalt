@@ -11,7 +11,6 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\FormWizardTable;
-use JFactory;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -72,7 +71,7 @@ class FormWizard extends DefaultModel
 
         if (array_key_exists('temp_id',$data) ) {
 
-            $db = JFactory::getDBO();
+            $db = $this->getDb();
             $query = $db->getQuery(true);
             $query->select('COUNT(*) as existing, MAX(id) AS greatest')
                     ->from('#__formwizard')
@@ -104,7 +103,7 @@ class FormWizard extends DefaultModel
 
     public function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
         $query
             ->select("f.*,CONCAT(user.first_name,' ',user.last_name) AS owner_name")
@@ -117,7 +116,7 @@ class FormWizard extends DefaultModel
     public function getForms()
     {
         $query = $this->_buildQuery();
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query->order($this->getState('Formwizard.filter_order') . ' ' . $this->getState('Formwizard.filter_order_Dir'));
         $db->setQuery($query);
         $results = $db->loadAssocList();
@@ -138,7 +137,7 @@ class FormWizard extends DefaultModel
         if ($formId > 0) {
 
             $query = $this->_buildQuery();
-            $db = JFactory::getDBO();
+            $db = $this->getDb();
             $query->where("f.id=".$formId);
             $db->setQuery($query);
             $result = $db->loadAssoc();
@@ -156,7 +155,7 @@ class FormWizard extends DefaultModel
     public function delete($ids)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         $query->delete("#__formwizard");
@@ -175,7 +174,7 @@ class FormWizard extends DefaultModel
 
     public function getTempFormId()
     {
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
         $query->select('MAX(id)')
                 ->from('#__formwizard');

@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 ?>
 <script type="text/javascript">
     var order_url = "<?php echo 'index.php?view=reports&layout=deal_milestones_filter&format=raw'; ?>";

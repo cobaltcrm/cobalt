@@ -10,7 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
 use Cobalt\Model\Document as DocumentModel;
 
 // no direct access
@@ -40,7 +39,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     //function to return filter types for deals
     public static function getDealTypes()
     {
-        return array(   
+        return array(
             ''=>TextHelper::_('COBALT_ALL_DEALS'),
             'due.today'=>TextHelper::_('COBALT_DEALS_TASKS_TODAY'),
             'due.tomorrow'=>TextHelper::_('COBALT_DEALS_TASKS_TOMORROW'),

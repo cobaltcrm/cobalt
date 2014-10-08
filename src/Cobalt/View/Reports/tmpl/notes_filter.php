@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 
   for ( $i=0; $i<count($this->note_entries); $i++ ) {
       $note = $this->note_entries[$i];

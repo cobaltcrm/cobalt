@@ -26,7 +26,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         //determine the type of goal we are creating//editing
         $type = $app->input->get('type');

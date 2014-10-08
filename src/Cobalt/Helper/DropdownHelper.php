@@ -10,7 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
 use JHtml;
 use Cobalt\Model\People as PeopleModel;
 

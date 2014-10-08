@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\UsersHelper;
 
 // no direct access

@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Cobalt\Table\DealTable;
 use Cobalt\Table\NoteTable;
-use JFactory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
@@ -154,7 +153,7 @@ class Note extends DefaultModel
     {
         $app = \Cobalt\Container::fetch('app');
         //grab db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         //initialize query
         $query = $db->getQuery(true);
@@ -201,7 +200,7 @@ class Note extends DefaultModel
         $app = \Cobalt\Container::fetch('app');
 
         //grab db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         //initialize query
         $query = $db->getQuery(true);
@@ -343,7 +342,7 @@ class Note extends DefaultModel
     public function getNoteCategories()
     {
         //db object
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         //gen query
         $query = $db->getQuery(true);
         $query->select("name,id FROM #__notes_categories");

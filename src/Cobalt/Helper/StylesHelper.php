@@ -10,10 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JBrowser;
-use JFactory;
-use JUri;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -45,7 +41,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             $logo = $db->loadResult();
 
-            return JUri::base()."/src/Cobalt/media/logos/".$logo;
+            return \Cobalt\Container::fetch('app')->get('uri.base.full') . "/src/Cobalt/media/logos/".$logo;
         }
 
         //dynamically generate styles
