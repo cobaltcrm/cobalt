@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f86c7b6cb1400aca6d41bbf7642cba18",
+    "hash": "d710bc2953310cdc99b12b5533e7ce47",
     "packages": [
         {
             "name": "filp/whoops",
@@ -515,6 +515,50 @@
                 "joomla"
             ],
             "time": "2014-02-09 07:45:50"
+        },
+        {
+            "name": "joomla/http",
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/http.git",
+                "reference": "e3b88785aa42de2ee8290a14ee4ee6652508a0d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/http/zipball/e3b88785aa42de2ee8290a14ee4ee6652508a0d0",
+                "reference": "e3b88785aa42de2ee8290a14ee4ee6652508a0d0",
+                "shasum": ""
+            },
+            "require": {
+                "joomla/uri": "~1.0",
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "joomla/test": "~1.0"
+            },
+            "suggest": {
+                "joomla/registry": "Registry can be used as an alternative to using an array for the package options."
+            },
+            "type": "joomla-package",
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Http\\": "src/",
+                    "Joomla\\Http\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla HTTP Package",
+            "homepage": "https://github.com/joomla-framework/http",
+            "keywords": [
+                "framework",
+                "http",
+                "joomla"
+            ],
+            "time": "2014-08-23 19:15:18"
         },
         {
             "name": "joomla/image",

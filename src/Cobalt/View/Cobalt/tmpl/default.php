@@ -40,13 +40,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
                     <?php } ?>
                     <div class="row">
-                        <div class="col-sm-12"> 
+                        <div class="col-sm-12">
                         <?php if ($this->latestVersion == 'no_curl') { ?>
                             <span class="btn btn-danger btn-mini">
                                 <i class="glyphicon glyphicon-remove icon-white tip"></i>
                             </span>
                             <?php echo JText::_('COBALT_CURL_NOT_INSTALLED'); ?>
-                            <?php } elseif ( VersionHelper::isUpToDate($this->installedVersion, $this->latestVersion) ) { ?>
+                            <?php } elseif ( version_compare($this->installedVersion, $this->latestVersion, 'ge') ) { ?>
                                 <span class="btn btn-success btn-mini">
                                     <i class="glyphicon glyphicon-ok icon-white"></i>
                                 </span>

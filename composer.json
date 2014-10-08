@@ -13,6 +13,7 @@
 		"joomla/event": "~1.1",
 		"joomla/filesystem": "~1.1",
 		"joomla/filter": "~1.1",
+		"joomla/http": "~1.1",
 		"joomla/image": "~1.1",
 		"joomla/input": "~1.1",
 		"joomla/language": "~1.1",
