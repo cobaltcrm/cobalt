@@ -56,6 +56,8 @@ class Html extends AbstractHtmlView
             //assign view info
             $this->custom_types = DropdownHelper::getCustomTypes('company');
             $this->custom = $model->getItem();
+
+            $app->getDocument()->addScriptDeclaration('jQuery(function() { CustomFieldConfig.bind(); });');
         }
         else
         {

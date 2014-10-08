@@ -3025,6 +3025,76 @@ var User = {
     }
 };
 
+var CustomFieldConfig = {
+
+    type: null,
+
+    bind: function() {
+        var typeSelect = jQuery("#select-custom-type");
+
+        this.type = typeSelect.val();
+        CustomFieldConfig.changeCustomType(this.type);
+
+        //bind custom type dropdown
+        typeSelect.change(function() {
+            CustomFieldConfig.changeCustomType(this.value);
+        });
+
+        //bind button to add more choices for picklists
+        CustomFieldConfig.bindPicklistAdd();
+        //bind remove value button
+        CustomFieldConfig.bindPicklistRemove();
+    },
+
+    //change the custom field type
+    changeCustomType: function(area) {
+        //change the html data on the page to reflect the correct type selected
+        $("#custom_field_data").empty().html($("#custom_field_" + area).html());
+        
+        //if we select a picklist we must bind the links for custom choices
+        if (area == 'picklist') {
+            CustomFieldConfig.bindPicklistAdd();
+            CustomFieldConfig.bindPicklistRemove();
+        }
+    },
+
+    //bind add to picklist
+    bindPicklistAdd: function() {
+        $("#add_values").unbind();
+        $("#add_values").bind('click', function() {
+            CustomFieldConfig.addValue();
+        });
+    },
+
+    //bind picklist areas
+    bindPicklistRemove: function() {
+        var ele = $("#choices").children('.choices');
+        $(ele).each(function(index, ele) {
+            $(this).find('.remove_values:last').unbind();
+        });
+        $(ele).each(function(index, element) {
+            $(this).find('.remove_values:last').bind('click', function() {
+                //assign function to link
+                removeValue($(this).parentsUntil('.choices').parent('.choices'));
+            })
+        });
+    },
+
+    //add choices to the picklist
+    addValue: function() {
+        //append template
+        $("#choices").append($("#choice_template").html());
+        //get the new entry
+        CustomFieldConfig.bindPicklistRemove();
+    },
+
+    //remove entry choices
+    removeValue: function(element) {
+        //remove the element
+        element.remove();
+    }
+};
+
 /**
  * Cobalt JS initialization
  **/
