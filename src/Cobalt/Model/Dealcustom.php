@@ -249,7 +249,7 @@ class DealCustom extends DefaultModel
                 $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'name':
-                $template .= '<a href="'.RouteHelper::_('index.php?view=peoplecustom&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
+                $template .= '<a href="'.RouteHelper::_('index.php?view=dealcustom&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
                 break;
             default:
                 if (isset($column) && isset($item->{$column}))
