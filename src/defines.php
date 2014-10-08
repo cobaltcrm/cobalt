@@ -17,7 +17,6 @@ define('JPATH_CONFIGURATION', JPATH_ROOT);
 define('JPATH_ADMINISTRATOR', JPATH_ROOT . '/admin');
 define('JPATH_LIBRARIES',     JPATH_ROOT . '/libraries');
 define('JPATH_PLUGINS',       JPATH_ROOT . '/plugins');
-define('JPATH_INSTALLATION',  JPATH_ROOT . '/installer');
 define('JPATH_THEMES',        JPATH_BASE . '/themes');
 define('JPATH_CACHE',         JPATH_BASE . '/cache');
 define('JPATH_VENDOR',        JPATH_BASE . '/vendor');

@@ -533,7 +533,7 @@ class Install extends AbstractModel
             $db_driver = 'mysql';
         }
 
-        $schema = JPATH_INSTALLATION."/sql/".$db_driver."/joomla.sql";
+        $schema = JPATH_ROOT."/src/meta/sql/".$db_driver."/joomla.sql";
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema)))
@@ -580,7 +580,7 @@ class Install extends AbstractModel
 			$db_driver = 'mysql';
 		}
 
-		$schema = JPATH_INSTALLATION."/sql/crm/" . $db_driver . "/crm.sql";
+		$schema = JPATH_ROOT."/src/meta/sql/crm/" . $db_driver . "/crm.sql";
 
         // Get the contents of the schema file.
         if (!($buffer = file_get_contents($schema))) {

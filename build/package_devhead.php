@@ -19,4 +19,4 @@ include_once __DIR__ . '/processfiles.php';
 // Post-processing - ZIP it up
 echo "Packaging Cobalt\n";
 system('find . -type d -name .git -exec rm -rf {} \\; > /dev/null');
-system('zip -r ../packages/cobalt-head.zip installer/ language/ libraries/ media/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');
+system('zip -r ../packages/cobalt-head.zip language/ libraries/ media/ src/ themes/ uploads/ vendor/ .htaccess index.php > /dev/null');

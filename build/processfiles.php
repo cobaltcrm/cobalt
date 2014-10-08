@@ -5,7 +5,6 @@
 
 // Copy files to packaging space
 echo "Copying files\n";
-system('cp -r ../installer packaging/');
 system('cp -r ../language packaging/');
 system('cp -r ../libraries packaging/');
 system('cp -r ../media packaging/');
