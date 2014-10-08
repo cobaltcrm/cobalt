@@ -92,11 +92,9 @@ class Stages extends DefaultModel
 				$this->state->set($this->_view . '_limit', $limit);
 				$this->state->set($this->_view . '_limitstart', $limitStart);
 			}
-
-			$query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
 		}
 
-		return $this->db->setQuery($query)->loadAssocList();
+		return $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 	}
 
 	public function getStage($id = null)
@@ -173,7 +171,7 @@ class Stages extends DefaultModel
 	 * Algorithm is available in parent method, just pass items array.
 	 *
 	 * @param   array  $items  of object of items from the database
-	 * 
+	 *
 	 * @return  array  in format dataTables requires
 	 */
 	public function getDataTableItems($items = array())
@@ -191,7 +189,7 @@ class Stages extends DefaultModel
 	 *
 	 * @param   string  $column  name
 	 * @param   object  $item    of item
-	 * 
+	 *
 	 * @return  string HTML template for propper field
 	 */
 	public function getDataTableFieldTemplate($column, $item)

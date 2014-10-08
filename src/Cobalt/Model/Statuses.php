@@ -96,11 +96,9 @@ class Statuses extends DefaultModel
 				$this->state->set($this->_view . '_limit', $limit);
 				$this->state->set($this->_view . '_limitstart', $limitStart);
 			}
-
-			$query .= " LIMIT " . ($limit) . " OFFSET " . ($limitStart);
 		}
 
-		return $this->db->setQuery($query)->loadAssocList();
+		return $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 	}
 
 	public function getStatus($id = null)
@@ -143,8 +141,6 @@ class Statuses extends DefaultModel
 		$state->set($this->_view . '_limitstart', $limitstart);
 
 		$this->setState($state);
-
-		$this->setState($state);
 	}
 
 	public function delete($id)
@@ -179,7 +175,7 @@ class Statuses extends DefaultModel
 	 * Algorithm is available in parent method, just pass items array.
 	 *
 	 * @param   array  $items  of object of items from the database
-	 * 
+	 *
 	 * @return  array  in format dataTables requires
 	 */
 	public function getDataTableItems($items = array())
@@ -197,7 +193,7 @@ class Statuses extends DefaultModel
 	 *
 	 * @param   string  $column  name
 	 * @param   object  $item    of item
-	 * 
+	 *
 	 * @return  string HTML template for propper field
 	 */
 	public function getDataTableFieldTemplate($column, $item)
