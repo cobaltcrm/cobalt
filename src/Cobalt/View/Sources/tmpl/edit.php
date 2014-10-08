@@ -12,32 +12,57 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
-            <div id="system-message-container"></div>
+    <div class="row">
+        <div class="col-sm-12" id="content">
             <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
-                    <form action="index.php?view=sources" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-                        <div class="row-fluid">
-                            <legend><h3><?php echo TextHelper::_('COBALT_EDITING_SOURCE'); ?></h3></legend>
-                            <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
-                            <input type="text" class="form-control" name="name" value="<?php echo $this->source['name']; ?>" />
-                            <label><b><?php echo JText::_('COBALT_HEADER_SOURCE_COST'); ?></b></label>
-                            <input type="text" class="form-control" name="cost" value="<?php echo $this->source['cost']; ?>" />
-                            <label><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></label>
-                            <select class="form-control" name="type">
-                                <option value=""><?php echo JText::_('COBALT_SELECT_SOURCE_TYPE'); ?></option>
-                                <?php echo JHtml::_('select.options', $this->source_types, 'value', 'text', $this->source['type'], true);?>
-                            </select>
-                            <div>
-                                <?php if ($this->source['id']) { ?>
-                                    <input type="hidden" name="id" value="<?php echo $this->source['id']; ?>" />
-                                <?php } ?>
-                                <input type="hidden" name="controller" value="" />
-                                <input type="hidden" name="model" value="sources" />
-                                <?php echo JHtml::_('form.token'); ?>
+                <div class="col-md-9">
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
+                        <legend>
+                            <div class="col-sm-9">
+                                <h2><?php echo TextHelper::_("COBALT_EDITING_SOURCE"); ?></h2>
                             </div>
+                            <div class="col-sm-3">
+                                <?php echo $this->toolbar->render(); ?>
+                            </div>
+                            <div class="clearfix"></div>
+                        </legend>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="name">
+                                <?php echo JText::_('COBALT_NAME'); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" id="name" value="<?php echo $this->source->name; ?>" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="cost">
+                                <?php echo JText::_('COBALT_HEADER_SOURCE_COST'); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="cost" id="cost" value="<?php echo $this->source->cost; ?>" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="type">
+                                <?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?>
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="type" id="type">
+                                    <option value=""><?php echo JText::_('COBALT_SELECT_SOURCE_TYPE'); ?></option>
+                                    <?php echo JHtml::_('select.options', $this->source_types, 'value', 'text', $this->source->type, true);?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <input type="hidden" name="id" value="<?php echo $this->source->id; ?>" />
+                            <input type="hidden" name="task" value="save" />
+                            <input type="hidden" name="model" value="sources" />
+                            <?php echo JHtml::_('form.token'); ?>
                         </div>
                     </form>
                 </div>

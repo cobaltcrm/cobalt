@@ -15,68 +15,86 @@ use JText;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
- class TextHelper extends JText
- {
+class TextHelper extends JText
+{
 
-     public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
+    public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
     {
         $string = JText::_($string, $jsSafe, $interpretBackSlashes, $script);
 
         $configValues = ConfigHelper::getNamingConventions();
 
-        foreach ($configValues as $key => $value) {
-            $key = str_replace("lang_","",$key);
+        foreach ($configValues as $key => $value)
+        {
+            $key = str_replace("lang_", "", $key);
             $string = self::ext_str_ireplace($key,$value,$string);
-               if ( stripos($string,"people") !== FALSE ) {
-                    $string = self::ext_str_ireplace("people",$configValues["lang_persons"],$string);
-               }
+
+            if (stripos($string, "people") !== false)
+            {
+                $string = self::ext_str_ireplace("people", $configValues["lang_persons"], $string);
+            }
         }
 
         return $string;
     }
 
-  public static function script($string = NULL, $jsSafe = false, $interpretBackSlashes = true)
-     {
-          $newString = JText::_($string, $jsSafe, $interpretBackSlashes);
+    public static function script($string = NULL, $jsSafe = false, $interpretBackSlashes = true)
+    {
+        $newString = JText::_($string, $jsSafe, $interpretBackSlashes);
 
-          $configValues = ConfigHelper::getNamingConventions();
+        $configValues = ConfigHelper::getNamingConventions();
 
-          foreach ($configValues as $key => $value) {
-               $key = str_replace("lang_","",$key);
-               $newString = self::ext_str_ireplace($key,$value,$newString);
-          }
+        foreach ($configValues as $key => $value)
+        {
+            $key = str_replace("lang_", "", $key);
+            $newString = self::ext_str_ireplace($key, $value, $newString);
+        }
 
-          // Normalize the key and translate the string.
-          parent::$strings[strtoupper($string)] = $newString;
+        // Normalize the key and translate the string.
+        parent::$strings[strtoupper($string)] = $newString;
 
-          return parent::$strings;
-     }
+        return parent::$strings;
+    }
 
     public static function ext_str_ireplace($findme, $replacewith, $subject)
-     {
-          // Replaces $findme in $subject with $replacewith
-          // Ignores the case and do keep the original capitalization by using $1 in $replacewith
-          // Required: PHP 5
+    {
+        // Replaces $findme in $subject with $replacewith
+        // Ignores the case and do keep the original capitalization by using $1 in $replacewith
+        // Required: PHP 5
 
-          $rest = $subject;
-          $result = '';
+        $rest = $subject;
+        $result = '';
 
-          while (stripos($rest, $findme) !== false) {
-               $pos = stripos($rest, $findme);
+        while (stripos($rest, $findme) !== false)
+        {
+            $pos = stripos($rest, $findme);
 
-               // Remove the wanted string from $rest and append it to $result
-               $result .= substr($rest, 0, $pos);
-               $rest = substr($rest, $pos, strlen($rest)-$pos);
+            // Remove the wanted string from $rest and append it to $result
+            $result .= substr($rest, 0, $pos);
+            $rest = substr($rest, $pos, strlen($rest)-$pos);
 
-               // Remove the wanted string from $rest and place it correctly into $result
-               $result .= str_replace('$1', substr($rest, 0, strlen($findme)), $replacewith);
-               $rest = substr($rest, strlen($findme), strlen($rest)-strlen($findme));
-          }
+            // Remove the wanted string from $rest and place it correctly into $result
+            $result .= str_replace('$1', substr($rest, 0, strlen($findme)), $replacewith);
+            $rest = substr($rest, strlen($findme), strlen($rest) - strlen($findme));
+        }
 
-          // After the last match, append the rest
-          $result .= $rest;
+        // After the last match, append the rest
+        $result .= $rest;
 
-          return $result;
-     }
+        return $result;
+    }
 
- }
+    /**
+     * Displays amount formated with currency.
+     * @TODO: let user to set decimal points and format.
+     * 
+     * @param float $amount plain amount number
+     * @return string formated amount
+     */
+    public static function price($amount)
+    {
+        $currency = ConfigHelper::getCurrency();
+
+        return  $currency . number_format($amount, 2);
+    }
+}

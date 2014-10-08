@@ -12,11 +12,9 @@ namespace Cobalt\View\DealCustom;
 
 use Cobalt\Model\DealCustom as DealCustomModel;
 use Joomla\View\AbstractHtmlView;
-use JFactory;
-use JUri;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
-use Cobalt\Helper\ToolbarHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\TextHelper;
 
@@ -30,54 +28,54 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
-        //document
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
-        $document->addScript(JURI::base().'src/Cobalt/media/js/custom_manager.js');
+        //application
+        $app = \Cobalt\Container::fetch('app');
 
         /** Menu Links **/
-        $menu = MenuHelper::getMenuModules();
-        $this->menu = $menu;
+        $this->menu = MenuHelper::getMenuModules();
 
         //model
         $model = new DealCustomModel;
 
+        // Initialise state variables.
+        $this->state = $model->getState();
+
         //gather information for view
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
-        $this->pagination   = $model->getPagination();
 
-        if ($layout && $layout == 'edit') {
-
+        if ($layout && $layout == 'edit')
+        {
             //toolbar
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('dealcustom');
 
             //assign view info
             $this->custom_types = DropdownHelper::getCustomTypes('deal');
             $this->custom = $model->getItem();
-            if ($this->custom['type'] != null) {
-                    $document->addScriptDeclaration('var type = "'.$this->custom['type'].'";');
+
+            if ($this->custom->type != null)
+            {
+                $app->getDocument()->addScriptDeclaration('var type = "' . $this->custom->type . '";');
             }
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('dealcustom');
+            $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'dealcustom';
+                var order_dir = '" . $this->state->get('Dealcustom.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Dealcustom.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             //assign view info
             $custom = $model->getCustom();
             $this->custom_fields = $custom;
-
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder  = $this->state->get('Dealcustom.filter_order');
-            $this->listDirn   = $this->state->get('Dealcustom.filter_order_Dir');
-            $this->saveOrder  = $this->listOrder == 'c.ordering';
         }
 
         //display

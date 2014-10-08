@@ -19,7 +19,16 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
+    	$app = \Cobalt\Container::fetch('app');
+    	$app->getDocument()->addScriptDeclaration("
+
+    		jQuery(function($) {
+				$('#username').focus();
+			});
+
+    	");
+
         return parent::render();
     }
 
- }
+}

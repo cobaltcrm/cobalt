@@ -15,9 +15,9 @@ use JUri;
 use JFactory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\PeopleCustom as PeopleCustomModel;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -29,53 +29,51 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
-
-        //javascripts
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
-        $document->addScript(JURI::base().'src/Cobalt/media/js/custom_manager.js');
 
          //gather information for view
         $model = new PeopleCustomModel;
         $layout = $this->getLayout();
         $model->set("_layout",$layout);
-        $this->pagination   = $model->getPagination();
+        
+        // Initialise state variables.
+        $this->state = $model->getState();
 
-        if ($layout && $layout == 'edit') {
-
-            //toolbar button
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+        if ($layout && $layout == 'edit')
+        {
+            //toolbar
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('peoplecustom');
 
             //assign view info
             $this->custom_types = DropdownHelper::getCustomTypes('people');
             $this->custom = $model->getItem();
 
-            if ($this->custom['type'] != null) {
-                $document->addScriptDeclaration('var type = "'.$this->custom['type'].'";');
+            if ($this->custom->type != null)
+            {
+                $app->getDocument()->addScriptDeclaration('var type = "'.$this->custom->type.'";');
             }
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('peoplecustom');
+            $this->toolbar->addDeleteRow();
 
-            $custom = $model->getCustom();
-            $this->custom_fields = $custom;
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'peoplecustom';
+                var order_dir = '" . $this->state->get('Peoplecustom.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Peoplecustom.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder  = $this->state->get('Peoplecustom.filter_order');
-            $this->listDirn   = $this->state->get('Peoplecustom.filter_order_Dir');
-            $this->saveOrder  = $listOrder == 'c.ordering';
-
+            $this->custom_fields = $model->getCustom();
         }
 
         //display
