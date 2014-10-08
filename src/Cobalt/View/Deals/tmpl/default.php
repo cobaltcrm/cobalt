@@ -45,13 +45,14 @@ use Joomla\Filter\OutputFilter;
                 </li>
             </ul>
         <?php else: ?>
-            <a href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-default">
+            <button data-placement="bottom" type="button" href="index.php?view=deals&layout=edit&format=raw&tmpl=component" data-target="#dealModal" data-toggle="modal" class="btn btn-default">
                 <i class="glyphicon glyphicon-plus icon-white"></i>
                 <?php echo TextHelper::_('COBALT_ADD_DEALS'); ?>
-            </a>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>">
+            </button>
+            <button data-placement="bottom" onclick="location.href = '<?php echo RouteHelper::_('index.php?view=import&import_type=deals'); ?>';" type="button" class="btn btn-default">
                 <i class="glyphicon glyphicon-arrow-up"></i>
-            </a>
+                <?php echo TextHelper::_('COBALT_IMPORT_DEALS'); ?>
+            </button>
         <?php endif; ?>
     </div>
 

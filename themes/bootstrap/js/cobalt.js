@@ -755,6 +755,7 @@ var Cobalt = {
                 inGraphDataFontSize : 14
             };
             var BarOptions = {barShowStroke: false};
+            var LineOptions = {};
 
             var dealsByStagePie = document.getElementById("deal_stage").getContext("2d");
             new Chart(dealsByStagePie).Pie(graphData.deal_stage, PieOptions);
@@ -762,8 +763,8 @@ var Cobalt = {
             var dealsByStatusPie = document.getElementById("deal_status").getContext("2d");
             new Chart(dealsByStatusPie).Pie(graphData.deal_status, PieOptions);
 
-            var yearlyCommissions = document.getElementById("yearly_commissions").getContext("2d");
-            new Chart(yearlyCommissions).Line(graphData.yearly_commissions, LineOptions);
+            //var yearlyCommissions = document.getElementById("yearly_commissions").getContext("2d");
+            //new Chart(yearlyCommissions).Line(graphData.yearly_commissions, LineOptions);
 
             //var yearlyRevenue = document.getElementById("yearly_revenue").getContext("2d");
             //new Chart(yearlyRevenue).Line(graphData.yearly_revenue, BarOptions);

@@ -40,10 +40,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </li>
             </ul>
         <?php else: ?>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?>" data-placement="bottom" class="btn btn-default" role="button" href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component'); ?>" data-target="#personModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?></a>
-            <a rel="tooltip" title="<?php echo TextHelper::_('COBALT_IMPORT_PEOPLE'); ?>" data-placement="bottom"  class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=people'); ?>">
-                <i class="glyphicon glyphicon-arrow-up"></i>
-            </a>
+            <a class="btn btn-default" role="button" href="<?php echo RouteHelper::_('index.php?view=people&layout=edit&format=raw&tmpl=component'); ?>" data-target="#personModal" data-toggle="modal"><i class="glyphicon glyphicon-plus icon-white"></i> <?php echo TextHelper::_('COBALT_PEOPLE_ADD'); ?></a>
+            <a class="btn btn-default" href="<?php echo RouteHelper::_('index.php?view=import&import_type=people'); ?>"><i class="glyphicon glyphicon-arrow-up"></i> <?php echo TextHelper::_('COBALT_IMPORT_PEOPLE'); ?></a>
         <?php endif; ?>
 
     </div>
