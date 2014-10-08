@@ -83,8 +83,6 @@ class Application extends AbstractCliApplication
         // Set error reporting based on config
 		$errorReporting = (int) $container->get('config')->get('errorReporting', 0);
 		error_reporting($errorReporting); */
-
-		$this->out('Execution complete!');
 	}
 
 	/**
