@@ -62,7 +62,7 @@ class Html extends AbstractHtmlView
         {
             //buttons
             $this->toolbar = new Toolbar;
-            $this->toolbar->addNew('stages');
+            $this->toolbar->addNew('sources');
             $this->toolbar->addDeleteRow();
 
             $app->getDocument()->addScriptDeclaration("

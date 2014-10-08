@@ -17,11 +17,19 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_SOURCES'); ?></h3></legend>
+
+                    <div class="page-header">
+                        <h3>
+                            <?php echo $this->toolbar->render(); ?>
+                            <?php echo JText::_('COBALT_SOURCES'); ?>
+                        </h3>
+                    </div>
+
                     <div class="alert alert-info">
                         <?php echo JText::_('COBALT_SOURCES_DESC_1'); ?><br />
                         <?php echo JText::_('COBALT_SOURCES_DESC_2'); ?>
                     </div>
+
                     <table class="table table-striped data-table">
                         <thead>
                             <tr>

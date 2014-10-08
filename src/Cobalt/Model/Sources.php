@@ -59,8 +59,7 @@ class Sources extends DefaultModel
 	{
 		return $this->db->getQuery(true)
 			->select("s.*")
-			->from("#__sources AS s")
-			->order($this->getState()->get('Sources.filter_order') . ' ' . $this->getState()->get('Sources.filter_order_Dir'));
+			->from("#__sources AS s");
 	}
 
 	/**
@@ -72,7 +71,31 @@ class Sources extends DefaultModel
 	 */
 	public function getSources()
 	{
-		return $this->db->setQuery($this->_buildQuery())->loadAssocList();
+		$query = $this->_buildQuery();
+
+		/** ------------------------------------------
+         * Set query limits/ordering and load results
+         */
+        $limit = $this->getState($this->_view . '_limit');
+        $limitStart = $this->getState($this->_view . '_limitstart');
+
+		if ($limit != 0)
+        {
+            $query->order($this->getState('Sources.filter_order') . ' ' . $this->getState('Sources.filter_order_Dir'));
+
+            if ($limitStart >= $this->getTotal())
+            {
+                $limitStart = 0;
+                $limit = 10;
+                $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
+                $this->state->set($this->_view . '_limit', $limit);
+                $this->state->set($this->_view . '_limitstart', $limitStart);
+            }
+
+            $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
+        }
+
+		return $this->db->setQuery($query)->loadAssocList();
 	}
 
 	public function getSource($id = null)
@@ -103,6 +126,16 @@ class Sources extends DefaultModel
 		//set states
 		$state->set('Sources.filter_order', $filter_order);
 		$state->set('Sources.filter_order_Dir', $filter_order_Dir);
+
+		// Get pagination request variables
+        $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
+        $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
+
+        // In case limit has been changed, adjust it
+        $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+
+        $state->set($this->_view . '_limit', $limit);
+        $state->set($this->_view . '_limitstart', $limitstart);
 
 		$this->setState($state);
 	}
