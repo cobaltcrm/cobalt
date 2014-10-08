@@ -685,16 +685,16 @@
         },
         {
             "name": "joomla/registry",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/registry.git",
-                "reference": "3a8b7837f9466df8e9ad568da31b303e470f3eaa"
+                "reference": "7330ea6481d0fe062f46d2b6cb848c212789915e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/registry/zipball/3a8b7837f9466df8e9ad568da31b303e470f3eaa",
-                "reference": "3a8b7837f9466df8e9ad568da31b303e470f3eaa",
+                "url": "https://api.github.com/repos/joomla-framework/registry/zipball/7330ea6481d0fe062f46d2b6cb848c212789915e",
+                "reference": "7330ea6481d0fe062f46d2b6cb848c212789915e",
                 "shasum": ""
             },
             "require": {
@@ -735,7 +735,7 @@
                 "joomla",
                 "registry"
             ],
-            "time": "2014-09-03 16:09:19"
+            "time": "2014-10-08 16:14:29"
         },
         {
             "name": "joomla/router",
@@ -1091,12 +1091,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tracy.git",
-                "reference": "dd9eeb2384859042f90a83e237cc45e318ca3f76"
+                "reference": "97889d2b8cfb7607cc370ca0ddb97c6f5b43deb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tracy/zipball/dd9eeb2384859042f90a83e237cc45e318ca3f76",
-                "reference": "dd9eeb2384859042f90a83e237cc45e318ca3f76",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/97889d2b8cfb7607cc370ca0ddb97c6f5b43deb9",
+                "reference": "97889d2b8cfb7607cc370ca0ddb97c6f5b43deb9",
                 "shasum": ""
             },
             "require": {
@@ -1137,7 +1137,7 @@
                 "debugger",
                 "nette"
             ],
-            "time": "2014-09-24 13:47:56"
+            "time": "2014-08-24 23:36:30"
         }
     ],
     "packages-dev": [],
