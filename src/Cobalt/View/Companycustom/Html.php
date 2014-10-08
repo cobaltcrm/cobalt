@@ -18,6 +18,7 @@ use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\MenuHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\CompanyCustom as CompanyCustomModel;
 
 // no direct access
@@ -30,6 +31,9 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
@@ -41,32 +45,40 @@ class Html extends AbstractHtmlView
         //gather information for view
         $model = new CompanyCustomModel;
 
+        // Initialise state variables.
+        $state = $model->getState();
+        $this->state = $state;
+
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
-        $this->pagination   = $model->getPagination();
+        $model->set("_layout", $layout);
+        $this->pagination = $model->getPagination();
 
-        if ($layout && $layout == 'edit') {
-
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+        if ($layout && $layout == 'edit')
+        {
+            //toolbar
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('companycustom');
 
             //assign view info
             $this->custom_types = DropdownHelper::getCustomTypes('company');
             $this->custom = $model->getItem();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('companycustom');
+            $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'companycustom';
+                var order_dir = '" . $this->state->get('Companycustom.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Companycustom.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             $custom = $model->getCustom();
             $this->custom_fields = $custom;
-
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
 
             $this->listOrder  = $state->get('Companycustom.filter_order');
             $this->listDirn   = $state->get('Companycustom.filter_order_Dir');

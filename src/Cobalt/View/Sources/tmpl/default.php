@@ -34,7 +34,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <thead>
                             <tr>
                                 <th width="1%">
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="checkAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_SOURCE_NAME'); ?>

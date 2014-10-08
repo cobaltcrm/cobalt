@@ -18,14 +18,21 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <legend><h3><?php echo JText::_('COBALT_COMPANY_CUSTOM_FIELDS'); ?></h3></legend>
+
+                    <div class="page-header">
+                        <h3>
+                            <?php echo $this->toolbar->render(); ?>
+                            <?php echo JText::_('COBALT_COMPANY_CUSTOM_FIELDS'); ?>
+                        </h3>
+                    </div>
+
                     <div class="alert alert-info"><?php echo JText::_('COBALT_COMPANY_CUSTOM_FIELDS_DESC'); ?></div>
                     <form action="index.php?view=companycustom" method="post" name="adminForm" id="adminForm">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th width="1%">
-                                        <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="checkAll(this)" />
+                                        <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                     </th>
                                     <th>
                                         <?php echo JHtml::_('grid.sort',  'COBALT_HEADER_CUSTOM_NAME', 'c.name', $this->listDirn, $this->listOrder); ?>
