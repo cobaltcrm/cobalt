@@ -40,11 +40,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="type">
+                            <label class="col-sm-2 control-label" for="select-custom-type">
                                 Type
                             </label>
                             <div class="col-sm-10">
-                                <select class="form-control required" name="type" id="type">
+                                <select class="form-control required" name="type" id="select-custom-type">
                                     <option value="">- Select Custom Field Type -</option>
                                     <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom->type, true);?>
                                 </select>
@@ -62,14 +62,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
 
                     </form>
-                    <div style="display:none;" id="custom_field_templates">
+
+                    <div class="hide" id="custom_field_templates">
                         <div id="custom_field_number">
                             <ul>
-                                <li>Numeric Fields can be used to capture items such as product units or other numeric values related to your people.</li>
+                                <li>Numeric Fields can be used to capture items such as product units or other numeric values related to your companies.</li>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -80,7 +81,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -91,7 +92,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -101,7 +102,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <li>Picklist fields allow you to specify a list of pre-defined values for a user to pick from. Examples: Industry, Competitor, Regions, Product or Service Interest.</li>
                             </ul>
                             <div id="choices">
-                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom->values != null ) {
+                                <?php if (isset($this->custom->values) && $this->custom->values != null) {
                                 $values = $this->custom->values;
                                 if ( count($values) > 0 ) {
                                     foreach ($values as $value) { ?>
@@ -156,7 +157,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
                        <div id="custom_field_date">
                            <ul>
-                               <li>Date fields allow you to capture important dates related to your people.</li>
+                               <li>Date fields allow you to capture important dates related to your companies.</li>
                            </ul>
                            <table>
                                 <tr>

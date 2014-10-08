@@ -37,8 +37,8 @@ class Stages extends DefaultModel
 		}
 
 		$data['modified'] = $date;
-		$data['color']    = str_replace("#", "", $data['color']);
-		$data['won']      = array_key_exists('won', $data) ? 1 : 0;
+		$data['color']	= str_replace("#", "", $data['color']);
+		$data['won']	  = array_key_exists('won', $data) ? 1 : 0;
 
 		// Bind the form fields to the table
 		try
@@ -75,28 +75,26 @@ class Stages extends DefaultModel
 		$query = $this->_buildQuery();
 
 		/** ------------------------------------------
-         * Set query limits/ordering and load results
-         */
-        $limit = $this->getState($this->_view . '_limit');
-        $limitStart = $this->getState($this->_view . '_limitstart');
+		 * Set query limits/ordering and load results
+		 */
+		$limit = $this->getState($this->_view . '_limit');
+		$limitStart = $this->getState($this->_view . '_limitstart');
 
-        if ($limit != 0)
-        {
-            $query->order($this->getState('Stages.filter_order') . ' ' . $this->getState('Stages.filter_order_Dir'));
+		if ($limit != 0)
+		{
+			$query->order($this->getState('Stages.filter_order') . ' ' . $this->getState('Stages.filter_order_Dir'));
 
-            if ($limitStart >= $this->getTotal())
-            {
-                $limitStart = 0;
-                $limit = 10;
-                $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
-                $this->state->set($this->_view . '_limit', $limit);
-                $this->state->set($this->_view . '_limitstart', $limitStart);
-            }
+			if ($limitStart >= $this->getTotal())
+			{
+				$limitStart = 0;
+				$limit = 10;
+				$limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
+				$this->state->set($this->_view . '_limit', $limit);
+				$this->state->set($this->_view . '_limitstart', $limitStart);
+			}
+		}
 
-            $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
-        }
-
-		return $this->db->setQuery($query)->loadAssocList();
+		return $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 	}
 
 	public function getStage($id = null)
@@ -117,7 +115,7 @@ class Stages extends DefaultModel
 	public function populateState()
 	{
 		//get states
-		$filter_order     = $this->app->getUserStateFromRequest('Stages.filter_order', 'filter_order', 's.name');
+		$filter_order	 = $this->app->getUserStateFromRequest('Stages.filter_order', 'filter_order', 's.name');
 		$filter_order_Dir = $this->app->getUserStateFromRequest('Stages.filter_order_Dir', 'filter_order_Dir', 'asc');
 
 		$state = new Registry;
@@ -127,14 +125,14 @@ class Stages extends DefaultModel
 		$state->set('Stages.filter_order_Dir', $filter_order_Dir);
 
 		// Get pagination request variables
-        $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
-        $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
+		$limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
+		$limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
 
-        // In case limit has been changed, adjust it
-        $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
-        $state->set($this->_view . '_limit', $limit);
-        $state->set($this->_view . '_limitstart', $limitstart);
+		$state->set($this->_view . '_limit', $limit);
+		$state->set($this->_view . '_limitstart', $limitstart);
 
 		$this->setState($state);
 	}
@@ -142,91 +140,94 @@ class Stages extends DefaultModel
 	public function delete($id)
 	{
 		$table = $this->getTable('Stages');
-        $table->delete($id);
+		$table->delete($id);
 	}
 
 	/**
-     * Describe and configure columns for jQuery dataTables here.
-     *
-     * 'data'       ... column id
-     * 'orderable'  ... if the column can be ordered by user or not
-     * 'ordering'   ... name of the column in SQL query with table prefix
-     * 'sClass'     ... CSS class applied to the column
-     * (other settings can be found at dataTable documentation)
-     *
-     * @return array
-     */
-    public function getDataTableColumns()
-    {
-        $columns = array();
-        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
-        $columns[] = array('data' => 'name', 'ordering' => 's.name');
-        $columns[] = array('data' => 'color', 'ordering' => 's.color', 'sClass' => 'text-center');
-        $columns[] = array('data' => 'percent', 'ordering' => 's.percent', 'sClass' => 'text-center');
-        $columns[] = array('data' => 'won', 'ordering' => 's.won', 'sClass' => 'text-center');
+	 * Describe and configure columns for jQuery dataTables here.
+	 *
+	 * 'data'	   ... column id
+	 * 'orderable'  ... if the column can be ordered by user or not
+	 * 'ordering'   ... name of the column in SQL query with table prefix
+	 * 'sClass'	 ... CSS class applied to the column
+	 * (other settings can be found at dataTable documentation)
+	 *
+	 * @return array
+	 */
+	public function getDataTableColumns()
+	{
+		$columns = array();
+		$columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+		$columns[] = array('data' => 'name', 'ordering' => 's.name');
+		$columns[] = array('data' => 'color', 'ordering' => 's.color', 'sClass' => 'text-center');
+		$columns[] = array('data' => 'percent', 'ordering' => 's.percent', 'sClass' => 'text-center');
+		$columns[] = array('data' => 'won', 'ordering' => 's.won', 'sClass' => 'text-center');
 
-        return $columns;
-    }
+		return $columns;
+	}
 
-    /**
-     * Method transforms items to the format jQuery dataTables needs.
-     * Algorithm is available in parent method, just pass items array.
-     *
-     * @param   array of object of items from the database
-     * @return  array in format dataTables requires
-     */
-    public function getDataTableItems($items = array())
-    {
-        if (!$items)
-        {
-            $items = $this->getStages();
-        }
+	/**
+	 * Method transforms items to the format jQuery dataTables needs.
+	 * Algorithm is available in parent method, just pass items array.
+	 *
+	 * @param   array  $items  of object of items from the database
+	 *
+	 * @return  array  in format dataTables requires
+	 */
+	public function getDataTableItems($items = array())
+	{
+		if (!$items)
+		{
+			$items = $this->getStages();
+		}
 
-        return parent::getDataTableItems($items);
-    }
+		return parent::getDataTableItems($items);
+	}
 
-    /**
-     * Prepare HTML field templates for each dataTable column.
-     *
-     * @param   string column name
-     * @param   object of item
-     * @return  string HTML template for propper field
-     */
-    public function getDataTableFieldTemplate($column, $item)
-    {
-        $template = '';
+	/**
+	 * Prepare HTML field templates for each dataTable column.
+	 *
+	 * @param   string  $column  name
+	 * @param   object  $item    of item
+	 *
+	 * @return  string HTML template for propper field
+	 */
+	public function getDataTableFieldTemplate($column, $item)
+	{
+		$template = '';
 
-        switch ($column)
-        {
-            case 'id':
-                $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
-                break;
-            case 'name':
-                $template .= '<a href="'.RouteHelper::_('index.php?view=stages&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
-                break;
-            case 'color':
-                $template .= '<i class="glyphicon glyphicon-bookmark" style="color:#'.$item->color.'"></i>';
-                break;
-            case 'won':
-            	$template .= '';
-            	if ($item->won)
-            	{
-            		$template .= '<i class="glyphicon glyphicon-ok"></i>';
-            	}
-                
-                break;
-            default:
-                if (isset($column) && isset($item->{$column}))
-                {
-                    $template = $item->{$column};
-                }
-                else
-                {
-                    $template = '';
-                }
-                break;
-        }
+		switch ($column)
+		{
+			case 'id':
+				$template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
+				break;
+			case 'name':
+				$template .= '<a href="' . RouteHelper::_('index.php?view=stages&layout=edit&id=' . $item->id) . '">' . $item->name . '</a>';
+				break;
+			case 'color':
+				$template .= '<i class="glyphicon glyphicon-bookmark" style="color:#' . $item->color . '"></i>';
+				break;
+			case 'won':
+				$template .= '';
 
-        return $template;
-    }
+				if ($item->won)
+				{
+					$template .= '<i class="glyphicon glyphicon-ok"></i>';
+				}
+
+				break;
+			default:
+				if (isset($column) && isset($item->{$column}))
+				{
+					$template = $item->{$column};
+				}
+				else
+				{
+					$template = '';
+				}
+				break;
+		}
+
+		return $template;
+	}
 }

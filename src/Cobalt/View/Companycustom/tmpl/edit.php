@@ -9,11 +9,6 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-<script type="text/javascript">
-    <?php if ($this->custom->type != null) { ?>
-        var type = "<?php echo $this->custom->type; ?>";
-    <?php } ?>
-</script>
 
 <div class="container-fluid">
 
@@ -45,11 +40,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="type">
+                            <label class="col-sm-2 control-label" for="select-custom-type">
                                 Type
                             </label>
                             <div class="col-sm-10">
-                                <select class="form-control required" id="select-custom-type" name="type" id="type">
+                                <select class="form-control required" id="select-custom-type" name="type">
                                     <option value="">- Select Custom Field Type -</option>
                                     <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom->type, true);?>
                                 </select>
@@ -77,7 +72,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -88,7 +83,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -99,7 +94,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -109,7 +104,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <li>Picklist fields allow you to specify a list of pre-defined values for a user to pick from. Examples: Industry, Competitor, Regions, Product or Service Interest.</li>
                             </ul>
                             <div id="choices">
-                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom->values != null ) {
+                                <?php if (isset($this->custom->values) && $this->custom->values != null) {
                                 $values = $this->custom->values;
                                 if ( count($values) > 0 ) {
                                     foreach ($values as $value) { ?>

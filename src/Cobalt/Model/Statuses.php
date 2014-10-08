@@ -11,6 +11,7 @@
 namespace Cobalt\Model;
 
 use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\RouteHelper;
 use Cobalt\Table\StatusesTable;
 
 use Joomla\Registry\Registry;
@@ -40,7 +41,7 @@ class Statuses extends DefaultModel
 		}
 
 		$data['modified'] = $date;
-		$data['color']    = str_replace("#", "", $data['color']);
+		$data['color']	= str_replace("#", "", $data['color']);
 
 		// Bind the form fields to the table
 		try
@@ -75,7 +76,29 @@ class Statuses extends DefaultModel
 	 */
 	public function getStatuses($id = null)
 	{
-		return $this->db->setQuery($this->_buildQuery())->loadAssocList();
+		$query = $this->_buildQuery();
+
+		/** ------------------------------------------
+		 * Set query limits/ordering and load results
+		 */
+		$limit = $this->getState($this->_view . '_limit');
+		$limitStart = $this->getState($this->_view . '_limitstart');
+
+		if ($limit != 0)
+		{
+			$query->order($this->getState('Statuses.filter_order') . ' ' . $this->getState('Statuses.filter_order_Dir'));
+
+			if ($limitStart >= $this->getTotal())
+			{
+				$limitStart = 0;
+				$limit = 10;
+				$limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
+				$this->state->set($this->_view . '_limit', $limit);
+				$this->state->set($this->_view . '_limitstart', $limitStart);
+			}
+		}
+
+		return $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 	}
 
 	public function getStatus($id = null)
@@ -89,16 +112,16 @@ class Statuses extends DefaultModel
 				->where('s.id = ' . $id);
 
 			//return results
-			return $this->db->setQuery($query)->loadAssoc();
+			return $this->db->setQuery($query)->loadObject();
 		}
 
-		return (array) $this->getTable('Statuses');
+		return $this->getTable('Statuses');
 	}
 
 	public function populateState()
 	{
 		//get states
-		$filter_order     = $this->app->getUserStateFromRequest('Statuses.filter_order', 'filter_order', 's.name');
+		$filter_order	 = $this->app->getUserStateFromRequest('Statuses.filter_order', 'filter_order', 's.name');
 		$filter_order_Dir = $this->app->getUserStateFromRequest('Statuses.filter_order_Dir', 'filter_order_Dir', 'asc');
 
 		$state = new Registry;
@@ -107,12 +130,99 @@ class Statuses extends DefaultModel
 		$state->set('Statuses.filter_order', $filter_order);
 		$state->set('Statuses.filter_order_Dir', $filter_order_Dir);
 
+		// Get pagination request variables
+		$limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
+		$limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
+
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+
+		$state->set($this->_view . '_limit', $limit);
+		$state->set($this->_view . '_limitstart', $limitstart);
+
 		$this->setState($state);
 	}
 
-	public function remove($id)
+	public function delete($id)
 	{
 		$table = $this->getTable('Statuses');
 		$table->delete($id);
+	}
+
+	/**
+	 * Describe and configure columns for jQuery dataTables here.
+	 *
+	 * 'data'	   ... column id
+	 * 'orderable'  ... if the column can be ordered by user or not
+	 * 'ordering'   ... name of the column in SQL query with table prefix
+	 * 'sClass'	 ... CSS class applied to the column
+	 * (other settings can be found at dataTable documentation)
+	 *
+	 * @return array
+	 */
+	public function getDataTableColumns()
+	{
+		$columns = array();
+		$columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+		$columns[] = array('data' => 'name', 'ordering' => 's.name');
+		$columns[] = array('data' => 'color', 'ordering' => 's.color', 'sClass' => 'text-center');
+
+		return $columns;
+	}
+
+	/**
+	 * Method transforms items to the format jQuery dataTables needs.
+	 * Algorithm is available in parent method, just pass items array.
+	 *
+	 * @param   array  $items  of object of items from the database
+	 *
+	 * @return  array  in format dataTables requires
+	 */
+	public function getDataTableItems($items = array())
+	{
+		if (!$items)
+		{
+			$items = $this->getStatuses();
+		}
+
+		return parent::getDataTableItems($items);
+	}
+
+	/**
+	 * Prepare HTML field templates for each dataTable column.
+	 *
+	 * @param   string  $column  name
+	 * @param   object  $item    of item
+	 *
+	 * @return  string HTML template for propper field
+	 */
+	public function getDataTableFieldTemplate($column, $item)
+	{
+		$template = '';
+
+		switch ($column)
+		{
+			case 'id':
+				$template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
+				break;
+			case 'name':
+				$template .= '<a href="' . RouteHelper::_('index.php?view=statuses&layout=edit&id=' . $item->id) . '">' . $item->name . '</a>';
+				break;
+			case 'color':
+				$template .= '<i class="glyphicon glyphicon-bookmark" style="color:#' . $item->color . '"></i>';
+				break;
+			default:
+				if (isset($column) && isset($item->{$column}))
+				{
+					$template = $item->{$column};
+				}
+				else
+				{
+					$template = '';
+				}
+				break;
+		}
+
+		return $template;
 	}
 }

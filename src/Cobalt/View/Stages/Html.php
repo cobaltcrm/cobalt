@@ -10,10 +10,7 @@
 
 namespace Cobalt\View\Stages;
 
-use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
@@ -44,19 +41,12 @@ class Html extends AbstractHtmlView
         $model->set("_layout", $layout);
         $this->state = $model->getState();
         $this->pagination   = $model->getPagination();
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         if ($layout && $layout == 'edit')
         {
             $this->toolbar = new Toolbar;
             $this->toolbar->save();
             $this->toolbar->cancel('stages');
-
-            $document->addScript(JURI::base().'src/Cobalt/media/js/stage_manager.js');
-            $document->addScript(JURI::base().'src/Cobalt/media/js/bootstrap-colorpicker.js');
-            //stylesheets
-            $document->addStylesheet(JURI::base().'src/Cobalt/media/css/bootstrap-colorpicker.css');
 
             $this->stage = $model->getStage();
         }
@@ -75,13 +65,6 @@ class Html extends AbstractHtmlView
 
             $stages = $model->getStages();
             $this->stages = $stages;
-
-            // Initialise state variables.
-            $state = $model->getState();
-
-            $this->listOrder  = $this->state->get('Stages.filter_order');
-            $this->listDirn   = $this->state->get('Stages.filter_order_Dir');
-            $this->saveOrder  = $this->listOrder == 's.ordering';
         }
 
         //display
