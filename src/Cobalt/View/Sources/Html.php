@@ -17,6 +17,7 @@ use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Sources as SourcesModel;
 use Joomla\View\AbstractHtmlView;
 
@@ -30,8 +31,11 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         //document
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
         $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
          /** Menu Links **/
@@ -44,18 +48,19 @@ class Html extends AbstractHtmlView
         $model->set("_layout",$layout);
         $this->pagination   = $model->getPagination();
 
-        if ($layout && $layout == 'edit') {
-
+        if ($layout && $layout == 'edit')
+        {
             //toolbar
-            ToolbarHelper::cancel('cancel');
-            ToolbarHelper::save('save');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->save();
+            $this->toolbar->cancel('sources');
 
             //information for view
             $this->source_types = DropdownHelper::getSources();
             $this->source = $model->getSource();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
             ToolbarHelper::addNew('edit');
             ToolbarHelper::editList('edit');
@@ -72,7 +77,6 @@ class Html extends AbstractHtmlView
             $this->listOrder  = $this->state->get('Sources.filter_order');
             $this->listDirn   = $this->state->get('Sources.filter_order_Dir');
             $this->saveOrder  = $this->listOrder == 's.ordering';
-
         }
 
         //display

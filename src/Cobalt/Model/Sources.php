@@ -80,13 +80,13 @@ class Sources extends DefaultModel
 		if ($id > 0)
 		{
 			$query = $this->_buildQuery()
-				->where("s.id=$id");
+				->where("s.id = $id");
 
-			return $this->db->setQuery($query)->loadAssoc();
+			return $this->db->setQuery($query)->loadObject();
 		}
 		else
 		{
-			return (array) $this->getTable('Sources');
+			return $this->getTable('Sources');
 		}
 	}
 
