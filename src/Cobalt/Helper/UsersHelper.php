@@ -522,6 +522,15 @@ class UsersHelper
     }
 
     /**
+     * Get deal_custom count associated with users
+     * @return int Count of deal_custom returned from database
+     */
+    public static function getDealcustomCount()
+    {
+        return self::getItemsCount('deal_custom');
+    }
+
+    /**
      * Get people_custom count associated with users
      * @return int Count of people_custom returned from database
      */

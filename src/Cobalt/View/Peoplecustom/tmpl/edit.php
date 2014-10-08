@@ -18,7 +18,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-sm-9">
-                   <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
                         
                         <legend>
                             <div class="col-sm-9">
@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="name">
-                                Name
+                                <?php echo JText::_('COBALT_NAME'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control required" name="name" id="name" value="<?php echo $this->custom->name; ?>" />

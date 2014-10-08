@@ -73,8 +73,7 @@ class Html extends AbstractHtmlView
                 var order_col = '" . $this->state->get('Peoplecustom.filter_order') . "';
                 var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
-            $custom = $model->getCustom();
-            $this->custom_fields = $custom;
+            $this->custom_fields = $model->getCustom();
         }
 
         //display
