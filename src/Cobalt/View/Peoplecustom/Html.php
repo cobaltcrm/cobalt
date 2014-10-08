@@ -57,7 +57,7 @@ class Html extends AbstractHtmlView
 
             if ($this->custom->type != null)
             {
-                $app->getDocument()->addScriptDeclaration('var type = "'.$this->custom->type.'";');
+                $app->getDocument()->addScriptDeclaration('jQuery(function() { CustomFieldConfig.bind(); });');
             }
         }
         else
