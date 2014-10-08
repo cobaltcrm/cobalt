@@ -10,12 +10,15 @@ namespace Cobalt\CLI;
 
 defined('_CEXEC') or die;
 
+use Cobalt\CLI\Command\Install;
 use Cobalt\Container;
 use Cobalt\Provider\ApplicationServiceProvider;
 use Cobalt\Provider\ConfigServiceProvider;
 use Cobalt\Provider\DatabaseServiceProvider;
 
 use Joomla\Application\AbstractCliApplication;
+use Joomla\Language\Language;
+use Joomla\Language\Text;
 
 /**
  * CLI application supporting the base application
@@ -33,6 +36,14 @@ class Application extends AbstractCliApplication
 	private $container;
 
 	/**
+	 * The Language object
+	 *
+	 * @var    Language
+	 * @since  1.0
+	 */
+	private $language;
+
+	/**
 	 * Constructor
 	 *
 	 * @since   1.0
@@ -41,15 +52,9 @@ class Application extends AbstractCliApplication
 	{
 		$container = Container::getInstance();
 
-		$container->registerServiceProvider(new ApplicationServiceProvider($this))
-			->registerServiceProvider(new ConfigServiceProvider)
-			->registerServiceProvider(new DatabaseServiceProvider);
+		$container->registerServiceProvider(new ApplicationServiceProvider($this));
 
 		$this->setContainer($container);
-
-		// Set error reporting based on config
-		$errorReporting = (int) $container->get('config')->get('errorReporting', 0);
-		error_reporting($errorReporting);
 
 		parent::__construct();
 	}
@@ -64,7 +69,22 @@ class Application extends AbstractCliApplication
 	 */
 	protected function doExecute()
 	{
-		$this->out('Finished!');
+		// If --install option provided, run the install routine to set up the database
+		if ($this->input->getBool('install', false))
+		{
+			$command = new Install($this);
+			$command->execute();
+		}
+
+		// If a non-install CLI script is added, un-comment these lines or otherwise integrate them into the routines
+		/* $container->registerServiceProvider(new ConfigServiceProvider)
+			->registerServiceProvider(new DatabaseServiceProvider);
+
+        // Set error reporting based on config
+		$errorReporting = (int) $container->get('config')->get('errorReporting', 0);
+		error_reporting($errorReporting); */
+
+		$this->out('Execution complete!');
 	}
 
 	/**
@@ -83,6 +103,25 @@ class Application extends AbstractCliApplication
 		}
 
 		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
+	}
+
+	/**
+	 * Get a language object.
+	 *
+	 * @return Language
+	 *
+	 * @since   1.0
+	 */
+	public function getLanguage()
+	{
+		if (is_null($this->language)) {
+			$this->language = Language::getInstance('en-GB');
+
+			// Configure Text to use language instance
+			Text::setLanguage($this->language);
+		}
+
+		return $this->language;
 	}
 
 	/**

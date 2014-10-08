@@ -14,6 +14,7 @@ defined('_CEXEC') or die;
 
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseFactory;
+use Joomla\Filesystem\Exception\FilesystemException;
 use Joomla\Filesystem\File as JFile;
 use Joomla\Language\Text;
 use Joomla\Model\AbstractModel;
@@ -194,6 +195,7 @@ class Install extends AbstractModel
      * @return  boolean
      *
    	 * @since   1.0
+     * @throws  \RuntimeException
      */
     public function install(array $postData)
     {
@@ -207,17 +209,12 @@ class Install extends AbstractModel
 
 	    if (empty($check) || count($check) < count($postData))
 	    {
-		    $this->setError(Text::_('INSTL_CHECK_REQUIRED_FIELDS'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_CHECK_REQUIRED_FIELDS'));
 	    }
 
-	    if ($this->canUpload())
+	    if (!$this->uploadLogo())
 	    {
-		    if (!$this->uploadLogo())
-		    {
-			    return false;
-		    }
+		    return false;
 	    }
 
 	    $config = array(
@@ -250,27 +247,46 @@ class Install extends AbstractModel
 
 	    $content = $this->config->toString('php', array('class' => 'JConfig'));
 
-	    if (!is_writable($file) || !is_writable(JPATH_CONFIGURATION) || !JFile::write($file, $content))
-	    {
-		    $this->setError(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
+		// Determine if the configuration file path is writable.
+		if (file_exists($file))
+		{
+			$canWrite = is_writable($file);
+		}
+		else
+		{
+			$canWrite = is_writable(JPATH_CONFIGURATION . '/');
+		}
 
-		    return false;
+	    if (!$canWrite)
+	    {
+		    throw new \RuntimeException(Text::_('INSTL_NOTICEYOUCANSTILLINSTALL'));
+	    }
+
+	    // Write the config file to the filesystem
+	    try
+	    {
+		    $isWritten = JFile::write($file, $content);
+	    }
+	    catch (FilesystemException $exception)
+	    {
+		    throw new \RuntimeException('Could not write configuration file to the filesystem: ' . $exception->getMessage());
+	    }
+
+	    if (!$isWritten)
+	    {
+		    throw new \RuntimeException('Could not write configuration file to the filesystem.');
 	    }
 
 	    // Populate database
 	    if (!$this->createDb())
 	    {
-		    $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
 	    }
 
 	    // Populate crm
 	    if (!$this->createCrm())
 	    {
-		    $this->setError(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_ERROR_IMPORT_DATABASE'));
 	    }
 
 	    //create admin user
@@ -284,40 +300,75 @@ class Install extends AbstractModel
 
 	    if (!$this->createAdmin($admin))
 	    {
-		    $this->setError(Text::_('INSTL_ERROR_CREATE_USER'));
-
-		    return false;
+		    throw new \RuntimeException(Text::_('INSTL_ERROR_CREATE_USER'));
 	    }
 
 	    return true;
     }
 
+	/**
+	 * Checks that the logo file can be uploaded
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 * @todo    Convert to throwing exceptions based on the error code
+	 */
     public function canUpload()
     {
-        if ($_FILES['logo']['error']) {
-            return false;
-        }
+	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
 
-        return true;
+	    if (!isset($file['error']))
+	    {
+		    return false;
+	    }
+
+	    if ($file['error'] === UPLOAD_ERR_OK)
+	    {
+		    return true;
+	    }
+
+	    return false;
     }
 
+	/**
+	 * Uploads the logo file
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
     public function uploadLogo()
     {
-        if ($_FILES['logo']['error']) {
-            return false;
-        }
+	    // Skip this for CLI installations, we'll handle this in the CLI command
+	    if (COBALT_CLI)
+	    {
+		    return true;
+	    }
 
-        //uploading image
-        $allowedImageTypes = array( "image/pjpeg","image/jpeg","image/jpg","image/png","image/x-png","image/gif");
-        if (!in_array($_FILES['logo']['type'], $allowedImageTypes)) {
-            $this->setError(Text::_('INSTL_ERROR_LOGO_FILE_TYPE'));
-            return false;
-        } else if (!JFile::upload($_FILES['logo']['tmp_name'],JPATH_ROOT.'/uploads/logo/'.JFile::makeSafe($_FILES['logo']['name']))) {
-            $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
-            return false;
-        }
+	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
 
-        return true;
+	    if (!$this->canUpload())
+	    {
+		    return false;
+	    }
+
+	    $allowedImageTypes = array('image/pjpeg', 'image/jpeg', 'image/jpg', 'image/png', 'image/x-png', 'image/gif');
+
+	    if (!in_array($file['type'], $allowedImageTypes))
+	    {
+		    $this->setError(Text::_('INSTL_ERROR_LOGO_FILE_TYPE'));
+
+		    return false;
+	    }
+	    elseif (!JFile::upload($file['tmp_name'], JPATH_ROOT . '/uploads/logo/' . JFile::makeSafe($file['name'])))
+	    {
+		    $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
+
+		    return false;
+	    }
+
+	    return true;
     }
 
     /**
