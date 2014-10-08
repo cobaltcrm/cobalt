@@ -40,11 +40,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="type">
+                            <label class="col-sm-2 control-label" for="select-custom-type">
                                 Type
                             </label>
                             <div class="col-sm-10">
-                                <select class="form-control required" id="select-custom-type" name="type" id="type">
+                                <select class="form-control required" id="select-custom-type" name="type">
                                     <option value="">- Select Custom Field Type -</option>
                                     <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom->type, true);?>
                                 </select>

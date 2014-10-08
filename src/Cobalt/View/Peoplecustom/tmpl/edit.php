@@ -40,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="type">
+                            <label class="col-sm-2 control-label" for="select-custom-type">
                                 Type
                             </label>
                             <div class="col-sm-10">

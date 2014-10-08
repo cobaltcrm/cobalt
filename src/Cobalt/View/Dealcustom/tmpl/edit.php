@@ -40,11 +40,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="name">
+                            <label class="col-sm-2 control-label" for="select-custom-type">
                                 Type
                             </label>
                             <div class="col-sm-10">
-                                <select class="form-control required" name="type">
+                                <select class="form-control required" id="select-custom-type" name="type">
                                     <option value="">- Select Custom Field Type -</option>
                                     <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom->type, true);?>
                                 </select>
@@ -65,15 +65,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="hide" id="custom_field_templates">
                         <div id="custom_field_number">
                             <ul>
-                                <li>Numeric Fields can be used to capture items such as product units or other numeric values related to your deals.</li>
+                                <li>Numeric Fields can be used to capture items such as product units or other numeric values related to your companies.</li>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="reported" <?php if ( $this->custom->reported) echo 'checked'; ?> /></td>
-                                    <td>I want this field totaled on any reports.</td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -84,7 +80,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -95,11 +91,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="reported" <?php if ( $this->custom->reported) echo 'checked'; ?> /></td>
-                                    <td>I want this field totaled on any reports.</td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -109,7 +101,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <li>Picklist fields allow you to specify a list of pre-defined values for a user to pick from. Examples: Industry, Competitor, Regions, Product or Service Interest.</li>
                             </ul>
                             <div id="choices">
-                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom->values != null ) {
+                                <?php if (isset($this->custom->values) && $this->custom->values != null) {
                                 $values = $this->custom->values;
                                 if ( count($values) > 0 ) {
                                     foreach ($values as $value) { ?>
@@ -162,15 +154,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </table>
                             </div>
                         </div>
-                       <div id="custom_field_forecast">
-                           <ul>
-                                <li>The Forcast is an automatically generated calculation field.</li>
-                                <li>The Forecast result is a dollar value that is calcualted by multiplying the Deal Amount $ field by the Probability %.</li>
-                            </ul>
-                       </div>
                        <div id="custom_field_date">
                            <ul>
-                               <li>Date fields allow you to capture important dates related to your deals.</li>
+                               <li>Date fields allow you to capture important dates related to your companies.</li>
                            </ul>
                            <table>
                                 <tr>
@@ -183,6 +169,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 </div>
             </div>
         </div>
+        <?php echo $this->menu['quick_menu']->render(); ?>
     </div>
-    <?php echo $this->menu['quick_menu']->render(); ?>
 </div>
