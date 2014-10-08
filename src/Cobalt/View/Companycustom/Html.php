@@ -14,7 +14,6 @@ use JUri;
 use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\MenuHelper;
@@ -38,20 +37,14 @@ class Html extends AbstractHtmlView
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
 
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
-        $document->addScript(JURI::base().'src/Cobalt/media/js/custom_manager.js');
-
         //gather information for view
         $model = new CompanyCustomModel;
 
         // Initialise state variables.
-        $state = $model->getState();
-        $this->state = $state;
+        $this->state = $model->getState();
 
         $layout = $this->getLayout();
         $model->set("_layout", $layout);
-        $this->pagination = $model->getPagination();
 
         if ($layout && $layout == 'edit')
         {
@@ -79,11 +72,6 @@ class Html extends AbstractHtmlView
 
             $custom = $model->getCustom();
             $this->custom_fields = $custom;
-
-            $this->listOrder  = $state->get('Companycustom.filter_order');
-            $this->listDirn   = $state->get('Companycustom.filter_order_Dir');
-            $this->saveOrder  = $this->listOrder == 'c.ordering';
-
         }
 
         //display

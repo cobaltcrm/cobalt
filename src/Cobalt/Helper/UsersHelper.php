@@ -522,6 +522,15 @@ class UsersHelper
     }
 
     /**
+     * Get people_custom count associated with users
+     * @return int Count of people_custom returned from database
+     */
+    public static function getPeoplecustomCount()
+    {
+        return self::getItemsCount('people_custom');
+    }
+
+    /**
      * Get companycustom count associated with users
      * @return int Count of companycustom returned from database
      */

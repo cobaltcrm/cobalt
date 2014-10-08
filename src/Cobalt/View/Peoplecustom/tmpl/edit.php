@@ -12,34 +12,55 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="container-fluid">
     <?php echo $this->menu['quick_menu']->render(); ?>
-    <div class="row-fluid">
-        <div class="span12" id="content">
+    <div class="row">
+        <div class="col-sm-12" id="content">
             <div id="system-message-container"></div>
-            <div class="row-fluid">
+            <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
-                <div class="span9">
-                    <form action="index.php?view=peoplecustom" method="post" name="adminForm" id="adminForm" class="form-validate"  >
-                        <div class="row-fluid">
-                            <legend><h3><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD"); ?></h3></legend>
-                            <label><b>Name</b></label>
-                            <input type="text" class="form-control required" name="name" value="<?php echo $this->custom['name']; ?>" />
-                            <label><b>Type</b></label>
-                            <select class="form-control required" name="type">
-                                <option value="">- Select Custom Field Type -</option>
-                                <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom['type'], true);?>
-                            </select>
-                            <legend>Field Information</legend>
-                            <div id="custom_field_data">
+                <div class="col-sm-9">
+                   <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
+                        
+                        <legend>
+                            <div class="col-sm-9">
+                                <h2><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD"); ?></h2>
                             </div>
-                            <div>
-                                <?php if ($this->custom['id']) { ?>
-                                    <input type="hidden" name="id" value="<?php echo $this->custom['id']; ?>" />
-                                <?php } ?>
-                                <input type="hidden" name="controller" value="" />
-                                <input type="hidden" name="model" value="peoplecustom" />
-                                <?php echo JHtml::_('form.token'); ?>
+                            <div class="col-sm-3">
+                                <?php echo $this->toolbar->render(); ?>
+                            </div>
+                            <div class="clearfix"></div>
+                        </legend>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="name">
+                                Name
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control required" name="name" id="name" value="<?php echo $this->custom->name; ?>" />
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="type">
+                                Type
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control required" name="type" id="type">
+                                    <option value="">- Select Custom Field Type -</option>
+                                    <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom->type, true);?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <legend>Field Information</legend>
+                        <div id="custom_field_data">
+                        </div>
+                        <div>
+                            <input type="hidden" name="id" value="<?php echo $this->custom->id; ?>" />
+                            <input type="hidden" name="task" value="save" />
+                            <input type="hidden" name="model" value="peoplecustom" />
+                            <?php echo JHtml::_('form.token'); ?>
+                        </div>
+
                     </form>
                     <div style="display:none;" id="custom_field_templates">
                         <div id="custom_field_number">
@@ -48,7 +69,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -59,7 +80,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -70,7 +91,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </ul>
                             <table>
                                 <tr>
-                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                                    <td><input class="form-control" type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -80,8 +101,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <li>Picklist fields allow you to specify a list of pre-defined values for a user to pick from. Examples: Industry, Competitor, Regions, Product or Service Interest.</li>
                             </ul>
                             <div id="choices">
-                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom['values'] != null ) {
-                                $values = $this->custom['values'];
+                                <?php if ( is_array($this->custom) && array_key_exists('values',$this->custom) && $this->custom->values != null ) {
+                                $values = $this->custom->values;
                                 if ( count($values) > 0 ) {
                                     foreach ($values as $value) { ?>
                                         <div class="choices">
@@ -113,11 +134,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                            </table>
                            <table>
                                 <tr>
-                                    <td><input type="checkbox" name="multiple_selections" <?php if ( $this->custom['multiple_selections']) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="multiple_selections" <?php if ( $this->custom->multiple_selections) echo 'checked'; ?> /></td>
                                     <td>Users can select more than one value</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>
@@ -139,7 +160,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                            </ul>
                            <table>
                                 <tr>
-                                    <td><input type="checkbox" name="required" <?php if ( $this->custom['required']) echo 'checked'; ?> /></td>
+                                    <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
                                     <td>Make this field a required entry.</td>
                                 </tr>
                             </table>

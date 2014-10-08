@@ -10,104 +10,92 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\CompanyCustomTable;
 use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class CompanyCustom extends DefaultModel
+class PeopleCustom extends DefaultModel
 {
-    public $id = null;
-    public $_view = "companycustom";
+    public $_view = "peoplecustom";
 
-    public function store()
-    {
-        $app = \Cobalt\Container::fetch('app');
+	public function store()
+	{
+		//Load Tables
+		$row  = $this->getTable('PeopleCustom');
+		$data = $this->app->input->post->getArray();
 
-        //Load Tables
-        $row = $this->getTable('CompanyCustom');
-        $data = $this->app->input->post->getArray();
+		//date generation
+		$date = date('Y-m-d H:i:s');
+		if (!array_key_exists('id', $data))
+		{
+			$data['created'] = $date;
+		}
+		$data['modified'] = $date;
 
-        //date generation
-        $date = date('Y-m-d H:i:s');
+		//generate custom values
+		$data['values'] = array_key_exists('values', $data) ? json_encode(($data['values'])) : "";
 
-        if (!array_key_exists('id', $data))
-        {
-            $data['created'] = $date;
-        }
+		//filter checkboxes
+		if (array_key_exists('required', $data))
+		{
+			$data['required'] = ($data['required'] == 'on') ? 1 : 0;
+		}
+		else
+		{
+			$data['required'] = 0;
+		}
 
-        $data['modified'] = $date;
+		if (array_key_exists('multiple_selections', $data))
+		{
+			$data['multiple_selections'] = ($data['multiple_selections'] == 'on') ? 1 : 0;
+		}
+		else
+		{
+			$data['multiple_selections'] = 0;
+		}
 
-        //generate custom values
-        $data['values'] = array_key_exists('values',$data) ? json_encode(($data['values'])) : "";
+		// Bind the form fields to the table
+		try
+		{
+			$row->save($data);
+		}
+		catch (\Exception $exception)
+		{
+			$this->app->enqueueMessage($exception->getMessage(), 'error');
 
-        //filter checkboxes
-        if (array_key_exists('required', $data))
-        {
-            $data['required'] = ($data['required'] == 'on') ? 1 : 0;
-        }
-        else
-        {
-            $data['required'] = 0;
-        }
+			return false;
+		}
 
-        if (array_key_exists('multiple_selections', $data))
-        {
-            $data['multiple_selections'] = ($data['multiple_selections'] == 'on') ? 1 : 0;
-        }
-        else
-        {
-            $data['multiple_selections'] = 0;
-        }
-
-        // Bind the form fields to the table
-	    try
-	    {
-		    $row->save($data);
-	    }
-	    catch (\Exception $exception)
-	    {
-		    $this->app->enqueueMessage($exception->getMessage(), 'error');
-
-		    return false;
-	    }
-
-        return true;
-    }
+		return true;
+	}
 
     public function _buildQuery()
     {
-        return $this->db->getQuery(true)
-            ->select("c.*")
-            ->from("#__company_custom AS c")
-            ->order($this->getState('Companycustom.filter_order') . ' ' . $this->getState('Companycustom.filter_order_Dir'));
+	    return $this->getDb()->getQuery(true)
+	        ->select('c.*')
+	        ->from('#__people_custom AS c');
     }
 
     /**
-     * Alias for getCustom
-     */
-    public function getCompanycustom($id = null)
+	 * Alias for getCustom
+	 */
+    public function getPeoplecustom()
     {
-        return $this->getCustom($id);
+    	return $this->getCustom();
     }
 
-    /**
-     * Get list of stages
-     * @param  int   $id specific search id
-     * @return mixed $results results
-     */
-    public function getCustom($id = null)
-    {
-        $query = $this->_buildQuery();
+	/**
+	 * Get list of stages
+	 *
+	 * @return  array
+	 */
+	public function getCustom()
+	{
+		$query = $this->_buildQuery();
 
-        if ($id)
-        {
-            $query->where("c.id = $id");
-        }
-
-        /** ------------------------------------------
+		/** ------------------------------------------
          * Set query limits/ordering and load results
          */
         $limit = $this->getState($this->_view . '_limit');
@@ -115,7 +103,7 @@ class CompanyCustom extends DefaultModel
 
         if ($limit != 0)
         {
-            $query->order($this->getState('Companycustom.filter_order') . ' ' . $this->getState('Companycustom.filter_order_Dir'));
+            $query->order($this->getState('Peoplecustom.filter_order') . ' ' . $this->getState('Peoplecustom.filter_order_Dir'));
 
             if ($limitStart >= $this->getTotal())
             {
@@ -129,52 +117,56 @@ class CompanyCustom extends DefaultModel
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-        $results = $this->db->setQuery($query)->loadAssocList();
+		$results = $this->getDb()->setQuery($query)->loadAssocList();
 
-        if (count($results) > 0)
-        {
-            foreach ($results as $key => $result)
-            {
-                $results[$key]['values'] = json_decode($result['values']);
-            }
-        }
+		if (count($results) > 0)
+		{
+			foreach ($results as $key => $result)
+			{
+				$results[$key]['values'] = json_decode($result['values']);
+			}
+		}
 
-        return $results;
-    }
+		return $results;
+	}
 
-    public function getItem($id = null)
-    {
-        $id = $id ? $id : $this->id;
+	public function getItem($id = null)
+	{
+		$id = $id ? $id : $this->id;
 
-        if ($id > 0)
-        {
-            $query = $this->_buildQuery();
-            $query->where("c.id = $id ");
-            $result = $this->db->setQuery($query)->loadObject();
-            $result->values = json_decode($result->values);
+		if ($id > 0)
+		{
+			//database
+			$db    = $this->getDb();
+			$query = $this->_buildQuery();
 
-            return $result;
-        }
-        else
-        {
-            return $this->getTable('CompanyCustom');
-        }
-    }
+			$query->where("c.id = $id");
 
-    public function populateState()
-    {
-        //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Companycustom.filter_order', 'filter_order', 'c.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Companycustom.filter_order_Dir', 'filter_order_Dir', 'asc');
+			//return results
+			$db->setQuery($query);
+			$result = $db->loadObject();
 
-        $state = new Registry;
+			$result->values = json_decode($result->values);
 
-        //set states
-        $state->set('Companycustom.filter_order', $filter_order);
-        $state->set('Companycustom.filter_order_Dir',$filter_order_Dir);
+			return $result;
+		}
 
-        // Get pagination request variables
+		return $this->getTable('PeopleCustom');
+	}
+
+	public function populateState()
+	{
+		//get states
+		$filter_order     = $this->app->getUserStateFromRequest('Peoplecustom.filter_order', 'filter_order', 'c.name');
+		$filter_order_Dir = $this->app->getUserStateFromRequest('Peoplecustom.filter_order_Dir', 'filter_order_Dir', 'asc');
+
+		$state = new Registry;
+
+		//set states
+		$state->set('Peoplecustom.filter_order', $filter_order);
+		$state->set('Peoplecustom.filter_order_Dir', $filter_order_Dir);
+
+		// Get pagination request variables
         $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
         $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
 
@@ -184,15 +176,15 @@ class CompanyCustom extends DefaultModel
         $state->set($this->_view . '_limit', $limit);
         $state->set($this->_view . '_limitstart', $limitstart);
 
-        $this->setState($state);
-    }
+		$this->setState($state);
+	}
 
-    public function delete($id)
-    {
-        return $this->getTable('CompanyCustom')->delete($id);
-    }
+	public function delete($id)
+	{
+		return $this->getTable('PeopleCustom')->delete($id);
+	}
 
-    /**
+	/**
      * Describe and configure columns for jQuery dataTables here.
      *
      * 'data'       ... column id
@@ -247,7 +239,7 @@ class CompanyCustom extends DefaultModel
                 $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'name':
-                $template .= '<a href="'.RouteHelper::_('index.php?view=companycustom&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
+                $template .= '<a href="'.RouteHelper::_('index.php?view=peoplecustom&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
                 break;
             default:
                 if (isset($column) && isset($item->{$column}))
