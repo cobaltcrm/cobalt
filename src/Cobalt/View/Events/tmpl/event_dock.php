@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $app = JFactory::getApplication();
 
 ?>
-<form action="<?php echo RouteHelper::_('index.php?view=print'); ?>" class="print_form">
+<form action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>" class="print_form">
     <div class="panel panel-default">
         <div class="panel-heading">
         <?php if ($app->input->get('view')!="print") { ?>
@@ -35,7 +35,7 @@ $app = JFactory::getApplication();
         </div>
 <div class="panel-body">
     <div id="event_list">
-        <?php if ($app->input->get('view')!="print") { ?>
+        <?php if ($app->input->get('view')!="printFriendly") { ?>
         <div class='alert alert-info'>
             <?php echo TextHelper::_('COBALT_SHOW_TASKS_FOR'); ?>:
             <span class="dropdown">
@@ -92,7 +92,6 @@ $app = JFactory::getApplication();
 </div>
     <input type="hidden" name="model" value="events">
     <input type="hidden" name="layout" value="events">
-    <input type="hidden" name="report" value="">
 
 </form>
 <script>

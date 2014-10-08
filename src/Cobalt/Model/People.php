@@ -170,7 +170,7 @@ class People extends DefaultModel
 
         /** retrieving joomla user id **/
         if ( array_key_exists('email',$data) ) {
-            $data['id'] = self::associateJoomlaUser($data['email']);
+            $data['uid'] = self::associateJoomlaUser($data['email']);
         }
 
         // Bind the form fields to the table
@@ -619,13 +619,14 @@ class People extends DefaultModel
             //
             $query = $db->getQuery(true);
             $query->select('p.*,c.name as company_name,stat.name as status_name,
-                            source.name as source_name, owner.name as owner_name, crmery_user.first_name AS owner_first_name, crmery_user.last_name AS owner_last_name');
+                            source.name as source_name, owner.name as owner_name, crmery_user.first_name AS owner_first_name, crmery_user.last_name AS owner_last_name, assigned_user.username as assignee_name');
             $query->from('#__people AS p');
             $query->leftJoin('#__companies AS c ON c.id = p.company_id AND c.published>0');
             $query->leftJoin('#__people_status AS stat ON stat.id = p.status_id');
             $query->leftJoin('#__sources AS source ON source.id = p.source_id');
             $query->leftJoin('#__users AS owner ON p.owner_id = owner.id');
             $query->leftJoin("#__users AS crmery_user ON crmery_user.id = p.owner_id");
+            $query->leftJoin("#__users AS assigned_user ON assigned_user.id = p.assignee_id");
 
             //searching for specific person
             $query->where("p.published=".$this->published);

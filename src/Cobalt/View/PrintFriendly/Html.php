@@ -12,11 +12,12 @@ namespace Cobalt\View\PrintFriendly;
 
 use JFactory;
 use Cobalt\Helper\ViewHelper;
+use Joomla\View\AbstractHtmlView;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Html extends ViewHelper
+class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
@@ -47,7 +48,7 @@ class Html extends ViewHelper
         }
 
         if ($layout != "report") {
-            $className = "CobaltModel".ucwords($model_name);
+            $className = "\\Cobalt\\Model\\".ucwords($model_name);
             $model = new $className();
             $params = NULL;
             switch ($model_name) {
@@ -91,7 +92,7 @@ class Html extends ViewHelper
                 }
                 switch ($report) {
                     case "sales_pipeline":
-                        $model = new CobaltModelDeal();
+                        $model = new \Cobalt\Model\Deal();
                         $model->set('_id',$items);
                         $state = $model->getState();
                         $reports = $model->getReportDeals();
@@ -100,7 +101,7 @@ class Html extends ViewHelper
                         $footer = ViewHelper::getView('reports','sales_pipeline_footer');
                     break;
                     case "source_report":
-                        $model = new CobaltModelDeal();
+                        $model = new \Cobalt\Model\Deal();
                         $model->set('_id',$items);
                         $reports = $model->getDeals();
                         $state = $model->getState();
@@ -109,7 +110,7 @@ class Html extends ViewHelper
                         $footer = ViewHelper::getView('reports','source_report_footer');
                     break;
                     case "roi_report":
-                        $model = new CobaltModelSource();
+                        $model = new \Cobalt\Model\Source();
                         $model->set('_id',$items);
                         $sources = $model->getRoiSources();
                         $header = ViewHelper::getView('reports','roi_report_header');
@@ -117,7 +118,7 @@ class Html extends ViewHelper
                         $footer = ViewHelper::getView('reports','roi_report_footer');
                     break;
                     case "notes":
-                        $model = new CobaltModelNote();
+                        $model = new \Cobalt\Model\Note();
                         $model->set('_id',$items);
                         $note_entries = $model->getNotes(NULL,NULL,FALSE);
                         $state = $model->getState();
@@ -126,7 +127,7 @@ class Html extends ViewHelper
                         $footer = ViewHelper::getView('reports','notes_footer');
                     break;
                     case "custom_report":
-                        $model = new CobaltModelReport();
+                        $model = new \Cobalt\Model\Report();
                         $report = $model->getCustomReports($app->input->get('custom_report'));
                         $report_data = $model->getCustomReportData($app->input->get('custom_report'));
                         $state = $model->getState();
@@ -172,7 +173,7 @@ class Html extends ViewHelper
                 $info = $model->$function($params);
 
                  /* Event list */
-                $model = new CobaltModelEvent();
+                $model = new \Cobalt\Model\Event();
                 $events = $model->getEvents("deal",NULL,$item_id);
                 if (count($events)>0) {
                     $ref = array( 'events'=>$events,'print'=>TRUE );

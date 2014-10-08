@@ -223,7 +223,7 @@ $person = $this->people[0];
             <?php endif; ?>
             <li>
                 <a onclick="Cobalt.printItems('form.print_form')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
-                <form class="print_form" method="POST" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
+                <form class="print_form" method="POST" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>">
                     <input type="hidden" name="item_id" value="<?php echo $person['id']; ?>"/>
                     <input type="hidden" name="layout" value="person"/>
                     <input type="hidden" name="model" value="people"/>
@@ -296,18 +296,29 @@ $person = $this->people[0];
                 <h2 class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo !empty($person['won_deal_amount']) ? (float) $person['won_deal_amount'] : 0 ; ?></h2>
             </div>
             <div class="crmeryRow top">
-                <div class="crmeryField"><?php echo TextHelper::_('COBALT_TITLE'); ?>:</div>
+                <div class="crmeryField"><?php echo TextHelper::_('COBALT_PERSON_POSITION'); ?>:</div>
                 <div class="crmeryValue">
 					<span class="editable parent" id="editable_position_container">
 						<div class="list-inline" id="editable_position">
                             <?php $data_title = (array_key_exists('position', $person) && $person['position'] != "") ? $person['position'] : ucwords(TextHelper::_('COBALT_CLICK_TO_EDIT')); ?>
-                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_POSITION'); ?>" data-html='true' data-content='<form class="input-append inline-form" id="position_form">
-								<input type="text" class="input-small" name="position" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" />
-								<a href="#" class="btn" onclick="Cobalt.saveEditableModal(this);"><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
-							</form></div>' ><span id="position_<?php echo $person['id']; ?>"><?php echo $data_title; ?></span></a>
+                            <a href="javascript:void(0);" rel="popover" data-title="<?php echo TextHelper::_('COBALT_PERSON_POSITION'); ?>" data-toggle="popover" data-content-class="position-form"><span id="position_<?php echo $person['id']; ?>"><?php echo $data_title; ?></span></a>
 
                         </div>
 					</span>
+                    <div class="position-form hidden">
+                        <form id="form-position-editable" method="post" onsubmit="jQuery('#position_<?php echo $person['id']; ?>').val(jQuery('#form-position-editable').find('input[name=position]').val());return Cobalt.sumbitForm(this);" role="form">
+                            <div class="input-group">
+                                <input type="text" name="position" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" class="form-control" />
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
+                                    </span>
+                            </div>
+                            <input type="hidden" name="task" value="save" />
+                            <input type="hidden" name="model" value="people" />
+                            <input type="hidden" name="id" value="1" />
+                        </form>
+                    </div>
+
                 </div>
                 <div class="clear"></div>
             </div>
@@ -324,7 +335,7 @@ $person = $this->people[0];
                             {
                                 foreach ($types as $key => $type)
                                 {
-                                    echo '<li><a href="javascript:void(0);" class="dropdown_item" data-item="people" data-field="type" data-item-id="'.$person['id'].'" data-value="' . $key . '">' . ucwords($type) . '</a></li>';
+                                    echo '<li><a href="javascript:void(0);" class="dropdown_item" data-item="people" data-field="type" data-item-id="'.$person['id'].'" data-value="' . $key . '"><span>' . ucwords($type) . '</span></a></li>';
                                 }
                             }
                             ?>
@@ -379,7 +390,7 @@ $person = $this->people[0];
                             {
                                 foreach ($sources as $id => $name)
                                 {
-                                    echo '<li><a href="javascript:void(0)" class="source_select dropdown_item" data-item="people" data-field="source_id" data-item-id="'.$person['id'].'" data-value="' . $id . '">' . $name . '</a></li>';
+                                    echo '<li><a href="javascript:void(0)" class="source_select dropdown_item" data-item="people" data-field="source_id" data-item-id="'.$person['id'].'" data-value="' . $id . '"><span>' . $name . '</span></a></li>';
                                 }
                             } ?>
                         </ul>

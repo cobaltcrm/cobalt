@@ -15,7 +15,7 @@ $app = JFactory::getApplication();
 <script type="text/javascript">
     Task.current_area = 'task_list';
 </script>
-<form class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
+<form class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly&layout=events'); ?>">
 <input type="hidden" name="layout" value="events" />
 <input type="hidden" name="model" value="event" />
 <div class="panel panel-default">

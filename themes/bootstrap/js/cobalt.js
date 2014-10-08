@@ -423,7 +423,6 @@ var Cobalt = {
             }
             if (typeof Cobalt.link != 'undefined') {
                 var id = jQuery(Cobalt.link[0].parentElement.parentElement).attr('aria-labelledby') + '_link';
-                console.log(jQuery(Cobalt.link).find('span'));
                 jQuery('#'+id+' span').text(jQuery(Cobalt.link).find('span').text());
                 Cobalt.link = undefined;
             }

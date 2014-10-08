@@ -26,7 +26,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <h1><?php echo $report['name']; ?></h1>
 </div>
 <?php echo $this->menu; ?>
-<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
+<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>">
 <input type="hidden" id="list_form_layout" name="layout" value="report" />
 <input type="hidden" name="model" value="source" />
 <input type="hidden" name="report" value="custom_report" />
