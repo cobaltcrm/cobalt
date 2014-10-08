@@ -11,6 +11,7 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\CompanyCustomTable;
+use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -178,9 +179,8 @@ class CompanyCustom extends DefaultModel
     {
         $columns = array();
         $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
-        $columns[] = array('data' => 'name', 'ordering' => 's.name');
-        $columns[] = array('data' => 'cost', 'ordering' => 's.cost', 'sClass' => 'text-center');
-        $columns[] = array('data' => 'type', 'ordering' => 's.type', 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 'c.name');
+        $columns[] = array('data' => 'type', 'ordering' => 'c.type', 'sClass' => 'text-center');
 
         return $columns;
     }
@@ -196,7 +196,7 @@ class CompanyCustom extends DefaultModel
     {
         if (!$items)
         {
-            $items = $this->getSources();
+            $items = $this->getCustom();
         }
 
         return parent::getDataTableItems($items);
@@ -219,13 +219,7 @@ class CompanyCustom extends DefaultModel
                 $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'name':
-                $template .= '<a href="'.RouteHelper::_('index.php?view=sources&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
-                break;
-            case 'cost':
-                $template .= TextHelper::price($item->cost);
-                break;
-            case 'type':
-                $template .= ($item->type == "per") ? "Per Lead/Deal" : "Flat Fee";
+                $template .= '<a href="'.RouteHelper::_('index.php?view=companycustom&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
                 break;
             default:
                 if (isset($column) && isset($item->{$column}))
