@@ -615,7 +615,7 @@ final class Application extends AbstractWebApplication
 		{
 			$this->router = new Router($this->input, $this);
 
-			$maps = json_decode(file_get_contents(JPATH_BASE . '/src/routes.json'));
+			$maps = json_decode(file_get_contents(JPATH_ROOT . '/src/routes.json'));
 
 			if (!$maps)
 			{

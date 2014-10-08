@@ -198,7 +198,7 @@ class Documents extends DefaultModel
         $hash = md5($fileName).".".$uploadedFileExtension;
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_SITE.'/uploads/'.$hash;
+        $uploadPath = JPATH_ROOT.'/uploads/'.$hash;
 
         $app = \Cobalt\Container::fetch('app');
 

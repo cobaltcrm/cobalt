@@ -541,7 +541,7 @@ class UsersHelper
 
 	/**
 	 * Get people_custom count associated with users
-     * 
+     *
 	 * @return int Count of people_custom returned from database
 	 */
 	public static function getPeoplecustomCount()
@@ -551,7 +551,7 @@ class UsersHelper
 
 	/**
 	 * Get companycustom count associated with users
-     * 
+     *
 	 * @return int Count of companycustom returned from database
 	 */
 	public static function getCompanycustomCount()
@@ -561,7 +561,7 @@ class UsersHelper
 
 	/**
 	 * Get sources count associated with users
-     * 
+     *
 	 * @return int Count of sources returned from database
 	 */
 	public static function getSourcesCount()
@@ -571,7 +571,7 @@ class UsersHelper
 
 	/**
 	 * Get stages count associated with users
-     * 
+     *
 	 * @return int Count of stages returned from database
 	 */
 	public static function getStagesCount()
@@ -581,7 +581,7 @@ class UsersHelper
 
 	/**
 	 * Get categories count associated with users
-     * 
+     *
 	 * @return int Count of categories returned from database
 	 */
 	public static function getCategoriesCount()
@@ -592,7 +592,7 @@ class UsersHelper
 	/**
 	 * Get an item count associated with users
 	 * @param $item string name of the item
-     * 
+     *
 	 * @return int Count of items returned from database
 	 */
 	public static function getItemsCount($item = null)
@@ -923,7 +923,7 @@ class UsersHelper
 	{
 		$lng = self::getLanguage();
 		$lang = JFactory::getLanguage();
-		$lang->load("joomla",JPATH_BASE,$lng);
+		$lang->load("joomla",JPATH_ROOT,$lng);
 		$lang->setDefault($lng);
 	}
 

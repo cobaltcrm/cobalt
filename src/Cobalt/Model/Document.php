@@ -123,7 +123,7 @@ class Document extends DefaultModel
         $fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_SITE.'//documents/'.$hashFilename;
+        $uploadPath = JPATH_ROOT.'//documents/'.$hashFilename;
 
         if ($data['is_attachment']) {
             if (!File::write($uploadPath,$fileTemp)) {

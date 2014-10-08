@@ -148,7 +148,7 @@ class ConfigHelper
     public static function getLanguages()
     {
         jimport('joomla.filesystem.folder');
-        $dirs = Folder::folders(JPATH_SITE."/language");
+        $dirs = Folder::folders(JPATH_ROOT."/language");
 
         $ret = array();
         if ( count($dirs) > 0 ) {
@@ -173,7 +173,7 @@ class ConfigHelper
         $config = JFactory::getConfig();
         $config->set("language",$lang);
 
-        $file = JPATH_BASE."/configuration.php";
+        $file = JPATH_CONFIGURATION."/configuration.php";
         file_put_contents($file, $config->toString('PHP', array('class' => 'JConfig', 'closingtag' => false)));
 
     }

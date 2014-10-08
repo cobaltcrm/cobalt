@@ -91,7 +91,7 @@ class Avatar extends DefaultModel
         //$fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_SITE.'/src/Cobalt/media/avatars/'.$hashFilename;
+        $uploadPath = JPATH_ROOT.'/src/Cobalt/media/avatars/'.$hashFilename;
 
         if (!File::upload($fileTemp, $uploadPath)) {
             echo TextHelper::_('ERROR MOVING FILE');
@@ -134,8 +134,8 @@ class Avatar extends DefaultModel
     {
         $avatar = $this->getAvatar($item_id,$item_type);
         if ($avatar) {
-            echo JPATH_SITE.'/src/Cobalt/media/avatars/'.$avatar;
-            File::delete(JPATH_SITE.'/src/Cobalt/media/avatars/'.$avatar);
+            echo JPATH_ROOT.'/src/Cobalt/media/avatars/'.$avatar;
+            File::delete(JPATH_ROOT.'/src/Cobalt/media/avatars/'.$avatar);
         }
 
     }
