@@ -11,6 +11,8 @@
 namespace Cobalt\Model;
 
 use Cobalt\Helper\DateHelper;
+use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\TextHelper;
 use Cobalt\Table\SourcesTable;
 use Joomla\Registry\Registry;
 
@@ -105,9 +107,88 @@ class Sources extends DefaultModel
 		$this->setState($state);
 	}
 
-	public function remove($id)
+	public function delete($id)
 	{
 		$table = $this->getTable('Sources');
 		$table->delete($id);
 	}
+
+	/**
+     * Describe and configure columns for jQuery dataTables here.
+     *
+     * 'data'       ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'     ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     *
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 's.name');
+        $columns[] = array('data' => 'cost', 'ordering' => 's.cost', 'sClass' => 'text-center');
+        $columns[] = array('data' => 'type', 'ordering' => 's.type', 'sClass' => 'text-center');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     *
+     * @param   array of object of items from the database
+     * @return  array in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getSources();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     *
+     * @param   string column name
+     * @param   object of item
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+        $template = '';
+
+        switch ($column)
+        {
+            case 'id':
+                $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
+                break;
+            case 'name':
+                $template .= '<a href="'.RouteHelper::_('index.php?view=sources&layout=edit&id='.$item->id).'">'.$item->name.'</a>';
+                break;
+            case 'cost':
+                $template .= TextHelper::price($item->cost);
+                break;
+            case 'type':
+            	$template .= ($item->type == "per") ? "Per Lead/Deal" : "Flat Fee";
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
+    }
 }

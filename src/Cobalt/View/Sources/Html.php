@@ -34,10 +34,6 @@ class Html extends AbstractHtmlView
         //application
         $app = \Cobalt\Container::fetch('app');
 
-        //document
-        $document = $app->getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
-
          /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
@@ -45,8 +41,11 @@ class Html extends AbstractHtmlView
         //gather information for view
         $model = new SourcesModel;
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
-        $this->pagination   = $model->getPagination();
+        $model->set("_layout", $layout);
+
+        // Initialise state variables.
+        $state = $model->getState();
+        $this->state = $state;
 
         if ($layout && $layout == 'edit')
         {
@@ -62,17 +61,19 @@ class Html extends AbstractHtmlView
         else
         {
             //buttons
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'delete');
+            $this->toolbar = new Toolbar;
+            $this->toolbar->addNew('stages');
+            $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'sources';
+                var order_dir = '" . $this->state->get('Sources.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Sources.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             //get sources
             $sources = $model->getSources();
             $this->sources = $sources;
-
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
 
             $this->listOrder  = $this->state->get('Sources.filter_order');
             $this->listDirn   = $this->state->get('Sources.filter_order_Dir');
