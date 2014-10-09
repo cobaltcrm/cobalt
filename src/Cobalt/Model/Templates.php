@@ -104,7 +104,7 @@ class Templates extends DefaultModel
             $item = $items[$i];
             $item['template_id'] = $template_id;
 
-            if (!array_key_exists('id',$item) AND $item['id'] == null)
+            if (!array_key_exists('id', $item) AND $item['id'] == null)
             {
                 $data['created'] = $date;
             }

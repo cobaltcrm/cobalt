@@ -520,6 +520,15 @@ class UsersHelper
 	}
 
     /**
+     * Get documents count associated with users
+     * @return int Count of documents returned from database
+     */
+    public static function getDocumentsCount()
+    {
+        return self::getItemsCount('documents');
+    }
+
+    /**
      * Get templates count associated with users
      * @return int Count of templates returned from database
      */
@@ -876,12 +885,12 @@ class UsersHelper
 	}
 
 	/** Determine if logged in user ( or specified user ) can delete items **/
-	public static function canDelete($user_id=null)
+	public static function canDelete($user_id = null)
 	{
 		$app = \Cobalt\Container::fetch('app');
 		$user = $app->getUser($user_id);
 
-		return ( $user->admin == 1 || $user->can_delete == 1 );
+		return ($user->admin == 1 || $user->can_delete == 1);
 
 	}
 

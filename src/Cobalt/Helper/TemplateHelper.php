@@ -470,16 +470,17 @@ class TemplateHelper
 
         $list_html .= "<div id='list_edit_actions'>";
         $list_html .= '<ul class="list-inline">';
-        $list_html .= '<li>'.TextHelper::_('COBALT_PERFORM').'</li>';
+        $list_html .= '<li>' . TextHelper::_('COBALT_PERFORM') . '</li>';
         $list_html .= '<li class="dropdown">';
-        $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >'.TextHelper::_('COBALT_ACTIONS').'</a>';
+        $list_html .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" >' . TextHelper::_('COBALT_ACTIONS') . '</a>';
             $list_html .= '<ul class="dropdown-menu" role="menu" aria-labelledby="">';
-                if ( UsersHelper::canDelete() ) {
-                    $list_html .= '<li><a onclick="Cobalt.deleteListItems()">'.TextHelper::_('COBALT_DELETE').'</a></li>';
+                if (UsersHelper::canDelete())
+                {
+                    $list_html .= '<li><a onclick="Cobalt.deleteListItems()">' . TextHelper::_('COBALT_DELETE') . '</a></li>';
                 }
             $list_html .= '</ul>';
         $list_html .= '</li>';
-        $list_html .= '<li>'.TextHelper::_('COBALT_ON_THE')."<span id='items_checked'></span> ".TextHelper::_('COBALT_ITEMS').'</li>';
+        $list_html .= '<li>' . TextHelper::_('COBALT_ON_THE') . "<span id='items_checked'></span> " . TextHelper::_('COBALT_ITEMS') . '</li>';
         $list_html .= '</ul>';
         $list_html .= "</div>";
 

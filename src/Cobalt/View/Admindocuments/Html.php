@@ -11,12 +11,9 @@
 namespace Cobalt\View\AdminDocuments;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
-use JUri;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Documents as DocumentsModel;
 
@@ -30,9 +27,11 @@ class Html extends AbstractHtmlView
      **/
     public function render()
     {
-
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
+
+        //application
+        $app = \Cobalt\Container::fetch('app');
 
         // Create toolbar
         $this->toolbar = new Toolbar;
@@ -42,39 +41,40 @@ class Html extends AbstractHtmlView
 
         //gather information for view
         $model = new DocumentsModel;
-        $model->set("_layout",$layout);
 
-        //add javascript
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
+        // Initialise state variables.
+        $this->state = $model->getState();
 
-        if ($layout != "upload") {
+        $model->set("_layout", $layout);
+
+        if ($layout != "upload")
+        {
             /** Menu Links **/
             $menu = MenuHelper::getMenuModules();
             $this->menu = $menu;
         }
 
         //determine layout type
-        if ($layout && $layout == 'edit') {
-
-            $this->toolbar->cancel();
+        if ($layout && $layout == 'edit')
+        {
+            $this->toolbar->cancel('documents');
             $this->toolbar->save();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            ToolbarHelper::popup( 'upload', TextHelper::_('COBALT_UPLOAD'), 'index.php?view=admindocuments&layout=upload&format=raw', 375, 150 );
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'remove');
+            // ToolbarHelper::popup( 'upload', TextHelper::_('COBALT_UPLOAD'), 'index.php?view=admindocuments&layout=upload&format=raw', 375, 150 );
+            $this->toolbar->addNew('documents');
+            // ToolbarHelper::editList('edit');
+            $this->toolbar->addDeleteRow();
 
-            $documents = $model->getDocuments();
-            $this->documents = $documents;
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'documents';
+                var order_dir = '" . $this->state->get('Documents.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Documents.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder = $state->get('Documents.filter_order');
-            $this->listDirn   = $state->get('Documents.filter_order_Dir');
+            $this->documents = $model->getDocuments();
         }
 
         //display

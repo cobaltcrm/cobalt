@@ -18,6 +18,7 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DocumentHelper;
 use Cobalt\Helper\ViewHelper;
 use Cobalt\Model\Document as DocumentModel;
+use Cobalt\Model\Documents as DocumentsModel;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access
@@ -54,20 +55,30 @@ class Html extends AbstractHtmlView
         $user = $session->get('document_user_filter');
         $team = $session->get('document_team_filter');
 
-        if ($user == "all") {
+        if ($user == "all")
+        {
             $user_name = TextHelper::_('COBALT_ALL_USERS');
-        } elseif ($user && $user != $user_id) {
+        }
+        elseif ($user && $user != $user_id)
+        {
             $user_info = UsersHelper::getUser($user);
             $user_name = $user_info->first_name . " " . $user_info->last_name;
-        } elseif ($team) {
+        }
+        elseif ($team)
+        {
             $team_info = UsersHelper::getTeams($team);
             $team_info = $team_info[0];
             $user_name = $team_info['team_name'] . TextHelper::_('COBALT_TEAM_APPEND');
-        } else {
+        }
+        else
+        {
             $user_name = TextHelper::_('COBALT_ME');
         }
 
-        if ($layout == 'default') {
+        if ($layout == 'default')
+        {
+            //get model
+            $model = new DocumentsModel;
             $total = $model->getTotal();
             $pagination = $model->getPagination();
             $this->dataTableColumns = $model->getDataTableColumns();
