@@ -34,12 +34,8 @@ class Goal extends DefaultModel
         $row = $this->getTable('Goal');
         $oldRow = $this->getTable('Goal');
 
-<<<<<<< HEAD
-        $data = $app->input->getArray();
-        $data = array_filter($data);
-=======
         $data = $this->app->input->getArray();
->>>>>>> upstream/staging
+        $data = array_filter($data);
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));

@@ -1101,7 +1101,6 @@ class Event extends DefaultModel
      */
     public function removeEvent($id=null,$type=null)
     {
-<<<<<<< HEAD
         $app = \Cobalt\Container::fetch('app');
 
         $type = ( $type == null ) ? $app->input->get('type') : $type;
@@ -1110,13 +1109,6 @@ class Event extends DefaultModel
         $event_type = ( $app->input->get('event_type') ) ? $app->input->get('event_type') : $app->input->get('type');
         $data = $app->input->getArray();
         $data = array_filter($data);
-=======
-        $type = ( $type == null ) ? $this->app->input->get('type') : $type;
-        $date = $this->app->input->get('date');
-        $repeats = $this->app->input->get('repeats');
-        $event_type = ( $this->app->input->get('event_type') ) ? $this->app->input->get('event_type') : $this->app->input->get('type');
-        $data = $this->app->input->getArray();
->>>>>>> upstream/staging
         if ( $id != null ) $data['event_id'] = $id;
 
         $db = $this->getDb();
