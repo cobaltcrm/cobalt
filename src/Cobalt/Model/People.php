@@ -347,6 +347,7 @@ class People extends DefaultModel
 			$query->leftJoin('#__sources AS source ON source.id = p.source_id');
 			$query->leftJoin("#__users AS u ON u.id = p.owner_id");
 			$query->leftJoin("#__users AS u2 ON u2.id = p.assignee_id");
+			$query->group("p.id");
 		}
 		else
 		{
@@ -367,10 +368,8 @@ class People extends DefaultModel
 			//join tasks
 			$query->leftJoin("#__events_cf as event_person_cf on event_person_cf.association_id = p.id AND event_person_cf.association_type ='person'");
 			$query->leftJoin("#__events as event on event.id = event_person_cf.event_id");
+			$query->group("p.id, c.name, u2.first_name, u2.last_name, u.first_name, u.last_name, stat.name, stat.color, source.name, event.id");
 		}
-
-		// group ids
-		$query->group("p.id");
 
 		/** ---------------------------------------------------------------
 		 * Filter data using member role permissions
