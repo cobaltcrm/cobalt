@@ -60,7 +60,12 @@ $dates = DateHelper::getGoalDates();
 $date_html .= JHtml::_('select.options', $dates, 'value', 'text', isset($this->goal) ? 'custom' : '', true);
 $date_html .= "</select>";
 ?>
-
+<style>
+    #edit-form select {
+        -webkit-appearance: none;
+        -webkit-border-radius: 0px 4px 4px 0px;
+    }
+</style>
 <div class="modal-header">
     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
     <h4 class="modal-title"><img src="<?php echo JURI::base() . $this->header_img; ?>"> <?php echo ucwords($this->header); ?></h4>
