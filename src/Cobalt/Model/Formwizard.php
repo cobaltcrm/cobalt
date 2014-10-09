@@ -53,7 +53,7 @@ class FormWizard extends DefaultModel
         }
 
         if ( array_key_exists('fields',$data) ) {
-            $data['fields'] = serialize($data['fields']);
+            $data['fields'] = json_encode($data['fields']);
         }
 
         if ( array_key_exists('html',$data) ) {
@@ -117,7 +117,7 @@ class FormWizard extends DefaultModel
         $results = $db->loadAssocList();
         if ( count($results) > 0 ) {
             foreach ($results as $key => $result) {
-                $results[$key]['fields'] = unserialize($result['fields']);
+                $results[$key]['fields'] = json_decode($result['fields']);
                 $results[$key]['html'] = $result['html'];
             }
         }
@@ -125,25 +125,33 @@ class FormWizard extends DefaultModel
         return $results;
     }
 
+    /**
+     * Alias for getForm
+     */
+    public function getFormwizard($id = null)
+    {
+        return $this->getForm($id);
+    }
+
     public function getForm($formId=null)
     {
         $formId = $formId ? $formId : $this->id;
 
-        if ($formId > 0) {
-
+        if ($formId > 0)
+        {
             $query = $this->_buildQuery();
             $db = $this->getDb();
-            $query->where("f.id=".$formId);
+            $query->where("f.id = " . $formId);
             $db->setQuery($query);
-            $result = $db->loadAssoc();
-            $result['fields'] = unserialize($result['fields']);
-            $result['html'] = $result['html'];
+            $result = $db->loadObject();
+            $result->fields = json_decode($result->fields);
+            $result->html = $result->html;
 
             return $result;
-
-        } else {
-            return (array) $this->getTable('FormWizard');
-
+        }
+        else
+        {
+            return $this->getTable('FormWizard');
         }
     }
 
