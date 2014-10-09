@@ -47,17 +47,17 @@ class GoalTable extends AbstractTable
 	public function bind($src, $ignore = array())
     {
 	    //transform date to SQL
-	    if (!empty($array['start_date']))
+	    if (!empty($src['start_date']))
 	    {
-		    $array['start_date'] = $this->dateToSql($array['start_date']);
+            $src['start_date'] = $this->dateToSql($array['start_date']);
 	    }
 
-	    if (!empty($array['end_date']))
+	    if (!empty($src['end_date']))
 	    {
-		    $array['end_date'] = $this->dateToSql($array['end_date']);
+            $src['end_date'] = $this->dateToSql($array['end_date']);
 	    }
 
-	    return parent::bind($array, $ignore);
+	    return parent::bind($src, $ignore);
     }
 
     private function dateToSql($date)

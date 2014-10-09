@@ -30,12 +30,12 @@ class Template extends DefaultModel
 
         $current_date = date("Y-m-d 00:00:00");
 
-        if ( count($template) > 0 ) {
-
+        if (count($template) > 0)
+        {
             $event_model = new Event;
 
-            foreach ($template as $event) {
-
+            foreach ($template as $event)
+            {
                 unset($event['id']);
 
                 $event['association_id'] = $association_id;
@@ -45,7 +45,8 @@ class Template extends DefaultModel
                 $event['due_date'] = DateHelper::formatDBDate(date("Y-m-d",strtotime($current_date." +".$event['day']." days")),false);
                 $event['due_date_hour'] = "00:00:00";
 
-                if ( !$event_model->store($event) ) {
+                if (!$event_model->store($event))
+                {
                     return false;
                 }
             }
@@ -59,11 +60,11 @@ class Template extends DefaultModel
      * @param  [type] $template_id [description]
      * @return [type] [description]
      */
-    public function getTemplate($template_id=null)
+    public function getTemplate($template_id = null)
     {
         $template_id = $template_id ? $template_id : $this->id;
 
-        $query = $this->db->getQuery(TRUE);
+        $query = $this->db->getQuery(true);
 
         $query->select("t.*")
             ->from("#__template_data AS t")

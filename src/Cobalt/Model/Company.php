@@ -406,7 +406,7 @@ class Company extends DefaultModel
 
         if ($company_name) {
             $company_name = ucwords($company_name);
-            $query->where("LOWER(name) LIKE '%".$company_name."%'");
+            $query->where('LOWER(name) LIKE ' . $this->db->quote('%' . $company_name . '%'));
         }
 
         $query->where("published=".$this->published);
@@ -437,7 +437,7 @@ class Company extends DefaultModel
         $query = $this->db->getQuery(true)
             ->select('c.id')
             ->from('#__companies AS c')
-            ->where('LOWER(c.name) = "'.strtolower($name).'"');
+            ->where('LOWER(c.name) = ' . $this->db->quote(strtolower($name)) );
 
         return $this->db->setQuery($query)->loadResult();
     }
@@ -447,7 +447,7 @@ class Company extends DefaultModel
         $query = $this->db->getQuery(true)
             ->select('c.name')
             ->from('#__companies AS c')
-            ->where("c.id='".$idOrName."' OR c.name='".$idOrName."'");
+            ->where('c.id=' . $this->db->quote($idOrName) . ' OR c.name=' . $this->db->quote($idOrName));
 
         return $this->db->setQuery($query)->loadResult();
     }

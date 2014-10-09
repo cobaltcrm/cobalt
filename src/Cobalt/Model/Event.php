@@ -1101,11 +1101,14 @@ class Event extends DefaultModel
      */
     public function removeEvent($id=null,$type=null)
     {
-        $type = ( $type == null ) ? $this->app->input->get('type') : $type;
-        $date = $this->app->input->get('date');
-        $repeats = $this->app->input->get('repeats');
-        $event_type = ( $this->app->input->get('event_type') ) ? $this->app->input->get('event_type') : $this->app->input->get('type');
-        $data = $this->app->input->getArray();
+        $app = \Cobalt\Container::fetch('app');
+
+        $type = ( $type == null ) ? $app->input->get('type') : $type;
+        $date = $app->input->get('date');
+        $repeats = $app->input->get('repeats');
+        $event_type = ( $app->input->get('event_type') ) ? $app->input->get('event_type') : $app->input->get('type');
+        $data = $app->input->getArray();
+        $data = array_filter($data);
         if ( $id != null ) $data['event_id'] = $id;
 
         $db = $this->getDb();
@@ -1786,7 +1789,7 @@ class Event extends DefaultModel
             $state->set("Event.".$view.'_limitstart', $limitstart);
 
             //set default filter states for reports
-            $filterOrder = "CASE e.type WHEN " . $db->quote('event') . " THEN e.start_time WHEN " . $db->quote('task') . " THEN e.due_date ELSE e.due_date END";
+            $filterOrder = "CASE e.type WHEN " . $this->db->quote('event') . " THEN e.start_time WHEN " . $this->db->quote('task') . " THEN e.due_date ELSE e.due_date END";
             $filterOrderDir = "ASC";
             $filter_order = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order','filter_order',$filterOrder);
             $filter_order_Dir = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order_Dir','filter_order_Dir',$filterOrderDir);

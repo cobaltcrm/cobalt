@@ -725,8 +725,7 @@ final class Application extends AbstractWebApplication
 	 */
 	public function setUser(User $user = null)
 	{
-		$this->user = is_null($user) ? new User($this->getContainer()->get('db')) : $user;
-		$this->getSession()->set('cobalt_user', $this->user);
+		$this->getSession()->set('cobalt_user', $user);
 
 		return $this;
 	}

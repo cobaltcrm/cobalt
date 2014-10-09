@@ -13,6 +13,7 @@ use Cobalt\Helper\TextHelper;
 ?>
 
 <script type="text/javascript">
+    var loc = 'report_dashboard';
     var graphData = <?php echo json_encode($this->graph_data); ?>;
 </script>
 <div class="page-header">
@@ -47,33 +48,39 @@ use Cobalt\Helper\TextHelper;
         <ul class="dash_float_list list-unstyled" id="dash_floats_right">
             <li class="graph widget">
                 <div class="btn-group pull-right">
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStagePie');"><i class="glyphicon glyphicon-adjust"></i></a>
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStageBar');"><i class="glyphicon glyphicon-align-left"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="CobaltChart.showChart('deal_stage', graphData.deal_stage, 'pie');"><i class="glyphicon glyphicon-adjust"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="CobaltChart.showChart('deal_stage', graphData.deal_stage, 'bar');"><i class="glyphicon glyphicon-align-left"></i></a>
                 </div>
-                <div id="deal_stage"></div>
+                <canvas id="deal_stage"></canvas>
+                <div class="-caption"><?php echo TextHelper::_('COBALT_DEALS_BY_STAGE_PIE_CHART'); ?></div>
             </li>
             <li class="graph widget">
                 <div class="btn-group pull-right">
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStatusPie');"><i class="glyphicon glyphicon-adjust"></i></a>
-                    <a class="btn" href="javascript:void(0);" onclick="showChart('dealStatusBar');"><i class="glyphicon glyphicon-align-left"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="CobaltChart.showChart('deal_status', graphData.deal_status, 'pie');"><i class="glyphicon glyphicon-adjust"></i></a>
+                    <a class="btn" href="javascript:void(0);" onclick="CobaltChart.showChart('deal_status', graphData.deal_status, 'bar');"><i class="glyphicon glyphicon-align-left"></i></a>
                 </div>
-                <div id="deal_status"></div>
+                <canvas id="deal_status"></canvas>
+                <div class="-caption"><?php echo TextHelper::_('COBALT_DEALS_BY_STATUS_PIE_CHART'); ?></div>
             </li>
         </ul>
     </div>
     <div class="col-md-6">
         <ul class="dash_float_list list-unstyled" id="dash_floats_right">
             <li class="graph widget">
-                <div id="yearly_commissions"></div>
+                <canvas id="yearly_commissions"></canvas>
+                <div class="-caption"><?php echo TextHelper::_('COBALT_YEARLY_COMMISSIONS'); ?></div>
             </li>
             <li class="graph widget">
-                <div id="yearly_revenue"></div>
+                <canvas id="yearly_revenue"></canvas>
+                <div class="-caption"><?php echo TextHelper::_('COBALT_YEARLY_REVENUE'); ?></div>
             </li>
             <li class="graph widget">
-                <div id="monthly_commissions"></div>
+                <canvas id="monthly_commissions"></canvas>
+                <div class="-caption"><?php echo TextHelper::_('COBALT_MONTHLY_COMMISSIONS'); ?></div>
             </li>
             <li class="graph widget">
-                <div id="monthly_revenue"></div>
+                <canvas id="monthly_revenue"></canvas>
+                <div class="-caption"><?php echo TextHelper::_('COBALT_MONTHLY_REVENUE'); ?></div>
             </li>
         </ul>
     </div>

@@ -17,27 +17,37 @@ var Cobalt = {
         this.initFormSave();
         this.initDataTables();
         this.initModalCentralize();
+        this.initModalRemoveData();
         this.initDocumentUploader();
         this.displayCharts();
     },
 
-    initDocumentUploader: function(){
-        $('#upload_button').click(function(){
-            $('#upload_form').submit();
+    /**
+     * On Modal Close Remove Data
+     */
+    initModalRemoveData: function (){
+        jQuery('.modal').on('hidden.bs.modal', function (e) {
+            jQuery('.modal').removeData('bs.modal');
         });
-        $('#upload_input_invisible').change(function() {
-            $('#upload_form').submit();
+    },
+
+    initDocumentUploader: function(){
+        jQuery('#upload_button').click(function(){
+            jQuery('#upload_form').submit();
+        });
+        jQuery('#upload_input_invisible').change(function() {
+            jQuery('#upload_form').submit();
         });
     },
 
     initModalCentralize: function(){
         $('#myModal').on('shown.bs.modal', function() {
-            var initModalHeight = $('#modal-dialog').outerHeight(); //give an id to .mobile-dialog
-            var userScreenHeight = $(document).outerHeight();
+            var initModalHeight = jQuery('#modal-dialog').outerHeight(); //give an id to .mobile-dialog
+            var userScreenHeight = jQuery(document).outerHeight();
             if (initModalHeight > userScreenHeight) {
-                $('#modal-dialog').css('overflow', 'auto'); //set to overflow if no fit
+                jQuery('#modal-dialog').css('overflow', 'auto'); //set to overflow if no fit
             } else {
-                $('#modal-dialog').css('margin-top',
+                jQuery('#modal-dialog').css('margin-top',
                     (userScreenHeight / 2) - (initModalHeight/2)); //center it if it does fit
             }
         });
@@ -61,7 +71,7 @@ var Cobalt = {
                 content: function() {
                     var contentClass = popover.attr('data-content-class');
                     if (contentClass) {
-                        return $('.'+contentClass).html();
+                        return jQuery('.'+contentClass).html();
                     }
                 }
             };
@@ -70,7 +80,7 @@ var Cobalt = {
     },
 
     bindTooltips: function() {
-        $('[rel="tooltip"]').tooltip();
+        jQuery('[rel="tooltip"]').tooltip();
     },
 
     /**
@@ -413,7 +423,6 @@ var Cobalt = {
             }
             if (typeof Cobalt.link != 'undefined') {
                 var id = jQuery(Cobalt.link[0].parentElement.parentElement).attr('aria-labelledby') + '_link';
-                console.log(jQuery(Cobalt.link).find('span'));
                 jQuery('#'+id+' span').text(jQuery(Cobalt.link).find('span').text());
                 Cobalt.link = undefined;
             }
@@ -733,6 +742,89 @@ var Cobalt = {
             var monthlyRevenue = document.getElementById("monthlyRevenue").getContext("2d");
             new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
 
+        }
+        if (typeof loc !== 'undefined' && loc === 'report_dashboard') {
+            var PieOptions = {
+                inGraphDataShow : true,
+                inGraphDataAnglePosition : 2,
+                inGraphDataRadiusPosition: 2,
+                inGraphDataRotate : "inRadiusAxisRotateLabels",
+                inGraphDataAlign : "center",
+                inGraphDataVAlign : "middle",
+                inGraphDataFontColor : "white",
+                inGraphDataFontSize : 14
+            };
+            var BarOptions = {barShowStroke: false};
+            var LineOptions = {};
+
+            var dealsByStagePie = document.getElementById("deal_stage").getContext("2d");
+            new Chart(dealsByStagePie).Pie(graphData.deal_stage, PieOptions);
+
+            var dealsByStatusPie = document.getElementById("deal_status").getContext("2d");
+            new Chart(dealsByStatusPie).Pie(graphData.deal_status, PieOptions);
+
+            //var yearlyCommissions = document.getElementById("yearly_commissions").getContext("2d");
+            //new Chart(yearlyCommissions).Line(graphData.yearly_commissions, LineOptions);
+
+            //var yearlyRevenue = document.getElementById("yearly_revenue").getContext("2d");
+            //new Chart(yearlyRevenue).Line(graphData.yearly_revenue, BarOptions);
+
+            var monthlyRevenue = document.getElementById("monthly_revenue").getContext("2d");
+            new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
+
+            //var monthlyCommissions = document.getElementById("monthly_commissions").getContext("2d");
+            //new Chart(monthlyCommissions).Bar(graphData.monthly_commissions, BarOptions);
+        }
+    },
+
+    printItems: function (print_button) {
+        if ( typeof print_button === 'object' ){
+            var form = jQuery(print_button).closest('form.print_form');
+        } else {
+            var form = jQuery(print_button);
+        }
+
+        jQuery(form).submit();
+    },
+
+    exportCsv: function(){
+        var old_action = jQuery("#list_form").attr('action');
+        var old_layout = jQuery("#list_form_layout").val();
+
+        jQuery("#list_form").attr('action','index.php?task=downloadCsv&tmpl=component&format=raw');
+        jQuery("#list_form_layout").val('custom_report');
+        jQuery("#list_form").append('<input type="hidden" id="export_flag" name="export" value="1" />');
+        jQuery("#list_form").submit();
+        jQuery("#export_flag").remove();
+        jQuery("#list_form").attr('action',old_action);
+        jQuery("#list_form_layout").val(old_layout);
+    }
+};
+
+var CobaltChart = {
+    Options: {
+        Pie: {
+            inGraphDataShow : true,
+            inGraphDataAnglePosition : 2,
+            inGraphDataRadiusPosition: 2,
+            inGraphDataRotate : "inRadiusAxisRotateLabels",
+            inGraphDataAlign : "center",
+            inGraphDataVAlign : "middle",
+            inGraphDataFontColor : "white",
+            inGraphDataFontSize : 14
+        },
+        Bar: {
+            barShowStroke: false
+        }
+    },
+    showChart: function (target, graph_data, chart_type) {
+        switch (chart_type) {
+            case 'pie':
+                new Chart(document.getElementById(target).getContext("2d")).Pie(graph_data, this.Options.Pie);
+                break;
+            case 'bar':
+                new Chart(document.getElementById(target).getContext("2d")).Bar(graph_data, this.Options.Bar);
+                break;
         }
     }
 };
@@ -3095,6 +3187,128 @@ var CustomFieldConfig = {
     }
 };
 
+var TemplateConfig = {
+    bind: function() {
+        TemplateConfig.bindAdd();
+        TemplateConfig.bindRemove();
+    },
+
+    //bind add to picklist
+    bindAdd: function() {
+        $("#add_item").click(function(e) {
+            e.preventDefault();
+            TemplateConfig.addValue();
+        });
+    },
+
+    //bind picklist areas
+    bindRemove: function() {
+        var ele = $("#items").children('.item:last');
+        $('.item').each(function(index) {
+            $(this).find('.remove_item').unbind();
+            $(this).find('.remove_item').bind('click',function() {
+                TemplateConfig.removeValue($(this).parentsUntil('div').parent('div'));
+            })
+        });
+    },
+
+    //add choices to the picklist
+    addValue: function() {
+        $("#items").append($("#item_template").html());
+        TemplateConfig.bindRemove();
+    },
+
+    //remove entry choices
+    removeValue: function(element) {
+        element.remove();
+    }
+}
+
+var FormWizard = {
+    bind: function() {
+
+        $("#type").change(function() {
+            TemplateConfig.updateFields();
+        });
+
+        $("#return_url").blur(function() {
+            TemplateConfig.updateFields();
+        });
+
+        // $('#owner_id').autocomplete({
+        //     source: function(request, response) {
+        //     var results = $.ui.autocomplete.filter(user_list, request.term);
+        //         response(results.slice(0, 10));
+        //     },
+        //     select:function(event,ui){
+        //         user_id = 0;
+        //         user_id = ui.item.value;
+        //         $("#owner_id_hidden").val(user_id);
+        //         $("#owner_id").val(ui.item.label);
+        //         updateFields();
+        //         return false;
+        //     },
+        //     search:function(event,ui){
+        //         user_id = 0;
+        //         $("#owner_id_hidden").val('');
+        //         updateFields();
+        //         return;
+        //     },
+        //     change:function(event,ui){
+        //         if ( user_id == 0 ){
+        //             $("#owner_id_hidden").val('');
+        //             $("#owner_id").val('');
+        //         }
+        //         updateFields();
+        //     },
+        //     close:function(event,ui){
+        //         updateFields();
+        //     }
+        // });
+
+    },
+
+    showFieldCheckboxes: function() {
+        $("div.field_checkbox_container").hide();
+        var type = $("#type").val();
+        $("#"+type+"_fields").show();
+    },
+
+    updateFields: function() {
+        var html = "<form action='"+base_url+"index.php?task=saveWizardForm&format=raw&tmpl=component' method='POST'>\n";
+        var type = $("#type").val();
+        $.each(fields[type],function(fieldIndex, field) {
+            if ($("#"+type+"_field_"+fieldIndex).is(":checked")) {
+                switch(field.type){
+                    case "text":
+                    case "number":
+                    case "currency":
+                        html += "\t<div class='row'>\n\t\t<label>"+field.display+"</label>\n\t\t<input type='text' name='"+field.name+"' />\n\t</div>\n";
+                    break;
+                    case "picklist":
+                        html += "\t<div class='row'>\n\t\t<label>"+field.display+"</label>\n\t\t<select name='"+field.name+"'>\n";
+                        $.each(field.values,function(valueIndex,value){
+                            html += "\t\t\t<option value='"+valueIndex+"'>"+value+'</option>\n';
+                        });
+                        html += "\t\t</select>\n\t</div>\n";
+                    break;
+                }
+            }
+        });
+        var return_url = Base64.encode($("#return_url").val());
+        var owner_id = $("#owner_id_hidden").val();
+        var form_id = $("#form_id").val();
+
+        html += '\t<input type="hidden" name="owner_id" value="'+owner_id+'" />\n';
+        html += '\t<input type="submit" value="Submit" />\n';
+        html += '\t<input type="hidden" name="save_type" value="'+type+'" />\n';
+        html += '\t<input type="hidden" name="return" value="'+return_url+'" />\n';
+        html += '\t<input type="hidden" name="form_id" value="'+form_id+'" />\n';
+        html += '</form>\n';
+        $("#fields").val(html);
+    }
+}
+
 /**
  * Cobalt JS initialization
  **/
@@ -3129,3 +3343,6 @@ var Joomla = {
         }
     }
 };
+
+// Base64 Object for encoding and decoding (http://scotch.io/quick-tips/js/how-to-encode-and-decode-strings-with-base64-in-javascript)
+var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}

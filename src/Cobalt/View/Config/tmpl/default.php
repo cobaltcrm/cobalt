@@ -18,7 +18,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <form action="index.php?view=config" method="post" name="adminForm" id="adminForm" class="form-validate"  >
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
 
                         <div class="page-header">
                             <h3>
@@ -31,7 +31,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <li class="active"><a data-toggle="tab" href="#locale"><?php echo JText::_('COBALT_LOCALE'); ?></a></li>
                             <li><a data-toggle="tab" href="#currency"><?php echo JText::_('COBALT_CURRENCY'); ?></a></li>
                             <li><a data-toggle="tab" href="#email"><?php echo JText::_('COBALT_EMAIL'); ?></a></li>
-                            <li><a data-toggle="tab" href="#language"><?php echo JText::_('COBALT_LANGUAGE'); ?></a></li>
+                            <?php // @TODO This should be moved to language files ?>
+                            <!-- <li><a data-toggle="tab" href="#language"><?php echo JText::_('COBALT_LANGUAGE'); ?></a></li> -->
                             <li><a data-toggle="tab" href="#help"><?php echo JText::_('COBALT_HELP'); ?></a></li>
                         </ul>
                         <div class="tab-content">
@@ -135,17 +136,16 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <ul class="list-unstyled adminlist cobaltadminlist">
                                      <li>
                                         <label class="checkbox">
-                                            <input type="checkbox" class="form-control" name="show_help" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_SHOW_HELP_TOOLTIP'); ?>" value="1" <?php if ( array_key_exists('show_help',$this->config ) && $this->config->show_help == 1 )  echo "checked='checked'"; ?> />
+                                            <input type="checkbox" name="show_help" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_SHOW_HELP_TOOLTIP'); ?>" value="1" <?php if ( array_key_exists('show_help',$this->config ) && $this->config->show_help == 1 )  echo "checked='checked'"; ?> />
                                             <b><?php echo JText::_('COBALT_SHOW_COBALT_CONFIG_HELP'); ?></b>
                                         </label>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <div style="display:none;" >
+                        <div>
                             <input type="hidden" name="id" value="1" />
-                            <input type="hidden" name="task" value="" />
-                            <input type="hidden" name="controller" value="" />
+                            <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="config" />
                             <?php echo JHtml::_('form.token'); ?>
                         </div>

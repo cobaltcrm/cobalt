@@ -196,7 +196,7 @@ class Commission extends DefaultModel
                 ->where("d.modified < '$end_date'")
                 ->where("d.modified IS NOT NULL")
                 ->where("d.owner_id=$id")
-                ->group("d.owner_id")
+                ->group("d.owner_id, d.modified")
                 ->where("d.published>0");
 
             $results[] = $this->db->setQuery($query)->loadAssoc();

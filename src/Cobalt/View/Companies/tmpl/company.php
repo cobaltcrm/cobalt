@@ -58,7 +58,7 @@ $company = $this->companies[0];?>
                         <li><a href="index.php?task=trash&item_id=<?php echo $company['id']; ?>&item_type=companies&page_redirect=companies" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a></li>
                     <?php } ?>
                     <li>
-                        <a href="index.php?view=print&item_id=<?php echo $company['id']; ?>&layout=company&model=company" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+                        <a href="index.php?view=printFriendly&item_id=<?php echo $company['id']; ?>&layout=company&model=company" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
                     </li>
                 </ul>
             </div>
@@ -348,8 +348,4 @@ $company = $this->companies[0];?>
 <script>
     Company.addPerson();
     Company.addDeal();
-    //clear modal data when close
-    $('#companyModal').on('hidden.bs.modal', function (e) {
-        $('#companyModal').removeData('bs.modal');
-    })
 </script>
