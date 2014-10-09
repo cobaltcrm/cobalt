@@ -41,7 +41,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             $logo = $db->loadResult();
 
-            return \Cobalt\Container::fetch('app')->get('uri.base.full') . "/src/Cobalt/media/logos/".$logo;
+            return \Cobalt\Container::fetch('app')->get('uri.media.full') . "logos/" . $logo;
         }
 
         //dynamically generate styles

@@ -339,12 +339,12 @@ class Documents extends DefaultModel
                 $file_path = sprintf('%s/media/images/%s.png', JPATH_COBALT, $item->filetype);
 
                 if (file_exists($file_path)) {
-                    $file_src = sprintf('%s/src/Cobalt/media/images/%s.png', JUri::base(), $item->filetype);
+                    $file_src = sprintf('%s/src/Cobalt/media/images/%s.png', $this->app->get('uri.base.full'), $item->filetype);
                     $template = '<img src="' . $file_src . '" >';
                 }
                 else
                 {
-                    $file_src = sprintf('%s/src/Cobalt/media/images/file.png', JUri::base());
+                    $file_src = sprintf('%s/src/Cobalt/media/images/file.png', $this->app->get('uri.base.full'));
                     $template = '<img src="' . $file_src . '" >';
                 }
 
