@@ -12,14 +12,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $app = \Cobalt\Container::fetch('app');
 
 ?>
-<form class="print_form">
+<form action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>" class="print_form">
     <div class="panel panel-default">
         <div class="panel-heading">
         <?php if ($app->input->get('view')!="print") { ?>
             <div class="btn-group pull-right">
                 <a rel="tooltip" class="btn btn-xs btn-default" title="<?php echo TextHelper::_('COBALT_ADD_TASK'); ?>" onclick="Task.add('task');" href="javascript:void(0);"><i class="glyphicon glyphicon-tasks"></i></a>
                 <a rel="tooltip" class="btn btn-xs btn-default" title="<?php echo TextHelper::_('COBALT_ADD_EVENT'); ?>" onclick="Task.add('event');" href="javascript:void(0);"><i class="glyphicon glyphicon-calendar"></i></a>
-                <a rel="tooltip" class="btn btn-xs btn-default" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="printItems(this)" href="javascript:void(0);"><i class="glyphicon glyphicon-print"></i></a>
+                <a rel="tooltip" class="btn btn-xs btn-default" title="<?php echo TextHelper::_('COBALT_PRINT'); ?>" onclick="Cobalt.printItems(this)" href="javascript:void(0);"><i class="glyphicon glyphicon-print"></i></a>
                 <a rel="tooltip" class="btn btn-xs btn-default dropdown-toggle" title="<?php echo TextHelper::_('COBALT_APPLY_A_WORKFLOW'); ?>" data-toggle="dropdown" id="templates_link" href="javascript:void(0);"><i class="glyphicon glyphicon-list"></i></a>
                 <ul class="dropdown-menu padding">
                     <?php $templates = CobaltHelper::getTaskTemplates($app->input->get('layout'));
@@ -35,7 +35,7 @@ $app = \Cobalt\Container::fetch('app');
         </div>
 <div class="panel-body">
     <div id="event_list">
-        <?php if ($app->input->get('view')!="print") { ?>
+        <?php if ($app->input->get('view')!="printFriendly") { ?>
         <div class='alert alert-info'>
             <?php echo TextHelper::_('COBALT_SHOW_TASKS_FOR'); ?>:
             <span class="dropdown">
@@ -90,6 +90,9 @@ $app = \Cobalt\Container::fetch('app');
 </div>
 <?php } ?>
 </div>
+    <input type="hidden" name="model" value="events">
+    <input type="hidden" name="layout" value="events">
+
 </form>
 <script>
     Task.current_area = 'task_list';

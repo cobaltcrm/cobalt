@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-    $custom = DropdownHelper::generateCustom($this->type, $this->item->id);
+    $custom = DropdownHelper::generateCustom($this->type, is_array($this->item) ? $this->item['id'] : $this->item->id );
     $count = 0;
     echo '<div class="custom-fields">';
     echo '<table class="table table-striped table-hover table-bordered">';
@@ -74,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
                     <?php break;
 
-                    case "forecast" ?>
+                    case "forecast": ?>
                     <span id="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" class="forecast">
                         <?php echo ConfigHelper::getCurrency().$custom_field_filter; ?>
                     </span>

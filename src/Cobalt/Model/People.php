@@ -108,6 +108,7 @@ class People extends DefaultModel
 					'aim'             => 'string'
 				)
 			);
+            $data = array_filter($data);
 		}
 
 		//date generation

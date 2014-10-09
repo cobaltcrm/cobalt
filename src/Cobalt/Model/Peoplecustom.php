@@ -20,82 +20,82 @@ class PeopleCustom extends DefaultModel
 {
     public $_view = "peoplecustom";
 
-	public function store()
-	{
-		//Load Tables
-		$row  = $this->getTable('PeopleCustom');
-		$data = $this->app->input->post->getArray();
+    public function store()
+    {
+        //Load Tables
+        $row  = $this->getTable('PeopleCustom');
+        $data = $this->app->input->post->getArray();
 
-		//date generation
-		$date = date('Y-m-d H:i:s');
-		if (!array_key_exists('id', $data))
-		{
-			$data['created'] = $date;
-		}
-		$data['modified'] = $date;
+        //date generation
+        $date = date('Y-m-d H:i:s');
+        if (!array_key_exists('id', $data))
+        {
+            $data['created'] = $date;
+        }
+        $data['modified'] = $date;
 
-		//generate custom values
-		$data['values'] = array_key_exists('values', $data) ? json_encode(($data['values'])) : "";
+        //generate custom values
+        $data['values'] = array_key_exists('values', $data) ? json_encode(($data['values'])) : "";
 
-		//filter checkboxes
-		if (array_key_exists('required', $data))
-		{
-			$data['required'] = ($data['required'] == 'on') ? 1 : 0;
-		}
-		else
-		{
-			$data['required'] = 0;
-		}
+        //filter checkboxes
+        if (array_key_exists('required', $data))
+        {
+            $data['required'] = ($data['required'] == 'on') ? 1 : 0;
+        }
+        else
+        {
+            $data['required'] = 0;
+        }
 
-		if (array_key_exists('multiple_selections', $data))
-		{
-			$data['multiple_selections'] = ($data['multiple_selections'] == 'on') ? 1 : 0;
-		}
-		else
-		{
-			$data['multiple_selections'] = 0;
-		}
+        if (array_key_exists('multiple_selections', $data))
+        {
+            $data['multiple_selections'] = ($data['multiple_selections'] == 'on') ? 1 : 0;
+        }
+        else
+        {
+            $data['multiple_selections'] = 0;
+        }
 
-		// Bind the form fields to the table
-		try
-		{
-			$row->save($data);
-		}
-		catch (\Exception $exception)
-		{
-			$this->app->enqueueMessage($exception->getMessage(), 'error');
+        // Bind the form fields to the table
+        try
+        {
+            $row->save($data);
+        }
+        catch (\Exception $exception)
+        {
+            $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     public function _buildQuery()
     {
-	    return $this->getDb()->getQuery(true)
-	        ->select('c.*')
-	        ->from('#__people_custom AS c');
+        return $this->getDb()->getQuery(true)
+            ->select('c.*')
+            ->from('#__people_custom AS c');
     }
 
     /**
-	 * Alias for getCustom
-	 */
+     * Alias for getCustom
+     */
     public function getPeoplecustom()
     {
-    	return $this->getCustom();
+        return $this->getCustom();
     }
 
-	/**
-	 * Get list of stages
-	 *
-	 * @return  array
-	 */
-	public function getCustom()
-	{
-		$query = $this->_buildQuery();
+    /**
+     * Get list of stages
+     *
+     * @return  array
+     */
+    public function getCustom()
+    {
+        $query = $this->_buildQuery();
 
-		/** ------------------------------------------
+        /** ------------------------------------------
          * Set query limits/ordering and load results
          */
         $limit = $this->getState($this->_view . '_limit');
@@ -117,56 +117,56 @@ class PeopleCustom extends DefaultModel
             $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-		$results = $this->getDb()->setQuery($query)->loadAssocList();
+        $results = $this->getDb()->setQuery($query)->loadAssocList();
 
-		if (count($results) > 0)
-		{
-			foreach ($results as $key => $result)
-			{
-				$results[$key]['values'] = json_decode($result['values']);
-			}
-		}
+        if (count($results) > 0)
+        {
+            foreach ($results as $key => $result)
+            {
+                $results[$key]['values'] = json_decode($result['values']);
+            }
+        }
 
-		return $results;
-	}
+        return $results;
+    }
 
-	public function getItem($id = null)
-	{
-		$id = $id ? $id : $this->id;
+    public function getItem($id = null)
+    {
+        $id = $id ? $id : $this->id;
 
-		if ($id > 0)
-		{
-			//database
-			$db    = $this->getDb();
-			$query = $this->_buildQuery();
+        if ($id > 0)
+        {
+            //database
+            $db    = $this->getDb();
+            $query = $this->_buildQuery();
 
-			$query->where("c.id = $id");
+            $query->where("c.id = $id");
 
-			//return results
-			$db->setQuery($query);
-			$result = $db->loadObject();
+            //return results
+            $db->setQuery($query);
+            $result = $db->loadObject();
 
-			$result->values = json_decode($result->values);
+            $result->values = json_decode($result->values);
 
-			return $result;
-		}
+            return $result;
+        }
 
-		return $this->getTable('PeopleCustom');
-	}
+        return $this->getTable('PeopleCustom');
+    }
 
-	public function populateState()
-	{
-		//get states
-		$filter_order     = $this->app->getUserStateFromRequest('Peoplecustom.filter_order', 'filter_order', 'c.name');
-		$filter_order_Dir = $this->app->getUserStateFromRequest('Peoplecustom.filter_order_Dir', 'filter_order_Dir', 'asc');
+    public function populateState()
+    {
+        //get states
+        $filter_order     = $this->app->getUserStateFromRequest('Peoplecustom.filter_order', 'filter_order', 'c.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Peoplecustom.filter_order_Dir', 'filter_order_Dir', 'asc');
 
-		$state = new Registry;
+        $state = new Registry;
 
-		//set states
-		$state->set('Peoplecustom.filter_order', $filter_order);
-		$state->set('Peoplecustom.filter_order_Dir', $filter_order_Dir);
+        //set states
+        $state->set('Peoplecustom.filter_order', $filter_order);
+        $state->set('Peoplecustom.filter_order_Dir', $filter_order_Dir);
 
-		// Get pagination request variables
+        // Get pagination request variables
         $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
         $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
 
@@ -176,15 +176,15 @@ class PeopleCustom extends DefaultModel
         $state->set($this->_view . '_limit', $limit);
         $state->set($this->_view . '_limitstart', $limitstart);
 
-		$this->setState($state);
-	}
+        $this->setState($state);
+    }
 
-	public function delete($id)
-	{
-		return $this->getTable('PeopleCustom')->delete($id);
-	}
+    public function delete($id)
+    {
+        return $this->getTable('PeopleCustom')->delete($id);
+    }
 
-	/**
+    /**
      * Describe and configure columns for jQuery dataTables here.
      *
      * 'data'       ... column id

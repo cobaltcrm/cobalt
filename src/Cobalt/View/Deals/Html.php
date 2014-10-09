@@ -172,12 +172,14 @@ class Html extends AbstractHtmlView
         if ($layout == "deal") {
             $model = new EventModel;
             $events = $model->getEvents("deal",null,$app->input->get('id'));
+            $pagination = $model->getPagination();
+            $total = $model->getTotal();
             $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
 
             $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]->id);
             $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]->people,'primary_contact_id'=>$primary_contact_id));
 
-            $this->document_list = ViewHelper::getView('documents','list','phtml',array('documents' => $deal->documents,'total'=>$total,'pagination'=>$pagination));
+            $this->document_list = ViewHelper::getView('documents','list','phtml',array('documents' => $deal->documents,'total'=> $total,'pagination'=> $pagination));
             //$this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal->documents));
             $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
         }

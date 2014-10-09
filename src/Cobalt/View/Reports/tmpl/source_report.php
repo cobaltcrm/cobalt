@@ -12,9 +12,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="page-header">
     <div class="btn-group pull-right">
-            <a class="btn" href="javascript:void(0)" onclick="printItems(this)"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+            <a class="btn" href="javascript:void(0)" onclick="Cobalt.printItems('#list_form')"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
             <?php if ( UsersHelper::canExport() ) {?>
-                <a class="btn" href="javascript:void(0)" onclick="exportCsv()"><?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
+                <a class="btn" href="javascript:void(0)" onclick="Cobalt.exportCsv()"><?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
             <?php } ?>
     </div>
     <h1><?php echo ucwords(TextHelper::_('COBALT_DEAL_SOURCE_REPORT')); ?></h1>
@@ -27,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     order_dir = "<?php echo $this->state->get('Deal.source_report_filter_order_Dir'); ?>";
     order_col = "<?php echo $this->state->get('Deal.source_report_filter_order'); ?>";
 </script>
-<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
+<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>">
 <input type="hidden" name="layout" value="report" />
 <input type="hidden" name="model" value="deal" />
 <input type="hidden" name="report" value="source_report" />
