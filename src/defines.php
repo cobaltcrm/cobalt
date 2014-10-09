@@ -21,3 +21,4 @@ define('JPATH_THEMES',        JPATH_ROOT . '/themes');
 define('JPATH_CACHE',         JPATH_ROOT . '/cache');
 define('JPATH_VENDOR',        JPATH_ROOT . '/vendor');
 define('JPATH_UPLOADS',       JPATH_ROOT . '/uploads');
+define('JPATH_MEDIA',         JPATH_ROOT . '/media');
