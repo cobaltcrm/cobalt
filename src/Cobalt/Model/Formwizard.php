@@ -277,17 +277,17 @@ class FormWizard extends DefaultModel
                 break;
             case 'html':
                 $template .= '<input onclick="selectTextarea(\'html_text_' . $item->id . '\')" type="button" class="btn btn-primary btn-xs" data-toggle="modal" href="#form_' . $item->id . '" id="show_fields_button" value="' . TextHelper::_('COBALT_VIEW_HTML') . '" />';
-                $template .= '<div class="modal hide" id="form_' . $item->id . '">';
+                $template .= '<div class="modal fade" id="form_' . $item->id . '"><div class="modal-dialog"><div class="modal-content">';
                 $template .= '<div class="modal-header">';
                 $template .= '<button type="button" class="close" data-dismiss="modal">×</button>';
                 $template .= '<h3>' . TextHelper::_('COBALT_FORM_HTML') . '</h3>';
                 $template .= '</div>';
                 $template .= '<div class="modal-body">';
-                $template .= '<textarea rel="tooltip" data-original-title="' . TextHelper::_('COBALT_FORM_HTML_TOOLTIP') . '" wrap="off" cols="20" rows="15" style="width:500px !important;" onclick="selectTextarea(this);" rel="" id="html_text_' . $item->id . '">' . $item->html . '</textarea>';
+                $template .= '<textarea rel="tooltip" data-original-title="' . TextHelper::_('COBALT_FORM_HTML_TOOLTIP') . '" wrap="off" cols="20" rows="15" style="width:500px !important;" onclick="//@TODO: selectTextarea(this);" rel="" id="html_text_' . $item->id . '">' . $item->html . '</textarea>';
                 $template .= '</div>';
                 $template .= '<div class="modal-footer">';
                 $template .= '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>';
-                $template .= '</div>';
+                $template .= '</div></div></div>';
                 $template .= '</div>';
                 break;
             default:
