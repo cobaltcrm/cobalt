@@ -31,7 +31,17 @@ class FormWizard extends DefaultModel
 
         //set states
         $state->set('Formwizard.filter_order', $filter_order);
-        $state->set('Formwizard.filter_order_Dir',$filter_order_Dir);
+        $state->set('Formwizard.filter_order_Dir', $filter_order_Dir);
+
+        // Get pagination request variables
+        $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
+        $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
+
+        // In case limit has been changed, adjust it
+        $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+
+        $state->set($this->_view . '_limit', $limit);
+        $state->set($this->_view . '_limitstart', $limitstart);
 
         $this->setState($state);
     }
@@ -118,12 +128,34 @@ class FormWizard extends DefaultModel
     public function getForms()
     {
         $query = $this->_buildQuery();
-        $db = $this->getDb();
+
+        /** ------------------------------------------
+         * Set query limits/ordering and load results
+         */
+        $limit = $this->getState($this->_view . '_limit');
+        $limitStart = $this->getState($this->_view . '_limitstart');
+
+        if ($limit != 0)
+        {
+            if ($limitStart >= $this->getTotal())
+            {
+                $limitStart = 0;
+                $limit = 10;
+                $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
+                $this->state->set($this->_view . '_limit', $limit);
+                $this->state->set($this->_view . '_limitstart', $limitStart);
+            }
+        }
+
         $query->order($this->getState()->get('Formwizard.filter_order') . ' ' . $this->getState()->get('Formwizard.filter_order_Dir'));
-        $db->setQuery($query);
-        $results = $db->loadAssocList();
-        if ( count($results) > 0 ) {
-            foreach ($results as $key => $result) {
+        $this->db->setQuery($query, $limitStart, $limit);
+        
+        $results = $this->db->loadAssocList();
+
+        if (count($results) > 0)
+        {
+            foreach ($results as $key => $result)
+            {
                 $results[$key]['fields'] = json_decode($result['fields']);
                 $results[$key]['html'] = $result['html'];
             }
