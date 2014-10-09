@@ -49,16 +49,20 @@ class FormWizard extends DefaultModel
         $date = date('Y-m-d H:i:s');
         $data['modified'] = $date;
         $data['modified_by'] = $userId;
-        if ( !array_key_exists('id',$data) ) {
+
+        if (!array_key_exists('id', $data))
+        {
             $data['created'] = $date;
             $data['created_by'] = $userId;
         }
 
-        if ( array_key_exists('fields',$data) ) {
+        if (array_key_exists('fields', $data))
+        {
             $data['fields'] = json_encode($data['fields']);
         }
 
-        if ( array_key_exists('html',$data) ) {
+        if (array_key_exists('html', $data))
+        {
             $data['html'] = $_POST['html'];
         }
 
@@ -66,7 +70,8 @@ class FormWizard extends DefaultModel
         // they could potentially have an existing ID and then have the wrong code in their copied HTML
         // This would be rare and only if multiple users are simultaneously adding custom forms...
 
-        if (array_key_exists('temp_id',$data) ) {
+        if (array_key_exists('temp_id', $data))
+        {
 
             $db = $this->getDb();
             $query = $db->getQuery(true);
@@ -76,11 +81,11 @@ class FormWizard extends DefaultModel
             $db->setQuery($query);
             $existing = $db->loadAssoc();
 
-            if ($existing['existing'] > 0) {
+            if ($existing['existing'] > 0)
+            {
                 $nextId = $existing['greatest']+1;
                 $data['html'] = preg_replace('/name="form_id" value="(.*?)"/','name="form_id" value="'.$nextId.'"',$data['html']);
             }
-
         }
 
         // Bind the form fields to the table
@@ -95,7 +100,7 @@ class FormWizard extends DefaultModel
 		    return false;
 	    }
 
-        return true;
+        return $row->id;
     }
 
     public function _buildQuery()
