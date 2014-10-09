@@ -324,9 +324,3 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <div class="modal-content"></div>
     </div>
 </div>
-<script>
-    //clear modal data when close
-    $('#editModal').on('hidden.bs.modal', function (e) {
-        $('#editModal').removeData('bs.modal');
-    })
-</script>

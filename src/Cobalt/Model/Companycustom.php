@@ -63,16 +63,16 @@ class CompanyCustom extends DefaultModel
         }
 
         // Bind the form fields to the table
-	    try
-	    {
-		    $row->save($data);
-	    }
-	    catch (\Exception $exception)
-	    {
-		    $this->app->enqueueMessage($exception->getMessage(), 'error');
+        try
+        {
+            $row->save($data);
+        }
+        catch (\Exception $exception)
+        {
+            $this->app->enqueueMessage($exception->getMessage(), 'error');
 
-		    return false;
-	    }
+            return false;
+        }
 
         return true;
     }

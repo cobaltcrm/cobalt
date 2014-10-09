@@ -22,15 +22,15 @@ defined('_CEXEC') or die('Restricted access'); ?>
 
 <div class="page-header">
     <div class="btn-group pull-right">
-        <a class="btn btn-default" href="javascript:void(0)" onclick="printItems(this);"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="Cobalt.printItems('#list_form');"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
         <?php if ( UsersHelper::canExport() ) {?>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
+            <a class="btn btn-default" href="javascript:void(0)" onclick="Cobalt.exportCsv()"><?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
         <?php } ?>
     </div>
     <h1><?php echo TextHelper::_('COBALT_NOTES_REPORT'); ?></h1>
 </div>
 <?php echo $this->menu; ?>
-<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
+<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>">
 <input type="hidden" name="layout" value="report" />
 <input type="hidden" name="model" value="note" />
 <input type="hidden" name="report" value="notes" />

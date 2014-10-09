@@ -195,7 +195,6 @@ $raw = $app->input->get('format'); ?>
             }
         ?>
         <input type="hidden" name="model" value="deal" />
-        <input type="hidden" name="refresh_page" value="1">
     </form>
 </div>
 <div class="modal-footer">

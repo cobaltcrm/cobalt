@@ -18,15 +18,15 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </script>
 <div class="page-header">
     <div class="btn-group pull-right">
-        <a class="btn btn-default" href="javascript:void(0)" onclick="printItems(this)"><i class="glyphicon glyphicon-print"></i> <?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="Cobalt.printItems('#list_form')"><i class="glyphicon glyphicon-print"></i> <?php echo TextHelper::_('COBALT_PRINT'); ?></a>
         <?php if ( UsersHelper::canExport() ) {?>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="exportCsv()"><i class="glyphicon glyphicon-share"></i> <?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
+            <a class="btn btn-default" href="javascript:void(0)" onclick="Cobalt.exportCsv()"><i class="glyphicon glyphicon-share"></i> <?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
         <?php } ?>
     </div>
     <h1><?php echo $report['name']; ?></h1>
 </div>
 <?php echo $this->menu; ?>
-<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=print'); ?>">
+<form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>">
 <input type="hidden" id="list_form_layout" name="layout" value="report" />
 <input type="hidden" name="model" value="source" />
 <input type="hidden" name="report" value="custom_report" />

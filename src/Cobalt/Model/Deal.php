@@ -342,7 +342,7 @@ class Deal extends DefaultModel
         {
             $queryString  = 'd.name,d.summary,d.probability,d.amount,d.actual_close,d.archived,';
             $queryString .= 'd.modified,d.category,d.expected_close,d.created,SUM(d.amount) AS filtered_total,';
-            $queryString .= '( d.amount * ( d.probability / 100 )) AS forecast,';
+            $queryString .= '( d.amount * ( cast(d.probability AS DECIMAL(10,6)) / 100 )) AS forecast,';
             $queryString .= 'c.name as company_name,';
             $queryString .= '(CASE WHEN (stat.name IS NOT NULL) THEN stat.name ELSE NULL END) as status_name,';
             $queryString .= 'source.name as source_name,';
@@ -363,14 +363,14 @@ class Deal extends DefaultModel
         else
         {
             $queryString  = 'd.*,SUM(d.amount) AS filtered_total,';
-            $queryString .= '( d.amount * ( d.probability / 100 )) AS forecast,';
+            $queryString .= '( d.amount * ( cast(d.probability AS DECIMAL(10,6)) / 100 )) AS forecast,';
             $queryString .= 'c.name as company_name,';
             $queryString .= '(CASE WHEN (stat.name IS NOT NULL) THEN stat.name ELSE NULL END) as status_name,';
             $queryString .= 'source.name as source_name,';
             $queryString .= 'stage.name as stage_name,stage.percent,';
             $queryString .= 'event_cf.*,';
             $queryString .= 'event.id as event_id,event.name as event_name,event.due_date as event_due_date,event.type as event_type,';
-            $queryString .= 'user.first_name as owner_first_name, user.last_name as owner_last_name,';
+            $queryString .= 'users.first_name as owner_first_name, users.last_name as owner_last_name,';
             $queryString .= 'p.first_name as primary_contact_first_name,p.last_name as primary_contact_last_name,';
             $queryString .= "p.email,p.phone";
             $queryString .= ' FROM #__deals AS d';
@@ -385,7 +385,7 @@ class Deal extends DefaultModel
                 ->leftJoin("#__events AS event ON event.id = event_cf.event_id AND event.due_date IS NULL or event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
                              "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
                              "WHERE e2cf.association_id=d.id AND e2cf.association_type='deal') AND event.published>0")
-                ->leftJoin('#__users AS user ON user.id = d.owner_id')
+                ->leftJoin('#__users AS users ON users.id = d.owner_id')
                 ->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0")
                 ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
         }
@@ -783,7 +783,14 @@ class Deal extends DefaultModel
             /**---------------------
              * Group by deal id
              */
-            $query->group('d.id');
+            if ($this->export)
+            {
+            	$query->group('d.id');
+            }
+            else
+            {
+            	$query->group('d.id, c.name, stat.name, source.name, stage.name, stage.percent, event_cf.association_id, event_cf.event_id, event_cf.association_type, event.id, users.first_name, users.last_name, p.first_name, p.last_name, p.email, p.phone');
+            }
 
             /**
              * Set our sorting direction if set via post
