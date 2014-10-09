@@ -10,6 +10,8 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\TextHelper;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -172,4 +174,97 @@ class FormWizard extends DefaultModel
         return $lastId+1;
     }
 
+    /**
+     * Describe and configure columns for jQuery dataTables here.
+     *
+     * 'data'      ... column id
+     * 'orderable'  ... if the column can be ordered by user or not
+     * 'ordering'   ... name of the column in SQL query with table prefix
+     * 'sClass'  ... CSS class applied to the column
+     * (other settings can be found at dataTable documentation)
+     *
+     * @return array
+     */
+    public function getDataTableColumns()
+    {
+        $columns = array();
+        $columns[] = array('data' => 'id', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'name', 'ordering' => 'f.name');
+        $columns[] = array('data' => 'description', 'ordering' => 'f.description');
+        $columns[] = array('data' => 'html', 'orderable' => false, 'sClass' => 'text-center');
+        $columns[] = array('data' => 'shortcode', 'ordering' => 'f.id', 'sClass' => 'text-center');
+
+        return $columns;
+    }
+
+    /**
+     * Method transforms items to the format jQuery dataTables needs.
+     * Algorithm is available in parent method, just pass items array.
+     *
+     * @param   array  $items  of object of items from the database
+     *
+     * @return  array  in format dataTables requires
+     */
+    public function getDataTableItems($items = array())
+    {
+        if (!$items)
+        {
+            $items = $this->getForms();
+        }
+
+        return parent::getDataTableItems($items);
+    }
+
+    /**
+     * Prepare HTML field templates for each dataTable column.
+     *
+     * @param   string  $column  name
+     * @param   object  $item    of item
+     *
+     * @return  string HTML template for propper field
+     */
+    public function getDataTableFieldTemplate($column, $item)
+    {
+        $template = '';
+
+        switch ($column)
+        {
+            case 'id':
+                $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
+                break;
+            case 'name':
+                $template .= '<a href="' . RouteHelper::_('index.php?view=stages&layout=edit&id=' . $item->id) . '">' . $item->name . '</a>';
+                break;
+            case 'shortcode':
+                $template .= '[cobaltform' . $item->id . ']';
+                break;
+            case 'html':
+                $template .= '<input onclick="selectTextarea(\'html_text_' . $item->id . '\')" type="button" class="btn btn-primary btn-xs" data-toggle="modal" href="#form_' . $item->id . '" id="show_fields_button" value="' . TextHelper::_('COBALT_VIEW_HTML') . '" />';
+                $template .= '<div class="modal hide" id="form_' . $item->id . '">';
+                $template .= '<div class="modal-header">';
+                $template .= '<button type="button" class="close" data-dismiss="modal">×</button>';
+                $template .= '<h3>' . TextHelper::_('COBALT_FORM_HTML') . '</h3>';
+                $template .= '</div>';
+                $template .= '<div class="modal-body">';
+                $template .= '<textarea rel="tooltip" data-original-title="' . TextHelper::_('COBALT_FORM_HTML_TOOLTIP') . '" wrap="off" cols="20" rows="15" style="width:500px !important;" onclick="selectTextarea(this);" rel="" id="html_text_' . $item->id . '">' . $item->html . '</textarea>';
+                $template .= '</div>';
+                $template .= '<div class="modal-footer">';
+                $template .= '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>';
+                $template .= '</div>';
+                $template .= '</div>';
+                break;
+            default:
+                if (isset($column) && isset($item->{$column}))
+                {
+                    $template = $item->{$column};
+                }
+                else
+                {
+                    $template = '';
+                }
+                break;
+        }
+
+        return $template;
+    }
 }

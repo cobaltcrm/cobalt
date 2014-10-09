@@ -56,8 +56,11 @@ class Html extends AbstractHtmlView
             $this->state = $model->getState();;
             $this->forms = $model->getForms();
 
-            $this->listOrder = $this->state->get('Formwizard.filter_order');
-            $this->listDirn   = $this->state->get('Formwizard.filter_order_Dir');
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'formwizard';
+                var order_dir = '" . $this->state->get('Formwizard.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Formwizard.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
         }
         elseif ($layout == 'edit')
         {
