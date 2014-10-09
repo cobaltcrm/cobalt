@@ -11,7 +11,10 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 //define company
-$company = $this->companies[0];?>
+$company = $this->companies[0];
+
+$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+?>
 
 <script type="text/javascript">
     var loc = "company";
@@ -149,7 +152,7 @@ $company = $this->companies[0];?>
             <div class="media">
                 <span class="pull-left">
                     <?php if ( array_key_exists('avatar',$company) && $company['avatar'] != "" && $company['avatar'] != null ) {
-                             echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$company['avatar'].'"/>';
+                             echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.$mediaURI.'avatars/'.$company['avatar'].'"/>';
                         } else {
                             echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.JURI::base().'src/Cobalt/media/images/company.png'.'"/>';
                         } ?>
