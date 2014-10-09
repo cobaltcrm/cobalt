@@ -10,6 +10,7 @@
 
 namespace Cobalt\View\Goals;
 
+use Cobalt\Container;
 use JUri;
 use JFactory;
 use Joomla\View\AbstractHtmlView;
@@ -121,8 +122,9 @@ class Html extends AbstractHtmlView
         }
 
         //load java libs
-        $doc = JFactory::getDocument();
-        $doc->addScript( JURI::base().'src/Cobalt/media/js/goal_manager.js' );
+	    $app = Container::fetch('app');
+        $doc = $app->getDocument();
+        $doc->addScript( $app->get('uri.media.full').'js/goal_manager.js' );
 
         //get associated members and teams
         $teams = UsersHelper::getTeams();

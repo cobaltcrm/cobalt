@@ -10,8 +10,6 @@
 
 namespace Cobalt\View\Deals;
 
-use JUri;
-use JFactory;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
@@ -41,7 +39,7 @@ class Html extends AbstractHtmlView
         $state = $model->getState();
         $dealList = array();
         $deal = array();
-        $doc = JFactory::getDocument();
+        $doc = $app->getDocument();
 
         //session info
         $session = \Cobalt\Container::fetch('app')->getSession();
@@ -118,7 +116,7 @@ class Html extends AbstractHtmlView
 
         //load javalibs
         if (!TemplateHelper::isMobile()) {
-            $doc->addScript( JURI::base().'src/Cobalt/media/js/deal_manager.js' );
+            $doc->addScript( $app->get('uri.media.full').'js/deal_manager.js' );
         }
 
         //dropdown info

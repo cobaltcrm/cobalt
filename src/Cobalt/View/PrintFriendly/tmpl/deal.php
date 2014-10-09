@@ -146,7 +146,7 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
                         if ( array_key_exists('avatar',$person) && $person['avatar'] != "" ) {
                             echo '<td><img src="'.$mediaURI.'avatars/'.$person['avatar'].'"/></td>';
                         } else {
-                            echo '<td><img src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
+                            echo '<td><img src="'.$mediaURI.'images/person.png'.'"/></td>';
                         }
                         echo '<td>'.$person['last_name'] . ', ' . $person['first_name'] . '</td>';
                         echo '<td>'.$person['phone'].'</td>';

@@ -16,7 +16,7 @@ echo '<tr class="cobalt_row_'.$this->k.'">';
         if ( array_key_exists('avatar',$person) && $person['avatar'] != "" ) {
             echo '<td><img src="'.$mediaURI.'avatars/'.$person['avatar'].'"/></td>';
         } else {
-            echo '<td><img src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
+            echo '<td><img src="'.$mediaURI.'images/person.png'.'"/></td>';
         }
         echo '<td><a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']).'">'.$person['first_name'] . ' ' . $person['last_name'] . '</a></td>';
         echo '<td>'.$person['phone'].'</td>';

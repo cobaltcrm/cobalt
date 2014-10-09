@@ -8,7 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' );
+
+$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full'); ?>
 
 <div class="page-header">
     <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS_HEADER')); ?></h1>
@@ -18,7 +20,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <ul class="list-unstyled">
             <li>
                 <div class="goal_container media">
-                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/win_more_cash.png" /></div>
+                    <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/win_more_cash.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=win_cash&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_CASH')); ?></a></h4>
                         <div class="goal_info"><?php echo JText::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',ConfigHelper::getConfigValue('currency')); ?></div>
@@ -28,7 +30,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <div class="goal_container media">
-                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/win_more_deals.png" /></div>
+                    <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/win_more_deals.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=win_deals&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_DEALS')); ?></a></h4>
                         <div class="goal_info"><?php echo TextHelper::_('COBALT_CREATE_GOAL_TRACK_DEALS'); ?></div>
@@ -38,7 +40,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <div class="goal_container media">
-                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/move_deals_forward.png" /></div>
+                    <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/move_deals_forward.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=move_deals&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_MOVE_DEALS_FORWARD')); ?></a></h4>
                         <div class="goal_info"><?php echo TextHelper::_('COBALT_CREATE_GOAL_TRACK_DEAL_STAGES'); ?></div>
@@ -51,7 +53,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <ul class="list-unstyled">
             <li>
                 <div class="goal_container media">
-                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/complete_more_tasks.png" /></div>
+                    <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/complete_more_tasks.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=complete_tasks&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_COMPLETE_TASKS')); ?></a></h4>
                         <div class="goal_info"><?php echo TextHelper::_('COBALT_CREATE_GOAL_TRACK_TASKS'); ?></div>
@@ -61,7 +63,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <div class="goal_container media">
-                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/write_more_notes.png" /></div>
+                    <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/write_more_notes.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=write_notes&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WRITE_NOTES')); ?></a></h4>
                         <div class="goal_info"><?php echo TextHelper::_('COBALT_CREATE_GOAL_TRACK_NOTES'); ?></div>
@@ -71,7 +73,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             </li>
             <li>
                 <div class="goal_container media">
-                    <div class="goal_img pull-left"><img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/create_deals.png" /></div>
+                    <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/create_deals.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=create_deals&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_CREATE_DEALS')); ?></a></h4>
                         <div class="goal_info"><?php echo TextHelper::_('COBALT_CREATE_GOAL_TRACK_DEALS_CREATED'); ?></div>

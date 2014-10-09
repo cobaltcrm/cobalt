@@ -1719,10 +1719,10 @@ class Event extends DefaultModel
                 $template = $item->assignee_first_name.' '.$item->assignee_last_name;
                 break;
             case 'contacts':
-                $template = '<a href="javascript:void(0);" onclick="Calendar.showEventContactsDialogModal('.$item->id.');"><img src="'.\JURI::base().'src/Cobalt/media/images/card.png'.'"/></a>';
+                $template = '<a href="javascript:void(0);" onclick="Calendar.showEventContactsDialogModal('.$item->id.');"><img src="'.$this->app->get('uri.media.full').'images/card.png'.'"/></a>';
                 break;
             case 'notes':
-                $template = '<a href="javascript:void(0);" onclick="Calendar.openNoteModal(\''.$item->id.'\',\'event\');"><img src="'.\JURI::base().'src/Cobalt/media/images/notes.png'.'"/></a>';
+                $template = '<a href="javascript:void(0);" onclick="Calendar.openNoteModal(\''.$item->id.'\',\'event\');"><img src="'.$this->app->get('uri.media.full').'images/notes.png'.'"/></a>';
                 $template .= '<div id="event_form_'.$item->id.'">';
                 $template .= '<input type="hidden" name="event_id" value="'.$item->id.'" />';
                 $template .= '<input type="hidden" name="parent_id" value="'.$item->parent_id.'" />';

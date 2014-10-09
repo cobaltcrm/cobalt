@@ -336,15 +336,15 @@ class Documents extends DefaultModel
                 $template = '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'type':
-                $file_path = sprintf('%s/media/images/%s.png', JPATH_COBALT, $item->filetype);
+                $file_path = sprintf('%s/images/%s.png', JPATH_MEDIA, $item->filetype);
 
                 if (file_exists($file_path)) {
-                    $file_src = sprintf('%s/src/Cobalt/media/images/%s.png', $this->app->get('uri.base.full'), $item->filetype);
+                    $file_src = sprintf('%simages/%s.png', $this->app->get('uri.media.full'), $item->filetype);
                     $template = '<img src="' . $file_src . '" >';
                 }
                 else
                 {
-                    $file_src = sprintf('%s/src/Cobalt/media/images/file.png', $this->app->get('uri.base.full'));
+                    $file_src = sprintf('%simages/file.png', $this->app->get('uri.media.full'));
                     $template = '<img src="' . $file_src . '" >';
                 }
 

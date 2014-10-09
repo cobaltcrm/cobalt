@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\AdminDocuments;
 
-use JUri;
+use Cobalt\Container;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\Documents as DocumentsModel;
@@ -25,9 +25,12 @@ class Raw extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+	    /** @var \Cobalt\Application $app */
+	    $app = Container::fetch('app');
+
         //Add styles for iframe popup
-        echo "<link href='".JURI::base()."src/Cobalt/media/css/style.css' type='text/css' rel='stylesheet' />";
-        echo "<link href='".JURI::base()."src/Cobalt/media/css/bootstrap.min.css' type='text/css' rel='stylesheet' />";
+        echo "<link href='".$app->get('uri.media.full')."css/style.css' type='text/css' rel='stylesheet' />";
+        echo "<link href='".$app->get('uri.media.full')."css/bootstrap.min.css' type='text/css' rel='stylesheet' />";
 
         //import document
         if ( is_array($_FILES) && count($_FILES) > 0 ) {

@@ -23,7 +23,7 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
                 if ( array_key_exists('avatar',$person) && $person['avatar'] != "" && $person['avatar'] != null ) {
                          echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.$mediaURI.'avatars/'.$person['avatar'].'"/></td>';
                     } else {
-                        echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
+                        echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.$mediaURI.'images/person.png"/></td>';
                     } ?>
             </div>
             <div class="infoDetails">

@@ -10,7 +10,6 @@
 
 namespace Cobalt\View\Import;
 
-use JUri;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
@@ -26,7 +25,7 @@ class Html extends AbstractHtmlView
     {
         $app = \Cobalt\Container::fetch('app');
         $doc = $app->getDocument();
-        $doc->addScript(JURI::base().'src/Cobalt/media/js/import_manager.js');
+        $doc->addScript($app->get('uri.media.full').'js/import_manager.js');
 
         if (count($_FILES) > 0)
         {

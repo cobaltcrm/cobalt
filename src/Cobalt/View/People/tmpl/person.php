@@ -28,7 +28,7 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
 
     <div class="row-fluid">
     <div class="col-sm-3">
-        <?php $image = !empty($person['avatar']) ? $mediaURI . 'avatars/' . $person['avatar'] : JUri::base() . 'src/Cobalt/media/images/person_profile.png'; ?>
+        <?php $image = $mediaURI . (!empty($person['avatar']) ? 'avatars/' . $person['avatar'] : 'images/person_profile.png'); ?>
         <div class="row-fluid">
             <img id="avatar_img_<?php echo $person['id']; ?>" data-item-type="people" data-item-id="<?php echo $person['id']; ?>" class="avatar" src="<?php echo $image; ?>"/>
         </div>

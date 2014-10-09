@@ -10,9 +10,7 @@
 
 namespace Cobalt\View\People;
 
-use JUri;
 use Cobalt\Helper\RouteHelper;
-use JFactory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;
@@ -54,8 +52,8 @@ class Html extends AbstractHtmlView
         $status = $session->get('people_status_filter');
 
         //load java
-        $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'src/Cobalt/media/js/people_manager.js' );
+        $document = $app->getDocument();
+        $document->addScript( $app->get('uri.media.full').'js/people_manager.js' );
 
         //get list of people
         $people = $model->getPeople();
@@ -178,7 +176,7 @@ class Html extends AbstractHtmlView
             $this->people_list = ViewHelper::getView('people','list','phtml',array('people'=>$people,'total'=>$total,'pagination'=>$pagination));
             $this->people_filter = $state->get('Deal.people_name');
             $this->dataTableColumns = $model->getDataTableColumns();
-            JFactory::getDocument()->addScriptDeclaration("
+            $document->addScriptDeclaration("
             var loc = 'people';
             var order_dir = '".$state->get('People.filter_order_Dir')."';
             var order_col = '".$state->get('People.filter_order')."';
