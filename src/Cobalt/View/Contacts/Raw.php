@@ -11,7 +11,6 @@
 namespace Cobalt\View\Contacts;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Helper\TextHelper;
@@ -22,7 +21,7 @@ class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         $deal_id = $app->input->get('deal_id');
         $event_id = $app->input->get('event_id');

@@ -10,11 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
-use Cobalt\Table\MenuTable;
-
-use Joomla\Model\AbstractModel;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -22,11 +17,9 @@ class Menu extends DefaultModel
 {
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('Menu');
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->post->getArray();
 
         //date generation
         $date = date('Y-m-d H:i:s');
@@ -52,7 +45,7 @@ class Menu extends DefaultModel
 
     public function getMenu()
     {
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         $query->select("*")->from("#__menu")->where("id=1");

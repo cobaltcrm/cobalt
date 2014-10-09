@@ -11,7 +11,6 @@
 namespace Cobalt\View\AdminImport;
 
 use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;

@@ -11,7 +11,6 @@
 namespace Cobalt\View\Contacts;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\TextHelper;
 
@@ -22,7 +21,7 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
         $deal_id = $app->input->get('deal_id');
         if ($deal_id) {
             $primary_contact_id = DealHelper::getPrimaryContact($deal_id);

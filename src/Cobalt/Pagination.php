@@ -285,7 +285,7 @@ class Pagination extends \JPagination
      */
     public function getPagesLinks()
     {
-        $app = JFactory::getApplication();
+        $app = Container::fetch('app');
 
         // Build the page navigation list.
         $data = $this->_buildDataObject();
@@ -374,7 +374,7 @@ class Pagination extends \JPagination
      */
     public function getListFooter()
     {
-        $app = JFactory::getApplication();
+        $app = Container::fetch('app');
 
         $list = array();
         $list['prefix'] = $this->prefix;
@@ -405,7 +405,7 @@ class Pagination extends \JPagination
      */
     public function getLimitBox()
     {
-        $app = JFactory::getApplication();
+        $app = Container::fetch('app');
 
         // Initialise variables.
         $limits = array();

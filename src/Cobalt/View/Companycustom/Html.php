@@ -10,8 +10,6 @@
 
 namespace Cobalt\View\CompanyCustom;
 
-use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DropdownHelper;

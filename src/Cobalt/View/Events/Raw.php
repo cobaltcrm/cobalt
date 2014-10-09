@@ -11,7 +11,6 @@
 namespace Cobalt\View\Events;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Helper\CobaltHelper;
 
@@ -21,7 +20,7 @@ class Raw extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         //grab model
         $model = new EventModel;

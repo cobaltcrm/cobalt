@@ -12,7 +12,6 @@ namespace Cobalt\View\Companies;
 
 use JUri;
 use Cobalt\Helper\RouteHelper;
-use JFactory;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
@@ -30,7 +29,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
         $app->input->set('view','companies');
         $app->input->set('layout',$app->input->get('layout','default'));
 
@@ -39,7 +38,7 @@ class Html extends AbstractHtmlView
         $state = $model->getState();
 
         //session data
-        $session = JFactory::getSession();
+        $session = \Cobalt\Container::fetch('app')->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
         $team_id = UsersHelper::getTeamId();
@@ -48,7 +47,7 @@ class Html extends AbstractHtmlView
         $team = $session->get('company_team_filter');
 
         //load java libs
-        $doc = JFactory::getDocument();
+        $doc = \JFactory::getDocument();
         $doc->addScript( JURI::base().'src/Cobalt/media/js/company_manager.js' );
 
         //determine if we are requesting a specific company or all companies
@@ -56,7 +55,6 @@ class Html extends AbstractHtmlView
         if ( $app->input->get('id') ) {
             $companies = $model->getCompanies($app->input->get('id'));
             if ( is_null($companies[0]['id']) ) {
-                $app = JFactory::getApplication();
                 $app->redirect(RouteHelper::_('index.php?view=companies'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
         } else {

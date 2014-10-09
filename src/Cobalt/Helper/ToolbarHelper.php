@@ -9,7 +9,6 @@
 namespace Cobalt\Helper;
 
 use JToolbar;
-use JFactory;
 use JLog;
 
 defined('_CEXEC') or die;

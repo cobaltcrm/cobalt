@@ -22,7 +22,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
         $type = $app->input->get('type');
         $id = $app->input->get('id');
         $view = $app->input->get('view');

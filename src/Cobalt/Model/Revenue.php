@@ -143,7 +143,8 @@ class Revenue extends DefaultModel
 				->where('d.modified >= ' . $db->quote($start_date))
 				->where('d.modified < ' . $db->quote($end_date))
 				->where('d.modified IS NOT NULL')
-				->where('d.published > 0');
+				->where('d.published > 0')
+				->group('d.modified');
 
 			if (count($won_stage_ids))
 			{

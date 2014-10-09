@@ -25,7 +25,7 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         $document = JFactory::getDocument();
 

@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 ?>
 
 <table class="table table-striped table-hover">

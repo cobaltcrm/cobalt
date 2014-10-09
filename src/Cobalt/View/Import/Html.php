@@ -12,7 +12,6 @@ namespace Cobalt\View\Import;
 
 use JUri;
 use Cobalt\Helper\RouteHelper;
-use JFactory;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
 

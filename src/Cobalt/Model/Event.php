@@ -12,7 +12,6 @@
 namespace Cobalt\Model;
 
 use Cobalt\Table\EventTable;
-use JFactory;
 use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\UsersHelper;
@@ -42,9 +41,8 @@ class Event extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = \Cobalt\Container::fetch('app');
-        $this->view = $app->input->get('view');
-        $this->layout = $app->input->get('layout','list');
+        $this->view = $this->app->input->get('view');
+        $this->layout = $this->app->input->get('layout','list');
 
     }
 
@@ -55,9 +53,7 @@ class Event extends DefaultModel
      */
     public function store($data = null)
     {
-
-        $app = \Cobalt\Container::fetch('app');
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         //Load Tables
         $row    = $this->getTable('Event');
@@ -181,10 +177,9 @@ class Event extends DefaultModel
      */
     public function getEvents($loc=null,$user=null,$association=null)
     {
-        $app = \Cobalt\Container::fetch('app');
         $loc = $loc ? $loc : $this->loc;
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
         $query->select("e.*,".
                        "a.*,".
@@ -198,9 +193,9 @@ class Event extends DefaultModel
                        "FROM #__events AS e");
         $query->leftJoin("#__events_categories AS ci ON ci.id = e.category_id");
         $query->leftJoin("#__events_cf AS a ON e.id = a.event_id");
-        $query->leftJoin("#__companies AS c ON a.association_type = 'company' AND a.association_id = c.id AND c.published>0");
-        $query->leftJoin("#__deals AS d ON a.association_type = 'deal' AND a.association_id = d.id AND d.published>0");
-        $query->leftJoin("#__people AS p ON a.association_type = 'person' AND a.association_id = p.id AND p.published>0");
+        $query->leftJoin("#__companies AS c ON a.association_type = " . $db->quote('company') . " AND a.association_id = c.id AND c.published>0");
+        $query->leftJoin("#__deals AS d ON a.association_type = " . $db->quote('deal') . " AND a.association_id = d.id AND d.published>0");
+        $query->leftJoin("#__people AS p ON a.association_type = " . $db->quote('person') . " AND a.association_id = p.id AND p.published>0");
         $query->leftJoin('#__users AS assignee ON assignee.id = e.assignee_id');
         $query->leftJoin('#__users AS owner ON owner.id = e.owner_id');
 
@@ -230,9 +225,9 @@ class Event extends DefaultModel
         }
 
         if (!$association) {
-            $association = $app->input->get('association_id') ? $app->input->get('association_id') : $app->input->get('id');
+            $association = $this->app->input->get('association_id') ? $this->app->input->get('association_id') : $this->app->input->get('id');
         }
-        $association_type = $app->input->get('association_type') ? $app->input->get('association_type') : $app->input->get('layout');
+        $association_type = $this->app->input->get('association_type') ? $this->app->input->get('association_type') : $this->app->input->get('layout');
         $association_types = array("company","deal","person");
 
         if ($association) {
@@ -268,7 +263,7 @@ class Event extends DefaultModel
 
         if ($this->current_events) {
            $now = DateHelper::formatDBDate(date('Y-m-d'));
-           $query->where('e.due_date != "0000-00-00 00:00:00" AND e.due_date >="'.$now.'"');
+           $query->where('e.due_date != ' . $db->quote($db->getNullDate()) . ' AND e.due_date >= ' . $db->quote($now));
         }
 
         /** Filter by status **/
@@ -290,7 +285,7 @@ class Event extends DefaultModel
         /** Filter by type **/
         $type_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_type');
         if ($type_filter != null && $type_filter != "all" && $this->view != "print") {
-            $query->where("e.type='$type_filter'");
+            $query->where("e.type=" . $db->quote($type_filter));
         }
 
         /** Filter by category **/
@@ -306,12 +301,12 @@ class Event extends DefaultModel
             switch ($due_date_filter) {
                 case "today":
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("((e.due_date >= '$date' AND e.due_date < '$tomorrow') OR (e.start_time >= '$date' AND e.start_time < '$tomorrow'))");
+                    $query->where("((e.due_date >= " . $db->quote($date) . " AND e.due_date < " . $db->quote($tomorrow) . ") OR (e.start_time >= " . $db->quote($date) . " AND e.start_time < " . $db->quote($tomorrow) . "))");
                 break;
                 case "tomorrow":
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                     $day_after_tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (2*24*60*60)));
-                    $query->where("((e.due_date >= '$tomorrow' AND e.due_date < '$day_after_tomorrow') OR (e.start_time >= '$tomorrow' AND e.start_time < '$day_after_tomorrow'))");
+                    $query->where("((e.due_date >= " . $db->quote($tomorrow) . " AND e.due_date < " . $db->quote($day_after_tomorrow) . ") OR (e.start_time >= " . $db->quote($tomorrow) . " AND e.start_time < " . $db->quote($day_after_tomorrow) . "))");
                 break;
                 case "this_week":
                     $date_info = getDate(strtotime($date));
@@ -320,13 +315,13 @@ class Event extends DefaultModel
                     $days_to_add = 5 - $today;
                     $beginning_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." - $days_to_remove days")));
                     $end_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." + $days_to_add days")));
-                    $query->where("((e.due_date >= '$beginning_of_week' AND e.due_date < '$end_of_week') OR (e.start_time >= '$beginning_of_week' AND e.start_time < '$end_of_week'))");
+                    $query->where("((e.due_date >= " . $db->quote($beginning_of_week) . " AND e.due_date < " . $db->quote($end_of_week) . ") OR (e.start_time >= " . $db->quote($beginning_of_week) . " AND e.start_time < " . $db->quote($end_of_week) . "))");
                 break;
                 case "past_due":
-                    $query->where("((e.due_date < '$date' AND e.due_date != '0000-00-00 00:00:00') OR (e.start_time < '$date' AND e.start_time != '0000-00-00 00:00:00'))");
+                    $query->where("((e.due_date < " . $db->quote($date) . " AND e.due_date != " . $db->quote($db->getNullDate()) . ") OR (e.start_time < " . $db->quote($date) . " AND e.start_time != " . $db->quote($db->getNullDate()) . "))");
                 break;
                 case "not_past_due":
-                    $query->where("((e.due_date >= '$date' AND e.due_date != '0000-00-00 00:00:00') OR (e.start_time >= '$date' AND e.start_time != '0000-00-00 00:00:00'))");
+                    $query->where("((e.due_date >= " . $db->quote($date) . " AND e.due_date != " . $db->quote($db->getNullDate()) . ") OR (e.start_time >= " . $db->quote($date) . " AND e.start_time != " . $db->quote($db->getNullDate()) . "))");
                 break;
             }
         }
@@ -352,15 +347,15 @@ class Event extends DefaultModel
         $query->where("e.published=".$this->published);
 
         if ($this->start_date) {
-            $query->where("(e.due_date >= '".$this->start_date."' OR e.start_time >= '".$this->start_date."' OR e.repeats != 'none' )");
+            $query->where("(e.due_date >= " . $db->quote($this->start_date) . " OR e.start_time >= " . $db->quote($this->start_date) . " OR e.repeats != " . $db->quote('none') . ")");
         }
 
         if ($this->end_date) {
-            $query->where("(e.due_date < '".$this->end_date."' OR e.end_time < '".$this->end_date."' OR e.repeats != 'none' )");
+            $query->where("(e.due_date < " . $db->quote($this->end_date) . " OR e.end_time < " . $db->quote($this->end_date) . " OR e.repeats != " . $db->quote('none') . ")");
         }
 
         if ($this->deal_id > 0) {
-            $query->where("(a.association_id=".$this->deal_id." AND a.association_type='deal')");
+            $query->where("(a.association_id=".$this->deal_id." AND a.association_type=" . $db->quote('deal') . ")");
         }
 
         $this->filter_order = $this->getState('Event.'.$this->view.'_'.$this->layout.'_filter_order');
@@ -752,7 +747,7 @@ class Event extends DefaultModel
             }
         }
 
-        //$app->triggerEvent('onEventLoad', array(&$rows));
+        //$this->app->triggerEvent('onEventLoad', array(&$rows));
 
         //Return results
         return $rows;
@@ -797,10 +792,8 @@ class Event extends DefaultModel
      */
     public function getEvent($id=null,$formatTime=true)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
 
         if (!$id) {
             $event = $this->getTable('Event');
@@ -808,7 +801,7 @@ class Event extends DefaultModel
             return $event;
         }
 
-        $data = $app->input->getRequest('post');
+        $data = $this->app->input->post->getArray();
 
         //determine if we are trying to retrieve a virtual event, if so retrieve its parent instead
         $query = $db->getQuery(true);
@@ -818,13 +811,13 @@ class Event extends DefaultModel
 
         //if we dont find any results use the parent id instead
         if ( count($result) == 0 || count(explode("-",$id)) > 1 ) {
-            $id = $app->input->get('parent_id');
+            $id = $this->app->input->get('parent_id');
         }
 
         //gen query
         $query->clear();
         $query->select("e.*,ecf.association_id,ecf.association_type,ecf.event_id,owner.first_name as owner_first_name, owner.last_name as owner_last_name,
-            d.name as deal_name, d.amount as deal_amount, CONCAT(p.first_name,' ',p.last_name) AS person_name, c.name as company_name, c.id as company_id,
+            d.name as deal_name, d.amount as deal_amount, " . $query->concatenate(array('p.first_name', $db->quote(' '), 'p.last_name')) . " AS person_name, c.name as company_name, c.id as company_id,
             c.address_1 as company_address_1, c.address_city as company_address_city, c.address_state as company_address_state, c.address_zip as company_address_zip,
             c.phone as company_phone, c.website as company_website,assignee.first_name AS assignee_first_name,assignee.last_name AS assignee_last_name
             ");
@@ -833,9 +826,9 @@ class Event extends DefaultModel
         //left join any assocations
         $query->leftJoin('#__events_cf AS ecf ON ecf.event_id = e.id');
         $query->leftJoin('#__users AS owner ON owner.id = e.owner_id');
-        $query->leftJoin('#__deals as d ON ecf.association_id = d.id AND ecf.association_type = "deal" AND d.published>0');
-        $query->leftJoin('#__people as p ON ecf.association_id = p.id AND ecf.association_type = "person" AND p.published>0');
-        $query->leftJoin('#__companies as c ON ecf.association_id = c.id AND ecf.association_type = "company" AND c.published>0');
+        $query->leftJoin('#__deals as d ON ecf.association_id = d.id AND ecf.association_type = ' . $db->quote('deal') . ' AND d.published>0');
+        $query->leftJoin('#__people as p ON ecf.association_id = p.id AND ecf.association_type = ' . $db->quote('person') . ' AND p.published>0');
+        $query->leftJoin('#__companies as c ON ecf.association_id = c.id AND ecf.association_type = ' . $db->quote('company') . ' AND c.published>0');
         $query->leftJoin('#__users AS assignee ON assignee.id = e.assignee_id');
 
         $query->where("e.id=".$id);
@@ -855,18 +848,18 @@ class Event extends DefaultModel
 
         if ( is_array($results) && array_key_exists(0,$results) ) {
 
-            if ( $results[0]['repeats'] != "none" && $app->input->get('date') && count($results) > 0 ) {
+            if ( $results[0]['repeats'] != "none" && $this->app->input->get('date') && count($results) > 0 ) {
                 if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ) {
                     $stime = explode(" ",$results[0]['start_time']);
                     $results[0]['start_time_hour'] = $stime[1];
                     $etime = explode(" ",$results[0]['end_time']);
                     $results[0]['end_time_hour'] =   $etime[1];
-                    $results[0]['start_time'] = $app->input->get('date');
-                    $results[0]['end_time'] = $app->input->get('date');
+                    $results[0]['start_time'] = $this->app->input->get('date');
+                    $results[0]['end_time'] = $this->app->input->get('date');
                 } elseif ( array_key_exists('due_date',$results[0]) ) {
                     $dtime = explode(" ",$results[0]['due_date']);
                     $results[0]['due_date_hour'] = $dtime[1];
-                    $results[0]['due_date'] = $app->input->get('date');
+                    $results[0]['due_date'] = $this->app->input->get('date');
                 }
             }
 
@@ -889,22 +882,22 @@ class Event extends DefaultModel
                     $results[0]['actual_close'] = DateHelper::formatDate($results[0]['actual_close'],true,false);
                 }
                 if ( array_key_exists('due_date',$results[0])) {
-                    $results[0]['due_date_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['due_date']) : DateHelper::formatDate($results[0]['due_date']);
-                    $results[0]['due_date'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['due_date']) : DateHelper::formatDate($results[0]['due_date'],true,false);
+                    $results[0]['due_date_formatted'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['due_date']) : DateHelper::formatDate($results[0]['due_date']);
+                    $results[0]['due_date'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['due_date']) : DateHelper::formatDate($results[0]['due_date'],true,false);
                 }
                 if ( array_key_exists('end_date',$results[0])) {
-                    $results[0]['end_date_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_date']) : DateHelper::formatDate($results[0]['end_date']);
-                    $results[0]['end_date'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_date']) : DateHelper::formatDate($results[0]['end_date'],true,false);
+                    $results[0]['end_date_formatted'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['end_date']) : DateHelper::formatDate($results[0]['end_date']);
+                    $results[0]['end_date'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['end_date']) : DateHelper::formatDate($results[0]['end_date'],true,false);
                 }
                 if ( array_key_exists('start_time',$results[0])) {
-                    $results[0]['start_time_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['start_time']) : DateHelper::formatDate($results[0]['start_time']);
-                    $results[0]['start_time'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['start_time']) : DateHelper::formatDate($results[0]['start_time'],true,false);
+                    $results[0]['start_time_formatted'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['start_time']) : DateHelper::formatDate($results[0]['start_time']);
+                    $results[0]['start_time'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['start_time']) : DateHelper::formatDate($results[0]['start_time'],true,false);
                 }
                 if ( array_key_exists('end_time',$results[0])) {
-                    $results[0]['end_time_formatted'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_time']) : DateHelper::formatDate($results[0]['end_time']);
-                    $results[0]['end_time'] = $app->input->get('date') ? DateHelper::formatDateString($results[0]['end_time']) : DateHelper::formatDate($results[0]['end_time'],true,false);
+                    $results[0]['end_time_formatted'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['end_time']) : DateHelper::formatDate($results[0]['end_time']);
+                    $results[0]['end_time'] = $this->app->input->get('date') ? DateHelper::formatDateString($results[0]['end_time']) : DateHelper::formatDate($results[0]['end_time'],true,false);
                 }
-                if ( array_key_exists(0,$results) && !$app->input->get('date') ) {
+                if ( array_key_exists(0,$results) && !$this->app->input->get('date') ) {
                     if ( array_key_exists('type',$results[0]) && $results[0]['type'] == "event" ) {
                         $stime = explode(" ",$results[0]['start_time']);
                         $results[0]['start_time_hour'] = $stime[1];
@@ -921,7 +914,7 @@ class Event extends DefaultModel
             }
 
             //filter results for calendar display
-            if ( $app->input->get('calendar_filter') ) {
+            if ( $this->app->input->get('calendar_filter') ) {
                 $results[0]['title']    = $results[0]['name'];
                 $results[0]['allDay']   = $results[0]['all_day'];
 
@@ -988,7 +981,7 @@ class Event extends DefaultModel
     public function eventsCf($cfdata,$type)
     {
         //get db
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //search for existing associations
@@ -1005,13 +998,13 @@ class Event extends DefaultModel
             //flush query object
             $query->clear();
             $query->update('#__events_cf');
-            $query->set(array("association_id=".$cfdata['association_id'],"association_type='".$type."'","event_id=".$cfdata['event_id']));
+            $query->set(array("association_id=".$cfdata['association_id'],"association_type=" . $db->quote($type),"event_id=".$cfdata['event_id']));
             $query->where("event_id=".$cfdata['event_id']);
         } else {
             //flush query object
             $query->clear();
             $query->insert('#__events_cf');
-            $query->set(array("association_id=".$cfdata['association_id'],"association_type='".$type."'","event_id=".$cfdata['event_id']));
+            $query->set(array("association_id=".$cfdata['association_id'],"association_type=" . $db->quote($type),"event_id=".$cfdata['event_id']));
         }
 
         //return
@@ -1030,7 +1023,7 @@ class Event extends DefaultModel
     public function addExcludes($parent_id,$date)
     {
         //Dbo
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //gen query
@@ -1053,7 +1046,7 @@ class Event extends DefaultModel
         //write new information to database
         $query->clear();
         $query->update('#__events');
-        $query->set(array("excludes='".$result."'"));
+        $query->set(array("excludes=" . $db->quote($result)));
         $query->where("id=".$parent_id);
         $db->setQuery($query);
         $db->execute();
@@ -1068,7 +1061,7 @@ class Event extends DefaultModel
     public function updateEvent($parent_id,$data)
     {
         //dbo
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //unset values
@@ -1085,7 +1078,7 @@ class Event extends DefaultModel
         //construct values
         $values = array();
         foreach ($data as $key=>$info) {
-                $values[] = $key." = '".$info."'";
+                $values[] = $key." = " . $db->quote($info);
         }
 
         //gen query
@@ -1108,6 +1101,7 @@ class Event extends DefaultModel
      */
     public function removeEvent($id=null,$type=null)
     {
+<<<<<<< HEAD
         $app = \Cobalt\Container::fetch('app');
 
         $type = ( $type == null ) ? $app->input->get('type') : $type;
@@ -1116,14 +1110,21 @@ class Event extends DefaultModel
         $event_type = ( $app->input->get('event_type') ) ? $app->input->get('event_type') : $app->input->get('type');
         $data = $app->input->getArray();
         $data = array_filter($data);
+=======
+        $type = ( $type == null ) ? $this->app->input->get('type') : $type;
+        $date = $this->app->input->get('date');
+        $repeats = $this->app->input->get('repeats');
+        $event_type = ( $this->app->input->get('event_type') ) ? $this->app->input->get('event_type') : $this->app->input->get('type');
+        $data = $this->app->input->getArray();
+>>>>>>> upstream/staging
         if ( $id != null ) $data['event_id'] = $id;
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
 
         //remove an entire series
         if ($type == 'series') {
-            $id = ( $app->input->get('parent_id') ) ? $app->input->get('parent_id') : $app->input->get('event_id');
+            $id = ( $this->app->input->get('parent_id') ) ? $this->app->input->get('parent_id') : $this->app->input->get('event_id');
             $query->update('#__events')->set("published=-1")->where('id='.$id." OR parent_id=".$id);
             //run database query
             $db->setQuery($query);
@@ -1244,9 +1245,9 @@ class Event extends DefaultModel
                         }
                         $query->update("#__events");
                         if ($event_type == 'event') {
-                            $query->set(array("start_time='".$start_time."'","end_time='".$end_time."'"));
+                            $query->set(array("start_time=" . $db->quote($start_time),"end_time=" . $db->quote($end_time)));
                         } else {
-                            $query->set(array("due_date='".$due_date."'"));
+                            $query->set(array("due_date=" . $db->quote($due_date)));
                         }
                         $query->set(array("completed=0"));
                         $query->where("id=".$data['event_id']);
@@ -1269,7 +1270,7 @@ class Event extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
-        return JFactory::getDbo()->getAffectedRows() ? true : false;
+        return $this->getDb()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1278,15 +1279,13 @@ class Event extends DefaultModel
      */
     public function markComplete()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Determine if we are editing a series of events of a single event
-        $event_id = $app->input->get('event_id');
-        $parent_id = $app->input->get('parent_id');
-        $date = $app->input->get('due_date') ? $app->input->get('due_date') : $app->input->get('date');
-        $event_type = $app->input->get('event_type');
-        $repeats = $app->input->get('repeats');
-        $completed = $app->input->get('completed') != "" ? $app->input->get('completed') : 1;
+        $event_id = $this->app->input->get('event_id');
+        $parent_id = $this->app->input->get('parent_id');
+        $date = $this->app->input->get('due_date') ? $this->app->input->get('due_date') : $this->app->input->get('date');
+        $event_type = $this->app->input->get('event_type');
+        $repeats = $this->app->input->get('repeats');
+        $completed = $this->app->input->get('completed') != "" ? $this->app->input->get('completed') : 1;
 
         //Load Tables
         $oldRow = $this->getTable('Table');
@@ -1295,10 +1294,10 @@ class Event extends DefaultModel
         //We are only editing a single event entry OR a parent entry
         if ($repeats == 'none' /*|| $parent_id == 0*/) {
 
-            $db = JFactory::getDBO();
+            $db = $this->getDb();
             $query = $db->getQuery(true);
             $date = DateHelper::formatDBDate(date("Y-m-d H:i:s"));
-            $query->update("#__events")->set(array('completed='.$completed,'actual_close="'.$date.'"'))->where("id=".$event_id);
+            $query->update("#__events")->set(array('completed='.$completed,'actual_close=' . $db->quote($date)))->where("id=".$event_id);
             $db->setQuery($query);
             $db->execute();
 
@@ -1312,14 +1311,14 @@ class Event extends DefaultModel
 
             //Add the event to the parent exclusion
             $exp1 = explode(" ",$date);
-            $append = $event->type == "task" ? $event->due_date : $event->start_time;
-            $exp2 = explode(" ",$append);
+            $this->append = $event->type == "task" ? $event->due_date : $event->start_time;
+            $exp2 = explode(" ",$this->append);
             $excludeDate = $exp1[0]." ".$exp2[1];
 
             $this->addExcludes($id,$excludeDate);
 
             //Merge arrays
-            $data = $app->input->getRequest('post');
+            $data = $this->app->input->getRequest('post');
             $data['completed'] = $completed;
             $new_data = array_merge($event,$data);
 
@@ -1355,7 +1354,7 @@ class Event extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'event', $status);
 
-        return JFactory::getDbo()->getAffectedRows() ? true : false;
+        return $this->getDb()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1363,22 +1362,20 @@ class Event extends DefaultModel
      */
     public function markIncomplete()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Determine if we are editing a series of events of a single event
-        $event_id = $app->input->get('event_id');
-        $parent_id = $app->input->get('parent_id');
-        $date = $app->input->get('date');
-        $event_type = $app->input->get('event_type');
-        $repeats = $app->input->get("repeats");
+        $event_id = $this->app->input->get('event_id');
+        $parent_id = $this->app->input->get('parent_id');
+        $date = $this->app->input->get('date');
+        $event_type = $this->app->input->get('event_type');
+        $repeats = $this->app->input->get("repeats");
 
-        $db = JFactory::getDBO();
+        $db = $this->getDb();
         $query = $db->getQuery(true);
-        $query->update("#__events")->set(array('completed=0','actual_close="0000-00-00 00:00:00"'))->where("id=".$event_id);
+        $query->update("#__events")->set(array('completed=0','actual_close=' . $db->quote($db->getNullDate())))->where("id=".$event_id);
         $db->setQuery($query);
         $db->query();
 
-        return JFactory::getDbo()->getAffectedRows() ? true : false;
+        return $this->getDb()->getAffectedRows() ? true : false;
     }
 
     /**
@@ -1387,12 +1384,10 @@ class Event extends DefaultModel
      */
     public function postponeEvent($days=null,$event_id=null)
     {
-            $app = \Cobalt\Container::fetch('app');
+            $event_id = ( $event_id == null ) ? $this->app->input->get('event_id') : $event_id;
+            $days = ( $days == null ) ? $this->app->input->get("days") : $days;
 
-            $event_id = ( $event_id == null ) ? $app->input->get('event_id') : $event_id;
-            $days = ( $days == null ) ? $app->input->get("days") : $days;
-
-            $db = JFactory::getDBO();
+            $db = $this->getDb();
             $query = $db->getQuery(true);
             $query->select("e.type,e.due_date,e.start_time,e.end_time")->from("#__events AS e")->where("e.id=".$event_id);
             $db->setQuery($query);
@@ -1408,11 +1403,11 @@ class Event extends DefaultModel
                     $query->update('#__events');
                     if ($date->type == "task") {
                         $due_date = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($date->due_date)) . "+".$days." days"));
-                        $query->set(array("due_date='".$due_date."'"));
+                        $query->set(array("due_date=" . $db->quote($due_date)));
                     } else {
                         $start_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($date->start_time)) . "+".$days." days"));
                         $end_time = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s", strtotime($date->end_time)) . "+".$days." days"));
-                        $query->set(array("start_time='".$start_time."'","end_time='".$end_time."'"));
+                        $query->set(array("start_time=" . $db->quote($start_time),"end_time=" . $db->quote($end_time)));
                     }
                     $query->where("id=".$event_id);
                     $db->setQuery($query);
@@ -1457,8 +1452,7 @@ class Event extends DefaultModel
 
     public function _buildQuery()
     {
-        $app = \Cobalt\Container::fetch('app');
-        $loc = $app->input->getCmd('loc',$this->loc);
+        $loc = $this->app->input->getCmd('loc',$this->loc);
         $association = null;
 
         $user = null;
@@ -1469,7 +1463,7 @@ class Event extends DefaultModel
         }
 
         $query = $this->db->getQuery(true);
-        $db = $this->db;
+        $db = $this->getDb();
 
         $query->select("e.*,".
             "a.*,".
@@ -1483,9 +1477,9 @@ class Event extends DefaultModel
             "FROM #__events AS e");
         $query->leftJoin("#__events_categories AS ci ON ci.id = e.category_id");
         $query->leftJoin("#__events_cf AS a ON e.id = a.event_id");
-        $query->leftJoin("#__companies AS c ON a.association_type = 'company' AND a.association_id = c.id AND c.published>0");
-        $query->leftJoin("#__deals AS d ON a.association_type = 'deal' AND a.association_id = d.id AND d.published>0");
-        $query->leftJoin("#__people AS p ON a.association_type = 'person' AND a.association_id = p.id AND p.published>0");
+        $query->leftJoin("#__companies AS c ON a.association_type = " . $db->quote('category') . " AND a.association_id = c.id AND c.published>0");
+        $query->leftJoin("#__deals AS d ON a.association_type = " . $db->quote('deal') . " AND a.association_id = d.id AND d.published>0");
+        $query->leftJoin("#__people AS p ON a.association_type = " . $db->quote('person') . " AND a.association_id = p.id AND p.published>0");
         $query->leftJoin('#__users AS assignee ON assignee.id = e.assignee_id');
         $query->leftJoin('#__users AS owner ON owner.id = e.owner_id');
 
@@ -1515,9 +1509,9 @@ class Event extends DefaultModel
         }
 
         if (!$association) {
-            $association = $app->input->get('association_id') ? $app->input->get('association_id') : $app->input->get('id');
+            $association = $this->app->input->get('association_id') ? $this->app->input->get('association_id') : $this->app->input->get('id');
         }
-        $association_type = $app->input->get('association_type') ? $app->input->get('association_type') : $app->input->get('layout');
+        $association_type = $this->app->input->get('association_type') ? $this->app->input->get('association_type') : $this->app->input->get('layout');
         $association_types = array("company","deal","person");
 
         if ($association) {
@@ -1553,7 +1547,7 @@ class Event extends DefaultModel
 
         if ($this->current_events) {
             $now = DateHelper::formatDBDate(date('Y-m-d'));
-            $query->where('e.due_date != "0000-00-00 00:00:00" AND e.due_date >="'.$now.'"');
+            $query->where('e.due_date != ' . $db->quote($db->getNullDate()) . ' AND e.due_date >= ' . $db->quote($now));
         }
 
         /** Filter by status **/
@@ -1575,7 +1569,7 @@ class Event extends DefaultModel
         /** Filter by type **/
         $type_filter = $this->getState('Event.'.$this->view.'_'.$this->layout.'_type');
         if ($type_filter != null && $type_filter != "all" && $this->view != "print") {
-            $query->where("e.type='$type_filter'");
+            $query->where("e.type=" . $db->quote($type_filter));
         }
 
         /** Filter by category **/
@@ -1591,12 +1585,12 @@ class Event extends DefaultModel
             switch ($due_date_filter) {
                 case "today":
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("((e.due_date >= '$date' AND e.due_date < '$tomorrow') OR (e.start_time >= '$date' AND e.start_time < '$tomorrow'))");
+                    $query->where("((e.due_date >= " . $db->quote($date) . " AND e.due_date < " . $db->quote($tomorrow) . ") OR (e.start_time >= " . $db->quote($date) . " AND e.start_time < " . $db->quote($tomorrow) . "))");
                     break;
                 case "tomorrow":
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
                     $day_after_tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (2*24*60*60)));
-                    $query->where("((e.due_date >= '$tomorrow' AND e.due_date < '$day_after_tomorrow') OR (e.start_time >= '$tomorrow' AND e.start_time < '$day_after_tomorrow'))");
+                    $query->where("((e.due_date >= " . $db->quote($tomorrow) . " AND e.due_date < " . $db->quote($day_after_tomorrow) . ") OR (e.start_time >= " . $db->quote($tomorrow) . " AND e.start_time < " . $db->quote($day_after_tomorrow) . "))");
                     break;
                 case "this_week":
                     $date_info = getDate(strtotime($date));
@@ -1605,13 +1599,13 @@ class Event extends DefaultModel
                     $days_to_add = 5 - $today;
                     $beginning_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." - $days_to_remove days")));
                     $end_of_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime($date." + $days_to_add days")));
-                    $query->where("((e.due_date >= '$beginning_of_week' AND e.due_date < '$end_of_week') OR (e.start_time >= '$beginning_of_week' AND e.start_time < '$end_of_week'))");
+                    $query->where("((e.due_date >= " . $db->quote($beginning_of_week) . " AND e.due_date < " . $db->quote($end_of_week) . ") OR (e.start_time >= " . $db->quote($beginning_of_week) . " AND e.start_time < " . $db->quote($end_of_week) . "))");
                     break;
                 case "past_due":
-                    $query->where("((e.due_date < '$date' AND e.due_date != '0000-00-00 00:00:00') OR (e.start_time < '$date' AND e.start_time != '0000-00-00 00:00:00'))");
+                    $query->where("((e.due_date < " . $db->quote($date) . " AND e.due_date != " . $db->quote($db->getNullDate()) . ") OR (e.start_time < " . $db->quote($date) . " AND e.start_time != " . $db->quote($db->getNullDate()) . "))");
                     break;
                 case "not_past_due":
-                    $query->where("((e.due_date >= '$date' AND e.due_date != '0000-00-00 00:00:00') OR (e.start_time >= '$date' AND e.start_time != '0000-00-00 00:00:00'))");
+                    $query->where("((e.due_date >= " . $db->quote($date) . " AND e.due_date != " . $db->quote($db->getNullDate()) . ") OR (e.start_time >= " . $db->quote($date) . " AND e.start_time != " . $db->quote($db->getNullDate()) . "))");
                     break;
             }
         }
@@ -1637,15 +1631,15 @@ class Event extends DefaultModel
         $query->where("e.published=".$this->published);
 
         if ($this->start_date) {
-            $query->where("(e.due_date >= '".$this->start_date."' OR e.start_time >= '".$this->start_date."' OR e.repeats != 'none' )");
+            $query->where("(e.due_date >= " . $db->quote($this->start_date) . " OR e.start_time >= " . $db->quote($this->start_date) . " OR e.repeats != " . $db->quote('none') . ")");
         }
 
         if ($this->end_date) {
-            $query->where("(e.due_date < '".$this->end_date."' OR e.end_time < '".$this->end_date."' OR e.repeats != 'none' )");
+            $query->where("(e.due_date < " . $db->quote($this->end_date) . " OR e.end_time < " . $db->quote($this->end_date) . " OR e.repeats != " . $db->quote('none') . ")");
         }
 
         if ($this->deal_id > 0) {
-            $query->where("(a.association_id=".$this->deal_id." AND a.association_type='deal')");
+            $query->where("(a.association_id=".$this->deal_id." AND a.association_type=" . $db->quote('deal') . ")");
         }
 
         $this->filter_order = $this->getState('Event.'.$this->view.'_'.$this->layout.'_filter_order');
@@ -1785,9 +1779,6 @@ class Event extends DefaultModel
      */
     public function populateState()
     {
-        //get states
-        $app = \Cobalt\Container::fetch('app');
-
         //determine view so we set correct states
         $view = $this->view;
         $layout = $this->layout;
@@ -1795,8 +1786,8 @@ class Event extends DefaultModel
         // if ( $view == "events" && ( $layout == "default" || $layout == "list" || $layout == null ) ) {
 
             // Get pagination request variables
-            $limit = $app->getUserStateFromRequest("Event.".$view.'_'.$layout.'_limit','limit',10);
-            $limitstart = $app->getUserStateFromRequest("Event.".$view.'_'.$layout.'_limitstart','limitstart',0);
+            $limit = $this->app->getUserStateFromRequest("Event.".$view.'_'.$layout.'_limit','limit',10);
+            $limitstart = $this->app->getUserStateFromRequest("Event.".$view.'_'.$layout.'_limitstart','limitstart',0);
 
             // In case limit has been changed, adjust it
             $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -1806,17 +1797,17 @@ class Event extends DefaultModel
             $state->set("Event.".$view.'_limitstart', $limitstart);
 
             //set default filter states for reports
-            $filterOrder = "CASE e.type WHEN 'event' THEN e.start_time WHEN 'task' THEN e.due_date ELSE e.due_date END";
+            $filterOrder = "CASE e.type WHEN " . $this->db->quote('event') . " THEN e.start_time WHEN " . $this->db->quote('task') . " THEN e.due_date ELSE e.due_date END";
             $filterOrderDir = "ASC";
-            $filter_order = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order','filter_order',$filterOrder);
-            $filter_order_Dir = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order_Dir','filter_order_Dir',$filterOrderDir);
-            $status_filter = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_status','status',0);
-            $type_filter = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_type','type','all');
-            $category_filter = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_category','category','any');
-            $due_date_filter = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_due_date','due_date','any');
-            $association_type_filter = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_association_type','association_type','any');
-            $assignee_id_filter = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_assignee_id','assignee_id',UsersHelper::getUserId());
-            $assignee_filter_type = $app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_assignee_filter_type','assignee_filter_type','individual');
+            $filter_order = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order','filter_order',$filterOrder);
+            $filter_order_Dir = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order_Dir','filter_order_Dir',$filterOrderDir);
+            $status_filter = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_status','status',0);
+            $type_filter = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_type','type','all');
+            $category_filter = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_category','category','any');
+            $due_date_filter = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_due_date','due_date','any');
+            $association_type_filter = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_association_type','association_type','any');
+            $assignee_id_filter = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_assignee_id','assignee_id',UsersHelper::getUserId());
+            $assignee_filter_type = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_assignee_filter_type','assignee_filter_type','individual');
 
             //set states for reports
             $state->set('Event.'.$view.'_'.$layout.'_filter_order',$filter_order);

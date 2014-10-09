@@ -44,7 +44,7 @@ class Html extends AbstractHtmlView
         $doc = JFactory::getDocument();
 
         //session info
-        $session = JFactory::getSession();
+        $session = \Cobalt\Container::fetch('app')->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
         $team_id = UsersHelper::getTeamId();

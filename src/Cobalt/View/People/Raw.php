@@ -22,7 +22,7 @@ class Raw extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
         $document = JFactory::getDocument();
         $id = $app->input->get('id') ? $app->input->get('id') : null;
 

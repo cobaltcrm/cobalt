@@ -40,7 +40,7 @@ class Html extends AbstractHtmlView
         $document->addScript( JURI::base().'src/Cobalt/media/js/document_manager.js' );
 
         //session data
-        $session = JFactory::getSession();
+        $session = \Cobalt\Container::fetch('app')->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
 

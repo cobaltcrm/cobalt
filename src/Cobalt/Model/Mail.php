@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\UsersHelper;
 
 // no direct access
@@ -516,8 +515,7 @@ class Mail extends DefaultModel
     {
         if ( $this->_connect() ) {
             if (!$message_id) {
-                $app = \Cobalt\Container::fetch('app');
-                $message_id = $app->input->get('id');
+                $message_id = $this->app->input->get('id');
             }
             if ($message_id != null || $message_id != 0) {
                 $this->_delete($message_id);
@@ -528,18 +526,16 @@ class Mail extends DefaultModel
 
     public function saveEmail($email_id=null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         if (!$email_id) {
-            $email_id = $app->input->get('id');
+            $email_id = $this->app->input->get('id');
         }
 
         $email = $this->getEmail($email_id,FALSE);
 
-        $person_id = $app->input->get('person_id');
-        $deal_id = $app->input->get('deal_id');
-        $person_name = $app->input->get('person_name');
-        $deal_name = $app->input->get('deal_name');
+        $person_id = $this->app->input->get('person_id');
+        $deal_id = $this->app->input->get('deal_id');
+        $person_name = $this->app->input->get('person_name');
+        $deal_name = $this->app->input->get('deal_name');
 
         $data = array(
                 'deal_id'       => $deal_id,

@@ -11,7 +11,6 @@
 namespace Cobalt\View\Note;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
 use Cobalt\Model\Note as NoteModel;
 use Cobalt\Helper\NoteHelper;
 
@@ -21,7 +20,7 @@ class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         $this->type = $app->input->getCmd('type');
         $this->id = $app->input->getInt('id');

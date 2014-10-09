@@ -11,7 +11,6 @@
 namespace Cobalt\View\Sources;
 
 use JUri;
-use JFactory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\DropdownHelper;

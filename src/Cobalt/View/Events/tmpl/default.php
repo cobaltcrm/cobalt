@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 $view = $app->input->get('view');
 $layout = $app->input->get('layout','list');
 

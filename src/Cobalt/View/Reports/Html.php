@@ -35,7 +35,7 @@ class Html extends AbstractHtmlView
     public function render()
     {
         //app
-        $this->app = JFactory::getApplication();
+        $this->app = \Cobalt\Container::fetch('app');
 
         //load reports menu bar
         $this->menu = TemplateHelper::loadReportMenu();

@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 /*
 if (UsersHelper::getLoggedInUser()) {
-  if ( UsersHelper::isFullscreen() && !(JFactory::getApplication()->input->get('view')=="print") ) {
+  if ( UsersHelper::isFullscreen() && !(\Cobalt\Container::fetch('app')->input->get('view')=="print") ) {
 ?>
     <div id="logged_in_user"><?php echo ConfigHelper::getConfigValue('welcome_message'); ?> <?php UsersHelper::getFirstName()."!";
                     echo self::displayLogout();

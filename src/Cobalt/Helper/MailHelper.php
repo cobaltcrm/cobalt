@@ -10,7 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
 use Cobalt\Model\Stats as StatsModel;
 
 // no direct access
@@ -67,14 +66,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function sendMail($layout,$recipient)
     {
-        $mailer = JFactory::getMailer();
+        $mailer = \JFactory::getMailer();
         $mailer->isHTML(true);
         $mailer->Encoding = 'base64';
 
-        $config = JFactory::getConfig();
+        $config = Container::fetch('config');
         $sender = array(
-                    $config->getValue( 'config.mailfrom' ),
-                       $config->getValue( 'config.fromname' )
+                    $config->get( 'mailfrom' ),
+                       $config->get( 'fromname' )
                    );
 
         $mailer->setSender($sender);

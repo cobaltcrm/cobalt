@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JFactory;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\DropdownHelper;
 
@@ -47,14 +46,13 @@ class Import extends DefaultModel
      */
     public function readCSVFile($file, $table = null)
     {
-        $app = \Cobalt\Container::fetch('app');
         ini_set("auto_detect_line_endings", "1");
         $data = array();
         $line = 1;
         $headers = array();
         $i = -2;
-        $db = JFactory::getDBO();
-        $table = $db->getTableColumns("#__" . $app->input->get('import_type', $table));
+        $db = $this->getDb();
+        $table = $db->getTableColumns("#__" . $this->app->input->get('import_type', $table));
         $special_headers = array('company_id','company_name','stage_name','source_name','status_name','primary_contact_name','assignee_name','type');
 
         if (($handle = fopen($file, "r")) !== false)
@@ -90,7 +88,7 @@ class Import extends DefaultModel
                                         $new_header = "company_id";
                                         $company_name = $model->getCompanyName($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        
+
                                         if ($company_name != "")
                                         {
                                             $name = $company_name;
@@ -109,7 +107,7 @@ class Import extends DefaultModel
                                         $new_header = "company_id";
                                         $company_id = $model->getCompanyList($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        
+
                                         if (count($company_id) > 0)
                                         {
                                             $name = $company_id[0]['name'];
@@ -127,7 +125,7 @@ class Import extends DefaultModel
                                         $new_header = "stage_id";
                                         $stage_id = DealHelper::getStages($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        
+
                                         if (count($stage_id))
                                         {
                                             $keys = array_keys($stage_id);
@@ -143,7 +141,7 @@ class Import extends DefaultModel
                                         $new_header = "source_id";
                                         $source_id = DealHelper::getSources($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        
+
                                         if (count($source_id))
                                         {
                                             $keys = array_keys($source_id);
@@ -159,7 +157,7 @@ class Import extends DefaultModel
                                         $new_header = "status_id";
                                         $status_id = DealHelper::getStatuses($read[$c]);
                                         $name = "name=\"import_id[".$i."][".$new_header."]\"";
-                                        
+
                                         if (count($status_id))
                                         {
                                             $keys = array_keys($status_id);
@@ -175,7 +173,7 @@ class Import extends DefaultModel
                                         $new_header = "primary_contact_id";
                                         $model = new People;
                                         $contact = $model->searchForContact($read[$c]);
-                                        
+
                                         if ($contact)
                                         {
                                             $special_data = array('label'=>$contact[0]->label,'value'=>$contact[0]->value);

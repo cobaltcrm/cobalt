@@ -13,7 +13,6 @@ namespace Cobalt\View\Categories;
 use Cobalt\Helper\TextHelper;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
-use JFactory;
 use JUri;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\Toolbar;

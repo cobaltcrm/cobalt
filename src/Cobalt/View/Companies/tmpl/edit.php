@@ -10,13 +10,13 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+$app = \Cobalt\Container::fetch('app');
 $ownerId = is_object($this->company) && isset($this->company->owner_id) ? $this->company->owner_id : UsersHelper::getUserId();
 $format = $app->input->get('format');
 if ($format != "raw")
 { ?>
     <h1><?php echo $header; ?></h1>
-    
+
 <?php } ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">
@@ -58,7 +58,7 @@ if ($format != "raw")
                 <a href="#Custom" data-toggle="tab"><?php echo ucwords(TextHelper::_('COBALT_CUSTOM')); ?></a>
             </li>
         </ul>
-     
+
         <div class="tab-content">
           <div class="tab-pane active fade in" id="Company">
               <div class="row">

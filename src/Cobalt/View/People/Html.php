@@ -32,7 +32,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = JFactory::getApplication();
+        $app = \Cobalt\Container::fetch('app');
 
         ///retrieve task list from model
         $model = new PeopleModel;
@@ -40,7 +40,7 @@ class Html extends AbstractHtmlView
         $state = $model->getState();
 
         //session data
-        $session = JFactory::getSession();
+        $session = $app->getSession();
 
         $user_id = UsersHelper::getUserId();
         $team_id = UsersHelper::getTeamId();

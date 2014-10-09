@@ -10,8 +10,6 @@
 
 namespace Cobalt\Helper;
 
-use JFactory;
-
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -910,10 +908,10 @@ class UsersHelper
 			$db->setQuery($query);
 			$lang = $db->loadResult();
 
-			return ( $lang != "" && $lang != null ) ? $lang : JFactory::getConfig()->get('language');
+			return ( $lang != "" && $lang != null ) ? $lang : \Cobalt\Container::fetch('config')->get('language');
 
 		} else {
-			return JFactory::getConfig()->get('language');
+			return \Cobalt\Container::fetch('config')->get('language');
 
 		}
 	}
@@ -922,7 +920,7 @@ class UsersHelper
 	public static function loadLanguage()
 	{
 		$lng = self::getLanguage();
-		$lang = JFactory::getLanguage();
+		$lang = \Cobalt\Container::fetch('app')->getLanguage();
 		$lang->load("joomla",JPATH_ROOT,$lng);
 		$lang->setDefault($lng);
 	}
