@@ -161,7 +161,7 @@ class ConfigHelper
 
     public static function getLanguage()
     {
-        $config = Container::fetch('config');
+        $config = \Cobalt\Container::fetch('config');
 
         return $config->get('language');
 
@@ -169,7 +169,7 @@ class ConfigHelper
 
     public static function saveLanguage($lang)
     {
-        $config = Container::fetch('config');
+        $config = \Cobalt\Container::fetch('config');
         $config->set("language",$lang);
 
         $file = JPATH_CONFIGURATION."/configuration.php";

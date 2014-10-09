@@ -18,7 +18,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row">
                 <?php echo $this->side_menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <form action="index.php?view=menu" method="post" name="adminForm" id="adminForm" class="form-validate"  >
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
                         <div class="page-header">
                             <?php echo $this->toolbar->render(); ?>
                             <h3><?php echo JText::_('COBALT_EDIT_MENU'); ?></h3>
@@ -34,8 +34,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <?php } ?>
                         <div>
                             <input type="hidden" name="id" value="1" />
-                            <input type="hidden" name="task" value="" />
-                            <input type="hidden" name="controller" value="" />
+                            <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="menu" />
                             <?php echo JHtml::_('form.token'); ?>
                         </div>

@@ -519,6 +519,15 @@ class UsersHelper
 		return $db->loadResult();
 	}
 
+	/**
+     * Get formwizard count associated with users
+     * @return int Count of formwizard returned from database
+     */
+    public static function getFormwizardCount()
+    {
+        return self::getItemsCount('formwizard');
+    }
+
     /**
      * Get documents count associated with users
      * @return int Count of documents returned from database

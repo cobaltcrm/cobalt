@@ -10,12 +10,9 @@
 
 namespace Cobalt\View\FormWizard;
 
-use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\MenuHelper;
@@ -32,38 +29,43 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
+        //application
+        $app = \Cobalt\Container::fetch('app');
+
         //load model
         $layout = $this->getLayout();
         $model = new FormWizardModel;
         $model->set("_layout",$layout);
 
         //document
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
 
         // Create the toolbar object
         $this->toolbar = new Toolbar;
 
-
         //add toolbar buttons to manage users
-        if ($layout == 'default') {
-
+        if ($layout == 'default')
+        {
             //buttons
             $this->toolbar->addNew();
             $this->toolbar->addDeleteRow();
 
-            ToolbarHelper::addNew('edit');
-            ToolbarHelper::editList('edit');
-            ToolbarHelper::deleteList(TextHelper::_('COBALT_CONFIRMATION'),'remove');
+            // ToolbarHelper::editList('edit');
 
             // Initialise variables.
             $this->state = $model->getState();;
             $this->forms = $model->getForms();
 
-            $this->listOrder = $this->state->get('Formwizard.filter_order');
-            $this->listDirn   = $this->state->get('Formwizard.filter_order_Dir');
+            $document->addScriptDeclaration("
+                var loc = 'formwizard';
+                var order_dir = '" . $this->state->get('Formwizard.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Formwizard.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
-        } elseif ($layout == 'edit') {
-
+            $document->addScriptDeclaration('jQuery(function() { FormWizard.bind(); });');
+        }
+        elseif ($layout == 'edit')
+        {
             //buttons
             $this->toolbar->save();
             $this->toolbar->cancel();
@@ -74,13 +76,13 @@ class Html extends AbstractHtmlView
             $this->form = $model->getForm();
 
             //form types
-            $this->form_types = DropdownHelper::getFormTypes($this->form['type']);
+            $this->form_types = DropdownHelper::getFormTypes($this->form->type);
             $fields = array(
-                    'lead'=>DropdownHelper::getFormFields('people'),
-                    'contact'=>DropdownHelper::getFormFields('people'),
-                    'deal'=>DropdownHelper::getFormFields('deal'),
-                    'company'=>DropdownHelper::getFormFields('company')
-                );
+                'lead' => DropdownHelper::getFormFields('people'),
+                'contact' => DropdownHelper::getFormFields('people'),
+                'deal' => DropdownHelper::getFormFields('deal'),
+                'company' => DropdownHelper::getFormFields('company')
+            );
             $this->fields = $fields;
             $document->addScriptDeclaration('var fields='.json_encode($fields));
 
@@ -88,13 +90,7 @@ class Html extends AbstractHtmlView
             $model = new UsersModel;
             $user_list = $model->getUsers();
             $document->addScriptDeclaration('var user_list='.json_encode($user_list).';');
-
         }
-
-        //javascripts
-        $document->addScript(JURI::base().'src/Cobalt/media/js/jquery.base64.js');
-        $document->addScript(JURI::base().'src/Cobalt/media/js/formwizard.js');
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

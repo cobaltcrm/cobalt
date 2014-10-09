@@ -23,26 +23,29 @@ class Config extends DefaultModel
 
         //Load Tables
         $row = $this->getTable('Config');
-        $data = isset($data) && is_array($data) && count($data) > 0 ? $data : $app->input->getRequest( 'post' );
+        $data = isset($data) && is_array($data) && count($data) > 0 ? $data : $this->app->input->post->getArray();
 
         //date generation
         $date = date('Y-m-d H:i:s');
 
         $data['id'] = 1;
 
-        if ( !array_key_exists('id',$data) ) {
+        if (!array_key_exists('id', $data))
+        {
             $data['created'] = $date;
         }
 
         $data['modified'] = $date;
 
-        if ( array_key_exists('imap_pass',$data) ) {
+        if (array_key_exists('imap_pass', $data))
+        {
             $data['imap_pass'] = base64_encode($data['imap_pass']);
         }
 
         $data['show_help'] = array_key_exists('show_help',$data) ? $data['show_help'] : 0;
 
-        if ( array_key_exists("site_language",$data) ) {
+        if (array_key_exists("site_language", $data))
+        {
             ConfigHelper::saveLanguage($data['site_language']);
             unset($data['site_language']);
         }

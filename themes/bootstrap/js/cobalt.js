@@ -3224,6 +3224,91 @@ var TemplateConfig = {
     }
 }
 
+var FormWizard = {
+    bind: function() {
+
+        $("#type").change(function() {
+            TemplateConfig.updateFields();
+        });
+
+        $("#return_url").blur(function() {
+            TemplateConfig.updateFields();
+        });
+
+        // $('#owner_id').autocomplete({
+        //     source: function(request, response) {
+        //     var results = $.ui.autocomplete.filter(user_list, request.term);
+        //         response(results.slice(0, 10));
+        //     },
+        //     select:function(event,ui){
+        //         user_id = 0;
+        //         user_id = ui.item.value;
+        //         $("#owner_id_hidden").val(user_id);
+        //         $("#owner_id").val(ui.item.label);
+        //         updateFields();
+        //         return false;
+        //     },
+        //     search:function(event,ui){
+        //         user_id = 0;
+        //         $("#owner_id_hidden").val('');
+        //         updateFields();
+        //         return;
+        //     },
+        //     change:function(event,ui){
+        //         if ( user_id == 0 ){
+        //             $("#owner_id_hidden").val('');
+        //             $("#owner_id").val('');
+        //         }
+        //         updateFields();
+        //     },
+        //     close:function(event,ui){
+        //         updateFields();
+        //     }
+        // });
+
+    },
+
+    showFieldCheckboxes: function() {
+        $("div.field_checkbox_container").hide();
+        var type = $("#type").val();
+        $("#"+type+"_fields").show();
+    },
+
+    updateFields: function() {
+        var html = "<form action='"+base_url+"index.php?task=saveWizardForm&format=raw&tmpl=component' method='POST'>\n";
+        var type = $("#type").val();
+        $.each(fields[type],function(fieldIndex, field) {
+            if ($("#"+type+"_field_"+fieldIndex).is(":checked")) {
+                switch(field.type){
+                    case "text":
+                    case "number":
+                    case "currency":
+                        html += "\t<div class='row'>\n\t\t<label>"+field.display+"</label>\n\t\t<input type='text' name='"+field.name+"' />\n\t</div>\n";
+                    break;
+                    case "picklist":
+                        html += "\t<div class='row'>\n\t\t<label>"+field.display+"</label>\n\t\t<select name='"+field.name+"'>\n";
+                        $.each(field.values,function(valueIndex,value){
+                            html += "\t\t\t<option value='"+valueIndex+"'>"+value+'</option>\n';
+                        });
+                        html += "\t\t</select>\n\t</div>\n";
+                    break;
+                }
+            }
+        });
+        var return_url = Base64.encode($("#return_url").val());
+        var owner_id = $("#owner_id_hidden").val();
+        var form_id = $("#form_id").val();
+
+        html += '\t<input type="hidden" name="owner_id" value="'+owner_id+'" />\n';
+        html += '\t<input type="submit" value="Submit" />\n';
+        html += '\t<input type="hidden" name="save_type" value="'+type+'" />\n';
+        html += '\t<input type="hidden" name="return" value="'+return_url+'" />\n';
+        html += '\t<input type="hidden" name="form_id" value="'+form_id+'" />\n';
+        html += '</form>\n';
+        $("#fields").val(html);
+    }
+}
+
 /**
  * Cobalt JS initialization
  **/
@@ -3258,3 +3343,6 @@ var Joomla = {
         }
     }
 };
+
+// Base64 Object for encoding and decoding (http://scotch.io/quick-tips/js/how-to-encode-and-decode-strings-with-base64-in-javascript)
+var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
