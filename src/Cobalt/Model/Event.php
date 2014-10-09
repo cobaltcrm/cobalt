@@ -1786,7 +1786,7 @@ class Event extends DefaultModel
             $state->set("Event.".$view.'_limitstart', $limitstart);
 
             //set default filter states for reports
-            $filterOrder = "CASE e.type WHEN " . $db->quote('event') . " THEN e.start_time WHEN " . $db->quote('task') . " THEN e.due_date ELSE e.due_date END";
+            $filterOrder = "CASE e.type WHEN " . $this->db->quote('event') . " THEN e.start_time WHEN " . $this->db->quote('task') . " THEN e.due_date ELSE e.due_date END";
             $filterOrderDir = "ASC";
             $filter_order = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order','filter_order',$filterOrder);
             $filter_order_Dir = $this->app->getUserStateFromRequest('Event.'.$view.'_'.$layout.'_filter_order_Dir','filter_order_Dir',$filterOrderDir);
