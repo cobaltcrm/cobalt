@@ -519,6 +519,15 @@ class UsersHelper
 		return $db->loadResult();
 	}
 
+    /**
+     * Get templates count associated with users
+     * @return int Count of templates returned from database
+     */
+    public static function getTemplatesCount()
+    {
+        return self::getItemsCount('templates');
+    }
+
 	/**
 	 * Get deal_custom count associated with users
 	 * @return int Count of deal_custom returned from database

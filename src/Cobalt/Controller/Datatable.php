@@ -91,7 +91,7 @@ class Datatable extends DefaultController
      */
     protected function getModelName($name)
     {
-        $doNotChange = array('stages', 'people', 'users', 'categories', 'sources', 'statuses');
+        $doNotChange = array('stages', 'people', 'users', 'categories', 'sources', 'statuses', 'templates');
         
         if (in_array($name, $doNotChange))
         {

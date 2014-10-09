@@ -42,9 +42,12 @@ class Html extends AbstractHtmlView
         //gather information for view
         $model = new TemplatesModel;
 
+        // Initialise state variables.
+        $this->state = $model->getState();
+
         //get layout
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
+        $model->set("_layout", $layout);
 
         //filter for layout type
         if ($layout == "edit")
@@ -67,16 +70,14 @@ class Html extends AbstractHtmlView
             // ToolbarHelper::editList('edit');
             $this->toolbar->addDeleteRow();
 
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'templates';
+                var order_dir = '" . $this->state->get('Templates.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Templates.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
+
             $templates = $model->getTemplates();
             $this->templates = $templates;
-
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder = $this->state->get('Templates.filter_order');
-            $this->listDirn   = $this->state->get('Templates.filter_order_Dir');
-
         }
 
         //display

@@ -72,6 +72,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </div>
                             </fieldset>
                         </div>
+                        
                         <div class="row-fluid">
                             <fieldset class="adminform">
                                 <div class="page-header">
