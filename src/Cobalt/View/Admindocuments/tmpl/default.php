@@ -55,3 +55,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     </div>
     <?php $this->menu['quick_menu']->render(); ?>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="dealModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>

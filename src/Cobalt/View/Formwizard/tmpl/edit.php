@@ -106,3 +106,24 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <?php echo $this->menu['quick_menu']->render(); ?>
     </div>
 </div>
+<script>
+    CobaltAutocomplete.create({
+        id: 'addowner',
+        object: 'user',
+        fields: 'id,username',
+        display_key: 'username',
+        prefetch: {
+            ajax: {
+                type: 'post',
+                data: {
+                    published: 1
+                }
+            }
+        }
+    });
+    $('input[name=owner_id_input]').typeahead({
+        highlight: true
+    },CobaltAutocomplete.getConfig('addowner')).on('typeahead:selected', function(event, item, name){
+        jQuery('#owner_id_hidden').val(item.id);
+    });
+</script>

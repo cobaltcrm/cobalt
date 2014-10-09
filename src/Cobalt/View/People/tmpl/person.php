@@ -307,16 +307,16 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
                         </div>
 					</span>
                     <div class="position-form hidden">
-                        <form id="form-position-editable" method="post" onsubmit="jQuery('#position_<?php echo $person['id']; ?>').val(jQuery('#form-position-editable').find('input[name=position]').val());return Cobalt.sumbitForm(this);" role="form">
+                        <form id="form-position-editable" method="post" onsubmit="jQuery('#position_<?php echo $person['id']; ?>').val(document.getElementById('editable_position').value);return Cobalt.sumbitForm(this);" role="form">
                             <div class="input-group">
-                                <input type="text" name="position" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" class="form-control" />
+                                <input type="text" name="position" id="editable_position_input" value="<?php if(array_key_exists('position', $person)): echo $person['position']; endif; ?>" class="form-control" >
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-default"><?php echo TextHelper::_('COBALT_SAVE'); ?></button>
                                     </span>
                             </div>
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="people" />
-                            <input type="hidden" name="id" value="1" />
+                            <input type="hidden" name="id" value="<?php echo $person['id']; ?>" />
                         </form>
                     </div>
 

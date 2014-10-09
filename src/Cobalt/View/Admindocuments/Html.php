@@ -63,8 +63,7 @@ class Html extends AbstractHtmlView
         else
         {
             //buttons
-            // ToolbarHelper::popup( 'upload', TextHelper::_('COBALT_UPLOAD'), 'index.php?view=admindocuments&layout=upload&format=raw', 375, 150 );
-            $this->toolbar->addNew('documents');
+            $this->toolbar->add(array('view' => 'documents', 'layout' => 'edit', 'format' => 'raw', 'tmpl' => 'component', 'return' => base64_encode(\JUri::current())), 'COBALT_TOOLBAR_NEW', 'btn btn-primary', 'plus', array('data-toggle'=> 'modal', 'data-target'=> '#uploadModal'));
             // ToolbarHelper::editList('edit');
             $this->toolbar->addDeleteRow();
 
