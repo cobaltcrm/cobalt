@@ -63,7 +63,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query->from("#__stages");
 
         if ($stage_name) {
-            $query->where("LOWER(name) LIKE '%".ucwords($stage_name)."%'");
+            $query->where("LOWER(name) LIKE " . $db->quote('%'.ucwords($stage_name).'%'));
         }
 
         if (!$stagesOnly) {
@@ -312,7 +312,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query->from("#__deal_status");
 
         if ($status_name) {
-            $query->where("name LIKE '%".$status_name."%'");
+            $query->where("name LIKE " . $db->quote('%'.$status_name.'%'));
         }
 
         $query->order('ordering');
@@ -355,7 +355,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $query->order('ordering');
 
         if ($source_name) {
-            $query->where("name LIKE '%".$source_name."%'");
+            $query->where("name LIKE " . $db->quote('%'.$source_name.'%'));
         }
 
         //merge arrays
