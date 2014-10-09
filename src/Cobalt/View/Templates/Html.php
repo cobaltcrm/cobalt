@@ -10,12 +10,9 @@
 
 namespace Cobalt\View\Templates;
 
-use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\TextHelper;
@@ -35,9 +32,8 @@ class Html extends AbstractHtmlView
         // Create toolbar
         $this->toolbar = new Toolbar;
 
-        //javascripts
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
+        //application
+        $app = \Cobalt\Container::fetch('app');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
@@ -51,24 +47,24 @@ class Html extends AbstractHtmlView
         $model->set("_layout",$layout);
 
         //filter for layout type
-        if ($layout == "edit") {
-
-             //toolbar buttons
-            $this->toolbar->cancel();
+        if ($layout == "edit")
+        {
+            //toolbar buttons
+            $this->toolbar->cancel('templates');
             $this->toolbar->save();
 
             //javascripts
-            $document->addScript(JURI::base().'src/Cobalt/media/js/template_manager.js');
+            // $document->addScript(JURI::base().'src/Cobalt/media/js/template_manager.js');
 
             //assign view data
             $this->template_types = DropdownHelper::getTemplateTypes();
             $this->template =  $model->getTemplate();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            $this->toolbar->addNew();
-            ToolbarHelper::editList('edit');
+            $this->toolbar->addNew('templates');
+            // ToolbarHelper::editList('edit');
             $this->toolbar->addDeleteRow();
 
             $templates = $model->getTemplates();

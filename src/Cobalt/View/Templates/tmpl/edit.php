@@ -17,42 +17,58 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
             <div class="row-fluid">
                 <?php echo $this->menu['menu']->render(); ?>
                 <div class="col-md-9">
-                    <form action="index.php?view=templates" method="post" name="adminForm" id="adminForm" class="form-validate"  >
+                    <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
                         <div class="row-fluid">
                             <fieldset class="adminform">
+
                                 <div class="page-header">
                                     <?php echo $this->toolbar->render(); ?>
                                     <h3><?php echo TextHelper::_("COBALT_EDITING_WORKFLOW"); ?></h3>
                                 </div>
+
                                 <div class="form-group">
-                                    <label><b><?php echo JText::_('COBALT_NAME'); ?></b></label>
-                                    <input type="text" class="form-control" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template['name']; ?>" />
-                                </div>
-                                <span class="cobaltfaux-label"><b><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></b></span><br />
-
-                                <label class="radio-inline">
-                                  <input type="radio" name="type" value="deal" <?php if($this->template['type']=='deal') echo 'checked'; ?> />
-                                  <?php echo JText::_('COBALT_DEAL'); ?>
-                                </label>
-
-                                <label class="radio-inline">
-                                  <input type="radio" name="type" value="person" <?php if($this->template['type']=='person') echo 'checked'; ?>/>
-                                  <?php echo JText::_('COBALT_PERSON'); ?>
-                                </label>
-
-                                <label class="radio-inline">
-                                  <input type="radio" name="type" value="company" <?php if($this->template['type']=='company') echo 'checked'; ?> />
-                                  <?php echo JText::_('COBALT_COMPANY'); ?>
-                                </label>
-                                <div class="form-group">
-                                        <span class="cobaltfaux-label"></span>
-                                        <span class="cobaltfield"></span>
-                                </div>
-                                <div class="checkbox">
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="default" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>"  <?php if($this->template['default']) echo 'checked'; ?> />
-                                        <?php echo JText::_("COBALT_MAKE_DEFAULT_TEMPLATE"); ?>
+                                    <label class="col-sm-2 control-label" for="name">
+                                        <?php echo JText::_('COBALT_NAME'); ?>
                                     </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>" value="<?php echo $this->template->name; ?>" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label cobaltfaux-label"><?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?></label>
+                                    <div class="col-sm-10">
+                                        <label class="radio-inline">
+                                          <input type="radio" name="type" value="deal" <?php if($this->template->type == 'deal') echo 'checked'; ?> />
+                                          <?php echo JText::_('COBALT_DEAL'); ?>
+                                        </label>
+
+                                        <label class="radio-inline">
+                                          <input type="radio" name="type" value="person" <?php if($this->template->type == 'person') echo 'checked'; ?>/>
+                                          <?php echo JText::_('COBALT_PERSON'); ?>
+                                        </label>
+
+                                        <label class="radio-inline">
+                                          <input type="radio" name="type" value="company" <?php if($this->template->type == 'company') echo 'checked'; ?> />
+                                          <?php echo JText::_('COBALT_COMPANY'); ?>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span class="cobaltfaux-label"></span>
+                                    <span class="cobaltfield"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="default" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_WORKFLOW'); ?>"  <?php if($this->template->default) echo 'checked'; ?> />
+                                                <?php echo JText::_("COBALT_MAKE_DEFAULT_TEMPLATE"); ?>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </fieldset>
                         </div>
@@ -62,7 +78,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <h4><?php echo JText::_("COBALT_ENTER_ITEMS"); ?></h4>
                                 </div>
                                         <div id="items">
-                                            <?php if ( array_key_exists("data",$this->template) && count($this->template['data']) ){ foreach ($this->template['data'] as $data) { ?>
+                                            <?php if ( array_key_exists("data", $this->template) && count($this->template->data)) { foreach ($this->template->data as $data) { ?>
                                                 <span class="cobaltfield clrboth">
                                                 <div class="item">
                                                     <table>
@@ -113,10 +129,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </fieldset>
                         </div>
                         <div>
-                            <?php if ($this->template['id']) { ?>
-                                <input type="hidden" name="id" value="<?php echo $this->template['id']; ?>" />
+                            <?php if ($this->template->id) { ?>
+                                <input type="hidden" name="id" value="<?php echo $this->template->id; ?>" />
                             <?php } ?>
-                            <input type="hidden" name="controller" value="" />
+                            <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="templates" />
                             <?php echo JHtml::_('form.token'); ?>
                         </div>

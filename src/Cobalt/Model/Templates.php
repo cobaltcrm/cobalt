@@ -146,8 +146,8 @@ class Templates extends DefaultModel
     {
         $id = $id ? $id : $this->id;
 
-        if ($id > 0) {
-
+        if ($id > 0)
+        {
             //database
             $query = $this->_buildQuery();
 
@@ -165,14 +165,14 @@ class Templates extends DefaultModel
             $query->from("#__template_data AS t");
             $query->where("t.template_id=$id");
             $this->db->setQuery($query);
-            $result['data'] = $this->db->loadAssocList();
+            $result = $this->db->loadObject();
 
             //return data
             return $result;
-
-        } else {
-            return (array) $this->getTable('Templates');
-
+        }
+        else
+        {
+            return $this->getTable('Templates');
         }
 
     }
