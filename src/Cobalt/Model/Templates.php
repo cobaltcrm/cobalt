@@ -194,13 +194,12 @@ class Templates extends DefaultModel
             $result = $this->db->loadObject();
 
             //left join essential data if we are searching for a specific template
-            // @Jan: what is that?
-            // $query = $this->db->getQuery(true);
-            // $query->select("t.*");
-            // $query->from("#__template_data AS t");
-            // $query->where("t.template_id = $id");
-            // $this->db->setQuery($query);
-            // $result = $this->db->loadObject();
+            $query = $this->db->getQuery(true);
+            $query->select("t.*");
+            $query->from("#__template_data AS t");
+            $query->where("t.template_id = $id");
+            $this->db->setQuery($query);
+            $result->data = $this->db->loadObjectList();
 
             //return data
             return $result;

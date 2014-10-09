@@ -57,7 +57,7 @@ class Html extends AbstractHtmlView
             $this->toolbar->save();
 
             //javascripts
-            // $document->addScript(JURI::base().'src/Cobalt/media/js/template_manager.js');
+            $app->getDocument()->addScriptDeclaration('jQuery(function() { TemplateConfig.bind(); });');
 
             //assign view data
             $this->template_types = DropdownHelper::getTemplateTypes();
