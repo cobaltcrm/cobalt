@@ -8,9 +8,20 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
-<form action="<?php echo RouteHelper::_('index.php?view=admindocuments&format=raw'); ?>" method="post" name="adminForm" id="adminForm" class="inline-form form-validate" enctype="multipart/form-data" >
-    <input type="file" class="input-file" name="document" />
-    <input type="submit" class="btn btn-primary" value="<?php echo TextHelper::_('COBALT_UPLOAD'); ?>" />
-    <?php echo JHtml::_('form.token'); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' );
+?>
+<form id="upload_form" action="<?php echo RouteHelper::_('index.php?task=upload'); ?>" method="post" enctype="multipart/form-data">
+
+
+    <div class="btn-group">
+        <div class="btn btn-default btn-file">
+            <i class="glyphicon glyphicon-plus"></i>  <?php echo TextHelper::_('COBALT_UPLOAD_FILE'); ?> <input type="file" id="upload_input_invisible" name="document" />
+        </div>
+    </div>
+
+
+
+    <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
+    <input type="hidden" name="association_type" value="company">
+    <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
 </form>

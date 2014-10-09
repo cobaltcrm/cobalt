@@ -28,10 +28,11 @@ class Toolbar
 	/**
      * Adds the common 'new' link to the button bar.
      *
-     * @param string    $view  Name of the view which should load the form.
+     * @param string    $view   Name of the view which should load the form.
      * @param string  	$label  Text of the link.
      * @param string  	$class  An override for the CSS class.
-     * @param string 	$icon 	Part of the icon class name.
+     * @param string 	$icon   Part of the icon class name.
+     * @param array 	$attr   Array of attributes
      *
      * @return void
      *
@@ -39,13 +40,51 @@ class Toolbar
      */
     public function addNew($view = null, $label = 'COBALT_TOOLBAR_NEW', $class = 'btn btn-primary', $icon = 'plus')
     {
-        if (!$view)
-        {
-            $view = $this->app->input->getCmd('view');
+        parse_str($view, $uri);
+        if (count($uri) == 1) {
+            $uri = array('view' => $view, 'layout' => 'edit');
+        } else {
+            // get keys
+            $keys = array_keys($uri);
+            // cleanup empty values
+            $uri = array_filter($uri);
+            // merge view name with data
+            $uri = array_merge(array('view' => $keys[0]),$uri);
         }
-    	
-    	$link = new Button('a', $label, '', '', $class);
-    	$link->setLink('index.php?view=' . $view . '&layout=edit')->setIcon($icon);
+        $this->add($uri,$label, $class, $icon);
+    }
+
+    /**
+     * Generic Link to button bar
+     *
+     * @param array  	$uri 	Array to build link
+     * @param string  	$label  Text of the link.
+     * @param string  	$class  An override for the CSS class.
+     * @param string  	$icon 	Part of the icon class name.
+     * @param array  	$attr 	Array of attributes to set on link
+     *
+     * @return void
+     *
+     * @since   1.0
+     */
+    public function add(array $uri = array(), $label, $class, $icon, array $attr = array())
+    {
+        if (empty($uri)) {
+            $uri = array(
+                'view' => $this->app->input->getCmd('view'),
+                'layout' => $this->app->input->getCmd('layout','edit')
+            );
+        }
+
+        $link = new Button('a', $label, '', '', $class);
+
+        $attributes = array();
+        foreach ($attr as $name => $value) {
+            $attributes[] = sprintf('%s="%s"',$name,$value);
+        }
+        $link->setAttribute(implode(' ',$attributes));
+
+        $link->setLink('index.php?'.http_build_query($uri))->setIcon($icon);
         $this->buttons[] = $link;
     }
 

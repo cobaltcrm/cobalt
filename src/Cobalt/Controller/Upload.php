@@ -62,23 +62,21 @@ class Upload extends DefaultController
         $uploadedFileNameParts = explode('.',$fileName);
         $uploadedFileExtension = array_pop($uploadedFileNameParts);
 
-        $validFileExts = explode(',', 'jpeg,jpg,png,gif,pdf,doc,docx,odt,rtf,ppt,xls,txt');
+        $validFileExts = array('jpeg','jpg','png','gif','pdf','doc','docx','odt','rtf','ppt','xls','txt');
 
         //assume the extension is false until we know its ok
         $extOk = false;
-
-        //go through every ok extension, if the ok extension matches the file extension (case insensitive)
-        //then the file extension is ok
-        foreach ($validFileExts as $key => $value) {
-            if ( preg_match("/$value/i", $uploadedFileExtension ) ) {
-                $extOk = true;
-            }
+        if (in_array(strtolower($uploadedFileExtension),$validFileExts)) {
+            $extOk = true;
         }
 
         if ($extOk == false) {
-            echo TextHelper::_( 'INVALID EXTENSION' );
-
-                return;
+            $msg = TextHelper::_( 'INVALID EXTENSION' );
+            $return_uri = base64_decode($this->getInput()->getBase64('return'));
+            if (empty($return_uri)) {
+                $return_uri = 'index.php?view=documents&layout=upload&tmpl=component';
+            }
+            $this->container->fetch('app')->redirect($return_uri, $msg, 'danger');
         }
 
         //the name of the file in PHP's temp directory that we are going to move to our folder
@@ -131,7 +129,7 @@ class Upload extends DefaultController
 
         if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-            $this->getApplication()->redirect('index.php?view=documents',$msg);
+            $this->container->fetch('app')->redirect('index.php?view=documents',$msg);
         } else {
             $return_uri = base64_decode($this->getInput()->getBase64('return'));
             if (empty($return_uri)) {
@@ -159,12 +157,12 @@ class Upload extends DefaultController
            if ($id=$model->store($data)) {
             //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._("COBALT_UPLOADING"),Joomla.JText._("COBALT_DOC_UPLOAD_SUCCESS"),"success");</script>';
                $msg = TextHelper::_('COBALT_DOC_UPLOAD_SUCCESS');
-               $this->getApplication()->redirect($return_uri,$msg);
+               $this->getApplication()->redirect($return_uri,$msg,'success');
                // $session->set("upload_success", true);
            } else {
                //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._(\'COBALT_UPLOADING\'),Joomla.JText._(\'COBALT_DOC_UPLOAD_FAIL\'),\'danger\');</script>';
                $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-               $this->getApplication()->redirect($return_uri,$msg);
+               $this->getApplication()->redirect($return_uri,$msg,'danger');
                // $session->set("upload_success", false);
            }
         }
