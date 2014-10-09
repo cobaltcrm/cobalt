@@ -10,12 +10,9 @@
 
 namespace Cobalt\View\Templates;
 
-use JUri;
-use JFactory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\TextHelper;
@@ -35,9 +32,8 @@ class Html extends AbstractHtmlView
         // Create toolbar
         $this->toolbar = new Toolbar;
 
-        //javascripts
-        $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
+        //application
+        $app = \Cobalt\Container::fetch('app');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
@@ -46,41 +42,42 @@ class Html extends AbstractHtmlView
         //gather information for view
         $model = new TemplatesModel;
 
+        // Initialise state variables.
+        $this->state = $model->getState();
+
         //get layout
         $layout = $this->getLayout();
-        $model->set("_layout",$layout);
+        $model->set("_layout", $layout);
 
         //filter for layout type
-        if ($layout == "edit") {
-
-             //toolbar buttons
-            $this->toolbar->cancel();
+        if ($layout == "edit")
+        {
+            //toolbar buttons
+            $this->toolbar->cancel('templates');
             $this->toolbar->save();
 
             //javascripts
-            $document->addScript(JURI::base().'src/Cobalt/media/js/template_manager.js');
+            $app->getDocument()->addScriptDeclaration('jQuery(function() { TemplateConfig.bind(); });');
 
             //assign view data
             $this->template_types = DropdownHelper::getTemplateTypes();
             $this->template =  $model->getTemplate();
-
-        } else {
-
+        }
+        else
+        {
             //buttons
-            $this->toolbar->addNew();
-            ToolbarHelper::editList('edit');
+            $this->toolbar->addNew('templates');
+            // ToolbarHelper::editList('edit');
             $this->toolbar->addDeleteRow();
+
+            $app->getDocument()->addScriptDeclaration("
+                var loc = 'templates';
+                var order_dir = '" . $this->state->get('Templates.filter_order_Dir') . "';
+                var order_col = '" . $this->state->get('Templates.filter_order') . "';
+                var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
 
             $templates = $model->getTemplates();
             $this->templates = $templates;
-
-            // Initialise state variables.
-            $state = $model->getState();
-            $this->state = $state;
-
-            $this->listOrder = $this->state->get('Templates.filter_order');
-            $this->listDirn   = $this->state->get('Templates.filter_order_Dir');
-
         }
 
         //display

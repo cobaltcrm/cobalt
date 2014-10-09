@@ -3187,6 +3187,43 @@ var CustomFieldConfig = {
     }
 };
 
+var TemplateConfig = {
+    bind: function() {
+        TemplateConfig.bindAdd();
+        TemplateConfig.bindRemove();
+    },
+
+    //bind add to picklist
+    bindAdd: function() {
+        $("#add_item").click(function(e) {
+            e.preventDefault();
+            TemplateConfig.addValue();
+        });
+    },
+
+    //bind picklist areas
+    bindRemove: function() {
+        var ele = $("#items").children('.item:last');
+        $('.item').each(function(index) {
+            $(this).find('.remove_item').unbind();
+            $(this).find('.remove_item').bind('click',function() {
+                TemplateConfig.removeValue($(this).parentsUntil('div').parent('div'));
+            })
+        });
+    },
+
+    //add choices to the picklist
+    addValue: function() {
+        $("#items").append($("#item_template").html());
+        TemplateConfig.bindRemove();
+    },
+
+    //remove entry choices
+    removeValue: function(element) {
+        element.remove();
+    }
+}
+
 /**
  * Cobalt JS initialization
  **/

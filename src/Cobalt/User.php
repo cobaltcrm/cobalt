@@ -415,9 +415,8 @@ class User implements \Serializable
 			$table->save($this);
 		}
 
-		$this->id = $table->id;
-		$this->params->loadString($table->params);
-
+		$this->bind($table);
+		
 		return $this;
 	}
 
@@ -444,16 +443,23 @@ class User implements \Serializable
 			throw new \RuntimeException('Unable to load the user with id: ' . $identifier);
 		}
 
+		$this->bind($table);
+
+		return $this;
+	}
+
+	public function bind($userTable)
+	{
 		// Assuming all is well at this point let's bind the data
-		foreach ($table->getFields() as $key => $value)
+		foreach ($userTable->getFields() as $key => $value)
 		{
 			if (isset($this->$key) && $key != 'params')
 			{
-				$this->$key = $table->$key;
+				$this->$key = $userTable->$key;
 			}
 		}
 
-		$this->params->loadString($table->params);
+		$this->params->loadString($userTable->params);
 
 		// The user is no longer a guest
         if ($this->id != 0)
@@ -464,8 +470,6 @@ class User implements \Serializable
         {
             $this->guest = 1;
         }
-
-		return $this;
 	}
 
 	/**
