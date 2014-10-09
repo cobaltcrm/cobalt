@@ -46,14 +46,13 @@ class Import extends DefaultModel
      */
     public function readCSVFile($file, $table = null)
     {
-        $app = \Cobalt\Container::fetch('app');
         ini_set("auto_detect_line_endings", "1");
         $data = array();
         $line = 1;
         $headers = array();
         $i = -2;
         $db = $this->getDb();
-        $table = $db->getTableColumns("#__" . $app->input->get('import_type', $table));
+        $table = $db->getTableColumns("#__" . $this->app->input->get('import_type', $table));
         $special_headers = array('company_id','company_name','stage_name','source_name','status_name','primary_contact_name','assignee_name','type');
 
         if (($handle = fopen($file, "r")) !== false)

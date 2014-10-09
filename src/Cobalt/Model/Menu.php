@@ -17,11 +17,9 @@ class Menu extends DefaultModel
 {
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('Menu');
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->post->getArray();
 
         //date generation
         $date = date('Y-m-d H:i:s');

@@ -10,8 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\DealTable;
-use Cobalt\Table\NoteTable;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
@@ -37,15 +35,12 @@ class Note extends DefaultModel
      */
     public function store($data=null)
     {
-
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('Note');
         $oldRow = $this->getTable('Note');
 
         if ($data == null) {
-            $data = $app->input->getArray(array(
+            $data = $this->app->input->getArray(array(
                 'note' => 'string',
                 'deal_id' => 'int',
                 'person_id' => 'int',
@@ -139,7 +134,7 @@ class Note extends DefaultModel
             $model->storeAttachments($data['email_id'], $data['person_id']);
         }
 
-        //$app->triggerEvent('onAfterNoteSave', array(&$row));
+        //$this->app->triggerEvent('onAfterNoteSave', array(&$row));
 
         return $id;
     }
@@ -151,7 +146,6 @@ class Note extends DefaultModel
      */
     public function getNote($id)
     {
-        $app = \Cobalt\Container::fetch('app');
         //grab db
         $db = $this->getDb();
 
@@ -184,7 +178,7 @@ class Note extends DefaultModel
             }
         }
 
-        //$app->triggerEvent('onNoteLoad', array(&$results));
+        //$this->app->triggerEvent('onNoteLoad', array(&$results));
 
         //return results
         return $results;
@@ -197,8 +191,6 @@ class Note extends DefaultModel
      */
     public function getNotes($object_id = NULL,$type = NULL, $display = true)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //grab db
         $db = $this->getDb();
 
@@ -223,15 +215,15 @@ class Note extends DefaultModel
 
         $company_filter = $this->getState('Note.company_name');
         if ($company_filter != null) {
-            $query->where("comp.name LIKE '%".$company_filter."%'");
+            $query->where("comp.name LIKE " . $db->quote('%' . $company_filter . '%'));
         }
         //deal
         $deal_filter = $this->getState('Note.deal_name');
         if ($deal_filter != null) {
-            $query->where("deal.name LIKE '%".$deal_filter."%'");
+            $query->where("deal.name LIKE " . $db->quote('%' . $deal_filter . '%'));
         }
         //person
-         $person_filter = $this->getState('Note.person_name');
+        $person_filter = $this->getState('Note.person_name');
         if ($person_filter != null) {
 
         }
@@ -271,12 +263,12 @@ class Note extends DefaultModel
             }
         }
         //created
-         $created_filter = $this->getState('Note.created');
+        $created_filter = $this->getState('Note.created');
         if ($company_filter != null) {
 
         }
         //category
-         $category_filter = $this->getState('Note.category_id');
+        $category_filter = $this->getState('Note.category_id');
         if ($category_filter != null) {
             $query->where("n.category_id=".$category_filter);
         }
@@ -302,7 +294,7 @@ class Note extends DefaultModel
                     $query->where('owner.team_id = '.$team_id);
                 } else {
                 //basic user filter
-                    $query->where(array('n.owner_id = '.$member_id));
+                    $query->where('n.owner_id = '.$member_id);
                 }
             }
         }
@@ -322,7 +314,7 @@ class Note extends DefaultModel
             }
         }
 
-        //$app->triggerEvent('onNoteLoad', array(&$results));
+        //$this->app->triggerEvent('onNoteLoad', array(&$results));
 
         if (!$display) {
             //return results
@@ -360,18 +352,17 @@ class Note extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Note.filter_order','filter_order','comp.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Note.filter_order_Dir','filter_order_Dir','asc');
+        $filter_order = $this->app->getUserStateFromRequest('Note.filter_order','filter_order','comp.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Note.filter_order_Dir','filter_order_Dir','asc');
 
         //set default filter states
-        $company_filter = $app->getUserStateFromRequest('Note.company_name','company_name',null);
-        $deal_filter = $app->getUserStateFromRequest('Note.deal_name','deal_name',null);
-        $person_filter = $app->getUserStateFromRequest('Note.person_name','person_name',null);
-        $owner_filter = $app->getUserStateFromRequest('Note.owner_id','owner_id',null);
-        $owner_type = $app->getUserStateFromRequest('Note.owner_type','owner_type',null);
-        $created_filter = $app->getUserStateFromRequest('Note.created','created',null);
-        $category_filter = $app->getUserStateFromRequest('Note.category_id','category_id',null);
+        $company_filter = $this->app->getUserStateFromRequest('Note.company_name','company_name',null);
+        $deal_filter = $this->app->getUserStateFromRequest('Note.deal_name','deal_name',null);
+        $person_filter = $this->app->getUserStateFromRequest('Note.person_name','person_name',null);
+        $owner_filter = $this->app->getUserStateFromRequest('Note.owner_id','owner_id',null);
+        $owner_type = $this->app->getUserStateFromRequest('Note.owner_type','owner_type',null);
+        $created_filter = $this->app->getUserStateFromRequest('Note.created','created',null);
+        $category_filter = $this->app->getUserStateFromRequest('Note.category_id','category_id',null);
 
         //set states
         //

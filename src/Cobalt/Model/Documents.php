@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\DocumentsTable;
 use Cobalt\Helper\TextHelper;
 use Joomla\Filesystem\File;
 use Joomla\Registry\Registry;
@@ -24,12 +23,10 @@ class Documents extends DefaultModel
 
     public function store($data=null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('Documents');
         if ($data==null) {
-            $data = $app->input->getRequest( 'post' );
+            $data = $this->app->input->getRequest( 'post' );
         }
 
         //date generation
@@ -100,9 +97,8 @@ class Documents extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Documents.filter_order','filter_order','d.filename');
-        $filter_order_Dir = $app->getUserStateFromRequest('Documents.filter_order_Dir','filter_order_Dir','asc');
+        $filter_order = $this->app->getUserStateFromRequest('Documents.filter_order','filter_order','d.filename');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Documents.filter_order_Dir','filter_order_Dir','asc');
 
         //set states
         $state = new Registry;
@@ -113,14 +109,7 @@ class Documents extends DefaultModel
 
     public function remove($id)
     {
-        //get dbo
-        $db = $this->getDb();
-        $query = $db->getQuery(true);
-
-        //delete id
-        $query->delete('#__documents')->where('id = '.$id);
-        $db->setQuery($query);
-        $db->query();
+	    return $this->getTable('Documents')->delete($id);
     }
 
     public function upload()
@@ -193,17 +182,15 @@ class Documents extends DefaultModel
         $imageinfo = getimagesize($fileTemp);
 
         //lose any special characters in the filename
-        $fileName = ereg_replace("[^A-Za-z0-9.]", "-", $fileName);
+        $fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
         $hash = md5($fileName).".".$uploadedFileExtension;
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
         $uploadPath = JPATH_ROOT.'/uploads/'.$hash;
 
-        $app = \Cobalt\Container::fetch('app');
-
         if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-            $app->redirect('index.php?view=admindocuments',$msg);
+            $this->app->redirect('index.php?view=admindocuments',$msg);
         } else {
            //update the database
            //date generation
@@ -223,11 +210,11 @@ class Documents extends DefaultModel
 
            if ($model->store($data)) {
                $msg = TextHelper::_('COM_CRMERY_DOC_UPLOAD_SUCCESS');
-               $app->redirect('index.php?view=admindocuments&layout=upload_success&format=raw',$msg);
+               $this->app->redirect('index.php?view=admindocuments&layout=upload_success&format=raw',$msg);
                $session->set("upload_success", true);
            } else {
                $msg = TextHelper::_('COM_CRMERY_DOC_UPLOAD_FAIL');
-               $app->redirect('index.php?view=admindocuments&layout=upload_success&format=raw',$msg);
+               $this->app->redirect('index.php?view=admindocuments&layout=upload_success&format=raw',$msg);
                $session->set("upload_success", false);
            }
         }

@@ -21,10 +21,8 @@ class Export extends DefaultModel
      */
     public function getCsv()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Determine request type
-        $download_type = $app->input->getCmd('list_type');
+        $download_type = $this->app->input->getCmd('list_type');
 
         //Generate CSV data based on request type
         $data = $this->getCsvData($download_type);
@@ -41,11 +39,9 @@ class Export extends DefaultModel
      */
     public function getCsvData($data_type)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         $data = array();
 
-        $export_ids = $app->input->get('ids');
+        $export_ids = $this->app->input->get('ids');
 
         switch ($data_type)
         {
@@ -79,7 +75,7 @@ class Export extends DefaultModel
             break;
             case "custom_report":
                 $model = new Report;
-                $data = $model->getCustomReportData($app->input->get('report_id'));
+                $data = $model->getCustomReportData($this->app->input->get('report_id'));
             break;
 
         }
@@ -126,9 +122,7 @@ class Export extends DefaultModel
      */
     public function getVcard()
     {
-        $app = \Cobalt\Container::fetch('app');
-
-        $person_id = $app->input->get('person_id');
+        $person_id = $this->app->input->get('person_id');
 
         $model = new People;
 

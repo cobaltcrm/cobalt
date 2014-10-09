@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\FormWizardTable;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -23,9 +22,8 @@ class FormWizard extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Formwizard.filter_order','filter_order','f.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Formwizard.filter_order_Dir','filter_order_Dir','asc');
+        $filter_order = $this->app->getUserStateFromRequest('Formwizard.filter_order','filter_order','f.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Formwizard.filter_order_Dir','filter_order_Dir','asc');
 
         $state = new Registry;
 
@@ -38,14 +36,11 @@ class FormWizard extends DefaultModel
 
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('FormWizard');
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->post->getArray();
 
-        $app = \Cobalt\Container::fetch('app');
-        $user = $app->getUser();
+        $user = $this->app->getUser();
         $userId = $user->get('id');
 
         //date generation
@@ -106,7 +101,7 @@ class FormWizard extends DefaultModel
         $db = $this->getDb();
         $query = $db->getQuery(true);
         $query
-            ->select("f.*,CONCAT(user.first_name,' ',user.last_name) AS owner_name")
+            ->select("f.*," . $query->concatenate(array('user.first_name', $db->quote(' '), 'user.last_name')) . " AS owner_name")
             ->from("#__formwizard AS f")
             ->leftJoin("#__users AS user ON user.id = f.owner_id");
 
@@ -117,7 +112,7 @@ class FormWizard extends DefaultModel
     {
         $query = $this->_buildQuery();
         $db = $this->getDb();
-        $query->order($this->getState('Formwizard.filter_order') . ' ' . $this->getState('Formwizard.filter_order_Dir'));
+        $query->order($this->getState()->get('Formwizard.filter_order') . ' ' . $this->getState()->get('Formwizard.filter_order_Dir'));
         $db->setQuery($query);
         $results = $db->loadAssocList();
         if ( count($results) > 0 ) {
@@ -154,22 +149,7 @@ class FormWizard extends DefaultModel
 
     public function delete($ids)
     {
-        //get db
-        $db = $this->getDb();
-        $query = $db->getQuery(true);
-
-        $query->delete("#__formwizard");
-                if ( is_array($ids) ) {
-                    $query->where("id IN(".implode(','.$ids).")");
-                } else {
-                    $query->where("id=".$ids);
-                }
-        $db->setQuery($query);
-        if ( $db->execute() ) {
-            return true;
-        } else {
-            return false;
-        }
+	    return $this->getTable('FormWizard')->delete($ids);
     }
 
     public function getTempFormId()

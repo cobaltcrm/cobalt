@@ -30,13 +30,11 @@ class Goal extends DefaultModel
      */
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('Goal');
         $oldRow = $this->getTable('Goal');
 
-        $data = $app->input->getArray();
+        $data = $this->app->input->getArray();
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -89,10 +87,10 @@ class Goal extends DefaultModel
 
         //if we are seaching for a specific individual
         if ($id) {
-            $query->where("g.assigned_type='member' AND g.assigned_id=$id");
+            $query->where("g.assigned_type=" . $db->quote('member') . " AND g.assigned_id=$id");
         } else {
         //else get logged in member
-            $query->where("g.assigned_type='member' AND g.assigned_id=$member_id");
+            $query->where("g.assigned_type=" . $db->quote('member') . " AND g.assigned_id=$member_id");
         }
 
         //left join users names
@@ -131,7 +129,7 @@ class Goal extends DefaultModel
         $query->select("g.*,u.first_name,u.last_name")->from("#__goals AS g");
 
         //if we are seaching for a specific individual
-        $query->where("g.assigned_type='member'");
+        $query->where("g.assigned_type=" . $db->quote('member'));
 
         //left join users names
         $query->leftJoin("#__users AS u ON u.id = g.assigned_id");
@@ -180,7 +178,7 @@ class Goal extends DefaultModel
         }
         $query = substr($query,0,-1);
         $query .= ")";
-        $query .= " AND g.assigned_type='member'";
+        $query .= " AND g.assigned_type=" . $db->quote('member');
 
         //left join users names
         $query .= " LEFT JOIN #__users AS u ON u.id = g.assigned_id";
@@ -222,10 +220,10 @@ class Goal extends DefaultModel
 
        //if we are searching for a specific team
        if ($id) {
-            $query->where("g.assigned_type='team' AND g.assigned_id=$id");
+            $query->where("g.assigned_type=" . $db->quote('team') . " AND g.assigned_id=$id");
        } else {
        //else load associated team if any
-            $query->where("g.assigned_type='team' AND g.assigned_id=$team_id");
+            $query->where("g.assigned_type=" . $db->quote('team') . " AND g.assigned_id=$team_id");
        }
 
        //left join managers name
@@ -261,11 +259,11 @@ class Goal extends DefaultModel
        $query = $db->getQuery(true);
 
        //load goals associated with team id
-       $query->select("g.*,u.first_name,u.last_name,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name")->from("#__goals AS g");
+       $query->select("g.*,u.first_name,u.last_name,IF(t.name!='',t.name," . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . ") AS team_name")->from("#__goals AS g");
        $db->setQuery($query);
 
        //if we are searching for a specific team
-        $query->where("g.assigned_type='team'");
+        $query->where("g.assigned_type=" . $db->quote('team'));
 
        //left join managers name
        $query->leftJoin("#__teams AS t ON t.team_id = g.assigned_id");
@@ -299,7 +297,7 @@ class Goal extends DefaultModel
         $query = $db->getQuery(true);
 
         //load goals associated with the company
-        $query->select("g.*")->from("#__goals AS g")->where("g.assigned_type='company'");
+        $query->select("g.*")->from("#__goals AS g")->where("g.assigned_type=" . $db->quote('company'));
 
         $query->where("g.published=".$this->published);
 
@@ -349,7 +347,7 @@ class Goal extends DefaultModel
                 if ($member_role == 'manager') {
                     $query->where("u.team_id=$team_id");
                 } else {
-                    $query->where("(g.owner_id=$user_id)");
+                    $query->where("g.owner_id=$user_id");
                 }
 
             }
@@ -442,8 +440,8 @@ class Goal extends DefaultModel
                 $query->where("stage_id IN (".implode(',',$this->won_stage_ids).")");
             }
              //filter by start and end date
-            $query .= " AND modified >= '".$goal['start_date']."'";
-            $query .= " AND modified <= '".$goal['end_date']."'";
+            $query .= " AND modified >= " . $db->quote($goal['start_date']);
+            $query .= " AND modified <= " . $db->quote($goal['end_date']);
         }
 
         //move_deals
@@ -474,8 +472,8 @@ class Goal extends DefaultModel
                 $query->where("stage_id=".$goal['stage_id']);
             }
              //filter by start and end date
-            $query .= " AND modified >= '".$goal['start_date']."'";
-            $query .= " AND modified <= '".$goal['end_date']."'";
+	        $query .= " AND modified >= " . $db->quote($goal['start_date']);
+            $query .= " AND modified <= " . $db->quote($goal['end_date']);
         }
 
         //complete_tasks
@@ -508,8 +506,8 @@ class Goal extends DefaultModel
                 $query->where("completed=1");
             }
              //filter by start and end date
-            $query .= " AND modified >= '".$goal['start_date']."'";
-            $query .= " AND modified <= '".$goal['end_date']."'";
+	        $query .= " AND modified >= " . $db->quote($goal['start_date']);
+            $query .= " AND modified <= " . $db->quote($goal['end_date']);
         }
 
         //write_notes
@@ -540,8 +538,8 @@ class Goal extends DefaultModel
                 $query->where("category_id=".$goal['category_id']);
             }
              //filter by start and end date
-            $query .= " AND created >= '".$goal['start_date']."'";
-            $query .= " AND created <= '".$goal['end_date']."'";
+	        $query .= " AND modified >= " . $db->quote($goal['start_date']);
+            $query .= " AND modified <= " . $db->quote($goal['end_date']);
         }
 
         //create_deals
@@ -569,8 +567,8 @@ class Goal extends DefaultModel
                 }
             }
              //filter by start and end date
-            $query .= " AND created >= '".$goal['start_date']."'";
-            $query .= " AND created <= '".$goal['end_date']."'";
+	        $query .= " AND modified >= " . $db->quote($goal['start_date']);
+            $query .= " AND modified <= " . $db->quote($goal['end_date']);
         }
 
         $query .= "AND published=".$this->published;
@@ -609,37 +607,37 @@ class Goal extends DefaultModel
         //win_cash
         if ($leaderboard['goal_type'] == 'win_cash') {
             $query->select("SUM(d.amount) AS cash_won");
-            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.stage_id IN (".implode(",",$won_stage_ids).") AND d.modified >= '$start_date' AND d.modified <= '$end_date' AND d.published>0");
+            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.stage_id IN (".implode(",",$won_stage_ids).") AND d.modified >= " . $db->quote($start_date) . " AND d.modified <= " . $db->quote($end_date) . " AND d.published>0");
             $query->order('SUM(d.amount) desc');
         }
         //win_deals
         if ($leaderboard['goal_type'] == 'win_deals') {
             $query->select("COUNT(d.id) AS deals_won");
-            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.stage_id IN (".implode(",",$won_stage_ids).") AND d.modified >= '$start_date' AND d.modified <= '$end_date' AND d.published>0");
+            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.stage_id IN (".implode(",",$won_stage_ids).") AND d.modified >= " . $db->quote($start_date) . " AND d.modified <= " . $db->quote($end_date) . " AND d.published>0");
             $query->order('COUNT(d.id) desc');
         }
         //move_deals
         if ($leaderboard['goal_type'] == 'move_deals') {
             $query->select("COUNT(d.id) AS deals_moved");
-            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.stage_id=".$leaderboard['stage_id']." AND d.modified >= '$start_date' AND d.modified <= '$end_date' AND d.published>0");
+            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.stage_id=".$leaderboard['stage_id']." AND d.modified >= " . $db->quote($start_date) . " AND d.modified <= " . $db->quote($end_date) . " AND d.published>0");
             $query->order('COUNT(d.id) desc');
         }
         //complete_tasks
         if ($leaderboard['goal_type'] == 'complete_tasks') {
             $query->select("COUNT(e.id) AS tasks_completed");
-            $query->leftJoin("#__events AS e ON e.assignee_id = u.id AND e.completed=1 AND e.category_id=".$leaderboard['category_id']." AND e.modified >= '$start_date' AND e.modified <= '$end_date' AND e.published>0");
+            $query->leftJoin("#__events AS e ON e.assignee_id = u.id AND e.completed=1 AND e.category_id=".$leaderboard['category_id']." AND e.modified >= " . $db->quote($start_date) . " AND e.modified <= '$end_date' AND e.published>0");
             $query->order('COUNT(e.id) desc');
         }
         //write_notes
         if ($leaderboard['goal_type'] == 'write_notes') {
             $query->select("COUNT(n.id) AS notes_written");
-            $query->leftJoin("#__notes AS n ON n.owner_id = u.id AND n.category_id=".$leaderboard['category_id']." AND n.created >= '$start_date' AND n.created <= '$end_date' AND n.published>0");
+            $query->leftJoin("#__notes AS n ON n.owner_id = u.id AND n.category_id=".$leaderboard['category_id']." AND n.created >= " . $db->quote($start_date) . " AND n.created <= " . $db->quote($end_date) . " AND n.published>0");
             $query->order('COUNT(n.id) desc');
         }
         //create_deals
         if ($leaderboard['goal_type'] == 'create_deals') {
             $query->select("COUNT(d.id) AS deals_created");
-            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.created >= '$start_date' AND d.created <= '$end_date' AND d.published>0");
+            $query->leftJoin("#__deals AS d ON d.owner_id = u.id AND d.created >= " . $db->quote($start_date) . " AND d.created <= " . $db->quote($end_date) . "d AND d.published>0");
             $query->order('COUNT(d.id) desc');
         }
 
