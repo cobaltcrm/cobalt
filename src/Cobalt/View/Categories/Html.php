@@ -38,7 +38,7 @@ class Html extends AbstractHtmlView
 
         //site document
         $document = $app->getDocument();
-        $document->addScript(JURI::base() . "/src/Cobalt/media/js/cobalt-admin.js");
+        $document->addScript($app->get('uri.media.full')."js/cobalt-admin.js");
 
          //gather information for view
         $model = new CategoriesModel;

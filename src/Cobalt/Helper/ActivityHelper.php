@@ -19,6 +19,7 @@ class ActivityHelper
 
     public static function saveActivity($old_info, $new_info, $model, $action_type)
     {
+	    /** @var \Joomla\Database\DatabaseDriver $db */
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
         $user_id = UsersHelper::getUserId();
@@ -26,17 +27,14 @@ class ActivityHelper
 
         if ($action_type == 'created')
         {
-            $query->clear()
-                ->insert('#__history')
-                ->set('type='.$db->q($model))
-                ->set('type_id='.$db->q($new_info->id))
-                ->set('user_id='.$db->q($user_id))
-                ->set('date='.$db->q($date))
-                ->set('new_value='.$db->q($new_info->id))
-                ->set('action_type='.$db->q($action_type))
-                ->set('field="id"');
-            $db->setQuery($query);
-            $db->query();
+	        $columns = array('type', 'type_id', 'user_id', 'date', 'new_value', 'action_type', 'field');
+	        $values = array($db->quote($model), $db->quote($new_info->id), $db->quote($user_id), $db->quote($date), $db->quote($new_info->id), $db->quote($action_type), $db->quote('id'));
+
+	        $query->insert('#__history')
+	            ->columns($columns)
+	            ->values(implode(', ', $values));
+
+            $db->setQuery($query)->execute();
         }
         else
         {
@@ -65,16 +63,16 @@ class ActivityHelper
 
     public static function saveUserLoginHistory()
     {
+	    /** @var \Joomla\Database\DatabaseDriver $db */
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
         $user_id = UsersHelper::getUserId();
         $today = DateHelper::formatDBDate(date("Y-m-d"));
 
-        $query->clear();
         $query->select("COUNT(id)");
         $query->from("#__login_history");
-        $query->where("date='".$today."'");
+        $query->where("date=" . $db->quote($today));
         $query->where("user_id=".$user_id);
         $db->setQuery($query);
         $existing = $db->loadResult();
@@ -82,26 +80,27 @@ class ActivityHelper
         if (!$existing) {
             $query->clear();
             $query->insert("#__login_history");
-            $query->set("user_id=".$user_id.",date='".$today."'");
+            $query->set("user_id=".$user_id.",date=" . $db->quote($today));
             $db->setQuery($query);
-            $db->query();
+            $db->execute();
         }
 
     }
 
     public static function getActivity()
     {
+	    /** @var \Joomla\Database\DatabaseDriver $db */
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
-        $query->select('h.*, CONCAT(u.first_name," ", u.last_name) AS owner_name, c.name as company_name, CONCAT(p.first_name," ", p.last_name) AS person_name,
-                        d.name as deal_name, e.name as event_name, note_cat.name as notes_category_name,
-                        event_cat.name as events_category_name, old_event_cat.name as events_category_name_old, old_note_cat.name AS notes_category_name_old,
-                        doc.name AS document_name,status.name AS deal_status_name_old, status2.name AS deal_status_name,deal_source.name AS deal_source_name_old,deal_source_2.name AS deal_source_name,
-                        deal_stage.name AS deal_stage_name_old,deal_stage_2.name AS deal_stage_name,CONCAT(deal_owner.first_name," ",deal_owner.last_name) AS deal_owner_name_old,
-                        CONCAT(deal_owner_2.first_name," ",deal_owner_2.last_name) AS deal_owner_name
-
-                        ');
+        $query->select(
+            'h.*, ' . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . ' AS owner_name, c.name as company_name,'
+            . $query->concatenate(array('p.first_name', $db->quote(' '), 'p.last_name')) . ' AS person_name, d.name as deal_name, e.name as event_name,
+            note_cat.name as notes_category_name, event_cat.name as events_category_name, old_event_cat.name as events_category_name_old,
+            old_note_cat.name AS notes_category_name_old, doc.name AS document_name,status.name AS deal_status_name_old, status2.name AS deal_status_name,
+            deal_source.name AS deal_source_name_old,deal_source_2.name AS deal_source_name, deal_stage.name AS deal_stage_name_old,deal_stage_2.name AS deal_stage_name,'
+	        . $query->concatenate(array('deal_owner.first_name', $db->quote(' '), 'deal_owner.last_name')) . ' AS deal_owner_name_old,'
+            . $query->concatenate(array('deal_owner_2.first_name', $db->quote(' '), 'deal_owner_2.last_name')) . ' AS deal_owner_name');
 
         $query->from('#__history AS h');
         $query->leftJoin('#__users AS u ON u.id = h.user_id');
@@ -135,27 +134,18 @@ class ActivityHelper
                 $query->where('u.team_id = '.$team_id);
             } else {
             //basic user filter
-                $query->where(array('h.user_id = '.$member_id));
+                $query->where('h.user_id = '.$member_id);
             }
         }
 
         //TODO: Add assignees to the display (massive left join)
-        $query->where('h.field!="assignee_id" AND h.field!="repeats"');
+        $query->where('h.field!=' . $db->quote('assignee_id') . ' AND h.field!=' . $db->quote('repeats'));
 
         $query->order('h.date DESC');
 
-        if (self::$limit != null) {
-            $query .= " LIMIT ".self::$limit;
-        } else {
-            $query .= " LIMIT 10";
-        }
+	    $limit = is_null(self::$limit) ? 10 : self::$limit;
 
-        $db->setQuery($query);
-
-        $activity = $db->loadObjectList();
-
-        return $activity;
-
+        return $db->setQuery($query, 0, $limit)->loadObjectList();
     }
 
     public static function recursive_array_diff($a1, $a2)

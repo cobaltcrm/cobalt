@@ -11,8 +11,6 @@
 namespace Cobalt\View\Documents;
 
 use Cobalt\Container;
-use JUri;
-use JFactory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DocumentHelper;
@@ -37,11 +35,13 @@ class Html extends AbstractHtmlView
         $state = $model->getState();
 
         //add js
-        $document = JFactory::getDocument();
-        $document->addScript( JURI::base().'src/Cobalt/media/js/document_manager.js' );
+	    /** @var \Cobalt\Application $app */
+	    $app = Container::fetch('app');
+        $document = $app->getDocument();
+        $document->addScript( $app->get('uri.media.full').'js/document_manager.js' );
 
         //session data
-        $session = \Cobalt\Container::fetch('app')->getSession();
+        $session = $app->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
 
@@ -82,7 +82,7 @@ class Html extends AbstractHtmlView
             $total = $model->getTotal();
             $pagination = $model->getPagination();
             $this->dataTableColumns = $model->getDataTableColumns();
-            JFactory::getDocument()->addScriptDeclaration("
+            $document->addScriptDeclaration("
             var loc = 'documents';
             var order_dir = '".$state->get('People.filter_order_Dir')."';
             var order_col = '".$state->get('People.filter_order')."';

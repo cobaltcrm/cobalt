@@ -995,7 +995,7 @@ class People extends DefaultModel
 		$db->setQuery($this->query);
 		$people = $db->loadAssocList();
 
-		$default_image = $this->app->get('uri.base.full') . '/src/Cobalt/media/images/person.png';
+		$default_image = $this->app->get('uri.media.full') . 'images/person.png';
 
 		$n = count($people);
 		for ($i = 0; $i < $n; $i++)
@@ -1081,11 +1081,11 @@ class People extends DefaultModel
 			case 'avatar':
 				if (isset($item->avatar) && $item->avatar)
 				{
-					$template = '<img id="avatar_img_' . $item->id . '" data-item-type="people" data-item-id="' . $item->id . '" class="avatar" src="' . $this->app->get('uri.base.full') . '/src/Cobalt/media/avatars/' . $item->avatar . '"/>';
+					$template = '<img id="avatar_img_' . $item->id . '" data-item-type="people" data-item-id="' . $item->id . '" class="avatar" src="' . $this->app->get('uri.media.full') . 'avatars/' . $item->avatar . '"/>';
 				}
 				else
 				{
-					$template = '<img id="avatar_img_' . $item->id . '" data-item-type="people" data-item-id="' . $item->id . '" class="avatar" src="' . $this->app->get('uri.base.full') . '/src/Cobalt/media/images/person.png' . '"/>';
+					$template = '<img id="avatar_img_' . $item->id . '" data-item-type="people" data-item-id="' . $item->id . '" class="avatar" src="' . $this->app->get('uri.media.full') . 'images/person.png' . '"/>';
 				}
 				break;
 			case 'name':

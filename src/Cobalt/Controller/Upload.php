@@ -91,7 +91,7 @@ class Upload extends DefaultController
         $hash = md5($fileName).".".$uploadedFileExtension;
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_ROOT.'/uploads/'.$hash;
+        $uploadPath = JPATH_UPLOADS . '/' . $hash;
 
         $associationID = $this->getInput()->getInt('association_id');
         $associationType = $this->getInput()->getString('association_type');
@@ -108,7 +108,7 @@ class Upload extends DefaultController
                 break;
         }
         if (isset($associationFolder)) {
-            $tmpPath = JPATH_ROOT.'/uploads/'.$associationFolder;
+            $tmpPath = JPATH_UPLOADS . '/' . $associationFolder;
             if (is_dir($tmpPath)) {
                 //check association_id folder
                 if (intval($associationID)) {

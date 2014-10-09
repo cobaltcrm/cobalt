@@ -30,7 +30,7 @@ class Documents extends DefaultModel
     {
         //Load Tables
         $row = $this->getTable('Documents');
-        
+
         if ($data == null)
         {
             $data = $this->app->input->getRequest( 'post' );
@@ -92,7 +92,7 @@ class Documents extends DefaultModel
 
         //sort
         $query->order($this->getState('Documents.filter_order') . ' ' . $this->getState('Documents.filter_order_Dir'));
-        
+
         if ($id)
         {
             $query->where("d.id = $id");
@@ -235,7 +235,7 @@ class Documents extends DefaultModel
         $hash = md5($fileName) . "." . $uploadedFileExtension;
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_ROOT . '/uploads/' . $hash;
+        $uploadPath = JPATH_UPLOADS . '/' . $hash;
 
         if (!File::upload($fileTemp, $uploadPath))
         {
@@ -336,18 +336,18 @@ class Documents extends DefaultModel
                 $template = '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'type':
-                $file_path = sprintf('%s/media/images/%s.png', JPATH_COBALT, $item->filetype);
-                
+                $file_path = sprintf('%s/images/%s.png', JPATH_MEDIA, $item->filetype);
+
                 if (file_exists($file_path)) {
-                    $file_src = sprintf('%s/src/Cobalt/media/images/%s.png', JUri::base(), $item->filetype);
+                    $file_src = sprintf('%simages/%s.png', $this->app->get('uri.media.full'), $item->filetype);
                     $template = '<img src="' . $file_src . '" >';
                 }
                 else
                 {
-                    $file_src = sprintf('%s/src/Cobalt/media/images/file.png', JUri::base());
+                    $file_src = sprintf('%simages/file.png', $this->app->get('uri.media.full'));
                     $template = '<img src="' . $file_src . '" >';
                 }
-                
+
                 break;
             case 'name':
                 $template = '<div class="dropdown"><span class="caret"></span><a id="'.$item->id.'" class="document_edit dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);"> '.$item->name.'</a>';
@@ -355,12 +355,12 @@ class Documents extends DefaultModel
                 $template .= '<ul class="dropdown-menu" role="menu">';
                 $template .= '<li><a href="'.RouteHelper::_('index.php?task=PreviewDocument&format=raw&tmpl=component&document='.$item->filename).'" target="_blank" class="document_preview" id="preview_'.$item->id.'"><i class="glyphicon glyphicon-eye-open"></i> '.TextHelper::_('COBALT_PREVIEW').'</a></li>';
                 $template .= '<li><a href="'.RouteHelper::_('index.php?task=DownloadDocument&format=raw&tmpl=component&document='.$item->filename).'" target="_blank" class="document_download" id="download_'.$item->id.'"><i class="glyphicon glyphicon-download"></i> '.TextHelper::_('COBALT_DOWNLOAD').'</a></li>';
-                
+
                 if ($item->owner_id == UsersHelper::getLoggedInUser()->id)
                 {
                     $template .= '<li><a href="#" class="document_delete" id="delete_' . $item->id . '"><i class="glyphicon glyphicon-remove"></i> ' . TextHelper::_('COBALT_DELETE') . '</a></li>';
                 }
-                
+
                 $template .= '</ul></div>';
                 break;
             case 'association':
@@ -382,7 +382,7 @@ class Documents extends DefaultModel
                         $item->association_name = $item->company_name;
                         break;
                 }
-                
+
                 if (isset($item->association_name))
                 {
                     $template = '<a href="'.RouteHelper::_('index.php?view='.$view.'&layout='.$association_type.'&id='.$item->association_id).'" >'.$item->association_name;
@@ -403,7 +403,7 @@ class Documents extends DefaultModel
                 $template = DateHelper::formatDate($item->created);
                 break;
             default:
-                
+
                 if (isset($column) && isset($item->{$column}))
                 {
                     $template = $item->{$column};

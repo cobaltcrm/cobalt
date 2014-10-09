@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use JUri;
 use Joomla\Filesystem\File;
 use Joomla\Image\Image;
 use Cobalt\Helper\DateHelper;
@@ -91,7 +90,7 @@ class Avatar extends DefaultModel
         //$fileName = preg_replace("[^A-Za-z0-9.]", "-", $fileName);
 
         //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-        $uploadPath = JPATH_ROOT.'/src/Cobalt/media/avatars/'.$hashFilename;
+        $uploadPath = JPATH_MEDIA . '/avatars/' . $hashFilename;
 
         if (!File::upload($fileTemp, $uploadPath)) {
             echo TextHelper::_('ERROR MOVING FILE');
@@ -126,7 +125,7 @@ class Avatar extends DefaultModel
         $model = new $modelClass($this->db);
         $model->store($data);
 
-        return JUri::base().'src/Cobalt/media/avatars/'.$hashFilename;
+        return $this->app->get('uri.media.full') . 'avatars/' . $hashFilename;
 
     }
 
@@ -134,8 +133,8 @@ class Avatar extends DefaultModel
     {
         $avatar = $this->getAvatar($item_id,$item_type);
         if ($avatar) {
-            echo JPATH_ROOT.'/src/Cobalt/media/avatars/'.$avatar;
-            File::delete(JPATH_ROOT.'/src/Cobalt/media/avatars/'.$avatar);
+            echo JPATH_MEDIA . '/avatars/' . $avatar;
+            File::delete(JPATH_MEDIA . '/avatars/' . $avatar);
         }
 
     }

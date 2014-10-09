@@ -50,7 +50,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <?php if ( isset($this->site_logo) ) { ?>
                                         <img src="<?php echo $this->site_logo; ?>" />
                                     <?php } else { ?>
-                                        <img src="<?php echo JURI::base(); ?>src/Cobalt/media/images/no-image.gif" />
+                                        <img src="<?php echo \Cobalt\Container::fetch('app')->get('uri.media.full'); ?>images/no-image.gif" />
                                     <?php } ?>
                                 </div>
                                   <div id="site-logo-preview" class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>

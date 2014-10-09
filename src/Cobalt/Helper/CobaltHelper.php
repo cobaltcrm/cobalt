@@ -43,6 +43,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      */
     public static function getTaskTemplates($type, $id = null)
     {
+	    /** @var \Joomla\Database\DatabaseDriver $db */
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
         $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
@@ -75,6 +76,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function storeCustomCf($id,$cf_data,$type)
     {
         //Get DBO
+	    /** @var \Joomla\Database\DatabaseDriver $db */
         $db = \Cobalt\Container::fetch('db');
         $query = $db->getQuery(true);
 
@@ -86,7 +88,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             //assign the data
             $row = $cf_data[$i];
 
-            $query->clear();
             $query->select("COUNT(*)")
                     ->from("#__".$type."_custom_cf")
                     ->where($type."_id=".$id." AND custom_field_id=".$row['custom_field_id']);
@@ -100,20 +101,18 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $query->update('#__'.$type.'_custom_cf');
                 $query->set($type."_id=".$id.
                              ",custom_field_id=".$row['custom_field_id'].
-                             ",value='".$row['custom_field_value']."'".
-                             ",modified='$date'");
+                             ",value=".$db->quote($row['custom_field_value']).
+                             ",modified=".$db->quote($date));
                 $query->where($type."_id=$id AND custom_field_id=".$row['custom_field_id']);
                 $db->setQuery($query);
-                $db->query();
+                $db->execute();
             } else {
                 $query->clear();
                 $query->insert('#__'.$type.'_custom_cf');
-                $query->set($type."_id=".$id.
-                         ",custom_field_id=".$row['custom_field_id'].
-                         ",value='".$row['custom_field_value']."'".
-                         ",modified='$date'");
+	            $query->columns(array($type."_id", 'ustom_field_id', 'value', 'modified'));
+	            $query->values($id . ', ' . $row['custom_field_id'] . ', ' . $db->quote($row['custom_field_value']) . ', ' . $db->quote($date));
                 $db->setQuery($query);
-                $db->query();
+                $db->execute();
             }
 
         }
@@ -127,7 +126,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $query->select("email")
             ->from("#__users_email_cf")
-            ->where("email='".$email."'");
+            ->where("email=" . $db->quote($email));
 
         $db->setQuery($query);
 
@@ -142,7 +141,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                     ->select("j.email")
                     ->from("#__users AS u")
                     ->leftJoin("#__users AS j ON j.id = u.id")
-                    ->where("j.email='".$email."'");
+                    ->where("j.email=" . $db->quote($email));
 
             $db->setQuery($query);
 
@@ -188,10 +187,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $query->insert("#__shared")
             ->columns('item_id,item_type,user_id')
-            ->values($itemId.",".$db->Quote($itemType).",".$userId);
+            ->values($itemId.",".$db->quote($itemType).",".$userId);
 
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
 
         return true;
     }
@@ -209,11 +208,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         $query->delete("#__shared")
             ->where('item_id='.$itemId)
-            ->where('item_type='.$db->Quote($itemType))
+            ->where('item_type='.$db->quote($itemType))
             ->where('user_id='.$userId);
 
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
 
         return true;
     }

@@ -10,6 +10,8 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+
     $n = count($this->events);
     for ($i=0; $i<$n; $i++) {
 
@@ -64,8 +66,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             echo '<td>'.$event['owner_first_name'].' '.$event['owner_last_name'].'</td>';
             echo '<td>'.$event['assignee_first_name'].' '.$event['assignee_last_name'].'</td>';
             echo '<td>'.ucwords($event['category_name']).'</td>';
-            echo '<td class="contacts" ><a href="javascript:void(0);" onclick="Calendar.showEventContactsDialogModal('.$event['id'].');"><img src="'.JURI::base().'src/Cobalt/media/images/card.png'.'"/></a></td>';
-            echo '<td class="notes"><a href="javascript:void(0);" onclick="Calendar.openNoteModal(\''.$event['id'].'\',\'event\');"><img src="'.JURI::base().'src/Cobalt/media/images/notes.png'.'"/></a>';
+            echo '<td class="contacts" ><a href="javascript:void(0);" onclick="Calendar.showEventContactsDialogModal('.$event['id'].');"><img src="'.$mediaURI.'images/card.png'.'"/></a></td>';
+            echo '<td class="notes"><a href="javascript:void(0);" onclick="Calendar.openNoteModal(\''.$event['id'].'\',\'event\');"><img src="'.$mediaURI.'images/notes.png'.'"/></a>';
             echo '<div id="event_form_'.$event['id'].'">';
                     echo '<input type="hidden" name="event_id" value="'.$event['id'].'" />';
                     echo '<input type="hidden" name="parent_id" value="'.$event['parent_id'].'" />';

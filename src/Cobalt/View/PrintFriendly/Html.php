@@ -31,7 +31,7 @@ class Html extends AbstractHtmlView
         $layout = $this->getLayout();
 
         //document
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
 
         if (!$model_name) {
             switch ($layout) {
@@ -68,11 +68,11 @@ class Html extends AbstractHtmlView
                         $params = "calendar";
 
                         //load js libs
-                        $document->addScript( JURI::base().'src/Cobalt/media/js/fullcalendar.js' );
-                        $document->addScript( JURI::base().'src/Cobalt/media/js/calendar_manager.js' );
+                        $document->addScript( $app->get('uri.media.full').'js/fullcalendar.js' );
+                        $document->addScript( $app->get('uri.media.full').'js/calendar_manager.js' );
 
                         //load required css for calendar
-                        $document->addStyleSheet( JURI::base().'src/Cobalt/media/css/fullcalendar.css' );
+                        $document->addStyleSheet( $app->get('uri.media.full').'css/fullcalendar.css' );
                     }
                 break;
             }

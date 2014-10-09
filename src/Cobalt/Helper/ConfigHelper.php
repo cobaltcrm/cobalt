@@ -146,7 +146,6 @@ class ConfigHelper
 
     public static function getLanguages()
     {
-        jimport('joomla.filesystem.folder');
         $dirs = Folder::folders(JPATH_ROOT."/language");
 
         $ret = array();

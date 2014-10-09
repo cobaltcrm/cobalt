@@ -92,27 +92,27 @@ class Raw extends AbstractHtmlView
             switch ($type) {
                 case "win_cash":
                     $header = ucwords(TextHelper::_('COBALT_WIN_MORE_CASH'));
-                    $header_img = 'src/Cobalt/media/images/win_more_cash.png';
+                    $header_img = 'images/win_more_cash.png';
                     break;
                 case "win_deals":
                     $header = ucwords(TextHelper::_('COBALT_WIN_MORE_DEALS'));
-                    $header_img = 'src/Cobalt/media/images/win_more_deals.png';
+                    $header_img = 'images/win_more_deals.png';
                     break;
                 case "move_deals";
                     $header = ucwords(TextHelper::_('COBALT_MOVE_DEALS_FORWARD'));
-                    $header_img = 'src/Cobalt/media/images/move_deals_forward.png';
+                    $header_img = 'images/move_deals_forward.png';
                     break;
                 case "complete_tasks";
                     $header = ucwords(TextHelper::_('COBALT_COMPLETE_TASKS'));
-                    $header_img = 'src/Cobalt/media/images/complete_more_tasks.png';
+                    $header_img = 'images/complete_more_tasks.png';
                     break;
                 case "write_notes";
                     $header = ucwords(TextHelper::_('COBALT_WRITE_NOTES'));
-                    $header_img = 'src/Cobalt/media/images/write_more_notes.png';
+                    $header_img = 'images/write_more_notes.png';
                     break;
                 case "create_deals";
                     $header = ucwords(TextHelper::_('COBALT_CREATE_DEALS'));
-                    $header_img = 'src/Cobalt/media/images/create_deals.png';
+                    $header_img = 'images/create_deals.png';
                     break;
                 default:
                    $app->redirect('index.php?view=goals');
@@ -183,8 +183,8 @@ class Raw extends AbstractHtmlView
         }
 
         //load java libs
-        $doc = JFactory::getDocument();
-        $doc->addScript( \JURI::base().'src/Cobalt/media/js/goal_manager.js' );
+        $doc = $app->getDocument();
+        $doc->addScript( $app->get('uri.media.full').'js/goal_manager.js' );
 
         //get associated members and teams
         $teams = UsersHelper::getTeams();

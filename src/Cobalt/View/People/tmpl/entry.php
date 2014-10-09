@@ -1,4 +1,5 @@
 <?php
+	$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
     $person = $this->person;
     $k = isset($this->k) ? $this->k : 0;
     //assign null data
@@ -15,9 +16,9 @@
     echo "<tr id='list_row_".$person['id']."' class='cobalt_row_".$k."'>";
         echo '<td><input type="checkbox" name="ids[]" value="'.$person['id'].'" /></td>';
         if ( array_key_exists('avatar',$person) && $person['avatar'] != "" && $person['avatar'] != null ) {
-             echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/avatars/'.$person['avatar'].'"/></td>';
+             echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.$mediaURI.'avatars/'.$person['avatar'].'"/></td>';
         } else {
-            echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.JURI::base().'src/Cobalt/media/images/person.png'.'"/></td>';
+            echo '<td class="avatar" ><img id="avatar_img_'.$person['id'].'" data-item-type="people" data-item-id="'.$person['id'].'" class="avatar" src="'.$mediaURI.'images/person.png'.'"/></td>';
         }
         echo '<td class="list_edit_button" id="list_'.$person['id'].'" ><div class="title_holder"><a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']).'">'.$person['first_name'].' '.$person['last_name']."</a></div></td>";
         echo "<td class='company' ><a href='".RouteHelper::_('index.php?view=companies&layout=company&id='.$person['company_id'])."'>".$person['company_name']."</a></td>";

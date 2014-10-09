@@ -361,7 +361,7 @@ class Install extends AbstractModel
 
 		    return false;
 	    }
-	    elseif (!JFile::upload($file['tmp_name'], JPATH_ROOT . '/uploads/logo/' . JFile::makeSafe($file['name'])))
+	    elseif (!JFile::upload($file['tmp_name'], JPATH_UPLOADS . '/logo/' . JFile::makeSafe($file['name'])))
 	    {
 		    $this->setError(Text::_('INSTL_ERROR_UPLOAD_LOGO'));
 

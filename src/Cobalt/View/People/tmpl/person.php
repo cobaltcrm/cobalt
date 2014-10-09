@@ -13,6 +13,7 @@ defined('_CEXEC') or die('Restricted access');
 //define person
 $person = $this->people[0];
 
+$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
 ?>
     <script type="text/javascript">
         var id = <?php echo $person['id']; ?>;
@@ -27,9 +28,9 @@ $person = $this->people[0];
 
     <div class="row-fluid">
     <div class="col-sm-3">
-        <?php $image = !empty($person['avatar']) ? '/avatars/' . $person['avatar'] : '/images/person_profile.png'; ?>
+        <?php $image = $mediaURI . (!empty($person['avatar']) ? 'avatars/' . $person['avatar'] : 'images/person_profile.png'); ?>
         <div class="row-fluid">
-            <img id="avatar_img_<?php echo $person['id']; ?>" data-item-type="people" data-item-id="<?php echo $person['id']; ?>" class="avatar" src="<?php echo JUri::base() . 'src/Cobalt/media' . $image; ?>"/>
+            <img id="avatar_img_<?php echo $person['id']; ?>" data-item-type="people" data-item-id="<?php echo $person['id']; ?>" class="avatar" src="<?php echo $image; ?>"/>
         </div>
         <br />
         <div class="well" id="details">
@@ -173,7 +174,7 @@ $person = $this->people[0];
                 </div>
             </div>
         </div>
-        
+
         <?php if ($person['twitter_user'])
         { ?>
             <div class="widget">

@@ -10,7 +10,6 @@
 
 namespace Cobalt\View\Companies;
 
-use JUri;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;
@@ -47,8 +46,8 @@ class Html extends AbstractHtmlView
         $team = $session->get('company_team_filter');
 
         //load java libs
-        $doc = \JFactory::getDocument();
-        $doc->addScript( JURI::base().'src/Cobalt/media/js/company_manager.js' );
+        $doc = $app->getDocument();
+        $doc->addScript( $app->get('uri.media.full').'js/company_manager.js' );
 
         //determine if we are requesting a specific company or all companies
         //if id requested

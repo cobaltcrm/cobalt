@@ -123,6 +123,10 @@ final class Application extends AbstractWebApplication
 	{
 		parent::__construct();
 
+		// Set our upload path URIs
+		$this->set('uri.uploads.full', $this->get('uri.base.full') . 'uploads/');
+		$this->set('uri.uploads.path', $this->get('uri.base.path') . 'uploads/');
+
 		$container = Container::getInstance();
 
 		$container->registerServiceProvider(new Provider\ApplicationServiceProvider($this));

@@ -10,7 +10,6 @@
 
 namespace Cobalt\View\AdminImport;
 
-use JUri;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
@@ -41,8 +40,8 @@ class Html extends AbstractHtmlView
 
         //javascripts
         $doc = $app->getDocument();
-        $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
-        $doc->addScript(JURI::base()."/src/Cobalt/media/js/document_manager.js");
+        $doc->addScript($app->get('uri.media.full')."js/cobalt-admin.js");
+        $doc->addScript($app->get('uri.media.full')."js/document_manager.js");
 
         //import data
         $import_post = FALSE;
@@ -108,7 +107,7 @@ class Html extends AbstractHtmlView
         $this->menu = $menu;
         $app = \Cobalt\Container::fetch('app');
         $doc = $app->getDocument();
-        $doc->addScript(JURI::base()."/src/Cobalt/media/js/cobalt-admin.js");
+        $doc->addScript($app->get('uri.media.full')."js/cobalt-admin.js");
 
         return parent::render();
     }
