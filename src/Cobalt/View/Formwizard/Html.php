@@ -56,11 +56,13 @@ class Html extends AbstractHtmlView
             $this->state = $model->getState();;
             $this->forms = $model->getForms();
 
-            $app->getDocument()->addScriptDeclaration("
+            $document->addScriptDeclaration("
                 var loc = 'formwizard';
                 var order_dir = '" . $this->state->get('Formwizard.filter_order_Dir') . "';
                 var order_col = '" . $this->state->get('Formwizard.filter_order') . "';
                 var dataTableColumns = " . json_encode($model->getDataTableColumns()) . ";");
+
+            $document->addScriptDeclaration('jQuery(function() { FormWizard.bind(); });');
         }
         elseif ($layout == 'edit')
         {
@@ -76,11 +78,11 @@ class Html extends AbstractHtmlView
             //form types
             $this->form_types = DropdownHelper::getFormTypes($this->form->type);
             $fields = array(
-                    'lead'=>DropdownHelper::getFormFields('people'),
-                    'contact'=>DropdownHelper::getFormFields('people'),
-                    'deal'=>DropdownHelper::getFormFields('deal'),
-                    'company'=>DropdownHelper::getFormFields('company')
-                );
+                'lead' => DropdownHelper::getFormFields('people'),
+                'contact' => DropdownHelper::getFormFields('people'),
+                'deal' => DropdownHelper::getFormFields('deal'),
+                'company' => DropdownHelper::getFormFields('company')
+            );
             $this->fields = $fields;
             $document->addScriptDeclaration('var fields='.json_encode($fields));
 
@@ -88,13 +90,7 @@ class Html extends AbstractHtmlView
             $model = new UsersModel;
             $user_list = $model->getUsers();
             $document->addScriptDeclaration('var user_list='.json_encode($user_list).';');
-
         }
-
-        //javascripts
-        // $document->addScript(JURI::base().'src/Cobalt/media/js/jquery.base64.js');
-        // $document->addScript(JURI::base().'src/Cobalt/media/js/formwizard.js');
-        // $document->addScript(JURI::base().'src/Cobalt/media/js/cobalt-admin.js');
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

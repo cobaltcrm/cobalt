@@ -270,7 +270,7 @@ class FormWizard extends DefaultModel
                 $template .= '<input type="checkbox" class="export" name="ids[]" value="' . $item->id . '" />';
                 break;
             case 'name':
-                $template .= '<a href="' . RouteHelper::_('index.php?view=stages&layout=edit&id=' . $item->id) . '">' . $item->name . '</a>';
+                $template .= '<a href="' . RouteHelper::_('index.php?view=formwizard&layout=edit&id=' . $item->id) . '">' . $item->name . '</a>';
                 break;
             case 'shortcode':
                 $template .= '[cobaltform' . $item->id . ']';
