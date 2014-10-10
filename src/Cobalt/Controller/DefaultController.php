@@ -13,7 +13,8 @@ namespace Cobalt\Controller;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-use Cobalt\Container;
+use Joomla\DI\Container;
+use Joomla\DI\ContainerAwareInterface;
 use Joomla\Input\Input;
 use Joomla\Application\AbstractApplication;
 use Joomla\Controller\AbstractController;
@@ -26,27 +27,15 @@ use Joomla\Controller\AbstractController;
  *
  * @since          1.0
  */
-class DefaultController extends AbstractController
+class DefaultController extends AbstractController implements ContainerAwareInterface
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
 	/**
-	 * Instantiate the controller.
+	 * DI Container
 	 *
-	 * @param   Input                $input  The input object.
-	 * @param   AbstractApplication  $app    The application object.
-	 *
-	 * @since   1.0
+	 * @var    Container
+	 * @since  1.0
 	 */
-    public function __construct(Input $input = null, AbstractApplication $app = null)
-    {
-        parent::__construct($input, $app);
-
-	    $this->container = Container::getInstance();
-    }
+	private $container;
 
     public function execute()
     {
@@ -88,6 +77,24 @@ class DefaultController extends AbstractController
         return true;
     }
 
+	/**
+	 * Get the DI container.
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
+	 */
+	public function getContainer()
+	{
+		if ($this->container)
+		{
+			return $this->container;
+		}
+
+		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
+	}
+
     public function getModel($modelName)
     {
         $fqcn = 'Cobalt\\Model\\' . $modelName;
@@ -100,4 +107,20 @@ class DefaultController extends AbstractController
         $headers = apache_request_headers();
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || (isset($headers['X-Requested-With']) && strtolower($headers['X-Requested-With']) === 'xmlhttprequest');
     }
+
+	/**
+	 * Set the DI container.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  $this  Method allows chaining
+	 *
+	 * @since   1.0
+	 */
+	public function setContainer(Container $container)
+	{
+		$this->container = $container;
+
+		return $this;
+	}
 }

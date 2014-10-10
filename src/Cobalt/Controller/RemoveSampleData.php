@@ -24,7 +24,7 @@ class RemoveSampleData extends DefaultController
     {
         $sampleIds = unserialize(ConfigHelper::getConfigValue('import_sample'));
 
-        $db = $this->container->get('db');
+        $db = $this->getContainer()->get('db');
         $query = $db->getQuery(true);
 
         foreach ($sampleIds as $table => $ids) {

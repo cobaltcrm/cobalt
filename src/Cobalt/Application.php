@@ -13,6 +13,8 @@ defined('_CEXEC') or die;
 use JFactory;
 use JDocument;
 
+use Joomla\DI\Container;
+use Joomla\DI\ContainerAwareInterface;
 use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Language\Text;
@@ -39,7 +41,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
  * @subpackage  Application
  * @since       1.0
  */
-final class Application extends AbstractWebApplication
+final class Application extends AbstractWebApplication implements ContainerAwareInterface
 {
 	/**
 	 * DI Container
@@ -127,7 +129,7 @@ final class Application extends AbstractWebApplication
 		$this->set('uri.uploads.full', $this->get('uri.base.full') . 'uploads/');
 		$this->set('uri.uploads.path', $this->get('uri.base.path') . 'uploads/');
 
-		$container = Container::getInstance();
+		$container = new Container;
 
 		$container->registerServiceProvider(new Provider\ApplicationServiceProvider($this));
 
@@ -206,7 +208,7 @@ final class Application extends AbstractWebApplication
 	 */
 	public function setContainer(Container $container)
 	{
-		$this->container = $container;
+		static::$container = $container;
 
 		return $this;
 	}
@@ -382,7 +384,9 @@ final class Application extends AbstractWebApplication
 			$this->getContainer()->set('session', $session);
 
 			// Fetch the controller
+			/** @var \Cobalt\Controller\DefaultController $controllerObj */
 			$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
+			$controllerObj->setApplication($this)->setContainer($this->getContainer());
 
 			// Perform the Request task
 			$controllerObj->execute();
@@ -411,7 +415,9 @@ final class Application extends AbstractWebApplication
 			$user = $this->getUser();
 
 			// Fetch the controller
+			/** @var \Cobalt\Controller\DefaultController $controllerObj */
 			$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
+			$controllerObj->setApplication($this)->setContainer($this->getContainer());
 
 			// Require specific controller if requested
 			$controller = $this->input->get('controller', 'default');
@@ -628,7 +634,7 @@ final class Application extends AbstractWebApplication
 	{
 		if (is_null($this->router))
 		{
-			$this->router = new Router($this->input, $this);
+			$this->router = new Router($this->input);
 
 			$maps = json_decode(file_get_contents(JPATH_ROOT . '/src/routes.json'));
 

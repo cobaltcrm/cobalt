@@ -8,7 +8,8 @@
 
 namespace Cobalt\Provider;
 
-use Cobalt\Container;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;

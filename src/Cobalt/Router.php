@@ -8,7 +8,6 @@
 
 namespace Cobalt;
 
-use Joomla\Application\AbstractApplication;
 use Joomla\Controller\ControllerInterface;
 use Joomla\Input\Input;
 use Joomla\Router\Router as JoomlaRouter;
@@ -22,30 +21,6 @@ use Cobalt\Helper\RouteHelper;
  */
 class Router extends JoomlaRouter
 {
-    /**
-     * Application object to inject into controllers
-     *
-     * @var    AbstractApplication
-     * @since  1.0
-     */
-    protected $app;
-
-    /**
-     * Constructor.
-     *
-     * @param Input $input An optional input object from which to derive the route.  If none
-     *                                       is given than the input from the application object will be used.
-     * @param AbstractApplication $app An optional application object to inject to controllers
-     *
-     * @since   1.0
-     */
-    public function __construct(Input $input = null, AbstractApplication $app = null)
-    {
-        parent::__construct($app->input);
-
-        $this->app = $app;
-    }
-
     /**
      * Get a ControllerInterface object for a given name.
      *
@@ -82,7 +57,7 @@ class Router extends JoomlaRouter
         }
 
         // Instantiate the controller.
-        return new $class($this->input, $this->app);
+        return new $class($this->input);
     }
 
     public static function to($url)
