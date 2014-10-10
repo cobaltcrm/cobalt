@@ -22,7 +22,7 @@ $return = $app->input->getBase64('return', base64_encode(\JUri::current()));
         </span>
     </button>
     <h3 class="modal-title" id="dealModal">
-        <?php echo ucwords(TextHelper::_('COBALT_ADD_DOCUMENT')); ?>
+        <?php echo ucwords(TextHelper::_('COBALT_UPLOAD_DOCUMENT')); ?>
     </h3>
 </div>
 <div class="modal-body">
