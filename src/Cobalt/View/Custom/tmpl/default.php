@@ -20,7 +20,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $k=$count%3;
         switch ($value['type']) {
             case "forecast":
-                $custom_field_filter = array_key_exists('forecast',$this->item) ? $this->item['forecast'] : 0;
+                $custom_field_filter = isset($this->item->forecast) ? $this->item->forecast : 0;
             break;
             case "text":
                 $custom_field_filter = array_key_exists('selected',$value) && strlen(trim($value['selected'])) > 0 ? $value['selected'] : TextHelper::_('COBALT_CLICK_TO_EDIT');
