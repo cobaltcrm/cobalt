@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full'); ?>
+$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full'); ?>
 
 <div class="page-header">
     <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS_HEADER')); ?></h1>

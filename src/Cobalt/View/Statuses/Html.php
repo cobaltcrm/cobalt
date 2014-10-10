@@ -10,12 +10,11 @@
 
 namespace Cobalt\View\Statuses;
 
-use JUri;
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Statuses as StatusesModel;
 
 // no direct access
@@ -29,7 +28,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         // Create toolbar
         $this->toolbar = new Toolbar;

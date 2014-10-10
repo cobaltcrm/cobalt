@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\AdminDocuments;
 
-use Cobalt\Container;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\Documents as DocumentsModel;
@@ -25,8 +25,7 @@ class Raw extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
-	    /** @var \Cobalt\Application $app */
-	    $app = Container::fetch('app');
+	    $app = Factory::getApplication();
 
         //Add styles for iframe popup
         echo "<link href='".$app->get('uri.media.full')."css/style.css' type='text/css' rel='stylesheet' />";

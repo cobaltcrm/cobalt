@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\PrintFriendly;
 
-use JFactory;
+use Cobalt\Factory;
 use Cobalt\Helper\ViewHelper;
 use Joomla\View\AbstractHtmlView;
 
@@ -22,7 +22,7 @@ class Html extends AbstractHtmlView
     public function render($tpl = null)
     {
         //app
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         /* Model // function info */
         $model_name = $app->input->get('model');

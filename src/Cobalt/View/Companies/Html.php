@@ -10,6 +10,7 @@
 
 namespace Cobalt\View\Companies;
 
+use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;
@@ -28,9 +29,9 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $app->input->set('view', 'companies');
-        $app->input->set('layout', $app->input->get('layout','default'));
+        $app->input->def('layout', 'default');
 
         $id = $app->input->getInt('id', $app->input->getInt('company_id'));
 
@@ -39,7 +40,7 @@ class Html extends AbstractHtmlView
         $state = $model->getState();
 
         //session data
-        $session = \Cobalt\Container::fetch('app')->getSession();
+        $session = $app->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
         $team_id = UsersHelper::getTeamId();

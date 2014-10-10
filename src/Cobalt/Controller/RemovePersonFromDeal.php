@@ -20,7 +20,7 @@ class RemovePersonFromDeal extends DefaultController
         $person_id = $this->getInput()->get('person_id');
         $deal_id = $this->getInput()->get('deal_id');
 
-        $db = $this->container->fetch('db');
+        $db = $this->container->get('db');
         $query = $db->getQuery(true);
 
         $query->select("COUNT(*)")

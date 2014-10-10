@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
 
     $n = count($this->events);
     for ($i=0; $i<$n; $i++) {

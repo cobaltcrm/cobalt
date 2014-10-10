@@ -11,6 +11,7 @@
 namespace Cobalt\View\Deals;
 
 use Cobalt\Helper\RouteHelper;
+use Cobalt\Factory;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;
@@ -32,7 +33,7 @@ class Html extends AbstractHtmlView
 
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //retrieve deal list from model
         $model = new DealModel;
@@ -42,7 +43,7 @@ class Html extends AbstractHtmlView
         $doc = $app->getDocument();
 
         //session info
-        $session = \Cobalt\Container::fetch('app')->getSession();
+        $session = $app->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
         $team_id = UsersHelper::getTeamId();

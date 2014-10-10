@@ -10,7 +10,6 @@
 
 namespace Cobalt\Table;
 
-use Cobalt\Container;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseQuery;
 
@@ -328,7 +327,7 @@ class AbstractTable implements \IteratorAggregate
 
 		$pKey = (is_null($pKey)) ? $this->$key : $pKey;
 
-		
+
 
 		// If no primary key is given, return false.
 		if ($pKey === null)

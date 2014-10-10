@@ -244,7 +244,7 @@ final class Application extends AbstractWebApplication
 	 */
 	public static function getHash($seed)
 	{
-		return md5(Container::fetch('config')->get('secret') . $seed);
+		return md5(Factory::getApplication()->getContainer()->get('config')->get('secret') . $seed);
 	}
 
 	/**
@@ -258,7 +258,7 @@ final class Application extends AbstractWebApplication
 	{
 		if (is_null($this->cSession))
 		{
-			$this->cSession = $this->getContainer()->fetch('session');
+			$this->cSession = $this->getContainer()->get('session');
 		}
 
 		return $this->cSession;

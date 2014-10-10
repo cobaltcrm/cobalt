@@ -10,7 +10,8 @@
 
 namespace Cobalt\View\Companies;
 
-use Joomla\View\AbstractHtmlView;;
+use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\ViewHelper;
 use Cobalt\Model\Company as CompanyModel;
 
@@ -22,7 +23,7 @@ class Raw extends AbstractHtmlView
     public function render()
     {
         //japplication
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $id = $app->input->get('id') ? $app->input->get('id') : null;
         $layout = $this->getLayout();
 

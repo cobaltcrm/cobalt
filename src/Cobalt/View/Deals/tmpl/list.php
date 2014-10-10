@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 ?>
 <thead>
     <tr>

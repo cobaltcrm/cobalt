@@ -10,6 +10,7 @@
 
 namespace Cobalt\View\Login;
 
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access
@@ -19,7 +20,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-    	$app = \Cobalt\Container::fetch('app');
+    	$app = Factory::getApplication();
     	$app->getDocument()->addScriptDeclaration("
 
     		jQuery(function($) {

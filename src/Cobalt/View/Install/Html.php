@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\Install;
 
-use Cobalt\Container;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access
@@ -41,9 +41,9 @@ class Html extends AbstractHtmlView
 	 */
 	public function render()
 	{
-		$this->basepath    = Container::fetch('app')->get('uri.base.host');
-		$this->knownLangs  = Container::fetch('app')->getLanguage()->getKnownLanguages();
-		$this->defaultLang = Container::fetch('app')->getLanguage()->getDefault();
+		$this->basepath    = Factory::getApplication()->get('uri.base.host');
+		$this->knownLangs  = Factory::getApplication()->getLanguage()->getKnownLanguages();
+		$this->defaultLang = Factory::getApplication()->getLanguage()->getDefault();
 		$this->phpOptions  = $this->model->getPhpOptions();
 		$this->dboDrivers  = $this->model->dboDrivers();
 

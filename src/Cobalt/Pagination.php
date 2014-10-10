@@ -10,7 +10,6 @@
 namespace Cobalt;
 
 use Cobalt\Helper\RouteHelper;
-use JFactory;
 use JHtml;
 use Cobalt\Helper\TextHelper;
 
@@ -285,7 +284,7 @@ class Pagination extends \JPagination
      */
     public function getPagesLinks()
     {
-        $app = Container::fetch('app');
+        $app = Factory::getApplication();
 
         // Build the page navigation list.
         $data = $this->_buildDataObject();
@@ -374,7 +373,7 @@ class Pagination extends \JPagination
      */
     public function getListFooter()
     {
-        $app = Container::fetch('app');
+        $app = Factory::getApplication();
 
         $list = array();
         $list['prefix'] = $this->prefix;
@@ -405,7 +404,7 @@ class Pagination extends \JPagination
      */
     public function getLimitBox()
     {
-        $app = Container::fetch('app');
+        $app = Factory::getApplication();
 
         // Initialise variables.
         $limits = array();

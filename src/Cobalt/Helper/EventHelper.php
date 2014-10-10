@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -20,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getCategories($appendLanguage=FALSE)
     {
         //grab db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
 
         //generate query
         $query = $db->getQuery(true);

@@ -13,6 +13,7 @@ namespace Cobalt\View\Events;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Helper\CobaltHelper;
+use Cobalt\Factory;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -20,7 +21,7 @@ class Raw extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //grab model
         $model = new EventModel;

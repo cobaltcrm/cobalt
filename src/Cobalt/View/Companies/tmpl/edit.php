@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 $ownerId = is_object($this->company) && isset($this->company->owner_id) ? $this->company->owner_id : UsersHelper::getUserId();
 $format = $app->input->get('format');
 if ($format != "raw")

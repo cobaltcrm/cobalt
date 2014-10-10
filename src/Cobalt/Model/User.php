@@ -11,7 +11,6 @@
 namespace Cobalt\Model;
 
 use Cobalt\Helper\TextHelper;
-use Cobalt\Table\UserTable;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
@@ -36,9 +35,8 @@ class User extends DefaultModel
     public function __construct($userId = null)
     {
         parent::__construct();
-        $app = \Cobalt\Container::fetch('app');
-        $this->_view = $app->input->get('view');
-        $this->_layout = str_replace('_filter','',$app->input->get('layout'));
+        $this->_view = $this->app->input->get('view');
+        $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
 
         if ($userId)
         {

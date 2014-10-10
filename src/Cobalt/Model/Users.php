@@ -202,7 +202,6 @@ class Users extends DefaultModel
 
     public function getUser($id=null)
     {
-        $this->app = \Cobalt\Container::fetch('app');
         $id = $id ? $id : $this->app->input->get("id");
 
         if ($id > 0) {
@@ -226,7 +225,6 @@ class Users extends DefaultModel
     public function populateState()
     {
         //get states
-        $this->app = \Cobalt\Container::fetch('app');
         $filter_order = $this->app->getUserStateFromRequest('Users.filter_order', 'filter_order', 'u.last_name');
         $filter_order_Dir = $this->app->getUserStateFromRequest('Users.filter_order_Dir', 'filter_order_Dir', 'asc');
 

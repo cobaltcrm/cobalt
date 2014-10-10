@@ -24,7 +24,7 @@ class SaveAjax extends DefaultController
         $field = $this->getInput()->get('field');
         $value = $this->getInput()->getString('value');
 
-        $db = $this->container->fetch('db');
+        $db = $this->container->get('db');
 
         $data = array('id' => $item_id, $field => $db->escape($value));
         $post_data = $_POST;

@@ -11,6 +11,7 @@
 namespace Cobalt\View\Reports;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\UsersHelper;
@@ -32,7 +33,7 @@ class Html extends AbstractHtmlView
     public function render()
     {
         //app
-        $this->app = \Cobalt\Container::fetch('app');
+        $this->app = Factory::getApplication();
 
         //load reports menu bar
         $this->menu = TemplateHelper::loadReportMenu();

@@ -11,7 +11,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\EventTable;
 use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\UsersHelper;
@@ -1101,13 +1100,11 @@ class Event extends DefaultModel
      */
     public function removeEvent($id=null,$type=null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
-        $type = ( $type == null ) ? $app->input->get('type') : $type;
-        $date = $app->input->get('date');
-        $repeats = $app->input->get('repeats');
-        $event_type = ( $app->input->get('event_type') ) ? $app->input->get('event_type') : $app->input->get('type');
-        $data = $app->input->getArray();
+        $type = ( $type == null ) ? $this->app->input->get('type') : $type;
+        $date = $this->app->input->get('date');
+        $repeats = $this->app->input->get('repeats');
+        $event_type = ( $this->app->input->get('event_type') ) ? $this->app->input->get('event_type') : $this->app->input->get('type');
+        $data = $this->app->input->getArray();
         $data = array_filter($data);
         if ( $id != null ) $data['event_id'] = $id;
 

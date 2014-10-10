@@ -10,6 +10,7 @@
 
 namespace Cobalt\View\People;
 
+use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Event as EventModel;
@@ -30,7 +31,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         ///retrieve task list from model
         $model = new PeopleModel;

@@ -87,7 +87,7 @@ class Router extends JoomlaRouter
 
     public static function to($url)
     {
-        return RouteHelper::_(\Cobalt\Container::fetch('app')->getRouter()->getRouteFor($url));
+        return RouteHelper::_(Factory::getApplication()->getRouter()->getRouteFor($url));
     }
 
     public function getRouteFor($url)

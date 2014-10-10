@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\Reports;
 
-use Cobalt\Model\Deal;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Model\Note as NoteModel;
 use Cobalt\Model\Deal as DealModel;
@@ -24,7 +24,7 @@ class Raw extends AbstractHtmlView
     public function render()
     {
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //get layout requested to load correct data and pass references
         $layout = $this->getLayout();

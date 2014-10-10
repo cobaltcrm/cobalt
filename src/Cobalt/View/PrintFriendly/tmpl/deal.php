@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $deal = $this->info[0];
 
-$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
 ?>
 
 <?php if ( array_key_exists('contact_info',$this) ||  array_key_exists('event_dock',$this) ) { ?>

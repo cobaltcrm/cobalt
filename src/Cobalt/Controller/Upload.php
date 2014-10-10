@@ -76,7 +76,7 @@ class Upload extends DefaultController
             if (empty($return_uri)) {
                 $return_uri = 'index.php?view=documents&layout=upload&tmpl=component';
             }
-            $this->container->fetch('app')->redirect($return_uri, $msg, 'danger');
+            $this->getApplication()->redirect($return_uri, $msg, 'danger');
         }
 
         //the name of the file in PHP's temp directory that we are going to move to our folder
@@ -129,7 +129,7 @@ class Upload extends DefaultController
 
         if (!File::upload($fileTemp, $uploadPath)) {
             $msg = TextHelper::_('COBALT_DOC_UPLOAD_FAIL');
-            $this->container->fetch('app')->redirect('index.php?view=documents',$msg);
+            $this->getApplication()->redirect('index.php?view=documents',$msg);
         } else {
             $return_uri = base64_decode($this->getInput()->getBase64('return'));
             if (empty($return_uri)) {
@@ -152,7 +152,7 @@ class Upload extends DefaultController
            );
 
            $model = new DocumentsModel;
-           //$session = $this->container->resolve('session');
+           //$session = $this->getApplication()->getSession();
 
            if ($id=$model->store($data)) {
             //echo '<script type="text/javascript">Cobalt.modalMessage(Joomla.JText._("COBALT_UPLOADING"),Joomla.JText._("COBALT_DOC_UPLOAD_SUCCESS"),"success");</script>';

@@ -10,13 +10,12 @@
 
 namespace Cobalt\View\Goals;
 
-use JFactory;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Model\Goal as GoalModel;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
-use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -25,7 +24,7 @@ class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //if we are deleting goals determine which goals the user is allowed to delete
         if ( $this->getLayout() == 'delete' ) {

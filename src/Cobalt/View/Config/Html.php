@@ -10,12 +10,9 @@
 
 namespace Cobalt\View\Config;
 
-use Cobalt\Container;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
-use JUri;
-use JFactory;
 use Cobalt\Helper\UsersHelper;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\DateHelper;
@@ -38,7 +35,7 @@ class Html extends AbstractHtmlView
         $this->toolbar->save();
 
         //document
-	    $app = Container::fetch('app');
+	    $app = Factory::getApplication();
         $document = $app->getDocument();
         $document->addScript($app->get('uri.media.full')."js/cobalt-admin.js");
 

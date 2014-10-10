@@ -11,6 +11,7 @@
 namespace Cobalt\View\Deals;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\ViewHelper;
 use Cobalt\Helper\UsersHelper;
@@ -24,7 +25,7 @@ class Raw extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $id = $app->input->get('id', null);
         $company_id = $app->input->get('company_id');

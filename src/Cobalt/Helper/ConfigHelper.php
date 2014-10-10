@@ -10,6 +10,7 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
 use Cobalt\Model\Config as ConfigModel;
 use Joomla\Filesystem\Folder;
 
@@ -20,7 +21,7 @@ class ConfigHelper
 {
      public static function getImapConfig()
      {
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
         $query->select("imap_host,imap_pass,imap_user")->from("#__config")->where("id=1");
         $db->setQuery($query);
@@ -58,7 +59,7 @@ class ConfigHelper
 
     public static function getNamingConventions()
     {
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
         $query->select("lang_deal,lang_person,lang_company,lang_contact,lang_lead,lang_task,lang_event,lang_goal")
                 ->from("#__config")
@@ -160,15 +161,12 @@ class ConfigHelper
 
     public static function getLanguage()
     {
-        $config = \Cobalt\Container::fetch('config');
-
-        return $config->get('language');
-
+        return Factory::getApplication()->getContainer()->get('config')->get('language');
     }
 
     public static function saveLanguage($lang)
     {
-        $config = \Cobalt\Container::fetch('config');
+        $config = Factory::getApplication()->getContainer()->get('config');
         $config->set("language",$lang);
 
         $file = JPATH_CONFIGURATION."/configuration.php";

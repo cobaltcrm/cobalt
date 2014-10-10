@@ -18,7 +18,7 @@ class WhoopsServiceProvider implements ServiceProviderInterface
     public function register(Container $container)
     {
         /** @var $config Registry */
-        $config = $container->resolve('config');
+        $config = $container->get('config');
 
         if ($config->get('debug', false)) {
             $whoops = new Run;
@@ -38,7 +38,7 @@ class WhoopsServiceProvider implements ServiceProviderInterface
 
             $whoops->register();
 
-            $container->bind('whoops', function() use ($whoops) {
+            $container->set('whoops', function() use ($whoops) {
                     return $whoops;
                 });
         }

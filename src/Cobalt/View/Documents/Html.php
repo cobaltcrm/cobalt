@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\Documents;
 
-use Cobalt\Container;
+use Cobalt\Factory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DocumentHelper;
@@ -35,8 +35,7 @@ class Html extends AbstractHtmlView
         $state = $model->getState();
 
         //add js
-	    /** @var \Cobalt\Application $app */
-	    $app = Container::fetch('app');
+	    $app = Factory::getApplication();
         $document = $app->getDocument();
         $document->addScript( $app->get('uri.media.full').'js/document_manager.js' );
 

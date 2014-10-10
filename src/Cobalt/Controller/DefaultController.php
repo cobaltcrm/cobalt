@@ -100,14 +100,4 @@ class DefaultController extends AbstractController
         $headers = apache_request_headers();
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || (isset($headers['X-Requested-With']) && strtolower($headers['X-Requested-With']) === 'xmlhttprequest');
     }
-
-    /**
-     * Return Application
-     *
-     * @return AbstractApplication|mixed
-     */
-    public function getApplication()
-    {
-        return $this->container->fetch('app');
-    }
 }

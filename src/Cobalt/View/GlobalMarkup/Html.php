@@ -11,8 +11,7 @@
 namespace Cobalt\View\GlobalMarkup;
 
 use Joomla\View\AbstractHtmlView;
-use JUri;
-use JFactory;
+use Cobalt\Factory;
 use Cobalt\Helper\TemplateHelper;
 
 // no direct access
@@ -24,13 +23,13 @@ class Html extends AbstractHtmlView
     public function render()
     {
         //app
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         //document
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
 
         //javascripts
         if ($this->getLayout()=='header') {
-            $document->addScriptDeclaration('var base_url = "'.JURI::base().'";');
+            $document->addScriptDeclaration('var base_url = "'.$app->get('uri.base.full').'";');
         }
 
         //mobile detection

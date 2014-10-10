@@ -1,5 +1,5 @@
 <?php
-	$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+	$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
     $person = $this->person;
     $k = isset($this->k) ? $this->k : 0;
     //assign null data

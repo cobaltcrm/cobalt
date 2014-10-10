@@ -10,6 +10,7 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
 use Cobalt\Model\Stats as StatsModel;
 
 // no direct access
@@ -70,7 +71,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $mailer->isHTML(true);
         $mailer->Encoding = 'base64';
 
-        $config = Container::fetch('config');
+        $config = Factory::getApplication()->getContainer()->get('config');
         $sender = array(
                     $config->get( 'mailfrom' ),
                        $config->get( 'fromname' )

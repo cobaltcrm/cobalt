@@ -2,6 +2,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined('_CEXEC') or die('Restricted access');
 
@@ -10,7 +12,7 @@ class ViewHelper
     public static function getView($viewName, $layoutName='default', $viewFormat='html', $vars=null)
     {
         // Get the application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $document = $app->getDocument();
         $app->input->set('view', $viewName);
@@ -56,6 +58,6 @@ class ViewHelper
     {
         $fqcn = 'Cobalt\\Model\\' . $modelName;
 
-        return \Cobalt\Container::getInstance()->buildObject($fqcn);
+        return Factory::getApplication()->getContainer()->buildObject($fqcn);
     }
 }

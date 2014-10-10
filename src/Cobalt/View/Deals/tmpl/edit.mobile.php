@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $deal = $this->deal;
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 ?>
 <h1><?php echo ucwords($deal->header); ?></h1>
 <form id="deal_form" method="post" name="new_deal" action="<?php echo RouteHelper::_('index.php?task=save&model=deal&return=deals'); ?>" target="hidden" onsubmit="save()">

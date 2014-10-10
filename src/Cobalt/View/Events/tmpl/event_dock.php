@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 
 ?>
 <form action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>" class="print_form">

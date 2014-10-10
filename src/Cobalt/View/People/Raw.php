@@ -11,7 +11,7 @@
 namespace Cobalt\View\People;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
+use Cobalt\Factory;
 use Cobalt\Model\People as PeopleModel;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Helper\ViewHelper;
@@ -22,8 +22,8 @@ class Raw extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
-        $document = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $document = $app->getDocument();
         $id = $app->input->get('id') ? $app->input->get('id') : null;
 
         $company_id = $app->input->get('company_id');

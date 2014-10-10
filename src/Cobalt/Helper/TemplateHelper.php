@@ -10,6 +10,7 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
 use Cobalt\Model\Menu as MenuModel;
 
 // no direct access
@@ -37,7 +38,7 @@ class TemplateHelper
                     <div id="document_preview_modal" style="display:none;"></div>
                     <?php echo TemplateHelper::getEventDialog(); ?>
                     <?php echo TemplateHelper::getAvatarDialog(); ?>
-                    <script type="text/javascript">var base_url = "<?php echo \Cobalt\Container::fetch('app')->get('uri.base.full'); ?>";</script>
+                    <script type="text/javascript">var base_url = "<?php echo Factory::getApplication()->get('uri.base.full'); ?>";</script>
                     <?php if (UsersHelper::getLoggedInUser()) : ?>
                     <script type="text/javascript">var userDateFormat = "<?php echo UsersHelper::getDateFormat(false); ?>";</script>
                     <script type="text/javascript">var user_id = "<?php echo UsersHelper::getUserId(); ?>";</script>
@@ -74,7 +75,7 @@ class TemplateHelper
 
     public static function endCompWrap()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         if (self::isMobile()) {
 
@@ -135,7 +136,7 @@ class TemplateHelper
 
     public static function loadToolbar()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 //load menu
         $menu_model = new MenuModel;
         $list = $menu_model->getMenu();
@@ -153,7 +154,7 @@ class TemplateHelper
             $list_html .= '<img id="site-logo-img" src="'.StylesHelper::getSiteLogo().'" />';
             $list_html .= '</div>';
         }
-        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.\Cobalt\Container::fetch('app')->get('uri.base.full').'">';
+        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.Factory::getApplication()->get('uri.base.full').'">';
         $list_html .= StylesHelper::getSiteName();
         $list_html .= '</a>';
         $list_html .= '</div>'; // navbar-header end
@@ -208,7 +209,7 @@ class TemplateHelper
             $list_html .= '</a>';
             $list_html .= '</li>';
         }
-        if (UsersHelper::getLoggedInUser() && !(\Cobalt\Container::fetch('app')->input->get('view')=="print"))
+        if (UsersHelper::getLoggedInUser() && !(Factory::getApplication()->input->get('view')=="print"))
         {
             $returnURL = base64_encode(RouteHelper::_('index.php?view=dashboard'));
             $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_LOGOUT').'" data-placement="bottom">';
@@ -253,7 +254,7 @@ class TemplateHelper
 
     public static function loadReportMenu()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $activeLayout = $app->input->get('layout');
 
         $layouts = array('dashboard','sales_pipeline','source_report','roi_report','deal_milestones','notes','custom_reports');
@@ -303,7 +304,7 @@ class TemplateHelper
     public static function isMobile()
     {
         return false;
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $mobile_detect = new MobileHelper();
         $mobile_auto = $mobile_detect->isMobile();
         $mobile_manual = $app->input->get('mobile');
@@ -505,7 +506,7 @@ class TemplateHelper
 
     public static function showMessages()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $document = $app->getDocument();
         $messageTypes = $app->getMessageQueue();
         $js = '';

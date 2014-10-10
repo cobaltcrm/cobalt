@@ -10,8 +10,8 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
-use Cobalt\Container;
 use Cobalt\Pagination;
 use Cobalt\Table\AbstractTable;
 use Joomla\Model\AbstractDatabaseModel;
@@ -40,12 +40,12 @@ class DefaultModel extends AbstractDatabaseModel
     {
         if (is_null($db))
         {
-            $db = Container::fetch('db');
+            $db = Factory::getDb();
         }
 
 	    parent::__construct($db);
 
-        $this->app = Container::fetch('app');
+        $this->app = Factory::getApplication();
 
         $ids = $this->app->input->get("cids", null, 'array');
 
