@@ -950,12 +950,9 @@ class Deal extends DefaultModel
                 $state->set($this->_view . '_limit', $limit);
                 $state->set($this->_view . '_limitstart', $limitStart);
             }
-
-            // Todo: should not be string
-            $query .= " LIMIT " . $limit . " OFFSET " . $limitStart;
         }
 
-        $deals = $this->db->setQuery($query)->loadObjectList();
+        $deals = $this->db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
         /**------------------------------------------
          * Generate queries to join essential data
