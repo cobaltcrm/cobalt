@@ -29,7 +29,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
-                                    <?php echo TextHelper::_('COBALT_DOCUMENT_ASSOCIATION'); ?>
+                                    <?php echo TextHelper::_('COBALT_HEADER_DOCUMENT_TYPE'); ?>
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_DOCUMENT_FILENAME'); ?>
@@ -38,7 +38,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <?php echo TextHelper::_('COBALT_DOCUMENT_OWNER'); ?>
                                 </th>
                                 <th>
-                                    <?php echo TextHelper::_('COBALT_HEADER_DOCUMENT_TYPE'); ?>
+                                    <?php echo TextHelper::_('COBALT_DOCUMENT_ASSOCIATION'); ?>
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_DOCUMENT_SIZE'); ?>
