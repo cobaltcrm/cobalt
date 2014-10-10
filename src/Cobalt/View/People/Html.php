@@ -51,16 +51,9 @@ class Html extends AbstractHtmlView
         $tag = $session->get('people_tag_filter');
         $status = $session->get('people_status_filter');
 
-        //load java
-        $document = $app->getDocument();
-        $document->addScript( $app->get('uri.media.full').'js/people_manager.js' );
-
         //get list of people
         $people = $model->getPeople();
-        $person = array();
-
-        //Pagination
-        $this->pagination = $model->getPagination();
+        $person = new \stdClass;
 
         //determine if we are editing an existing person entry
         if ($app->input->get('id'))
@@ -68,46 +61,45 @@ class Html extends AbstractHtmlView
             //grab deal object
             $person = $people[0];
 
-            if (is_null($person['id']))
+            if (is_null($person->id))
             {
                 $app->redirect(RouteHelper::_('index.php?view=people'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
 
-            $person['header'] = TextHelper::_('COBALT_EDIT') . ' ' . $person['first_name'] . ' ' . $person['last_name'];
+            $person->header = TextHelper::_('COBALT_EDIT') . ' ' . $person->first_name . ' ' . $person->last_name;
         }
         else
         {
             //else we are creating a new entry
-            $person = array();
-            $person['id'] = '';
-            $person['first_name'] = "";
-            $person['last_name'] = "";
-            $person['company_id'] = ( $app->input->get('company_id') ) ? $app->input->get('company_id') : null;
-            $person['deal_id'] = ( $app->input->get('deal_id') ) ? $app->input->get('deal_id') : null;
+            $person->id = '';
+            $person->first_name = "";
+            $person->last_name = "";
+            $person->company_id = ( $app->input->get('company_id') ) ? $app->input->get('company_id') : null;
+            $person->deal_id = ( $app->input->get('deal_id') ) ? $app->input->get('deal_id') : null;
 
             //get company name to prefill data on page and hidden fields
-            if ($person['company_id'])
+            if ($person->company_id)
             {
-                $company = CompanyHelper::getCompany($person['company_id']);
-                $person['company_name'] = $company[0]['name'];
-                $person['company_id'] = $company[0]['id'];
+                $company = CompanyHelper::getCompany($person->company_id);
+                $person->company_name = $company[0]['name'];
+                $person->company_id = $company[0]['id'];
             }
 
             //get deal name to prefill data on page and hidden fields
-            if ($person['deal_id'])
+            if ($person->deal_id)
             {
-                $deal = DealHelper::getDeal($person['deal_id']);
-                $person['deal_name'] = $deal[0]['name'];
-                $person['deal_id'] = $deal[0]['id'];
+                $deal = DealHelper::getDeal($person->deal_id);
+                $person->deal_name = $deal[0]['name'];
+                $person->deal_id = $deal[0]['id'];
             }
 
-            $person['position'] = "";
-            $person['phone'] = "";
-            $person['email'] = "";
-            $person['type'] = '';
-            $person['source_id'] = null;
-            $person['status_id'] = null;
-            $person['header'] = TextHelper::_('COBALT_PERSON_ADD');
+            $person->position = "";
+            $person->phone = "";
+            $person->email = "";
+            $person->type = '';
+            $person->source_id = null;
+            $person->status_id = null;
+            $person->header = TextHelper::_('COBALT_PERSON_ADD');
         }
 
         //get total people associated with users account
@@ -131,12 +123,14 @@ class Html extends AbstractHtmlView
             $user_info = UsersHelper::getUsers($user);
             $user_info = $user_info[0];
             $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
-        } elseif ($team)
+        }
+        elseif ($team)
         {
             $team_info = UsersHelper::getTeams($team);
             $team_info = $team_info[0];
             $user_name = $team_info['team_name'] . TextHelper::_('COBALT_TEAM_APPEND');
-        } elseif ($user == 'all')
+        }
+        elseif ($user == 'all')
         {
             $user_name = TextHelper::_('COBALT_ALL_USERS');
         }
@@ -151,7 +145,8 @@ class Html extends AbstractHtmlView
 
         //get tag filter
         $tag_list = PeopleHelper::getTagList();
-        for ( $i=0; $i<count($tag_list); $i++ )
+
+        for ($i = 0; $i < count($tag_list); $i++)
         {
             if ($tag_list[$i]['id'] == $tag AND $tag != 'any')
             {
@@ -159,6 +154,7 @@ class Html extends AbstractHtmlView
                 break;
             }
         }
+
         $tag_name = ( $tag AND $tag != 'any' ) ? $tag_name : 'all tags';
 
         //get status filter
@@ -172,6 +168,7 @@ class Html extends AbstractHtmlView
                 break;
             }
         }
+
         $status_name = ( $status AND $status != 'any' ) ? $status_name : 'any status';
 
         $dropdowns = $model->getDropdowns();
@@ -184,9 +181,9 @@ class Html extends AbstractHtmlView
             $model = new EventModel;
             $events = $model->getEvents("person", null, $app->input->get('id'));
             $this->event_dock = ViewHelper::getView('events', 'event_dock', 'phtml', array('events' => $events));
-            $this->deal_dock = ViewHelper::getView('deals', 'deal_dock', 'phtml', array('deals' => !empty($person['deals']) ? $person['deals'] : array() ));
+            $this->deal_dock = ViewHelper::getView('deals', 'deal_dock', 'phtml', array('deals' => !empty($person->deals) ? $person->deals : array() ));
 
-            $this->document_list = ViewHelper::getView('documents', 'document_row', 'phtml', array('documents' => $person['documents']));
+            $this->document_list = ViewHelper::getView('documents', 'document_row', 'phtml', array('documents' => $person->documents));
             $this->custom_fields_view = ViewHelper::getView('custom', 'default', 'phtml', array('type' => 'people', 'item' => $person));
         }
 
@@ -197,7 +194,7 @@ class Html extends AbstractHtmlView
             $this->people_list = ViewHelper::getView('people', 'list', 'phtml', array('people' => $people, 'total' => $total, 'pagination' => $pagination));
             $this->people_filter = $state->get('Deal.people_name');
             $this->dataTableColumns = $model->getDataTableColumns();
-            $document->addScriptDeclaration("
+            $app->getDocument()->addScriptDeclaration("
             var loc = 'people';
             var order_dir = '".$state->get('People.filter_order_Dir')."';
             var order_col = '".$state->get('People.filter_order')."';

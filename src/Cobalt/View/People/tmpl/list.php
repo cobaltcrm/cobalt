@@ -8,8 +8,8 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
-?>
+defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+
 <thead>
     <tr>
         <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" /></th>
@@ -28,17 +28,3 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         <th class="updated" ><?php echo TextHelper::_('COBALT_PEOPLE_UPDATED'); ?></th>
     </tr>
 </thead>
-<tbody id="list">
-<?php
-$n = count($this->people);
-$k = 0;
-for ($i=0;$i<$n;$i++) {
-    $person = $this->people[$i];
-    $k = $i%2;
-    $pView = ViewHelper::getView('people','entry','phtml');
-    $pView->person = $person;
-    $pView->k = $k;
-    echo $pView->render();
-}
-?>
-</tbody>

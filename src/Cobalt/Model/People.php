@@ -581,7 +581,7 @@ class People extends DefaultModel
 			}
 		}
 
-		$people = $db->setQuery($query, $limitStart, $limit)->loadAssocList();
+		$people = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
 		//generate query to join deals
 		if (count($people) > 0)
@@ -595,17 +595,17 @@ class People extends DefaultModel
 				{
 					/* Notes */
 					$notesModel            = new Note;
-					$people[$key]['notes'] = $notesModel->getNotes($person['id'], 'people');
+					$people[$key]->notes = $notesModel->getNotes($person->id, 'people');
 
 					/* Docs */
 					$docsModel = new Document;
-					$docsModel->set('person_id', $person['id']);
-					$people[$key]['documents'] = $docsModel->getDocuments();
+					$docsModel->set('person_id', $person->id);
+					$people[$key]->documents = $docsModel->getDocuments();
 
 					/* Tweets */
-					if ($person['twitter_user'] != "" && $person['twitter_user'] != " ")
+					if ($person->twitter_user != "" && $person->twitter_user != " ")
 					{
-						$people[$key]['tweets'] = TweetsHelper::getTweets($person['twitter_user']);
+						$people[$key]->tweets = TweetsHelper::getTweets($person->twitter_user);
 					}
 				}
 			}
