@@ -143,10 +143,6 @@ class Html extends AbstractHtmlView
                 $this->selected_columns = CompanyHelper::getSelectedColumnFilters();
 
                 $company_list = ViewHelper::getView('companies', 'list', 'html', array('companies' => $companies));
-                $total = $model->getTotal();
-                $pagination = $model->getPagination();
-                $company_list->total = $total;
-                $company_list->pagination = $pagination;
                 $this->company_list = $company_list;
                 $company_name = $state->get('Company.companies_name');
                 $this->company_filter = $company_name;
