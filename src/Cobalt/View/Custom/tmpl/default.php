@@ -57,7 +57,7 @@ if (count($custom) > 0)
             <span class="editable parent" id="editable_custom_<?php echo $value['id']; ?>_container">
                 <div class="list-inline" id="editable_custom_<?php echo $value['id']; ?>">
                     <a href="#" data-toggle="popover" data-title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.$value['name']; ?>"  data-html='true'  data-content-class="currency-form_<?php echo $value['id']; ?>">
-                        <span id="custom_<?php echo $value['id']; ?>_<?php echo $deal->id; ?>"><?php echo $custom_field_filter; ?></span>
+                        <span id="custom_<?php echo $value['id']; ?>_<?php echo $this->item->id; ?>"><?php echo $custom_field_filter; ?></span>
                     </a>
                 </div>
             </span>
@@ -109,14 +109,15 @@ if (count($custom) > 0)
             <?php break;
 
             case "date": ?>
-            <!-- make this a custom date picker -->
-                <form name="custom_<?php echo $value['id'];?>_form" id="custom_<?php echo $value['id']; ?>_form">
-                    <div class="input-append">
-                        <input class="input-small inputbox-hidden date_input editable-modal-datepicker" id="custom_<?php echo $value['id']; ?>" name="custom_<?php echo $value['id']; ?>_hidden" type="text" placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>"  value="<?php echo $custom_field_filter; ?>"  />
-                        <input type="hidden" id="custom_<?php echo $value['id']; ?>_hidden" name="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>"  />
-                        <span class="input-append-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    </div>
-                </form>
+
+            <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" role="form" class="inline-form" id="custom_<?php echo $value['id']; ?>_form" onsubmit="return Cobalt.sumbitForm(this)">
+                <input type="text" class="input-invisible editable-modal-datepicker input-small form-control date_input" name="custom_<?php echo $value['id']; ?>_hidden" id="custom_<?php echo $value['id']; ?>" value="<?php echo DateHelper::formatDate($custom_field_filter); ?>" />
+                <input type="hidden" name="custom_<?php echo $value['id']; ?>" id="custom_<?php echo $value['id']; ?>_hidden" value="<?php echo $custom_field_filter; ?>" />
+                <input type="hidden" name="task" value="save" />
+                <input type="hidden" name="model" value="<?php echo $this->type; ?>" />
+                <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+            </form>
+
             <?php break; ?>
 
         <?php }
