@@ -18,13 +18,13 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
 
 <script type="text/javascript">
     var loc = "company";
-    var id = <?php echo $company['id']; ?>;
-    var company_id = <?php echo $company['id']; ?>;
+    var id = <?php echo $company->id; ?>;
+    var company_id = <?php echo $company->id; ?>;
     var association_type = 'company';
 </script>
 
 <!-- COMPANY EDIT MODAL -->
-<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company['id']; ?>" class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-remote="index.php?view=companies&layout=edit&format=raw&tmpl=component&id=<?php echo $company->id; ?>" class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,36 +58,36 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
                 <ul class="dropdown-menu">
                     <li><a href="javascript:void(0);" role="button" data-target="#companyModal" data-toggle="modal"><?php echo TextHelper::_('COBALT_EDIT_BUTTON'); ?></a></li>
                     <?php if ( UsersHelper::isAdmin() ) { ?>
-                        <li><a href="index.php?task=trash&item_id=<?php echo $company['id']; ?>&item_type=companies&page_redirect=companies" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a></li>
+                        <li><a href="index.php?task=trash&item_id=<?php echo $company->id; ?>&item_type=companies&page_redirect=companies" onclick="deleteProfileItem(this)"><?php echo TextHelper::_('COBALT_DELETE'); ?></a></li>
                     <?php } ?>
                     <li>
-                        <a href="index.php?view=printFriendly&item_id=<?php echo $company['id']; ?>&layout=company&model=company" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
+                        <a href="index.php?view=printFriendly&item_id=<?php echo $company->id; ?>&layout=company&model=company" target="_blank"><?php echo TextHelper::_('COBALT_PRINT'); ?></a>
                     </li>
                 </ul>
             </div>
 
             <!-- HEADER -->
-            <h1><?php echo $company['name']; ?></h1>
+            <h1><?php echo $company->name; ?></h1>
         </div>
 
         <div class="row-fluid">
             <div class="col-md-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_TOTAL_PIPELINE')); ?>:
-                    <span class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['pipeline']; ?></span></td>
+                    <span class="amount"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company->pipeline; ?></span></td>
             </div>
             <div class="col-md-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_DEALS')); ?>:
-                    <span class="text-success"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company['won_deals']; ?></span>
+                    <span class="text-success"><?php echo ConfigHelper::getCurrency(); ?><?php echo $company->won_deals; ?></span>
             </div>
 
             <div class="col-md-4 well well-small">
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANY_CONTACTED')); ?>:
-                    <?php echo DateHelper::formatDate($company['modified']); ?>
+                    <?php echo DateHelper::formatDate($company->modified); ?>
             </div>
         </div>
 
         <!-- NOTES -->
-        <?php echo $company['notes']->render(); ?>
+        <?php echo $company->notes->render(); ?>
 
         <!-- CUSTOM FIELDS -->
         <h3><?php echo TextHelper::_('COBALT_EDIT_CUSTOM'); ?></h3>
@@ -127,7 +127,7 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
 
 
 
-                <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
+                <input type="hidden" name="association_id" value="<?php echo $company->id; ?>" />
                 <input type="hidden" name="association_type" value="company">
                 <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
             </form>
@@ -151,58 +151,58 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
             <h3><?php echo ucwords(TextHelper::_('COBALT_COMPANY_DETAILS')); ?></h3>
             <div class="media">
                 <span class="pull-left">
-                    <?php if ( array_key_exists('avatar',$company) && $company['avatar'] != "" && $company['avatar'] != null ) {
-                             echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.$mediaURI.'avatars/'.$company['avatar'].'"/>';
+                    <?php if (isset($company->avatar) && $company->avatar) {
+                             echo '<img id="avatar_img_'.$company->id.'" data-item-type="companies" data-item-id="'.$company->id.'" class="media-object avatar" src="'.$mediaURI.'avatars/'.$company->avatar.'"/>';
                         } else {
-                            echo '<img id="avatar_img_'.$company['id'].'" data-item-type="companies" data-item-id="'.$company['id'].'" class="media-object avatar" src="'.$mediaURI.'images/company.png'.'"/>';
+                            echo '<img id="avatar_img_'.$company->id.'" data-item-type="companies" data-item-id="'.$company->id.'" class="media-object avatar" src="'.$mediaURI.'images/company.png'.'"/>';
                         } ?>
                 </span>
                 <div class="media-body">
-                    <?php if ( array_key_exists('address_1',$company) && $company['address_1'] != "" ) { ?>
-                        <?php $urlString = "http://maps.googleapis.com/maps/api/staticmap?&zoom=13&zoom=2&size=600x400&sensor=false&center=".str_replace(" ","+",$company['address_1'].' '.$company['address_2'].' '.$company['address_city'].' '.$company['address_state'].' '.$company['address_zip'].' '.$company['address_country']); ?>
+                    <?php if ( isset($company->address_1) && $company->address_1) { ?>
+                        <?php $urlString = "http://maps.googleapis.com/maps/api/staticmap?&zoom=13&zoom=2&size=600x400&sensor=false&center=".str_replace(" ","+",$company->address_1.' '.$company->address_2.' '.$company->address_city.' '.$company->address_state.' '.$company->address_zip.' '.$company->address_country); ?>
                         <a href="javascript:void(0);" class="google-map" id="work_address"></a>
                         <div id="work_address_modal" style="display:none;">
                             <div class="google_map_center"></div>
                             <img class="google-image-modal"  style="background-image:url(<?php echo $urlString; ?>);" />
                         </div>
-                        <?php echo $company['address_1']; ?><br />
-                        <?php if ( array_key_exists('address_2',$company) && $company['address_2'] != "" ) {
-                            echo $company['address_2'].'<br />';
+                        <?php echo $company->address_1; ?><br />
+                        <?php if ( isset($company->address_2) && $company->address_2 != "" ) {
+                            echo $company->address_2.'<br />';
                         } ?>
-                        <?php echo $company['address_city'].', '.$company['address_state']." ".$company['address_zip']; ?><br />
-                        <?php echo $company['address_country']; ?>
+                        <?php echo $company->address_city.', '.$company->address_state." ".$company->address_zip; ?><br />
+                        <?php echo $company->address_country; ?>
                     <?php } ?>
-            <?php if ( array_key_exists('phone',$company) && $company['phone']!="") { ?>
+            <?php if ( isset($company->phone) && $company->phone) { ?>
                     <b><?php echo ucwords(TextHelper::_('COBALT_COMPANY_PHONE')); ?></b>
                     <div class="infoDetails">
-                        <?php echo $company['phone']; ?>
+                        <?php echo $company->phone; ?>
                     </div>
             <?php } ?>
-            <?php if ( array_key_exists('fax',$company) && $company['fax']!="" ) { ?>
+            <?php if ( isset($company->fax) && $company->fax) { ?>
                     <b><?php echo ucwords(TextHelper::_('COBALT_COMPANY_FAX')); ?></b>
                     <div class="infoDetails">
-                        <?php echo $company['fax']; ?>
+                        <?php echo $company->fax; ?>
                     </div>
             <?php } ?>
-            <?php if ( array_key_exists('website',$company) && $company['website']!="") { ?>
+            <?php if ( isset($company->website) && $company->website) { ?>
                     <b><?php echo ucwords(TextHelper::_('COBALT_COMPANY_WEBSITE')); ?></b>
                     <div class="infoDetails">
-                        <a target="_blank" href="<?php echo $company['website']; ?>"><?php echo $company['website']; ?></a>
+                        <a target="_blank" href="<?php echo $company->website; ?>"><?php echo $company->website; ?></a>
                     </div>
             <?php } ?>
-            <?php if ( array_key_exists('email',$company) && $company['email']!="") { ?>
+            <?php if ( isset($company->email) && $company->email) { ?>
                     <b><?php echo ucwords(TextHelper::_('COBALT_COMPANY_EMAIL')); ?></b>
                     <div class="infoDetails">
-                        <a href="mailto:<?php echo $company['email']; ?>"><?php echo $company['email']; ?></a>
+                        <a href="mailto:<?php echo $company->email; ?>"><?php echo $company->email; ?></a>
                     </div>
             <?php } ?>
                 </div>
             </div>
-            <?php if ( array_key_exists('description',$company) && $company['description']!="" ) { ?>
+            <?php if ( isset($company->description) && $company->description) { ?>
                 <hr />
                 <div class="infoLabel"></div>
                 <div class="infoDetails">
-                    <?php echo nl2br($company['description']); ?>
+                    <?php echo nl2br($company->description); ?>
                 </div>
             <?php } ?>
             <hr />
@@ -211,49 +211,49 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
             <div class="text-center">
 
                 <!-- FACEBOOK -->
-                <?php if (array_key_exists('facebook_url',$company) && $company['facebook_url'] != "") { ?>
-                    <a href="<?php echo $company['facebook_url']; ?>" target="_blank"><div class="facebook_light"></div></a>
+                <?php if (isset($company->facebook_url) && $company->facebook_url) { ?>
+                    <a href="<?php echo $company->facebook_url; ?>" target="_blank"><div class="facebook_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="facebook_form_<?php echo $company['id']; ?>">
-                    <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
+                    <a data-html="true" data-content='<div class="input-append"><form id="facebook_form_<?php echo $company->id; ?>">
+                    <input type="hidden" name="item_id" value="<?php echo $company->id; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="facebook_url" value="<?php if ( array_key_exists('facebook',$company) )  echo $company['facebook_url']; ?>" />
+                    <input type="text" class="form-control input-small" name="facebook_url" value="<?php if ( isset($company->facebook_url) )  echo $company->facebook_url; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_FACEBOOK_URL'); ?>" href="javascript:void(0);"><div class="facebook_dark"></div></a>
                 <?php } ?>
 
                 <!-- TWITTER -->
-                <?php if (array_key_exists('twitter_user',$company) && $company['twitter_user'] != "") { ?>
-                    <a href="http://www.twitter.com/#!/<?php echo $company['twitter_user']; ?>" target="_blank"><div class="twitter_light"></div></a>
+                <?php if (isset($company->twitter_user) && $company->twitter_user) { ?>
+                    <a href="http://www.twitter.com/#!/<?php echo $company->twitter_user; ?>" target="_blank"><div class="twitter_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="twitter_form_<?php echo $company['id']; ?>">
-                    <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
+                    <a data-html="true" data-content='<div class="input-append"><form id="twitter_form_<?php echo $company->id; ?>">
+                    <input type="hidden" name="item_id" value="<?php echo $company->id; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="twitter_user" value="<?php if ( array_key_exists('twitter_user',$company) )  echo $company['twitter_user']; ?>" />
+                    <input type="text" class="form-control input-small" name="twitter_user" value="<?php if ( isset($company->twitter_user) )  echo $company->twitter_user; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_TWITTER_USER'); ?>" href="javascript:void(0);"><div class="twitter_dark"></div></a>
                 <?php } ?>
 
                 <!-- YOUTUBE -->
-                <?php if (array_key_exists('youtube_url',$company) && $company['youtube_url'] != "" ) { ?>
-                    <a href="<?php echo $company['youtube_url']; ?>" target="_blank"><div class="youtube_light"></div></a>
+                <?php if (isset($company->youtube_url) && $company->youtube_url) { ?>
+                    <a href="<?php echo $company->youtube_url; ?>" target="_blank"><div class="youtube_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="youtube_form_<?php echo $company['id']; ?>">
-                    <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
+                    <a data-html="true" data-content='<div class="input-append"><form id="youtube_form_<?php echo $company->id; ?>">
+                    <input type="hidden" name="item_id" value="<?php echo $company->id; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="youtube_url" value="<?php if ( array_key_exists('youtube_url',$company) )  echo $company['youtube_url']; ?>" />
+                    <input type="text" class="form-control input-small" name="youtube_url" value="<?php if ( isset($company->youtube_url) )  echo $company->youtube_url; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_YOUTUBE_URL'); ?>" href="javascript:void(0);"><div class="youtube_dark"></div></a>
                 <?php } ?>
 
                 <!-- FLICKR -->
-                <?php if (array_key_exists('flickr_url',$company) && $company['flickr_url'] != "" ) { ?>
-                    <a href="<?php echo $company['flickr_url']; ?>" target="_blank"><div class="flickr_light"></div></a>
+                <?php if (isset($company->flickr_url) && $company->flickr_url) { ?>
+                    <a href="<?php echo $company->flickr_url; ?>" target="_blank"><div class="flickr_light"></div></a>
                 <?php } else { ?>
-                    <a data-html="true" data-content='<div class="input-append"><form id="flickr_form_<?php echo $company['id']; ?>">
-                    <input type="hidden" name="item_id" value="<?php echo $company['id']; ?>" />
+                    <a data-html="true" data-content='<div class="input-append"><form id="flickr_form_<?php echo $company->id; ?>">
+                    <input type="hidden" name="item_id" value="<?php echo $company->id; ?>" />
                     <input type="hidden" name="item_type" value="people" />
-                    <input type="text" class="form-control input-small" name="flickr_url" value="<?php if ( array_key_exists('flickr_url',$company) )  echo $company['flickr_url']; ?>" />
+                    <input type="text" class="form-control input-small" name="flickr_url" value="<?php if ( isset($company->flickr_url) )  echo $company->flickr_url; ?>" />
                     <a href="javascript:void(0);" class="btn button" onclick="Cobalt.saveEditableModal(this);" ><?php echo TextHelper::_('COBALT_SAVE'); ?></a>
                     </form></div>' rel="popover" title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.TextHelper::_('COBALT_FLICKR_URL'); ?>" href="javascript:void(0);"><div class="flickr_dark"></div></a>
                 <?php } ?>
@@ -263,11 +263,11 @@ $mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
         </div>
 
         <!-- TWEETS -->
-        <?php if ($company['twitter_user']) { ?>
+        <?php if ($company->twitter_user) { ?>
             <div class="widget">
                 <h2><?php echo TextHelper::_('COBALT_LATEST_TWEETS'); ?></h2>
-                <?php if ( array_key_exists('tweets',$company) ){ for($i=0; $i<count($company['tweets']); $i++) {
-                    $tweet = $company['tweets'][$i];
+                <?php if ( isset($company->tweets) ){ for ($i = 0; $i < count($company->tweets); $i++) {
+                    $tweet = $company->tweets[$i];
                 ?>
                 <div class="tweet">
                     <span class="tweet_date"><?php echo $tweet['date']; ?></span>

@@ -296,70 +296,80 @@ class Company extends DefaultModel
          * Set query limits and load results
          */
 
-        if (!TemplateHelper::isMobile()) {
+        if (!TemplateHelper::isMobile())
+        {
             $limit = $this->getState($this->_view.'_limit');
             $limitStart = $this->getState($this->_view.'_limitstart');
-            if (!$this->_id && $limit != 0) {
-                if ( $limitStart >= $this->getTotal() ) {
+
+            if (!$this->_id && $limit != 0)
+            {
+                if ($limitStart >= $this->getTotal())
+                {
                     $limitStart = 0;
                     $limit = 10;
                     $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
                     $this->state->set($this->_view.'_limit', $limit);
                     $this->state->set($this->_view.'_limitstart', $limitStart);
                 }
-                $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
             }
         }
 
         //run query and grab results of companies
-        $companies = $this->db->setQuery($query)->loadAssocList();
+        $companies = $this->db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
         //generate query to join people
-        if ( count($companies) ) {
+        if (count($companies))
+        {
             $export = $app->input->get('export');
 
-            if (!$export) {
-
-                foreach ($companies as $key => $company) {
-
+            if (!$export)
+            {
+                foreach ($companies as $key => $company)
+                {
                     /* Tweets */
-                    if ($company['twitter_user']!="" && $company['twitter_user']!=" ") {
-                        $companies[$key]['tweets'] = TweetsHelper::getTweets($company['twitter_user']);
+                    if ($company->twitter_user != "" && $company->twitter_user != " ")
+                    {
+                        $companies[$key]->tweets = TweetsHelper::getTweets($company->twitter_user);
                     }
 
                     //generate people query
                     $peopleModel = new People;
-                    $peopleModel->set('company_id',$company['id']);
-                    $companies[$key]['people'] = $peopleModel->getContacts();
+                    $peopleModel->set('company_id', $company->id);
+                    $companies[$key]->people = $peopleModel->getContacts();
 
                     //generate deal query
                     $dealModel = new Deal;
-                    $dealModel->set('company_id',$company['id']);
+                    $dealModel->set('company_id', $company->id);
                     $deals = $dealModel->getDeals();
-                    $companies[$key]['pipeline'] = 0;
-                    $companies[$key]['won_deals'] = 0;
-                    for ($i=0;$i<count($deals);$i++) {
+                    $companies[$key]->pipeline = 0;
+                    $companies[$key]->won_deals = 0;
+
+                    for ($i = 0; $i < count($deals); $i++)
+                    {
                         $deal = $deals[$i];
-                        $companies[$key]['pipeline'] += $deal->amount;
-                        if ($deal->percent==100) {
-                            $companies[$key]['won_deals'] += $deal->amount;
+                        $companies[$key]->pipeline += $deal->amount;
+
+                        if ($deal->percent == 100)
+                        {
+                            $companies[$key]->won_deals += $deal->amount;
                         }
                     }
-                    $companies[$key]['deals'] = $deals;
+
+                    $companies[$key]->deals = $deals;
 
                     //Get Associated Notes
                     $notesModel = new Note;
-                    $companies[$key]['notes'] = $notesModel->getNotes($company['id'],'company');
+                    $companies[$key]->notes = $notesModel->getNotes($company->id, 'company');
 
                     // Get Associated Documents
                     $documentModel = new Document;
-                    $documentModel->set('company_id',$company['id']);
-                    $companies[$key]['documents']  = $documentModel->getDocuments();
+                    $documentModel->set('company_id', $company->id);
+                    $companies[$key]->documents  = $documentModel->getDocuments();
 
-                    $companies[$key]['address_formatted'] = ( strlen($company['address_1']) > 0 ) ? $company['address_1'].
-                                                             $company['address_2'].", ".
-                                                             $company['address_city'].' '.$company['address_state'].', '.$company['address_zip'].
-                                                             ' '.$company['address_country'] : "";
+                    $companies[$key]->address_formatted = ( strlen($company->address_1) > 0 ) ? $company->address_1.
+                         $company->address_2.", ".
+                         $company->address_city.' '.$company->address_state.', '.$company->address_zip.
+                         ' '.$company->address_country : "";
                 }
 
             }

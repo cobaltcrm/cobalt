@@ -29,8 +29,10 @@ class Html extends AbstractHtmlView
     public function render()
     {
         $app = \Cobalt\Container::fetch('app');
-        $app->input->set('view','companies');
-        $app->input->set('layout',$app->input->get('layout','default'));
+        $app->input->set('view', 'companies');
+        $app->input->set('layout', $app->input->get('layout','default'));
+
+        $id = $app->input->getInt('id', $app->input->getInt('company_id'));
 
         //get model
         $model = new CompanyModel;
@@ -51,14 +53,20 @@ class Html extends AbstractHtmlView
 
         //determine if we are requesting a specific company or all companies
         //if id requested
-        if ( $app->input->get('id') ) {
-            $companies = $model->getCompanies($app->input->get('id'));
-            if ( is_null($companies[0]['id']) ) {
-                $app->redirect(RouteHelper::_('index.php?view=companies'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
+        if ($id)
+        {
+            $companies = $model->getCompanies($id);
+
+            if (is_null($companies[0]->id))
+            {
+                $app->redirect(RouteHelper::_('index.php?view=companies'), TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
-        } else {
+        }
+        else
+        {
             //else load all companies
-            if ( $app->input->get('layout') != 'edit' ) {
+            if ($app->input->get('layout') != 'edit')
+            {
                 $companies = $model->getCompanies();
             }
         }
@@ -72,17 +80,24 @@ class Html extends AbstractHtmlView
         $company_type = ( $company ) ? $company_types[$company] : $company_types['all'];
 
         //get user filter
-        if ($user AND $user != $user_id AND $user != 'all') {
+        if ($user AND $user != $user_id AND $user != 'all')
+        {
             $user_info = UsersHelper::getUsers($user);
             $user_info = $user_info[0];
             $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
-        } elseif ($team) {
+        }
+        elseif ($team)
+        {
             $team_info = UsersHelper::getTeams($team);
             $team_info = $team_info[0];
             $user_name = $team_info['team_name'].TextHelper::_('COBALT_TEAM_APPEND');
-        } elseif ($user == 'all' || $user == "") {
+        }
+        elseif ($user == 'all' || $user == "")
+        {
             $user_name = TextHelper::_('COBALT_ALL_USERS');
-        } else {
+        }
+        else
+        {
             $user_name = TextHelper::_('COBALT_ME');
         }
 
@@ -91,29 +106,30 @@ class Html extends AbstractHtmlView
         $users = UsersHelper::getUsers();
 
         //get total associated companies for count display
-        $company_count = UsersHelper::getCompanyCount($user_id,$team_id,$member_role);
+        $company_count = UsersHelper::getCompanyCount($user_id, $team_id, $member_role);
 
         //Load Events & Tasks for person
         $layout = $app->input->get('layout');
 
-        switch ($layout) {
+        switch ($layout)
+        {
             case 'company':
 
                 $model = new EventModel;
-                $events = $model->getEvents("company",null,$app->input->get('id'));
+                $events = $model->getEvents("company", null, $app->input->get('id'));
 
-                $this->event_dock = ViewHelper::getView('events','event_dock', 'phtml',array('events'=>$events));
-                $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml',array('deals'=>$companies[0]['deals']));
-                $this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$companies[0]['documents']));
-                $this->people_dock = ViewHelper::getView('people','people_dock','html',array('people'=>$companies[0]['people']));
+                $this->event_dock = ViewHelper::getView('events', 'event_dock', 'phtml', array('events' => $events));
+                $this->deal_dock = ViewHelper::getView('deals', 'deal_dock', 'phtml', array('deals' => $companies[0]->deals));
+                $this->document_list = ViewHelper::getView('documents', 'document_row', 'phtml', array('documents' => $companies[0]->documents));
+                $this->people_dock = ViewHelper::getView('people', 'people_dock', 'html', array('people' => $companies[0]->people));
 
-                $custom_fields_view = ViewHelper::getView('custom','default','html');
-                $type = "company";
-                $custom_fields_view->type = $type;
+                $custom_fields_view = ViewHelper::getView('custom', 'default', 'html');
+                $custom_fields_view->type = 'company';
                 $custom_fields_view->item = $companies[0];
                 $this->custom_fields_view = $custom_fields_view;
 
-                if ( TemplateHelper::isMobile() ) {
+                if (TemplateHelper::isMobile())
+                {
                     $add_note = ViewHelper::getView('note','edit','html');
                     $this->add_note = $add_note;
                 }
@@ -126,7 +142,7 @@ class Html extends AbstractHtmlView
                 $this->column_filters = CompanyHelper::getColumnFilters();
                 $this->selected_columns = CompanyHelper::getSelectedColumnFilters();
 
-                $company_list = ViewHelper::getView('companies','list','html',array('companies'=>$companies));
+                $company_list = ViewHelper::getView('companies', 'list', 'html', array('companies' => $companies));
                 $total = $model->getTotal();
                 $pagination = $model->getPagination();
                 $company_list->total = $total;
