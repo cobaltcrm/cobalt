@@ -47,7 +47,7 @@ final class Application extends AbstractWebApplication
 	 * @var    Container
 	 * @since  1.0
 	 */
-	private $container;
+	private static $container;
 
 	/**
 	 * A session object.
@@ -165,19 +165,31 @@ final class Application extends AbstractWebApplication
 	}
 
 	/**
-	 * Get the DI container.
+	 * Get the DI container
 	 *
 	 * @return  Container
 	 *
 	 * @since   1.0
-	 *
 	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
 	 */
 	public function getContainer()
 	{
-		if ($this->container)
+		return static::getDIContainer();
+	}
+
+	/**
+	 * Get the DI container
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
+	 */
+	public static function getDIContainer()
+	{
+		if (static::$container)
 		{
-			return $this->container;
+			return static::$container;
 		}
 
 		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
