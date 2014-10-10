@@ -57,7 +57,7 @@ if (count($custom) > 0)
             <span class="editable parent" id="editable_custom_<?php echo $value['id']; ?>_container">
                 <div class="list-inline" id="editable_custom_<?php echo $value['id']; ?>">
                     <a href="#" data-toggle="popover" data-title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.$value['name']; ?>"  data-html='true'  data-content-class="currency-form_<?php echo $value['id']; ?>">
-                        <?php echo $custom_field_filter; ?>
+                        <span id="custom_<?php echo $value['id']; ?>_<?php echo $deal->id; ?>"><?php echo $custom_field_filter; ?></span>
                     </a>
                 </div>
             </span>
@@ -85,12 +85,14 @@ if (count($custom) > 0)
 
             case "picklist": ?>
 
-            <div class='dropdown'>
-                <a href='javascript:void(0);' class='dropdown-toggle update-toggle-html' role='button' data-toggle='dropdown' id='custom_<?php echo $value['id']; ?>_field_link'><?php echo $custom_field_filter; ?></a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle update-toggle-html" role="button" data-toggle="dropdown" id='custom_<?php echo $value['id']; ?>_field_link'>
+                    <?php echo $custom_field_filter; ?>
+                </a>
                 <ul class="dropdown-menu" role="menu">
                 <?php if ( is_array($value) && array_key_exists('values',$value) && count($value['values']) > 0 ){ foreach ($value['values'] as $id => $name) { ?>
                     <li>
-                        <a href="javascript:void(0)" class="dropdown_item" data-field="custom_<?php echo $value['id']; ?>" data-item="<?php echo $this->type; ?>" data-item-id="<?php echo $this->item['id']; ?>" data-value="<?php echo $id; ?>">
+                        <a href="#" class="dropdown_item" data-field="custom_<?php echo $value['id']; ?>" data-item="<?php echo $this->type; ?>" data-item-id="<?php echo $this->item->id; ?>" data-value="<?php echo $id; ?>">
                             <?php echo $name; ?>
                         </a>
                     </li>
@@ -102,7 +104,7 @@ if (count($custom) > 0)
 
             case "forecast": ?>
             <span id="custom_<?php echo $value['id']; ?>" value="<?php echo $custom_field_filter; ?>" class="forecast">
-                <?php echo ConfigHelper::getCurrency().$custom_field_filter; ?>
+                <?php echo TextHelper::price($custom_field_filter); ?>
             </span>
             <?php break;
 
