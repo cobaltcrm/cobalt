@@ -46,7 +46,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <?php $k = $i%2; ?>
                                 <tr class="cobalt_row_'<?php echo $k; ?>">
                                     <td>
-                                        <a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id=' . $deal->id); ?>">
+                                        <a href="<?php echo LinkHelper::viewDeal($deal->id); ?>">
                                             <?php echo $deal->name; ?>
                                         </a>
                                     </td>

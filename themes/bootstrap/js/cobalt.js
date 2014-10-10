@@ -731,49 +731,18 @@ var Cobalt = {
                 inGraphDataFontSize : 14
             };
 
-            var dealsByStagePie = document.getElementById("dealsByStagePie").getContext("2d");
-            new Chart(dealsByStagePie).Pie(graphData.deal_stage, PieOptions);
-
-            var dealsByStatusPie = document.getElementById("dealsByStatusPie").getContext("2d");
-            new Chart(dealsByStatusPie).Pie(graphData.deal_status, PieOptions);
-
-            var BarOptions = {barShowStroke: false};
-
-            var monthlyRevenue = document.getElementById("monthlyRevenue").getContext("2d");
-            new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
+            CobaltChart.showChart('dealsByStagePie', graphData.deal_stage,'pie');
+            CobaltChart.showChart('dealsByStatusPie', graphData.deal_status,'pie');
+            CobaltChart.showChart('monthlyRevenue',graphData.monthly_revenue,'bar')
 
         }
         if (typeof loc !== 'undefined' && loc === 'report_dashboard') {
-            var PieOptions = {
-                inGraphDataShow : true,
-                inGraphDataAnglePosition : 2,
-                inGraphDataRadiusPosition: 2,
-                inGraphDataRotate : "inRadiusAxisRotateLabels",
-                inGraphDataAlign : "center",
-                inGraphDataVAlign : "middle",
-                inGraphDataFontColor : "white",
-                inGraphDataFontSize : 14
-            };
-            var BarOptions = {barShowStroke: false};
-            var LineOptions = {};
-
-            var dealsByStagePie = document.getElementById("deal_stage").getContext("2d");
-            new Chart(dealsByStagePie).Pie(graphData.deal_stage, PieOptions);
-
-            var dealsByStatusPie = document.getElementById("deal_status").getContext("2d");
-            new Chart(dealsByStatusPie).Pie(graphData.deal_status, PieOptions);
-
-            //var yearlyCommissions = document.getElementById("yearly_commissions").getContext("2d");
-            //new Chart(yearlyCommissions).Line(graphData.yearly_commissions, LineOptions);
-
-            //var yearlyRevenue = document.getElementById("yearly_revenue").getContext("2d");
-            //new Chart(yearlyRevenue).Line(graphData.yearly_revenue, BarOptions);
-
-            var monthlyRevenue = document.getElementById("monthly_revenue").getContext("2d");
-            new Chart(monthlyRevenue).Bar(graphData.monthly_revenue, BarOptions);
-
-            //var monthlyCommissions = document.getElementById("monthly_commissions").getContext("2d");
-            //new Chart(monthlyCommissions).Bar(graphData.monthly_commissions, BarOptions);
+            CobaltChart.showChart('deal_stage',graphData.deal_stage,'pie');
+            CobaltChart.showChart('deal_status',graphData.deal_status,'pie');
+            CobaltChart.showChart('yearly_commissions',graphData.yearly_commissions,'bar');
+            CobaltChart.showChart('yearly_revenue',graphData.yearly_revenue,'bar');
+            CobaltChart.showChart('monthly_revenue',graphData.monthly_revenue,'bar');
+            CobaltChart.showChart('monthly_commissions',graphData.monthly_commissions,'bar');
         }
     },
 
@@ -817,7 +786,13 @@ var CobaltChart = {
             barShowStroke: false
         }
     },
+
     showChart: function (target, graph_data, chart_type) {
+        //default chart_type is bar
+        if (typeof chart_type == 'undefined') {
+            chart_type = 'bar';
+        }
+
         switch (chart_type) {
             case 'pie':
                 new Chart(document.getElementById(target).getContext("2d")).Pie(graph_data, this.Options.Pie);
@@ -826,6 +801,36 @@ var CobaltChart = {
                 new Chart(document.getElementById(target).getContext("2d")).Bar(graph_data, this.Options.Bar);
                 break;
         }
+    },
+
+    salesDashboardFilter: function(member,team){
+        var data = null;
+        var type = null;
+        //if we are searching for a specific member
+        if ( member != null ){
+            type = 'member_'+member;
+            data = 'filter=member&id='+member;
+        }
+        //if we are searching for a specific team
+        if ( team != null ){
+            type = 'team_'+team;
+            data = 'filter=team&id='+team;
+        }
+        //if we are searching for the company
+        if ( member == null && team == null ){
+            type = 'company';
+            data = 'filter=company';
+        }
+        jQuery.ajax({
+            type	:	'post',
+            url		:	'index.php?task=graph&format=raw&tmpl=component',
+            data	:	data,
+            dataType:	'json',
+            success	:	function(data){
+                graphData = data;
+                Cobalt.displayCharts();
+            }
+        });
     }
 };
 

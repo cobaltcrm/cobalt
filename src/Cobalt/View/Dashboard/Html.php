@@ -22,6 +22,7 @@ use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\ViewHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Helper\LinkHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

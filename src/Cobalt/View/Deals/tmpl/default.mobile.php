@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     if ($i==0 || substr_compare($deal->name,$this->dealList[$i-1]['name'],0,1)) {
                         echo "<li data-role='list-divider'>".ucfirst(substr($deal->name,0,1))."</li>";
                     }
-                    echo '<li data-filtertext="'.$deal->name.'" ><a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id).'">'.$deal->name.'</a></li>';
+                    echo '<li data-filtertext="'.$deal->name.'" ><a href="'.LinkHelper::viewDeal($deal->id).'">'.$deal->name.'</a></li>';
 
                 }
         ?>

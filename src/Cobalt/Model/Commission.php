@@ -13,6 +13,7 @@ namespace Cobalt\Model;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -58,9 +59,9 @@ class Commission extends DefaultModel
             foreach ($members as $key=>$member) {
                 foreach ($member as $date_key => $data) {
                     if ( array_key_exists($date_key,$results) ) {
-                        $results[$date_key]['y'] += $data['y'];
+                        $results[$date_key] += $data;
                     } else {
-                        $results[$date_key]['y'] = $data['y'];
+                        $results[$date_key] = $data;
                     }
                 }
             }
@@ -84,7 +85,9 @@ class Commission extends DefaultModel
 
             //array to assign our data
             $members = array();
-            $results = array();
+            $data           = new \stdClass;
+            $data->labels   = array();
+            $data->datasets = array();
 
             //get team data
             if ($access_type == 'team') {
@@ -105,17 +108,25 @@ class Commission extends DefaultModel
             }
 
             //combine data
-            foreach ($members as $key=>$member) {
-                foreach ($member as $date_key=>$data) {
-                    if ( array_key_exists($date_key,$results) ) {
-                        $results[$date_key]['y'] += $data['y'];
-                    } else {
-                        $results[$date_key]['y'] = $data['y'];
+            $results = array();
+            foreach ($members as $member) {
+                foreach ($member->datasets[0]->data as $key => $value) {
+                    if (!isset($results[$key])) {
+                        $results[$key] = 0;
                     }
+                    $results[$key] += $value;
                 }
             }
 
-            return $results;
+            $data->datasets[0]                   = new \stdClass;
+            $data->datasets[0]->data             = $results;
+            $data->datasets[0]->label            = '';
+            $data->datasets[0]->fillColor        = "rgba(151,187,205,0.5)";
+            $data->datasets[0]->strokeColor      = "rgba(151,187,205,0.8)";
+            $data->datasets[0]->pointColor       = "rgba(151,187,205,0.75)";
+            $data->datasets[0]->pointStrokeColor = "rgba(151,187,205,1)";
+
+            return $data;
         }
 
     }
@@ -136,11 +147,17 @@ class Commission extends DefaultModel
         //get stage id to filter deals by
         $won_stage_ids = DealHelper::getWonStages();
 
+        $data           = new \stdClass;
+        $data->labels   = array();
+        $data->datasets = array();
+
         //gen query
         $results = array();
         foreach ($weeks as $week) {
             $start_date = $week['start_date'];
             $end_date = $week['end_date'];
+            $weekDate       = new \DateTime($start_date);
+            $data->labels[] = TextHelper::_('COBALT_WEEK') . ' ' . $weekDate->format('W');
 
             //flush query
             $query = $this->db->getQuery(true)
@@ -160,10 +177,18 @@ class Commission extends DefaultModel
         //clean data for commission rate
         foreach ($results as $key => $result) {
             $commission_rate = UsersHelper::getCommissionRate($result['owner_id']);
-            $results[$key]['y'] = (int) $result['y']*($commission_rate/100);
+            $results[$key] = (int) $result['y']*($commission_rate/100);
         }
 
-        return $results;
+        $data->datasets[0]                   = new \stdClass;
+        $data->datasets[0]->data             = $results;
+        $data->datasets[0]->label            = '';
+        $data->datasets[0]->fillColor        = "rgba(151,187,205,0.5)";
+        $data->datasets[0]->strokeColor      = "rgba(151,187,205,0.8)";
+        $data->datasets[0]->pointColor       = "rgba(151,187,205,0.75)";
+        $data->datasets[0]->pointStrokeColor = "rgba(151,187,205,1)";
+
+        return $data;
     }
 
     /**
@@ -178,6 +203,10 @@ class Commission extends DefaultModel
         $month_names = DateHelper::getMonthNames();
         $months = DateHelper::getMonthDates();
 
+        $data           = new \stdClass;
+        $data->labels   = array();
+        $data->datasets = array();
+
         //get stage id to filter deals by
         $won_stage_ids = DealHelper::getWonStages();
 
@@ -186,6 +215,8 @@ class Commission extends DefaultModel
         foreach ($months as $month) {
             $start_date = $month['date'];
             $end_date = DateHelper::formatDBDate(date('Y-m-d 00:00:00',strtotime("$start_date + 1 months")));
+            $weekDate       = new \DateTime($start_date);
+            $data->labels[] = TextHelper::_('COBALT_MONTH') . ' ' . $weekDate->format('m');
 
             //flush the query
             $query = $this->db->getQuery(true)
@@ -205,10 +236,18 @@ class Commission extends DefaultModel
         //clean data for commission rate
         foreach ($results as $key=>$result) {
             $commission_rate = UsersHelper::getCommissionRate($result['owner_id']);
-            $results[$key]['y'] = (int) $result['y']*($commission_rate/100);
+            $results[$key] = (int) $result['y']*($commission_rate/100);
         }
 
-        return $results;
+        $data->datasets[0]                   = new \stdClass;
+        $data->datasets[0]->data             = $results;
+        $data->datasets[0]->label            = '';
+        $data->datasets[0]->fillColor        = "rgba(151,187,205,0.5)";
+        $data->datasets[0]->strokeColor      = "rgba(151,187,205,0.8)";
+        $data->datasets[0]->pointColor       = "rgba(151,187,205,0.75)";
+        $data->datasets[0]->pointStrokeColor = "rgba(151,187,205,1)";
+
+        return $data;
     }
 
 }

@@ -55,7 +55,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <?php } ?>
                     <?php if ( array_key_exists('home_address_1',$person) && $person['home_address_1']!="") { ?>
                     <li>
-                        <a href="<?php echo RouteHelper::_('index.php?view=people&layout=directions&id='.$person['id']); ?>">
+                        <a href="<?php echo LinkHelperviewPerson($person['id'], array('layout' => 'directions')); ?>">
                             <?php if ( array_key_exists('home_address_1',$person) ) echo $person['home_address_1'].' '.$person['home_city'].', '.$person['home_state'].' '.$person['home_zip']; ?>
                         </a>
                     </li>
@@ -94,7 +94,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <h3><?php echo ucwords(TextHelper::_('COBALT_ASSOCIATED_DEALS')); ?></h3>
                 <ul data-inset='true' data-role='listview' data-theme="c">
                     <li>
-                        <a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id='.$event['association_id']); ?>">
+                        <a href="<?php echo LinkHelper::viewDeal($event['association_id']); ?>">
                             <h3><?php echo $event['deal_name']; ?></h3>
                             <div class="ui-li-count"><?php echo ConfigHelper::getCurrency().$event['deal_amount']; ?></div>
                         </a>

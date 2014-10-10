@@ -130,12 +130,16 @@ class Revenue extends DefaultModel
 		// Get stage id to filter deals by
 		$won_stage_ids = DealHelper::getWonStages();
 
-		$results = array();
+        $data           = new \stdClass;
+        $data->labels   = array();
+        $data->datasets = array();
 
 		foreach ($months as $month)
 		{
 			$start_date = $month['date'];
 			$end_date   = DateHelper::formatDBDate(date('Y-m-d 00:00:00', strtotime($start_date . ' + 1 months')));
+            $weekDate       = new \DateTime($start_date);
+            $data->labels[] = TextHelper::_('COBALT_MONTH') . ' ' . $weekDate->format('m');
 
 			$query->clear()
 				->select('d.modified, SUM(d.amount) AS y')
@@ -173,9 +177,17 @@ class Revenue extends DefaultModel
 			}
 
 			$totals['y'] = (int) $totals['y'];
-			$results[]   = $totals;
+			$results[]   = $totals['y'];
 		}
 
-		return $results;
+        $data->datasets[0]                   = new \stdClass;
+        $data->datasets[0]->data             = $results;
+        $data->datasets[0]->label            = '';
+        $data->datasets[0]->fillColor        = "rgba(151,187,205,0.5)";
+        $data->datasets[0]->strokeColor      = "rgba(151,187,205,0.8)";
+        $data->datasets[0]->pointColor       = "rgba(151,187,205,0.75)";
+        $data->datasets[0]->pointStrokeColor = "rgba(151,187,205,1)";
+
+		return $data;
 	}
 }
