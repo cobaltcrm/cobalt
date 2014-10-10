@@ -170,7 +170,7 @@ if ($filter_type == "individual") {
     <tbody id="list">
         <?php
             $data = array('events'=>$this->events);
-            $event_list = ViewHelper::getView('events','list','phtml',$data);
+            $event_list = \Cobalt\Factory::getView('events','list','phtml',$data);
             echo $event_list->render();
         ?>
     </tbody>

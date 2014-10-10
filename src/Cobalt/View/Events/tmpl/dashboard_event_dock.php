@@ -64,7 +64,7 @@ $app = \Cobalt\Factory::getApplication();
         <div id="task_container">
             <div id="task_list">
                 <?php
-                     $task_list = ViewHelper::getView('events','event_listings','phtml', array('events'=>$this->events));
+                     $task_list = \Cobalt\Factory::getView('events','event_listings','phtml', array('events'=>$this->events));
                      echo $task_list->render();
                 ?>
             </div>

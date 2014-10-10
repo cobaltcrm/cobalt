@@ -14,9 +14,6 @@ use Cobalt\Factory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DocumentHelper;
-use Cobalt\Helper\ViewHelper;
-use Cobalt\Model\Document as DocumentModel;
-use Cobalt\Model\Documents as DocumentsModel;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access
@@ -29,7 +26,7 @@ class Html extends AbstractHtmlView
         $layout = $this->getLayout();
 
         //get model
-        $model = new DocumentModel;
+        $model = Factory::getModel('Document');
 
         $documents = $model->getDocuments();
         $state = $model->getState();
@@ -77,7 +74,7 @@ class Html extends AbstractHtmlView
         if ($layout == 'default')
         {
             //get model
-            $model = new DocumentsModel;
+            $model = Factory::getModel('Documents');
             $total = $model->getTotal();
             $pagination = $model->getPagination();
             $this->dataTableColumns = $model->getDataTableColumns();
@@ -99,7 +96,7 @@ class Html extends AbstractHtmlView
         $users = UsersHelper::getUsers();
 
         //list view
-        $document_list = ViewHelper::getView('documents','list','phtml',array('documents'=>$documents,'state'=>$state, 'total'=>$total,'pagination'=>$pagination));
+        $document_list = Factory::getView('documents','list','phtml',array('documents'=>$documents,'state'=>$state, 'total'=>$total,'pagination'=>$pagination));
 
         if ($layout == "download") {
             DealHelper::downloadDocument();

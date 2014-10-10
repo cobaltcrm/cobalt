@@ -16,6 +16,7 @@ use Cobalt\Pagination;
 use Cobalt\Table\AbstractTable;
 use Joomla\Model\AbstractDatabaseModel;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

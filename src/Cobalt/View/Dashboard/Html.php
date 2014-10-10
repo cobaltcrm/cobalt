@@ -10,16 +10,9 @@
 
 namespace Cobalt\View\Dashboard;
 
-use JUri;
-use JFactory;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
-use Cobalt\Model\Event as EventModel;
-use Cobalt\Model\Graphs as GraphsModel;
-use Cobalt\Model\Deal as DealModel;
-use Cobalt\Model\Company as CompanyModel;
-use Cobalt\Model\People as PeopleModel;
 use Cobalt\Helper\TemplateHelper;
-use Cobalt\Helper\ViewHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
 
@@ -32,7 +25,8 @@ class Html extends AbstractHtmlView
     {
 
         //get model and retrieve info
-        $model = new EventModel;
+	    /** @var \Cobalt\Model\Event $model */
+        $model = Factory::getModel('Event');
 
         if (TemplateHelper::isMobile())
         {
@@ -40,19 +34,21 @@ class Html extends AbstractHtmlView
         }
 
         $events = $model->getEvents();
-        $eventDock = ViewHelper::getView('events','dashboard_event_dock','phtml', array('events'=>$events));
+        $eventDock = Factory::getView('events','dashboard_event_dock','phtml', array('events'=>$events));
 
-        $dealModel = new DealModel;
+	    /** @var \Cobalt\Model\Deal $dealModel */
+	    $dealModel = Factory::getModel('Deal');
 		$dealModel->set('_view', 'dashboard');
 
         $dealModel->set('recent',true);
         $dealModel->set('archived',0);
         $recentDeals = $dealModel->getDeals();
 
-        $doc = JFactory::getDocument();
+        $doc = Factory::getApplication()->getDocument();
 
         //get data for sales graphs
-        $model = new GraphsModel;
+	    /** @var \Cobalt\Model\Graphs $model */
+	    $model = Factory::getModel('Graphs');
         $graph_data = $model->getGraphData();
 
         $activityHelper = new ActivityHelper;
@@ -65,7 +61,9 @@ class Html extends AbstractHtmlView
         $this->activity 	= $activity;
 
         $json = TRUE;
-        $peopleModel = new PeopleModel;
+
+	    /** @var \Cobalt\Model\People $peopleModel */
+	    $peopleModel = Factory::getModel('People');
 
         if (TemplateHelper::isMobile())
         {
@@ -79,7 +77,8 @@ class Html extends AbstractHtmlView
             $peopleModel->set('type', 'not_leads');
             $totalContacts = $peopleModel->getTotal();
 
-            $companyModel = new CompanyModel;
+	        /** @var \Cobalt\Model\Company $companyModel */
+	        $companyModel = Factory::getModel('Company');
             $totalCompanies = $companyModel->getTotal();
 
             $user = UsersHelper::getLoggedInUser();
@@ -95,16 +94,13 @@ class Html extends AbstractHtmlView
         $peopleNames = $peopleModel->getPeopleNames($json);
         $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
 
-        $dealModel = new DealModel;
+	    /** @var \Cobalt\Model\Deal $dealModel */
+	    $dealModel = Factory::getModel('Deal');
         $dealNames = $dealModel->getDealNames($json);
         $doc->addScriptDeclaration("var deal_names=".$dealNames.";");
 
          /** get latest activities **/
-        $this->latest_activities = ViewHelper::getView('dashboard','latest_activities','phtml');
-        $this->latest_activities->activity = $activity;
-
-        $activityHelper = new ActivityHelper;
-        $activity = $activityHelper->getActivity();
+        $this->latest_activities = Factory::getView('dashboard','latest_activities','phtml',array('activity' => $activity));
 
         //display
         return parent::render();

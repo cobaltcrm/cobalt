@@ -12,15 +12,11 @@ namespace Cobalt\View\People;
 
 use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
-use Cobalt\Model\People as PeopleModel;
-use Cobalt\Model\Event as EventModel;
-use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\PeopleHelper;
-use Cobalt\Helper\ViewHelper;
 use Cobalt\Helper\TemplateHelper;
 use Joomla\View\AbstractHtmlView;
 
@@ -34,7 +30,7 @@ class Html extends AbstractHtmlView
         $app = Factory::getApplication();
 
         ///retrieve task list from model
-        $model = new PeopleModel;
+        $model = Factory::getModel('People');
 
         $state = $model->getState();
 
@@ -162,19 +158,19 @@ class Html extends AbstractHtmlView
         //Load Events & Tasks for person
         $layout = $this->getLayout();
         if ($layout == "person") {
-            $model = new EventModel;
+            $model = Factory::getModel('Event');
             $events = $model->getEvents("person",null,$app->input->get('id'));
-            $this->event_dock = ViewHelper::getView('events','event_dock','phtml',array('events'=>$events));
-            $this->deal_dock = ViewHelper::getView('deals','deal_dock','phtml', array('deals' => !empty($person['deals']) ? $person['deals'] : array() ));
+            $this->event_dock = Factory::getView('events','event_dock','phtml',array('events'=>$events));
+            $this->deal_dock = Factory::getView('deals','deal_dock','phtml', array('deals' => !empty($person['deals']) ? $person['deals'] : array() ));
 
-            $this->document_list = ViewHelper::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
-            $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'people','item'=>$person));
+            $this->document_list = Factory::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
+            $this->custom_fields_view = Factory::getView('custom','default','phtml',array('type'=>'people','item'=>$person));
         }
 
         if ($layout == "default") {
             $total = $model->getTotal();
             $pagination = $model->getPagination();
-            $this->people_list = ViewHelper::getView('people','list','phtml',array('people'=>$people,'total'=>$total,'pagination'=>$pagination));
+            $this->people_list = Factory::getView('people','list','phtml',array('people'=>$people,'total'=>$total,'pagination'=>$pagination));
             $this->people_filter = $state->get('Deal.people_name');
             $this->dataTableColumns = $model->getDataTableColumns();
             $document->addScriptDeclaration("
@@ -186,9 +182,9 @@ class Html extends AbstractHtmlView
 
         if ($layout == "edit") {
             $item = $app->input->get('id') && array_key_exists(0,$people) ? $people[0] : array('id'=>'');
-            $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'people','item'=>$item));
+            $this->edit_custom_fields_view = Factory::getView('custom','edit','phtml',array('type'=>'people','item'=>$item));
 
-            $companyModel = new CompanyModel;
+            $companyModel = Factory::getModel('Company');
 
             $json = TRUE;
             $companyNames = $companyModel->getCompanyNames($json);
@@ -196,9 +192,9 @@ class Html extends AbstractHtmlView
         }
 
         if ( TemplateHelper::isMobile() && $app->input->get('id')) {
-            $this->add_note = ViewHelper::getView('note','edit','phtml',array('add_note'=>$add_note));
+            $this->add_note = Factory::getView('note','edit','phtml',array('add_note'=>$add_note));
 
-            $this->add_task = ViewHelper::getView('events','edit_task','phtml',array('association_type'=>'person','assocation_id'=>$app->input->get('id')));
+            $this->add_task = Factory::getView('events','edit_task','phtml',array('association_type'=>'person','assocation_id'=>$app->input->get('id')));
         }
 
         //assign results to view

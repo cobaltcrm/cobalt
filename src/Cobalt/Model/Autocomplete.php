@@ -10,9 +10,7 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Helper\TextHelper;
 use Cobalt\Table\AbstractTable;
-use Joomla\Model\AbstractDatabaseModel;
 
 class Autocomplete extends DefaultModel
 {

@@ -11,7 +11,6 @@
 namespace Cobalt\Helper;
 
 use Cobalt\Factory;
-use Cobalt\Model\Stats as StatsModel;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -23,44 +22,23 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     {
 
         //Load stats model
-        $statsModel = new StatsModel;
+	    /** @var \Cobalt\Model\Stats $statsModel */
+        $statsModel = Factory::getModel('Stats');
         $statsModel->set('person_id',$person_id);
+        $leads = $statsModel->getLeads();
+
+	    $viewVars = array(
+		    'totalDealsAmount' => $statsModel->getActiveDealsAmount(),
+	        'stages'           => $statsModel->getStages(),
+	        'numConvertedLeads' => $leads['contact'],
+	        'numNewLeads'       => $leads['lead'],
+	        'notes'             => $statsModel->getNotes(),
+	        'todos'             => $statsModel->getTodos(),
+	        'dealActivity'      => $statsModel->getDealActivity()
+	    );
 
         //Load view
-        $coffeeView = ViewHelper::getView('emails','coffee.report');
-
-        //Get Total Deals Amount
-        $activeDeals = $statsModel->getActiveDealsAmount();
-        $coffeeView->totalDealsAmount = $activeDeals;
-
-        //Get Stage Details
-        $stages = $statsModel->getStages();
-        $coffeeView->stages = $stages;
-
-        //Get Number of Converted Leads
-        $leads = $statsModel->getLeads();
-        $coffeeView->numConvertedLeads = $leads['contact'];
-
-        //Get Number of New Leads
-        $coffeeView->numNewLeads = $leads['lead'];
-
-        //Get Note Details
-        $notes = $statsModel->getNotes();
-        $coffeeView->notes = $notes;
-
-        //Get ToDo Details
-        $todos = $statsModel->getTodos();
-        $coffeeView->todos = $todos;
-
-        //Get Deal Activity
-        $dealActivity = $statsModel->getDealActivity();
-        $coffeeView->dealActivity = $dealActivity;
-
-        //Get Lead Activity
-        $coffeeView->leadActivity = $leadActivity;
-
-        //Get Contact Activity
-        $coffeeView->contactActivity = $contactActivity;
+        $coffeeView = Factory::getView('emails','coffee.report', 'html', $viewVars, $statsModel);
 
         return $coffeeView;
     }

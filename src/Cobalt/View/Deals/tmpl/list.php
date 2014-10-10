@@ -36,13 +36,7 @@ $app = \Cobalt\Factory::getApplication();
         for ($i=0;$i<$n;$i++) {
             $deal = $this->dealList[$i];
             $k = $i%2;
-            $entryView = ViewHelper::getView('deals','entry','phtml');
-            $entryView->deal = $deal;
-            $entryView->stages = $stages;
-            $entryView->statuses = $statuses;
-            $entryView->sources = $sources;
-            $entryView->users = $users;
-            $entryView->k = $k;
+            $entryView = \Cobalt\Factory::getView('deals','entry','phtml', array('deal' => $deal, 'stages' => $stages, 'statuses' => $statuses, 'sources' => $sources, 'users' => $users, 'k' => $k));
             echo $entryView->render();
         }
 ?>

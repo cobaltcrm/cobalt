@@ -16,7 +16,6 @@ use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\CompanyHelper;
-use Cobalt\Helper\ViewHelper;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\Event as EventModel;
 
@@ -119,19 +118,15 @@ class Html extends AbstractHtmlView
                 $model = new EventModel;
                 $events = $model->getEvents("company", null, $app->input->get('id'));
 
-                $this->event_dock = ViewHelper::getView('events', 'event_dock', 'phtml', array('events' => $events));
-                $this->deal_dock = ViewHelper::getView('deals', 'deal_dock', 'phtml', array('deals' => $companies[0]->deals));
-                $this->document_list = ViewHelper::getView('documents', 'document_row', 'phtml', array('documents' => $companies[0]->documents));
-                $this->people_dock = ViewHelper::getView('people', 'people_dock', 'html', array('people' => $companies[0]->people));
-
-                $custom_fields_view = ViewHelper::getView('custom', 'default', 'html');
-                $custom_fields_view->type = 'company';
-                $custom_fields_view->item = $companies[0];
-                $this->custom_fields_view = $custom_fields_view;
+                $this->event_dock = Factory::getView('events', 'event_dock', 'phtml', array('events' => $events));
+                $this->deal_dock = Factory::getView('deals', 'deal_dock', 'phtml', array('deals' => $companies[0]->deals));
+                $this->document_list = Factory::getView('documents', 'document_row', 'phtml', array('documents' => $companies[0]->documents));
+                $this->people_dock = Factory::getView('people', 'people_dock', 'html', array('people' => $companies[0]->people));
+                $this->custom_fields_view = Factory::getView('custom', 'default', 'html', array('type' => 'company', 'item' => $companies[0]));
 
                 if (TemplateHelper::isMobile())
                 {
-                    $add_note = ViewHelper::getView('note','edit','html');
+                    $add_note = Factory::getView('note','edit','html');
                     $this->add_note = $add_note;
                 }
 
@@ -142,11 +137,8 @@ class Html extends AbstractHtmlView
                 //get column filters
                 $this->column_filters = CompanyHelper::getColumnFilters();
                 $this->selected_columns = CompanyHelper::getSelectedColumnFilters();
-
-                $company_list = ViewHelper::getView('companies', 'list', 'html', array('companies' => $companies));
-                $this->company_list = $company_list;
-                $company_name = $state->get('Company.companies_name');
-                $this->company_filter = $company_name;
+                $this->company_list = Factory::getView('companies', 'list', 'html', array('companies' => $companies));
+                $this->company_filter = $state->get('Company.companies_name');
                 $this->dataTableColumns = $model->getDataTableColumns();
 
                 $doc->addScriptDeclaration("
@@ -158,11 +150,7 @@ class Html extends AbstractHtmlView
 
             case 'edit':
                 $item = $app->input->get('id') && array_key_exists(0,$companies) ? $companies[0] : array('id'=>'');
-                $edit_custom_fields_view = ViewHelper::getView('custom','edit','html');
-                $type = "company";
-                $edit_custom_fields_view->type = $type;
-                $edit_custom_fields_view->item = $item;
-                $this->edit_custom_fields_view = $edit_custom_fields_view;
+                $this->edit_custom_fields_view = Factory::getView('custom','edit','html', array('type' => 'company', 'item' => $item));
             break;
 
         }

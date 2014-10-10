@@ -10,5 +10,5 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-     $task_list = ViewHelper::getView('events','event_listings','phtml',array('events'=>$this->events));
+     $task_list = \Cobalt\Factory::getView('events','event_listings','phtml',array('events'=>$this->events));
      echo $task_list->render();

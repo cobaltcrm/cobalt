@@ -13,7 +13,6 @@ namespace Cobalt\View\Deals;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Factory;
 use Cobalt\Helper\DealHelper;
-use Cobalt\Helper\ViewHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
@@ -67,10 +66,10 @@ class Raw extends AbstractHtmlView
                 $this->closed_stages = DealHelper::getClosedStages();
                 $model = new EventModel;
                 $events = $model->getEvents("deal", null, $app->input->get('id'));
-                $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events' => $events));
-                $this->document_list = ViewHelper::getView('documents', 'document_row', 'phtml', array('documents' => $this->deal->documents));
-                $this->custom_fields_view = ViewHelper::getView('custom', 'default', 'phtml', array('type' => 'deal', 'item' => $this->deal));
-                $this->contact_info = ViewHelper::getView('contacts', 'default', 'phtml', array('contacts' => $this->deal->people, 'primary_contact_id' => $primary_contact_id));
+                $this->event_dock = Factory::getView('events','event_dock','phtml', array('events' => $events));
+                $this->document_list = Factory::getView('documents', 'document_row', 'phtml', array('documents' => $this->deal->documents));
+                $this->custom_fields_view = Factory::getView('custom', 'default', 'phtml', array('type' => 'deal', 'item' => $this->deal));
+                $this->contact_info = Factory::getView('contacts', 'default', 'phtml', array('contacts' => $this->deal->people, 'primary_contact_id' => $primary_contact_id));
             break;
             case "deal_dock_list":
                     $this->deals = $model->getDeals();
@@ -78,7 +77,7 @@ class Raw extends AbstractHtmlView
             case "add":
             case "edit":
                     $this->deal = $model->getDeal($id);
-                    $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'deal','item'=>$this->deal));
+                    $this->edit_custom_fields_view = Factory::getView('custom','edit','phtml',array('type'=>'deal','item'=>$this->deal));
             break;
             case "edit_conversation":
                     $model = new ConversationModel;

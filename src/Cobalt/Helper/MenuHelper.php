@@ -338,13 +338,13 @@ public static function getHelpMenuLinks()
 
         /** Side menu links **/
         $menu_links = MenuHelper::getMenuLinks();
-        $menu = ViewHelper::getView('cobalt','menu','phtml');
+        $menu = Factory::getView('cobalt','menu','phtml');
         $menu->menu_links = $menu_links;
         $modules['menu'] = $menu;
 
         /** Quick Menu Links **/
         $quick_menu_links = MenuHelper::getQuickMenuLinks();
-        $quick_menu = ViewHelper::getView('cobalt','quick_menu','phtml');
+        $quick_menu = Factory::getView('cobalt','quick_menu','phtml');
         $quick_menu->quick_menu_links = $quick_menu_links;
         $modules['quick_menu'] = $quick_menu;
 
@@ -362,7 +362,7 @@ public static function getHelpMenuLinks()
 
         /** Help Menu Links **/
         $help_menu_links = MenuHelper::getHelpMenuLinks();
-        $help_menu = ViewHelper::getView('cobalt','help_menu','phtml');
+        $help_menu = Factory::getView('cobalt','help_menu','phtml');
         $help_menu->help_menu_links = $help_menu_links;
         $help_menu->help_type = $help_type;
         $help_menu->show_help = $show_help;

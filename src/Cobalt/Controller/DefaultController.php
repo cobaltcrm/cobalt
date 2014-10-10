@@ -39,36 +39,11 @@ class DefaultController extends AbstractController implements ContainerAwareInte
     public function execute()
     {
         // Get the document object.
-        $document   = $this->getApplication()->getDocument();
         $viewFormat = $this->getInput()->getWord('format', 'html');
         $viewName   = $this->getInput()->getWord('view', 'dashboard');
         $layoutName = $this->getInput()->getWord('layout', 'default');
 
-        $this->getInput()->set('view', $viewName);
-
-        // Register the layout paths for the view
-        $paths = new \SplPriorityQueue;
-
-        $themeOverride = JPATH_THEMES . '/' . $this->getApplication()->get('theme') . '/html/' . strtolower($viewName);
-        if (is_dir($themeOverride)) {
-            $paths->insert($themeOverride, 'normal');
-        }
-
-        $paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
-
-        $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
-        $modelClass = ucfirst($viewName);
-
-        if (class_exists('Cobalt\\Model\\'.$modelClass) === false) {
-            $modelClass = 'DefaultModel';
-        }
-
-        $model = Factory::getModel($modelClass);
-
-        /** @var $view \Joomla\View\AbstractHtmlView **/
-        $view = new $viewClass($model, $paths);
-        $view->setLayout($layoutName);
-        $view->document = $document;
+	    $view = Factory::getView($viewName, $layoutName, $viewFormat, array('bypass' => false));
 
         // Render our view.
         echo $view->render();

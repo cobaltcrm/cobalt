@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\Goal as GoalModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -21,13 +20,13 @@ class GetTeamGoals extends DefaultController
     public function execute()
     {
         //get model
-        $model = new GoalModel;;
+        $model = Factory::getModel('Goal');
 
         //get data
         $goals = $model->getTeamGoals($this->getInput()->get('id'));
 
         //pass data to view
-        $view = ViewHelper::getView('goals','filters', 'phtml', array('goals'=>$goals ));
+        $view = Factory::getView('goals','filters', 'phtml', array('goals'=>$goals ), $model);
 
         //display view
         echo $view->render();
