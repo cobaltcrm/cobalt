@@ -216,7 +216,7 @@ class DropdownHelper
 
      }
 
-    public static function generateCustom($type,$id=null)
+    public static function generateCustom($type, $id = null)
     {
              //base html
              $return = array();
@@ -225,7 +225,8 @@ class DropdownHelper
             $db = \Cobalt\Container::fetch('db');
 
             //generate query based on type
-             $query = $db->getQuery(true);
+            $query = $db->getQuery(true);
+
             //determine specific entry to generate
             $query->select("cf.* FROM #__".$type."_custom AS cf");
 
@@ -236,21 +237,24 @@ class DropdownHelper
             $row = $db->loadAssocList();
 
             //determine selected values
-            if ($id) {
+            if ($id)
+            {
                 $custom_data = self::getCustomData($id,$type);
             }
 
-            if ( is_array($row) && count($row) > 0 ) {
+            if (is_array($row) && count($row) > 0)
+            {
 
                 //loop for explosion delims
-                foreach ($row as $custom) {
-
+                foreach ($row as $custom)
+                {
                     //retrieve custom values
                     $custom['values'] = json_decode($custom['values']);
 
                     //determine selected values
-                    if ($id && $custom['type'] != 'forecast') {
-                        $custom['selected'] = ( array_key_exists($custom['id'],$custom_data) ) ? $custom_data[$custom['id']] : TextHelper::_('COBALT_CLICK_TO_EDIT');
+                    if ($id && $custom['type'] != 'forecast')
+                    {
+                        $custom['selected'] = ( array_key_exists($custom['id'], $custom_data) ) ? $custom_data[$custom['id']] : '';
                     }
                     //append items to array
                     $return[] = $custom;
@@ -259,7 +263,6 @@ class DropdownHelper
 
             //return
             return $return;
-
         }
 
         //get custom data to prefill dropdowns
