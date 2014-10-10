@@ -109,7 +109,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             } else {
                 $query->clear();
                 $query->insert('#__'.$type.'_custom_cf');
-	            $query->columns(array($type."_id", 'ustom_field_id', 'value', 'modified'));
+	            $query->columns(array($type."_id", 'custom_field_id', 'value', 'modified'));
 	            $query->values($id . ', ' . $row['custom_field_id'] . ', ' . $db->quote($row['custom_field_value']) . ', ' . $db->quote($date));
                 $db->setQuery($query);
                 $db->execute();
