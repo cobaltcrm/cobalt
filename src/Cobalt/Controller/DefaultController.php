@@ -13,10 +13,9 @@ namespace Cobalt\Controller;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+use Cobalt\Factory;
 use Joomla\DI\Container;
 use Joomla\DI\ContainerAwareInterface;
-use Joomla\Input\Input;
-use Joomla\Application\AbstractApplication;
 use Joomla\Controller\AbstractController;
 
 /**
@@ -64,7 +63,7 @@ class DefaultController extends AbstractController implements ContainerAwareInte
             $modelClass = 'DefaultModel';
         }
 
-        $model = $this->getModel($modelClass);
+        $model = Factory::getModel($modelClass);
 
         /** @var $view \Joomla\View\AbstractHtmlView **/
         $view = new $viewClass($model, $paths);
@@ -94,13 +93,6 @@ class DefaultController extends AbstractController implements ContainerAwareInte
 
 		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
 	}
-
-    public function getModel($modelName)
-    {
-        $fqcn = 'Cobalt\\Model\\' . $modelName;
-
-        return $this->container->buildObject($fqcn);
-    }
 
     public function isAjaxRequest()
     {

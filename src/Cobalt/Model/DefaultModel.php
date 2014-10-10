@@ -36,14 +36,19 @@ class DefaultModel extends AbstractDatabaseModel
 	 */
     protected $app;
 
-    public function __construct(DatabaseDriver $db = null)
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
     {
-        if (is_null($db))
-        {
-            $db = Factory::getDb();
-        }
+	    $db = is_null($db) ? Factory::getDb() : $db;
 
-	    parent::__construct($db);
+	    parent::__construct($db, $state);
 
         $this->app = Factory::getApplication();
 

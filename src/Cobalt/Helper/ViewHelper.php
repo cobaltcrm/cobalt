@@ -34,7 +34,7 @@ class ViewHelper
             $modelClass = 'DefaultModel';
         }
 
-        $model = self::getModel($modelClass);
+        $model = Factory::getModel($modelClass);
 
         /** @var $view \Joomla\View\AbstractHtmlView **/
         $view = new $viewClass($model, $paths);

@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 use Joomla\Filter\OutputFilter;
 use Joomla\Registry\Registry;
+use Joomla\Database\DatabaseDriver;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\ActivityHelper;
@@ -43,11 +44,16 @@ class People extends DefaultModel
 	public $query = null;
 
 	/**
-	 * Constructor
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
 	 */
-	public function __construct()
-	{
-		parent::__construct();
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
+    {
+        parent::__construct($db, $state);
 
 		$this->_view   = $this->app->input->get('view');
 		$this->_layout = str_replace('_filter', '', $this->app->input->get('layout'));

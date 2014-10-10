@@ -19,6 +19,8 @@ use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CobaltHelper;
 
 use Joomla\Date\Date;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -29,12 +31,19 @@ class User extends DefaultModel
 	protected $_view;
 	protected $_layout;
 
-    /**
-     * Constructor
-     */
-    public function __construct($userId = null)
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db      The database adapter.
+	 * @param   Registry        $state   The model state.
+	 * @param   integer         $userId  User ID to load
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null, $userId = null)
     {
-        parent::__construct();
+        parent::__construct($db, $state);
+
         $this->_view = $this->app->input->get('view');
         $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
 

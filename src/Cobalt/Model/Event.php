@@ -12,6 +12,7 @@
 namespace Cobalt\Model;
 
 use Cobalt\Helper\RouteHelper;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DateHelper;
@@ -37,9 +38,17 @@ class Event extends DefaultModel
     public $filter_order_Dir = null;
     public $completed = null;
 
-    public function __construct()
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
     {
-        parent::__construct();
+        parent::__construct($db, $state);
         $this->view = $this->app->input->get('view');
         $this->layout = $this->app->input->get('layout','list');
 

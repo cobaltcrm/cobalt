@@ -10,8 +10,8 @@
 
 namespace Cobalt\Model;
 
+use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
-use Cobalt\Pagination;
 use Cobalt\Helper\TextHelper;
 
 // no direct access
@@ -22,15 +22,18 @@ class Cobalt extends DefaultModel
     public $view = null;
     public $_model = null;
 
-    /**
-     *
-     *
-     * @access	public
-     * @return void
-     */
-    public function __construct()
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
     {
-        parent::__construct();
+        parent::__construct($db, $state);
+
         $this->getListLimits();
         $this->view = $this->app->input->get('view');
     }

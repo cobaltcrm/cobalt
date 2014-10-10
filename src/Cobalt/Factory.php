@@ -52,6 +52,20 @@ abstract class Factory
 	}
 
 	/**
+	 * Fetches a model object
+	 *
+	 * @param   string  $model  The model to retrieve
+	 *
+	 * @return  \Cobalt\Model\DefaultModel
+	 *
+	 * @since   1.0
+	 */
+	public static function getModel($model)
+	{
+		return self::getContainer()->buildObject('\\Cobalt\\Model\\' . $model);
+	}
+
+	/**
 	 * Fetch the Session object
 	 *
 	 * @return  \Symfony\Component\HttpFoundation\Session\Session
