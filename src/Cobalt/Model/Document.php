@@ -215,7 +215,7 @@ class Document extends DefaultModel
                        "c.name as company_name,".
                        "deal.name as deal_name,".
                        "p.first_name as owner_first_name, p.last_name as owner_last_name,".
-                       "CONCAT(u.first_name,' ',u.last_name) AS owner_name");
+				       $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . " AS owner_name");
         $query->from("#__documents AS d");
         $query->leftJoin("#__companies AS c ON d.association_type = 'company' AND d.association_id = c.id");
         $query->leftJoin("#__deals AS deal ON d.association_type = 'deal' AND d.association_id = deal.id");

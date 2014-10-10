@@ -268,7 +268,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $table = "companies";
             break;
             case "person":
-                $select = "CONCAT(first_name,' ',last_name)";
+                $select = $query->concatenate(array('first_name', $db->quote(' '), 'last_name'));
                 $table = "people";
             break;
             case "deal":

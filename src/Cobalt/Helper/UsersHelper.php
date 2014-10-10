@@ -31,7 +31,7 @@ class UsersHelper
 			$db = \Cobalt\Container::fetch('db');
 			$query = $db->getQuery(true);
 
-			$select = ( $idsOnly ) ? "id AS value,CONCAT(first_name,' ',last_name) AS label" : "*";
+			$select = ( $idsOnly ) ? "id AS value,".$query->concatenate(array('first_name', $db->quote(' '), 'last_name')) . " AS label" : "*";
 
 			//get users
 			$query->select($select);
@@ -244,7 +244,7 @@ class UsersHelper
 		$query = $db->getQuery(true);
 
 		//query
-		$query->select("t.*,u.first_name,u.last_name,(CASE WHEN (t.name IS NOT NULL) THEN t.name ELSE CONCAT(u.first_name,NULL,u.last_name) END) AS team_name");
+		$query->select("t.*,u.first_name,u.last_name,(CASE WHEN (t.name IS NOT NULL) THEN t.name ELSE " . $query->concatenate(array('u.first_name', 'NULL', 'u.last_name')) . " END) AS team_name");
 		$query->from("#__teams AS t");
 		$query->leftJoin("#__users AS u ON u.id = t.leader_id AND u.published=1");
 
@@ -308,7 +308,7 @@ class UsersHelper
 		$db = \Cobalt\Container::fetch('db');
 		$query = $db->getQuery(true);
 
-		$query->select("id AS value,CONCAT(first_name,' ',last_name) AS label")
+		$query->select("id AS value," . $query->concatenate(array('first_name', $db->quote(' '), 'last_name')) . " AS label")
 			->from("#__users");
 
 		$role = UsersHelper::getRole();
@@ -332,7 +332,7 @@ class UsersHelper
 		$db = \Cobalt\Container::fetch('db');
 		$query = $db->getQuery(true);
 
-		$query->select("s.user_id AS value, CONCAT(u.first_name, ' ', u.last_name) AS label")
+		$query->select("s.user_id AS value, " . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . " AS label")
 			->from("#__shared AS s")
 			->leftJoin("#__users AS u ON u.id = s.user_id")
 			->where("s.item_id=" . (int) $itemId)

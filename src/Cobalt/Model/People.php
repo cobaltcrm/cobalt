@@ -337,7 +337,7 @@ class People extends DefaultModel
 				'p.home_city,p.home_state,p.home_zip,p.home_country,p.fax,p.website,p.facebook_url,p.twitter_user,' .
 				'p.linkedin_url,p.created,p.tags,p.type,p.info,p.modified,p.work_address_1,p.work_address_2,' .
 				'p.work_city,p.work_state,p.work_zip,p.work_country,p.assignment_note,p.mobile_phone,p.home_email,' .
-				'p.other_email,p.home_phone,c.name as company_name, CONCAT(u2.first_name,NULL,u2.last_name) AS assignee_name,' .
+				'p.other_email,p.home_phone,c.name as company_name, ' . $query->concatenate(array('u2.first_name', 'NULL', 'u2.last_name')) . ' AS assignee_name,' .
 				'u.first_name AS owner_first_name,' .
 				'u.last_name AS owner_last_name, stat.name as status_name,' .
 				'source.name as source_name'
@@ -353,7 +353,7 @@ class People extends DefaultModel
 		else
 		{
 			$query->select(
-			'p.*,c.name as company_name, CONCAT(u2.first_name,NULL,u2.last_name) AS assignee_name,u.first_name AS owner_first_name,
+			'p.*,c.name as company_name, ' . $query->concatenate(array('u2.first_name', 'NULL', 'u2.last_name')) . ' AS assignee_name,u.first_name AS owner_first_name,
                         u.last_name AS owner_last_name, stat.name as status_name,stat.color as status_color,
                         source.name as source_name,event.id as event_id,
                         event.name as event_name, event.type as event_type,
@@ -838,7 +838,7 @@ class People extends DefaultModel
 		$db    = $this->getDb();
 		$query = $db->getQuery(true);
 
-		$select = $idsOnly ? "CONCAT(first_name,' ',last_name) AS label,id AS value" : "*";
+		$select = $idsOnly ? $query->concatenate(array('first_name', $db->quote(' '), 'last_name')) . " AS label,id AS value" : "*";
 
 		$query->select($select)
 			->from("#__people")

@@ -28,7 +28,7 @@ class Teams extends DefaultModel
         $query = $this->db->getQuery(true);
 
         //Query String
-        $query->select("t.*,IF(t.name!='',t.name,CONCAT(u.first_name,' ',u.last_name)) AS team_name");
+        $query->select("t.*,IF(t.name!='',t.name," . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . " AS team_name");
         $query->from("#__teams AS t");
         $query->leftJoin("#__users AS u ON u.team_id = t.leader_id");
         $this->db->setQuery($query);
