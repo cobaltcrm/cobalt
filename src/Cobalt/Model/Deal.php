@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Joomla\Registry\Registry;
 use Joomla\Filter\OutputFilter;
-use Cobalt\Table\DealTable;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\ConfigHelper;
 use Cobalt\Helper\DealHelper;
@@ -58,10 +57,9 @@ class Deal extends DefaultModel
     public function __construct()
     {
         parent::__construct();
-        $app = \Cobalt\Container::fetch('app');
         $this->_view = $this->app->input->get('view');
         $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
-        $this->_user_id = $app->getUser()->get('id');
+        $this->_user_id = $this->app->getUser()->get('id');
         $this->export = $this->app->input->getInt('export');
     }
 
@@ -117,13 +115,13 @@ class Deal extends DefaultModel
         if (array_key_exists('expected_close', $data)) {
             if (strpos($data['expected_close'],'/')) {
                 $dateParts = explode('/',$data['expected_close']);
-                $expected_close = new \JDate(sprintf('%s-%s-%s 00:00:00',$dateParts[1],$dateParts[0],'20'.$dateParts[2]));
+                $expected_close = new \DateTime(sprintf('%s-%s-%s 00:00:00',$dateParts[1],$dateParts[0],'20'.$dateParts[2]));
             } else {
-                $expected_close = new \JDate($data['expected_close']);
+                $expected_close = new \DateTime($data['expected_close']);
             }
 
 
-            $data['expected_close'] = $expected_close->toSql();
+            $data['expected_close'] = DateHelper::formatDBDate($expected_close->format('Y-m-d H:i:s'));
         }
 
          if ((array_key_exists('company_name',$data) && $data['company_name']!="")  || (array_key_exists('company',$data) && $data['company'] != "")) {
@@ -358,7 +356,7 @@ class Deal extends DefaultModel
                 ->leftJoin('#__sources AS source ON source.id = d.source_id')
                 ->leftJoin('#__stages AS stage on stage.id = d.stage_id')
                 ->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0")
-                ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
+                ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type=" . $this->db->quote('deal'));
         }
         else
         {
@@ -381,32 +379,32 @@ class Deal extends DefaultModel
                 ->leftJoin('#__deal_status AS stat ON stat.id = d.status_id')
                 ->leftJoin('#__sources AS source ON source.id = d.source_id')
                 ->leftJoin('#__stages AS stage on stage.id = d.stage_id')
-                ->leftJoin("#__events_cf AS event_cf ON event_cf.association_id = d.id AND event_cf.association_type ='deal' ")
+                ->leftJoin("#__events_cf AS event_cf ON event_cf.association_id = d.id AND event_cf.association_type =" . $this->db->quote('deal'))
                 ->leftJoin("#__events AS event ON event.id = event_cf.event_id AND event.due_date IS NULL or event.due_date=(SELECT MIN(e2.due_date) FROM #__events_cf e2cf ".
                              "LEFT JOIN #__events as e2 on e2.id = e2cf.event_id ".
-                             "WHERE e2cf.association_id=d.id AND e2cf.association_type='deal') AND event.published>0")
+                             "WHERE e2cf.association_id=d.id AND e2cf.association_type=" . $this->db->quote('deal') . ") AND event.published>0")
                 ->leftJoin('#__users AS users ON users.id = d.owner_id')
                 ->leftJoin("#__people AS p ON p.id = d.primary_contact_id AND p.published>0")
-                ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type='deal'");
+                ->leftJoin("#__shared AS shared ON shared.item_id=d.id AND shared.item_type=" . $this->db->quote('deal'));
         }
 
         if (!$id)
         {
 
             //name
-            $deal_filter = $this->getState('Deal.'.$layout.'_name');
+            $deal_filter = $this->getState()->get('Deal.'.$layout.'_name');
 
             if ($deal_filter != null)
             {
-                $query->where("d.name LIKE '%".$deal_filter."%'");
+                $query->where("d.name LIKE " . $this->db->quote('%' . $deal_filter . '%'));
             }
 
             //owner
-            $owner_filter = $this->getState('Deal.'.$layout.'_owner_id', $this->_user_id);
+            $owner_filter = $this->getState()->get('Deal.'.$layout.'_owner_id', $this->_user_id);
 
             if ($owner_filter != 'all' && $owner_filter)
             {
-                $owner_type = $this->getState('Deal.'.$layout.'_owner_type');
+                $owner_type = $this->getState()->get('Deal.'.$layout.'_owner_type');
 
                 if ($owner_type == 'member' OR $owner_type == null)
                 {
@@ -432,7 +430,7 @@ class Deal extends DefaultModel
                 }
             }
             //amount
-            $amount_filter = $this->getState('Deal.'.$layout.'_amount', '');
+            $amount_filter = $this->getState()->get('Deal.'.$layout.'_amount', '');
 
             if ($amount_filter != null AND $amount_filter != 'all')
             {
@@ -452,7 +450,7 @@ class Deal extends DefaultModel
                 }
             }
             //source
-            $source_filter = $this->getState('Deal.'.$layout.'_source_id');
+            $source_filter = $this->getState()->get('Deal.'.$layout.'_source_id');
 
             if ($source_filter != null AND $source_filter != 'all')
             {
@@ -460,7 +458,7 @@ class Deal extends DefaultModel
             }
 
             //stage
-            $stage_filter = $this->getState('Deal.'.$layout.'_stage_id');
+            $stage_filter = $this->getState()->get('Deal.'.$layout.'_stage_id');
 
             if ($stage_filter != null AND $stage_filter != 'all')
             {
@@ -468,7 +466,7 @@ class Deal extends DefaultModel
             }
 
             //status
-            $status_filter = $this->getState('Deal.'.$layout.'_status_id');
+            $status_filter = $this->getState()->get('Deal.'.$layout.'_status_id');
 
             if ($status_filter != null AND $status_filter != 'all')
             {
@@ -476,7 +474,7 @@ class Deal extends DefaultModel
             }
 
             //expected close
-            $expected_close_filter = $this->getState('Deal.'.$layout.'_expected_close');
+            $expected_close_filter = $this->getState()->get('Deal.'.$layout.'_expected_close');
 
             if ($expected_close_filter != null AND $expected_close_filter != 'all')
             {
@@ -484,7 +482,7 @@ class Deal extends DefaultModel
             }
 
             //modified
-            $modified_filter = $this->getState('Deal.'.$layout.'_modified');
+            $modified_filter = $this->getState()->get('Deal.'.$layout.'_modified');
 
             if ($modified_filter != null AND $modified_filter != 'all')
             {
@@ -492,7 +490,7 @@ class Deal extends DefaultModel
             }
 
             //created
-            $created_filter = $this->getState('Deal.'.$layout.'_created');
+            $created_filter = $this->getState()->get('Deal.'.$layout.'_created');
 
             if ($created_filter != null AND $created_filter != 'all')
             {
@@ -507,60 +505,52 @@ class Deal extends DefaultModel
              * Here we filter for diferent types of deals
              */
 
-            $item_filter = $this->getState('Deal.'.$layout.'_item', '');
+            $item_filter = $this->getState()->get('Deal.'.$layout.'_item', '');
 
             if ($item_filter)
             {
-
                 //filter for deals//tasks due today
                 if ($item_filter == 'due.today')
                 {
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("event.due_date > '$date' AND event.due_date < '$tomorrow'");
+                    $query->where("event.due_date > " . $this->db->quote($date) . " AND event.due_date < " . $this->db->quote($tomorrow));
                     $query->where("event.published>0");
                 }
-
                 //filter for deals//tasks due tomorrow
-                if ($item_filter == "due.tomorrow")
+                elseif ($item_filter == "due.tomorrow")
                 {
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->where("event.due_date='".$tomorrow."'");
+                    $query->where("event.due_date=" . $this->db->quote($tomorrow));
                     $query->where("event.published>0");
                 }
-
                 //filter for past deals
-                if ($item_filter == "due.past")
+                elseif ($item_filter == "due.past")
                 {
-                    $query->where("event.due_date < '$date'");
+                    $query->where("event.due_date < " . $this->db->quote($date));
                     $query->where("event.published>0");
                 }
-
                 //filter for deals not updated in the last 30 days
-                if ($item_filter == "updated.not_thirty")
+                elseif ($item_filter == "updated.not_thirty")
                 {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("d.modified < '$last_thirty_days'");
+                    $query->where("d.modified < " . $this->db->quote($last_thirty_days));
                 }
-
                 //filter for deals updated in the last 30 days
-                if ($item_filter == "updated.thirty")
+                elseif ($item_filter == "updated.thirty")
                 {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("d.modified >'$last_thirty_days'");
+                    $query->where("d.modified > " . $this->db->quote($last_thirty_days));
                 }
-
                 //filter for most valuable deals
-                if ($item_filter == "amount.valuable")
+                elseif ($item_filter == "amount.valuable")
                 {
                     $query->where('d.amount > 0');
                 }
-
                 //filter for shared deals
-                if ($item_filter == "shared")
+                elseif ($item_filter == "shared")
                 {
                     $query->where("shared.item_id IS NOT NULL");
                 }
-
             }
 
             //filter for archived deals
@@ -582,34 +572,30 @@ class Deal extends DefaultModel
                 {
                     $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                     $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
-                    $query->where("d.expected_close >= '$this_week'");
-                    $query->where("d.expected_close < '$next_week'");
+                    $query->where("d.expected_close >= " . $this->db->quote($this_week));
+                    $query->where("d.expected_close < " . $this->db->quote($next_week));
                 }
-
-                if ($close == "next_week")
+                elseif ($close == "next_week")
                 {
                     $next_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+7 days"));
                     $week_after_next = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+14 days"));
-                    $query->where("d.expected_close >= '$next_week'");
-                    $query->where("d.expected_close < '$week_after_next'");
+                    $query->where("d.expected_close >= " . $this->db->quote($next_week));
+                    $query->where("d.expected_close < " . $this->db->quote($week_after_next));
                 }
-
-                if ($close == "this_month")
+                elseif ($close == "this_month")
                 {
                     $this_month = DateHelper::formatDBDate(date('Y-m-0 00:00:00'));
                     $next_month = date('Y-m-0 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
-                    $query->where("d.expected_close >= '$this_month'");
-                    $query->where("d.expected_close < '$next_month'");
+                    $query->where("d.expected_close >= " . $this->db->quote($this_month));
+                    $query->where("d.expected_close < " . $this->db->quote($next_month));
                 }
-
-                if ($close == "next_month")
+                elseif ($close == "next_month")
                 {
                     $next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+1 month"));
                     $next_next_month = date("Y-m-0 00:00:00", strtotime(date("Y-m-d 00:00:00", strtotime($date)) . "+2 months"));
-                    $query->where("d.expected_close >= '$next_month'");
-                    $query->where("d.expected_close < '$next_next_month'");
+                    $query->where("d.expected_close >= " . $this->db->quote($next_month));
+                    $query->where("d.expected_close < " . $this->db->quote($next_next_month));
                 }
-
             }
 
             /** --------------------------------------------
@@ -621,34 +607,30 @@ class Deal extends DefaultModel
                 {
                     $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                     $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
-                    $query->where("d.modified >= '$last_week'");
-                    $query->where("d.modified < '$this_week'");
+                    $query->where("d.modified >= " . $this->db->quote($last_week));
+                    $query->where("d.modified < " . $this->db->quote($this_week));
                 }
-
-                if ($modified == "last_week")
+                elseif ($modified == "last_week")
                 {
                     $last_week = DateHelper::formatDBDate(date("Y-m-d", strtotime("-7 days")));
                     $week_before_last = DateHelper::formatDBDate(date("Y-m-d", strtotime("-14 days")));
-                    $query->where("d.modified >= '$week_before_last'");
-                    $query->where("d.modified < '$last_week'");
+                    $query->where("d.modified >= " . $this->db->quote($week_before_last));
+                    $query->where("d.modified < " . $this->db->quote($last_week));
                 }
-
-                if ($modified == "this_month")
+                elseif ($modified == "this_month")
                 {
                     $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                     $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
-                    $query->where("d.modified >= '$this_month'");
-                    $query->where("d.modified < '$next_month'");
+                    $query->where("d.modified >= " . $this->db->quote($this_month));
+                    $query->where("d.modified < " . $this->db->quote($next_month));
                 }
-
-                if ($modified == "last_month")
+                elseif ($modified == "last_month")
                 {
                     $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                     $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
-                    $query->where("d.modified >= '$last_month'");
-                    $query->where("d.modified < '$this_month'");
+                    $query->where("d.modified >= " . $this->db->quote($last_month));
+                    $query->where("d.modified < " . $this->db->quote($this_month));
                 }
-
             }
 
             /** --------------------------------------------
@@ -660,48 +642,43 @@ class Deal extends DefaultModel
                 {
                     $this_week = DateHelper::formatDBDate(date('Y-m-d 00:00:00'));
                     $last_week = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-7 days"));
-                    $query->where("d.created >= '$last_week'");
+                    $query->where("d.created >= " . $this->db->quote($last_week));
                     $query->where("d.created < '$this_week'");
                 }
-
-                if ($created == "last_week")
+                elseif ($created == "last_week")
                 {
                     $last_week = DateHelper::formatDBDate(date("Y-m-d", strtotime("-7 days")));
                     $week_before_last = DateHelper::formatDBDate(date("Y-m-d", strtotime("-14 days")));
-                    $query->where("d.created >= '$week_before_last'");
-                    $query->where("d.created < '$last_week'");
+                    $query->where("d.created >= " . $this->db->quote($week_before_last));
+                    $query->where("d.created < " . $this->db->quote($last_week));
                 }
-
-                if ($created == "this_month")
+                elseif ($created == "this_month")
                 {
                     $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                     $next_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 month"));
-                    $query->where("d.created >= '$this_month'");
-                    $query->where("d.created < '$next_month'");
+                    $query->where("d.created >= " . $this->db->quote($this_month));
+                    $query->where("d.created < " . $this->db->quote($next_month));
                 }
-
-                if ($created == "last_month")
+                elseif ($created == "last_month")
                 {
                     $this_month = DateHelper::formatDBDate(date('Y-m-1 00:00:00'));
                     $last_month = date('Y-m-1 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 month"));
-                    $query->where("d.created >= '$last_month'");
-                    $query->where("d.created < '$this_month'");
+                    $query->where("d.created >= " . $this->db->quote($last_month));
+                    $query->where("d.created < " . $this->db->quote($this_month));
                 }
-
-                if ($created == "today")
+                elseif ($created == "today")
                 {
                     $today = DateHelper::formatDBDate(date("Y-m-d 00:00:00"));
                     $tomorrow = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "+1 day"));
-                    $query->where("d.created >= '$today'");
-                    $query->where("d.created < '$tomorrow'");
+                    $query->where("d.created >= " . $this->db->quote($today));
+                    $query->where("d.created < " . $this->db->quote($tomorrow));
                 }
-
-                if ($created == "yesterday")
+                elseif ($created == "yesterday")
                 {
                     $today = DateHelper::formatDBDate(date("Y-m-d 00:00:00"));
                     $yesterday = date('Y-m-d 00:00:00', strtotime(date("Y-m-d", strtotime($date)) . "-1 day"));
-                    $query->where("d.created >= '$yesterday'");
-                    $query->where("d.created < '$today'");
+                    $query->where("d.created >= " . $this->db->quote($yesterday));
+                    $query->where("d.created < " . $this->db->quote($today));
                 }
             }
 
@@ -746,7 +723,7 @@ class Deal extends DefaultModel
                 else
                 {
                     //else filter by the stage id
-                    $query->where("d.stage_id='".$stage."'");
+                    $query->where("d.stage_id=".$this->db->quote($stage));
                 }
             }
 
@@ -764,11 +741,11 @@ class Deal extends DefaultModel
                 $query->where("d.source_id <> 0");
             }
 
-            $deal_filter = $this->getState('Deal.'.$view.'_name');
+            $deal_filter = $this->getState()->get('Deal.'.$view.'_name');
 
             if ($deal_filter != null)
             {
-                $query->where("d.name LIKE '%".$deal_filter."%'");
+                $query->where("d.name LIKE ".$this->db->quote('%'.$deal_filter.'%'));
             }
 
             /** --------------------
@@ -777,7 +754,7 @@ class Deal extends DefaultModel
             if ($this->recent)
             {
                 $past = DateHelper::formatDBDate(date('Y-m-d H:i:s')." - 30 days");
-                $query->where('d.last_viewed > '.$this->db->Quote($past));
+                $query->where('d.last_viewed > '.$this->db->quote($past));
             }
 
             /**---------------------
@@ -805,13 +782,13 @@ class Deal extends DefaultModel
             //reports view
             if ($view == "reports")
             {
-                $order = $this->getState('Deal.'.$layout.'_filter_order');
-                $dir = $this->getState('Deal.'.$layout.'_filter_order_Dir');
+                $order = $this->getState()->get('Deal.'.$layout.'_filter_order');
+                $dir = $this->getState()->get('Deal.'.$layout.'_filter_order_Dir');
                 $query->order($order . ' ' . $dir);
             }
             else
             {
-                $orderString = $this->getState('Deal.filter_order', 'd.name') . " " . $this->getState('Deal.filter_order_Dir', 'asc');
+                $orderString = $this->getState()->get('Deal.filter_order', 'd.name') . " " . $this->getState()->get('Deal.filter_order_Dir', 'asc');
                 $query->order($orderString);
             }
         }
@@ -885,7 +862,7 @@ class Deal extends DefaultModel
         /** people **/
         if ($this->person_id)
         {
-            $query->leftJoin("#__people_cf AS dpcf ON dpcf.association_id = d.id AND dpcf.association_type='deal'");
+            $query->leftJoin("#__people_cf AS dpcf ON dpcf.association_id = d.id AND dpcf.association_type=" . $this->db->quote('deal'));
             $query->where("dpcf.person_id=".$this->person_id);
         }
 
@@ -936,8 +913,8 @@ class Deal extends DefaultModel
         /** ------------------------------------------
          * Set query limits and load results
          */
-        $limit = $this->getState($this->_view . '_limit');
-        $limitStart = $this->getState($this->_view . '_limitstart');
+        $limit = $this->getState()->get($this->_view . '_limit');
+        $limitStart = $this->getState()->get($this->_view . '_limitstart');
 
         if (!$this->_id && $limit != 0 && $this->limit == 1)
         {
@@ -950,12 +927,9 @@ class Deal extends DefaultModel
                 $state->set($this->_view . '_limit', $limit);
                 $state->set($this->_view . '_limitstart', $limitStart);
             }
-
-            // Todo: should not be string
-            $query .= " LIMIT " . $limit . " OFFSET " . $limitStart;
         }
 
-        $deals = $this->db->setQuery($query)->loadObjectList();
+        $deals = $this->db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
         /**------------------------------------------
          * Generate queries to join essential data
@@ -970,7 +944,7 @@ class Deal extends DefaultModel
                  */
                 foreach ($deals as $key => $deal)
                 {
-                    self::getDealDetails($deals[$key]);
+                    $this->getDealDetails($deals[$key]);
 
                     /** ------------------------------------------
                      * Update last access for each deal
@@ -1059,7 +1033,7 @@ class Deal extends DefaultModel
 
             $deal = $this->db->setQuery($query)->loadObject();
 
-            self::getDealDetails($deal);
+            $this->getDealDetails($deal);
         }
         else
         {
@@ -1099,7 +1073,7 @@ class Deal extends DefaultModel
             ->select("DISTINCT(d.id),d.name,d.id")
             ->from("#__deals AS d")
             ->leftJoin('#__users AS users ON users.id = d.owner_id')
-            ->leftJoin("#__people_cf AS pcf ON pcf.association_id = d.id AND pcf.association_type='deal'");
+            ->leftJoin("#__people_cf AS pcf ON pcf.association_id = d.id AND pcf.association_type=" . $this->db->quote('deal'));
 
         /** ---------------------------------------------------------------
          * Filter data using member role permissions
@@ -1265,7 +1239,7 @@ class Deal extends DefaultModel
 
         //left join people that have won deals
         $query->leftJoin("#__sources AS s ON s.id = p.source_id");
-        $query->leftJoin("#__people_cf AS dpcf ON dpcf.person_id = p.id AND dpcf.association_type='deal'");
+        $query->leftJoin("#__people_cf AS dpcf ON dpcf.person_id = p.id AND dpcf.association_type=" . $this->db->quote('deal'));
         $query->leftJoin("#__deals AS d ON d.id = dpcf.association_id AND d.published>0");
 
         //filter where we have associated source ids and the person is a lead contact
@@ -1285,25 +1259,26 @@ class Deal extends DefaultModel
             if ($access_type == 'team') {
                 //get team members
                 $team_members = UsersHelper::getTeamUsers($access_id);
-                $query .= " AND d.owner_id IN (";
+                $string = "d.owner_id IN (";
                 //loop to make string
-                $query .= "0,";
+	            $string .= "0,";
                 foreach ($team_members as $key=>$member) {
-                    $query .= "'".$member['id']."',";
+	                $string .= "'".$member['id']."',";
                 }
-                $query  = substr($query,0,-1);
-                $query .= ") ";
+	            $string  = substr($query,0,-1);
+	            $string .= ") ";
+	            $query->where($string);
             }
 
             //member sorting
             if ($access_type == 'member') {
-                $query .= " AND d.owner_id=$access_id ";
+                $query->where("d.owner_id=$access_id ");
             }
 
         }
 
         //group by source ids
-        $query .= " GROUP BY s.id";
+	    $query->group('s.id');
 
         $results = $this->db->setQuery($query)->loadAssocList();
 
@@ -1426,7 +1401,7 @@ class Deal extends DefaultModel
             ->select("COUNT(*)")
             ->from("#__people_cf")
             ->where("association_id=".$deal_id)
-            ->where("association_type='deal'")
+            ->where("association_type=" . $this->db->quote('deal'))
             ->where("person_id=".$contact_id);
 
         $contacts = $this->db->setQuery($query)->loadResult();
@@ -1435,7 +1410,7 @@ class Deal extends DefaultModel
 
             $created = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
-            $data = array($deal_id.",'deal',".$contact_id.",'".$created."'");
+            $data = $deal_id."," . $this->db->quote('deal') . ",".$contact_id.",".$this->db->quote($created);
 
             $query
                 ->clear()
@@ -1458,7 +1433,7 @@ class Deal extends DefaultModel
         $query = $this->db->getQuery(true)
             ->select('d.id')
             ->from('#__deals AS d')
-            ->where('LOWER(d.name) = "'.strtolower($name).'"');
+            ->where('LOWER(d.name) = ' . $this->db->quote(strtolower($name)));
 
         return $this->db->setQuery($query)->loadResult();
     }

@@ -11,14 +11,13 @@
 namespace Cobalt\Model;
 
 use Joomla\Registry\Registry;
-use Joomla\Model\AbstractModel;
 use Cobalt\Pagination;
 use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-class Cobalt extends AbstractModel
+class Cobalt extends DefaultModel
 {
     public $view = null;
     public $_model = null;
@@ -31,10 +30,9 @@ class Cobalt extends AbstractModel
      */
     public function __construct()
     {
-        $app = \Cobalt\Container::fetch('app');
         parent::__construct();
         $this->getListLimits();
-        $this->view = $app->input->get('view');
+        $this->view = $this->app->input->get('view');
     }
 
     /**
@@ -50,19 +48,13 @@ class Cobalt extends AbstractModel
     public function saveorder($pks = null, $order = null)
     {
         // Initialise variables.
-        $app = \Cobalt\Container::fetch('app');
-        $data = $app->input->getRequest('post');
+        $data = $this->app->input->post->getArray();
 
-        $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';
-
-        if (!class_exists()) {
-            return false;
-        }
-        $table = new $tableClass;
+	    $table = $this->getTable(ucfirst($data['view']));
         $conditions = array();
 
         if (empty($pks)) {
-            $app->enqueueMessage(TextHelper::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'), 'error');
+            $this->app->enqueueMessage(TextHelper::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'), 'error');
 
             return false;
         }
@@ -120,40 +112,11 @@ class Cobalt extends AbstractModel
         return array();
     }
 
-     /**
-     * Method to get a JPagination object for the data set.
-     *
-     * @return JPagination A JPagination object for the data set.
-     *
-     * @since   11.1
-     */
-    public function getPagination()
-    {
-        // Get a storage key.
-        $store = $this->getStoreId('getPagination');
-
-        // Try to load the data from internal storage.
-        if (isset($this->cache[$store])) {
-            return $this->cache[$store];
-        }
-
-        // Create the pagination object.
-        jimport('joomla.html.pagination');
-        $page = new Pagination($this->getTotal(), $this->getState($this->view.'_limitstart'), $this->getState($this->view.'_limit'));
-
-        // Add the object to the internal cache.
-        $this->cache[$store] = $page;
-
-        return $this->cache[$store];
-    }
-
     public function getListLimits()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         // Get pagination request variables
-        $limit = $app->getUserStateFromRequest($this->view.'_limit','limit',10);
-        $limitstart = $app->getUserStateFromRequest($this->view.'_limitstart','limitstart',0);
+        $limit = $this->app->getUserStateFromRequest($this->view.'_limit','limit',10);
+        $limitstart = $this->app->getUserStateFromRequest($this->view.'_limitstart','limitstart',0);
 
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -164,17 +127,6 @@ class Cobalt extends AbstractModel
         $state->set($this->view.'_limitstart', $limitstart);
 
         $this->setState($state);
-    }
-
-    public function getTotal()
-    {
-        if ( empty ( $this->_total ) ) {
-          $query = $this->__buildQuery();
-          $this->_total = $this->_getListCount($query);
-          $this->_total = $this->_total ? $this->_total : 0;
-          }
-
-          return $this->_total;
     }
 
     /**
@@ -193,17 +145,9 @@ class Cobalt extends AbstractModel
     public function reorder($pks, $delta = 0)
     {
         // Initialise variables.
-        $app = \Cobalt\Container::fetch('app');
-        $data = $app->input->getRequest('post');
+        $data = $this->app->input->post->getArray();
 
-        $tableClass = 'Cobalt\\Table\\' . ucfirst($data['view']) . 'Table';
-
-        if (!class_exists($tableClass)) {
-            return false;
-        }
-
-        /** @var \Cobalt\Table\AbstractTable $table */
-        $table = new $tableClass;
+	    $table = $this->getTable(ucfirst($data['view']));
         $pks = (array) $pks;
         $result = true;
 

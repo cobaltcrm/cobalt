@@ -11,7 +11,6 @@
 namespace Cobalt\Model;
 
 use Joomla\Registry\Registry;
-use Cobalt\Table\CategoriesTable;
 use Cobalt\Helper\RouteHelper;
 
 // no direct access
@@ -24,7 +23,6 @@ class Categories extends DefaultModel
     public function store()
     {
         //Load Tables
-        $app = \Cobalt\Container::fetch('app');
         $row = $this->getTable('Categories');
         $data = $this->app->input->post->getArray();
 
@@ -75,8 +73,8 @@ class Categories extends DefaultModel
         /** ------------------------------------------
          * Set query limits/ordering and load results
          */
-        $limit = $this->getState($this->_view . '_limit');
-        $limitStart = $this->getState($this->_view . '_limitstart');
+        $limit = $this->getState()->get($this->_view . '_limit');
+        $limitStart = $this->getState()->get($this->_view . '_limitstart');
 
         if ($limit != 0)
         {
@@ -90,11 +88,9 @@ class Categories extends DefaultModel
                 $this->state->set($this->_view . '_limit', $limit);
                 $this->state->set($this->_view . '_limitstart', $limitStart);
             }
-
-            $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-        return $this->db->setQuery($query)->loadAssocList();
+        return $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 
     }
 
@@ -125,9 +121,8 @@ class Categories extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Categories.filter_order', 'filter_order', 'c.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Categories.filter_order_Dir', 'filter_order_Dir', 'asc');
+        $filter_order = $this->app->getUserStateFromRequest('Categories.filter_order', 'filter_order', 'c.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Categories.filter_order_Dir', 'filter_order_Dir', 'asc');
 
         $state = new Registry;
 
@@ -136,8 +131,8 @@ class Categories extends DefaultModel
         $state->set('Categories.filter_order_Dir', $filter_order_Dir);
 
         // Get pagination request variables
-        $limit = $app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
-        $limitstart = $app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
+        $limit = $this->app->getUserStateFromRequest($this->_view . '_limit', 'limit', 10);
+        $limitstart = $this->app->getUserStateFromRequest($this->_view . '_limitstart', 'limitstart', 0);
 
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
