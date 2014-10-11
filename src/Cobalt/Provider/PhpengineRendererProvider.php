@@ -14,7 +14,7 @@ use Cobalt\Templating\PhpEngineRenderer;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
-use Symfony\Component\Templating\Asset\PathPackage;
+use Symfony\Component\Templating\Asset\UrlPackage;
 use Symfony\Component\Templating\Helper\SlotsHelper;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
@@ -47,7 +47,7 @@ class PhpengineRendererProvider implements ServiceProviderInterface
 				$loader = new FilesystemLoader(array(JPATH_THEMES . '/' . $app->getTemplate() . '/%name%.php'));
 
 				$engine = new PhpEngine(new TemplateNameParser, $loader);
-				$engine->addHelpers(array(new SlotsHelper, new AssetsHelper(new PathPackage)));
+				$engine->addHelpers(array(new SlotsHelper, new AssetsHelper(new UrlPackage($app->get('uri.base.full')))));
 
 				return new PhpEngineRenderer(new TemplateNameParser, $loader, $engine);
 			},
