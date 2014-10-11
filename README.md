@@ -125,13 +125,13 @@ Since we are using Joomla Framework, let's follow it's [Coding Standars](http://
 Templates are rendered with the [Symfony Templating Component](http://symfony.com/doc/current/components/templating/introduction.html).  Some considerations for the implementation in Cobalt:
 
 The lookup paths are as follows:
-* <root>/themes/<template>/layouts/<View>/<layout>.php
-* <root>/src/Cobalt/View/<View>/tmpl/<layout>.php
-* <root>/themes/<template>/layouts/<layout>.php
+* `<root>/themes/<template>/layouts/<View>/<layout>.php`
+* `<root>/src/Cobalt/View/<View>/tmpl/<layout>.php`
+* `<root>/themes/<template>/layouts/<layout>.php`
 
 Only base template layouts (such as the main index layout) should go in the root of the template's layouts folder.  Otherwise, everything else should go into the folder for the specific view.
 
-In the lookup paths, <View> requires the first character to be uppercase, similar to how the Views are structured in the `\Cobalt\View` namespace.
+In the lookup paths, `<View>` requires the first character to be uppercase, similar to how the Views are structured in the `\Cobalt\View` namespace.
 
 When a layout extends another, you will call `$view->extend()`.  Please exclude the .php extension from the names here, it is automatically appended during the actual lookup processing.  For most layouts that extend the base template layout, you will call `$view->extend('index');` to properly extend the base template.
 
