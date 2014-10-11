@@ -119,3 +119,24 @@ Ps.2: You can specify some filter condition like: published=1
 ### Coding standards
 
 Since we are using Joomla Framework, let's follow it's [Coding Standars](http://joomla.github.io/coding-standards/).
+
+### Templating
+
+Templates are rendered with the [Symfony Templating Component](http://symfony.com/doc/current/components/templating/introduction.html).  Some considerations for the implementation in Cobalt:
+
+The lookup paths are as follows:
+* <root>/themes/<template>/layouts/<View>/<layout>.php
+* <root>/src/Cobalt/View/<View>/tmpl/<layout>.php
+* <root>/themes/<template>/layouts/<layout>.php
+
+Only base template layouts (such as the main index layout) should go in the root of the template's layouts folder.  Otherwise, everything else should go into the folder for the specific view.
+
+In the lookup paths, <View> requires the first character to be uppercase, similar to how the Views are structured in the `\Cobalt\View` namespace.
+
+When a layout extends another, you will call `$view->extend()`.  Please exclude the .php extension from the names here, it is automatically appended during the actual lookup processing.  For most layouts that extend the base template layout, you will call `$view->extend('index');` to properly extend the base template.
+
+To render the contents of another layout, you will call `$view->render()`.  The render method accepts two parameters; the template name and an optional array of parameters to inject into the layout.  The template name should be passed as an instance of `\Cobalt\Templating\TemplateReference` to allow the correct paths to be extracted.  So, for example, to render the `dashboard_event_dock` layout from the `Events` view and inject an `$events` variable, you would call `$view->render(new TemplateReference('dashboard_event_dock', 'events'), array('events' => $events))`.
+
+An `AssetsHelper` class is available in the layouts in order to add and render media.  To access it, you would reference `$view['assets']`.  Please see the [Bootstrap theme index](/themes/bootstrap/layouts/index.php) for examples on how to use this helper.
+
+The View class is responsible for injecting data into the layouts; the layout is not within the instance of a view class and therefore `$this` is not in scope for the layouts as expected.  Please see the [Dashboard HTML View](/src/Cobalt/View/Dashboard/Html.php) for an example on how to correctly construct a view and inject the data.
