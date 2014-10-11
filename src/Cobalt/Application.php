@@ -11,7 +11,6 @@ namespace Cobalt;
 defined('_CEXEC') or die;
 
 use JFactory;
-use JDocument;
 
 use Joomla\DI\Container;
 use Joomla\DI\ContainerAwareInterface;
@@ -77,14 +76,6 @@ final class Application extends AbstractWebApplication implements ContainerAware
 	public $router = null;
 
 	/**
-	 * Document object
-	 *
-	 * @var    JDocument
-	 * @since  1.0
-	 */
-	public $document = null;
-
-	/**
 	 * The application message queue.
 	 *
 	 * @var    array
@@ -136,7 +127,6 @@ final class Application extends AbstractWebApplication implements ContainerAware
 
 		// Setup the application pieces.
 		$this->setContainer($container);
-		$this->loadDocument();
 
 		// Load the library language file
 		//$this->getLanguage()->load('lib_joomla', JPATH_BASE);
@@ -363,12 +353,6 @@ final class Application extends AbstractWebApplication implements ContainerAware
 		$this->set('theme', $template->template);
 		$this->set('themeFile', $this->input->get('tmpl', 'index') . '.php');
 
-		// Set metadata
-		$this->document->setTitle('Cobalt');
-
-		// Start the output buffer
-		ob_start();
-
 		// Install check
 		if (!file_exists(JPATH_CONFIGURATION . '/configuration.php')  || (filesize(JPATH_CONFIGURATION . '/configuration.php') < 10))
 		{
@@ -472,46 +456,6 @@ final class Application extends AbstractWebApplication implements ContainerAware
 				TemplateHelper::endCompWrap();
 			}
 		}
-
-		$contents = ob_get_clean();
-
-		if ($this->input->get('format', 'html') === 'raw')
-		{
-			$this->setBody($contents);
-		}
-		else
-		{
-			$this->document->setBuffer($contents, 'cobalt');
-			$this->setBody($this->document->render(false, (array) $template));
-		}
-	}
-
-	/**
-	 * Load the document object
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function loadDocument()
-	{
-		if (empty($this->document))
-		{
-			$this->document     = JDocument::getInstance();
-			JFactory::$document = $this->document;
-		}
-	}
-
-	/**
-	 * Retrieve the document object
-	 *
-	 * @return  JDocument
-	 *
-	 * @since   1.0
-	 */
-	public function getDocument()
-	{
-		return $this->document;
 	}
 
 	/**

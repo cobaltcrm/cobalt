@@ -85,7 +85,7 @@ if (COBALT_CLI)
 }
 else
 {
-	\Tracy\Debugger::enable();
+	//\Tracy\Debugger::enable();
 
 	$app = new \Cobalt\Application;
 	$app->execute();

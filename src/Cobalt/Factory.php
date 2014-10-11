@@ -96,8 +96,6 @@ abstract class Factory
 	{
 		// Get the application
 		$app = Factory::getApplication();
-
-		$document = $app->getDocument();
 		$app->input->set('view', $viewName);
 
 		$viewClass  = 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);

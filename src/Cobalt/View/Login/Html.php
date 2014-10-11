@@ -1,35 +1,35 @@
 <?php
-/*------------------------------------------------------------------------
-# Cobalt
-# ------------------------------------------------------------------------
-# @author Cobalt
-# @copyright Copyright (C) 2012 cobaltcrm.org All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Website: http://www.cobaltcrm.org
--------------------------------------------------------------------------*/
+/**
+ * Cobalt CRM
+ *
+ * @copyright  Copyright (C) 2012 - 2014 cobaltcrm.org All Rights Reserved.
+ * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License Version 2 or Later
+ */
 
 namespace Cobalt\View\Login;
 
-use Cobalt\Factory;
-use Joomla\View\AbstractHtmlView;
+use Cobalt\View\AbstractHtmlView;
 
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
+defined('_CEXEC') or die;
 
+/**
+ * HTML view class for the login view
+ *
+ * @since  1.0
+ */
 class Html extends AbstractHtmlView
 {
-    public function render()
-    {
-    	$app = Factory::getApplication();
-    	$app->getDocument()->addScriptDeclaration("
-
-    		jQuery(function($) {
-				$('#username').focus();
-			});
-
-    	");
-
-        return parent::render();
-    }
-
+	/**
+	 * Method to render the view.
+	 *
+	 * @return  string  The rendered view.
+	 *
+	 * @since   1.0
+	 * @throws  \RuntimeException
+	 */
+	public function render()
+	{
+		return parent::render();
+	}
 }

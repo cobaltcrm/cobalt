@@ -8,12 +8,16 @@
 
 namespace Cobalt\Provider;
 
-use BabDev\Renderer\PhpEngineRenderer;
+use Cobalt\Templating\Helper\AssetsHelper;
+use Cobalt\Templating\PhpEngineRenderer;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
+use Symfony\Component\Templating\Asset\PathPackage;
+use Symfony\Component\Templating\Helper\SlotsHelper;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
 
 /**
@@ -40,9 +44,12 @@ class PhpengineRendererProvider implements ServiceProviderInterface
 				/* @type  \Cobalt\Application  $app */
 				$app = $container->get('app');
 
-				$loader = new FilesystemLoader(array(JPATH_THEMES . '/' . $app->getTemplate()));
+				$loader = new FilesystemLoader(array(JPATH_THEMES . '/' . $app->getTemplate() . '/%name%.php'));
 
-				return new PhpEngineRenderer(new TemplateNameParser, $loader);
+				$engine = new PhpEngine(new TemplateNameParser, $loader);
+				$engine->addHelpers(array(new SlotsHelper, new AssetsHelper(new PathPackage)));
+
+				return new PhpEngineRenderer(new TemplateNameParser, $loader, $engine);
 			},
 			true,
 			true

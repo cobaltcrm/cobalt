@@ -46,7 +46,7 @@ class DefaultController extends AbstractController implements ContainerAwareInte
 	    $view = Factory::getView($viewName, $layoutName, $viewFormat, array('bypass' => false));
 
         // Render our view.
-        echo $view->render();
+	    $this->getApplication()->setBody($view->render());
 
         return true;
     }
