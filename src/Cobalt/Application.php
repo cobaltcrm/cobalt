@@ -419,9 +419,6 @@ final class Application extends AbstractWebApplication implements ContainerAware
 				// Set a default view if none exists
 				$this->input->def('view', 'dashboard');
 
-				// Grab document instance
-				$document = $this->getDocument();
-
 				// Start component div wrapper
 				if (!in_array($this->input->get('view'), array('print')))
 				{
@@ -450,8 +447,8 @@ final class Application extends AbstractWebApplication implements ContainerAware
 			// Perform the Request task
 			$controllerObj->execute();
 
-			// End componenet wrapper
-			if ($user !== false && $format !== 'raw')
+			// End component wrapper
+			if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides))
 			{
 				TemplateHelper::endCompWrap();
 			}

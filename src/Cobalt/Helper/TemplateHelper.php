@@ -507,7 +507,6 @@ class TemplateHelper
     public static function showMessages()
     {
         $app = Factory::getApplication();
-        $document = $app->getDocument();
         $messageTypes = $app->getMessageQueue();
         $js = '';
         if (is_array($messageTypes) && $messageTypes)
@@ -522,11 +521,11 @@ class TemplateHelper
                     }
                 }
             }
-            $document->addScriptDeclaration("
+            /*$document->addScriptDeclaration("
 jQuery(function() {
 " . $js . "
 });
-");
+");*/
             $app->clearMessageQueue();
         }
     }
