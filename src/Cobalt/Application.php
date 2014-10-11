@@ -131,7 +131,8 @@ final class Application extends AbstractWebApplication implements ContainerAware
 
 		$container = new Container;
 
-		$container->registerServiceProvider(new Provider\ApplicationServiceProvider($this));
+		$container->registerServiceProvider(new Provider\ApplicationServiceProvider($this))
+			->registerServiceProvider(new Provider\PhpengineRendererProvider);
 
 		// Setup the application pieces.
 		$this->setContainer($container);
@@ -400,8 +401,8 @@ final class Application extends AbstractWebApplication implements ContainerAware
 		{
 			// Finish bootstrapping the application now
 			$this->getContainer()->registerServiceProvider(new Provider\ConfigServiceProvider)
-			     ->registerServiceProvider(new Provider\DatabaseServiceProvider)
-			     ->registerServiceProvider(new Provider\SessionServiceProvider);
+				->registerServiceProvider(new Provider\DatabaseServiceProvider)
+		        ->registerServiceProvider(new Provider\SessionServiceProvider);
 
 			$this->loadConfiguration();
 
