@@ -1,108 +1,109 @@
 <?php
-/*------------------------------------------------------------------------
-# Cobalt
-# ------------------------------------------------------------------------
-# @author Cobalt
-# @copyright Copyright (C) 2012 cobaltcrm.org All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Website: http://www.cobaltcrm.org
--------------------------------------------------------------------------*/
+/**
+ * Cobalt CRM
+ *
+ * @copyright  Copyright (C) 2012 - 2014 cobaltcrm.org All Rights Reserved.
+ * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License Version 2 or Later
+ */
 
 namespace Cobalt\View\Dashboard;
 
 use Cobalt\Factory;
-use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\View\AbstractHtmlView;
 
-// no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
+defined('_CEXEC') or die;
 
+/**
+ * HTML view class for the login view
+ *
+ * @since  1.0
+ */
 class Html extends AbstractHtmlView
 {
-    public function render($tpl = null)
-    {
+	/**
+	 * Method to render the view.
+	 *
+	 * @return  string  The rendered view.
+	 *
+	 * @since   1.0
+	 * @throws  \RuntimeException
+	 */
+	public function render()
+	{
+		$viewData = array();
 
-        //get model and retrieve info
-	    /** @var \Cobalt\Model\Event $model */
-        $model = Factory::getModel('Event');
+		/** @var \Cobalt\Model\Event $model */
+		$model = Factory::getModel('Event');
 
-        if (TemplateHelper::isMobile())
-        {
-            $model->set('current_events', true);
-        }
+		if (TemplateHelper::isMobile())
+		{
+			$model->set('current_events', true);
+		}
 
-        $events = $model->getEvents();
-        $eventDock = Factory::getView('events','dashboard_event_dock','phtml', array('events'=>$events));
+		$events = $model->getEvents();
 
-	    /** @var \Cobalt\Model\Deal $dealModel */
-	    $dealModel = Factory::getModel('Deal');
+		/** @var \Cobalt\Model\Deal $dealModel */
+		$dealModel = Factory::getModel('Deal');
 		$dealModel->set('_view', 'dashboard');
+		$dealModel->set('recent', true);
+		$dealModel->set('archived', 0);
+		$recentDeals = $dealModel->getDeals();
 
-        $dealModel->set('recent',true);
-        $dealModel->set('archived',0);
-        $recentDeals = $dealModel->getDeals();
+		//get data for sales graphs
+		/** @var \Cobalt\Model\Graphs $model */
+		$model      = Factory::getModel('Graphs');
+		$graph_data = $model->getGraphData();
 
-        $doc = Factory::getApplication()->getDocument();
+		$activityHelper = new ActivityHelper;
+		$activity       = $activityHelper->getActivity();
 
-        //get data for sales graphs
-	    /** @var \Cobalt\Model\Graphs $model */
-	    $model = Factory::getModel('Graphs');
-        $graph_data = $model->getGraphData();
+		// Assign results to view
+		$viewData['events']      = $events;
+		$viewData['graph_data']  = $graph_data;
+		$viewData['recentDeals'] = $recentDeals;
+		$viewData['activity']    = $activity;
 
-        $activityHelper = new ActivityHelper;
-        $activity = $activityHelper->getActivity();
+		$json = true;
 
-        //assign results to view
-        $this->eventDock 	= $eventDock;
-        $this->graph_data 	= $graph_data;
-        $this->recentDeals 	= $recentDeals;
-        $this->activity 	= $activity;
+		/** @var \Cobalt\Model\People $peopleModel */
+		$peopleModel = Factory::getModel('People');
 
-        $json = TRUE;
+		if (TemplateHelper::isMobile())
+		{
+			$dealModel->set('recent', false);
+			$totalDeals = $dealModel->getTotal();
 
-	    /** @var \Cobalt\Model\People $peopleModel */
-	    $peopleModel = Factory::getModel('People');
+			$peopleModel->set('type', 'leads');
+			$totalLeads = $peopleModel->getTotal();
 
-        if (TemplateHelper::isMobile())
-        {
+			$peopleModel->set('type', 'not_leads');
+			$totalContacts = $peopleModel->getTotal();
 
-            $dealModel->set('recent', false);
-            $totalDeals = $dealModel->getTotal();
+			/** @var \Cobalt\Model\Company $companyModel */
+			$companyModel   = Factory::getModel('Company');
+			$totalCompanies = $companyModel->getTotal();
 
-            $peopleModel->set('type', 'leads');
-            $totalLeads = $peopleModel->getTotal();
+			$user = UsersHelper::getLoggedInUser();
 
-            $peopleModel->set('type', 'not_leads');
-            $totalContacts = $peopleModel->getTotal();
+			$viewData['first_name']   = $user->first_name;
+			$viewData['numEvents']    = count($events);
+			$viewData['numDeals']     = $totalDeals;
+			$viewData['numLeads']     = $totalLeads;
+			$viewData['numContacts']  = $totalContacts;
+			$viewData['numCompanies'] = $totalCompanies;
+		}
 
-	        /** @var \Cobalt\Model\Company $companyModel */
-	        $companyModel = Factory::getModel('Company');
-            $totalCompanies = $companyModel->getTotal();
+		$viewData['peopleNames'] = $peopleModel->getPeopleNames($json);
 
-            $user = UsersHelper::getLoggedInUser();
+		/** @var \Cobalt\Model\Deal $dealModel */
+		$dealModel = Factory::getModel('Deal');
+		$viewData['dealNames'] = $dealModel->getDealNames($json);
 
-            $this->first_name 	= $user->first_name;
-            $this->numEvents 	= count($events);
-            $this->numDeals 	= $totalDeals;
-            $this->numLeads  	= $totalLeads;
-            $this->numContacts 	= $totalContacts;
-            $this->numCompanies = $totalCompanies;
-        }
+		$this->setData($viewData);
 
-        $peopleNames = $peopleModel->getPeopleNames($json);
-        $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
-
-	    /** @var \Cobalt\Model\Deal $dealModel */
-	    $dealModel = Factory::getModel('Deal');
-        $dealNames = $dealModel->getDealNames($json);
-        $doc->addScriptDeclaration("var deal_names=".$dealNames.";");
-
-         /** get latest activities **/
-        $this->latest_activities = Factory::getView('dashboard','latest_activities','phtml',array('activity' => $activity));
-
-        //display
-        return parent::render();
-    }
+		return parent::render();
+	}
 }

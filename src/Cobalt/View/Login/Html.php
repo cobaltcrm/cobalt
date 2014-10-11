@@ -10,7 +10,6 @@ namespace Cobalt\View\Login;
 
 use Cobalt\View\AbstractHtmlView;
 
-// no direct access
 defined('_CEXEC') or die;
 
 /**

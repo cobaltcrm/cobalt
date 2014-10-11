@@ -8,6 +8,7 @@
 
 defined('_CEXEC') or die;
 
+use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\StylesHelper;
 use Cobalt\Helper\TextHelper;
@@ -17,7 +18,7 @@ $controller = $app->input->get('controller');
 $view = $app->input->get('view');
 
 // Load menu
-$menu_model = new MenuModel;
+$menu_model = Factory::getModel('Menu');
 $list = $menu_model->getMenu();
 ?>
 

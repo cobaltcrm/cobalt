@@ -1,19 +1,32 @@
 <?php
-/*------------------------------------------------------------------------
-# Cobalt
-# ------------------------------------------------------------------------
-# @author Cobalt
-# @copyright Copyright (C) 2012 cobaltcrm.org All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Website: http://www.cobaltcrm.org
--------------------------------------------------------------------------*/
-// no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+/**
+ * Cobalt CRM
+ *
+ * @copyright  Copyright (C) 2012 - 2014 cobaltcrm.org All Rights Reserved.
+ * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License Version 2 or Later
+ */
 
-<script type="text/javascript">
-    var loc = "dashboard";
-    var graphData = <?php echo json_encode($this->graph_data); ?>;
-</script>
+defined('_CEXEC') or die;
+
+use Cobalt\Helper\ConfigHelper;
+use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\TextHelper;
+
+// Available variables in this layout
+/** @var \Symfony\Component\Templating\PhpEngine $view */
+/** @var array $graph_data */
+/** @var array $events */
+/** @var array $recentDeals */
+/** @var array $activity */
+/** @var string $peopleNames */
+/** @var string $dealNames */
+
+$view->extend('index');
+$view['assets']->addScriptDeclaration('var loc = "dashboard";');
+$view['assets']->addScriptDeclaration('var graphData = ' . json_encode($graph_data) . ';');
+$view['assets']->addScriptDeclaration('var people_names = ' . $peopleNames . ';');
+$view['assets']->addScriptDeclaration('var deal_names = ' . $dealNames . ';'); ?>
+
 <div class="page-header">
     <h1><?php echo TextHelper::_('COBALT_DASHBOARD_HEADER'); ?></h1>
 </div>
@@ -25,7 +38,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <ul class="dash_float_list list-unstyled" id="dash_floats_left">
             <li class="widget">
                 <div class="dash_float" id="com_cobalt_tasks_events">
-                        <?php echo $this->eventDock->render(); ?>
+                        <?php echo $view->render('events/dashboard_event_dock', array('events' => $events)) ?>
                 </div>
            </li>
            <li class="widget">
@@ -42,7 +55,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 </tr>
                             </thead>
                             <?php $i = 0; ?>
-                            <?php foreach ($this->recentDeals as $deal) : ?>
+                            <?php foreach ($recentDeals as $deal) : ?>
                                 <?php $k = $i%2; ?>
                                 <tr class="cobalt_row_'<?php echo $k; ?>">
                                     <td>
@@ -150,7 +163,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                     <th><?php echo TextHelper::_('COBALT_OCCURRED'); ?></th>
                                 </tr>
                             </thead>
-                            <?php echo $this->latest_activities->render(); ?>
+	                        <?php echo $view->render('dashboard/latest_activities', array('activities' => $activity)) ?>
                         </table>
                     </div>
                 </div>

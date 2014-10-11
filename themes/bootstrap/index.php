@@ -66,7 +66,7 @@ endif;*/
 	</head>
 	<body>
 		<?php if ($isAuthenticated && !in_array($app->input->get('view'), array('print'))) : ?>
-		<?php $view->render('toolbar.php'); ?>
+		<?php echo $view->render('toolbar'); ?>
 		<?php endif; ?>
 		<?php if ($isAuthenticated) : ?>
 		<div class="container">
