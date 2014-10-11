@@ -419,18 +419,8 @@ final class Application extends AbstractWebApplication implements ContainerAware
 				// Set a default view if none exists
 				$this->input->def('view', 'dashboard');
 
-				// Start component div wrapper
-				if (!in_array($this->input->get('view'), array('print')))
-				{
-					TemplateHelper::loadToolbar();
-				}
-
-				TemplateHelper::startCompWrap();
-
 				// Load javascript language
 				TemplateHelper::loadJavascriptLanguage();
-
-				TemplateHelper::showMessages();
 			}
 
 			if (!$loggedIn && !($controllerObj instanceof \Cobalt\Controller\Login))
@@ -446,12 +436,6 @@ final class Application extends AbstractWebApplication implements ContainerAware
 
 			// Perform the Request task
 			$controllerObj->execute();
-
-			// End component wrapper
-			if ($loggedIn && $format !== 'raw' && !in_array($controller, $overrides))
-			{
-				TemplateHelper::endCompWrap();
-			}
 		}
 	}
 
