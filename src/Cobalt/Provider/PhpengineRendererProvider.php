@@ -44,7 +44,13 @@ class PhpengineRendererProvider implements ServiceProviderInterface
 				/* @type  \Cobalt\Application  $app */
 				$app = $container->get('app');
 
-				$loader = new FilesystemLoader(array(JPATH_THEMES . '/' . $app->getTemplate() . '/%name%.php'));
+				$lookupPaths = array(
+					JPATH_THEMES . '/' . $app->getTemplate() . '/layouts/%view%/%name%.php',
+				    JPATH_COBALT . '/View/%view%/tmpl/%name%.php',
+					JPATH_THEMES . '/' . $app->getTemplate() . '/layouts/%name%.php',
+				);
+
+				$loader = new FilesystemLoader($lookupPaths);
 
 				$engine = new PhpEngine(new TemplateNameParser, $loader);
 				$engine->addHelpers(array(new SlotsHelper, new AssetsHelper(new UrlPackage($app->get('uri.base.full')))));

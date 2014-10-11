@@ -112,7 +112,7 @@ abstract class Factory
 		self::initializeRenderer();
 
 		$view = new $viewClass($model, self::getContainer()->get('renderer'));
-		$view->setLayout($viewName . '/' . $layoutName);
+		$view->setLayout($layoutName);
 
 		if (isset($vars))
 		{

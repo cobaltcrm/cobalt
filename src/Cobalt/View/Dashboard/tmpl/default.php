@@ -11,6 +11,7 @@ defined('_CEXEC') or die;
 use Cobalt\Helper\ConfigHelper;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\TextHelper;
+use Cobalt\Templating\TemplateReference;
 
 // Available variables in this layout
 /** @var \Symfony\Component\Templating\PhpEngine $view */
@@ -38,7 +39,7 @@ $view['assets']->addScriptDeclaration('var deal_names = ' . $dealNames . ';'); ?
         <ul class="dash_float_list list-unstyled" id="dash_floats_left">
             <li class="widget">
                 <div class="dash_float" id="com_cobalt_tasks_events">
-                        <?php echo $view->render('events/dashboard_event_dock', array('events' => $events)) ?>
+                        <?php echo $view->render(new TemplateReference('dashboard_event_dock', 'events'), array('events' => $events)) ?>
                 </div>
            </li>
            <li class="widget">
@@ -163,7 +164,7 @@ $view['assets']->addScriptDeclaration('var deal_names = ' . $dealNames . ';'); ?
                                     <th><?php echo TextHelper::_('COBALT_OCCURRED'); ?></th>
                                 </tr>
                             </thead>
-	                        <?php echo $view->render('dashboard/latest_activities', array('activities' => $activity)) ?>
+	                        <?php echo $view->render(new TemplateReference('latest_activities', 'dashboard'), array('activities' => $activity)) ?>
                         </table>
                     </div>
                 </div>

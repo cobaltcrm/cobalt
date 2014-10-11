@@ -12,6 +12,7 @@ use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
+use Cobalt\Templating\TemplateReference;
 
 // Available variables in this layout
 /** @var \Symfony\Component\Templating\PhpEngine $view */
@@ -77,7 +78,7 @@ $app = Factory::getApplication();
 			</div>
 			<div id="task_container">
 				<div id="task_list">
-					<?php echo $view->render('events/event_listings', array('events' => $events));?>
+					<?php echo $view->render(new TemplateReference('event_listings', 'events'), array('events' => $events));?>
 				</div>
 				<div id="edit_task" style="display:none;"></div>
 				<div id="edit_event" style="display:none;"></div>

@@ -13,6 +13,7 @@ use BabDev\Renderer\RendererInterface;
 use Symfony\Component\Templating\Loader\LoaderInterface;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParserInterface;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 
 /**
  * PhpEngine template renderer
@@ -54,8 +55,8 @@ class PhpEngineRenderer implements RendererInterface
 	/**
 	 * Render and return compiled data.
 	 *
-	 * @param   string  $template  The template file name
-	 * @param   array   $data      The data to pass to the template
+	 * @param   string|TemplateReferenceInterface  $template  A template name or a TemplateReferenceInterface instance
+	 * @param   array                              $data      The data to pass to the template
 	 *
 	 * @return  string  Compiled data
 	 *

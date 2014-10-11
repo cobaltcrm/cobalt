@@ -10,6 +10,7 @@ namespace Cobalt\View;
 
 use BabDev\Renderer\RendererInterface;
 
+use Cobalt\Templating\TemplateReference;
 use Joomla\Model\ModelInterface;
 use Joomla\View\AbstractView;
 
@@ -111,7 +112,9 @@ abstract class AbstractHtmlView extends AbstractView
 	 */
 	public function render()
 	{
-		return $this->getRenderer()->render($this->getLayout(), $this->getData());
+		$view = str_replace(array('Cobalt\\View\\', '\\Html'), '', get_called_class());
+
+		return $this->getRenderer()->render(new TemplateReference($this->getLayout(), $view), $this->getData());
 	}
 
 	/**
