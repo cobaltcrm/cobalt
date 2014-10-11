@@ -100,18 +100,6 @@ abstract class Factory
 		$document = $app->getDocument();
 		$app->input->set('view', $viewName);
 
-		// Register the layout paths for the view
-		$paths = new \SplPriorityQueue;
-
-		$themeOverride = JPATH_THEMES . '/' . $app->get('theme') . '/html/' . strtolower($viewName);
-
-		if (is_dir($themeOverride))
-		{
-			$paths->insert($themeOverride, 'normal');
-		}
-
-		$paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
-
 		$viewClass  = 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
 		$modelClass = ucfirst($viewName);
 
@@ -122,9 +110,11 @@ abstract class Factory
 
 		$model = is_null($model) ? Factory::getModel($modelClass) : $model;
 
-		$view = new $viewClass($model, $paths);
-		$view->setLayout($layoutName);
-		$view->document = $document;
+		// Initialize the RendererInterface object
+		self::initializeRenderer();
+
+		$view = new $viewClass($model, self::getContainer()->get('renderer'));
+		$view->setLayout($viewName . '/' . $layoutName);
 
 		if (isset($vars))
 		{
@@ -140,5 +130,33 @@ abstract class Factory
 		}
 
 		return $view;
+	}
+
+	/**
+	 * Method to initialize the renderer object
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 * @throws  \RuntimeException
+	 */
+	private static function initializeRenderer()
+	{
+		// Add the provider to the DI container if it doesn't exist
+		if (!self::getContainer()->exists('renderer'))
+		{
+			$type = 'Phpengine';
+
+			// Set the class name for the renderer's service provider
+			$class = '\\Cobalt\\Provider\\' . ucfirst($type) . 'RendererProvider';
+
+			// Sanity check
+			if (!class_exists($class))
+			{
+				throw new \RuntimeException(sprintf('Renderer provider for renderer type %s not found.', ucfirst($type)));
+			}
+
+			self::getContainer()->registerServiceProvider(new $class());
+		}
 	}
 }
