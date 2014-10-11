@@ -24,7 +24,9 @@
 		"joomla/view": "~1.1",
 		"symfony/http-foundation": "2.3.*",
 		"filp/whoops": "1.*",
-		"tracy/tracy": "2.2.3"
+		"tracy/tracy": "2.2.3",
+		"babdev/renderer": "dev-master",
+		"symfony/templating": "~2.5"
 	},
 	"autoload": {
 		"psr-0": {
