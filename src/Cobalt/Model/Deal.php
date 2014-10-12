@@ -1008,7 +1008,7 @@ class Deal extends DefaultModel
          */
 
            $notesModel = new Note;
-           $deal->notes = $notesModel->getNotes($deal_id, 'deal');
+           $deal->notes = $notesModel->getNotes($deal_id, 'deal', false);
 
          /** ------------------------------------------
          *  Join documents

@@ -17,7 +17,7 @@ use Cobalt\View\AbstractHtmlView;
 defined('_CEXEC') or die;
 
 /**
- * HTML view class for the login view
+ * HTML view class for the dashboard view
  *
  * @since  1.0
  */

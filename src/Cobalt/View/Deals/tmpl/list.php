@@ -1,15 +1,26 @@
 <?php
-/*------------------------------------------------------------------------
-# Cobalt
-# ------------------------------------------------------------------------
-# @author Cobalt
-# @copyright Copyright (C) 2012 cobaltcrm.org All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Website: http://www.cobaltcrm.org
--------------------------------------------------------------------------*/
-// no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = \Cobalt\Factory::getApplication();
+/**
+ * Cobalt CRM
+ *
+ * @copyright  Copyright (C) 2012 - 2014 cobaltcrm.org All Rights Reserved.
+ * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License Version 2 or Later
+ */
+
+defined('_CEXEC') or die;
+
+use Cobalt\Helper\DealHelper;
+use Cobalt\Helper\TextHelper;
+use Cobalt\Helper\UsersHelper;
+use Cobalt\Templating\TemplateReference;
+
+// Available variables in this layout
+/** @var \Symfony\Component\Templating\PhpEngine $view */
+/** @var array $dealList */
+
+$stages   = DealHelper::getStages(null, true, false);
+$statuses = DealHelper::getStatuses(null, true);
+$sources  = DealHelper::getSources(null);
+$users    = UsersHelper::getUsers(null, true);
 ?>
 <thead>
     <tr>
@@ -26,18 +37,7 @@ $app = \Cobalt\Factory::getApplication();
     </tr>
 </thead>
 <tbody id="list">
-<?php
-    $stages = DealHelper::getStages(null,TRUE,FALSE);
-    $statuses = DealHelper::getStatuses(null,true);
-    $sources = DealHelper::getSources(null);
-    $users = UsersHelper::getUsers(null,TRUE);
-    $n = count($this->dealList);
-    $k = 0;
-        for ($i=0;$i<$n;$i++) {
-            $deal = $this->dealList[$i];
-            $k = $i%2;
-            $entryView = \Cobalt\Factory::getView('deals','entry','phtml', array('deal' => $deal, 'stages' => $stages, 'statuses' => $statuses, 'sources' => $sources, 'users' => $users, 'k' => $k));
-            echo $entryView->render();
-        }
-?>
+<?php foreach ($dealList as $deal) : ?>
+	<?php echo $view->render(new TemplateReference('entry', 'deals'), array('deal' => $deal, 'stages' => $stages, 'statuses' => $statuses, 'sources' => $sources, 'users' => $users)); ?>
+<?php endforeach; ?>
 </tbody>
