@@ -11,10 +11,9 @@
 namespace Cobalt\View\PeopleCustom;
 
 use Joomla\View\AbstractHtmlView;
-use JUri;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Model\PeopleCustom as PeopleCustomModel;
@@ -29,7 +28,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

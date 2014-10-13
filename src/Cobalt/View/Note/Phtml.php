@@ -20,7 +20,6 @@ class Phtml extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
         $this->categories = NoteHelper::getCategories();
 
         return parent::render();

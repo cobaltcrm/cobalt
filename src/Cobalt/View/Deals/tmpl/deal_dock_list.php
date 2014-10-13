@@ -14,6 +14,6 @@ $n = count($this->deals);
 for ($i=0; $i<$n; $i++) {
     $deal = $this->deals[$i];
     $k = $i%2;
-    $view = ViewHelper::getView('deals','deal_dock_entry','phtml',array('deal'=>$deal,'offset'=>$k));
+    $view = \Cobalt\Factory::getView('deals','deal_dock_entry','phtml',array('deal'=>$deal,'offset'=>$k));
     echo $view->render();
 }

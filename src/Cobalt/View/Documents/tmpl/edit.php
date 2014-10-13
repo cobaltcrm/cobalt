@@ -11,9 +11,9 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $document = $this->document;
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 $raw = $app->input->get('format');
-$return = $app->input->getBase64('return', base64_encode(\JUri::current()));
+$return = $app->input->getBase64('return', base64_encode($app->get('uri.request')));
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">
@@ -22,7 +22,7 @@ $return = $app->input->getBase64('return', base64_encode(\JUri::current()));
         </span>
     </button>
     <h3 class="modal-title" id="dealModal">
-        <?php echo ucwords(TextHelper::_('COBALT_ADD_DOCUMENT')); ?>
+        <?php echo ucwords(TextHelper::_('COBALT_UPLOAD_DOCUMENT')); ?>
     </h3>
 </div>
 <div class="modal-body">

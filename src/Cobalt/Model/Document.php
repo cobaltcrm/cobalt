@@ -193,7 +193,7 @@ class Document extends DefaultModel
 
         ActivityHelper::saveActivity($oldRow, $row,'document', $status);
 
-        //$app->triggerEvent('onAfterDocumentSave', array(&$row));
+        //$this->app->triggerEvent('onAfterDocumentSave', array(&$row));
 
         return $id;
     }
@@ -204,8 +204,6 @@ class Document extends DefaultModel
      */
     public function getDocuments($id=null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //get DBO
         $db = $this->getDb();
 
@@ -215,7 +213,7 @@ class Document extends DefaultModel
                        "c.name as company_name,".
                        "deal.name as deal_name,".
                        "p.first_name as owner_first_name, p.last_name as owner_last_name,".
-                       "CONCAT(u.first_name,' ',u.last_name) AS owner_name");
+				       $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . " AS owner_name");
         $query->from("#__documents AS d");
         $query->leftJoin("#__companies AS c ON d.association_type = 'company' AND d.association_id = c.id");
         $query->leftJoin("#__deals AS deal ON d.association_type = 'deal' AND d.association_id = deal.id");
@@ -231,11 +229,11 @@ class Document extends DefaultModel
         $session = $this->app->getSession();
 
         //get post data
-        $assoc  = $app->input->get('assoc');
-        $user   = $app->input->get('user');
-        $type   = $app->input->get('type');
-        $team   = $app->input->get('team_id');
-        $document_name = $app->input->getString('document_name');
+        $assoc  = $this->app->input->get('assoc');
+        $user   = $this->app->input->get('user');
+        $type   = $this->app->input->get('type');
+        $team   = $this->app->input->get('team_id');
+        $document_name = $this->app->input->getString('document_name');
 
         //determine if we are searching for a team or a user
         if ($team) {
@@ -376,12 +374,12 @@ class Document extends DefaultModel
         }
 
         //get results
-        $offset = $app->input->getInt('start',0);
-        $limit = $app->input->getInt('length',0);
+        $offset = $this->app->input->getInt('start',0);
+        $limit = $this->app->input->getInt('length',0);
         $db->setQuery($query, $offset, $limit);
         $results = $db->loadAssocList();
 
-        //$app->triggerEvent('onDocumentLoad', array(&$results));
+        //$this->app->triggerEvent('onDocumentLoad', array(&$results));
 
         //return results
         return $results;
@@ -390,15 +388,13 @@ class Document extends DefaultModel
 
     public function getDocument($id=null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         $db = $this->getDb();
         $query = $db->getQuery(true);
 
         $query->select("*")->from("#__documents");
 
         if (!$id) {
-            $document_hash = $app->input->getString('document');
+            $document_hash = $this->app->input->getString('document');
             $query->where("filename=".$db->quote($document_hash));
         } else {
             $query->where("id=".$id);
@@ -410,7 +406,7 @@ class Document extends DefaultModel
 
         $document->path = getcwd().'/uploads/'.$document->filename;
 
-        //$app->triggerEvent('onDocumentLoad', array(&$document));
+        //$this->app->triggerEvent('onDocumentLoad', array(&$document));
 
         return $document;
 
@@ -453,13 +449,10 @@ class Document extends DefaultModel
      */
     public function populateState()
     {
-        //get states
-        $app = \Cobalt\Container::fetch('app');
+        if ( $this->app->input->get('view') == "documents" ) {
 
-        if ( $app->input->get('view') == "documents" ) {
-
-            $filter_order = $app->getUserStateFromRequest('Document.filter_order','filter_order','d.created');
-            $filter_order_Dir = $app->getUserStateFromRequest('Document.filter_order_Dir','filter_order_Dir','desc');
+            $filter_order = $this->app->getUserStateFromRequest('Document.filter_order','filter_order','d.created');
+            $filter_order_Dir = $this->app->getUserStateFromRequest('Document.filter_order_Dir','filter_order_Dir','desc');
 
         } else {
 

@@ -10,6 +10,7 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
 use Cobalt\Model\Document as DocumentModel;
 
 // no direct access
@@ -21,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getDeal($id)
     {
         //get db object
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //generate query
@@ -55,7 +56,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getStages($stage_name=null,$stagesOnly=FALSE,$idsOnly=TRUE)
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -93,7 +94,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getNonInactiveStages()
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -110,7 +111,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getPrimaryContact($deal_id)
     {
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
         $query->select("primary_contact_id")->from("#__deals")->where("id=".$deal_id);
         $db->setQuery($query);
@@ -122,7 +123,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getSourceStages()
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -153,7 +154,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getActiveStages($idsOnly=FALSE)
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -186,7 +187,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getGoalStages()
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -245,7 +246,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getWonStages()
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //search for 100% stage id
@@ -264,7 +265,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getInactiveStages()
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //search for 0% stage id
@@ -282,7 +283,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getClosedStages()
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //search for 100% stage id
@@ -304,7 +305,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getStatuses($status_name=null,$classOnly=FALSE)
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -345,7 +346,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getSources($source_name=null)
     {
         //get db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //query
@@ -373,7 +374,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getUserCustomFields($id=null)
     {
         //get dbo
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //gen query string
@@ -451,7 +452,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getSelectedColumnFilters()
     {
         //get the user session data
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->select("deals_columns");

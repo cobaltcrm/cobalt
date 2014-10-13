@@ -8,6 +8,7 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
 use JToolbar;
 use JLog;
 
@@ -54,7 +55,7 @@ abstract class ToolbarHelper
 
         $html = '<div class="pagetitle ' . htmlspecialchars(implode(' ', $icons)) . '"><h2>' . $title . '</h2></div>';
 
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $app->JComponentTitle = $html;
     }
 

@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\DealCustomTable;
 use Joomla\Registry\Registry;
 use Cobalt\Helper\RouteHelper;
 
@@ -23,8 +22,6 @@ class DealCustom extends DefaultModel
 
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('DealCustom');
         $data = $this->app->input->post->getArray();
@@ -112,26 +109,24 @@ class DealCustom extends DefaultModel
         /** ------------------------------------------
          * Set query limits/ordering and load results
          */
-        $limit = $this->getState($this->_view . '_limit');
-        $limitStart = $this->getState($this->_view . '_limitstart');
+        $limit = $this->getState()->get($this->_view . '_limit');
+        $limitStart = $this->getState()->get($this->_view . '_limitstart');
 
         if ($limit != 0)
         {
-            $query->order($this->getState('Dealcustom.filter_order') . ' ' . $this->getState('Dealcustom.filter_order_Dir'));
+            $query->order($this->getState()->get('Dealcustom.filter_order') . ' ' . $this->getState()->get('Dealcustom.filter_order_Dir'));
 
             if ($limitStart >= $this->getTotal())
             {
                 $limitStart = 0;
                 $limit = 10;
                 $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
-                $this->state->set($this->_view . '_limit', $limit);
-                $this->state->set($this->_view . '_limitstart', $limitStart);
+                $this->getState()->set($this->_view . '_limit', $limit);
+                $this->getState()->set($this->_view . '_limitstart', $limitStart);
             }
-
-            $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-        $results = $this->db->setQuery($query)->loadAssocList();
+        $results = $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 
         if (count($results) > 0)
         {
@@ -166,9 +161,8 @@ class DealCustom extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Dealcustom.filter_order', 'filter_order', 'c.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Dealcustom.filter_order_Dir', 'filter_order_Dir', 'asc');
+        $filter_order = $this->app->getUserStateFromRequest('Dealcustom.filter_order', 'filter_order', 'c.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Dealcustom.filter_order_Dir', 'filter_order_Dir', 'asc');
 
         $state = new Registry;
 

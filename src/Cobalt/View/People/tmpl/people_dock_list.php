@@ -19,6 +19,6 @@ $c = count($this->people);
             array('ref'=>'k','data'=>$k),
             array('ref'=>'person','data'=>$person)
             );
-        $person_entry = ViewHelper::getView('people','people_dock_entry','phtml',array('person'=>$person,'k'=>$k));
+        $person_entry = \Cobalt\Factory::getView('people','people_dock_entry','phtml',array('person'=>$person,'k'=>$k));
         echo $person_entry->render();
     }

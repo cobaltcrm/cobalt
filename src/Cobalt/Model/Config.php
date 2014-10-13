@@ -9,7 +9,6 @@
 -------------------------------------------------------------------------*/
 namespace Cobalt\Model;
 
-use Cobalt\Table\ConfigTable;
 use Cobalt\Helper\ConfigHelper;
 
 // no direct access
@@ -19,8 +18,6 @@ class Config extends DefaultModel
 {
     public function store($data = null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('Config');
         $data = isset($data) && is_array($data) && count($data) > 0 ? $data : $this->app->input->post->getArray();

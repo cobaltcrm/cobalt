@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -19,8 +21,7 @@ class ActivityHelper
 
     public static function saveActivity($old_info, $new_info, $model, $action_type)
     {
-	    /** @var \Joomla\Database\DatabaseDriver $db */
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
         $user_id = UsersHelper::getUserId();
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
@@ -63,8 +64,7 @@ class ActivityHelper
 
     public static function saveUserLoginHistory()
     {
-	    /** @var \Joomla\Database\DatabaseDriver $db */
-        $db = \Cobalt\Container::fetch('db');
+	    $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $user_id = UsersHelper::getUserId();
@@ -89,8 +89,7 @@ class ActivityHelper
 
     public static function getActivity()
     {
-	    /** @var \Joomla\Database\DatabaseDriver $db */
-        $db = \Cobalt\Container::fetch('db');
+	    $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->select(

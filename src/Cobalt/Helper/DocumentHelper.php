@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -20,7 +22,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getTotalDocuments()
     {
         //db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //select

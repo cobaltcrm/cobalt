@@ -11,6 +11,7 @@
 namespace Cobalt\View\AdminImport;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\TextHelper;
@@ -27,7 +28,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //app
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         if ($app->input->get('layout')=='sample') {
             $this->_displaySample($tpl);
 
@@ -105,7 +106,7 @@ class Html extends AbstractHtmlView
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();
         $this->menu = $menu;
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $doc = $app->getDocument();
         $doc->addScript($app->get('uri.media.full')."js/cobalt-admin.js");
 

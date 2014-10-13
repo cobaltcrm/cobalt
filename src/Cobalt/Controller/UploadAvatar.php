@@ -10,6 +10,7 @@
 
 namespace Cobalt\Controller;
 
+use Cobalt\Factory;
 use Cobalt\Helper\TextHelper;
 
 // no direct access
@@ -19,7 +20,7 @@ class UploadAvatar extends DefaultController
 {
     public function execute()
     {
-        $model = $this->getModel('Avatar');
+        $model = Factory::getModel('Avatar');
 
         /** @var \Joomla\Registry\Registry $state */
         $state = $model->getState();

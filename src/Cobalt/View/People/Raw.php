@@ -11,10 +11,7 @@
 namespace Cobalt\View\People;
 
 use Joomla\View\AbstractHtmlView;
-use JFactory;
-use Cobalt\Model\People as PeopleModel;
-use Cobalt\Model\Company as CompanyModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -22,14 +19,14 @@ class Raw extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
-        $document = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $document = $app->getDocument();
         $id = $app->input->get('id') ? $app->input->get('id') : null;
 
         $company_id = $app->input->get('company_id');
 
         //retrieve people from model
-        $model = new PeopleModel;
+        $model = Factory::getModel('People');
         $model->set('company_id',$company_id);
 
         $layout = $this->getLayout();
@@ -47,9 +44,9 @@ class Raw extends AbstractHtmlView
             case "edit":
                 $this->person = $model->getPerson();
 
-                $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'people','item'=>$this->person));
+                $this->edit_custom_fields_view = Factory::getView('custom','edit','phtml',array('type'=>'people','item'=>$this->person));
 
-                $companyModel = new CompanyModel;
+                $companyModel = Factory::getModel('Company');
                 $json = TRUE;
 
                 $companyNames = $companyModel->getCompanyNames($json);

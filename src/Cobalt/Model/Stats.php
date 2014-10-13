@@ -12,6 +12,8 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined('_CEXEC') or die('Restricted access');
@@ -29,8 +31,18 @@ class Stats extends DefaultModel
 
 	public $previousDay;
 
-	public function __construct()
-	{
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
+    {
+        parent::__construct($db, $state);
+
 		$this->previousDay = DateHelper::formatDBDate(date('Y-m-d') . " - 1 day");
 		$this->today       = DateHelper::formatDBDate(date('Y-m-d'));
 		$this->access      = UsersHelper::getRole($this->person_id);

@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -19,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getCompany($id)
     {
         //get db object
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //generate query
@@ -65,7 +67,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function getSelectedColumnFilters()
     {
         //get the user session data
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->select("companies_columns");

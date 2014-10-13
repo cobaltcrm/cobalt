@@ -10,12 +10,12 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Factory;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\DateHelper;
-use Cobalt\Helper\ViewHelper;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -322,7 +322,7 @@ class Note extends DefaultModel
             return $results;
 
         } else {
-            $notesView = ViewHelper::getView('note','default','phtml',array('notes'=>$results));
+            $notesView = Factory::getView('note','default','phtml',array('notes'=>$results),$this);
 
             return $notesView;
         }

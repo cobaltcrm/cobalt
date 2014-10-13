@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $person = $this->info[0];
-$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
 ?>
 
 <div class="rightColumn">

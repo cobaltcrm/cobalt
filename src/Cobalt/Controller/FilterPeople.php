@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\People as PeopleModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -21,11 +20,11 @@ class FilterPeople extends DefaultController
     public function execute()
     {
         //set view
-        $view = ViewHelper::getView('people','raw');
+        $view = Factory::getView('people','raw');
         $view->setLayout('list');
 
         //get deals
-        $model = new PeopleModel;
+        $model = Factory::getModel('People');
         $people = $model->getPeople();
 
         //assign references

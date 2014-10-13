@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -43,8 +45,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
      */
     public static function getTaskTemplates($type, $id = null)
     {
-	    /** @var \Joomla\Database\DatabaseDriver $db */
-        $db = \Cobalt\Container::fetch('db');
+	    $db = Factory::getDb();
         $query = $db->getQuery(true);
         $query->select("t.*")->from("#__templates AS t")->where("t.type=".$db->quote($type));
         $db->setQuery($query);
@@ -76,8 +77,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     public static function storeCustomCf($id,$cf_data,$type)
     {
         //Get DBO
-	    /** @var \Joomla\Database\DatabaseDriver $db */
-        $db = \Cobalt\Container::fetch('db');
+	    $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         //date generation
@@ -109,7 +109,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
             } else {
                 $query->clear();
                 $query->insert('#__'.$type.'_custom_cf');
-	            $query->columns(array($type."_id", 'ustom_field_id', 'value', 'modified'));
+	            $query->columns(array($type."_id", 'custom_field_id', 'value', 'modified'));
 	            $query->values($id . ', ' . $row['custom_field_id'] . ', ' . $db->quote($row['custom_field_value']) . ', ' . $db->quote($date));
                 $db->setQuery($query);
                 $db->execute();
@@ -121,7 +121,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function checkEmailName($email)
     {
-        $db = \Cobalt\Container::fetch('db');
+	    $db = Factory::getDb();
         $query = $db->getQuery(TRUE);
 
         $query->select("email")
@@ -176,13 +176,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function shareItem($itemId=null,$itemType=null,$userId=null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $itemId = $itemId ? $itemId : $app->input->get('item_id');
         $itemType = $itemType ? $itemType : $app->input->get('item_type');
         $userId = $userId ? $userId : $app->input->get('user_id');
 
-        $db = \Cobalt\Container::fetch('db');
+	    $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->insert("#__shared")
@@ -197,13 +197,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function unshareItem($itemId=null,$itemType=null,$userId=null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $itemId = $itemId ? $itemId : $app->input->get('item_id');
         $itemType = $itemType ? $itemType : $app->input->get('item_type');
         $userId = $userId ? $userId : $app->input->get('user_id');
 
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->delete("#__shared")
@@ -219,7 +219,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function showShareDialog()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $document = $app->getDocument();
         $document->addScriptDeclaration('var users='.json_encode(UsersHelper::getAllSharedUsers()).';');
@@ -255,11 +255,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getAssociationName($associationType=null,$associationId=null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $associationType = $associationType ? $associationType : $app->input->get('association_type');
         $associationId = $associationId ? $associationId : $app->input->get('association_id');
 
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         switch ($associationType) {
@@ -268,7 +268,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 $table = "companies";
             break;
             case "person":
-                $select = "CONCAT(first_name,' ',last_name)";
+                $select = $query->concatenate(array('first_name', $db->quote(' '), 'last_name'));
                 $table = "people";
             break;
             case "deal":

@@ -24,7 +24,7 @@ class RemoveSampleData extends DefaultController
     {
         $sampleIds = unserialize(ConfigHelper::getConfigValue('import_sample'));
 
-        $db = $this->container->resolve('db');
+        $db = $this->getContainer()->get('db');
         $query = $db->getQuery(true);
 
         foreach ($sampleIds as $table => $ids) {
@@ -32,7 +32,7 @@ class RemoveSampleData extends DefaultController
                     ->delete("#__".$table)
                     ->where("id IN(".implode(',',$ids).")");
                 $db->setQuery($query);
-                $db->query();
+                $db->execute();
         }
 
         $data = array('import_sample'=>"0");

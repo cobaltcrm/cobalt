@@ -16,13 +16,13 @@ use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\Company as CompanyModel;
 use Cobalt\Model\People as PeopleModel;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TemplateHelper;
 use Cobalt\Helper\CompanyHelper;
 use Cobalt\Helper\DealHelper;
 use Cobalt\Helper\PeopleHelper;
 use Cobalt\Helper\TextHelper;
-use Cobalt\Helper\ViewHelper;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access
@@ -33,17 +33,17 @@ class Html extends AbstractHtmlView
 
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //retrieve deal list from model
-        $model = new DealModel;
+	    $model = Factory::getModel('Deal');
         $state = $model->getState();
         $dealList = array();
         $deal = array();
         $doc = $app->getDocument();
 
         //session info
-        $session = \Cobalt\Container::fetch('app')->getSession();
+        $session = $app->getSession();
         $member_role = UsersHelper::getRole();
         $user_id = UsersHelper::getUserId();
         $team_id = UsersHelper::getTeamId();
@@ -169,25 +169,25 @@ class Html extends AbstractHtmlView
         //Load Events & Tasks for person
         $layout = $this->getLayout();
         if ($layout == "deal") {
-            $model = new EventModel;
+	        $model = Factory::getModel('Event');
             $events = $model->getEvents("deal",null,$app->input->get('id'));
             $pagination = $model->getPagination();
             $total = $model->getTotal();
-            $this->event_dock = ViewHelper::getView('events','event_dock','phtml', array('events'=>$events));
+            $this->event_dock = Factory::getView('events','event_dock','phtml', array('events'=>$events));
 
             $primary_contact_id = DealHelper::getPrimaryContact($dealList[0]->id);
-            $this->contact_info = ViewHelper::getView('contacts','default','phtml',array('contacts'=>$dealList[0]->people,'primary_contact_id'=>$primary_contact_id));
+            $this->contact_info = Factory::getView('contacts','default','phtml',array('contacts'=>$dealList[0]->people,'primary_contact_id'=>$primary_contact_id));
 
-            $this->document_list = ViewHelper::getView('documents','list','phtml',array('documents' => $deal->documents,'total'=> $total,'pagination'=> $pagination));
-            //$this->document_list = ViewHelper::getView('documents','document_row','phtml',array('documents'=>$deal->documents));
-            $this->custom_fields_view = ViewHelper::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
+            $this->document_list = Factory::getView('documents','list','phtml',array('documents' => $deal->documents,'total'=> $total,'pagination'=> $pagination));
+            //$this->document_list = Factory::getView('documents','document_row','phtml',array('documents'=>$deal->documents));
+            $this->custom_fields_view = Factory::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
         }
 
         if ($layout == "default") {
             $this->dataTableColumns = $model->getDataTableColumns();
             $pagination = $model->getPagination();
             $total = $model->getTotal();
-            $this->deal_list = ViewHelper::getView('deals','list','phtml',array('dealList'=>$dealList,'total'=>$total,'pagination'=>$pagination));
+            $this->deal_list = Factory::getView('deals','list','phtml',array('dealList'=>$dealList,'total'=>$total,'pagination'=>$pagination));
             $this->state = $state;
             $doc->addScriptDeclaration("
             loc = 'deals';
@@ -201,21 +201,21 @@ class Html extends AbstractHtmlView
         }
 
         if ( TemplateHelper::isMobile() ) {
-            $this->add_note = ViewHelper::getView('note','edit','phtml');
-            $this->add_task = ViewHelper::getView('events','edit_task','phtml',array('association_type'=>'deal','assocation_id'=>$app->input->get('id')));
+            $this->add_note = Factory::getView('note','edit','phtml');
+            $this->add_task = Factory::getView('events','edit_task','phtml',array('association_type'=>'deal','assocation_id'=>$app->input->get('id')));
         }
 
         if ($layout == "edit") {
             $item = $app->input->get('id') && array_key_exists(0,$dealList) ? $dealList[0] : array('id'=>'');
-            $this->edit_custom_fields_view = ViewHelper::getView('custom','edit','phtml',array('type'=>'deal','item'=>$item));
+            $this->edit_custom_fields_view = Factory::getView('custom','edit','phtml',array('type'=>'deal','item'=>$item));
 
             $json = TRUE;
 
-            $companyModel = new CompanyModel;
+	        $companyModel = Factory::getModel('Company');
             $companyNames = $companyModel->getCompanyNames($json);
             $doc->addScriptDeclaration("var company_names=".$companyNames.";");
 
-            $peopleModel = new PeopleModel;
+	        $peopleModel = Factory::getModel('People');
             $peopleNames = $peopleModel->getPeopleNames($json);
             $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
         }

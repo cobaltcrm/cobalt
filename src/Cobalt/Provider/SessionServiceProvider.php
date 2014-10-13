@@ -32,7 +32,7 @@ class SessionServiceProvider implements ServiceProviderInterface
 	 */
 	public function register(Container $container)
 	{
-		$config = $container::fetch('config');
+		$config = $container->get('config');
 
 		if ($config->get('session', true) !== false)
 		{

@@ -12,11 +12,11 @@ namespace Cobalt\View\DealCustom;
 
 use Cobalt\Model\DealCustom as DealCustomModel;
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\DropdownHelper;
-use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -29,7 +29,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         /** Menu Links **/
         $this->menu = MenuHelper::getMenuModules();

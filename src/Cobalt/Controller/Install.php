@@ -10,6 +10,8 @@
 
 namespace Cobalt\Controller;
 
+use Cobalt\Factory;
+
 // no direct access
 defined('_CEXEC') or die('Restricted access');
 
@@ -36,7 +38,7 @@ class Install extends DefaultController
 		));
 
 		/** @var \Cobalt\Model\Install $model */
-		$model = $this->getModel('Install');
+		$model = Factory::getModel('Install');
 
 		if (!$model->install($data))
 		{

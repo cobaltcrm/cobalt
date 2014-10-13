@@ -10,15 +10,16 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+$app = \Cobalt\Factory::getApplication();
 ?>
     <thead>
     <tr>
-        <?php if (\Cobalt\Container::fetch('app')->input->getString('loc','documents') == 'documents'): ?>
+        <?php if ($app->input->getString('loc','documents') == 'documents'): ?>
         <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" /></th>
         <?php endif; ?>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_TYPE'); ?></th>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_NAME'); ?></th>
-        <?php if (\Cobalt\Container::fetch('app')->input->getString('loc','documents') == 'documents'): ?>
+        <?php if ($app->input->getString('loc','documents') == 'documents'): ?>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_ASSOCIATION'); ?></th>
         <?php endif; ?>
         <th><?php echo TextHelper::_('COBALT_DOCUMENT_OWNER'); ?></th>
@@ -61,7 +62,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             echo '<tr id="document_row_'.$document['id'].'" role="row" class="'.$row_class.'">';
                 echo '<td class="text-center"><input type="checkbox" value="'.$document['id'].'" name="ids[]" class="export"></td>';
-                echo '<td><img width="30px" height="30px" src="'.\Cobalt\Container::fetch('app')->get('uri.media.full').'images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
+                echo '<td><img width="30px" height="30px" src="'.$app->get('uri.media.full').'images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
                 echo '<td><div class="dropdown"><span class="caret"></span> <a href="javascript:void(0);" class="document_edit dropdown-toggle" role="button" data-toggle="dropdown" id="'.$document['id'].'">'.$document['name'].'</a>';
                 echo '<ul class="dropdown-menu" role="menu">';
                 echo '<input type="hidden" name="document_'.$document['id'].'_hash" id="document_'.$document['id'].'_hash" value="'.$document['filename'].'" />';
@@ -72,7 +73,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 echo '<li><a href="javascript:void(0);" class="document_delete" id="delete_'.$document['id'].'"><i class="glyphicon glyphicon-trash"></i> '.TextHelper::_('COBALT_DELETE').'</a></li>';
                 echo '</ul>';
                 echo '</div></td>';
-                if (\Cobalt\Container::fetch('app')->input->getString('loc','documents') == 'documents') {
+                if ($app->input->getString('loc','documents') == 'documents') {
                     echo '<td>'.$association_link.'</a></td>';
                 }
                 echo '<td>'.$document['owner_name'].'</td>';

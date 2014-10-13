@@ -10,12 +10,10 @@
 
 namespace Cobalt\View\Sources;
 
-use JUri;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\MenuHelper;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Sources as SourcesModel;
 use Joomla\View\AbstractHtmlView;
@@ -31,7 +29,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
          /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

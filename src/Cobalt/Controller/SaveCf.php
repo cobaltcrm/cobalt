@@ -28,7 +28,7 @@ class SaveCf extends DefaultController
             'person_id' => 'int'
         ));
         //get db Object
-        $db = $this->container->fetch('db');
+        $db = $this->getContainer()->get('db');
         $query = $db->getQuery(true);
         $table = $this->getInput()->getCmd('table');
         $loc = $this->getInput()->getCmd('loc');

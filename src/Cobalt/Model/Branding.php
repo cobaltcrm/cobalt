@@ -12,7 +12,6 @@ namespace Cobalt\Model;
 
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\TextHelper;
-use Cobalt\Table\BrandingTable;
 use Joomla\Filesystem\File;
 
 // no direct access
@@ -23,9 +22,8 @@ class Branding extends DefaultModel
     public function store()
     {
         //Load Tables
-        $app = \Cobalt\Container::fetch('app');
         $row = $this->getTable('Branding');
-        $data = $app->input->getRequest('post');
+        $data = $this->app->input->post->getArray();
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));

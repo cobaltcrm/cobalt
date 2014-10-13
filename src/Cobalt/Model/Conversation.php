@@ -14,7 +14,6 @@ use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\CobaltHelper;
-use Cobalt\Table\ConversationTable;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -31,12 +30,10 @@ class Conversation extends DefaultModel
      */
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row    = $this->getTable('Conversation');
         $oldRow = $this->getTable('Conversation');
-        $data = $app->input->getRequest( 'post' );
+        $data = $this->app->input->post->getArray();
 
         //date generation
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));

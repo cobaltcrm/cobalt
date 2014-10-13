@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -17,7 +19,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
  {
         public static function getSiteName()
         {
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
 
             $query->select("site_name")->from("#__branding")->where("assigned=1");
@@ -32,7 +34,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
         public static function getSiteLogo()
         {
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
 
             $query->select("site_logo")->from("#__branding")->where("assigned=1");
@@ -41,14 +43,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
             $logo = $db->loadResult();
 
-            return \Cobalt\Container::fetch('app')->get('uri.media.full') . "logos/" . $logo;
+            return Factory::getApplication()->get('uri.media.full') . "logos/" . $logo;
         }
 
         //dynamically generate styles
         public static function getDynamicStyle()
         {
             //database
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
 
             //query

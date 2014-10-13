@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\Document as DocumentModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -21,16 +20,12 @@ class FilterDocuments extends DefaultController
 
     public function execute()
     {
-        //set view
-        $view = ViewHelper::getView('documents','raw');
-        $view->setLayout('list');
-
         //get deals
-        $model = new DocumentModel;
+        $model = Factory::getModel('Document');
         $documents = $model->getDocuments();
 
-        //assign references
-        $view->documents = $documents;
+        //set view
+        $view = Factory::getView('documents','list','raw',array('documents' => $documents),$model);
 
         //display
         echo $view->render();

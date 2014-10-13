@@ -11,7 +11,7 @@
 namespace Cobalt\View\Profile;
 
 use Joomla\View\AbstractHtmlView;
-use Cobalt\Helper\UsersHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,7 +20,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //get user data and pass to view
         $this->user = $app->getUser();

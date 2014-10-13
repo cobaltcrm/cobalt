@@ -10,15 +10,12 @@
 
 namespace Cobalt\View\Goals;
 
-use Cobalt\Container;
-use JUri;
-use JFactory;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Model\Goal as GoalModel;
-use Cobalt\Helper\RouteHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -27,7 +24,7 @@ class Html extends AbstractHtmlView
 {
     public function render()
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //determine the type of goal we are creating//editing
         $type = $app->input->get('type');
@@ -122,7 +119,6 @@ class Html extends AbstractHtmlView
         }
 
         //load java libs
-	    $app = Container::fetch('app');
         $doc = $app->getDocument();
         $doc->addScript( $app->get('uri.media.full').'js/goal_manager.js' );
 

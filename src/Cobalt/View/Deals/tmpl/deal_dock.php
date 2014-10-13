@@ -19,7 +19,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );?>
     </tr>
     <tbody id="deal_dock_list">
         <?php
-            $deal_dock_list = ViewHelper::getView('deals','deal_dock_list', 'phtml', array('deals'=>$this->deals));
+            $deal_dock_list = \Cobalt\Factory::getView('deals','deal_dock_list', 'phtml', array('deals'=>$this->deals));
             echo $deal_dock_list->render();
         ?>
     </tbody>

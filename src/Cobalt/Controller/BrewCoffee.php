@@ -18,7 +18,7 @@ class BrewCoffee extends DefaultController
 {
     public function execute()
     {
-        $db = $this->container->resolve('db');
+        $db = $this->getContainer()->get('db');
         $query = $db->getQuery(true);
         $query->select('u.id, u.first_name, u.last_name, user.email');
         $query->from('#__users AS u');

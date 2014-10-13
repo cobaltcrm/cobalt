@@ -11,8 +11,8 @@
 namespace Cobalt\View\Contacts;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\DealHelper;
-use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -21,7 +21,7 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $deal_id = $app->input->get('deal_id');
         if ($deal_id) {
             $primary_contact_id = DealHelper::getPrimaryContact($deal_id);

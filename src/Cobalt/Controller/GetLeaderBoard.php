@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\Goal as GoalModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -21,13 +20,13 @@ class GetLeaderBoard extends DefaultController
     public function execute()
     {
         //get model
-        $model = new GoalModel;
+        $model = Factory::getModel('Goal');
 
         //get data
         $leaderboard = $model->getLeaderBoards($this->getInput()->get('id'));
 
         //pass data to view
-        $view = ViewHelper::getView('goals','leaderboard', 'raw', array('leaderboard'=>$leaderboard ));
+        $view = Factory::getView('goals','leaderboard', 'raw', array('leaderboard'=>$leaderboard ), $model);
 
         //display view
         echo $view->render();
