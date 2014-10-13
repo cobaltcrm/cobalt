@@ -38,6 +38,11 @@ abstract class Factory
 	 */
 	private static function getContainer()
 	{
+		if (COBALT_CLI)
+		{
+			return CLI\Application::getDIContainer();
+		}
+
 		return Application::getDIContainer();
 	}
 
