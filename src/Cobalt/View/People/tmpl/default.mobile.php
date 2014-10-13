@@ -42,7 +42,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
                 <li data-filtertext="<?php echo $person['first_name'].' '.$person['last_name']; ?>">
                     <a href="<?php echo RouteHelper::_('index.php?view=people&layout=person&id='.$person['id']); ?>">
                         <h3 class="ui-li-heading"><?php echo $person['first_name'].' '.$person['last_name']; ?></h3>
-                        <p class="ui-li-desc"><?php echo JText::sprintf('COBALT_MOBILE_PERSON_DESC',$person['position'],$person['company_name']); ?></p>
+                        <p class="ui-li-desc"><?php echo TextHelper::sprintf('COBALT_MOBILE_PERSON_DESC',$person['position'],$person['company_name']); ?></p>
                     </a>
                 </li>
             <?php } ?>

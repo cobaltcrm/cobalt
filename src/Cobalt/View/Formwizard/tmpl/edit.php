@@ -26,33 +26,33 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </h3>
                         </div>
                         <div class="form-group">
-                            <label><?php echo JText::_('COBALT_FORM_TYPE'); ?></label>
+                            <label><?php echo TextHelper::_('COBALT_FORM_TYPE'); ?></label>
                             <?php echo $this->form_types; ?>
                         </div>
                         <div class="form-group">
-                            <label><b><?php echo JText::_('COBALT_FORM_NAME'); ?></b></label>
-                            <input type="text" id="name" name="name" class="form-control required" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_NAME_YOUR_FORM'); ?>" value="<?php if(isset($this->form)) echo $this->form->name; ?>">
+                            <label><b><?php echo TextHelper::_('COBALT_FORM_NAME'); ?></b></label>
+                            <input type="text" id="name" name="name" class="form-control required" rel="tooltip" data-original-title="<?php echo TextHelper::_('COBALT_NAME_YOUR_FORM'); ?>" value="<?php if(isset($this->form)) echo $this->form->name; ?>">
                         </div>
                         <div class="form-group">
-                            <label><b><?php echo JText::_('COBALT_FORM_DESCRIPTION'); ?></b></label>
+                            <label><b><?php echo TextHelper::_('COBALT_FORM_DESCRIPTION'); ?></b></label>
                             <textarea class="form-control" id="description" name="description"><?php if(isset($this->form)) echo $this->form->description; ?></textarea>
                         </div>
                         <div class="form-group">
-                            <label><b><?php echo JText::_('COBALT_FORM_FIELDS'); ?></b></label><br />
-                            <input onclick="FormWizard.showFieldCheckboxes()" type="button" class="btn btn-primary" data-toggle="modal" href="#show_fields_button_modal" id="show_fields_button" value="<?php echo JText::_('COBALT_SELECT_FIELDS'); ?>" />
+                            <label><b><?php echo TextHelper::_('COBALT_FORM_FIELDS'); ?></b></label><br />
+                            <input onclick="FormWizard.showFieldCheckboxes()" type="button" class="btn btn-primary" data-toggle="modal" href="#show_fields_button_modal" id="show_fields_button" value="<?php echo TextHelper::_('COBALT_SELECT_FIELDS'); ?>" />
                         </div>
                         <div class="form-group">
-                            <label><b><?php echo JText::_('COBALT_FORM_RETURN_URL'); ?></b></label>
-                            <input type="text" class="form-control" id="return_url" name="return_url" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_RETURN_URL_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form->return_url; ?>">
+                            <label><b><?php echo TextHelper::_('COBALT_FORM_RETURN_URL'); ?></b></label>
+                            <input type="text" class="form-control" id="return_url" name="return_url" rel="tooltip" data-original-title="<?php echo TextHelper::_('COBALT_RETURN_URL_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form->return_url; ?>">
                         </div>
                         <div class="form-group">
-                            <label><b><?php echo JText::_('COBALT_OWNER'); ?></b></label>
-                            <input class="form-control required" type="text" id="owner_id" name="owner_id_input" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_OWNER_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form->owner_name; ?>">
+                            <label><b><?php echo TextHelper::_('COBALT_OWNER'); ?></b></label>
+                            <input class="form-control required" type="text" id="owner_id" name="owner_id_input" rel="tooltip" data-original-title="<?php echo TextHelper::_('COBALT_OWNER_TOOLTIP'); ?>" value="<?php if(isset($this->form)) echo $this->form->owner_name; ?>">
                             <input class="required" type="hidden" id="owner_id_hidden" name="owner_id" value="<?php if ( isset($this->form) ) echo $this->form->owner_id; ?>" />
                         </div>
                         <div class="form-group">
-                            <label><b><?php echo JText::_('COBALT_FORM_HTML'); ?></b></label>
-                            <textarea wrap="off" cols="20" rows="15" class="form-control" id="fields" onclick="//@TODO: selectTextarea(this);" rel="tooltip" data-original-title="<?php echo JText::_('COBALT_FORM_HTML_TOOLTIP'); ?>" name="html"><?php if(isset($this->form)) echo $this->form->html; ?></textarea>
+                            <label><b><?php echo TextHelper::_('COBALT_FORM_HTML'); ?></b></label>
+                            <textarea wrap="off" cols="20" rows="15" class="form-control" id="fields" onclick="//@TODO: selectTextarea(this);" rel="tooltip" data-original-title="<?php echo TextHelper::_('COBALT_FORM_HTML_TOOLTIP'); ?>" name="html"><?php if(isset($this->form)) echo $this->form->html; ?></textarea>
                         </div>
                             <div>
                                 <input type="hidden" name="id" id="form_id" value="<?php echo $this->form->id; ?>" />
@@ -66,7 +66,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">×</button>
-                                        <h3><?php echo JText::_('COBALT_SELECT_FIELDS'); ?></h3>
+                                        <h3><?php echo TextHelper::_('COBALT_SELECT_FIELDS'); ?></h3>
                                     </div>
                                     <div class="modal-body">
                                         <?php if ( isset($this->fields) && count($this->fields) > 0 ) {

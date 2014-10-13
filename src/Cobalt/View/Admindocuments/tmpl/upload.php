@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 ?>
-<form id="upload_form" action="<?php echo RouteHelper::_('index.php?task=upload'); ?>" method="post" enctype="multipart/form-data">
+<form id="upload_form" action="<?php echo LinkHelper::upload(); ?>" method="post" enctype="multipart/form-data">
 
 
     <div class="btn-group">

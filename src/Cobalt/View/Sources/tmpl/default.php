@@ -21,20 +21,20 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="page-header">
                         <h3>
                             <?php echo $this->toolbar->render(); ?>
-                            <?php echo JText::_('COBALT_SOURCES'); ?>
+                            <?php echo TextHelper::_('COBALT_SOURCES'); ?>
                         </h3>
                     </div>
 
                     <div class="alert alert-info">
-                        <?php echo JText::_('COBALT_SOURCES_DESC_1'); ?><br />
-                        <?php echo JText::_('COBALT_SOURCES_DESC_2'); ?>
+                        <?php echo TextHelper::_('COBALT_SOURCES_DESC_1'); ?><br />
+                        <?php echo TextHelper::_('COBALT_SOURCES_DESC_2'); ?>
                     </div>
 
                     <table class="table table-striped data-table">
                         <thead>
                             <tr>
                                 <th width="1%">
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_SOURCE_NAME'); ?>

@@ -19,13 +19,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="page-header">
                         <h3>
                             <?php echo $this->toolbar->render(); ?>
-                            <?php echo JText::_('COBALT_NOTE_CATEGORIES'); ?>
+                            <?php echo TextHelper::_('COBALT_NOTE_CATEGORIES'); ?>
                         </h3>
                     </div>
 
                     <div class="alert alert-info">
-                        <?php echo JText::_('COBALT_NOTES_DESC_1'); ?>
-                        <?php echo JText::_('COBALT_NOTES_DESC_2'); ?>
+                        <?php echo TextHelper::_('COBALT_NOTES_DESC_1'); ?>
+                        <?php echo TextHelper::_('COBALT_NOTES_DESC_2'); ?>
                     </div>
                     
                     <form action="index.php?view=categories" method="post" name="adminForm" id="adminForm">
@@ -33,7 +33,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <thead>
                                 <tr>
                                     <th width="1%">
-                                        <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="checkAll(this)" />
+                                        <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="checkAll(this)" />
                                     </th>
                                     <th>
                                         <?php echo TextHelper::_('COBALT_HEADER_NOTE_CATEGORY'); ?>

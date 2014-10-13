@@ -27,7 +27,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="name">
-                                <?php echo JText::_('COBALT_NAME'); ?>
+                                <?php echo TextHelper::_('COBALT_NAME'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="name" value="<?php echo $this->status->name; ?>" />
@@ -36,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="name">
-                                <?php echo JText::_('COBALT_HEADER_STATUS_COLOR'); ?>
+                                <?php echo TextHelper::_('COBALT_HEADER_STATUS_COLOR'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input 

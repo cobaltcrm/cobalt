@@ -30,7 +30,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="name">
-                                <?php echo JText::_('COBALT_NAME'); ?>
+                                <?php echo TextHelper::_('COBALT_NAME'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="name" id="name" value="<?php echo $this->source->name; ?>" />
@@ -39,7 +39,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="cost">
-                                <?php echo JText::_('COBALT_HEADER_SOURCE_COST'); ?>
+                                <?php echo TextHelper::_('COBALT_HEADER_SOURCE_COST'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="cost" id="cost" value="<?php echo $this->source->cost; ?>" />
@@ -48,11 +48,11 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="type">
-                                <?php echo JText::_('COBALT_HEADER_SOURCE_TYPE'); ?>
+                                <?php echo TextHelper::_('COBALT_HEADER_SOURCE_TYPE'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <select class="form-control" name="type" id="type">
-                                    <option value=""><?php echo JText::_('COBALT_SELECT_SOURCE_TYPE'); ?></option>
+                                    <option value=""><?php echo TextHelper::_('COBALT_SELECT_SOURCE_TYPE'); ?></option>
                                     <?php echo JHtml::_('select.options', $this->source_types, 'value', 'text', $this->source->type, true);?>
                                 </select>
                             </div>

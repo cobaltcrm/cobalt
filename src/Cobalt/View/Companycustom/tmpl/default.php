@@ -22,17 +22,17 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="page-header">
                         <h3>
                             <?php echo $this->toolbar->render(); ?>
-                            <?php echo JText::_('COBALT_COMPANY_CUSTOM_FIELDS'); ?>
+                            <?php echo TextHelper::_('COBALT_COMPANY_CUSTOM_FIELDS'); ?>
                         </h3>
                     </div>
 
-                    <div class="alert alert-info"><?php echo JText::_('COBALT_COMPANY_CUSTOM_FIELDS_DESC'); ?></div>
+                    <div class="alert alert-info"><?php echo TextHelper::_('COBALT_COMPANY_CUSTOM_FIELDS_DESC'); ?></div>
 
                     <table class="table table-striped data-table">
                         <thead>
                             <tr>
                                 <th width="1%">
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_CUSTOM_NAME'); ?>
