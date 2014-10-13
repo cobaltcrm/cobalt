@@ -177,9 +177,9 @@ class Html extends AbstractHtmlView
             $model = Factory::getModel('Event');
             $events = $model->getEvents("person",null,$app->input->get('id'));
             $this->event_dock = Factory::getView('events','event_dock','phtml',array('events'=>$events));
-            $this->deal_dock = Factory::getView('deals','deal_dock','phtml', array('deals' => !empty($person['deals']) ? $person['deals'] : array() ));
+            $this->deal_dock = Factory::getView('deals','deal_dock','phtml', array('deals' => !empty($person->deals) ? $person->deals : array() ));
 
-            $this->document_list = Factory::getView('documents','document_row','phtml', array('documents'=>$person['documents']));
+            $this->document_list = Factory::getView('documents','document_row','phtml', array('documents'=>$person->documents));
             $this->custom_fields_view = Factory::getView('custom','default','phtml',array('type'=>'people','item'=>$person));
         }
 
