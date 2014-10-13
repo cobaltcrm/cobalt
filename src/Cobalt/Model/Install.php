@@ -425,7 +425,7 @@ class Install extends AbstractModel
 			// Run the create database query.
 			$this->__createDatabase($db, $options, $utf);
 		}
-		catch (RuntimeException $e)
+		catch (\RuntimeException $e)
 		{
 			// If an error occurred return false.
 			return false;
@@ -508,7 +508,7 @@ class Install extends AbstractModel
 		{
 			$this->db->select($this->options['database']);
 		}
-		catch (RuntimeException $e)
+		catch (\RuntimeException $e)
 		{
 			// Get database's UTF support
 			$utfSupport = $this->db->hasUTFSupport();
@@ -562,7 +562,7 @@ class Install extends AbstractModel
                 {
                     $this->db->execute();
                 }
-                catch (RuntimeException $e)
+                catch (\RuntimeException $e)
                 {
                     $this->setError($e->getMessage());
                     $return = false;
@@ -603,7 +603,7 @@ class Install extends AbstractModel
 
                 try {
                     $this->db->execute();
-                } catch (RuntimeException $e) {
+                } catch (\RuntimeException $e) {
                     $this->setError($e->getMessage());
                     $return = false;
                 }
