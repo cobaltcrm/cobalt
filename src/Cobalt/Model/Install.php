@@ -450,7 +450,7 @@ class Install extends AbstractModel
     {
         if (is_null($options))
         {
-            throw new RuntimeException('$options object must not be null.');
+            throw new \RuntimeException('$options object must not be null.');
         }
         elseif (empty($options->db_name))
         {
@@ -508,7 +508,7 @@ class Install extends AbstractModel
 		{
 			$this->db->select($this->options['database']);
 		}
-		catch (RuntimeException $e)
+		catch (\RuntimeException $e)
 		{
 			// Get database's UTF support
 			$utfSupport = $this->db->hasUTFSupport();
@@ -562,7 +562,7 @@ class Install extends AbstractModel
                 {
                     $this->db->execute();
                 }
-                catch (RuntimeException $e)
+                catch (\RuntimeException $e)
                 {
                     $this->setError($e->getMessage());
                     $return = false;
@@ -603,7 +603,7 @@ class Install extends AbstractModel
 
                 try {
                     $this->db->execute();
-                } catch (RuntimeException $e) {
+                } catch (\RuntimeException $e) {
                     $this->setError($e->getMessage());
                     $return = false;
                 }
