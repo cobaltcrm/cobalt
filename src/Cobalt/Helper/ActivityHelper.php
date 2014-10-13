@@ -77,14 +77,16 @@ class ActivityHelper
         $db->setQuery($query);
         $existing = $db->loadResult();
 
-        if (!$existing) {
-            $query->clear();
-            $query->insert("#__login_history");
-            $query->set("user_id=".$user_id.",date=" . $db->quote($today));
-            $db->setQuery($query);
-            $db->execute();
-        }
+		if (!$existing) {
+			$values = array($user_id,$db->quote($today));
 
+			$query->clear();
+			$query->insert("#__login_history");
+			$query->columns(array($db->quoteName('user_id'), $db->quoteName('date')));
+			$query->values(implode(',', $values));
+			$db->setQuery($query);
+			$db->execute();
+		}
     }
 
     public static function getActivity()
