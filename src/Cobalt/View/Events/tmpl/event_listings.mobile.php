@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 
 if ( $app->input->get('loc') ) {
     $model = new CobaltModelEvent();

@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
 //assign event
 $event = $this->event;
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 
 ?>
 <form action="<?php echo RouteHelper::_('index.php'); ?>">

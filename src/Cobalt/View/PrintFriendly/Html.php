@@ -10,8 +10,7 @@
 
 namespace Cobalt\View\PrintFriendly;
 
-use JFactory;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 
 // no direct access
@@ -22,7 +21,7 @@ class Html extends AbstractHtmlView
     public function render($tpl = null)
     {
         //app
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         /* Model // function info */
         $model_name = $app->input->get('model');
@@ -92,42 +91,42 @@ class Html extends AbstractHtmlView
                 }
                 switch ($report) {
                     case "sales_pipeline":
-                        $model = new \Cobalt\Model\Deal();
+                        $model = Factory::getModel('Deal');
                         $model->set('_id',$items);
                         $state = $model->getState();
                         $reports = $model->getReportDeals();
-                        $header = ViewHelper::getView('reports','sales_pipeline_header',array('state'=>$state,'reports'=>$reports));
-                        $table = ViewHelper::getView('reports','sales_pipeline_filter',array('reports'=>$reports));
-                        $footer = ViewHelper::getView('reports','sales_pipeline_footer');
+                        $header = Factory::getView('reports','sales_pipeline_header',array('state'=>$state,'reports'=>$reports));
+                        $table = Factory::getView('reports','sales_pipeline_filter',array('reports'=>$reports));
+                        $footer = Factory::getView('reports','sales_pipeline_footer');
                     break;
                     case "source_report":
-                        $model = new \Cobalt\Model\Deal();
+	                    $model = Factory::getModel('Deal');
                         $model->set('_id',$items);
                         $reports = $model->getDeals();
                         $state = $model->getState();
-                        $header = ViewHelper::getView('reports','sales_pipeline_header',array('state'=>$state,'reports'=>$reports));
-                        $table = ViewHelper::getView('reports','sales_pipeline_filter',array('reports'=>$reports));
-                        $footer = ViewHelper::getView('reports','source_report_footer');
+                        $header = Factory::getView('reports','sales_pipeline_header',array('state'=>$state,'reports'=>$reports));
+                        $table = Factory::getView('reports','sales_pipeline_filter',array('reports'=>$reports));
+                        $footer = Factory::getView('reports','source_report_footer');
                     break;
                     case "roi_report":
-                        $model = new \Cobalt\Model\Source();
+	                    $model = Factory::getModel('Source');
                         $model->set('_id',$items);
                         $sources = $model->getRoiSources();
-                        $header = ViewHelper::getView('reports','roi_report_header');
-                        $table = ViewHelper::getView('reports','roi_report_filter',array('sources'=>$sources));
-                        $footer = ViewHelper::getView('reports','roi_report_footer');
+                        $header = Factory::getView('reports','roi_report_header');
+                        $table = Factory::getView('reports','roi_report_filter',array('sources'=>$sources));
+                        $footer = Factory::getView('reports','roi_report_footer');
                     break;
                     case "notes":
-                        $model = new \Cobalt\Model\Note();
+	                    $model = Factory::getModel('Notes');
                         $model->set('_id',$items);
                         $note_entries = $model->getNotes(NULL,NULL,FALSE);
                         $state = $model->getState();
-                        $header = ViewHelper::getView('reports','notes_header',array('state'=>$state,'note_entries'=>$note_entries));
-                        $table = ViewHelper::getView('reports','notes_filter',array('note_entries'=>$note_entries));
-                        $footer = ViewHelper::getView('reports','notes_footer');
+                        $header = Factory::getView('reports','notes_header',array('state'=>$state,'note_entries'=>$note_entries));
+                        $table = Factory::getView('reports','notes_filter',array('note_entries'=>$note_entries));
+                        $footer = Factory::getView('reports','notes_footer');
                     break;
                     case "custom_report":
-                        $model = new \Cobalt\Model\Report();
+	                    $model = Factory::getModel('Report');
                         $report = $model->getCustomReports($app->input->get('custom_report'));
                         $report_data = $model->getCustomReportData($app->input->get('custom_report'));
                         $state = $model->getState();
@@ -136,9 +135,9 @@ class Html extends AbstractHtmlView
                                 'report'=>$report,
                                'state'=>$state
                             );
-                        $header = ViewHelper::getView('reports','custom_report_header',$data);
-                        $table = ViewHelper::getView('reports','custom_report_filter',$data);
-                        $footer = ViewHelper::getView('reports','custom_report_footer');
+                        $header = Factory::getView('reports','custom_report_header',$data);
+                        $table = Factory::getView('reports','custom_report_filter',$data);
+                        $footer = Factory::getView('reports','custom_report_footer');
                     break;
                 }
                 $this->header = $header;
@@ -173,21 +172,21 @@ class Html extends AbstractHtmlView
                 $info = $model->$function($params);
 
                  /* Event list */
-                $model = new \Cobalt\Model\Event();
+                $model = Factory::getModel('Event');
                 $events = $model->getEvents("deal",NULL,$item_id);
                 if (count($events)>0) {
                     $ref = array( 'events'=>$events,'print'=>TRUE );
-                    $eventDock = ViewHelper::getView('events','event_dock',$ref);
+                    $eventDock = Factory::getView('events','event_dock',$ref);
                     $this->event_dock = $eventDock;
                 }
 
                 /* Contact info */
                 if (is_array($info) && array_key_exists(0,$info) && array_key_exists('people',$info[0]) && count($info[0]['people'])>0) {
-                    $peopleModel = new CobaltModelPeople();
+	                $peopleModel = Factory::getModel('People');
                     $peopleModel->set('deal_id',$info[0]['id']);
                     $contacts = $peopleModel->getContacts();
                     $ref = array('contacts'=>$contacts,'print'=>TRUE);
-                    $contact_info = ViewHelper::getView('contacts','default',$ref);
+                    $contact_info = Factory::getView('contacts','default',$ref);
                     $this->contact_info = $contact_info;
                 }
 
@@ -197,7 +196,7 @@ class Html extends AbstractHtmlView
 
         $custom_fields = array('deal','company','person');
         if ( in_array($layout,$custom_fields) ) {
-            $this->custom_fields = ViewHelper::getView('print','custom_fields','phtml');
+            $this->custom_fields = Factory::getView('print','custom_fields','phtml');
             $this->custom_fields->item_type = $layout;
             $this->custom_fields->item = $info[0];
         }

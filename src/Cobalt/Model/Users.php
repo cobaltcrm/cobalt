@@ -145,7 +145,7 @@ class Users extends DefaultModel
         $query->select("u.*,ju.username,ju.email,ju.lastvisitDate as last_login,
                         team_leader.first_name as leader_first_name,team_leader.last_name as leader_last_name,
                         team.leader_id as leader_id,
-                        IF(team.name!='',team.name,CONCAT(team_leader.first_name,' ',team_leader.last_name)) AS team_name");
+                        IF(team.name!='',team.name," . $query->concatenate(array('team_leader.first_name', $db->quote(' '), 'team_leader.last_name')) . " AS team_name");
         $query->from("#__users AS u");
 
         //left join essential data
@@ -164,7 +164,7 @@ class Users extends DefaultModel
 
         //sort
         $query->order($this->getState('Users.filter_order') . ' ' . $this->getState('Users.filter_order_Dir'));
-        
+
         if ($id)
         {
             $query->where("u.id = $id");
@@ -202,7 +202,6 @@ class Users extends DefaultModel
 
     public function getUser($id=null)
     {
-        $this->app = \Cobalt\Container::fetch('app');
         $id = $id ? $id : $this->app->input->get("id");
 
         if ($id > 0) {
@@ -226,7 +225,6 @@ class Users extends DefaultModel
     public function populateState()
     {
         //get states
-        $this->app = \Cobalt\Container::fetch('app');
         $filter_order = $this->app->getUserStateFromRequest('Users.filter_order', 'filter_order', 'u.last_name');
         $filter_order_Dir = $this->app->getUserStateFromRequest('Users.filter_order_Dir', 'filter_order_Dir', 'asc');
 
@@ -283,7 +281,7 @@ class Users extends DefaultModel
         $query = $this->db->getQuery(true);
 
         //select
-        $query->select("u.id AS value, CONCAT(u.first_name, ' ', u.last_name) AS label");
+        $query->select("u.id AS value, " . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . " AS label");
         $query->from("#__users AS u");
         $query->where("u.published=1");
 

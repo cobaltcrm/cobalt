@@ -11,12 +11,13 @@ namespace Cobalt\CLI;
 defined('_CEXEC') or die;
 
 use Cobalt\CLI\Command\Install;
-use Cobalt\Container;
 use Cobalt\Provider\ApplicationServiceProvider;
 use Cobalt\Provider\ConfigServiceProvider;
 use Cobalt\Provider\DatabaseServiceProvider;
 
 use Joomla\Application\AbstractCliApplication;
+use Joomla\DI\Container;
+use Joomla\DI\ContainerAwareInterface;
 use Joomla\Language\Language;
 use Joomla\Language\Text;
 
@@ -25,7 +26,7 @@ use Joomla\Language\Text;
  *
  * @since  1.0
  */
-class Application extends AbstractCliApplication
+class Application extends AbstractCliApplication implements ContainerAwareInterface
 {
 	/**
 	 * DI Container
@@ -50,7 +51,7 @@ class Application extends AbstractCliApplication
 	 */
 	public function __construct()
 	{
-		$container = Container::getInstance();
+		$container = new Container;
 
 		$container->registerServiceProvider(new ApplicationServiceProvider($this));
 

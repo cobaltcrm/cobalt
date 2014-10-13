@@ -11,9 +11,9 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $document = $this->document;
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 $raw = $app->input->get('format');
-$return = $app->input->getBase64('return', base64_encode(\JUri::current()));
+$return = $app->input->getBase64('return', base64_encode($app->get('uri.request')));
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">

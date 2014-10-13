@@ -216,7 +216,7 @@ class Goal extends DefaultModel
        $query = $db->getQuery(true);
 
        //load goals associated with team id
-       $query->select("g.*,u.first_name,u.last_name,(CASE WHEN (t.name IS NOT NULL) THEN t.name ELSE CONCAT(u.first_name,NULL,u.last_name) END) AS team_name")
+       $query->select("g.*,u.first_name,u.last_name,(CASE WHEN (t.name IS NOT NULL) THEN t.name ELSE " . $query->concatenate(array('u.first_name', 'NULL', 'u.last_name')) . " END) AS team_name")
        ->from("#__goals AS g");
 
        //if we are searching for a specific team

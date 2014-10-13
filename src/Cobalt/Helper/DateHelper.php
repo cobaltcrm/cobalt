@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -184,7 +186,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     public static function getSiteTimezone()
     {
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
         $query->select("timezone")->from("#__config")->where("id=1");
         $db->setQuery($query);

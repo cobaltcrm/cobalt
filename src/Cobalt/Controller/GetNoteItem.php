@@ -11,7 +11,6 @@
 namespace Cobalt\Controller;
 
 use Cobalt\Model\Note as NoteModel;
-use Cobalt\Helper\ViewHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

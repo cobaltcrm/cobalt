@@ -13,7 +13,7 @@ defined('_CEXEC') or die('Restricted access');
 //define person
 $person = $this->people[0];
 
-$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
 ?>
     <script type="text/javascript">
         var id = <?php echo $person->id; ?>;

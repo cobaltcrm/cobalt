@@ -11,9 +11,9 @@
 namespace Cobalt\View\Stages;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Model\Stages as StagesModel;
 
@@ -25,7 +25,7 @@ class Html extends AbstractHtmlView
     public function render($tpl = null)
     {
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();

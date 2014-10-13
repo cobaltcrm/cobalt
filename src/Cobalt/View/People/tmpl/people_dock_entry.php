@@ -11,7 +11,7 @@
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 $person = $this->person;
-$mediaURI = \Cobalt\Container::fetch('app')->get('uri.media.full');
+$mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
 echo '<tr class="cobalt_row_'.$this->k.'">';
 
     if ( array_key_exists('avatar',$person) && $person->avatar)

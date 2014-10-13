@@ -10,15 +10,14 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\CompanyTable;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\CobaltHelper;
 use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\TweetsHelper;
 use Cobalt\Helper\UsersHelper;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\TemplateHelper;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -34,15 +33,19 @@ class Company extends DefaultModel
     public $_type      = null;
     public $published  = 1;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
     {
-        parent::__construct();
-        $app = \Cobalt\Container::fetch('app');
-        $this->_view = $app->input->get('view');
-        $this->_layout = str_replace('_filter','',$app->input->get('layout'));
+        parent::__construct($db, $state);
+        $this->_view = $this->app->input->get('view');
+        $this->_layout = str_replace('_filter','',$this->app->input->get('layout'));
     }
 
     /**
@@ -52,8 +55,6 @@ class Company extends DefaultModel
      */
     public function store($data = null)
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row    = $this->getTable('Company');
         $oldRow = $this->getTable('Company');
@@ -109,7 +110,7 @@ class Company extends DefaultModel
             CobaltHelper::storeCustomCf($id,$customArray,'company');
         }
 
-        //$app->triggerEvent('onAfterCompanySave', array(&$row));
+        //$this->app->triggerEvent('onAfterCompanySave', array(&$row));
 
         return $row->id;
     }
@@ -119,8 +120,6 @@ class Company extends DefaultModel
      */
     public function _buildQuery()
     {
-        $app = \Cobalt\Container::fetch('app');
-
 		if ($this->db->name=='mysqli')
 		{
 			$this->db->setQuery("SET SQL_BIG_SELECTS=1")->execute();
@@ -130,11 +129,11 @@ class Company extends DefaultModel
         $team = $this->_team;
         $id = $this->_id;
         $type = $this->_type;
-        $view = $app->input->get('view');
+        $view = $this->app->input->get('view');
 
         if (!$id) {
 
-            $session = $app->getSession();
+            $session = $this->app->getSession();
 
             //determine whether we are searching for a team or user
             if ($user) {
@@ -168,7 +167,7 @@ class Company extends DefaultModel
 
         //generate query for base companies
         $query = $this->db->getQuery(true);
-        $export = $app->input->get('export');
+        $export = $this->app->input->get('export');
 
         if ($export) {
 
@@ -198,37 +197,37 @@ class Company extends DefaultModel
 
                 //filter for companies with tasks due today
                 if ($type == 'today') {
-                    $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type='company'");
+                    $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type=" . $this->db->quote('company'));
                     $query->join('INNER',"#__events as event on event.id = event_company_cf.event_id");
-                    $query->where("event.due_date='$date'");
+                    $query->where("event.due_date=" . $this->db->quote($date));
                     $query->where("event.published>0");
                 }
 
                 //filter for companies and deals//tasks due tomorrow
                 if ($type == "tomorrow") {
                     $tomorrow = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() + (1*24*60*60)));
-                    $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type='company'");
+                    $query->leftJoin("#__events_cf as event_company_cf on event_company_cf.association_id = c.id AND event_company_cf.association_type=" . $this->db->quote('company'));
                     $query->join('INNER',"#__events as event on event.id = event_company_cf.event_id");
-                    $query->where("event.due_date='$tomorrow'");
+                    $query->where("event.due_date=" . $this->db->quote($tomorrow));
                     $query->where("event.published>0");
                 }
 
                 //filter for companies updated in the last 30 days
                 if ($type == "updated_thirty") {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("c.modified >'$last_thirty_days'");
+                    $query->where("c.modified >" . $this->db->quote($last_thirty_days));
                 }
 
                  //filter for past companies// last contacted 30 days ago or longer
                 if ($type == "past") {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("c.modified <'$last_thirty_days'");
+                    $query->where("c.modified <" . $this->db->quote($last_thirty_days));
                 }
 
                 //filter for recent companies
                 if ($type == "recent") {
                     $last_thirty_days = DateHelper::formatDBDate(date('Y-m-d 00:00:00',time() - (30*24*60*60)));
-                    $query->where("c.modified >'$last_thirty_days'");
+                    $query->where("c.modified >" . $this->db->quote($last_thirty_days));
                 }
 
                  $query->group("c.id");
@@ -236,9 +235,9 @@ class Company extends DefaultModel
             }
 
             /** company name filter **/
-            $company_name = $this->getState('Company.'.$view.'_name');
+            $company_name = $this->getState()->get('Company.'.$view.'_name');
             if ($company_name != null) {
-                $query->where("( c.name LIKE '%".$company_name."%' )");
+                $query->where("( c.name LIKE " . $this->db->quote('%'.$company_name.'%') . " )");
             }
 
         }
@@ -270,7 +269,7 @@ class Company extends DefaultModel
 
         //set user state requests
         $query
-            ->order($this->getState('Company.filter_order').' '.$this->getState('Company.filter_order_Dir'))
+            ->order($this->getState()->get('Company.filter_order').' '.$this->getState()->get('Company.filter_order_Dir'))
             ->where("c.published=".$this->published);
 
         return $query;
@@ -283,7 +282,6 @@ class Company extends DefaultModel
      */
     public function getCompanies($id = null, $type = null, $user = null, $team = null)
     {
-        $app = \Cobalt\Container::fetch('app');
         $this->_id = $id;
         $this->_type = $type;
         $this->_user = $user;
@@ -298,8 +296,8 @@ class Company extends DefaultModel
 
         if (!TemplateHelper::isMobile())
         {
-            $limit = $this->getState($this->_view.'_limit');
-            $limitStart = $this->getState($this->_view.'_limitstart');
+            $limit = $this->getState()->get($this->_view.'_limit');
+            $limitStart = $this->getState()->get($this->_view.'_limitstart');
 
             if (!$this->_id && $limit != 0)
             {
@@ -308,8 +306,8 @@ class Company extends DefaultModel
                     $limitStart = 0;
                     $limit = 10;
                     $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
-                    $this->state->set($this->_view.'_limit', $limit);
-                    $this->state->set($this->_view.'_limitstart', $limitStart);
+                    $this->getState()->set($this->_view.'_limit', $limit);
+                    $this->getState()->set($this->_view.'_limitstart', $limitStart);
                 }
             }
         }
@@ -320,7 +318,7 @@ class Company extends DefaultModel
         //generate query to join people
         if (count($companies))
         {
-            $export = $app->input->get('export');
+            $export = $this->app->input->get('export');
 
             if (!$export)
             {
@@ -376,15 +374,14 @@ class Company extends DefaultModel
 
         }
 
-        //$app->triggerEvent('onCompanyLoad',array(&$companies));
+        //$this->app->triggerEvent('onCompanyLoad',array(&$companies));
 
         return $companies;
     }
 
     public function getCompany($id = null)
     {
-        $app = \Cobalt\Container::fetch('app');
-        $id = $id ? $id : $app->input->getInt('id');
+        $id = $id ? $id : $this->app->input->getInt('id');
 
         if ($id > 0)
         {
@@ -467,15 +464,12 @@ class Company extends DefaultModel
      */
     public function populateState()
     {
-        //get states
-        $app = \Cobalt\Container::fetch('app');
-
         //determine view so we set correct states
-        $view = $app->input->get('view');
+        $view = $this->app->input->get('view');
 
         // Get pagination request variables
-        $limit = $app->getUserStateFromRequest($view.'_limit','limit',10);
-        $limitstart = $app->getUserStateFromRequest($view.'_limitstart','limitstart',0);
+        $limit = $this->app->getUserStateFromRequest($view.'_limit','limit',10);
+        $limitstart = $this->app->getUserStateFromRequest($view.'_limitstart','limitstart',0);
 
         // In case limit has been changed, adjust it
         $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -486,9 +480,9 @@ class Company extends DefaultModel
         $state->set($view.'_limitstart', $limitstart);
 
         //set default filter states for reports
-        $filter_order           = $app->getUserStateFromRequest('Company.filter_order','filter_order','c.name');
-        $filter_order_Dir       = $app->getUserStateFromRequest('Company.filter_order_Dir','filter_order_Dir','asc');
-        $company_filter         = $app->getUserStateFromRequest('Company.'.$view.'_name','company_name',null);
+        $filter_order           = $this->app->getUserStateFromRequest('Company.filter_order','filter_order','c.name');
+        $filter_order_Dir       = $this->app->getUserStateFromRequest('Company.filter_order_Dir','filter_order_Dir','asc');
+        $company_filter         = $this->app->getUserStateFromRequest('Company.'.$view.'_name','company_name',null);
 
         //set states for reports
         $state->set('Company.filter_order', $filter_order);

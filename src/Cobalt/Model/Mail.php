@@ -11,6 +11,8 @@
 namespace Cobalt\Model;
 
 use Cobalt\Helper\UsersHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -29,15 +31,17 @@ class Mail extends DefaultModel
     private $stucture = null;
     private $attachments = null;
 
-    /**
-     *
-     *
-     * @access  public
-     * @return void
-     */
-    public function __construct()
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
     {
-        parent::__construct();
+        parent::__construct($db, $state);
         /**Initialize Configurations**/
         $this->_getConfig();
     }

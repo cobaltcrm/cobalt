@@ -10,12 +10,11 @@
 
 namespace Cobalt\View\Menu;
 
-use Cobalt\Container;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Model\Menu as MenuModel;
 
 // no direct access
@@ -28,7 +27,7 @@ class Html extends AbstractHtmlView
         //authenticate the current user to make sure they are an admin
         UsersHelper::authenticateAdmin();
 
-	    $app = Container::fetch('app');
+	    $app = Factory::getApplication();
         $document = $app->getDocument();
         $document->addScript($app->get('uri.media.full')."js/cobalt-admin.js");
 

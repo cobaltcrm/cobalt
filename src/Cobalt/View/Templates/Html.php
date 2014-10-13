@@ -11,11 +11,11 @@
 namespace Cobalt\View\Templates;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Helper\DropdownHelper;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Model\Templates as TemplatesModel;
 
 // no direct access
@@ -33,7 +33,7 @@ class Html extends AbstractHtmlView
         $this->toolbar = new Toolbar;
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         /** Menu Links **/
         $menu = MenuHelper::getMenuModules();

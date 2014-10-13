@@ -10,12 +10,13 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
-use Cobalt\Container;
 use Cobalt\Pagination;
 use Cobalt\Table\AbstractTable;
 use Joomla\Model\AbstractDatabaseModel;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Registry\Registry;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -36,16 +37,21 @@ class DefaultModel extends AbstractDatabaseModel
 	 */
     protected $app;
 
-    public function __construct(DatabaseDriver $db = null)
+	/**
+	 * Instantiate the model.
+	 *
+	 * @param   DatabaseDriver  $db     The database adapter.
+	 * @param   Registry        $state  The model state.
+	 *
+	 * @since   1.0
+	 */
+	public function __construct(DatabaseDriver $db = null, Registry $state = null)
     {
-        if (is_null($db))
-        {
-            $db = Container::fetch('db');
-        }
+	    $db = is_null($db) ? Factory::getDb() : $db;
 
-	    parent::__construct($db);
+	    parent::__construct($db, $state);
 
-        $this->app = Container::fetch('app');
+        $this->app = Factory::getApplication();
 
         $ids = $this->app->input->get("cids", null, 'array');
 

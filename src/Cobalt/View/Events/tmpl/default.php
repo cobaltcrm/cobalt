@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 $view = $app->input->get('view');
 $layout = $app->input->get('layout','list');
 
@@ -170,7 +170,7 @@ if ($filter_type == "individual") {
     <tbody id="list">
         <?php
             $data = array('events'=>$this->events);
-            $event_list = ViewHelper::getView('events','list','phtml',$data);
+            $event_list = \Cobalt\Factory::getView('events','list','phtml',$data);
             echo $event_list->render();
         ?>
     </tbody>

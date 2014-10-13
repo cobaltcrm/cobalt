@@ -13,6 +13,8 @@ defined('_CEXEC') or die;
 use JFactory;
 use JDocument;
 
+use Joomla\DI\Container;
+use Joomla\DI\ContainerAwareInterface;
 use Joomla\Registry\Registry;
 use Joomla\Language\Language;
 use Joomla\Language\Text;
@@ -39,7 +41,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
  * @subpackage  Application
  * @since       1.0
  */
-final class Application extends AbstractWebApplication
+final class Application extends AbstractWebApplication implements ContainerAwareInterface
 {
 	/**
 	 * DI Container
@@ -47,7 +49,7 @@ final class Application extends AbstractWebApplication
 	 * @var    Container
 	 * @since  1.0
 	 */
-	private $container;
+	private static $container;
 
 	/**
 	 * A session object.
@@ -127,7 +129,7 @@ final class Application extends AbstractWebApplication
 		$this->set('uri.uploads.full', $this->get('uri.base.full') . 'uploads/');
 		$this->set('uri.uploads.path', $this->get('uri.base.path') . 'uploads/');
 
-		$container = Container::getInstance();
+		$container = new Container;
 
 		$container->registerServiceProvider(new Provider\ApplicationServiceProvider($this));
 
@@ -165,19 +167,31 @@ final class Application extends AbstractWebApplication
 	}
 
 	/**
-	 * Get the DI container.
+	 * Get the DI container
 	 *
 	 * @return  Container
 	 *
 	 * @since   1.0
-	 *
 	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
 	 */
 	public function getContainer()
 	{
-		if ($this->container)
+		return static::getDIContainer();
+	}
+
+	/**
+	 * Get the DI container
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
+	 */
+	public static function getDIContainer()
+	{
+		if (static::$container)
 		{
-			return $this->container;
+			return static::$container;
 		}
 
 		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
@@ -194,7 +208,7 @@ final class Application extends AbstractWebApplication
 	 */
 	public function setContainer(Container $container)
 	{
-		$this->container = $container;
+		static::$container = $container;
 
 		return $this;
 	}
@@ -232,7 +246,7 @@ final class Application extends AbstractWebApplication
 	 */
 	public static function getHash($seed)
 	{
-		return md5(Container::fetch('config')->get('secret') . $seed);
+		return md5(Factory::getApplication()->getContainer()->get('config')->get('secret') . $seed);
 	}
 
 	/**
@@ -246,7 +260,7 @@ final class Application extends AbstractWebApplication
 	{
 		if (is_null($this->cSession))
 		{
-			$this->cSession = $this->getContainer()->fetch('session');
+			$this->cSession = $this->getContainer()->get('session');
 		}
 
 		return $this->cSession;
@@ -370,7 +384,9 @@ final class Application extends AbstractWebApplication
 			$this->getContainer()->set('session', $session);
 
 			// Fetch the controller
+			/** @var \Cobalt\Controller\DefaultController $controllerObj */
 			$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
+			$controllerObj->setApplication($this)->setContainer($this->getContainer());
 
 			// Perform the Request task
 			$controllerObj->execute();
@@ -399,7 +415,9 @@ final class Application extends AbstractWebApplication
 			$user = $this->getUser();
 
 			// Fetch the controller
+			/** @var \Cobalt\Controller\DefaultController $controllerObj */
 			$controllerObj = $this->getRouter()->getController($this->get('uri.route'));
+			$controllerObj->setApplication($this)->setContainer($this->getContainer());
 
 			// Require specific controller if requested
 			$controller = $this->input->get('controller', 'default');
@@ -616,7 +634,7 @@ final class Application extends AbstractWebApplication
 	{
 		if (is_null($this->router))
 		{
-			$this->router = new Router($this->input, $this);
+			$this->router = new Router($this->input);
 
 			$maps = json_decode(file_get_contents(JPATH_ROOT . '/src/routes.json'));
 

@@ -13,9 +13,9 @@ namespace Cobalt\Controller;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
-use Cobalt\Container;
-use Joomla\Input\Input;
-use Joomla\Application\AbstractApplication;
+use Cobalt\Factory;
+use Joomla\DI\Container;
+use Joomla\DI\ContainerAwareInterface;
 use Joomla\Controller\AbstractController;
 
 /**
@@ -26,61 +26,24 @@ use Joomla\Controller\AbstractController;
  *
  * @since          1.0
  */
-class DefaultController extends AbstractController
+class DefaultController extends AbstractController implements ContainerAwareInterface
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
 	/**
-	 * Instantiate the controller.
+	 * DI Container
 	 *
-	 * @param   Input                $input  The input object.
-	 * @param   AbstractApplication  $app    The application object.
-	 *
-	 * @since   1.0
+	 * @var    Container
+	 * @since  1.0
 	 */
-    public function __construct(Input $input = null, AbstractApplication $app = null)
-    {
-        parent::__construct($input, $app);
-
-	    $this->container = Container::getInstance();
-    }
+	private $container;
 
     public function execute()
     {
         // Get the document object.
-        $document   = $this->getApplication()->getDocument();
         $viewFormat = $this->getInput()->getWord('format', 'html');
         $viewName   = $this->getInput()->getWord('view', 'dashboard');
         $layoutName = $this->getInput()->getWord('layout', 'default');
 
-        $this->getInput()->set('view', $viewName);
-
-        // Register the layout paths for the view
-        $paths = new \SplPriorityQueue;
-
-        $themeOverride = JPATH_THEMES . '/' . $this->getApplication()->get('theme') . '/html/' . strtolower($viewName);
-        if (is_dir($themeOverride)) {
-            $paths->insert($themeOverride, 'normal');
-        }
-
-        $paths->insert(JPATH_COBALT . '/View/' . ucfirst($viewName) . '/tmpl', 'normal');
-
-        $viewClass 	= 'Cobalt\\View\\' . ucfirst($viewName) . '\\' . ucfirst($viewFormat);
-        $modelClass = ucfirst($viewName);
-
-        if (class_exists('Cobalt\\Model\\'.$modelClass) === false) {
-            $modelClass = 'DefaultModel';
-        }
-
-        $model = $this->getModel($modelClass);
-
-        /** @var $view \Joomla\View\AbstractHtmlView **/
-        $view = new $viewClass($model, $paths);
-        $view->setLayout($layoutName);
-        $view->document = $document;
+	    $view = Factory::getView($viewName, $layoutName, $viewFormat, array('bypass' => false));
 
         // Render our view.
         echo $view->render();
@@ -88,12 +51,23 @@ class DefaultController extends AbstractController
         return true;
     }
 
-    public function getModel($modelName)
-    {
-        $fqcn = 'Cobalt\\Model\\' . $modelName;
+	/**
+	 * Get the DI container.
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
+	 */
+	public function getContainer()
+	{
+		if ($this->container)
+		{
+			return $this->container;
+		}
 
-        return $this->container->buildObject($fqcn);
-    }
+		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
+	}
 
     public function isAjaxRequest()
     {
@@ -101,13 +75,19 @@ class DefaultController extends AbstractController
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || (isset($headers['X-Requested-With']) && strtolower($headers['X-Requested-With']) === 'xmlhttprequest');
     }
 
-    /**
-     * Return Application
-     *
-     * @return AbstractApplication|mixed
-     */
-    public function getApplication()
-    {
-        return $this->container->fetch('app');
-    }
+	/**
+	 * Set the DI container.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  $this  Method allows chaining
+	 *
+	 * @since   1.0
+	 */
+	public function setContainer(Container $container)
+	{
+		$this->container = $container;
+
+		return $this;
+	}
 }

@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 $report = $this->report[0]; ?>
 
 <table class="com_cobalt_table table table-hover table-striped">
@@ -223,7 +223,7 @@ $report = $this->report[0]; ?>
                             case "currency": ?>
                             <th><input class="input input-small filter_input" name="custom_<?php echo $info['id']; ?>" type="text" value="<?php echo $custom_field_filter; ?>"  /></th>
                             <?php break;
-                            case "forecast" ?>
+	                        case "forecast": ?>
                             <th><input class="input input-small filter_input" name="custom_<?php echo $info['id']; ?>" type="text" value="<?php echo $custom_field_filter; ?>"  /></th>
                             <?php break;
                             case "date": ?>

@@ -11,9 +11,9 @@
 namespace Cobalt\View\FormWizard;
 
 use Joomla\View\AbstractHtmlView;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\Toolbar;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Model\FormWizard as FormWizardModel;
@@ -30,7 +30,7 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //load model
         $layout = $this->getLayout();

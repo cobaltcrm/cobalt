@@ -12,6 +12,7 @@ namespace Cobalt\Model;
 
 defined('_CEXEC') or die;
 
+use Cobalt\Factory;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Filesystem\Exception\FilesystemException;
@@ -47,7 +48,7 @@ class Install extends AbstractModel
 	{
 		parent::__construct($state);
 
-		Text::setLanguage(\Cobalt\Container::fetch('app')->getLanguage());
+		Text::setLanguage(Factory::getApplication()->getLanguage());
 	}
 
     /**
@@ -316,7 +317,7 @@ class Install extends AbstractModel
 	 */
     public function canUpload()
     {
-	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
+	    $file = Factory::getApplication()->input->files->get('logo', array(), 'array');
 
 	    if (!isset($file['error']))
 	    {
@@ -346,7 +347,7 @@ class Install extends AbstractModel
 		    return true;
 	    }
 
-	    $file = \Cobalt\Container::fetch('app')->input->files->get('logo', array(), 'array');
+	    $file = Factory::getApplication()->input->files->get('logo', array(), 'array');
 
 	    if (!$this->canUpload())
 	    {

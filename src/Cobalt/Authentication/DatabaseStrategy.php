@@ -8,11 +8,11 @@
 
 namespace Cobalt\Authentication;
 
-use Cobalt\Container;
 use Cobalt\Table\UserTable;
 
 use Joomla\Authentication\AuthenticationStrategyInterface;
 use Joomla\Authentication\Authentication;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Input\Input;
 
 /**
@@ -49,15 +49,16 @@ class DatabaseStrategy implements AuthenticationStrategyInterface
 	/**
 	 * Strategy Constructor
 	 *
-	 * @param   Input  $input  The input object from which to retrieve the request credentials.
+	 * @param   Input           $input  The input object from which to retrieve the request credentials.
+	 * @param   DatabaseDriver  $db     DatabaseDriver object
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(Input $input)
+	public function __construct(Input $input, DatabaseDriver $db)
 	{
 		$this->input = $input;
 
-		$usersTable = new UserTable(Container::fetch('db'));
+		$usersTable = new UserTable($db);
 		$this->credentialStore = $usersTable->getUserPasswords();
 	}
 

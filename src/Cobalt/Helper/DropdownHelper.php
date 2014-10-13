@@ -11,6 +11,7 @@
 namespace Cobalt\Helper;
 
 use JHtml;
+use Cobalt\Factory;
 use Cobalt\Model\People as PeopleModel;
 
 // no direct access
@@ -25,7 +26,7 @@ class DropdownHelper
         $html = '';
 
         //grab db
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
 
         //generate query based on type
         $query = $db->getQuery(true);
@@ -222,7 +223,7 @@ class DropdownHelper
              $return = array();
 
             //grab db
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
 
             //generate query based on type
             $query = $db->getQuery(true);
@@ -269,7 +270,7 @@ class DropdownHelper
         public static function getCustomData($id,$type)
         {
             //get dbo
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
 
             //query
@@ -296,7 +297,7 @@ class DropdownHelper
          */
         public static function getCustomValue($customType,$customNameOrId,$customValue,$itemId)
         {
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
 
             $id = str_replace("custom_","",$customNameOrId);
@@ -347,7 +348,7 @@ class DropdownHelper
         public static function getLeaderBoards()
         {
             //load database
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
 
             //load goals associate with user depending on team//role that have a leaderboard flag in the database
@@ -468,7 +469,7 @@ class DropdownHelper
         public static function getTeams($team=null)
         {
             //get database
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
             //query string
             //u.id//
@@ -496,7 +497,7 @@ class DropdownHelper
         public static function getManagers($remove=null)
         {
             //get database
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
             //query string
             $query->select("u.id,u.first_name,u.last_name,u.team_id");
@@ -676,7 +677,7 @@ class DropdownHelper
 
          public static function generateDealStatuses($selected=null, $name="status_id", $class="class='inputbox form-control'")
          {
-            $db = \Cobalt\Container::fetch('db');
+            $db = Factory::getDb();
             $query = $db->getQuery(true);
             $query->select("id,name")->from("#__deal_status");
 

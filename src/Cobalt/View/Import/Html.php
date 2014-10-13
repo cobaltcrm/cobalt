@@ -10,6 +10,7 @@
 
 namespace Cobalt\View\Import;
 
+use Cobalt\Factory;
 use Cobalt\Helper\RouteHelper;
 use Cobalt\Model\Import as ImportModel;
 use Cobalt\Helper\TextHelper;
@@ -23,7 +24,7 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $doc = $app->getDocument();
         $doc->addScript($app->get('uri.media.full').'js/import_manager.js');
 

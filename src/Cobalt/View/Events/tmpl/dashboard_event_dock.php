@@ -9,7 +9,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
-$app = \Cobalt\Container::fetch('app');
+$app = \Cobalt\Factory::getApplication();
 ?>
 
 <script type="text/javascript">
@@ -64,7 +64,7 @@ $app = \Cobalt\Container::fetch('app');
         <div id="task_container">
             <div id="task_list">
                 <?php
-                     $task_list = ViewHelper::getView('events','event_listings','phtml', array('events'=>$this->events));
+                     $task_list = \Cobalt\Factory::getView('events','event_listings','phtml', array('events'=>$this->events));
                      echo $task_list->render();
                 ?>
             </div>

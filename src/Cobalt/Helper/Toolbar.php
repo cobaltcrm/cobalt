@@ -10,7 +10,7 @@
 
 namespace Cobalt\Helper;
 
-use Cobalt\Helper\Button;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -22,7 +22,7 @@ class Toolbar
 	public function __construct()
 	{
 		$this->buttons = array();
-		$this->app = \Cobalt\Container::fetch('app');
+		$this->app = Factory::getApplication();
 	}
 
 	/**
@@ -165,7 +165,7 @@ class Toolbar
         {
             $view = $this->app->input->getCmd('view');
         }
-    	
+
     	$link = new Button('a', $label, '', '', $class);
     	$link->setLink(RouteHelper::_('index.php?view=' . $view))->setIcon($icon);
         $this->buttons[] = $link;

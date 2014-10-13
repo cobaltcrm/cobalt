@@ -10,7 +10,6 @@
 
 namespace Cobalt\Model;
 
-use Cobalt\Table\CompanyCustomTable;
 use Cobalt\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
@@ -24,8 +23,6 @@ class CompanyCustom extends DefaultModel
 
     public function store()
     {
-        $app = \Cobalt\Container::fetch('app');
-
         //Load Tables
         $row = $this->getTable('CompanyCustom');
         $data = $this->app->input->post->getArray();
@@ -82,7 +79,7 @@ class CompanyCustom extends DefaultModel
         return $this->db->getQuery(true)
             ->select("c.*")
             ->from("#__company_custom AS c")
-            ->order($this->getState('Companycustom.filter_order') . ' ' . $this->getState('Companycustom.filter_order_Dir'));
+            ->order($this->getState()->get('Companycustom.filter_order') . ' ' . $this->getState()->get('Companycustom.filter_order_Dir'));
     }
 
     /**
@@ -110,26 +107,24 @@ class CompanyCustom extends DefaultModel
         /** ------------------------------------------
          * Set query limits/ordering and load results
          */
-        $limit = $this->getState($this->_view . '_limit');
-        $limitStart = $this->getState($this->_view . '_limitstart');
+        $limit = $this->getState()->get($this->_view . '_limit');
+        $limitStart = $this->getState()->get($this->_view . '_limitstart');
 
         if ($limit != 0)
         {
-            $query->order($this->getState('Companycustom.filter_order') . ' ' . $this->getState('Companycustom.filter_order_Dir'));
+            $query->order($this->getState()->get('Companycustom.filter_order') . ' ' . $this->getState()->get('Companycustom.filter_order_Dir'));
 
             if ($limitStart >= $this->getTotal())
             {
                 $limitStart = 0;
                 $limit = 10;
                 $limitStart = ($limit != 0) ? (floor($limitStart / $limit) * $limit) : 0;
-                $this->state->set($this->_view . '_limit', $limit);
-                $this->state->set($this->_view . '_limitstart', $limitStart);
+                $this->getState()->set($this->_view . '_limit', $limit);
+                $this->getState()->set($this->_view . '_limitstart', $limitStart);
             }
-
-            $query .= " LIMIT ".($limit)." OFFSET ".($limitStart);
         }
 
-        $results = $this->db->setQuery($query)->loadAssocList();
+        $results = $this->db->setQuery($query, $limitStart, $limit)->loadAssocList();
 
         if (count($results) > 0)
         {
@@ -164,9 +159,8 @@ class CompanyCustom extends DefaultModel
     public function populateState()
     {
         //get states
-        $app = \Cobalt\Container::fetch('app');
-        $filter_order = $app->getUserStateFromRequest('Companycustom.filter_order', 'filter_order', 'c.name');
-        $filter_order_Dir = $app->getUserStateFromRequest('Companycustom.filter_order_Dir', 'filter_order_Dir', 'asc');
+        $filter_order = $this->app->getUserStateFromRequest('Companycustom.filter_order', 'filter_order', 'c.name');
+        $filter_order_Dir = $this->app->getUserStateFromRequest('Companycustom.filter_order_Dir', 'filter_order_Dir', 'asc');
 
         $state = new Registry;
 

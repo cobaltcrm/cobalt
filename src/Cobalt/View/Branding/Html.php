@@ -10,7 +10,7 @@
 
 namespace Cobalt\View\Branding;
 
-use Cobalt\Container;
+use Cobalt\Factory;
 use Joomla\View\AbstractHtmlView;
 use Cobalt\Model\Branding as BrandingModel;
 use Cobalt\Helper\MenuHelper;
@@ -33,8 +33,7 @@ class Html extends AbstractHtmlView
         $this->menu = $menu;
 
          //add javascript
-	    /** @var \Cobalt\Application $app */
-	    $app = Container::fetch('app');
+	    $app = Factory::getApplication();
         $document = $app->getDocument();
         $document->addScript($app->get('uri.media.full').'js/branding_manager.js');
         $document->addScript($app->get('uri.media.full').'js/cobalt-admin.js');

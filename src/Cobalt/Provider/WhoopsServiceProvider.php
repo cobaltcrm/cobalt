@@ -8,7 +8,8 @@
 
 namespace Cobalt\Provider;
 
-use Cobalt\Container;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
@@ -18,7 +19,7 @@ class WhoopsServiceProvider implements ServiceProviderInterface
     public function register(Container $container)
     {
         /** @var $config Registry */
-        $config = $container->resolve('config');
+        $config = $container->get('config');
 
         if ($config->get('debug', false)) {
             $whoops = new Run;
@@ -38,7 +39,7 @@ class WhoopsServiceProvider implements ServiceProviderInterface
 
             $whoops->register();
 
-            $container->bind('whoops', function() use ($whoops) {
+            $container->set('whoops', function() use ($whoops) {
                     return $whoops;
                 });
         }

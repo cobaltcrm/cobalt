@@ -10,6 +10,8 @@
 
 namespace Cobalt\Helper;
 
+use Cobalt\Factory;
+
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
@@ -17,7 +19,7 @@ class TranscriptlistsHelper
 {
     public static function getRooms($associationId=null,$associationType=null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $autoId = $app->input->get('id') ? $app->input->get('id') : $app->input->get('association_id');
         $autoType = $app->input->get('layout') ? $app->input->get('layout') : $app->input->get('association_type');
@@ -25,7 +27,7 @@ class TranscriptlistsHelper
         $associationId = $associationId ? $associationId : $autoId;
         $associationType = $associationType ? $associationType : $autoType;
 
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->select("id,name")
@@ -43,11 +45,11 @@ class TranscriptlistsHelper
 
     public static function getTranscripts($roomId=null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         $roomId = $roomId ? $roomId : $app->input->get('room_id');
 
-        $db = \Cobalt\Container::fetch('db');
+        $db = Factory::getDb();
         $query = $db->getQuery(true);
 
         $query->select("t.*,r.name AS room_name")

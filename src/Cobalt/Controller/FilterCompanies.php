@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\Company as CompanyModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,24 +19,19 @@ class FilterCompanies extends DefaultController
 {
     public function execute()
     {
-         //set view
-        $view = ViewHelper::getView('companies','raw','html');
-        $view->setLayout('list');
-
         //get filters
         $type = $this->getInput()->get('type');
         $user = $this->getInput()->get('user');
         $team = $this->getInput()->get('team_id');
 
         //get deals
-        $model = new CompanyModel;
+        $model = Factory::getModel('Company');
         $companies = $model->getCompanies(null,$type,$user,$team);
 
-        //assign references
-        $view->companies = $companies;
+         //set view
+        $view = Factory::getView('companies','list','html', array('companies' => $companies), $model);
 
         //display
         echo $view->render();
     }
-
 }

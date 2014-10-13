@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\Note as NoteModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -22,10 +21,10 @@ class GetNoteEntry extends DefaultController
     {
         $note_id = $this->getInput()->get('note_id');
 
-        $model = new NoteModel;
+        $model = Factory::getModel('Note');
         $note = $model->getNote($note_id);
 
-        $note_view = ViewHelper::getView('note','entry','phtml',array('note'=>$note[0]));
+        $note_view = Factory::getView('note','entry','phtml',array('note'=>$note[0]), $model);
         echo $note_view->render();
     }
 }

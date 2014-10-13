@@ -11,12 +11,9 @@
 namespace Cobalt\View\Users;
 
 use Joomla\View\AbstractHtmlView;
-use JUri;
-use JFactory;
+use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
-use Cobalt\Helper\TextHelper;
 use Cobalt\Helper\DropdownHelper;
-use Cobalt\Helper\ToolbarHelper;
 use Cobalt\Helper\Toolbar;
 use Cobalt\Helper\MenuHelper;
 use Cobalt\Model\Users as UsersModel;
@@ -33,10 +30,10 @@ class Html extends AbstractHtmlView
         UsersHelper::authenticateAdmin();
 
         //application
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
         //display title
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
 
         //load model
         $layout = $this->getLayout();

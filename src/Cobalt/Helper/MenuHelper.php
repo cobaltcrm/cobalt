@@ -11,6 +11,8 @@
 namespace Cobalt\Helper;
 
 // no direct access
+use Cobalt\Factory;
+
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
 class MenuHelper
@@ -185,7 +187,7 @@ class MenuHelper
 
     public static function setActive($menuItems)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
         $view = $app->input->getCmd('view', 'cobalt');
 
         foreach ($menuItems as &$item)
@@ -332,23 +334,23 @@ public static function getHelpMenuLinks()
     {
         $modules = array();
 
-        $app = \Cobalt\Container::fetch('app');
+	    $app = Factory::getApplication();
 
         /** Side menu links **/
         $menu_links = MenuHelper::getMenuLinks();
-        $menu = ViewHelper::getView('cobalt','menu','phtml');
+        $menu = Factory::getView('cobalt','menu','phtml');
         $menu->menu_links = $menu_links;
         $modules['menu'] = $menu;
 
         /** Quick Menu Links **/
         $quick_menu_links = MenuHelper::getQuickMenuLinks();
-        $quick_menu = ViewHelper::getView('cobalt','quick_menu','phtml');
+        $quick_menu = Factory::getView('cobalt','quick_menu','phtml');
         $quick_menu->quick_menu_links = $quick_menu_links;
         $modules['quick_menu'] = $quick_menu;
 
         /** Determine help type on page **/
-        $help_type_1 = $app->input->get('view') != '' || !is_null($app->input->get('view')) ? $app->input->get('view') : $app->input->get('controller');
-        $help_type_2 = $app->input->get('layout') != '' || !is_null($app->input->get('layout')) ? $app->input->get('layout') : $app->input->get('task');
+        $help_type_1 = $app->input->get('view', $app->input->get('controller'));
+        $help_type_2 = $app->input->get('layout', $app->input->get('task'));
         $help_type_1 = ( $help_type_1 == "" || is_null($help_type_1) ) ? "" : $help_type_1;
         $help_type_2 = ( $help_type_2 == "" || is_null($help_type_2) ) ? "" : '_'.$help_type_2;
         $help_type = str_replace(".","_",$help_type_1.$help_type_2);
@@ -360,7 +362,7 @@ public static function getHelpMenuLinks()
 
         /** Help Menu Links **/
         $help_menu_links = MenuHelper::getHelpMenuLinks();
-        $help_menu = ViewHelper::getView('cobalt','help_menu','phtml');
+        $help_menu = Factory::getView('cobalt','help_menu','phtml');
         $help_menu->help_menu_links = $help_menu_links;
         $help_menu->help_type = $help_type;
         $help_menu->show_help = $show_help;

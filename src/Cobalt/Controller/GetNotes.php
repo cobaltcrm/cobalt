@@ -13,9 +13,8 @@ namespace Cobalt\Controller;
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+use Cobalt\Factory;
 use Cobalt\Helper\TextHelper;
-use Cobalt\Model\Note;
-use Cobalt\Helper\ViewHelper;
 
 class GetNotes extends DefaultController
 {
@@ -49,19 +48,19 @@ class GetNotes extends DefaultController
         //Always object_id 0 return empty notes
         $load_more = false;
         if ($object_id && !empty($item_type)) {
-            $model = new Note;
+            $model = Factory::getModel('Note');
             $notes = $model->getNotes($object_id, $item_type, false);
             $total = count($notes);
             //filter notes by limits
             $items = array_slice($notes,$start, $limit);
 
-            $view = ViewHelper::getView('note','default','phtml', array('notes' => $items));
+            $view = Factory::getView('note','default','phtml', array('notes' => $items), $model);
 
             $load_more = (($start + $limit) >= $total) ? false : true ;
 
             $response['html'] = '';
             foreach ($items as $note) {
-                $view = ViewHelper::getView('note','entry','phtml',array('note' => $note));
+	            $view = Factory::getView('note','entry','phtml', array('note' => $note), $model);
                 $response['html'] .= $view->render();
             }
         }

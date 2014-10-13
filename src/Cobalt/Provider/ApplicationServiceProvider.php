@@ -57,5 +57,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 				return $app;
 			}, true, true
 		);
+
+		$container->alias('\\Joomla\\Application\\AbstractApplication', 'app');
 	}
 }

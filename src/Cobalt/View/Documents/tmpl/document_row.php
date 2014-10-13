@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         foreach ($this->documents as $key => $document) {
             $k = $key%2;
             echo '<tr class="document_'.$key.'" id="document_row_'.$document['id'].'" class="cobalt_row_'.$k.'">';
-                echo '<td><img width="30px" height="30px" src="'.\Cobalt\Container::fetch('app')->get('uri.media.full').'images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
+                echo '<td><img width="30px" height="30px" src="'.\Cobalt\Factory::getApplication()->get('uri.media.full').'images/'.$document['filetype'].'.png'.'" /><br /><b>'.strtoupper($document['filetype']).'<b></td>';
                 echo '<td>';
                 echo'<div class="dropdown">';
                 echo '<a href="javascript:void(0);" class="dropdown-toggle" role="button" data-toggle="dropdown" id="'.$document['id'].'">'.$document['name'].'</a>';

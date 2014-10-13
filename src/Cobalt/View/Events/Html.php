@@ -10,9 +10,9 @@
 
 namespace Cobalt\View\Events;
 
-use JFactory;
 use Cobalt\Model\Event as EventModel;
 use Cobalt\Model\People as PeopleModel;
+use Cobalt\Factory;
 use Cobalt\Helper\EventHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TemplateHelper;
@@ -25,9 +25,9 @@ class Html extends AbstractHtmlView
 {
     public function render($tpl = null)
     {
-        $app = \Cobalt\Container::fetch('app');
+        $app = Factory::getApplication();
 
-        $document = JFactory::getDocument();
+        $document = $app->getDocument();
 
         //event model
         $model = new EventModel;

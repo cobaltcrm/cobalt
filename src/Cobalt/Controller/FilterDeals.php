@@ -10,8 +10,7 @@
 
 namespace Cobalt\Controller;
 
-use Cobalt\Model\Deal as DealModel;
-use Cobalt\Helper\ViewHelper;
+use Cobalt\Factory;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -20,10 +19,6 @@ class FilterDeals extends DefaultController
 {
     public function execute()
     {
-        //set view
-        $view = ViewHelper::getView('deals','raw');
-        $view->setLayout('list');
-
         //get filters
         $type = $this->getInput()->get('type');
         $stage = $this->getInput()->get('stage');
@@ -32,12 +27,11 @@ class FilterDeals extends DefaultController
         $team = $this->getInput()->get('team_id');
 
         //get deals
-        $model = new DealModel;
+        $model = Factory::getModel('Deal');
         $deals = $model->getDeals(null,$type,$user,$stage,$close,$team);
 
-        //assign references
-        $view->deals = $deals;
-        $view->pagination = $model->getPagination();
+        //set view
+        $view = Factory::getView('deals','list','raw',array('deals' => $deals, 'pagination' => $model->getPagination()),$model);
 
         //display
         echo $view->render();

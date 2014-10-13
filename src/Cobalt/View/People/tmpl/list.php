@@ -12,7 +12,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
 <thead>
     <tr>
-        <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" type="checkbox" /></th>
+        <th class="checkbox_column"><input type="checkbox" onclick="Cobalt.selectAll(this);" title="<?php echo TextHelper::_('COBALT_CHECK_ALL_ITEMS'); ?>" data-placement="bottom" /></th>
         <th class="avatar" ></th>
         <th><?php echo TextHelper::_('COBALT_PEOPLE_NAME'); ?></th>
         <th class="company"><?php echo TextHelper::_('COBALT_PEOPLE_COMPANY'); ?></th>
