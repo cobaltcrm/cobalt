@@ -425,7 +425,7 @@ class Install extends AbstractModel
 			// Run the create database query.
 			$this->__createDatabase($db, $options, $utf);
 		}
-		catch (RuntimeException $e)
+		catch (\RuntimeException $e)
 		{
 			// If an error occurred return false.
 			return false;
