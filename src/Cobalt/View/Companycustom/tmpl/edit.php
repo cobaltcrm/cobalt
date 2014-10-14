@@ -60,7 +60,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <?php } ?>
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="companycustom" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
 
                     </form>

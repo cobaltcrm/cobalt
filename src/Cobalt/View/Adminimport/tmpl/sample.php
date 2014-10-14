@@ -30,7 +30,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <input type="hidden" name="controller" value="import" />
                                 <input type="hidden" name="view" value="import" />
                                 <input type="hidden" name="layout" value="sample" />
-                                <?php echo JHtml::_('form.token'); ?>
+
                             </form>
                             <form action="index.php?view=import" method="post" name="adminForm" id="adminForm" class="inline-form"  >
                                 <input type="submit" value="<?php echo TextHelper::_('COBALT_REMOVE_SAMPLE_BUTTON'); ?>" class="btn btn-danger btn-large" />
@@ -39,7 +39,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <input type="hidden" name="controller" value="import" />
                                 <input type="hidden" name="view" value="import" />
                                 <input type="hidden" name="layout" value="sample" />
-                                <?php echo JHtml::_('form.token'); ?>
+
                             </form>
                         </div>
                     </div>

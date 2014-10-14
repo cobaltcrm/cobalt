@@ -47,7 +47,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <input type="hidden" name="boxchecked" value="0" />
                             <input type="hidden" name="filter_order" value="<?php echo $this->listOrder; ?>" />
                             <input type="hidden" name="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
                     </form>
                 </div>

@@ -58,7 +58,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                 <input type="hidden" name="id" id="form_id" value="<?php echo $this->form->id; ?>" />
                                 <input type="hidden" name="task" value="save" />
                                 <input type="hidden" name="model" value="formwizard" />
-                                <?php echo JHtml::_('form.token'); ?>
+
                             </div>
                         </div>
                         <div class="modal fade" id="show_fields_button_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

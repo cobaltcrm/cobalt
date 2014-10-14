@@ -86,7 +86,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <input type="hidden" name="block_btn_border" id="block-btn-border" value="" />
                             <input type="hidden" name="feature_btn_border" id="feature-btn-border" value="" />
                             <input type="hidden" name="feature_btn_bg" id="feature-btn-bg" value="" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
                     </form>
                     <div id="themes" style="display:none;">

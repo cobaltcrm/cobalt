@@ -241,7 +241,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
                         <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
                         <input type="hidden" name="model" value="user" />
                         <input type="hidden" name="task" value="save" />
-                        <?php echo JHtml::_('form.token'); ?>
+
                     </form>
                 </div>
             </div>
