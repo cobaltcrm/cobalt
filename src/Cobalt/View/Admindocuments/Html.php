@@ -63,7 +63,7 @@ class Html extends AbstractHtmlView
         else
         {
             //buttons
-            $this->toolbar->add(array('view' => 'documents', 'layout' => 'edit', 'format' => 'raw', 'tmpl' => 'component', 'return' => base64_encode(\JUri::current())), 'COBALT_TOOLBAR_NEW', 'btn btn-primary', 'plus', array('data-toggle'=> 'modal', 'data-target'=> '#uploadModal'));
+            $this->toolbar->add(array('view' => 'documents', 'layout' => 'edit', 'format' => 'raw', 'tmpl' => 'component', 'return' => base64_encode($app->get('uri')->current())), 'COBALT_TOOLBAR_NEW', 'btn btn-primary', 'plus', array('data-toggle'=> 'modal', 'data-target'=> '#uploadModal'));
             // ToolbarHelper::editList('edit');
             $this->toolbar->addDeleteRow();
 

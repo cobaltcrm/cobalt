@@ -17,7 +17,6 @@ use Cobalt\Helper\ActivityHelper;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\FileHelper;
-use JUri;
 use Cobalt\Helper\RouteHelper;
 
 // no direct access

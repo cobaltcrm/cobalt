@@ -25,6 +25,81 @@ use Cobalt\Helper\RouteHelper;
 class LinkHelper
 {
     /**
+     * @param array $params
+     * @return string
+     */
+    public static function viewDashboard(array $params = array())
+    {
+        $link = array(
+            'view' => 'dashboard'
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public static function viewDocuments(array $params = array())
+    {
+        $link = array(
+            'view' => 'documents'
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public static function viewAdminDocuments(array $params = array())
+    {
+        $link = array(
+            'view' => 'admindocuments'
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public static function viewImport(array $params = array())
+    {
+        $link = array(
+            'view' => 'import'
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public static function upload(array $params = array())
+    {
+        $link = array(
+            'task' => 'upload'
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
      * Link to view deal
      *
      * @param $deal_id
@@ -36,6 +111,36 @@ class LinkHelper
             'view' => 'deal',
             'layout' => 'deal',
             'id' => intval($deal_id)
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public static function viewDeals(array $params = array())
+    {
+        $link = array(
+            'view' => 'deals'
+        );
+
+        $query = array_merge($link, $params);
+
+        return self::create($query);
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public static function viewReports(array $params = array())
+    {
+        $link = array(
+            'view' => 'reports'
         );
 
         $query = array_merge($link, $params);

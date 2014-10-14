@@ -284,7 +284,7 @@ $deal = $this->dealList[0];
 
                 <input type="hidden" name="association_id" value="<?php echo $deal->id; ?>" />
                 <input type="hidden" name="association_type" value="deal">
-                <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
+                <input type="hidden" name="return" value="<?php echo base64_encode(Factory::getApplication()->get('uri')->current()); ?>" />
             </form>
         </span>
 

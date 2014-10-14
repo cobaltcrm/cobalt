@@ -17,7 +17,6 @@ use Cobalt\Helper\FileHelper;
 use Cobalt\Helper\DateHelper;
 use Joomla\Filesystem\File;
 use Joomla\Registry\Registry;
-use JUri;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );

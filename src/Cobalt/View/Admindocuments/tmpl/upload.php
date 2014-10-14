@@ -23,5 +23,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
     <input type="hidden" name="association_type" value="company">
-    <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
+    <input type="hidden" name="return" value="<?php echo base64_encode(Factory::getApplication()->get('uri')->current()); ?>" />
 </form>

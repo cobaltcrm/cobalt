@@ -427,7 +427,7 @@ $mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
 
             <input type="hidden" name="association_id" value="<?php echo $person['id']; ?>" />
             <input type="hidden" name="association_type" value="person">
-            <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
+            <input type="hidden" name="return" value="<?php echo base64_encode(Factory::getApplication()->get('uri')->current()); ?>" />
         </form>
 	</span>
     <h2 class="dotted"><?php echo TextHelper::_('COBALT_EDIT_DOCUMENTS'); ?></h2>
