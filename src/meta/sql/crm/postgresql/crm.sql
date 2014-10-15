@@ -200,19 +200,19 @@ CREATE TABLE "#__events" (
 	"created" timestamp NOT NULL,
 	"type" varchar(250) NOT NULL,
 	"assignee_id" int NOT NULL,
-	"due_date" timestamp NOT NULL,
+	"due_date" timestamp,
 	"end_date" date,
 	"repeats" varchar(255) NOT NULL,
-	"repeat_end" timestamp NOT NULL,
-	"start_time" timestamp NOT NULL,
-	"end_time" timestamp NOT NULL,
+	"repeat_end" timestamp,
+	"start_time" timestamp,
+	"end_time" timestamp,
 	"all_day" int NOT NULL,
 	"category_id" int NOT NULL,
 	"modified" timestamp NOT NULL,
-	"completed" int NOT NULL,
-	"actual_close" timestamp NOT NULL,
-	"excludes" text NOT NULL,
-	"parent_id" int NOT NULL,
+	"completed" int DEFAULT 0,
+	"actual_close" timestamp,
+	"excludes" text,
+	"parent_id" int NOT NULL DEFAULT 0,
 	"published" int DEFAULT 1,
 	PRIMARY KEY ("id")
 );
@@ -286,8 +286,8 @@ CREATE TABLE "#__history" (
 	"type_id" int,
 	"user_id" int,
 	"date" timestamp,
-	"old_value" text,
-	"new_value" text,
+	"old_value" int,
+	"new_value" int,
 	"action_type" varchar(250),
 	"field" varchar(255),
 	PRIMARY KEY ("id")
@@ -363,7 +363,7 @@ CREATE TABLE "#__people" (
 	"home_state" varchar(255),
 	"home_zip" int NOT NULL,
 	"home_country" varchar(255),
-	"assignee_id" int NOT NULL,
+	"assignee_id" int NOT NULL DEFAULT 0,
 	"fax" varchar(255),
 	"website" varchar(255),
 	"facebook_url" varchar(255),
@@ -586,44 +586,44 @@ CREATE TABLE IF NOT EXISTS "#__company_custom_cf" (
 	"modified" TIMESTAMP WITHOUT TIME ZONE
 );
 
-INSERT INTO "#__branding" ("id", "header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES (1, 'eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 0, '2012-02-21 16:11:03', 'cobalt-3d.png', null, null, null, 'COBALT');
-INSERT INTO "#__branding" ("id", "header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES (2, 'eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 1, '2012-07-18 17:30:10', 'cobalt-3d.png', null, null, null, 'COBALT');
+INSERT INTO "#__branding" ("header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES ('eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 0, '2012-02-21 16:11:03', 'cobalt-3d.png', null, null, null, 'COBALT');
+INSERT INTO "#__branding" ("header", "tabs_hover", "tabs_hover_text", "table_header_row", "table_header_text", "link", "link_hover", "assigned", "modified", "site_logo", "feature_btn_bg", "feature_btn_border", "block_btn_border", "site_name") VALUES ('eff6f7', 'd6edf2', '000000', 'd6edf2', '6793a7', '1E759E', '1E759E', 1, '2012-07-18 17:30:10', 'cobalt-3d.png', null, null, null, 'COBALT');
 INSERT INTO "#__config" ("id", "timezone", "imap_host", "imap_user", "imap_pass", "users_add", "config_default", "templates_edit", "menu_default", "import_default", "launch_default", "show_help", "import_sample", "currency", "lang_deal", "lang_person", "lang_company", "lang_contact", "lang_lead", "lang_task", "lang_event", "lang_goal", "welcome_message", "time_format") VALUES (1, 'America/New_York', '', '', '', 0, 0, 0, 0, 0, 0, 1, null, '$', 'deal', 'person', 'company', 'contact', 'lead', 'task', 'event', 'goal', 'Hello', 'H:i');
-INSERT INTO "#__deal_status" ("id", "name", "ordering", "class") VALUES (1, 'bad', null, 'bad');
-INSERT INTO "#__deal_status" ("id", "name", "ordering", "class") VALUES (2, 'good', null, 'good');
-INSERT INTO "#__deal_status" ("id", "name", "ordering", "class") VALUES (3, 'question', null, 'question');
-INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (1, 'Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (2, 'Milestone', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (3, 'Appointment', '2012-02-23 14:32:35', '2012-02-23 14:32:41');
-INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (4, 'Email', '2012-02-23 14:32:45', '2012-02-23 14:32:50');
-INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (5, 'Todo', '2012-02-23 14:32:35', '2012-02-23 14:32:41');
-INSERT INTO "#__events_categories" ("id", "name", "created", "modified") VALUES (6, 'Fax', '2012-02-23 14:32:45', '2012-02-23 14:32:50');
+INSERT INTO "#__deal_status" ("name", "ordering", "class") VALUES ('bad', null, 'bad');
+INSERT INTO "#__deal_status" ("name", "ordering", "class") VALUES ('good', null, 'good');
+INSERT INTO "#__deal_status" ("name", "ordering", "class") VALUES ('question', null, 'question');
+INSERT INTO "#__events_categories" ("name", "created", "modified") VALUES ('Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__events_categories" ("name", "created", "modified") VALUES ('Milestone', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__events_categories" ("name", "created", "modified") VALUES ('Appointment', '2012-02-23 14:32:35', '2012-02-23 14:32:41');
+INSERT INTO "#__events_categories" ("name", "created", "modified") VALUES ('Email', '2012-02-23 14:32:45', '2012-02-23 14:32:50');
+INSERT INTO "#__events_categories" ("name", "created", "modified") VALUES ('Todo', '2012-02-23 14:32:35', '2012-02-23 14:32:41');
+INSERT INTO "#__events_categories" ("name", "created", "modified") VALUES ('Fax', '2012-02-23 14:32:45', '2012-02-23 14:32:50');
 INSERT INTO "#__menu" ("id", "menu_items", "modified") VALUES (1, 'a:8:{i:0;s:9:"dashboard";i:1;s:5:"deals";i:2;s:6:"people";i:3;s:9:"companies";i:4;s:8:"calendar";i:5;s:9:"documents";i:6;s:5:"goals";i:7;s:7:"reports";}', '2012-07-19 09:19:46');
-INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (1, 'Phone Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (2, 'Voicemail', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (3, 'Appointments', '1970-01-01 00:00:00', '2012-02-14 10:38:24');
-INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (4, 'Cold Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (5, 'Concerns', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__notes_categories" ("id", "name", "created", "modified") VALUES (6, 'Emails', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__people_status" ("id", "name", "color", "created", "modified", "ordering") VALUES (1, 'Archived', '199e76', '1970-01-01 00:00:00', '2012-02-21 00:44:15', null);
-INSERT INTO "#__people_status" ("id", "name", "color", "created", "modified", "ordering") VALUES (2, 'Hot', 'ff0004', '1970-01-01 00:00:00', '2012-02-17 10:59:07', null);
-INSERT INTO "#__people_status" ("id", "name", "color", "created", "modified", "ordering") VALUES (3, 'Warm', '5510b5', '1970-01-01 00:00:00', '2012-02-16 19:58:14', null);
-INSERT INTO "#__people_status"("id", "name", "color", "created", "modified", "ordering") VALUES (4, 'Follow-Up', '52b354', '1970-01-01 00:00:00', '2012-02-17 01:46:57', null);
-INSERT INTO "#__people_status" ("id", "name", "color", "created", "modified", "ordering") VALUES (5, 'Cold', 'bababa', '1970-01-01 00:00:00', '2012-02-16 19:58:36', null);
-INSERT INTO "#__people_tags" ("id", "name", "created", "modified") VALUES (1, 'Decision Makers', '1970-01-01 00:00:00', '2012-02-16 12:30:38');
-INSERT INTO "#__people_tags" ("id", "name", "created", "modified") VALUES (2, 'Existing Customer', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__people_tags" ("id", "name", "created", "modified") VALUES (3, 'Partner', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__people_tags" ("id", "name", "created", "modified") VALUES (4, 'Vendor', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__people_tags" ("id", "name", "created", "modified") VALUES (5, 'Vip', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
-INSERT INTO "#__sources" ("id", "name", "type", "created", "modified", "cost", "ordering") VALUES (1, 'Cold Call', 'flat', '1970-01-01 00:00:00', '2012-02-16 13:16:55', 20, null);
-INSERT INTO "#__sources" ("id", "name", "type", "created", "modified", "cost", "ordering") VALUES (2, 'Import', 'per', '1970-01-01 00:00:00', '1970-01-01 00:00:00', 0, null);
-INSERT INTO "#__sources" ("id", "name", "type", "created", "modified", "cost", "ordering") VALUES (3, 'None', 'per', '1970-01-01 00:00:00', '2012-02-14 10:59:48', 26, null);
-INSERT INTO "#__sources" ("id", "name", "type", "created", "modified", "cost", "ordering") VALUES (4, 'Referral', 'per', '1970-01-01 00:00:00', '1970-01-01 00:00:00', 0, null);
-INSERT INTO "#__sources" ("id", "name", "type", "created", "modified", "cost", "ordering") VALUES (5, 'Trade', 'flat', '1970-01-01 00:00:00', '2012-03-01 14:51:27', 20, null);
-INSERT INTO "#__sources" ("id", "name", "type", "created", "modified", "cost", "ordering") VALUES (6, 'Website', 'per', '1970-01-01 00:00:00', '1970-01-01 00:00:00', 0, null);
-INSERT INTO "#__stages" ("id", "name", "percent", "created", "modified", "color", "ordering", "won") VALUES (1, 'Qualified Lead', 12, '1970-01-01 00:00:00', '2012-07-11 15:24:01', 'ffa200', null, 0);
-INSERT INTO "#__stages" ("id", "name", "percent", "created", "modified", "color", "ordering", "won") VALUES (2, 'Request for Info', 9, '1970-01-01 00:00:00', '2012-07-11 15:24:14', '00ffea', null, 0);
-INSERT INTO "#__stages" ("id", "name", "percent", "created", "modified", "color", "ordering", "won") VALUES (3, 'Presentation', 27, '1970-01-01 00:00:00', '2012-07-11 15:23:43', '009dff', null, 0);
-INSERT INTO "#__stages" ("id", "name", "percent", "created", "modified", "color", "ordering", "won") VALUES (4, 'Negotiation', 50, '1970-01-01 00:00:00', '2012-07-11 15:23:33', 'ebe238', null, 0);
-INSERT INTO "#__stages" ("id", "name", "percent", "created", "modified", "color", "ordering", "won") VALUES (5, 'Won', 100, '1970-01-01 00:00:00', '2012-07-11 15:24:20', '12d900', null, 0);
-INSERT INTO "#__stages" ("id", "name", "percent", "created", "modified", "color", "ordering", "won") VALUES (6, 'Lost', 0, '1970-01-01 00:00:00', '2012-07-11 15:23:19', 'cc2121', null, 0);
+INSERT INTO "#__notes_categories" ("name", "created", "modified") VALUES ('Phone Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__notes_categories" ("name", "created", "modified") VALUES ('Voicemail', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__notes_categories" ("name", "created", "modified") VALUES ('Appointments', '1970-01-01 00:00:00', '2012-02-14 10:38:24');
+INSERT INTO "#__notes_categories" ("name", "created", "modified") VALUES ('Cold Call', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__notes_categories" ("name", "created", "modified") VALUES ('Concerns', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__notes_categories" ("name", "created", "modified") VALUES ('Emails', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__people_status" ("name", "color", "created", "modified", "ordering") VALUES ('Archived', '199e76', '1970-01-01 00:00:00', '2012-02-21 00:44:15', null);
+INSERT INTO "#__people_status" ("name", "color", "created", "modified", "ordering") VALUES ('Hot', 'ff0004', '1970-01-01 00:00:00', '2012-02-17 10:59:07', null);
+INSERT INTO "#__people_status" ("name", "color", "created", "modified", "ordering") VALUES ('Warm', '5510b5', '1970-01-01 00:00:00', '2012-02-16 19:58:14', null);
+INSERT INTO "#__people_status"("name", "color", "created", "modified", "ordering") VALUES ('Follow-Up', '52b354', '1970-01-01 00:00:00', '2012-02-17 01:46:57', null);
+INSERT INTO "#__people_status" ("name", "color", "created", "modified", "ordering") VALUES ('Cold', 'bababa', '1970-01-01 00:00:00', '2012-02-16 19:58:36', null);
+INSERT INTO "#__people_tags" ("name", "created", "modified") VALUES ('Decision Makers', '1970-01-01 00:00:00', '2012-02-16 12:30:38');
+INSERT INTO "#__people_tags" ("name", "created", "modified") VALUES ('Existing Customer', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__people_tags" ("name", "created", "modified") VALUES ('Partner', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__people_tags" ("name", "created", "modified") VALUES ('Vendor', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__people_tags" ("name", "created", "modified") VALUES ('Vip', '1970-01-01 00:00:00', '1970-01-01 00:00:00');
+INSERT INTO "#__sources" ("name", "type", "created", "modified", "cost", "ordering") VALUES ('Cold Call', 'flat', '1970-01-01 00:00:00', '2012-02-16 13:16:55', 20, null);
+INSERT INTO "#__sources" ("name", "type", "created", "modified", "cost", "ordering") VALUES ('Import', 'per', '1970-01-01 00:00:00', '1970-01-01 00:00:00', 0, null);
+INSERT INTO "#__sources" ("name", "type", "created", "modified", "cost", "ordering") VALUES ('None', 'per', '1970-01-01 00:00:00', '2012-02-14 10:59:48', 26, null);
+INSERT INTO "#__sources" ("name", "type", "created", "modified", "cost", "ordering") VALUES ('Referral', 'per', '1970-01-01 00:00:00', '1970-01-01 00:00:00', 0, null);
+INSERT INTO "#__sources" ("name", "type", "created", "modified", "cost", "ordering") VALUES ('Trade', 'flat', '1970-01-01 00:00:00', '2012-03-01 14:51:27', 20, null);
+INSERT INTO "#__sources" ("name", "type", "created", "modified", "cost", "ordering") VALUES ('Website', 'per', '1970-01-01 00:00:00', '1970-01-01 00:00:00', 0, null);
+INSERT INTO "#__stages" ("name", "percent", "created", "modified", "color", "ordering", "won") VALUES ('Qualified Lead', 12, '1970-01-01 00:00:00', '2012-07-11 15:24:01', 'ffa200', null, 0);
+INSERT INTO "#__stages" ("name", "percent", "created", "modified", "color", "ordering", "won") VALUES ('Request for Info', 9, '1970-01-01 00:00:00', '2012-07-11 15:24:14', '00ffea', null, 0);
+INSERT INTO "#__stages" ("name", "percent", "created", "modified", "color", "ordering", "won") VALUES ('Presentation', 27, '1970-01-01 00:00:00', '2012-07-11 15:23:43', '009dff', null, 0);
+INSERT INTO "#__stages" ("name", "percent", "created", "modified", "color", "ordering", "won") VALUES ('Negotiation', 50, '1970-01-01 00:00:00', '2012-07-11 15:23:33', 'ebe238', null, 0);
+INSERT INTO "#__stages" ("name", "percent", "created", "modified", "color", "ordering", "won") VALUES ('Won', 100, '1970-01-01 00:00:00', '2012-07-11 15:24:20', '12d900', null, 0);
+INSERT INTO "#__stages" ("name", "percent", "created", "modified", "color", "ordering", "won") VALUES ('Lost', 0, '1970-01-01 00:00:00', '2012-07-11 15:23:19', 'cc2121', null, 0);
