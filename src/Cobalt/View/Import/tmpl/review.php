@@ -8,7 +8,10 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' );
+
+$memoryFlag = false;
+?>
 
 <h1><?php echo TextHelper::_('COBALT_REVIEW_YOUR_IMPORT'); ?></h1>
 <?php if ( count($this->import_data) > 0 ) { ?>
@@ -22,7 +25,6 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     <?php if ( isset($this->import_data) && count($this->import_data) > 0 ) { try { foreach ($this->import_data as $key => $data) { ?>
     <?php if ($key > 0) { $style = "style='display:none;'"; } else { $style = ""; } ?>
     <div <?php echo $style; ?> id="import_entry_<?php echo $key; ?>" class="imported_row">
-            <?php $memoryFlag = false; ?>
             <?php foreach ($data as $field => $value) { ?>
                 <?php
                     $scriptMemory = memory_get_peak_usage(true);

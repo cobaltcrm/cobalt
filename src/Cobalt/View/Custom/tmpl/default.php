@@ -10,10 +10,15 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 
+echo '<div class="clearfix padding">';
+echo '</div>';
+
 $custom = DropdownHelper::generateCustom($this->type, is_array($this->item) ? $this->item['id'] : $this->item->id );
 $count = 0;
 echo '<div class="custom-fields">';
 echo '<table class="table table-striped table-hover table-bordered">';
+
+$item_id = is_array($this->item) ? $this->item['id'] : $this->item->id;
 
 if (count($custom) > 0)
 {
@@ -57,18 +62,18 @@ if (count($custom) > 0)
             <span class="editable parent" id="editable_custom_<?php echo $value['id']; ?>_container">
                 <div class="list-inline" id="editable_custom_<?php echo $value['id']; ?>">
                     <a href="#" data-toggle="popover" data-title="<?php echo TextHelper::_('COBALT_UPDATE_FIELD').' '.$value['name']; ?>"  data-html='true'  data-content-class="currency-form_<?php echo $value['id']; ?>">
-                        <span id="custom_<?php echo $value['id']; ?>_<?php echo $this->item->id; ?>"><?php echo $custom_field_filter; ?></span>
+                        <span id="custom_<?php echo $value['id']; ?>_<?php echo $item_id; ?>"><?php echo $custom_field_filter; ?></span>
                     </a>
                 </div>
             </span>
             <div class="clearfix currency-form_<?php echo $value['id']; ?> hidden input-append">
                 <form action="<?php echo RouteHelper::_('index.php'); ?>" method="post" id="amount_form_<?php echo $value['id']; ?>" onsubmit="return Cobalt.sumbitForm(this)" role="form">
                     <div class="input-group">
-                        <input 
-                            placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>" 
-                            type="text" 
-                            class="form-control input-small" 
-                            name="custom_<?php echo $value['id']; ?>" 
+                        <input
+                            placeholder="<?php echo TextHelper::_('COBALT_CLICK_TO_EDIT'); ?>"
+                            type="text"
+                            class="form-control input-small"
+                            name="custom_<?php echo $value['id']; ?>"
                             value="<?php echo $value['selected']; ?>" />
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
@@ -78,7 +83,7 @@ if (count($custom) > 0)
                     </div>
                     <input type="hidden" name="task" value="save" />
                     <input type="hidden" name="model" value="<?php echo $this->type; ?>" />
-                    <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+                    <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
                 </form>
             </div>
             <?php break;

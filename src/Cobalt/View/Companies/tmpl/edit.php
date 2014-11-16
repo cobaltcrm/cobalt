@@ -315,11 +315,7 @@ if ($format != "raw")
             </div>
         </div>
         <div class="tab-pane fade in" id="Custom">
-            <?php if ($format != "raw")
-            { ?>
-                <?php echo $this->edit_custom_fields_view->display(); ?>
-            <?php
-            } ?>
+			<?php echo $this->edit_custom_fields_view->render(); ?>
         </div>
 
         <?php if (isset($this->company->id) && $this->company->id) { ?>

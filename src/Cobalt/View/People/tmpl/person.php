@@ -402,7 +402,10 @@ $mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
         </div>
     </div>
 
-    <?php $this->custom_fields_view->render(); ?>
+	<h2 class="dotted">
+		<?php echo ucwords(TextHelper::_('COBALT_PERSON_CUSTOM_FIELDS_DISPLAY')); ?>
+    </h2>
+    <?php echo $this->custom_fields_view->render(); ?>
 
 
     <?php echo $person['notes']->render(); ?>

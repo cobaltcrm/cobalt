@@ -28,14 +28,13 @@ class Html extends AbstractHtmlView
         $doc = $app->getDocument();
         $doc->addScript($app->get('uri.media.full').'js/import_manager.js');
 
-        if (count($_FILES) > 0)
-        {
-            $model = new ImportModel;
+		$file = $app->input->files->get('document');
 
-            foreach ($_FILES as $file)
-            {
-                $import_data = $model->readCSVFile($file['tmp_name']);
-            }
+		if (!empty($file) && $file['error']==0)
+		{
+			$model = new ImportModel;
+
+			$import_data = $model->readCSVFile($file['tmp_name']);
 
             $this->headers = $import_data['headers'];
             unset($import_data['headers']);

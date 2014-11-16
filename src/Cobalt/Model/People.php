@@ -73,48 +73,8 @@ class People extends DefaultModel
 
 		if ($data == null)
 		{
-			$data = $this->app->input->getArray(
-				array(
-					'id'              => 'int',
-					'first_name'      => 'string',
-					'last_name'       => 'string',
-					'company'         => 'string',
-					'company_id'      => 'int',
-					'position'        => 'string',
-					'phone'           => 'string',
-					'email'           => 'email',
-					'source_id'       => 'int',
-					'status_id'       => 'int',
-					'deal_id'         => 'int',
-					'type'            => 'string',
-					'home_address_1'  => 'string',
-					'home_address_2'  => 'string',
-					'home_city'       => 'string',
-					'home_state'      => 'string',
-					'home_zip'        => 'string',
-					'home_country'    => 'string',
-					'work_address_1'  => 'string',
-					'work_address_2'  => 'string',
-					'work_city'       => 'string',
-					'work_country'    => 'string',
-					'work_state'      => 'string',
-					'work_zip'        => 'string',
-					'assignee_name'   => 'string',
-					'assignee_id'     => 'int',
-					'assignment_note' => 'string',
-					'mobile_phone'    => 'string',
-					'home_email'      => 'email',
-					'other_email'     => 'email',
-					'home_phone'      => 'string',
-					'fax'             => 'string',
-					'website'         => 'string',
-					'facebook_url'    => 'string',
-					'twitter_user'    => 'string',
-					'linkedin_url'    => 'string',
-					'aim'             => 'string'
-				)
-			);
-            $data = array_filter($data);
+			$data = $this->app->input->post->getArray();
+			$data = array_filter($data);
 		}
 
 		//date generation
@@ -221,14 +181,11 @@ class People extends DefaultModel
 		//bind to cf tables for deal & person association
 		if (isset($data['deal_id']) && $data['deal_id'])
 		{
-			$deal = array(
-				'association_id = ' . $data['deal_id'],
-				'association_type="deal"',
-				'person_id = ' . $row->id,
-				"created = '$date'"
-			);
+			$columns = array('association_id', 'association_type', 'person_id', 'created');
 
-			if (!$this->dealsPeople($deal))
+			$values = array($data['deal_id'], $this->getDb()->quote('deal'), $row->id, $this->getDb()->quote($date));
+
+			if (!$this->dealsPeople($columns, $values))
 			{
 				return false;
 			}
@@ -278,16 +235,17 @@ class People extends DefaultModel
 	/*
 	 * Method to link deals and people in cf tables
 	 */
-	public function dealsPeople($cfdata)
+	public function dealsPeople($columns, $values)
 	{
 		$db = $this->getDb();
+		$query = $db->getQuery(true);
 
-		// TODO - Refactor to use insert/columns/values methods instead
-		return $db->setQuery(
-			$db->getQuery(true)
-				->insert('#__people_cf')
-				->set($cfdata)
-		)->execute();
+		$query
+			->insert($db->quoteName('#__people_cf'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $values));
+
+		return $db->setQuery($query)->execute();
 	}
 
 	/**
