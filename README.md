@@ -118,4 +118,4 @@ Ps.2: You can specify some filter condition like: published=1
 
 ### Coding standards
 
-Since we are using Joomla Framework, let's follow it's [Coding Standars](http://joomla.github.io/coding-standards/).
+Since we are using Joomla Framework, let's follow it's [Coding Standards](http://joomla.github.io/coding-standards/).
