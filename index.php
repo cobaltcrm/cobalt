@@ -6,8 +6,14 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-if (version_compare(PHP_VERSION, '5.3.10', '<')) {
+if (version_compare(PHP_VERSION, '5.3.10', '<'))
+{
 	die('Your host needs to use PHP 5.3.10 or higher to run this version of Cobalt!');
+}
+
+if (!isset($_SERVER['HTACCESS']))
+{
+	die('Your server must allow .htaccess file to run Cobalt.');
 }
 
 /*
