@@ -45,13 +45,13 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </label>
                             <div class="col-sm-10">
                                 <select class="form-control required" id="select-custom-type" name="type">
-                                    <option value="">- Select Custom Field Type -</option>
+                                    <option value="">- <?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_SELECT_TYPE"); ?> -</option>
                                     <?php echo JHtml::_('select.options', $this->custom_types, 'value', 'text', $this->custom->type, true);?>
                                 </select>
                             </div>
                         </div>
 
-                        <legend>Field Information</legend>
+                        <legend><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_INFORMATION"); ?></legend>
 
                         <div id="custom_field_data"></div>
                         <div>
@@ -68,40 +68,40 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="hide" id="custom_field_templates">
                         <div id="custom_field_number">
                             <ul>
-                                <li>Numeric Fields can be used to capture items such as product units or other numeric values related to your companies.</li>
+                                <li><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_NUMERIC_FIELD_DESC"); ?></li>
                             </ul>
                             <table>
                                 <tr>
                                     <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
-                                    <td>Make this field a required entry.</td>
+                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REQUIRED"); ?></td>
                                 </tr>
                             </table>
                         </div>
                         <div id="custom_field_text">
                             <ul>
-                                <li>Text Fields are used to capture free form text. Examples: Billing Street Address, Email Address.</li>
+                                <li><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_TEXT_FIELD_DESC"); ?></li>
                             </ul>
                             <table>
                                 <tr>
                                     <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
-                                    <td>Make this field a required entry.</td>
+                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REQUIRED"); ?></td>
                                 </tr>
                             </table>
                         </div>
                         <div id="custom_field_currency">
                             <ul>
-                                <li>Currency Fields are used to capture items that have a $ monetary value. Examples: Service Revenue $, Product Sales $</li>
+                                <li><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_CURRENCY_FIELD"); ?></li>
                             </ul>
                             <table>
                                 <tr>
                                     <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
-                                    <td>Make this field a required entry.</td>
+                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REQUIRED"); ?></td>
                                 </tr>
                             </table>
                         </div>
                         <div id="custom_field_picklist">
                             <ul>
-                                <li>Picklist fields allow you to specify a list of pre-defined values for a user to pick from. Examples: Industry, Competitor, Regions, Product or Service Interest.</li>
+                                <li><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_PICKLIST_FIELD_DESC"); ?></li>
                             </ul>
                             <div id="choices">
                                 <?php if (isset($this->custom->values) && $this->custom->values != null) {
@@ -111,7 +111,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                         <div class="choices">
                                             <table>
                                                 <tr>
-                                                    <td>Enter Choice</td>
+                                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_ENTER_CHOICE"); ?></td>
                                                     <td><input class="form-control required" type="text" name="values[]" value="<?php echo $value; ?>" /></td>
                                                     <td><a class="btn btn-danger remove_values">Remove</a></td>
                                                 </tr>
@@ -122,9 +122,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                      <div class="choices">
                                         <table>
                                             <tr>
-                                                <td>Enter Choice</td>
+                                                <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_ENTER_CHOICE"); ?></td>
                                                 <td><input class="form-control required" type="text" name="values[]" value="" /></td>
-                                                <td><a class="btn btn-danger remove_values">Remove</a></td>
+                                                <td><a class="btn btn-danger remove_values"><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REMOVE"); ?></a></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -132,17 +132,17 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             </div>
                             <table>
                                 <tr>
-                                    <td><a class="btn btn-primary" id="add_values">Add More Choices</a></td>
+                                    <td><a class="btn btn-primary" id="add_values"><?php echo TextHelper::_("BALT_EDITING_CUSTOM_FIELD_ADD_MORE_CHOICES"); ?></a></td>
                                 </tr>
                            </table>
                            <table>
                                 <tr>
                                     <td><input type="checkbox" name="multiple_selections" <?php if ( $this->custom->multiple_selections) echo 'checked'; ?> /></td>
-                                    <td>Users can select more than one value</td>
+                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_SELECT_MORE_THAN_ONE"); ?></td>
                                 </tr>
                                 <tr>
                                     <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
-                                    <td>Make this field a required entry.</td>
+                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REQUIRED"); ?></td>
                                 </tr>
                             </table>
                         </div>
@@ -150,21 +150,21 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <div class="choices">
                                 <table>
                                     <tr>
-                                        <td>Enter Choice</td>
+                                        <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_ENTER_CHOICE"); ?></td>
                                         <td><input class="form-control required" type="text" name="values[]" value="" /></td>
-                                        <td><a class="btn btn-danger remove_values">Remove</a></td>
+                                        <td><a class="btn btn-danger remove_values"><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REMOVE"); ?></a></td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                        <div id="custom_field_date">
                            <ul>
-                               <li>Date fields allow you to capture important dates related to your companies.</li>
+                               <li><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_DATE_FIELD_DESC"); ?></li>
                            </ul>
                            <table>
                                 <tr>
                                     <td><input type="checkbox" name="required" <?php if ( $this->custom->required) echo 'checked'; ?> /></td>
-                                    <td>Make this field a required entry.</td>
+                                    <td><?php echo TextHelper::_("COBALT_EDITING_CUSTOM_FIELD_REQUIRED"); ?></td>
                                 </tr>
                             </table>
                        </div>
