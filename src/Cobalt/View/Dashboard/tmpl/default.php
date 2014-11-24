@@ -7,8 +7,13 @@
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
+
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' );
+
+use Joomla\Filter\OutputFilter;
+
+?>
 
 <script type="text/javascript">
     var loc = "dashboard";
@@ -50,8 +55,8 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                                             <?php echo $deal->name; ?>
                                         </a>
                                     </td>
-                                    <td><div class="deal-status-'<?php echo strtolower($deal->status_name); ?>"></div></td>
-                                    <td><span class="amount"><?php echo ConfigHelper::getConfigValue('currency').$deal->amount; ?></span></td>
+                                    <td><div class="deal-status-'<?php echo OutputFilter::stringURLUnicodeSlug($deal->status_name); ?>"><?php echo $deal->status_name; ?></div></td>
+                                    <td><span class="amount"><?php echo TextHelper::price($deal->amount); ?></span></td>
                                 </tr>
                                 <?php $i++; ?>
                             <?php endforeach; ?>

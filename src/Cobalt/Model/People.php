@@ -73,47 +73,7 @@ class People extends DefaultModel
 
 		if ($data == null)
 		{
-			$data = $this->app->input->getArray(
-				array(
-					'id'              => 'int',
-					'first_name'      => 'string',
-					'last_name'       => 'string',
-					'company'         => 'string',
-					'company_id'      => 'int',
-					'position'        => 'string',
-					'phone'           => 'string',
-					'email'           => 'email',
-					'source_id'       => 'int',
-					'status_id'       => 'int',
-					'deal_id'         => 'int',
-					'type'            => 'string',
-					'home_address_1'  => 'string',
-					'home_address_2'  => 'string',
-					'home_city'       => 'string',
-					'home_state'      => 'string',
-					'home_zip'        => 'string',
-					'home_country'    => 'string',
-					'work_address_1'  => 'string',
-					'work_address_2'  => 'string',
-					'work_city'       => 'string',
-					'work_country'    => 'string',
-					'work_state'      => 'string',
-					'work_zip'        => 'string',
-					'assignee_name'   => 'string',
-					'assignee_id'     => 'int',
-					'assignment_note' => 'string',
-					'mobile_phone'    => 'string',
-					'home_email'      => 'email',
-					'other_email'     => 'email',
-					'home_phone'      => 'string',
-					'fax'             => 'string',
-					'website'         => 'string',
-					'facebook_url'    => 'string',
-					'twitter_user'    => 'string',
-					'linkedin_url'    => 'string',
-					'aim'             => 'string'
-				)
-			);
+			$data = $this->app->input->post->getArray();
             $data = array_filter($data);
 		}
 
@@ -137,6 +97,7 @@ class People extends DefaultModel
 
 		//generate custom field string
 		$customArray = array();
+		
 		foreach ($data as $name => $value)
 		{
 			if (strstr($name, 'custom_') && !strstr($name, '_input') && !strstr($name, "_hidden"))
@@ -587,7 +548,7 @@ class People extends DefaultModel
 			}
 		}
 
-		$people = $db->setQuery($query, $limitStart, $limit)->loadAssocList();
+		$people = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
 		//generate query to join deals
 		if (count($people) > 0)
@@ -601,17 +562,17 @@ class People extends DefaultModel
 				{
 					/* Notes */
 					$notesModel            = new Note;
-					$people[$key]['notes'] = $notesModel->getNotes($person['id'], 'people');
+					$people[$key]->notes = $notesModel->getNotes($person->id, 'people');
 
 					/* Docs */
 					$docsModel = new Document;
-					$docsModel->set('person_id', $person['id']);
-					$people[$key]['documents'] = $docsModel->getDocuments();
+					$docsModel->set('person_id', $person->id);
+					$people[$key]->documents = $docsModel->getDocuments();
 
 					/* Tweets */
-					if ($person['twitter_user'] != "" && $person['twitter_user'] != " ")
+					if ($person->twitter_user != "" && $person->twitter_user != " ")
 					{
-						$people[$key]['tweets'] = TweetsHelper::getTweets($person['twitter_user']);
+						$people[$key]->tweets = TweetsHelper::getTweets($person->twitter_user);
 					}
 				}
 			}

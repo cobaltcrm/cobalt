@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "filp/whoops",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "9f451fbc7b8cad5e71300672c340c28c6bec09ff"
+                "reference": "a85fab9a98f1f9b8ebcdbe71733f0d910e5b9adf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/9f451fbc7b8cad5e71300672c340c28c6bec09ff",
-                "reference": "9f451fbc7b8cad5e71300672c340c28c6bec09ff",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/a85fab9a98f1f9b8ebcdbe71733f0d910e5b9adf",
+                "reference": "a85fab9a98f1f9b8ebcdbe71733f0d910e5b9adf",
                 "shasum": ""
             },
             "require": {
@@ -62,21 +62,24 @@
                 "whoops",
                 "zf2"
             ],
-            "time": "2014-07-11 05:56:54"
+            "time": "2014-10-26 09:05:09"
         },
         {
             "name": "ircmaxell/password-compat",
-            "version": "1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ircmaxell/password_compat.git",
-                "reference": "1fc1521b5e9794ea77e4eca30717be9635f1d4f4"
+                "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/1fc1521b5e9794ea77e4eca30717be9635f1d4f4",
-                "reference": "1fc1521b5e9794ea77e4eca30717be9635f1d4f4",
+                "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/5c5cde8822a69545767f7c7f3058cb15ff84614c",
+                "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c",
                 "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
             },
             "type": "library",
             "autoload": {
@@ -91,7 +94,7 @@
             "authors": [
                 {
                     "name": "Anthony Ferrara",
-                    "email": "ircmaxell@ircmaxell.com",
+                    "email": "ircmaxell@php.net",
                     "homepage": "http://blog.ircmaxell.com"
                 }
             ],
@@ -101,24 +104,24 @@
                 "hashing",
                 "password"
             ],
-            "time": "2013-04-30 19:58:08"
+            "time": "2014-11-20 16:49:30"
         },
         {
             "name": "joomla/application",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/application.git",
-                "reference": "6eaa27a50d5362cf5d73acf9eade50ae042097da"
+                "reference": "b7745273664294387bdd7fb694d75e65b7491f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/application/zipball/6eaa27a50d5362cf5d73acf9eade50ae042097da",
-                "reference": "6eaa27a50d5362cf5d73acf9eade50ae042097da",
+                "url": "https://api.github.com/repos/joomla-framework/application/zipball/b7745273664294387bdd7fb694d75e65b7491f28",
+                "reference": "b7745273664294387bdd7fb694d75e65b7491f28",
                 "shasum": ""
             },
             "require": {
-                "joomla/input": "~1.1.1",
+                "joomla/input": "~1.2",
                 "joomla/registry": "~1.1",
                 "joomla/session": "~1.1",
                 "joomla/string": "~1.1",
@@ -127,9 +130,16 @@
                 "psr/log": "~1.0"
             },
             "require-dev": {
-                "joomla/test": "~1.1"
+                "joomla/test": "~1.1",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
             },
             "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Joomla\\Application\\": "src/",
@@ -147,7 +157,7 @@
                 "framework",
                 "joomla"
             ],
-            "time": "2014-05-20 14:35:14"
+            "time": "2014-10-13 12:43:54"
         },
         {
             "name": "joomla/authentication",
@@ -604,16 +614,16 @@
         },
         {
             "name": "joomla/input",
-            "version": "1.1.4",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/input.git",
-                "reference": "8f6ea1ce7ba13d372725aa6c61b641903d1aa015"
+                "reference": "b6098276043e2d627221fe54d3c91232e6679d0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/input/zipball/8f6ea1ce7ba13d372725aa6c61b641903d1aa015",
-                "reference": "8f6ea1ce7ba13d372725aa6c61b641903d1aa015",
+                "url": "https://api.github.com/repos/joomla-framework/input/zipball/b6098276043e2d627221fe54d3c91232e6679d0f",
+                "reference": "b6098276043e2d627221fe54d3c91232e6679d0f",
                 "shasum": ""
             },
             "require": {
@@ -621,9 +631,16 @@
                 "php": ">=5.3.10"
             },
             "require-dev": {
-                "joomla/test": "~1.0"
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
             },
             "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Joomla\\Input\\": "src/",
@@ -641,20 +658,20 @@
                 "input",
                 "joomla"
             ],
-            "time": "2014-08-23 19:16:46"
+            "time": "2014-10-12 18:01:36"
         },
         {
             "name": "joomla/language",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/language.git",
-                "reference": "3261f4179e4e5110d6cbab271ab6ae2aefd29e84"
+                "reference": "6e7ef63e85cf2948d546334d26167bef6636cb89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/language/zipball/3261f4179e4e5110d6cbab271ab6ae2aefd29e84",
-                "reference": "3261f4179e4e5110d6cbab271ab6ae2aefd29e84",
+                "url": "https://api.github.com/repos/joomla-framework/language/zipball/6e7ef63e85cf2948d546334d26167bef6636cb89",
+                "reference": "6e7ef63e85cf2948d546334d26167bef6636cb89",
                 "shasum": ""
             },
             "require": {
@@ -663,9 +680,16 @@
             },
             "require-dev": {
                 "joomla/filesystem": "~1.0",
-                "joomla/test": "~1.0"
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
             },
             "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Joomla\\Language\\": "src/",
@@ -683,7 +707,7 @@
                 "joomla",
                 "language"
             ],
-            "time": "2014-08-23 19:42:44"
+            "time": "2014-10-29 07:14:45"
         },
         {
             "name": "joomla/model",
@@ -1081,17 +1105,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.3.20",
+            "version": "v2.3.22",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "e5c18fae9fb16db2f3dd921a455e7d423445ae6d"
+                "reference": "81017f7bb8bf059ee5fef26d31f1590debe3eb5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/e5c18fae9fb16db2f3dd921a455e7d423445ae6d",
-                "reference": "e5c18fae9fb16db2f3dd921a455e7d423445ae6d",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/81017f7bb8bf059ee5fef26d31f1590debe3eb5b",
+                "reference": "81017f7bb8bf059ee5fef26d31f1590debe3eb5b",
                 "shasum": ""
             },
             "require": {
@@ -1127,7 +1151,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-23 10:19:50"
+            "time": "2014-11-17 16:27:42"
         },
         {
             "name": "tracy/tracy",

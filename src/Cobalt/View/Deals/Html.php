@@ -45,20 +45,27 @@ class Html extends AbstractHtmlView
 
         //determine if we are requesting a specific deal or all deals
         //if id requested
-        if ( $app->input->get('id') ) {
-            $model->set('_id',$app->input->get('id'));
+        if ($app->input->get('id'))
+        {
+            $model->set('_id', $app->input->get('id'));
             $dealList = $model->getDeals();
-            if ( is_null($dealList[0]->id) ) {
+
+            if (is_null($dealList[0]->id))
+            {
                 $app->redirect(RouteHelper::_('index.php?view=deals'),TextHelper::_('COBALT_NOT_AUTHORIZED'));
             }
             //display remove and assign primary contact to deal
             $app->input->set('loc', 'deal');
-        } else {
-        //else load all deals
-            if ( $app->input->get('layout') != 'edit' ) {
+        }
+        else
+        {
+            //else load all deals
+            if ($app->input->get('layout') != 'edit')
+            {
 
-                if (TemplateHelper::isMobile()) {
-                    $model->set('ordering','d.name ASC');
+                if (TemplateHelper::isMobile())
+                {
+                    $model->set('ordering', 'd.name ASC');
                 }
 
                 $dealList = $model->getDeals();
@@ -66,11 +73,14 @@ class Html extends AbstractHtmlView
         }
 
         //determine if we are editing an existing deal entry
-        if ( count($dealList) == 1 ) {
+        if (count($dealList) == 1)
+        {
             //grab deal object
             $deal = $dealList[0];
             $deal->header = ucwords(TextHelper::_('COBALT_DEAL_EDIT'));
-        } else {
+        }
+        else
+        {
             //else we are creating a new entry
             $deal = new \stdClass;
             $deal->name = "";
@@ -79,21 +89,24 @@ class Html extends AbstractHtmlView
             $deal->person_id = ( $app->input->get('person_id') ) ? $app->input->get('person_id') : null;
 
             //get company name to prefill data and hidden fields
-            if ($deal->company_id) {
+            if ($deal->company_id)
+            {
                 $company = CompanyHelper::getCompany($deal->company_id);
                 $deal->company_name = $company[0]['name'];
                 $deal->company_id = $company[0]['id'];
             }
 
             //if a person is specified prefill data
-            if ($deal->person_id) {
+            if ($deal->person_id)
+            {
                 $person = PeopleHelper::getPerson($deal->person_id);
 
                 $deal->person_name = $person[0]['last_name'] . ', ' . $person[0]['first_name'];
                 $deal->person_id = $person[0]['id'];
 
                 //assign company if person is associated with company
-                if ($person[0]['company_id']) {
+                if ($person[0]['company_id'])
+                {
                     $deal->company_id = $person[0]['company_id'];
                     $deal->company_name = $person[0]['company_name'];
                 }
@@ -108,11 +121,6 @@ class Html extends AbstractHtmlView
             $deal->status_id = 0;
             $deal->expected_close = "";
             $deal->header = ucwords(TextHelper::_('COBALT_DEAL_HEADER'));
-        }
-
-        //load javalibs
-        if (!TemplateHelper::isMobile()) {
-            $doc->addScript( $app->get('uri.media.full').'js/deal_manager.js' );
         }
 
         //dropdown info
@@ -137,19 +145,29 @@ class Html extends AbstractHtmlView
         //get session data to prefill filters
         $user_filter = $session->get('deal_user_filter');
         $team_filter = $session->get('deal_team_filter');
-        if ($user_filter == "all" && $user_filter != $user_id) {
+
+        if ($user_filter == "all" && $user_filter != $user_id)
+        {
             $user_name = TextHelper::_('COBALT_ALL_USERS');
-        } elseif ($user_filter == "all") {
+        }
+        elseif ($user_filter == "all")
+        {
             $user_name = TextHelper::_('COBALT_ME');
-        } elseif ($user_filter AND $user_filter != $user_id AND $user_filter != 'all') {
+        }
+        elseif ($user_filter AND $user_filter != $user_id AND $user_filter != 'all')
+        {
             $user_info = UsersHelper::getUsers($user_filter);
             $user_info = $user_info[0];
             $user_name = $user_info['first_name'] . " " . $user_info['last_name'];
-        } elseif ($team_filter) {
+        }
+        elseif ($team_filter)
+        {
             $team_info = UsersHelper::getTeams($team_filter);
             $team = $team_info[0];
-            $user_name = $team['team_name'].TextHelper::_('COBALT_TEAM_APPEND');
-        } else {
+            $user_name = $team['team_name'] . TextHelper::_('COBALT_TEAM_APPEND');
+        }
+        else
+        {
             $user_name = TextHelper::_('COBALT_ME');
         }
 
@@ -159,12 +177,14 @@ class Html extends AbstractHtmlView
         $closing_name = ( $closing_name ) ? $closing_names[$closing_name] : $closing_names['all'];
 
         //get total deals associated with user
-        $total_deals = UsersHelper::getDealCount($user_id,$team_id,$member_role);
+        $total_deals = UsersHelper::getDealCount($user_id, $team_id, $member_role);
 
         //Load Events & Tasks for person
         $layout = $this->getLayout();
+
         if ($layout == "deal") {
 	        $model = Factory::getModel('Event');
+
             $events = $model->getEvents("deal",null,$app->input->get('id'));
             $pagination = $model->getPagination();
             $total = $model->getTotal();
@@ -178,7 +198,8 @@ class Html extends AbstractHtmlView
             $this->custom_fields_view = Factory::getView('custom','default','phtml',array('type'=>'deal','item'=>$dealList[0]));
         }
 
-        if ($layout == "default") {
+        if ($layout == "default")
+        {
             $this->dataTableColumns = $model->getDataTableColumns();
             $pagination = $model->getPagination();
             $total = $model->getTotal();
@@ -187,13 +208,14 @@ class Html extends AbstractHtmlView
             $doc->addScriptDeclaration("
             loc = 'deals';
             order_url = 'index.php?view=deals&layout=list&format=raw&tmpl=component';
-            order_dir = '".$state->get('Deal.filter_order_Dir')."';
-            order_col = '".$state->get('Deal.filter_order')."';
+            order_dir = '" . $state->get('Deal.filter_order_Dir') . "';
+            order_col = '" . $state->get('Deal.filter_order') . "';
             var dataTableColumns = " . json_encode($this->dataTableColumns) . ";");
 
             $deal_name = $state->get('Deal.deals_name');
             $this->deal_filter = $deal_name;
         }
+
 
         if ( TemplateHelper::isMobile() ) {
             $this->add_note = Factory::getView('note','edit','phtml');
@@ -208,11 +230,11 @@ class Html extends AbstractHtmlView
 
 	        $companyModel = Factory::getModel('Company');
             $companyNames = $companyModel->getCompanyNames($json);
-            $doc->addScriptDeclaration("var company_names=".$companyNames.";");
+            $doc->addScriptDeclaration("var company_names=" . $companyNames . ";");
 
 	        $peopleModel = Factory::getModel('People');
             $peopleNames = $peopleModel->getPeopleNames($json);
-            $doc->addScriptDeclaration("var people_names=".$peopleNames.";");
+            $doc->addScriptDeclaration("var people_names=" . $peopleNames . ";");
         }
 
         $closed_stages = DealHelper::getClosedStages();
