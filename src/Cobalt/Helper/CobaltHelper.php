@@ -84,7 +84,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
         $date = DateHelper::formatDBDate(date('Y-m-d H:i:s'));
 
         //Loop through $cf_data array to update/insert
-        for ( $i=0; $i<count($cf_data); $i++ ) {
+        $total = count($cf_data);
+
+        for ( $i=0; $i<$total; $i++ ) {
             //assign the data
             $row = $cf_data[$i];
 

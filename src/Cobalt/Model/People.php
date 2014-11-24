@@ -74,7 +74,8 @@ class People extends DefaultModel
 		if ($data == null)
 		{
 			$data = $this->app->input->post->getArray();
-            $data = array_filter($data);
+
+			$data = array_filter($data);
 		}
 
 		//date generation
@@ -97,7 +98,7 @@ class People extends DefaultModel
 
 		//generate custom field string
 		$customArray = array();
-		
+
 		foreach ($data as $name => $value)
 		{
 			if (strstr($name, 'custom_') && !strstr($name, '_input') && !strstr($name, "_hidden"))
@@ -182,14 +183,11 @@ class People extends DefaultModel
 		//bind to cf tables for deal & person association
 		if (isset($data['deal_id']) && $data['deal_id'])
 		{
-			$deal = array(
-				'association_id = ' . $data['deal_id'],
-				'association_type="deal"',
-				'person_id = ' . $row->id,
-				"created = '$date'"
-			);
+			$columns = array('association_id', 'association_type', 'person_id', 'created');
 
-			if (!$this->dealsPeople($deal))
+			$values = array($data['deal_id'], $this->getDb()->quote('deal'), $row->id, $this->getDb()->quote($date));
+
+			if (!$this->dealsPeople($columns, $values))
 			{
 				return false;
 			}
@@ -239,16 +237,17 @@ class People extends DefaultModel
 	/*
 	 * Method to link deals and people in cf tables
 	 */
-	public function dealsPeople($cfdata)
+	public function dealsPeople($columns, $values)
 	{
 		$db = $this->getDb();
+		$query = $db->getQuery(true);
 
-		// TODO - Refactor to use insert/columns/values methods instead
-		return $db->setQuery(
-			$db->getQuery(true)
-				->insert('#__people_cf')
-				->set($cfdata)
-		)->execute();
+		$query
+			->insert($db->quoteName('#__people_cf'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $values));
+
+		return $db->setQuery($query)->execute();
 	}
 
 	/**
