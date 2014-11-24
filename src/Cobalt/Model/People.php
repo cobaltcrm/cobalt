@@ -74,6 +74,7 @@ class People extends DefaultModel
 		if ($data == null)
 		{
 			$data = $this->app->input->post->getArray();
+
 			$data = array_filter($data);
 		}
 
@@ -97,6 +98,7 @@ class People extends DefaultModel
 
 		//generate custom field string
 		$customArray = array();
+
 		foreach ($data as $name => $value)
 		{
 			if (strstr($name, 'custom_') && !strstr($name, '_input') && !strstr($name, "_hidden"))
@@ -545,7 +547,7 @@ class People extends DefaultModel
 			}
 		}
 
-		$people = $db->setQuery($query, $limitStart, $limit)->loadAssocList();
+		$people = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
 		//generate query to join deals
 		if (count($people) > 0)
@@ -559,17 +561,17 @@ class People extends DefaultModel
 				{
 					/* Notes */
 					$notesModel            = new Note;
-					$people[$key]['notes'] = $notesModel->getNotes($person['id'], 'people');
+					$people[$key]->notes = $notesModel->getNotes($person->id, 'people');
 
 					/* Docs */
 					$docsModel = new Document;
-					$docsModel->set('person_id', $person['id']);
-					$people[$key]['documents'] = $docsModel->getDocuments();
+					$docsModel->set('person_id', $person->id);
+					$people[$key]->documents = $docsModel->getDocuments();
 
 					/* Tweets */
-					if ($person['twitter_user'] != "" && $person['twitter_user'] != " ")
+					if ($person->twitter_user != "" && $person->twitter_user != " ")
 					{
-						$people[$key]['tweets'] = TweetsHelper::getTweets($person['twitter_user']);
+						$people[$key]->tweets = TweetsHelper::getTweets($person->twitter_user);
 					}
 				}
 			}

@@ -145,7 +145,7 @@ class Users extends DefaultModel
         $query->select("u.*,ju.username,ju.email,ju.lastvisitDate as last_login,
                         team_leader.first_name as leader_first_name,team_leader.last_name as leader_last_name,
                         team.leader_id as leader_id,
-                        IF(team.name!='',team.name," . $query->concatenate(array('team_leader.first_name', $db->quote(' '), 'team_leader.last_name')) . " AS team_name");
+                        IF(team.name!='',team.name," . $query->concatenate(array('team_leader.first_name', $this->db->quote(' '), 'team_leader.last_name')) . ") AS team_name");
         $query->from("#__users AS u");
 
         //left join essential data

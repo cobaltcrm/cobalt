@@ -5,10 +5,10 @@ Prototype Standalone CRM on Joomla! Framework
 
 ## Installation via Git and Composer
 
-At folder you want to install Cobalt in execute these commands:
+At the folder you want to install Cobalt in, execute these commands:
 
 ```
-git clone git@github.com:cobaltcrm/cobalt.git .
+git clone https://github.com/cobaltcrm/cobalt.git.
 ```
 ```
 composer install
@@ -20,7 +20,7 @@ Cobalt went through refactoring last year. The goal was and still is to move Cob
 
 ### JavaScript
 
-New refactored JS is at https://github.com/cobaltcrm/cobalt/blob/master/themes/bootstrap/js/cobalt.js. The main inovation is there is namespace _Cobalt_ which contains all Cobalt JS functions. Most of JS functionality does not work now, so let's do it better when we have a chance now.
+New refactored JS is at https://github.com/cobaltcrm/cobalt/blob/master/themes/bootstrap/js/cobalt.js. The main innovation is there is namespace _Cobalt_ which contains all Cobalt JS functions. Most of JS functionality does not work now, so let's do it better when we have a chance now.
 
 [Older version](https://github.com/cobaltcrm/cobalt/blob/master/src/Cobalt/media/js/cobalt.js) used many JS functions for saving a form like:
 
@@ -88,7 +88,7 @@ $('#input_id').typeahead(null,CobaltAutocomplete.getConfig('deal'));
 
 Example 2
 
-Here how to create a autocomplete with people object using Bloodhound as sugestion engine.
+Here's how to create an autocomplete with people object using Bloodhound as suggestion engine.
 
 ```javascript
 CobaltAutocomplete.create({
@@ -118,4 +118,4 @@ Ps.2: You can specify some filter condition like: published=1
 
 ### Coding standards
 
-Since we are using Joomla Framework, let's follow it's [Coding Standars](http://joomla.github.io/coding-standards/).
+Since we are using the Joomla Framework, let's follow it's [Coding Standards](http://joomla.github.io/coding-standards/).

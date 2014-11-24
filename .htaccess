@@ -15,6 +15,10 @@
 # it has been set by your server administrator and you do not need it set here.
 ##
 
+## If this variable is on, Cobalt recognize that .htaccess file is activated.
+# Do not change following line.
+SetEnv HTACCESS On
+
 ## Can be commented out if causes errors, see notes above.
 Options +FollowSymLinks
 
