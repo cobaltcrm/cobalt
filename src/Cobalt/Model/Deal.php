@@ -772,7 +772,7 @@ class Deal extends DefaultModel
             }
             else
             {
-            	$query->group('d.id, c.name, stat.name, source.name, stage.name, stage.percent, event_cf.association_id, event_cf.event_id, event_cf.association_type, event.id, users.first_name, users.last_name, p.first_name, p.last_name, p.email, p.phone');
+            	$query->group('d.id, c.name, stat.name, source.name, stage.name, stage.percent, event_cf.association_id, event_cf.event_id, event_cf.association_type, event.id, users.first_name, users.last_name, p.first_name, p.last_name, p.email, p.phone, c.created');
             }
 
             /**
