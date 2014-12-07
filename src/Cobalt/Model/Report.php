@@ -156,7 +156,7 @@ class Report extends DefaultModel
 		$queryString .= 'stat.name as status_name,';
 		$queryString .= 'source.name as source_name,';
 		$queryString .= 'stage.name as stage_name,stage.percent,';
-		$queryString .= 'user.first_name, user.last_name,';
+		$queryString .= 'users.first_name, users.last_name,';
 		$queryString .= 'p.first_name as primary_contact_first_name,p.last_name as primary_contact_last_name,';
 		$queryString .= "p.email as primary_contact_email,p.phone as primary_contact_phone,";
 		$queryString .= "pc.name as primary_contact_company_name";
@@ -170,7 +170,7 @@ class Report extends DefaultModel
 		$query->leftJoin('#__deal_status AS stat ON stat.id = d.status_id');
 		$query->leftJoin('#__sources AS source ON source.id = d.source_id');
 		$query->leftJoin('#__stages AS stage on stage.id = d.stage_id');
-		$query->leftJoin('#__users AS user ON user.id = d.owner_id');
+		$query->leftJoin('#__users AS users ON users.id = d.owner_id');
 		$query->leftJoin("#__people AS p ON p.id = d.primary_contact_id && p.published>0");
 		$query->leftJoin("#__companies AS pc ON pc.id = p.company_id && pc.published>0");
 

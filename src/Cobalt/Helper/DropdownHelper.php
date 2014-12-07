@@ -473,7 +473,11 @@ class DropdownHelper
             $query = $db->getQuery(true);
             //query string
             //u.id//
-            $query->select("t.team_id AS id,u.first_name,u.last_name,u.team_id,IF(t.name!=" . $db->quote('') . ",t.name," . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . " AS team_name");
+            $query->select("t.team_id AS id,u.first_name,u.last_name,u.team_id,
+							CASE t.name
+							WHEN '' THEN " . $query->concatenate(array('u.first_name', $db->quote(' '), 'u.last_name')) . "
+							ELSE t.name
+							END AS team_name");
             $query->from("#__users AS u");
             $query->leftJoin("#__teams AS t on t.leader_id = u.id");
             $query->where("u.role_type=" . $db->quote('manager'));
