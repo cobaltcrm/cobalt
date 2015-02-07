@@ -21,6 +21,12 @@ if (!isset($person['status_id'])) {
     $person['status_id'] = '';
 }
 
+$isLeadChecked = '';
+if ( !empty($person['type']) )
+{
+	if ( $person['type'] == "Lead" ) $isLeadChecked = 'checked';
+}
+
 if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_id']; } elseif ($app->input->get('company_id')) { $company_id = $app->input->get('company_id');} else {$company_id = "";}
 ?>
 <div class="modal-header" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
@@ -54,7 +60,7 @@ if ( array_key_exists('company_id',$person) ) { $company_id = $person['company_i
   <div class="tab-pane active fade in" id="Person">
         <br />
       <div class="alert alert-info">
-          <input value="lead" type="checkbox" name="type" <?php $checked = ( $person['type'] == "Lead") ? "checked" : ""; echo $checked; ?> /> <?php echo TextHelper::_('COBALT_THIS_PERSON_IS_A_LEAD'); ?>
+          <input value="lead" type="checkbox" name="type" <?php echo $isLeadChecked ?> /> <?php echo TextHelper::_('COBALT_THIS_PERSON_IS_A_LEAD'); ?>
       </div>
 
       <div class="row">

@@ -266,7 +266,8 @@ $mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full');
         <?php if ($company->twitter_user) { ?>
             <div class="widget">
                 <h2><?php echo TextHelper::_('COBALT_LATEST_TWEETS'); ?></h2>
-                <?php if ( isset($company->tweets) ){ for ($i = 0; $i < count($company->tweets); $i++) {
+                <?php $total = count($company->tweets);
+				if ( isset($company->tweets) ){ for ($i = 0; $i < $total; $i++) {
                     $tweet = $company->tweets[$i];
                 ?>
                 <div class="tweet">
