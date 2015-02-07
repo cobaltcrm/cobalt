@@ -111,9 +111,9 @@ class JText
      * script is a boolean to indicate that the string will be push in the javascript language store.
      *
      * Examples:
-     * <script>alert(Joomla.JText._('<?php echo JText::plural("COM_PLUGINS_N_ITEMS_UNPUBLISHED", 1, array("script"=>true));?>'));</script>
+     * <script>alert(Joomla.JText._('<?php echo TextHelper::plural("COM_PLUGINS_N_ITEMS_UNPUBLISHED", 1, array("script"=>true));?>'));</script>
      * will generate an alert message containing '1 plugin successfully disabled'
-     * <?php echo JText::plural("COM_PLUGINS_N_ITEMS_UNPUBLISHED", 1);?> it will generate a '1 plugin successfully disabled' string
+     * <?php echo TextHelper::plural("COM_PLUGINS_N_ITEMS_UNPUBLISHED", 1);?> it will generate a '1 plugin successfully disabled' string
      *
      * @param string  $string The format string.
      * @param integer $n      The number of items

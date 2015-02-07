@@ -83,7 +83,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     <?php if ($new_value != "") { ?>
         <tr class="crmery_row_<?php echo $k; ?>">
             <td><?php echo $link.$name; ?></a></td>
-            <td><?php echo JText::sprintf('COBALT_ACTIVITY_'.strtoupper($activity->action_type),ucwords(str_replace('_',' ',$activity->type)), ucwords(str_replace(' id','',str_replace(' 1','',str_replace('_',' ',$activity->field)))),$old_value,$new_value); ?></td>
+            <td><?php echo TextHelper::sprintf('COBALT_ACTIVITY_'.strtoupper($activity->action_type),ucwords(str_replace('_',' ',$activity->type)), ucwords(str_replace(' id','',str_replace(' 1','',str_replace('_',' ',$activity->field)))),$old_value,$new_value); ?></td>
             <td><?php echo $activity->owner_name; ?></td>
             <td><?php echo DateHelper::getElapsedTime($activity->date,true,true,true,true,true); ?></td>
         </tr>

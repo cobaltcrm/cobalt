@@ -21,7 +21,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="page-header">
                         <h3>
                             <?php echo $this->toolbar->render(); ?>
-                            <?php echo JText::_('COBALT_ADD_TO_ACCOUNT'); ?>
+                            <?php echo TextHelper::_('COBALT_ADD_TO_ACCOUNT'); ?>
                         </h3>
                     </div>
 
@@ -29,7 +29,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <thead>
                             <tr>
                                 <th width="1%">
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_USERS_HEADER_NAME'); ?>
@@ -54,10 +54,10 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     </table>
                     <div class="clearfix"></div>
                     <div class="alert alert-info clearfix">
-                        <h3><?php echo JText::_("COBALT_USER_ROLES_VISIBILITY"); ?></h3>
-                        <b><?php echo JText::_('COBALT_EXECUTIVE'); ?></b> - <?php echo JText::_('COBALT_EXECUTIVE_DESC'); ?><br />
-                        <b><?php echo JText::_('COBALT_MANAGERS'); ?></b> - <?php echo JText::_('COBALT_MANAGERS_DESC'); ?><br />
-                        <b><?php echo JText::_('COBALT_BASIC_USERS'); ?></b> - <?php echo JText::_('COBALT_BASIC_USERS_DESC'); ?>
+                        <h3><?php echo TextHelper::_("COBALT_USER_ROLES_VISIBILITY"); ?></h3>
+                        <b><?php echo TextHelper::_('COBALT_EXECUTIVE'); ?></b> - <?php echo TextHelper::_('COBALT_EXECUTIVE_DESC'); ?><br />
+                        <b><?php echo TextHelper::_('COBALT_MANAGERS'); ?></b> - <?php echo TextHelper::_('COBALT_MANAGERS_DESC'); ?><br />
+                        <b><?php echo TextHelper::_('COBALT_BASIC_USERS'); ?></b> - <?php echo TextHelper::_('COBALT_BASIC_USERS_DESC'); ?>
                     </div>
                 </div>
             </div>

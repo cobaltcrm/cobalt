@@ -14,7 +14,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <div class="col-sm-12">
             <?php if (!$this->launch_default) { ?>
                 <div class="alert">
-                <?php echo JText::_('COBALT_YOUR_SETUP_IS').$this->setup_percent.'% '.JText::_('COBALT_COMPLETED'); ?>
+                <?php echo TextHelper::_('COBALT_YOUR_SETUP_IS').$this->setup_percent.'% '.JText::_('COBALT_COMPLETED'); ?>
                     <div class="progress progress-striped">
                         <div class="bar" style="width:<?php echo $this->setup_percent; ?>%;"></div>
                     </div>
@@ -36,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="col-md-9">
                     <?php if (!$this->php_version_check) { ?>
                         <div class="alert alert-error">
-                            <?php echo JText::sprintf("COBALT_WARNING_PHP_VERSION_INVALID",$this->php_version); ?>
+                            <?php echo TextHelper::sprintf("COBALT_WARNING_PHP_VERSION_INVALID",$this->php_version); ?>
                         </div>
                     <?php } ?>
                     <div class="row">
@@ -45,30 +45,30 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <span class="btn btn-danger btn-mini">
                                 <i class="glyphicon glyphicon-remove icon-white tip"></i>
                             </span>
-                            <?php echo JText::_('COBALT_CURL_NOT_INSTALLED'); ?>
+                            <?php echo TextHelper::_('COBALT_CURL_NOT_INSTALLED'); ?>
                             <?php } elseif ( version_compare($this->installedVersion, $this->latestVersion, 'ge') ) { ?>
                                 <span class="btn btn-success btn-mini">
                                     <i class="glyphicon glyphicon-ok icon-white"></i>
                                 </span>
-                                <?php echo JText::sprintf('COBALT_UP_TO_DATE', $this->installedVersion); ?>
+                                <?php echo TextHelper::sprintf('COBALT_UP_TO_DATE', $this->installedVersion); ?>
                             <?php } else {	?>
                                 <span class="btn btn-danger btn-mini">
                                     <i class="glyphicon glyphicon-remove icon-white"></i>
                                 </span>
-                                <?php echo JText::sprintf('COBALT_UPDATE', $this->installedVersion, $this->latestVersion); ?>
-                                <a href="<?php echo $this->updateUrl; ?>" target="_blank"><?php echo JText::_('COBALT_UPDATE_LINK'); ?></a>
+                                <?php echo TextHelper::sprintf('COBALT_UPDATE', $this->installedVersion, $this->latestVersion); ?>
+                                <a href="<?php echo $this->updateUrl; ?>" target="_blank"><?php echo TextHelper::_('COBALT_UPDATE_LINK'); ?></a>
                         <?php } ?>
                         </div>
                     </div>
                     <hr />
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title"><?php echo JText::_('COBALT_LATEST_NEWS'); ?></h4>
+                            <h4 class="panel-title"><?php echo TextHelper::_('COBALT_LATEST_NEWS'); ?></h4>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="alert alert-warning"><?php echo JText::_('COBALT_NO_MATCHING_RESULTS'); ?></div>
+                                    <div class="alert alert-warning"><?php echo TextHelper::_('COBALT_NO_MATCHING_RESULTS'); ?></div>
                                 </div>
                             </div>
                         </div>

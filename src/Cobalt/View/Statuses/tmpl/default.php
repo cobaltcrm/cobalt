@@ -19,17 +19,17 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                 <div class="col-md-9">
                     <div class="page-header">
                         <?php echo $this->toolbar->render(); ?>
-                        <h3><?php echo JText::_('COBALT_PEOPLE_STATUSES'); ?></h3>
+                        <h3><?php echo TextHelper::_('COBALT_PEOPLE_STATUSES'); ?></h3>
                     </div>
                     <div class="alert alert-info">
-                        <?php echo JText::_('COBALT_PEOPLE_STATUS_DESC_1'); ?><br />
-                        <?php echo JText::_('COBALT_PEOPLE_STATUS_DESC_2'); ?>
+                        <?php echo TextHelper::_('COBALT_PEOPLE_STATUS_DESC_1'); ?><br />
+                        <?php echo TextHelper::_('COBALT_PEOPLE_STATUS_DESC_2'); ?>
                     </div>
                     <table class="table table-striped data-table">
                         <thead>
                             <tr>
                                 <th width="1%">
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_STATUS_NAME'); ?>

@@ -11,6 +11,11 @@
 namespace Cobalt\View\Deals;
 
 use Cobalt\Helper\RouteHelper;
+use Cobalt\Helper\LinkHelper;
+use Cobalt\Model\Deal as DealModel;
+use Cobalt\Model\Event as EventModel;
+use Cobalt\Model\Company as CompanyModel;
+use Cobalt\Model\People as PeopleModel;
 use Cobalt\Factory;
 use Cobalt\Helper\UsersHelper;
 use Cobalt\Helper\TemplateHelper;

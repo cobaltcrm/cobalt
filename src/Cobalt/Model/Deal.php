@@ -10,6 +10,7 @@
 
 namespace Cobalt\Model;
 
+use Cobalt\Helper\LinkHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 use Joomla\Filter\OutputFilter;
@@ -1526,10 +1527,10 @@ class Deal extends DefaultModel
                 $template = '<input type="checkbox" class="export" name="ids[]" value="'.$item->id.'" />';
                 break;
             case 'name':
-                $template = '<a href="'.RouteHelper::_('index.php?view=deals&layout=deal&id='.$item->id).'">'.$item->name.'</a>';
+                $template = '<a href="'. LinkHelper::viewDeal($item->id).'">'.$item->name.'</a>';
                 break;
             case 'company_name':
-                $template = '<a href="'.RouteHelper::_('index.php?view=companies&layout=company&id='.$item->company_id).'">'.$item->company_name.'</a>';
+                $template = '<a href="'.LinkHelper::viewCompany($item->company_id).'">'.$item->company_name.'</a>';
                 break;
             case 'amount':
                 $template = ConfigHelper::getCurrency().$item->amount;
@@ -1647,7 +1648,7 @@ class Deal extends DefaultModel
                 $template .= '</div>';
                 $template .= '<div class="extras-'.$item->id.' hide">';
                 $template .= ' <b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>';
-                $template .= ' <a href="'.RouteHelper::_('index.php?view=people&layout=person&id='.$item->primary_contact_id).'">'.$item->primary_contact_first_name.'</a><br>';
+                $template .= ' <a href="'.LinkHelper::viewPerson($item->primary_contact_id).'">'.$item->primary_contact_first_name.'</a><br>';
                 $template .= ' <b>'.TextHelper::_('COBALT_NEXT_ACTION').'</b><br>';
                 $template .= '</div>';
                 break;

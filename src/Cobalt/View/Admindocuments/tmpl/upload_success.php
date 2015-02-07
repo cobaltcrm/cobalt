@@ -10,6 +10,6 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <script type="text/javascript">
-       setTimeout(function(){window.top.location = 'index.php?view=admindocuments';},1000);
+       setTimeout(function(){window.top.location = '<?php echo LinkHelper::viewAdminDocuments(); ?>';},1000);
 </script>
 <?php echo TextHelper::_('COBALT_UPLOAD_SUCCESS');

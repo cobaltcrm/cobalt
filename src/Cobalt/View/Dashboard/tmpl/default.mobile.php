@@ -8,7 +8,9 @@
 # Website: http://www.cobaltcrm.org
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_CEXEC' ) or die( 'Restricted access' );
+$uri = Factory::getApplication()->get('uri');
+?>
 
 <script type="text/javascript">
     var loc = "dashboard";
@@ -25,39 +27,39 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <ul data-inset='true' data-role='listview'>
             <li data-theme="c">
                 <a href="<?php echo RouteHelper::_('index.php?view=events'); ?>">
-                <img class='ui-li-icon' src='<?php echo JURI::root(); ?>//media/images/mobile/agenda.png' />
+                <img class='ui-li-icon' src='<?php echo $uri->root(); ?>//media/images/mobile/agenda.png' />
                 <?php echo ucwords(TextHelper::_('COBALT_AGENDA')); ?>
                 <span class='ui-li-count'><?php echo $this->numEvents; ?></span>
                 </a>
             </li>
             <li data-theme="c">
                 <a href="<?php echo RouteHelper::_('index.php?view=deals'); ?>">
-                    <img class='ui-li-icon' src='<?php echo JURI::root(); ?>//media/images/mobile/deals.png' />
+                    <img class='ui-li-icon' src='<?php echo $uri->root(); ?>//media/images/mobile/deals.png' />
                     <?php echo ucwords(TextHelper::_('COBALT_DEALS_HEADER')); ?>
                     <span class='ui-li-count'><?php echo $this->numDeals; ?></span>
                 </a>
             </li>
             <li data-theme="c">
                 <a href="<?php echo RouteHelper::_('index.php?view=people&type=leads'); ?>">
-                    <img class='ui-li-icon' src='<?php echo JURI::root(); ?>//media/images/mobile/leads.png' />
+                    <img class='ui-li-icon' src='<?php echo $uri->root(); ?>//media/images/mobile/leads.png' />
                     <?php echo ucwords(TextHelper::_('COBALT_LEADS')); ?>
                     <span class='ui-li-count'><?php echo $this->numLeads; ?></span>
                 </a>
             </li>
             <li data-theme="c">
                 <a href="<?php echo RouteHelper::_('index.php?view=people&type=not_leads'); ?>">
-                    <img class='ui-li-icon' src='<?php echo JURI::root(); ?>//media/images/mobile/contacts.png' />
+                    <img class='ui-li-icon' src='<?php echo $uri->root(); ?>//media/images/mobile/contacts.png' />
                     <?php echo ucwords(TextHelper::_('COBALT_CONTACTS')); ?>
                     <span class='ui-li-count'><?php echo $this->numContacts; ?></span>
                 </a>
             </li>
             <li data-theme="c">
                 <a href="<?php echo RouteHelper::_('index.php?view=companies'); ?>">
-                    <img class='ui-li-icon' src='<?php echo JURI::root(); ?>//media/images/mobile/companies.png' />
+                    <img class='ui-li-icon' src='<?php echo $uri->root(); ?>//media/images/mobile/companies.png' />
                     <?php echo ucwords(TextHelper::_('COBALT_COMPANIES')); ?>
                     <span class='ui-li-count'><?php echo $this->numCompanies; ?></span>
                 </a>
             </li>
         </ul>
-        <div style="float:right;font-size:8px;"><a href="javascript:void(0);" onclick="window.location='<?php echo RouteHelper::_('index.php?view=dashboard&mobile=no'); ?>';"><?php echo TextHelper::_('COBALT_TOGGLE_DESKTOP_VIEW'); ?></a></div>
+        <div style="float:right;font-size:8px;"><a href="javascript:void(0);" onclick="window.location='<?php echo LinkHelper::viewDashboard(array('mobile' => 'no')); ?>';"><?php echo TextHelper::_('COBALT_TOGGLE_DESKTOP_VIEW'); ?></a></div>
     </div>

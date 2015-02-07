@@ -23,7 +23,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 <?php echo $this->menu; ?>
 <script type="text/javascript">
     // add to view.html.php
-    order_url = "<?php echo 'index.php?view=reports&layout=source_report_filter&tmpl=component&format=raw'; ?>";
+    order_url = "<?php echo \Cobalt\Helper\LinkHelper::viewReports(array('layout' => 'source_report_filter', 'tmpl' => 'component', 'format' => 'raw')); ?>";
     order_dir = "<?php echo $this->state->get('Deal.source_report_filter_order_Dir'); ?>";
     order_col = "<?php echo $this->state->get('Deal.source_report_filter_order'); ?>";
 </script>

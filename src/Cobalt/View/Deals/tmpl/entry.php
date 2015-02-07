@@ -22,7 +22,7 @@ $extras = '<b>'.TextHelper::_('COBALT_PRIMARY_CONTACT').'</b>
     <td><input type="checkbox" class="export" name="ids[]" value="<?php echo $deal->id; ?>" /></td>
     <td id="list_<?php echo $deal->id; ?>">
         <div class="title_holder">
-            <a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id='.$deal->id); ?>"><?php echo $deal->name; ?></a>
+            <a href="<?php echo LinkHelper::viewDeal($deal->id); ?>"><?php echo $deal->name; ?></a>
         </div>
     </td>
     <td class="company">

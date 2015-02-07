@@ -42,7 +42,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="categories" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
 
                     </form>

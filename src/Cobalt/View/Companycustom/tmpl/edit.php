@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="name">
-                                <?php echo JText::_('COBALT_NAME'); ?>
+                                <?php echo TextHelper::_('COBALT_NAME'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control required" name="name" id="name" value="<?php echo $this->custom->name; ?>" />
@@ -60,7 +60,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <?php } ?>
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="companycustom" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
 
                     </form>

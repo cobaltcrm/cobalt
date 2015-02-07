@@ -23,7 +23,7 @@ $mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full'); ?>
                     <div class="goal_img pull-left"><img src="<?php echo $mediaURI; ?>images/win_more_cash.png" /></div>
                     <div class="goal_info_container media-body">
                         <h4><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=win_cash&format=raw&tmpl=component'); ?>"><?php echo ucwords(TextHelper::_('COBALT_WIN_MORE_CASH')); ?></a></h4>
-                        <div class="goal_info"><?php echo JText::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',ConfigHelper::getConfigValue('currency')); ?></div>
+                        <div class="goal_info"><?php echo TextHelper::sprintf('COBALT_CREATE_GOAL_TRACK_CASH',ConfigHelper::getConfigValue('currency')); ?></div>
                     </div>
                 </div>
                 <hr />

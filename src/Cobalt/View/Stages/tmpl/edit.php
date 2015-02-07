@@ -32,7 +32,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="name">
-                                <?php echo JText::_('COBALT_NAME'); ?>
+                                <?php echo TextHelper::_('COBALT_NAME'); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input 
@@ -46,7 +46,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="percent">
-                                <?php echo JText::_('COBALT_HEADER_PERCENT'); ?>
+                                <?php echo TextHelper::_('COBALT_HEADER_PERCENT'); ?>
                             </label>
                             <div class="col-sm-8">
                                 <input 
@@ -74,7 +74,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="color">
-                                <?php echo JText::_("COBALT_COLOR"); ?>
+                                <?php echo TextHelper::_("COBALT_COLOR"); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input 
@@ -89,7 +89,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
-                                <?php echo JText::_("COBALT_WON_STAGE"); ?>
+                                <?php echo TextHelper::_("COBALT_WON_STAGE"); ?>
                             </label>
                             <div class="col-sm-10">
                                 <input <?php if (isset($this->stage->won) && $this->stage->won == 1) echo "checked='checked'"; ?> type="checkbox" name="won" value="1">
@@ -100,7 +100,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <input type="hidden" name="id" value="<?php echo isset($this->stage->id) ? $this->stage->id : ''; ?>" />
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="stages" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
                     </form>
                 </div>

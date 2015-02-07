@@ -21,14 +21,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <form action="<?php echo RouteHelper::_('index.php'); ?>" data-ajax="1" method="post" name="adminForm" id="adminForm" class="form-horizontal" >
                         <div class="page-header">
                             <?php echo $this->toolbar->render(); ?>
-                            <h3><?php echo JText::_('COBALT_EDIT_MENU'); ?></h3>
+                            <h3><?php echo TextHelper::_('COBALT_EDIT_MENU'); ?></h3>
                         </div>
-                        <div class="alert alert-info"><?php echo JText::_('COBALT_EDIT_MENU_DESC'); ?></div>
+                        <div class="alert alert-info"><?php echo TextHelper::_('COBALT_EDIT_MENU_DESC'); ?></div>
                         <?php foreach ($this->menu_template as $menu_item) { ?>
                             <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="menu_items[]" value="<?php echo $menu_item; ?>" <?php if (is_array($this->menu->menu_items) && in_array($menu_item,$this->menu->menu_items)) { echo 'checked="checked"'; } ?> />
-                                <?php echo JText::_('COBALT_'.strtoupper($menu_item)); ?>
+                                <?php echo TextHelper::_('COBALT_'.strtoupper($menu_item)); ?>
                             </label>
                             </div>
                         <?php } ?>
@@ -36,7 +36,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <input type="hidden" name="id" value="1" />
                             <input type="hidden" name="task" value="save" />
                             <input type="hidden" name="model" value="menu" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
                     </form>
                 </div>

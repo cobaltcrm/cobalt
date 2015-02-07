@@ -21,14 +21,14 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="page-header">
                         <h3>
                             <?php echo $this->toolbar->render(); ?>
-                            <?php echo JText::_('COBALT_FORM_WIZARD_HEADER'); ?>
+                            <?php echo TextHelper::_('COBALT_FORM_WIZARD_HEADER'); ?>
                         </h3>
                     </div>
                     <table class="table table-striped data-table">
                         <thead>
                             <tr>
                                 <th width="1%">
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_FORM_HEADER_NAME'); ?>

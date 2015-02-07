@@ -13,6 +13,7 @@ namespace Cobalt\Controller;
 use Cobalt\Helper\DateHelper;
 use Cobalt\Model\Deal as DealModel;
 use Cobalt\Model\People as PeopleModel;
+use Cobalt\Helper\TextHelper;
 
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
@@ -79,7 +80,7 @@ class SaveCf extends DefaultController
                     $model = new PeopleModel;
                     $return = $model->getPerson($data['person_id']);
                     $response->alert = new \stdClass;
-                    $response->alert->message = \JText::_('DEAL_CONTACT_ADDED_SUCCESS');
+                    $response->alert->message = TextHelper::_('DEAL_CONTACT_ADDED_SUCCESS');
                     $response->alert->type = 'success';
                     $response->item = $return;
                     $response->reload = 2000;
@@ -96,7 +97,7 @@ class SaveCf extends DefaultController
             }
         } else {
             $response->alert = new \stdClass;
-            $response->alert->message = \JText::_('DEAL_CONTACT_ERROR_FAILURE_ADD_PERSON');
+            $response->alert->message = TextHelper::_('DEAL_CONTACT_ERROR_FAILURE_ADD_PERSON');
             $response->alert->type = 'error';
         }
 

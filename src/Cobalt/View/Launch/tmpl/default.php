@@ -23,9 +23,9 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                         <div class="row-fluid">
                             <div class="rocket"></div>
                             <div class="launch_text">
-                                <h1><?php echo JText::_('COBALT_CONGRATULATIONS'); ?></h1>
-                                <p><?php echo JText::_('COBALT_LAUNCH_TEXT_DESC'); ?></p>
-                                <input type="submit" value="<?php echo JText::_('COBALT_LAUNCH_BUTTON'); ?>" class="btn btn-success btn-large" />
+                                <h1><?php echo TextHelper::_('COBALT_CONGRATULATIONS'); ?></h1>
+                                <p><?php echo TextHelper::_('COBALT_LAUNCH_TEXT_DESC'); ?></p>
+                                <input type="submit" value="<?php echo TextHelper::_('COBALT_LAUNCH_BUTTON'); ?>" class="btn btn-success btn-large" />
                             </div>
                             <input type="hidden" name="id" value="1" />
                             <input type="hidden" name="task" value="save" />
@@ -33,7 +33,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                             <input type="hidden" name="launch_default" value="1" />
                             <input type="hidden" name="show_launch_message" value="1" />
                             <input type="hidden" name="view" value="cobalt" />
-                            <?php echo JHtml::_('form.token'); ?>
+
                         </div>
                     </form>
                 </div>

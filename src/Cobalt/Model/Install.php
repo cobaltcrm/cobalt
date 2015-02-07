@@ -450,7 +450,7 @@ class Install extends AbstractModel
     {
         if (is_null($options))
         {
-            throw new RuntimeException('$options object must not be null.');
+            throw new \RuntimeException('$options object must not be null.');
         }
         elseif (empty($options->db_name))
         {

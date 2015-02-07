@@ -22,25 +22,25 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
                     <div class="page-header">
                         <h3>
                             <?php echo $this->toolbar->render(); ?>
-                            <?php echo JText::_('COBALT_DEAL_STAGES'); ?>
+                            <?php echo TextHelper::_('COBALT_DEAL_STAGES'); ?>
                         </h3>
                     </div>
 
                     <div class="alert alert-info">
-                        <?php echo JText::_('COBALT_DEAL_STAGES_DESC_1'); ?><br />
-                        <?php echo JText::_('COBALT_DEAL_STAGES_DESC_2'); ?>
+                        <?php echo TextHelper::_('COBALT_DEAL_STAGES_DESC_1'); ?><br />
+                        <?php echo TextHelper::_('COBALT_DEAL_STAGES_DESC_2'); ?>
                     </div>
                     
                     <table class="table table-striped data-table">
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo TextHelper::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Cobalt.selectAll(this)" />
                                 </th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_DEAL_STAGE'); ?>
                                 </th>
-                                <th><?php echo JText::_('COBALT_COLOR'); ?></th>
+                                <th><?php echo TextHelper::_('COBALT_COLOR'); ?></th>
                                 <th>
                                     <?php echo TextHelper::_('COBALT_HEADER_PERCENT'); ?>
                                 </th>

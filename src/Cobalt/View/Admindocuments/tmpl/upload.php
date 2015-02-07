@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' );
 ?>
-<form id="upload_form" action="<?php echo RouteHelper::_('index.php?task=upload'); ?>" method="post" enctype="multipart/form-data">
+<form id="upload_form" action="<?php echo LinkHelper::upload(); ?>" method="post" enctype="multipart/form-data">
 
 
     <div class="btn-group">
@@ -23,5 +23,5 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 
     <input type="hidden" name="association_id" value="<?php echo $company['id']; ?>" />
     <input type="hidden" name="association_type" value="company">
-    <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>" />
+    <input type="hidden" name="return" value="<?php echo base64_encode(Factory::getApplication()->get('uri')->current()); ?>" />
 </form>

@@ -22,11 +22,11 @@ class Graph extends DefaultController
         //get graph data from model
         $model = new GraphsModel;
 
-        $type = $this->getInput()->get('filter');
+        $type = $this->getInput()->getCmd('filter');
         if ($type == 'company') {
             $graph_data = $model->getGraphData('company');
         } else {
-            $graph_data = $model->getGraphData($type,$this->getInput()->get('id'));
+            $graph_data = $model->getGraphData($type,$this->getInput()->getInt('id'));
         }
 
         //return data
