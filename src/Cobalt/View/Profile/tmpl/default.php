@@ -16,7 +16,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     var loc = 'profile';
 </script>
 
-<h1><?php echo TextHelper::_('COBALT_PROFILE'); ?></h1>
+<div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_PROFILE')); ?></h3></div>
 
 <div class="panel-group" id="accordion">
     <div class="panel panel-default">

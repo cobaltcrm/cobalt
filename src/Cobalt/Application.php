@@ -365,6 +365,7 @@ final class Application extends AbstractWebApplication implements ContainerAware
 		// Set metadata
 		$this->document->setTitle('Cobalt');
 
+
 		// Start the output buffer
 		ob_start();
 
@@ -440,7 +441,8 @@ final class Application extends AbstractWebApplication implements ContainerAware
 				// Start component div wrapper
 				if (!in_array($this->input->get('view'), array('print')))
 				{
-					TemplateHelper::loadToolbar();
+					$this->document->setBuffer(TemplateHelper::loadToolbar(), 'widget', 'top-right');
+					$this->document->setBuffer(TemplateHelper::loadLeftMenu(), 'widget', 'left');
 				}
 
 				TemplateHelper::startCompWrap();
@@ -577,7 +579,7 @@ final class Application extends AbstractWebApplication implements ContainerAware
 		// Fallback template
 		$template = new \stdClass;
 
-		$template->template = 'bootstrap';
+		$template->template = 'mautic';
 		if (!file_exists(JPATH_THEMES . '/default/index.php'))
 		{
 			$template->template = '';

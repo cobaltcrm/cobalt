@@ -17,7 +17,7 @@ use Cobalt\Helper\TextHelper;
     var graphData = <?php echo json_encode($this->graph_data); ?>;
 </script>
 <div class="page-header">
-    <h1><?php echo TextHelper::_('COBALT_SALES_DASHBOARD'); ?></h1>
+    <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_SALES_DASHBOARD')); ?></h3></div>
 </div>
 
 <?php echo $this->menu; ?>

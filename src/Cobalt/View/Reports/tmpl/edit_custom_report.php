@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );  ?>
 <script type="text/javascript">
     var order_url = "<?php echo RouteHelper::_('index.php?view=reports&layout=custom_reports_filter&tmpl=component&format=raw'); ?>";
 </script>
-<h1><?php echo TextHelper::_('COBALT_CUSTOM_REPORTS'); ?></h1>
+<div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_CUSTOM_REPORTS')); ?></h3></div>
 <?php echo $this->menu; ?>
 <h2><?php echo TextHelper::_('COBALT_SELECT_CUSTOM_COLUMNS'); ?></h2>
 <p><?php echo TextHelper::_('COBALT_CUSTOM_COLUMNS_MESSAGE'); ?></p>

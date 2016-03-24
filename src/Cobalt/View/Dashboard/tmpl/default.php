@@ -19,52 +19,17 @@ use Joomla\Filter\OutputFilter;
     var loc = "dashboard";
     var graphData = <?php echo json_encode($this->graph_data); ?>;
 </script>
+
 <div class="page-header">
-    <h1><?php echo TextHelper::_('COBALT_DASHBOARD_HEADER'); ?></h1>
+    <div class="box-layout">
+        <div class="col-xs-5 col-sm-6 col-md-5 va-m">
+            <h3><?php echo ucwords(TextHelper::_('COBALT_DASHBOARD_HEADER')); ?></h3>
+        </div>
+    </div>
 </div>
 
 <iframe name="hidden" style="display:none;width:0px;height:0px;border:0px;"></iframe>
-
-<div class="row-fluid">
-    <div class="col-md-4">
-        <ul class="dash_float_list list-unstyled" id="dash_floats_left">
-            <li class="widget">
-                <div class="dash_float" id="com_cobalt_tasks_events">
-                        <?php echo $this->eventDock->render(); ?>
-                </div>
-           </li>
-           <li class="widget">
-                <div class="panel panel-default" id="deals_container">
-                    <div class="panel-heading">
-                        <h4 class="panel-title"><?php echo ucwords(TextHelper::_('COBALT_RECENT_DEALS')); ?></h4>
-                    </div>
-                        <table class="table table-striped table-hover table-bordered" id="deal_list">
-                            <thead>
-                                <tr>
-                                    <th><?php echo TextHelper::_('COBALT_DEAL_NAME'); ?></th>
-                                    <th><?php echo TextHelper::_('COBALT_DEAL_STATUS'); ?></th>
-                                    <th class="right"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></th>
-                                </tr>
-                            </thead>
-                            <?php $i = 0; ?>
-                            <?php foreach ($this->recentDeals as $deal) : ?>
-                                <?php $k = $i%2; ?>
-                                <tr class="cobalt_row_'<?php echo $k; ?>">
-                                    <td>
-                                        <a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id=' . $deal->id); ?>">
-                                            <?php echo $deal->name; ?>
-                                        </a>
-                                    </td>
-                                    <td><div class="deal-status-'<?php echo OutputFilter::stringURLUnicodeSlug($deal->status_name); ?>"><?php echo $deal->status_name; ?></div></td>
-                                    <td><span class="amount"><?php echo TextHelper::price($deal->amount); ?></span></td>
-                                </tr>
-                                <?php $i++; ?>
-                            <?php endforeach; ?>
-                        </table>
-                </div>
-            </li>
-       </ul>
-    </div>
+    
     <div class="col-md-8">
         <ul class="dash_float_list list-unstyled" id="dash_floats_right">
             <li class="widget">
@@ -161,4 +126,43 @@ use Joomla\Filter\OutputFilter;
                 </div>
            </li>
         </ul>
+    </div>
+    <div class="col-md-4">
+        <ul class="dash_float_list list-unstyled" id="dash_floats_left">
+            <li class="widget">
+                <div class="dash_float" id="com_cobalt_tasks_events">
+                        <?php echo $this->eventDock->render(); ?>
+                </div>
+           </li>
+           <li class="widget">
+                <div class="panel panel-default" id="deals_container">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><?php echo ucwords(TextHelper::_('COBALT_RECENT_DEALS')); ?></h4>
+                    </div>
+                        <table class="table table-striped table-hover table-bordered" id="deal_list">
+                            <thead>
+                                <tr>
+                                    <th><?php echo TextHelper::_('COBALT_DEAL_NAME'); ?></th>
+                                    <th><?php echo TextHelper::_('COBALT_DEAL_STATUS'); ?></th>
+                                    <th class="right"><?php echo TextHelper::_('COBALT_DEAL_AMOUNT'); ?></th>
+                                </tr>
+                            </thead>
+                            <?php $i = 0; ?>
+                            <?php foreach ($this->recentDeals as $deal) : ?>
+                                <?php $k = $i%2; ?>
+                                <tr class="cobalt_row_'<?php echo $k; ?>">
+                                    <td>
+                                        <a href="<?php echo RouteHelper::_('index.php?view=deals&layout=deal&id=' . $deal->id); ?>">
+                                            <?php echo $deal->name; ?>
+                                        </a>
+                                    </td>
+                                    <td><div class="deal-status-'<?php echo OutputFilter::stringURLUnicodeSlug($deal->status_name); ?>"><?php echo $deal->status_name; ?></div></td>
+                                    <td><span class="amount"><?php echo TextHelper::price($deal->amount); ?></span></td>
+                                </tr>
+                                <?php $i++; ?>
+                            <?php endforeach; ?>
+                        </table>
+                </div>
+            </li>
+       </ul>
     </div>

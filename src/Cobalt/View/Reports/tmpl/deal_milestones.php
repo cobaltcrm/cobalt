@@ -15,7 +15,7 @@ $app = \Cobalt\Factory::getApplication();
     var order_url = "<?php echo 'index.php?view=reports&layout=deal_milestones_filter&format=raw'; ?>";
 </script>
 <div class="page-header">
-    <h1><?php echo ucwords(TextHelper::_('COBALT_DEAL_MILESTONE_REPORT')); ?></h1>
+    <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_DEAL_MILESTONE_REPORT')); ?></h3></div>
 </div>
 <?php echo $this->menu; ?>
 <table class="table table-striped table-hover">

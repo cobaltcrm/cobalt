@@ -18,21 +18,34 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
     var loc = 'calendar';
 </script>
 
-<div class="pull-right btn-group">
-    <button onclick="location.href = '<?php echo RouteHelper::_('index.php?view=events'); ?>'" class="btn btn-default" type="button"><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></button>
-    <button id="company_type_link" class="btn btn-default"data-toggle="dropdown" type="button">
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="javascript:void(0);" onclick="Calendar.showCalendarTasks()"><?php echo TextHelper::_('COBALT_SHOW_TASKS'); ?></a></li>
-        <li><a href="javascript:void(0);" onclick="Calendar.showCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_EVENTS'); ?></a></li>
-        <li><a href="javascript:void(0);" onclick="Calendar.showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
-    </ul>
+<div class="page-header">
+    <div class="box-layout">
+        <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_CALENDAR_HEADER')); ?></h3></div>
+        <div class="col-xs-7 col-sm-6 col-md-7 va-m">
+            <div class="toolbar text-right" id="toolbar">
+                <div class="btn-group">
+                    <button onclick="location.href = '<?php echo RouteHelper::_('index.php?view=events'); ?>'" class="btn btn-default" type="button"><?php echo TextHelper::_('COBALT_CALENDAR_SHOW_ALL'); ?></button>
+                    <button id="company_type_link" class="btn btn-default"data-toggle="dropdown" type="button">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="javascript:void(0);" onclick="Calendar.showCalendarTasks()"><?php echo TextHelper::_('COBALT_SHOW_TASKS'); ?></a></li>
+                        <li><a href="javascript:void(0);" onclick="Calendar.showCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_EVENTS'); ?></a></li>
+                        <li><a href="javascript:void(0);" onclick="Calendar.showAllCalendarEvents()"><?php echo TextHelper::_('COBALT_SHOW_TASKS_EVENTS'); ?></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<h1><?php echo TextHelper::_('COBALT_CALENDAR_HEADER'); ?></h1>
-
-<div id="calendar"></div>
+<div class="panel panel-default bdr-t-wdh-0 mb-0">
+    <div class="panel-body">
+        <div class="box-layout">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
 
 <div id="team_members" class="padding">
     <form class="inline-form">

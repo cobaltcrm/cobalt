@@ -68,7 +68,7 @@ if ($filter_type == "individual") {
             <button type="button" class="btn btn-default" onclick="location.href = '<?php echo RouteHelper::_('index.php?view=calendar'); ?>'" ><?php echo TextHelper::_('COBALT_SHOW_CALENDAR'); ?></button>
             <button type="button" class="btn btn-default" href="javascript:void(0)" onclick="Cobalt.printItems('#events_form');"><?php echo TextHelper::_('COBALT_PRINT'); ?></button>
         </div>
-    <h1><?php echo ucwords(TextHelper::_('COBALT_TASKS_HEADER')); ?></h1>
+    <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_TASKS_HEADER')); ?></h3></div>
 </div>
 <div>
     <ul class="list-inline filter-sentence">

@@ -13,7 +13,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
 $mediaURI = \Cobalt\Factory::getApplication()->get('uri.media.full'); ?>
 
 <div class="page-header">
-    <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS_HEADER')); ?></h1>
+    <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_GOALS_HEADER')); ?></h3></div>
 </div>
 <div class="goals_columns row">
     <div class="goals_left_column col-md-6">

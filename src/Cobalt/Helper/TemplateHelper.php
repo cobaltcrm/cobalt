@@ -21,7 +21,7 @@ class TemplateHelper
     public static function startCompWrap()
     {
         ?>
-        <div class="container">
+        <div class="panel panel-default bdr-t-wdh-0 mb-0">
             <div id="com_cobalt">
                 <div id="message" style="display:none;"></div>
                     <div id="CobaltModalMessage" class="modal hide fade top-right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -134,38 +134,42 @@ class TemplateHelper
         return $string;
     }
 
-    public static function loadToolbar()
+
+    public static function loadLeftMenu()
     {
         $app = Factory::getApplication();
-//load menu
+        
+        //load menu
         $menu_model = new MenuModel;
         $list = $menu_model->getMenu();
-//Get controller to select active menu item
+        
+        //Get controller to select active menu item
         $controller = $app->input->get('controller');
         $view = $app->input->get('view');
         $class = "";
-//generate html
-        $list_html = '<div class="navbar navbar-default navbar-fixed-top" role="navigation">';
-        $list_html .= '<div class="container">';
-        $list_html .= '<div class="navbar-header">';
-        if (StylesHelper::getSiteLogo())
-        {
-            $list_html .= '<div class="site-logo pull-left">';
-            $list_html .= '<img id="site-logo-img" src="'.StylesHelper::getSiteLogo().'" />';
-            $list_html .= '</div>';
-        }
-        $list_html .= '<a id="site-name-link" class="navbar-brand" href="'.Factory::getApplication()->get('uri.base.full').'">';
-        $list_html .= StylesHelper::getSiteName();
-        $list_html .= '</a>';
-        $list_html .= '</div>'; // navbar-header end
-        $list_html .= '<ul class="nav navbar-nav">';
+
+        //generate html
+        $list_html = '<nav class="nav-sidebar">';
+        $list_html .= '<ul class="nav mt-10" data-toggle="menu">';
         foreach ($list->menu_items as $name)
         {
-            $class = $name == $controller || $name == $view ? "active" : "";
-            $list_html .= '<li><a class="'.$class.'" href="'.RouteHelper::_('index.php?view='.$name).'">'.ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($name))).'</a></li>';
+            list($menu_name, $icon) = explode("|", $name);
+            $class = $menu_name == $controller || $menu_name == $view ? " active" : "";
+            $list_html .= '<li class="nav-group'.$class.' "><a href="'.RouteHelper::_('index.php?view='.$menu_name).'">
+                        <span class="icon pull-left fa fa-' . $icon . '"></span>' . ucwords(TextHelper::_('COBALT_MENU_'.strtoupper($menu_name))).'</a></li>';
         }
         $list_html .= '</ul>';
-        $list_html .= '<ul class="nav navbar-nav navbar-right">';
+        $list_html .= '</nav>';
+
+        return $list_html;
+    }
+
+    public static function loadToolbar()
+    {
+        $app = Factory::getApplication();
+
+        //Right top menu
+        $list_html  = '<ul class="nav navbar-nav navbar-right">';
         $list_html .= '<li data-toggle="tooltip" title="'.TextHelper::_('COBALT_CREATE_ITEM').'" data-placement="right" class="dropdown">';
         $list_html .= '<a class="feature-btn dropdown-toggle" data-toggle="dropdown" href="#" id="create_button">';
         $list_html .= '<i class="glyphicon glyphicon-plus-sign icon-white"></i>';
@@ -232,7 +236,7 @@ class TemplateHelper
         $list_html .= '</div>';
         $list_html .= '</div>';
 //return html
-        echo $list_html;
+        return $list_html;
     }
 
     public static function loadFooterMenu()

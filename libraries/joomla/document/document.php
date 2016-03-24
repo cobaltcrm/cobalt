@@ -872,7 +872,7 @@ class JDocument
             if (file_exists($path)) {
                 require_once $path;
             } else {
-                throw new RuntimeException('Unable to load renderer class', 500);
+                throw new RuntimeException('Unable to load renderer class: ' . $type . ': ' . $this->_type . ' - ' . $view, 500);
             }
         }
 

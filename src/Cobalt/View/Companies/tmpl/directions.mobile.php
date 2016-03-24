@@ -23,7 +23,7 @@ $company = $this->companies[0];
 </script>
 
     <div data-role="header" data-theme="b">
-        <h1><?php echo TextHelper::_('COBALT_GET_DIRECTIONS'); ?></h1>
+        <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_GET_DIRECTIONS')); ?></h3></div>
         <a href="#" data-icon="back" class="ui-btn-left">
         <?php echo TextHelper::_('COBALT_BACK'); ?>
     </a>	</div>

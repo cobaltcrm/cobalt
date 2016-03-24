@@ -57,7 +57,7 @@ RewriteRule .* index.php [F]
 # Update Your Joomla! Directory (just / for root).
 ##
 
-# RewriteBase /
+RewriteBase /cobalt
 
 ## Begin - Joomla! core SEF Section.
 #

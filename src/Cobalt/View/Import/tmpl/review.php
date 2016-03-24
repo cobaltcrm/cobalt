@@ -10,7 +10,7 @@
 // no direct access
 defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 
-<h1><?php echo TextHelper::_('COBALT_REVIEW_YOUR_IMPORT'); ?></h1>
+<div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_REVIEW_YOUR_IMPORT')); ?></h3></div>
 <?php if ( count($this->import_data) > 0 ) { ?>
     <p><?php echo TextHelper::_('COBALT_REVIEW_IMPORT_MESSAGE'); ?></p>
 <?php } else { ?>

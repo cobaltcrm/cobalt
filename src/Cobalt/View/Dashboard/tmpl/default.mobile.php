@@ -15,7 +15,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
 </script>
 
     <div data-role='header' data-theme='b'>
-        <h1><?php echo TextHelper::_('COBALT_DASHBOARD_HEADER'); ?></h1>
+        <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_DASHBOARD_HEADER')); ?></h3></div>
         <a data-icon='delete' data-role='button' href='<?php echo RouteHelper::_('index.php?option=com_users&task=logout'); ?>' rel='external'>
             <?php echo TextHelper::_('COBALT_LOGOUT'); ?>
         </a>

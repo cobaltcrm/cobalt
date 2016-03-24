@@ -27,7 +27,7 @@ defined('_CEXEC') or die('Restricted access'); ?>
             <a class="btn btn-default" href="javascript:void(0)" onclick="Cobalt.exportCsv()"><?php echo TextHelper::_('COBALT_EXPORT_CSV'); ?></a>
         <?php } ?>
     </div>
-    <h1><?php echo TextHelper::_('COBALT_NOTES_REPORT'); ?></h1>
+    <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_NOTES_REPORT')); ?></h3></div>
 </div>
 <?php echo $this->menu; ?>
 <form id="list_form" class="print_form" method="post" target="_blank" action="<?php echo RouteHelper::_('index.php?view=printFriendly'); ?>">

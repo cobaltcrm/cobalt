@@ -25,7 +25,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' ); ?>
         <li><a data-target="#editModal" data-toggle="modal" href="<?php echo RouteHelper::_('index.php?view=goals&layout=edit&type=create_deals&tmpl=component&format=raw'); ?>"><?php echo ucwords(TextHelper::_('COBALT_CREATE_DEALS')); ?></a></li>
     </ul>
 </div>
-    <h1><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h1>
+    <div class="col-xs-5 col-sm-6 col-md-5 va-m"><h3><?php echo ucwords(TextHelper::_('COBALT_GOALS')); ?></h3></div>
 </div>
 
 <div class="row-fluid">
