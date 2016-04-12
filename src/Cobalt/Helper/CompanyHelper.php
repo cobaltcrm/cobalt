@@ -41,6 +41,7 @@ defined( '_CEXEC' ) or die( 'Restricted access' );
     {
         return array(   'all'=>TextHelper::_('COBALT_ALL_COMPANIES'),
                         'today'=>TextHelper::_('COBALT_COMPANIES_TASKS_TODAY'),
+						'unpublished'=>TextHelper::_('COBALT_COMPANIES_UNPUBLISHED'),
                         'tomorrow'=>TextHelper::_('COBALT_COMPANIES_TASKS_TOMORROW'),
                         'updated_thirty'=>TextHelper::_('COBALT_COMPANIES_UPDATED_LAST_MONTH'),
                         'recent'=>TextHelper::_('COBALT_RECENTLY_ADDED'),

@@ -194,6 +194,11 @@ class Company extends DefaultModel
 
             //filter for type
             if ($type != null && $type != "all") {
+				// Filter for get companies with published status of -1
+				if($type == 'unpublished')
+				{
+					$query->where("c.published='-1'");
+				}
 
                 //filter for companies with tasks due today
                 if ($type == 'today') {
@@ -233,6 +238,10 @@ class Company extends DefaultModel
                  $query->group("c.id");
 
             }
+			else
+			{
+				$query->where("c.published=1");
+			}
 
             /** company name filter **/
             $company_name = $this->getState()->get('Company.'.$view.'_name');
@@ -269,8 +278,7 @@ class Company extends DefaultModel
 
         //set user state requests
         $query
-            ->order($this->getState()->get('Company.filter_order').' '.$this->getState()->get('Company.filter_order_Dir'))
-            ->where("c.published=".$this->published);
+            ->order($this->getState()->get('Company.filter_order').' '.$this->getState()->get('Company.filter_order_Dir'));
 
         return $query;
     }
